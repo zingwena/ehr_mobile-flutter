@@ -3,6 +3,11 @@ package com.example.ehr_mobile.persistance.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Created by Tinotenda Ruzane
+ *
+ * This is the Entity class for the User table in the local database
+ */
 @Entity
 public class User {
 
@@ -22,6 +27,22 @@ public class User {
     private String last_modified_by;
     private String last_modified_date;
     private String permissions;
+
+    public User(int id, String login, String first_name, String last_name, String email, String image_url, String activated, String lang_key, String created_by, String created_date, String last_modified_by, String last_modified_date, String permissions) {
+        this.id = id;
+        this.login = login;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.image_url = image_url;
+        this.activated = activated;
+        this.lang_key = lang_key;
+        this.created_by = created_by;
+        this.created_date = created_date;
+        this.last_modified_by = last_modified_by;
+        this.last_modified_date = last_modified_date;
+        this.permissions = permissions;
+    }
 
     public int getP_id() {
         return p_id;

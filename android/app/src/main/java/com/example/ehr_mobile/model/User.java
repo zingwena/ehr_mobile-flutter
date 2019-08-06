@@ -18,14 +18,14 @@ public class User {
      private String lastModifiedBy;
      private String lastModifiedDate;
      private ArrayList<String> authorities;
-
+     private String permissions="";
     public User() {
     }
 
     public  String strSeparator = "__,__";
 
      public String convertArrayToList(ArrayList arrayList){
-         String permissions="";
+
          for(int i=0;i<arrayList.size();i++){
              permissions= permissions+arrayList.get(i);
 

@@ -74,9 +74,7 @@ public class MainActivity extends FlutterActivity {
 
         userList=response.body();
         User user= new User();
-        for(int i=0;i<userList.size();i++){
-          System.out.println(user.convertArrayToList(userList.get(i).getAuthorities()));
-        }
+
         System.out.println("****************"+ response.body());
       }
 
