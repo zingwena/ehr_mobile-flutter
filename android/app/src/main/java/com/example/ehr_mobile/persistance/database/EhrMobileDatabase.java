@@ -13,6 +13,8 @@ import com.example.ehr_mobile.model.User;
 import com.example.ehr_mobile.persistance.dao.AuthoritiesDao;
 import com.example.ehr_mobile.persistance.dao.CountryDao;
 import com.example.ehr_mobile.persistance.dao.MaritalStateDao;
+import com.example.ehr_mobile.model.Patient;
+import com.example.ehr_mobile.persistance.dao.PatientDao;
 import com.example.ehr_mobile.persistance.dao.UserDao;
 
 
@@ -31,6 +33,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract AuthoritiesDao authoritiesDao();
     public abstract CountryDao countryDao();
     public abstract MaritalStateDao maritalStateDao();
+
+    public abstract PatientDao patientDao();
 
     public static volatile EhrMobileDatabase INSTANCE;
 

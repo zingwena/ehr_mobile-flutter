@@ -29,7 +29,6 @@ public class MainActivity extends FlutterActivity {
 
   public List<User> userList;
 
-
   public Token token;
      EhrMobileDatabase ehrMobileDatabase;
 
@@ -38,7 +37,6 @@ public class MainActivity extends FlutterActivity {
     super.onCreate(savedInstanceState);
     GeneratedPluginRegistrant.registerWith(this);
     Login login= new Login("admin", "admin");
-
     authenticate(login);
 
     ehrMobileDatabase= EhrMobileDatabase.getInstance(getApplication());
