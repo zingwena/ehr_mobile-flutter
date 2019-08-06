@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:cbs_app/view/data_syncronization_summary.dart';
 
 class DataSyncronization extends StatefulWidget {
   @override
@@ -109,10 +108,11 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                   style: TextStyle(color: Colors.white),
                 ),
 
-                onPressed: () => Navigator.push(
-                                        context,
-                       MaterialPageRoute(
-                         builder: (context) => DataSyncronizationSummary()),),
+                onPressed: null,
+//                    () => Navigator.push(
+//                                        context,
+//                       MaterialPageRoute(
+//                         builder: (context) => DataSyncronizationSummary()),),
               ),
             ),
             SizedBox(

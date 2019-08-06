@@ -1,10 +1,8 @@
+import 'package:ehr_mobile/view/data_syncronization.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cbs_app/view/home_page.dart';
-import 'package:cbs_app/view/data_syncronization.dart';
-import 'package:cbs_app/login_screen.dart';
+import 'login_screen.dart';
 
-// import 'package:fresh_app/utils/navigation_router.dart';
 
 
 class LandingScreen extends StatefulWidget {

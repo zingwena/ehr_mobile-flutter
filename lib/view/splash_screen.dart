@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:cbs_app/view/home_page.dart';
-import 'package:cbs_app/login_screen.dart';
-import 'package:cbs_app/landing_screen.dart';
-import 'package:cbs_app/view/data_syncronization.dart';
+
+import '../landing_screen.dart';
+
+
 
 
 class SplashScreen extends StatefulWidget {
