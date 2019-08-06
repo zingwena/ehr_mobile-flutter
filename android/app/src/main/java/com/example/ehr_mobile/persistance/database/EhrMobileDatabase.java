@@ -6,8 +6,15 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.ehr_mobile.model.Authorities;
+import com.example.ehr_mobile.model.Country;
+import com.example.ehr_mobile.model.MaritalState;
+import com.example.ehr_mobile.model.User;
+import com.example.ehr_mobile.persistance.dao.AuthoritiesDao;
+import com.example.ehr_mobile.persistance.dao.CountryDao;
+import com.example.ehr_mobile.persistance.dao.MaritalStateDao;
 import com.example.ehr_mobile.persistance.dao.UserDao;
-import com.example.ehr_mobile.persistance.model.User;
+
 
 /**
  * Created by Tinotenda Ruzane
@@ -17,10 +24,13 @@ import com.example.ehr_mobile.persistance.model.User;
  *
  * Room persistence Library will help to create the cache
  */
-@Database(entities = {User.class}, version = 1,exportSchema = false)
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalState.class}, version = 1,exportSchema = false)
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
+    public abstract AuthoritiesDao authoritiesDao();
+    public abstract CountryDao countryDao();
+    public abstract MaritalStateDao maritalStateDao();
 
     public static volatile EhrMobileDatabase INSTANCE;
 
