@@ -1,6 +1,7 @@
 package com.example.ehr_mobile;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,10 +34,12 @@ public class MainActivity extends FlutterActivity {
         GeneratedPluginRegistrant.registerWith(this);
         Login login = new Login("admin", "admin");
 
-        PatientsApolloClient.getPatientsFromEhr();
         authenticate(login);
 
         ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
+
+
+
 
         System.out.println("***************** Users" + ehrMobileDatabase.userDao().selectAllUsers());
 
@@ -56,6 +59,11 @@ public class MainActivity extends FlutterActivity {
                     token = response.body();
                     getUsers(token);
                     getMatitalStates(token);
+
+                    // get patients
+                    PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
+                    int numberOfPatients=ehrMobileDatabase.patientDao().listPatients().size();
+                    Log.d("Number of Patients",String.valueOf(numberOfPatients));
                 }
 
             }

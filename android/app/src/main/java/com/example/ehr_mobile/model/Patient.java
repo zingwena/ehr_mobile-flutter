@@ -3,12 +3,13 @@ package com.example.ehr_mobile.model;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 import java.util.Date;
 
-@Entity
+@Entity(indices = @Index(value = {"id"}, unique = true))
 public class Patient {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -18,26 +19,35 @@ public class Patient {
     @NonNull
     private String lastName;
 
-    @NonNull
+
     private String sex;
 
-
     private String identifier;
+
+
     private String number;
 
 
+
     private String selfIdentifiedGender;
+
     private String religion;
+
     private String occupation;
+
     private String maritalStatus;
+
     private String educationLevel;
 
     private String birthDate;
+
     private int age;
 
 
     private String schoolHouse;
+
     private String suburbVillage;
+
     private String town;
 
     public Patient() {
