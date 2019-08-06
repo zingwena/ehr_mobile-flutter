@@ -11,6 +11,7 @@ import com.example.ehr_mobile.configuration.RetrofitClientInstance;
 import com.example.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
+import com.example.ehr_mobile.model.Nationality;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
 import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -56,6 +57,8 @@ public class MainActivity extends FlutterActivity {
                     token = response.body();
                     getUsers(token);
                     getMatitalStates(token);
+                    getNationalities(token);
+
                 }
 
             }
@@ -106,6 +109,23 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onFailure(Call<MaritalStates> call, Throwable t) {
                 System.out.println("tttttttttttttttttttttttt" + t);
+            }
+        });
+    }
+
+    public void getNationalities(Token token) {
+
+        DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
+        Call<Nationality> call = service.getNationality("Bearer " + token.getId_token());
+        call.enqueue(new Callback<Nationality>() {
+            @Override
+            public void onResponse(Call<Nationality> call, Response<Nationality> response) {
+                System.out.println("Nationalities     " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Nationality> call, Throwable t) {
+                System.out.println("ERRRRRRORRRRRRRRRRRRRt" + t);
             }
         });
     }
