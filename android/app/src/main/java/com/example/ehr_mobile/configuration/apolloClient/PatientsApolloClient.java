@@ -6,20 +6,16 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.example.ehr_mobile.GetPatientsQuery;
 import com.example.ehr_mobile.model.Patient;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import okhttp3.OkHttpClient;
 
-import static java.util.Objects.requireNonNull;
-
+import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-    private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
-    // private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
+//    private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
     private static Patient patient;
 
     public static ApolloClient getApolloClient() {
@@ -34,7 +30,7 @@ public class PatientsApolloClient {
     }
 
 
-    public static void getPatientsFromEhr() {
+    public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
         patient = new Patient();
         PatientsApolloClient.getApolloClient().query(
                 GetPatientsQuery.builder()
@@ -44,18 +40,28 @@ public class PatientsApolloClient {
                     public void onResponse(@NotNull Response<GetPatientsQuery.Data> response) {
                         List<GetPatientsQuery.Content> patients = response.data().people().content();
                         for (GetPatientsQuery.Content patientData : patients) {
+
                             System.out.println("Response =========" + patientData.toString());
-                            patient.setFirstName(requireNonNull(patientData.firstname()));
-                            patient.setLastName(requireNonNull(patientData.lastname()));
+
+                            patient.setFirstName(handleNullField(patientData.firstname()));
+                            patient.setLastName(handleNullField(patientData.lastname()));
                             patient.setAge(patientData.age().years());
-//                            patient.setReligion(patientData.religion().name());
-//                             patient.setReligion(patientData.religion().name());
-//                             patient.setNumber(patientData.identifications().get(0).number());
-//                                patient.setBirthDate(new Date(patientData.birthdate()));
-//                                patient.setMaritalStatus(patientData.marital().name());
+                            patient.setSex(handleNullField(patientData.sex().rawValue()));
+//                            patient.setReligion(handleNullField(patientData.religion().name()));
+//                            patient.setNumber(handleNullField(patientData.identifications().get(0).number()));
+//                            patient.setBirthDate(handleNullField(patientData.birthdate()));
+//                            patient.setMaritalStatus(handleNullField(patientData.marital().name()));
+//                            patient.setEducationLevel(handleNullField(patientData.education().name()));
+//                            patient.setOccupation(handleNullField(patientData.occupation().name()));
+//                            patient.setSelfIdentifiedGender(handleNullField(patientData.selfIdentifiedGender().rawValue()));
+//                            patient.setTown(handleNullField(patientData.address().town().name()));
+//                            patient.setSchoolHouse(handleNullField(patientData.address().street()));
+                            ehrMobileDatabase.patientDao().createPatient(patient);
 
 
                         }
+
+
                     }
 
                     @Override
@@ -64,5 +70,13 @@ public class PatientsApolloClient {
                     }
                 }
         );
+    }
+
+
+    private static String handleNullField(String field) {
+        if (field == null) {
+            return "";
+        }
+        return field;
     }
 }

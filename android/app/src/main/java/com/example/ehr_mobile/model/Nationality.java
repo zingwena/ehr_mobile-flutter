@@ -2,20 +2,20 @@ package com.example.ehr_mobile.model;
 
 import java.util.ArrayList;
 
-public class MaritalStates {
+public class Nationality {
 
     private ArrayList content;
 
     private int totalElements;
-    private  boolean last;
-    private int totalPages;
-    private boolean sort;
-    private boolean first;
-    private int numberOfElements;
-    private  int size;
-    private int number;
+     private  boolean last;
+     private int totalPages;
+     private boolean sort;
+      private boolean first;
+      private int numberOfElements;
+       private  int size;
+       private int number;
 
-    public MaritalStates(ArrayList content, int totalElements, boolean last, int totalPages, boolean sort, boolean first, int numberOfElements, int size, int number) {
+    public Nationality(ArrayList content, int totalElements, boolean last, int totalPages, boolean sort, boolean first, int numberOfElements, int size, int number) {
         this.content = content;
         this.totalElements = totalElements;
         this.last = last;
@@ -101,7 +101,7 @@ public class MaritalStates {
 
     @Override
     public String toString() {
-        return "MaritalStates{" +
+        return "Nationality{" +
                 "content=" + content +
                 ", totalElements=" + totalElements +
                 ", last=" + last +
