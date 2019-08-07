@@ -1,4 +1,5 @@
-package com.example.ehr_mobile.configuration;
+package com.example.ehr_mobile.service;
+
 
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
@@ -15,8 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-
-public interface DataService {
+public interface DataSyncService {
 
     @GET("users")
     Call<List<User>>getAllUsers(@Header("Authorization") String token);
@@ -32,6 +32,5 @@ public interface DataService {
 
 
     @POST("authenticate")
-    Call<Token> getToken(@Body Login login);
-
+    Call<Token> dataSync(@Body Login login);
 }
