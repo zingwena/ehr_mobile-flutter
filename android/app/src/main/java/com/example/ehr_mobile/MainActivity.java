@@ -8,6 +8,7 @@ import com.example.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
 import com.example.ehr_mobile.model.Nationality;
+import com.example.ehr_mobile.model.Occupation;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
 import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -67,6 +68,7 @@ public class MainActivity extends FlutterActivity {
 
                    Token token= response.body();
                     getMaritalStates(token,url+"/api/");
+                   getOccupation(token,url+"/api/");
                    System.out.println("%%%%%%%%%%%%%"+token);
                }
 
@@ -94,6 +96,24 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<MaritalStates> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt"+t);
+            }
+        });
+    }
+
+    public void getOccupation(Token token, String baseUrl){
+
+        DataSyncService service= RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<Occupation> call= service.getOccupation("Bearer "+ token.getId_token());
+        call.enqueue(new Callback<Occupation>() {
+            @Override
+            public void onResponse(Call<Occupation> call, Response<Occupation> response) {
+                System.out.println("*************************** "+ response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Occupation> call, Throwable t) {
 
                 System.out.println("tttttttttttttttttttttttt"+t);
             }
