@@ -2,8 +2,13 @@ package com.example.ehr_mobile;
 
 import android.os.Bundle;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import com.example.ehr_mobile.configuration.DataService;
 import com.example.ehr_mobile.configuration.RetrofitClientInstance;
+import com.example.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
 import com.example.ehr_mobile.model.Token;
@@ -14,63 +19,63 @@ import java.util.List;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugins.GeneratedPluginRegistrant;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends FlutterActivity {
 
-  public List<User> userList;
+    public List<User> userList;
 
-  public Token token;
-     EhrMobileDatabase ehrMobileDatabase;
+    public Token token;
+    EhrMobileDatabase ehrMobileDatabase;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    GeneratedPluginRegistrant.registerWith(this);
-    Login login= new Login("admin", "admin");
-    authenticate(login);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GeneratedPluginRegistrant.registerWith(this);
+        Login login = new Login("admin", "admin");
 
-    ehrMobileDatabase= EhrMobileDatabase.getInstance(getApplication());
+        PatientsApolloClient.getPatientsFromEhr();
+        authenticate(login);
 
-      System.out.println("***************** Users"+ ehrMobileDatabase.userDao().selectAllUsers());
-
-  }
+        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
 
 
-  public  Token authenticate(Login login){
+    }
 
-    DataService service= RetrofitClientInstance.getRetrofit().create(DataService.class);
-    Call<Token> call= service.getToken(login);
 
-    call.enqueue(new Callback<Token>() {
-      @Override
-      public void onResponse(Call<Token> call, Response<Token> response) {
+    public Token authenticate(Login login) {
 
-        if (response.isSuccessful()) {
-          token=response.body();
-          getUsers(token);
-      getMatitalStates(token);
-        }
+        DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
+        Call<Token> call = service.getToken(login);
 
-      }
-      @Override
-      public void onFailure(Call<Token> call, Throwable t) {
+        call.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
 
-      }
-    });
+                if (response.isSuccessful()) {
+                    token = response.body();
+                    getUsers(token);
+                    getMatitalStates(token);
+                }
 
-    return token;
-  }
+            }
 
-  public void getUsers(Token token){
-    DataService service= RetrofitClientInstance.getRetrofit().create(DataService.class);
-    Call<List<User>> call= service.getAllUsers("Bearer "+ token.getId_token() );
+            @Override
+            public void onFailure(Call<Token> call, Throwable t) {
 
-    call.enqueue(new Callback<List<User>>() {
-      @Override
-      public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            }
+        });
+
+        return token;
+    }
+
+
+    public void getUsers(Token token) {
+        DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
+        Call<List<User>> call = service.getAllUsers("Bearer " + token.getId_token());
+
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
         userList=response.body();
         User user= new User();
@@ -78,28 +83,28 @@ public class MainActivity extends FlutterActivity {
         System.out.println("****************"+ response.body());
       }
 
-      @Override
-      public void onFailure(Call<List<User>> call, Throwable t) {
-        System.out.println("-------------------"+ t.getMessage());
-      }
-    });
-  }
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                System.out.println("-------------------" + t.getMessage());
+            }
+        });
+    }
 
-  public void getMatitalStates(Token token){
+    public void getMatitalStates(Token token) {
 
-    DataService service= RetrofitClientInstance.getRetrofit().create(DataService.class);
-    Call<MaritalStates> call= service.getMaritalStates("Bearer "+ token.getId_token());
-    call.enqueue(new Callback<MaritalStates>() {
-      @Override
-      public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
-        System.out.println("Marital states     "+response.body());
-      }
+        DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
+        Call<MaritalStates> call = service.getMaritalStates("Bearer " + token.getId_token());
+        call.enqueue(new Callback<MaritalStates>() {
+            @Override
+            public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
+                System.out.println("Marital states     " + response.body());
+            }
 
-      @Override
-      public void onFailure(Call<MaritalStates> call, Throwable t) {
-        System.out.println("tttttttttttttttttttttttt"+t);
-      }
-    });
-  }
+            @Override
+            public void onFailure(Call<MaritalStates> call, Throwable t) {
+                System.out.println("tttttttttttttttttttttttt" + t);
+            }
+        });
+    }
 
 }

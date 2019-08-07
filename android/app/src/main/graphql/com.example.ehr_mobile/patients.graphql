@@ -1,0 +1,30 @@
+query GetPatientsQuery{
+
+    people(text: "", page: 0, sort: "", size: 50) {
+        content {
+            personId
+
+            firstname
+            lastname
+            sex
+            occupation{name}
+            identifications{number}
+            selfIdentifiedGender
+            religion{name}
+            education{name}
+            marital{name}
+            birthdate
+            address {
+                city
+                town {
+                    name
+                }
+                street
+            }
+            age {
+                years
+            }
+        }
+    }
+}
+
