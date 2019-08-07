@@ -7,13 +7,13 @@ public class MaritalStates {
     private ArrayList content;
 
     private int totalElements;
-     private  boolean last;
-     private int totalPages;
-     private boolean sort;
-      private boolean first;
-      private int numberOfElements;
-       private  int size;
-       private int number;
+    private  boolean last;
+    private int totalPages;
+    private boolean sort;
+    private boolean first;
+    private int numberOfElements;
+    private  int size;
+    private int number;
 
     public MaritalStates(ArrayList content, int totalElements, boolean last, int totalPages, boolean sort, boolean first, int numberOfElements, int size, int number) {
         this.content = content;
