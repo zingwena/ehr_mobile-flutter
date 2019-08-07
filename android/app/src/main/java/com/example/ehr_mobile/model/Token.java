@@ -4,9 +4,6 @@ public class Token {
 
     private String id_token;
 
-    public Token() {
-    }
-
     public Token(String id_token) {
         this.id_token = id_token;
     }
