@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.example.ehr_mobile.configuration.DataService;
 import com.example.ehr_mobile.configuration.RetrofitClientInstance;
 import com.example.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import com.example.ehr_mobile.model.Facilities;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
 import com.example.ehr_mobile.model.Nationality;
@@ -82,6 +83,7 @@ public class MainActivity extends FlutterActivity {
     });
   }
 
+
     public void getMaritalStates(Token token, String baseUrl){
 
         DataSyncService service= RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
@@ -99,6 +101,27 @@ public class MainActivity extends FlutterActivity {
             }
         });
     }
+    public void RequestFacility(Token token){
+        DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
+        Call<Facilities> call = service.getAllFacilities("Bearer "+token.getId_token());
+        call.enqueue(new Callback<Facilities>() {
+            @Override
+            public void onResponse(Call<Facilities> call, Response<Facilities> response) {
+                System.out.println("////////////////////////////////////////////////////////"+response.message());
+
+            }
+
+            @Override
+            public void onFailure(Call<Facilities> call, Throwable t) {
+                System.out.println("********************************************"+ t.getMessage());
+
+            }
+        });
+
+
+
+    }
+
 
     /*
     TODO refactor this method to follow getMaritalStates

@@ -1,5 +1,6 @@
 package com.example.ehr_mobile.configuration;
 
+import com.example.ehr_mobile.model.Facilities;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
 import com.example.ehr_mobile.model.Nationality;
@@ -25,6 +26,9 @@ public interface DataService {
 
     @GET("nationalities")
     Call<Nationality> getNationality(@Header("Authorization") String token);
+    @GET("facilities")
+//    Call<List<Facilities>> getAllFacility(@Header("Authorization") String Token);
+    Call<Facilities>getAllFacilities(@Header("Authorization") String Token);
 
     @POST("authenticate")
     Call<Token> getToken(@Body Login login);
