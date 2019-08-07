@@ -3,10 +3,15 @@ package com.example.ehr_mobile;
 import android.os.Bundle;
 import android.util.Log;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import com.example.ehr_mobile.configuration.DataService;
 import com.example.ehr_mobile.configuration.RetrofitClientInstance;
 import com.example.ehr_mobile.model.Authorities;
 import com.example.ehr_mobile.model.Country;
+import com.example.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalState;
 import com.example.ehr_mobile.model.Token;
@@ -29,6 +34,7 @@ public class MainActivity extends FlutterActivity {
 
   public List<User> userList;
 
+
   public Token token;
      EhrMobileDatabase ehrMobileDatabase;
 
@@ -37,6 +43,8 @@ public class MainActivity extends FlutterActivity {
     super.onCreate(savedInstanceState);
     GeneratedPluginRegistrant.registerWith(this);
     Login login= new Login("admin", "admin");
+
+
     authenticate(login);
 
     ehrMobileDatabase= EhrMobileDatabase.getInstance(getApplication());
@@ -62,6 +70,7 @@ public class MainActivity extends FlutterActivity {
           getUsers(token);
           getMatitalStates(token);
           getCountries(token);
+          PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
         }
 
       }
