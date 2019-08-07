@@ -6,10 +6,11 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import java.time.LocalDate;
+import com.squareup.moshi.Json;
+
 import java.util.Date;
 
-@Entity(indices = @Index(value = {"id"}, unique = true))
+@Entity()
 public class Patient {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -19,14 +20,10 @@ public class Patient {
     @NonNull
     private String lastName;
 
+    private String personId;
 
     private String sex;
-
-    private String identifier;
-
-
-    private String number;
-
+    private String nationalId;
 
 
     private String selfIdentifiedGender;
@@ -38,6 +35,7 @@ public class Patient {
     private String maritalStatus;
 
     private String educationLevel;
+
 
     private String birthDate;
 
@@ -57,9 +55,7 @@ public class Patient {
     public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull String sex) {
         this.firstName = firstName;
         this.lastName = lastName;
-
         this.sex = sex;
-
     }
 
     public int getId() {
@@ -70,20 +66,14 @@ public class Patient {
         this.id = id;
     }
 
-    public String getIdentifier() {
-        return identifier;
+
+
+    public String getNationalId() {
+        return nationalId;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
     }
 
 
@@ -203,8 +193,7 @@ public class Patient {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", sex='" + sex + '\'' +
-                ", identifier='" + identifier + '\'' +
-                ", number='" + number + '\'' +
+                ", nationalId='" + nationalId + '\'' +
                 ", selfIdentifiedGender='" + selfIdentifiedGender + '\'' +
                 ", religion='" + religion + '\'' +
                 ", occupation='" + occupation + '\'' +
@@ -216,5 +205,13 @@ public class Patient {
                 ", suburbVillage='" + suburbVillage + '\'' +
                 ", town='" + town + '\'' +
                 '}';
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 }
