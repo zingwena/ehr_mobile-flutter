@@ -21,9 +21,9 @@ import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
 import java.util.List;
 
 import com.example.ehr_mobile.configuration.RetrofitClient;
-
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
+import com.example.ehr_mobile.model.Occupation;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.service.DataSyncService;
 
@@ -77,7 +77,24 @@ public class MainActivity extends FlutterActivity {
 
                             System.out.println("%%%%%%%%%%%%%" + token);
                         }
+                            Token token = response.body();
+                            getMaritalStates(token, url + "/api/");
+                            getOccupation(token, url + "/api/");
+                            System.out.println("%%%%%%%%%%%%%" + token);
 
+                        }
+
+                        @Override
+                        public void onFailure(Call<Token> call, Throwable t) {
+                            System.out.println("Error=============== " + t);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void getMaritalStates(Token token, String baseUrl) {
                         @Override
                         public void onFailure(Call<Token> call, Throwable t) {
                             System.out.println("Error=============== " + t);
@@ -99,14 +116,15 @@ public class MainActivity extends FlutterActivity {
                         System.out.println("Marital states     " + response.body());
                     }
 
-                    @Override
-                    public void onFailure(Call<MaritalStates> call, Throwable t) {
+            @Override
+            public void onFailure(Call<MaritalStates> call, Throwable t) {
 
-                        System.out.println("tttttttttttttttttttttttt" + t);
-                    }
-                });
+                System.out.println("tttttttttttttttttttttttt" + t);
             }
+        });
+    }
 
+    public void getOccupation(Token token, String baseUrl) {
 
             public void getAllFacilities(Token token, String baseUrl) {
                 DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
@@ -117,10 +135,19 @@ public class MainActivity extends FlutterActivity {
                         System.out.println("////////////////////////////////////////////////////////" + response.message());
 
                     }
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<Occupation> call = service.getOccupation("Bearer " + token.getId_token());
+        call.enqueue(new Callback<Occupation>() {
+            @Override
+            public void onResponse(Call<Occupation> call, Response<Occupation> response) {
+                System.out.println("*************************** " + response.body());
+            }
 
                     @Override
                     public void onFailure(Call<Facilities> call, Throwable t) {
                         System.out.println("********************************************" + t.getMessage());
+            @Override
+            public void onFailure(Call<Occupation> call, Throwable t) {
 
                     }
                 });
@@ -128,33 +155,16 @@ public class MainActivity extends FlutterActivity {
 
             }
 
-
-    /*
-    TODO refactor this method to follow getMaritalStates
-    public void getUsers(Token token, String baseUrl) {
-        DataSyncService service= RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<List<User>> call = service.getAllUsers("Bearer "+ token.getId_token());
-
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-
-                List<User> userList = response.body();
-                User user = new User();
-                for (int i = 0; i < userList.size(); i++) {
-                    System.out.println(user.convertArrayToList(userList.get(i).getAuthorities()));
-                }
-                System.out.println("****************" + response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                System.out.println("-------------------" + t.getMessage());
+                System.out.println("tttttttttttttttttttttttt" + t);
             }
         });
-    }*/
+    }
+
+    /*
+
 
         });
     }
 }
+
 
