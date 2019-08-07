@@ -1,35 +1,18 @@
 package com.example.ehr_mobile;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import com.example.ehr_mobile.configuration.DataService;
-import com.example.ehr_mobile.configuration.RetrofitClientInstance;
+import com.example.ehr_mobile.configuration.RetrofitClient;
 import com.example.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
-import com.example.ehr_mobile.model.Nationality;
 import com.example.ehr_mobile.model.Token;
-import com.example.ehr_mobile.model.User;
 import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
-
-import java.util.List;
-
-import com.example.ehr_mobile.configuration.RetrofitClient;
-
-import com.example.ehr_mobile.model.Login;
-import com.example.ehr_mobile.model.MaritalStates;
-import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.service.DataSyncService;
 
 import java.util.ArrayList;
 
 import io.flutter.app.FlutterActivity;
-import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import retrofit2.Call;
@@ -39,18 +22,18 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends FlutterActivity {
 
-  final static  String CHANNEL="Authentication";
+    final static String CHANNEL = "Authentication";
+    private EhrMobileDatabase database;
+    public String url, username, password;
 
-  public String url,username,password;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GeneratedPluginRegistrant.registerWith(this);
+        database=EhrMobileDatabase.getInstance(getApplicationContext());
+        PatientsApolloClient.getPatientsFromEhr(database);
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    GeneratedPluginRegistrant.registerWith(this);
-
-    new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
-        @Override
-        public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+        new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler((methodCall, result) -> {
             if (methodCall.method.equals("DataSync")) {
 
                 ArrayList args = methodCall.arguments();
@@ -73,72 +56,36 @@ public class MainActivity extends FlutterActivity {
                         Token token = response.body();
                         getMaritalStates(token, url + "/api/");
                         System.out.println("%%%%%%%%%%%%%" + token);
+                        PatientsApolloClient.getPatientsFromEhr(database);
+
                     }
 
                     @Override
                     public void onFailure(Call<Token> call, Throwable t) {
-                        System.out.println("Error=============== " + t);
+                        System.out.println("----------------------------------------------" + t.getMessage());
                     }
                 });
 
-                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-                Call<MaritalStates> call = service.getMaritalStates("Bearer " + token.getId_token());
-                call.enqueue(new Callback<MaritalStates>() {
-                    @Override
-                    public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
-                        System.out.println("Marital states     " + response.body());
-                    }
 
-                    @Override
-                    public void onFailure(Call<MaritalStates> call, Throwable t) {
-
-                        System.out.println("tttttttttttttttttttttttt" + t);
-                    }
-                });
-            }
-
-            public void getMaritalStates(Token token, String baseUrl){
-
-                DataSyncService service= RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-                Call<MaritalStates> call= service.getMaritalStates("Bearer "+ token.getId_token());
-                call.enqueue(new Callback<MaritalStates>() {
-                    @Override
-                    public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
-                        System.out.println("Marital states     "+response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<MaritalStates> call, Throwable t) {
-
-                        System.out.println("tttttttttttttttttttttttt"+t);
-                    }
-                });
-            }
-
-    /*
-    TODO refactor this method to follow getMaritalStates
-    public void getUsers(Token token, String baseUrl) {
-        DataSyncService service= RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<List<User>> call = service.getAllUsers("Bearer "+ token.getId_token());
-
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-
-                List<User> userList = response.body();
-                User user = new User();
-                for (int i = 0; i < userList.size(); i++) {
-                    System.out.println(user.convertArrayToList(userList.get(i).getAuthorities()));
-                }
-                System.out.println("****************" + response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                System.out.println("-------------------" + t.getMessage());
             }
         });
-    }*/
+    }
 
-        }
-    });}}
+    public void getMaritalStates(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<MaritalStates> call = service.getMaritalStates("Bearer " + token.getId_token());
+        call.enqueue(new Callback<MaritalStates>() {
+            @Override
+            public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
+                System.out.println("Marital states     " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<MaritalStates> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+            }
+        });
+    }
+}

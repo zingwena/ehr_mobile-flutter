@@ -48,24 +48,31 @@ public class PatientsApolloClient {
                             //String number = patientData.identifications().get(0).number();
 
 
-                            String firstName =patientData.firstname();
+                            String firstName = patientData.firstname();
                             String lastName = patientData.lastname();
                             String sex = patientData.sex().rawValue();
-                            if(patientData.identifications().size()>0){
-                                String nationalId=patientData.identifications().get(0).type().name();
+
+                            if (patientData.identifications().size() > 0) {
+                                String type = patientData.identifications().get(0).type().name();
+
+
+                                patient = new Patient(firstName, lastName
+                                        , sex);
+
+                                patient.setNationalId(patientData.identifications().get(0).number());
+                                System.out.println("type = " + type);
+                                ehrMobileDatabase.patientDao().createPatient(patient);
+
                             }
 
 
-                            patient = new Patient(firstName, lastName
-                                    , sex);
-
-                            ehrMobileDatabase.patientDao().createPatient(patient);                            System.out.println("Response =========" + patientData.toString());
                             System.out.println("Response =========" + patientData.toString());
-                            System.out.println("Num of patients " + ehrMobileDatabase.patientDao().listPatients());
-
 
 
                         }
+                        System.out.println("Num of patients " + ehrMobileDatabase.patientDao().listPatients().size() +
+                                ehrMobileDatabase.patientDao().listPatients()
+                        );
 
 
                     }
@@ -78,19 +85,5 @@ public class PatientsApolloClient {
         );
     }
 
-    private static boolean patientExists(String firstName, String lastName, EhrMobileDatabase ehrMobileDatabase) {
-      Patient patient=  ehrMobileDatabase.patientDao().findPatientByName(firstName, lastName);
-        if(patient!=null){
-            return true;
-        }
-        return false;
-    }
 
-
-    private static String handleNullField(String field) {
-        if (field == null) {
-            return " ";
-        }
-        return field;
-    }
 }
