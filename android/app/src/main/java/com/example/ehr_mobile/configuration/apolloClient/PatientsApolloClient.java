@@ -1,21 +1,27 @@
 package com.example.ehr_mobile.configuration.apolloClient;
 
+import android.util.Log;
+
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.example.ehr_mobile.GetPatientsQuery;
 import com.example.ehr_mobile.model.Patient;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
 import okhttp3.OkHttpClient;
 
 import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
+
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
-//    private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+//   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
+    private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
     private static Patient patient;
 
     public static ApolloClient getApolloClient() {
@@ -31,7 +37,6 @@ public class PatientsApolloClient {
 
 
     public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
-        patient = new Patient();
         PatientsApolloClient.getApolloClient().query(
                 GetPatientsQuery.builder()
                         .build()).enqueue(
@@ -40,23 +45,24 @@ public class PatientsApolloClient {
                     public void onResponse(@NotNull Response<GetPatientsQuery.Data> response) {
                         List<GetPatientsQuery.Content> patients = response.data().people().content();
                         for (GetPatientsQuery.Content patientData : patients) {
+                            //String number = patientData.identifications().get(0).number();
 
+
+                            String firstName =patientData.firstname();
+                            String lastName = patientData.lastname();
+                            String sex = patientData.sex().rawValue();
+                            if(patientData.identifications().size()>0){
+                                String nationalId=patientData.identifications().get(0).type().name();
+                            }
+
+
+                            patient = new Patient(firstName, lastName
+                                    , sex);
+
+                            ehrMobileDatabase.patientDao().createPatient(patient);                            System.out.println("Response =========" + patientData.toString());
                             System.out.println("Response =========" + patientData.toString());
+                            System.out.println("Num of patients " + ehrMobileDatabase.patientDao().listPatients());
 
-                            patient.setFirstName(handleNullField(patientData.firstname()));
-                            patient.setLastName(handleNullField(patientData.lastname()));
-                            patient.setAge(patientData.age().years());
-                            patient.setSex(handleNullField(patientData.sex().rawValue()));
-//                            patient.setReligion(handleNullField(patientData.religion().name()));
-//                            patient.setNumber(handleNullField(patientData.identifications().get(0).number()));
-//                            patient.setBirthDate(handleNullField(patientData.birthdate()));
-//                            patient.setMaritalStatus(handleNullField(patientData.marital().name()));
-//                            patient.setEducationLevel(handleNullField(patientData.education().name()));
-//                            patient.setOccupation(handleNullField(patientData.occupation().name()));
-//                            patient.setSelfIdentifiedGender(handleNullField(patientData.selfIdentifiedGender().rawValue()));
-//                            patient.setTown(handleNullField(patientData.address().town().name()));
-//                            patient.setSchoolHouse(handleNullField(patientData.address().street()));
-                            ehrMobileDatabase.patientDao().createPatient(patient);
 
 
                         }
@@ -72,10 +78,18 @@ public class PatientsApolloClient {
         );
     }
 
+    private static boolean patientExists(String firstName, String lastName, EhrMobileDatabase ehrMobileDatabase) {
+      Patient patient=  ehrMobileDatabase.patientDao().findPatientByName(firstName, lastName);
+        if(patient!=null){
+            return true;
+        }
+        return false;
+    }
+
 
     private static String handleNullField(String field) {
         if (field == null) {
-            return "";
+            return " ";
         }
         return field;
     }

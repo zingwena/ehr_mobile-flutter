@@ -70,7 +70,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-
+                System.out.println("Error   = " + t);
             }
         });
 

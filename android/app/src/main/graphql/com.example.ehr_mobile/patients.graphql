@@ -3,12 +3,11 @@ query GetPatientsQuery{
     people(text: "", page: 0, sort: "", size: 50) {
         content {
             personId
-
             firstname
             lastname
             sex
             occupation{name}
-            identifications{number}
+            identifications{number,type{name}}
             selfIdentifiedGender
             religion{name}
             education{name}
