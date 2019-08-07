@@ -1,116 +1,43 @@
 package com.example.ehr_mobile.model;
 
-import java.util.ArrayList;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+@Entity
 public class Nationality {
 
-    private ArrayList content;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String code;
+    private String name;
 
-    private int totalElements;
-     private  boolean last;
-     private int totalPages;
-     private boolean sort;
-      private boolean first;
-      private int numberOfElements;
-       private  int size;
-       private int number;
-
-    public Nationality(ArrayList content, int totalElements, boolean last, int totalPages, boolean sort, boolean first, int numberOfElements, int size, int number) {
-        this.content = content;
-        this.totalElements = totalElements;
-        this.last = last;
-        this.totalPages = totalPages;
-        this.sort = sort;
-        this.first = first;
-        this.numberOfElements = numberOfElements;
-        this.size = size;
-        this.number = number;
+    public Nationality(String code, String name) {
+        this.code = code;
+        this.name = name;
     }
 
-    public ArrayList getContent() {
-        return content;
+    public int getId() {
+        return id;
     }
 
-    public void setContent(ArrayList content) {
-        this.content = content;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getTotalElements() {
-        return totalElements;
+    public String getCode() {
+        return code;
     }
 
-    public void setTotalElements(int totalElements) {
-        this.totalElements = totalElements;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public boolean isLast() {
-        return last;
+    public String getName() {
+        return name;
     }
 
-    public void setLast(boolean last) {
-        this.last = last;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public boolean isSort() {
-        return sort;
-    }
-
-    public void setSort(boolean sort) {
-        this.sort = sort;
-    }
-
-    public boolean isFirst() {
-        return first;
-    }
-
-    public void setFirst(boolean first) {
-        this.first = first;
-    }
-
-    public int getNumberOfElements() {
-        return numberOfElements;
-    }
-
-    public void setNumberOfElements(int numberOfElements) {
-        this.numberOfElements = numberOfElements;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    @Override
-    public String toString() {
-        return "Nationality{" +
-                "content=" + content +
-                ", totalElements=" + totalElements +
-                ", last=" + last +
-                ", totalPages=" + totalPages +
-                ", sort=" + sort +
-                ", first=" + first +
-                ", numberOfElements=" + numberOfElements +
-                ", size=" + size +
-                ", number=" + number +
-                '}';
+    public void setName(String name) {
+        this.name = name;
     }
 }
