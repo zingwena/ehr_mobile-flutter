@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Data;
 
 //@Data
-public class BasePageable <T> implements Serializable {
+abstract public class BasePageable <T> implements Serializable {
 
     private int totalElements;
     private  boolean last;
