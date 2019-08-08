@@ -1,12 +1,11 @@
 package com.example.ehr_mobile.model;
 
+import java.io.Serializable;
 
+public class BaseNameModel implements Serializable {
 
-public class MaritalStates extends  BasePageable<BaseNameModel> {
-
-
-   private String code;
-   private String name;
+    private String code;
+    private String name;
 
     public String getCode() {
         return code;
@@ -20,18 +19,15 @@ public class MaritalStates extends  BasePageable<BaseNameModel> {
         return name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
 
-
     @Override
     public String toString() {
-        return super.toString()+"MaritalStates{" +
+        return "BaseNameModel{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
-
 }

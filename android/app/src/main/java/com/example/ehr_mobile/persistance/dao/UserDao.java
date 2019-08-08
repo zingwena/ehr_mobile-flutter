@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.ehr_mobile.persistance.model.User;
+import com.example.ehr_mobile.model.User;
 
 import java.util.List;
 
@@ -16,8 +16,14 @@ import java.util.List;
 @Dao
 public interface UserDao {
 
+    @Insert
+    void insertUsers(List<User> users);
+
     @Query("SELECT * From user")
     List<User> selectAllUsers();
+
+    @Query("SELECT * FROM user WHERE userId=:id ")
+    User findUserByid(int id);
 
     @Insert
     void insertAllUsers(List<User> users);
