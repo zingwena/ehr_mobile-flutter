@@ -26,6 +26,11 @@ import java.util.List;
 
 import com.example.ehr_mobile.configuration.RetrofitClient;
 
+import com.example.ehr_mobile.configuration.RetrofitClient;
+import com.example.ehr_mobile.model.Login;
+import com.example.ehr_mobile.model.MaritalState;
+import com.example.ehr_mobile.model.Occupation;
+import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.service.DataSyncService;
 
 import io.flutter.app.FlutterActivity;
@@ -36,66 +41,62 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends FlutterActivity {
 
-
-  public List<User> userList;
   final static  String CHANNEL="Authentication";
 
 
   public Token token;
      EhrMobileDatabase ehrMobileDatabase;
   public String url,username,password;
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    GeneratedPluginRegistrant.registerWith(this);
-
-    new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
-      @Override
-      public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-        if(methodCall.method.equals("DataSync")){
-
-    ArrayList args= methodCall.arguments();
-     url=args.get(0).toString();
-     username=args.get(1).toString();
-     password= args.get(2).toString();
-            Login login= new Login(username,password);
-
-     Retrofit retrofitInstance= RetrofitClient.getRetrofitInstance(url+"/api/");
+  List<User> userList;
 
 
-     DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
-           Call <Token> call = dataSyncService.dataSync(login);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GeneratedPluginRegistrant.registerWith(this);
+
+        new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                if (methodCall.method.equals("DataSync")) {
+
+                    ArrayList args = methodCall.arguments();
+                    url = args.get(0).toString();
+                    username = args.get(1).toString();
+                    password = args.get(2).toString();
+                    Login login = new Login(username, password);
+
+                    Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
 
 
-           call.enqueue(new Callback<Token>() {
-               @Override
-               public void onResponse(Call<Token> call, Response<Token> response) {
-
-                   Token token= response.body();
-                    getUsers(token,url+"/api/");
-                    getMaritalStates(token,url+"/api/");
-                    getNationalities(token,url+"/api/");
-                    getCountries(token,url+"/api/");
-                   System.out.println("%%%%%%%%%%%%%"+token);
-               }
-
-               @Override
-               public void onFailure(Call<Token> call, Throwable t) {
-                   System.out.println("----------------------------------------------"+t.getMessage());
-               }
-           });
+                    DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
+                    Call<Token> call = dataSyncService.dataSync(login);
 
 
-        }
-      }
-    });
-  }
 
+                    call.enqueue(new Callback<Token>() {
+                        @Override
+                        public void onResponse(Call<Token> call, Response<Token> response) {
 
-    //tino 2
+                            Token token = response.body();
+                            getUsers(token,url+"/api/");
+                            getMaritalStates(token,url+"/api/");
+                            getNationalities(token,url+"/api/");
+                            getCountries(token,url+"/api/");
+                            System.out.println("%%%%%%%%%%%%%" + token);
 
-//mine
+                        }
+
+                        @Override
+                        public void onFailure(Call<Token> call, Throwable t) {
+                            System.out.println("Error=============== " + t);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public void getMaritalStates(Token token, String baseUrl){
 
         DataSyncService service= RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
@@ -122,12 +123,32 @@ public class MainActivity extends FlutterActivity {
                     Log.d("onResponseFailed", response.errorBody().toString());
                 }
 
+
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.d("onFailed", t.fillInStackTrace().toString());
 
+                System.out.println("tttttttttttttttttttttttt" + t);
+            }
+        });
+    }
+
+    public void getOccupation(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<Occupation> call = service.getOccupation("Bearer " + token.getId_token());
+        call.enqueue(new Callback<Occupation>() {
+            @Override
+            public void onResponse(Call<Occupation> call, Response<Occupation> response) {
+                System.out.println("*************************** " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Occupation> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
             }
         });
     }
@@ -140,7 +161,7 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
-                userList=response.body();
+                userList = response.body();
 
                 System.out.println("user instance&&&&&&&&&&&&&&&&&&"+userList);
 

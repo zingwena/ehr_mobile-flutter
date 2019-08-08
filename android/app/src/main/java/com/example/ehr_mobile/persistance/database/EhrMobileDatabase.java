@@ -28,7 +28,10 @@ import com.example.ehr_mobile.persistance.dao.UserDao;
  *
  * Room persistence Library will help to create the cache
  */
+
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalState.class, Patient.class}, version = 1,exportSchema = false)
+
+
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();

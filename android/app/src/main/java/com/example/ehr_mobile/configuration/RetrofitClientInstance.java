@@ -20,6 +20,7 @@ public class RetrofitClientInstance  {
 
     private static  final String  BASE_URL="http://10.20.101.91:8080/api/";
 
+
     public static Retrofit getRetrofit(){
         retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl(BASE_URL)
