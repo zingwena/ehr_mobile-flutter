@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.ehr_mobile.configuration.RetrofitClient;
 import com.example.ehr_mobile.model.Authorities;
+import com.example.ehr_mobile.model.BaseNameModel;
 import com.example.ehr_mobile.model.Country;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStatus;
@@ -67,10 +68,10 @@ public class MainActivity extends FlutterActivity {
                         public void onResponse(Call<Token> call, Response<Token> response) {
 
                             Token token = response.body();
-                            getUsers(token, url + "/api/");
+                            /*getUsers(token, url + "/api/");
                             getMaritalStates(token, url + "/api/");
                             getNationalities(token, url + "/api/");
-                            getCountries(token, url + "/api/");
+                            getCountries(token, url + "/api/");*/
                             getOccupation(token, url + "/api/");
                             System.out.println("%%%%%%%%%%%%%" + token);
 
@@ -132,8 +133,8 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                //List<Occupation> occupationList = response.body().getContent();
-                System.out.print("Occupation content : " + response.body());
+                List<BaseNameModel> occupationList = response.body().getContent();
+                System.out.print("Occupation content : " + occupationList);
             }
 
             @Override
@@ -232,11 +233,11 @@ public class MainActivity extends FlutterActivity {
 
     void saveUsersToDB(List<User> userListInstance) {
 
-        ehrMobileDatabase.userDao().insertUsers(userListInstance);
+        /*ehrMobileDatabase.userDao().insertUsers(userListInstance);
         List<User> usersFromDB = ehrMobileDatabase.userDao().selectAllUsers();
         System.out.println("froooooooooooooooom DB" + usersFromDB);
         saveAuthorities(usersFromDB);
-        System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));
+        System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));*/
 
     }
 
@@ -252,9 +253,9 @@ public class MainActivity extends FlutterActivity {
                                 authorities.add(new Authorities(user.getUserId(), authority)))
                 )
 
-        );*/
+        );
         ehrMobileDatabase.authoritiesDao().insertAuthorities(authorities);
-
+*/
         System.out.println("froooooooooooooom DB=================" + ehrMobileDatabase.authoritiesDao().getAllAuthorities());
         //ehrMobileDatabase.permissionsDao().insertPermissions();
         testById(1);
