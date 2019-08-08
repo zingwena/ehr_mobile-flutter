@@ -1,17 +1,16 @@
 package zw.gov.mohcc.mrs.ehr_mobile;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
+import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
-import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalState;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -50,6 +49,7 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler((methodCall, result) -> {
             if (methodCall.method.equals("DataSync")) {
 
+
                 ArrayList args = methodCall.arguments();
                 url = args.get(0).toString();
                 username = args.get(1).toString();
@@ -62,7 +62,6 @@ public class MainActivity extends FlutterActivity {
                 DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
                 Call<Token> call = dataSyncService.dataSync(login);
 
-
                 call.enqueue(new Callback<Token>() {
                     @Override
                     public void onResponse(Call<Token> call, Response<Token> response) {
@@ -73,6 +72,7 @@ public class MainActivity extends FlutterActivity {
                         getNationalities(token, url + "/api/");
                         getCountries(token, url + "/api/");
                         getOccupation(token, url + "/api/");
+                        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
                         System.out.println("%%%%%%%%%%%%%" + token);
 
                     }
@@ -94,19 +94,20 @@ public class MainActivity extends FlutterActivity {
         Call<JsonObject> call = service.getMaritalStates("Bearer " + token.getId_token());
 
         call.enqueue(new Callback<JsonObject>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     JsonArray maritalStatesJson = response.body().getAsJsonArray("content");
 
-                    List<MaritalState> maritalStates = new ArrayList<>();
+                    List<TerminologyModel> maritalStates = new ArrayList<>();
 
+                    /*
+                    TODO brian refactor this part
                     maritalStatesJson.forEach(maritalState ->
-                            maritalStates.add(new MaritalState(maritalState.getAsJsonObject().get("code").toString(), maritalState.getAsJsonObject().get("name").toString()))
+                            maritalStates.add(new MaritalStatus(maritalState.getAsJsonObject().get("code").toString(), maritalState.getAsJsonObject().get("name").toString()))
                     );
 
-                    saveMaritalStatesToDB(maritalStates);
+                    saveMaritalStatesToDB(maritalStates);*/
 
                     System.out.println("Maritaaaaaaaaaaaal Staaates" + maritalStates);
 
@@ -129,16 +130,16 @@ public class MainActivity extends FlutterActivity {
     public void getOccupation(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<Occupation> call = service.getOccupation("Bearer " + token.getId_token());
-        call.enqueue(new Callback<Occupation>() {
+        Call<TerminologyModel> call = service.getOccupation("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
             @Override
-            public void onResponse(Call<Occupation> call, Response<Occupation> response) {
-                //List<Occupation> occupationList = response.body().getContent();
-                System.out.print("Occupation content : " + response.body());
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<BaseNameModel> occupationList = response.body().getContent();
+                System.out.print("Occupation content : " + occupationList);
             }
 
             @Override
-            public void onFailure(Call<Occupation> call, Throwable t) {
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
                 System.out.println("tttttttttttttttttttttttt" + t);
             }
@@ -150,7 +151,6 @@ public class MainActivity extends FlutterActivity {
         Call<List<User>> call = service.getAllUsers("Bearer " + token.getId_token());
 
         call.enqueue(new Callback<List<User>>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
@@ -214,21 +214,22 @@ public class MainActivity extends FlutterActivity {
         Call<JsonObject> call = service.getCountries("Bearer " + token.getId_token());
 
         call.enqueue(new Callback<JsonObject>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
 
                     JsonArray jsonCountries = response.body().getAsJsonArray("content");
 
-                    List<Country> countries = new ArrayList<>();
+                    List<TerminologyModel> countries = new ArrayList<>();
 
+                    /*
+                    TODO brian refatcor this part
                     jsonCountries.forEach(country -> {
 
                         countries.add(new Country(country.getAsJsonObject().get("code").toString(), country.getAsJsonObject().get("name").toString()));
                     });
 
-                    saveCountriesToDB(countries);
+                    saveCountriesToDB(countries);*/
 
                     System.out.println(countries.toString());
 
@@ -248,21 +249,21 @@ public class MainActivity extends FlutterActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     void saveUsersToDB(List<User> userListInstance) {
 
-        ehrMobileDatabase.userDao().insertUsers(userListInstance);
+        /*ehrMobileDatabase.userDao().insertUsers(userListInstance);
         List<User> usersFromDB = ehrMobileDatabase.userDao().selectAllUsers();
         System.out.println("froooooooooooooooom DB" + usersFromDB);
         saveAuthorities(usersFromDB);
-        System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));
+        System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));*/
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     void saveAuthorities(List<User> usersFromDB) {
         List<Authorities> authorities = new ArrayList<>();
 
+        /*
+        TODO brian refactor this part
         usersFromDB.forEach(user ->
 
                 userList.forEach(user1 ->
@@ -272,7 +273,7 @@ public class MainActivity extends FlutterActivity {
 
         );
         ehrMobileDatabase.authoritiesDao().insertAuthorities(authorities);
-
+*/
         System.out.println("froooooooooooooom DB=================" + ehrMobileDatabase.authoritiesDao().getAllAuthorities());
         //ehrMobileDatabase.permissionsDao().insertPermissions();
         testById(1);
@@ -295,9 +296,9 @@ public class MainActivity extends FlutterActivity {
         System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
     }
 
-    void saveMaritalStatesToDB(List<MaritalState> maritalStates) {
+    void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
 
-        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStates);
+        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
     }

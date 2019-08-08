@@ -1,8 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.configuration;
 
 
-import com.example.ehr_mobile.model.Facilities;
-
+import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
@@ -31,7 +30,7 @@ public interface DataService {
     @GET("countries")
     Call<JsonObject> getCountries(@Header("Authorization")String authToken);
     @GET("facilities")
-//    Call<List<Facilities>> getAllFacility(@Header("Authorization") String Token);
-    Call<Facilities>getAllFacilities(@Header("Authorization") String Token);
+//    Call<List<Facility>> getAllFacility(@Header("Authorization") String Token);
+    Call<Facility>getAllFacilities(@Header("Authorization") String Token);
 
 }

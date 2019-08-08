@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Country extends BaseNameModel {
+public class Facility extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -16,4 +16,5 @@ public class Country extends BaseNameModel {
     public void setId(int id) {
         this.id = id;
     }
+
 }

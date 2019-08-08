@@ -3,7 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import com.google.gson.JsonObject;
@@ -36,9 +36,9 @@ public interface DataSyncService {
     Call<JsonObject> getNationalities(@Header("Authorization")String authToken);
 
     @GET("occupations")
-    Call<Occupation> getOccupation(@Header("Authorization") String token);
+    Call<TerminologyModel> getOccupation(@Header("Authorization") String token);
+
     @GET("facilities")
     Call<JsonObject> getFacilities(@Header("Authorization")String authToken);
-
 
 }
