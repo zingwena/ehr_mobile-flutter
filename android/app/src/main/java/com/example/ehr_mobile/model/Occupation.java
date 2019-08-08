@@ -7,9 +7,14 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Occupation extends BaseNameModel {
 
-    @PrimaryKey
-    @Override
-    public String getCode () {
-        return super.getCode();
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

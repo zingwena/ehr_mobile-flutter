@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.ehr_mobile.model.MaritalState;
+import com.example.ehr_mobile.model.MaritalStatus;
 
 import java.util.List;
 
@@ -12,14 +12,14 @@ import java.util.List;
 public interface MaritalStateDao {
 
     @Insert
-    void insertMaritalStates(List<MaritalState> maritalStates);
+    void insertMaritalStates(List<MaritalStatus> maritalStatuses);
 
     @Insert
-    void insertMAritalState(MaritalState maritalState);
+    void insertMAritalState(MaritalStatus maritalStatus);
 
-    @Query("SELECT * FROM maritalstate")
-    List<MaritalState> getAllMaritalStates();
+    @Query("SELECT * FROM MaritalStatus")
+    List<MaritalStatus> getAllMaritalStates();
 
-    @Query("SELECT * FROM maritalstate WHERE id=:id")
-    MaritalState findMaritalStateById(int id);
+    @Query("SELECT * FROM MaritalStatus WHERE id=:id")
+    MaritalStatus findMaritalStateById(int id);
 }

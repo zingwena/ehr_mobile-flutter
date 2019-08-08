@@ -8,14 +8,12 @@ import androidx.room.RoomDatabase;
 
 import com.example.ehr_mobile.model.Authorities;
 import com.example.ehr_mobile.model.Country;
-import com.example.ehr_mobile.model.MaritalState;
+import com.example.ehr_mobile.model.MaritalStatus;
 import com.example.ehr_mobile.model.Patient;
 import com.example.ehr_mobile.model.User;
 import com.example.ehr_mobile.persistance.dao.AuthoritiesDao;
 import com.example.ehr_mobile.persistance.dao.CountryDao;
 import com.example.ehr_mobile.persistance.dao.MaritalStateDao;
-import com.example.ehr_mobile.persistance.dao.PatientDao;
-import com.example.ehr_mobile.model.Patient;
 import com.example.ehr_mobile.persistance.dao.PatientDao;
 import com.example.ehr_mobile.persistance.dao.UserDao;
 
@@ -29,7 +27,7 @@ import com.example.ehr_mobile.persistance.dao.UserDao;
  * Room persistence Library will help to create the cache
  */
 
-@Database(entities = {User.class, Authorities.class, Country.class, MaritalState.class, Patient.class}, version = 1,exportSchema = false)
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class}, version = 1,exportSchema = false)
 
 
 public abstract class EhrMobileDatabase extends RoomDatabase {

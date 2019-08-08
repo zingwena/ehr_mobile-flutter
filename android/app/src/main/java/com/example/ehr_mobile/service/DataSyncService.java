@@ -3,8 +3,6 @@ package com.example.ehr_mobile.service;
 
 import com.example.ehr_mobile.model.Login;
 
-import com.example.ehr_mobile.model.MaritalState;
-import com.example.ehr_mobile.model.Occupation;
 import com.example.ehr_mobile.model.TerminologyModel;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;

@@ -7,8 +7,7 @@ import com.example.ehr_mobile.configuration.RetrofitClient;
 import com.example.ehr_mobile.model.Authorities;
 import com.example.ehr_mobile.model.Country;
 import com.example.ehr_mobile.model.Login;
-import com.example.ehr_mobile.model.MaritalState;
-import com.example.ehr_mobile.model.Occupation;
+import com.example.ehr_mobile.model.MaritalStatus;
 import com.example.ehr_mobile.model.TerminologyModel;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
@@ -103,7 +102,7 @@ public class MainActivity extends FlutterActivity {
                     /*
                     TODO brian refactor this part
                     maritalStatesJson.forEach(maritalState ->
-                            maritalStates.add(new MaritalState(maritalState.getAsJsonObject().get("code").toString(), maritalState.getAsJsonObject().get("name").toString()))
+                            maritalStates.add(new MaritalStatus(maritalState.getAsJsonObject().get("code").toString(), maritalState.getAsJsonObject().get("name").toString()))
                     );
 
                     saveMaritalStatesToDB(maritalStates);*/
@@ -278,9 +277,9 @@ public class MainActivity extends FlutterActivity {
         System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
     }
 
-    void saveMaritalStatesToDB(List<MaritalState> maritalStates) {
+    void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
 
-        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStates);
+        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
     }
