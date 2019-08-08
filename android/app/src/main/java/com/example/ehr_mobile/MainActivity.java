@@ -10,6 +10,7 @@ import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.service.DataSyncService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
@@ -95,7 +96,8 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<Occupation>() {
             @Override
             public void onResponse(Call<Occupation> call, Response<Occupation> response) {
-                System.out.println("*************************** " + response.body());
+                //List<Occupation> occupationList = response.body().getContent();
+                System.out.print("Occupation content : "+ response.body());
             }
 
             @Override
