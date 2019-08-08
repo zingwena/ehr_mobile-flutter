@@ -3,16 +3,22 @@ package zw.gov.mohcc.mrs.ehr_mobile;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.sqlite.db.SimpleSQLiteQuery;
+
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalState;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -31,6 +37,7 @@ import retrofit2.Retrofit;
 public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
+    private final static String PATIENT_CHANNEL = "ehr_mobile.channel.patient";
 
 
     public Token token;
@@ -43,6 +50,9 @@ public class MainActivity extends FlutterActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
+
+        ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
+
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
@@ -84,8 +94,26 @@ public class MainActivity extends FlutterActivity {
                 }
             }
         });
-    }
 
+        new MethodChannel(getFlutterView(),PATIENT_CHANNEL).setMethodCallHandler((methodCall, result) -> {
+
+            final String arguments = methodCall.arguments();
+            if (methodCall.method.equals("searchPatient")) {
+                List<Patient> _list;
+
+                String searchItem = arguments;
+
+                PatientQuery patientQuery = new PatientQuery();
+                SimpleSQLiteQuery sqLiteQuery = patientQuery.SearchPatient(searchItem);
+                _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                Gson gson = new Gson();
+
+
+
+                result.success(gson.toJson(_list));
+
+            }});
+    }
 
 
     public void getMaritalStates(Token token, String baseUrl) {
