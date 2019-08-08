@@ -4,17 +4,17 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Nationality {
+public class Nationality extends BaseNameModel {
+
+    public Nationality() {
+    }
+
+    public Nationality(String code, String name) {
+        super(code, name);
+    }
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String code;
-    private String name;
-
-    public Nationality(String code, String name) {
-        this.code = code;
-        this.name = name;
-    }
 
     public int getId() {
         return id;
@@ -22,21 +22,5 @@ public class Nationality {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
