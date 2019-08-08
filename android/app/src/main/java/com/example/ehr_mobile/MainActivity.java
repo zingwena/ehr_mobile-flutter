@@ -61,7 +61,6 @@ public class MainActivity extends FlutterActivity {
                     DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
                     Call<Token> call = dataSyncService.dataSync(login);
 
-
                     call.enqueue(new Callback<Token>() {
                         @Override
                         public void onResponse(Call<Token> call, Response<Token> response) {
