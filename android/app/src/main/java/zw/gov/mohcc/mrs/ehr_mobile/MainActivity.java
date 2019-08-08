@@ -5,6 +5,7 @@ import android.util.Log;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
@@ -39,7 +40,6 @@ public class MainActivity extends FlutterActivity {
     EhrMobileDatabase ehrMobileDatabase;
     List<User> userList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +68,12 @@ public class MainActivity extends FlutterActivity {
                         public void onResponse(Call<Token> call, Response<Token> response) {
 
                             Token token = response.body();
-                            getUsers(token, url + "/api/");
+                            /*getUsers(token, url + "/api/");
                             getMaritalStates(token, url + "/api/");
                             getNationalities(token, url + "/api/");
                             getCountries(token, url + "/api/");
-                            getOccupation(token, url + "/api/");
+                            getOccupation(token, url + "/api/");*/
+                            getReligion(token, url + "/api/");
                             System.out.println("%%%%%%%%%%%%%" + token);
 
                         }
@@ -302,6 +303,41 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
+    }
+
+    public void getReligion(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Religion> religionList = new ArrayList<>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    religionList.add(new Religion(item.getCode(), item.getName()));
+                }
+                if (religionList != null && !religionList.isEmpty()) {
+                    saveReligionToDB(religionList);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+            }
+        });
+    }
+
+    void saveReligionToDB(List<Religion> religions) {
+
+        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
+
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+
+        ehrMobileDatabase.religionDao().insertReligions(religions);
+
+        System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
     }
 
 }
