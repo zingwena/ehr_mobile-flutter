@@ -6,6 +6,13 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Nationality extends BaseNameModel {
 
+    public Nationality() {
+    }
+
+    public Nationality(String code, String name) {
+        super(code, name);
+    }
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 
