@@ -9,6 +9,7 @@ import com.example.ehr_mobile.model.Country;
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalState;
 import com.example.ehr_mobile.model.Occupation;
+import com.example.ehr_mobile.model.TerminologyModel;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
 import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -97,13 +98,15 @@ public class MainActivity extends FlutterActivity {
                 if (response.isSuccessful()) {
                     JsonArray maritalStatesJson = response.body().getAsJsonArray("content");
 
-                    List<MaritalState> maritalStates = new ArrayList<>();
+                    List<TerminologyModel> maritalStates = new ArrayList<>();
 
+                    /*
+                    TODO brian refactor this part
                     maritalStatesJson.forEach(maritalState ->
                             maritalStates.add(new MaritalState(maritalState.getAsJsonObject().get("code").toString(), maritalState.getAsJsonObject().get("name").toString()))
                     );
 
-                    saveMaritalStatesToDB(maritalStates);
+                    saveMaritalStatesToDB(maritalStates);*/
 
                     System.out.println("Maritaaaaaaaaaaaal Staaates" + maritalStates);
 
@@ -126,16 +129,16 @@ public class MainActivity extends FlutterActivity {
     public void getOccupation(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<Occupation> call = service.getOccupation("Bearer " + token.getId_token());
-        call.enqueue(new Callback<Occupation>() {
+        Call<TerminologyModel> call = service.getOccupation("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
             @Override
-            public void onResponse(Call<Occupation> call, Response<Occupation> response) {
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 //List<Occupation> occupationList = response.body().getContent();
                 System.out.print("Occupation content : " + response.body());
             }
 
             @Override
-            public void onFailure(Call<Occupation> call, Throwable t) {
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
                 System.out.println("tttttttttttttttttttttttt" + t);
             }
@@ -199,14 +202,16 @@ public class MainActivity extends FlutterActivity {
 
                     JsonArray jsonCountries = response.body().getAsJsonArray("content");
 
-                    List<Country> countries = new ArrayList<>();
+                    List<TerminologyModel> countries = new ArrayList<>();
 
+                    /*
+                    TODO brian refatcor this part
                     jsonCountries.forEach(country -> {
 
                         countries.add(new Country(country.getAsJsonObject().get("code").toString(), country.getAsJsonObject().get("name").toString()));
                     });
 
-                    saveCountriesToDB(countries);
+                    saveCountriesToDB(countries);*/
 
                     System.out.println(countries.toString());
 
@@ -239,6 +244,8 @@ public class MainActivity extends FlutterActivity {
     void saveAuthorities(List<User> usersFromDB) {
         List<Authorities> authorities = new ArrayList<>();
 
+        /*
+        TODO brian refactor this part
         usersFromDB.forEach(user ->
 
                 userList.forEach(user1 ->
@@ -246,7 +253,7 @@ public class MainActivity extends FlutterActivity {
                                 authorities.add(new Authorities(user.getUserId(), authority)))
                 )
 
-        );
+        );*/
         ehrMobileDatabase.authoritiesDao().insertAuthorities(authorities);
 
         System.out.println("froooooooooooooom DB=================" + ehrMobileDatabase.authoritiesDao().getAllAuthorities());

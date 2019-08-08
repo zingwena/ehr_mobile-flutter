@@ -1,7 +1,15 @@
 package com.example.ehr_mobile.model;
 
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Occupation extends BasePageable<BaseNameModel> {
+@Entity
+public class Occupation extends BaseNameModel {
 
+    @PrimaryKey
+    @Override
+    public String getCode () {
+        return super.getCode();
+    }
 }

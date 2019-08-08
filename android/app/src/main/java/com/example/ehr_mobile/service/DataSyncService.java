@@ -5,6 +5,7 @@ import com.example.ehr_mobile.model.Login;
 
 import com.example.ehr_mobile.model.MaritalState;
 import com.example.ehr_mobile.model.Occupation;
+import com.example.ehr_mobile.model.TerminologyModel;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
 import com.google.gson.JsonObject;
@@ -37,6 +38,6 @@ public interface DataSyncService {
     Call<JsonObject> getNationalities(@Header("Authorization")String authToken);
 
     @GET("occupations")
-    Call<Occupation> getOccupation(@Header("Authorization") String token);
+    Call<TerminologyModel> getOccupation(@Header("Authorization") String token);
 
 }
