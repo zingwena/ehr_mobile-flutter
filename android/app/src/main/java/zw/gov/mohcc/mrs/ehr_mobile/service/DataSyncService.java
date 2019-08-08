@@ -55,4 +55,7 @@ public interface DataSyncService {
     @GET("facilities")
     Call<JsonObject> getFacilities(@Header("Authorization")String authToken);
 
+    @GET("religions")
+    Call<TerminologyModel> getReligion(@Header("Authorization") String token);
+
 }

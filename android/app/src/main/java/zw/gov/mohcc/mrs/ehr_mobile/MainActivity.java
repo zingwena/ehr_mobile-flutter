@@ -6,6 +6,8 @@ import android.util.Log;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
@@ -41,7 +43,6 @@ public class MainActivity extends FlutterActivity {
     EhrMobileDatabase ehrMobileDatabase;
     List<User> userList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,22 +65,20 @@ public class MainActivity extends FlutterActivity {
                     DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
                     Call<Token> call = dataSyncService.dataSync(login);
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> a508bf3432fc44af521e5fe6e13e7916dae6208c
                     call.enqueue(new Callback<Token>() {
                         @Override
                         public void onResponse(Call<Token> call, Response<Token> response) {
 
 
                             Token token = response.body();
-                            getUsers(token, url + "/api/");
+                            /*getUsers(token, url + "/api/");
                             getMaritalStates(token, url + "/api/");
                             getNationalities(token, url + "/api/");
-                            getCountries(token, url + "/api/");
+                            getCountries(token, url + "/api/");*/
                             getOccupation(token, url + "/api/");
+                            getReligion(token, url + "/api/");
                             System.out.println("%%%%%%%%%%%%%" + token);
 
                         }
@@ -144,8 +143,16 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<BaseNameModel> occupationList = response.body().getContent();
-                System.out.print("Occupation content : " + occupationList);
+                List<Occupation> occupationList = new ArrayList<>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    occupationList.add(new Occupation(item.getCode(), item.getName()));
+                }
+                if (occupationList != null && !occupationList.isEmpty()) {
+
+                    saveOccupationsToDB(occupationList);
+                }
+
+
             }
 
             @Override
@@ -319,5 +326,51 @@ public class MainActivity extends FlutterActivity {
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
     }
 
+
+    public void getReligion(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Religion> religionList = new ArrayList<>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    religionList.add(new Religion(item.getCode(), item.getName()));
+                }
+                if (religionList != null && !religionList.isEmpty()) {
+                    saveReligionToDB(religionList);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+            }
+        });
+    }
+
+    void saveReligionToDB(List<Religion> religions) {
+
+        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
+
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+
+        ehrMobileDatabase.religionDao().insertReligions(religions);
+
+        System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
+    }
+
+    void saveOccupationsToDB(List<Occupation> occupations){
+        for(Occupation occupation:occupations){
+            System.out.println("occupation = " + occupation);
+        }
+
+        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.occupationDao().insertOccupations(occupations);
+        System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
+    }
 
 }
