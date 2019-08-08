@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -14,29 +14,28 @@ public class User extends PersonBaseEntity {
     private int userId;
 
     @Ignore
-    private ArrayList<String> authorities;
-
+    private List<String> authorities;
 
 
     public int getUserId() {
         return userId;
     }
 
-    public ArrayList<String> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(ArrayList<String> authorities) {
-        this.authorities = authorities;
-    }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+    public List<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public String toString() {
-        return super.toString()+ "User{" +//call this to string after base to String has been called
+        return super.toString() + "User{" +//call this to string after base to String has been called
                 "userId=" + userId +
                 ", authorities=" + authorities +
                 '}';
@@ -56,8 +55,6 @@ public class User extends PersonBaseEntity {
 //         }
 //         return permissions;
 //     }
-
-
 
 
 }

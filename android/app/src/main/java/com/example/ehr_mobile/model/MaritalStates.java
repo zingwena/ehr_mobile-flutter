@@ -2,11 +2,10 @@ package com.example.ehr_mobile.model;
 
 
 
-//@Data
-public class Occupation extends BasePageable<Occupation> {
+public class MaritalStates extends  BasePageable<MaritalStates> {
 
-    private String code;
-    private String name;
+   private String code;
+   private String name;
 
     public String getCode() {
         return code;
@@ -20,13 +19,15 @@ public class Occupation extends BasePageable<Occupation> {
         return name;
     }
 
+
     public void setName(String name) {
         this.name = name;
     }
 
+
     @Override
     public String toString() {
-        return super.toString()+ " Occupation{" +
+        return super.toString() +  " MaritalStates{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';
