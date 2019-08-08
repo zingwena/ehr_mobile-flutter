@@ -4,18 +4,14 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
+
 @Entity
-public class Nationality {
+public class Country {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String code;
     private String name;
-
-    public Nationality(String code, String name) {
-        this.code = code;
-        this.name = name;
-    }
 
     public int getId() {
         return id;
@@ -23,6 +19,11 @@ public class Nationality {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Country(String code, String name) {
+        this.code = code;
+        this.name = name;
     }
 
     public String getCode() {
@@ -39,5 +40,13 @@ public class Nationality {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
