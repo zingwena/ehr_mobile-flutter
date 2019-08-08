@@ -3,7 +3,7 @@ package com.example.ehr_mobile.model;
 import java.io.Serializable;
 import java.util.List;
 
-import lombok.Data;
+
 
 //@Data
 abstract public class BasePageable <T> implements Serializable {

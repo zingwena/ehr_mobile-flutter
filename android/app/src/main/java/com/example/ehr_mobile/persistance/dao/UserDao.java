@@ -13,7 +13,6 @@ import java.util.List;
  *
  * This is the Room Data Accessing interface for the users table in the local cache
  */
-
 @Dao
 public interface UserDao {
 
@@ -21,5 +20,8 @@ public interface UserDao {
     List<User> selectAllUsers();
 
     @Insert
-    void insertUsers(List<User> users);
+    void insertAllUsers(List<User> users);
+
+    @Insert
+    void createUser(User user);
 }
