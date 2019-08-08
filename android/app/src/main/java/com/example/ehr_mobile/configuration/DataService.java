@@ -1,10 +1,11 @@
 package com.example.ehr_mobile.configuration;
 
+
 import com.example.ehr_mobile.model.Login;
-import com.example.ehr_mobile.model.MaritalStates;
-import com.example.ehr_mobile.model.Nationality;
+import com.example.ehr_mobile.model.MaritalState;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -17,15 +18,16 @@ import retrofit2.http.POST;
 
 public interface DataService {
 
+    @POST("authenticate")
+    Call<Token> getToken(@Body Login login);
+
     @GET("users")
     Call<List<User>>getAllUsers(@Header("Authorization") String token);
 
     @GET("marital-states")
-    Call<MaritalStates> getMaritalStates(@Header("Authorization") String token);
+    Call<JsonObject> getMaritalStates(@Header("Authorization") String token);
 
-    @GET("nationalities")
-    Call<Nationality> getNationality(@Header("Authorization") String token);
+    @GET("countries")
+    Call<JsonObject> getCountries(@Header("Authorization")String authToken);
 
-    @POST("authenticate")
-    Call<Token> getToken(@Body Login login);
 }
