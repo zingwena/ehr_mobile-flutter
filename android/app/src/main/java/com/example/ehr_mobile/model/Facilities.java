@@ -2,7 +2,7 @@ package com.example.ehr_mobile.model;
 
 import java.util.ArrayList;
 
-public class Facilities {
+public class Facilities extends BasePageable<Facilities>{
    private ArrayList content;
    private int totalElements;
    private int totalPages;

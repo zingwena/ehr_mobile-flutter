@@ -72,99 +72,75 @@ public class MainActivity extends FlutterActivity {
                         public void onResponse(Call<Token> call, Response<Token> response) {
 
                             Token token = response.body();
-                            getMaritalStates(token,url+"/api/");
-                            getAllFacilities(token,url+"/api/");
-
-                            System.out.println("%%%%%%%%%%%%%" + token);
-                        }
-                            Token token = response.body();
                             getMaritalStates(token, url + "/api/");
-                            getOccupation(token, url + "/api/");
+                            getAllFacilities(token, url + "/api/");
+
                             System.out.println("%%%%%%%%%%%%%" + token);
-
                         }
 
                         @Override
                         public void onFailure(Call<Token> call, Throwable t) {
-                            System.out.println("Error=============== " + t);
+
                         }
                     });
                 }
             }
         });
     }
+                        public void getMaritalStates(Token token, String baseUrl) {
 
-    public void getMaritalStates(Token token, String baseUrl) {
-                        @Override
-                        public void onFailure(Call<Token> call, Throwable t) {
-                            System.out.println("Error=============== " + t);
+                            DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                            Call<MaritalStates> call = service.getMaritalStates("Bearer " + token.getId_token());
+                            call.enqueue(new Callback<MaritalStates>() {
+                                @Override
+                                public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
+                                    System.out.println("Marital states     " + response.body());
+                                }
+
+                                @Override
+                                public void onFailure(Call<MaritalStates> call, Throwable t) {
+
+                                    System.out.println("tttttttttttttttttttttttt" + t);
+                                }
+                            });
                         }
-                    });
 
+                        public void getOccupation(Token token, String baseUrl) {
+                            DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                            Call<Occupation> call = service.getOccupation("Bearer " + token.getId_token());
+                            call.enqueue(new Callback<Occupation>() {
+                                @Override
+                                public void onResponse(Call<Occupation> call, Response<Occupation> response) {
+                                    System.out.println("*************************** " + response.body());
+                                }
+
+
+                                @Override
+                                public void onFailure(Call<Occupation> call, Throwable t) {
+
+                                }
+                            });
+
+
+                        }
+
+                        public void getAllFacilities(Token token, String baseUrl) {
+                            DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
+                            Call<Facilities> call = service.getAllFacilities("Bearer " + token.getId_token());
+                            call.enqueue(new Callback<Facilities>() {
+                                @Override
+                                public void onResponse(Call<Facilities> call, Response<Facilities> response) {
+                                    System.out.println("////////////////////////////////////////////////////////" + response.message());
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<Facilities> call, Throwable t) {
+                                    System.out.println("********************************************" + t.getMessage());
+                                }
+                            });
+
+
+                        }
 
                 }
-            }
-
-
-            public void getMaritalStates(Token token, String baseUrl) {
-
-                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-                Call<MaritalStates> call = service.getMaritalStates("Bearer " + token.getId_token());
-                call.enqueue(new Callback<MaritalStates>() {
-                    @Override
-                    public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
-                        System.out.println("Marital states     " + response.body());
-                    }
-
-            @Override
-            public void onFailure(Call<MaritalStates> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
-            }
-        });
-    }
-
-    public void getOccupation(Token token, String baseUrl) {
-
-            public void getAllFacilities(Token token, String baseUrl) {
-                DataService service = RetrofitClientInstance.getRetrofit().create(DataService.class);
-                Call<Facilities> call = service.getAllFacilities("Bearer " + token.getId_token());
-                call.enqueue(new Callback<Facilities>() {
-                    @Override
-                    public void onResponse(Call<Facilities> call, Response<Facilities> response) {
-                        System.out.println("////////////////////////////////////////////////////////" + response.message());
-
-                    }
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<Occupation> call = service.getOccupation("Bearer " + token.getId_token());
-        call.enqueue(new Callback<Occupation>() {
-            @Override
-            public void onResponse(Call<Occupation> call, Response<Occupation> response) {
-                System.out.println("*************************** " + response.body());
-            }
-
-                    @Override
-                    public void onFailure(Call<Facilities> call, Throwable t) {
-                        System.out.println("********************************************" + t.getMessage());
-            @Override
-            public void onFailure(Call<Occupation> call, Throwable t) {
-
-                    }
-                });
-
-
-            }
-
-                System.out.println("tttttttttttttttttttttttt" + t);
-            }
-        });
-    }
-
-    /*
-
-
-        });
-    }
-}
-
-
