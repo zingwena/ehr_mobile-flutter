@@ -3,22 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile;
 import android.os.Bundle;
 import android.util.Log;
 
-<<<<<<< HEAD:android/app/src/main/java/com/example/ehr_mobile/MainActivity.java
 
-import com.example.ehr_mobile.configuration.RetrofitClient;
-import com.example.ehr_mobile.model.Authorities;
-import com.example.ehr_mobile.model.Country;
-
-import com.example.ehr_mobile.model.Login;
-import com.example.ehr_mobile.model.MaritalState;
-import com.example.ehr_mobile.model.Occupation;
-import com.example.ehr_mobile.model.Token;
-import com.example.ehr_mobile.model.User;
-
-import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
-
-import com.example.ehr_mobile.service.DataSyncService;
-=======
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
@@ -30,7 +15,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
->>>>>>> 4258c32598266336fb221bade71390de6190ae73:android/app/src/main/java/zw/gov/mohcc/mrs/ehr_mobile/MainActivity.java
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
