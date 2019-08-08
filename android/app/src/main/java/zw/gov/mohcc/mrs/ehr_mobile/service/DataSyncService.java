@@ -41,13 +41,13 @@ public interface DataSyncService {
     Call<List<User>>getAllUsers(@Header("Authorization") String token);
 
     @GET("marital-states")
-    Call<JsonObject> getMaritalStates(@Header("Authorization") String token);
+    Call<TerminologyModel> getMaritalStates(@Header("Authorization") String token);
 
     @GET("countries")
     Call<JsonObject> getCountries(@Header("Authorization")String authToken);
 
-    @GET("countries")
-    Call<JsonObject> getNationalities(@Header("Authorization")String authToken);
+    @GET("nationalities")
+    Call<TerminologyModel> getNationalities(@Header("Authorization")String authToken);
 
     @GET("occupations")
     Call<TerminologyModel> getOccupation(@Header("Authorization") String token);
