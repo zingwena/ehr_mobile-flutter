@@ -2,6 +2,7 @@ package com.example.ehr_mobile.service;
 
 
 import com.example.ehr_mobile.model.Login;
+<<<<<<< HEAD
 import com.example.ehr_mobile.model.MaritalStates;
 
 import com.example.ehr_mobile.model.Nationality;
@@ -9,6 +10,14 @@ import com.example.ehr_mobile.model.Nationality;
 import com.example.ehr_mobile.model.Occupation;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
+=======
+
+import com.example.ehr_mobile.model.MaritalState;
+import com.example.ehr_mobile.model.Occupation;
+import com.example.ehr_mobile.model.Token;
+import com.example.ehr_mobile.model.User;
+import com.google.gson.JsonObject;
+>>>>>>> 13f365c51c920b76114be58885cbed5ead4d4829
 
 import java.util.List;
 
@@ -20,11 +29,14 @@ import retrofit2.http.POST;
 
 public interface DataSyncService {
 
+<<<<<<< HEAD
     @GET("users")
     Call<List<User>>getAllUsers(@Header("Authorization") String token);
 
     @GET("marital-states")
     Call<MaritalStates> getMaritalStates(@Header("Authorization") String token);
+=======
+>>>>>>> 13f365c51c920b76114be58885cbed5ead4d4829
 
     @GET("nationalities")
     Call<Nationality> getNationality(@Header("Authorization") String token);
@@ -36,6 +48,20 @@ public interface DataSyncService {
     @POST("authenticate")
     Call<Token> dataSync(@Body Login login);
 
+
+    @GET("users")
+    Call<List<User>>getAllUsers(@Header("Authorization") String token);
+
+    @GET("marital-states")
+    Call<JsonObject> getMaritalStates(@Header("Authorization") String token);
+
+    @GET("countries")
+    Call<JsonObject> getCountries(@Header("Authorization")String authToken);
+
+    @GET("countries")
+    Call<JsonObject> getNationalities(@Header("Authorization")String authToken);
+
     @GET("occupations")
     Call<Occupation> getOccupation(@Header("Authorization") String token);
+
 }
