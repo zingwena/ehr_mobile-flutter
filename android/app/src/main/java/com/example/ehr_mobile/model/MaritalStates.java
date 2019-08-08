@@ -27,7 +27,7 @@ public class MaritalStates extends  BasePageable<MaritalStates> {
 
     @Override
     public String toString() {
-        return "MaritalStates{" +
+        return super.toString() +  " MaritalStates{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';

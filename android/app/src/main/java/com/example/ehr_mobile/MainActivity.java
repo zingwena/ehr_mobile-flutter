@@ -73,19 +73,19 @@ public class MainActivity extends FlutterActivity {
     public void getMaritalStates(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-    Call<MaritalStates> call= service.getMaritalStates("Bearer "+token.getId_token());
+        Call<MaritalStates> call = service.getMaritalStates("Bearer " + token.getId_token());
 
-    call.enqueue(new Callback<MaritalStates>() {
-        @Override
-        public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
-            System.out.println("--------------------------"+ response.body());
-        }
+        call.enqueue(new Callback<MaritalStates>() {
+            @Override
+            public void onResponse(Call<MaritalStates> call, Response<MaritalStates> response) {
+                System.out.println("--------------------------" + response.body());
+            }
 
-        @Override
-        public void onFailure(Call<MaritalStates> call, Throwable t) {
-            System.out.println("getMaritalStaes throws  "+ t.getMessage());
-        }
-    });
+            @Override
+            public void onFailure(Call<MaritalStates> call, Throwable t) {
+                System.out.println("getMaritalStaes throws  " + t.getMessage());
+            }
+        });
     }
 
     public void getOccupation(Token token, String baseUrl) {
