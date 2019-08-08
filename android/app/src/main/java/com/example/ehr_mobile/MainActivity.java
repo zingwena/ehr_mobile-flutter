@@ -83,6 +83,7 @@ public class MainActivity extends FlutterActivity {
                             getMaritalStates(token,url+"/api/");
                             getNationalities(token,url+"/api/");
                             getCountries(token,url+"/api/");
+                            getOccupation(token,url+"/api/");
                             System.out.println("%%%%%%%%%%%%%" + token);
 
                         }
@@ -165,7 +166,7 @@ public class MainActivity extends FlutterActivity {
 
                 System.out.println("user instance&&&&&&&&&&&&&&&&&&"+userList);
 
-                //saveUsersToDB(userList);
+                saveUsersToDB(userList);
 
             }
 
