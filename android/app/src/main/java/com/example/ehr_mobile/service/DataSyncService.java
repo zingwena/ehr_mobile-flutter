@@ -3,7 +3,9 @@ package com.example.ehr_mobile.service;
 
 import com.example.ehr_mobile.model.Login;
 import com.example.ehr_mobile.model.MaritalStates;
+
 import com.example.ehr_mobile.model.Nationality;
+
 import com.example.ehr_mobile.model.Occupation;
 import com.example.ehr_mobile.model.Token;
 import com.example.ehr_mobile.model.User;
@@ -33,4 +35,7 @@ public interface DataSyncService {
 
     @POST("authenticate")
     Call<Token> dataSync(@Body Login login);
+
+    @GET("occupations")
+    Call<Occupation> getOccupation(@Header("Authorization") String token);
 }

@@ -10,6 +10,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.example.ehr_mobile.model.Patient;
 
 import java.util.List;
+import java.util.Set;
 
 @Dao
 public interface PatientDao {
@@ -37,8 +38,11 @@ public interface PatientDao {
     @RawQuery
     List<Patient> searchPatient(SimpleSQLiteQuery query);
 
-    @Query("SELECT * FROM Patient WHERE identifier = :identifier AND number = :number")
-    Patient findPatientByIdentifierAndNumber(String identifier, String number);
+//
 
+    @Query("SELECT * FROM Patient WHERE nationalId=:number ")
+    Patient findPatientByNationalId(String number);
 
+    @Query("SELECT * FROM Patient WHERE firstName=:firstName AND lastName=:lastName")
+    Patient findPatientByName (String firstName,String lastName);
 }
