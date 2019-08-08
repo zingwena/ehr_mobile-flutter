@@ -16,6 +16,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 
 import com.example.ehr_mobile.persistance.database.EhrMobileDatabase;
+import com.google.gson.Gson;
 
 public class PatientsApolloClient {
 
@@ -42,37 +43,40 @@ public class PatientsApolloClient {
                         .build()).enqueue(
                 new ApolloCall.Callback<GetPatientsQuery.Data>() {
                     @Override
-                    public void onResponse(@NotNull Response<GetPatientsQuery.Data> response) {
+                    public void onResponse(@NotNull Response<GetPatientsQuery.Data> response) throws IndexOutOfBoundsException {
                         List<GetPatientsQuery.Content> patients = response.data().people().content();
                         for (GetPatientsQuery.Content patientData : patients) {
-                            //String number = patientData.identifications().get(0).number();
-
-
+                            int numberOfIdentifications = patientData.identifications().size();
                             String firstName = patientData.firstname();
                             String lastName = patientData.lastname();
                             String sex = patientData.sex().rawValue();
-
-                            if (patientData.identifications().size() > 0) {
-                                String type = patientData.identifications().get(0).type().name();
+                            patient=new Patient(firstName,lastName,sex);
 
 
-                                patient = new Patient(firstName, lastName
-                                        , sex);
+                                if(numberOfIdentifications>0)
+                                {
+                                    String identifierType= patientData.identifications().get(0).type().name();
 
-                                patient.setNationalId(patientData.identifications().get(0).number());
-                                System.out.println("type = " + type);
-                                ehrMobileDatabase.patientDao().createPatient(patient);
+                                    if(identifierType.equals("National Id")){
+                                        String nationalId=patientData.identifications().get(0).number();
 
-                            }
+                                        patient.setNationalId(nationalId);
+                                    }
+                                    else {
+                                        patient.setNationalId(null);
+
+                                    }
+
+                                }
 
 
-                            System.out.println("Response =========" + patientData.toString());
 
-
+                              ehrMobileDatabase.patientDao().createPatient(patient);
+//                            System.out.println("Number of Patients  = " + ehrMobileDatabase.patientDao().listPatients().size());
                         }
-                        System.out.println("Num of patients " + ehrMobileDatabase.patientDao().listPatients().size() +
-                                ehrMobileDatabase.patientDao().listPatients()
-                        );
+                        System.out.println("Number of Patients  = " + ehrMobileDatabase.patientDao().listPatients().size());
+
+                        System.out.println("\"Patient Table\" " + ehrMobileDatabase.patientDao().listPatients());
 
 
                     }
