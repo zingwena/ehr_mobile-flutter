@@ -121,15 +121,14 @@ public class MainActivity extends FlutterActivity {
 
                             getMaritalStates(token, url + "/api/");
                             getEducationLevels(token,url+"/api/");
-                            getEducationLevels(token,url+"/api/");
+
 
 
                            /* getUsers(token, url + "/api/");
                             getCountries(token, url + "/api/");
                             getOccupation(token, url + "/api/");*/
-
-                           /* getReligion(token, url + "/api/");
-                            System.out.println("%%%%%%%%%%%%%" + token);*/
+                           getReligion(token, url + "/api/");
+                       /*     System.out.println("%%%%%%%%%%%%%" + token);*/
 
                         }
 
@@ -142,24 +141,30 @@ public class MainActivity extends FlutterActivity {
             }
         });
 
-        new MethodChannel(getFlutterView(),PATIENT_CHANNEL).setMethodCallHandler((methodCall, result) -> {
+        new MethodChannel(getFlutterView(),PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                final String arguments = methodCall.arguments();
+                if (methodCall.method.equals("searchPatient")) {
+                    List<Patient> _list;
 
-            final String arguments = methodCall.arguments();
-            if (methodCall.method.equals("searchPatient")) {
-                List<Patient> _list;
+                    String searchItem = arguments;
 
-                String searchItem = arguments;
-
-                PatientQuery patientQuery = new PatientQuery();
-                SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
-                _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
-                Gson gson = new Gson();
+                    PatientQuery patientQuery = new PatientQuery();
+                    SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
+                    _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                    Gson gson = new Gson();
 
 
 
-                result.success(gson.toJson(_list));
+                    result.success(gson.toJson(_list));
 
-            }});
+                }
+            }
+        });
+
+
+
     }
 
     public void getMaritalStates(Token token, String baseUrl) {
@@ -477,7 +482,7 @@ public class MainActivity extends FlutterActivity {
 
 
 
-/*    public void getReligion(Token token, String baseUrl) {
+   public void getReligion(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
         Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
@@ -499,9 +504,9 @@ public class MainActivity extends FlutterActivity {
                 System.out.println("tttttttttttttttttttttttt" + t);
             }
         });
-    }*/
+    }
 
-   /* void saveReligionToDB(List<Religion> religions) {
+    void saveReligionToDB(List<Religion> religions) {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
@@ -509,7 +514,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.religionDao().insertReligions(religions);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
-    }*/
+    }
 
 
     void saveOccupationsToDB(List<Occupation> occupations) {
@@ -551,17 +556,17 @@ public class MainActivity extends FlutterActivity {
     }
 
 
-    void saveEducationToDB(List<Education> educationList) {
-
-
-
-        System.out.println("?????????????????    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.educationDao().insertEducationList(educationList);
-
-        System.out.println("education from DB +++++++++++++++++ :" + ehrMobileDatabase.educationDao().getEducationList());
-
-
-    }
+//    void saveEducationToDB(List<Education> educationList) {
+//
+//
+//
+//        System.out.println("?????????????????    " + ehrMobileDatabase);
+//
+//        ehrMobileDatabase.educationDao().insertEducationList(educationList);
+//
+//        System.out.println("education from DB +++++++++++++++++ :" + ehrMobileDatabase.educationDao().getEducationList());
+//
+//
+//    }
 
 }
