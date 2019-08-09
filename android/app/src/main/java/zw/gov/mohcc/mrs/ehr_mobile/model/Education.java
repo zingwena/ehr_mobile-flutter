@@ -1,13 +1,22 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Facility extends BaseNameModel {
+public class Education extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    public Education() {
+    }
+
+    @Ignore
+    public Education(String code, String name) {
+        super(code, name);
+    }
 
     public int getId() {
         return id;
@@ -16,9 +25,4 @@ public class Facility extends BaseNameModel {
     public void setId(int id) {
         this.id = id;
     }
-    public Facility(String code, String name) {
-        super(code, name);
-    }
-
-
 }

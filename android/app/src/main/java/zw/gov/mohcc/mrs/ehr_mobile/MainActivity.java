@@ -7,6 +7,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 
@@ -112,18 +114,22 @@ public class MainActivity extends FlutterActivity {
 
                             Token token = response.body();
                             getNationalities(token, url + "/api/");
-
+                            getFacilities(token, url + "/api/");
                             getCountries(token, url + "/api/");
                             getOccupation(token, url + "/api/");
 
 
                             getMaritalStates(token, url + "/api/");
+                            getEducationLevels(token,url+"/api/");
+                            getEducationLevels(token,url+"/api/");
+
+
                            /* getUsers(token, url + "/api/");
                             getCountries(token, url + "/api/");
                             getOccupation(token, url + "/api/");*/
 
-                            getReligion(token, url + "/api/");
-                            System.out.println("%%%%%%%%%%%%%" + token);
+                           /* getReligion(token, url + "/api/");
+                            System.out.println("%%%%%%%%%%%%%" + token);*/
 
                         }
 
@@ -249,16 +255,26 @@ public class MainActivity extends FlutterActivity {
     public void getFacilities(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<JsonObject> call = service.getFacilities("Bearer " + token.getId_token());
-        call.enqueue(new Callback<JsonObject>() {
+        Call<TerminologyModel> call = service.getFacilities("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Facility> facilityList = new ArrayList<>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    facilityList.add(new Facility(item.getCode(), item.getName()));
+                }
+                if (facilityList != null && !facilityList.isEmpty()) {
+
+                    saveFacilityToDB(facilityList);
+                }
+
 
             }
 
-
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("facility tttttttttttttttttttttttt" + t);
 
             }
         });
@@ -366,6 +382,34 @@ public class MainActivity extends FlutterActivity {
     }
 
 
+ /*   public void getEducationList(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getEducationList("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Education> educationList = new ArrayList<>();
+
+                if (response.isSuccessful()) {
+                    for (BaseNameModel item : response.body().getContent()) {
+                        educationList.add(new Education(item.getCode(), item.getName()));
+                    }
+
+                    if (educationList != null && !educationList.isEmpty()) {
+                        saveEducationToDB(educationList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }*/
+
+
 
     void saveUsersToDB(List<User> userListInstance) {
 
@@ -424,9 +468,16 @@ public class MainActivity extends FlutterActivity {
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
     }
+    void saveFacilityToDB(List<Facility> facilities) {
+
+        ehrMobileDatabase.facilityDao().insertFacilities(facilities);
+
+        System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());
+    }
 
 
-    public void getReligion(Token token, String baseUrl) {
+
+/*    public void getReligion(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
         Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
@@ -448,9 +499,9 @@ public class MainActivity extends FlutterActivity {
                 System.out.println("tttttttttttttttttttttttt" + t);
             }
         });
-    }
+    }*/
 
-    void saveReligionToDB(List<Religion> religions) {
+   /* void saveReligionToDB(List<Religion> religions) {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
@@ -458,7 +509,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.religionDao().insertReligions(religions);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
-    }
+    }*/
 
 
     void saveOccupationsToDB(List<Occupation> occupations) {
@@ -495,6 +546,20 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
 
         System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
+
+
+    }
+
+
+    void saveEducationToDB(List<Education> educationList) {
+
+
+
+        System.out.println("?????????????????    " + ehrMobileDatabase);
+
+        ehrMobileDatabase.educationDao().insertEducationList(educationList);
+
+        System.out.println("education from DB +++++++++++++++++ :" + ehrMobileDatabase.educationDao().getEducationList());
 
 
     }

@@ -20,8 +20,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-//   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
-    private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+  private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
+ //   private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
     private static Patient patient;
 
     public static ApolloClient getApolloClient() {
