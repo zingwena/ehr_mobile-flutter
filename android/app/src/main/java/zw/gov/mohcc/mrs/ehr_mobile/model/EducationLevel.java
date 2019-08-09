@@ -5,14 +5,18 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Facility extends BaseNameModel {
-
-    public Facility() {
-    }
-
+public class EducationLevel extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    public EducationLevel() {
+    }
+
+    @Ignore
+    public EducationLevel(String code, String name) {
+        super(code, name);
+    }
 
     public int getId() {
         return id;
@@ -21,11 +25,4 @@ public class Facility extends BaseNameModel {
     public void setId(int id) {
         this.id = id;
     }
-
-
-    @Ignore
-    public Facility(String code, String name) {
-        super(code, name);
-    }
-
 }

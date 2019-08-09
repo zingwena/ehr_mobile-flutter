@@ -6,6 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
@@ -20,6 +24,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
@@ -42,7 +49,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
 
-        Religion.class, Nationality.class, Occupation.class}, version = 1,exportSchema = false)
+        Religion.class, Facility.class, Nationality.class, Occupation.class,Education.class, EducationLevel.class}, version = 1,exportSchema = false)
 
 
 
@@ -52,17 +59,22 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract AuthoritiesDao authoritiesDao();
     public abstract CountryDao countryDao();
     public abstract MaritalStatusDao maritalStateDao();
-    public abstract ReligionDao religionDao();
 
     public abstract OccupationDao occupationDao();
     public abstract NationalityDao nationalityDao();
+    public abstract EducationLevelDao educationLevelDao();
+    public abstract EducationDao educationDao();
 
+
+    public abstract ReligionDao religionDao();
     public abstract PatientDao patientDao();
+    public abstract FacilityDao facilityDao();
+
 
     public static volatile EhrMobileDatabase INSTANCE;
 
 
-    public static EhrMobileDatabase getInstance(final Context context){
+    public static EhrMobileDatabase getDatabaseInstance(final Context context){
         if(INSTANCE==null){
             synchronized (EhrMobileDatabase.class){
                 if(INSTANCE==null){
