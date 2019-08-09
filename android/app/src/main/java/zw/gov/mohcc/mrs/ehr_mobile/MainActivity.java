@@ -467,7 +467,7 @@ public class MainActivity extends FlutterActivity {
 
         ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
 
-        System.out.println("nationality from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
+        System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
 
 
     }
