@@ -58,8 +58,8 @@ public interface DataSyncService {
     @GET("religions")
     Call<TerminologyModel> getReligion(@Header("Authorization") String token);
 
-    @GET("educationList")
-    Call<TerminologyModel> getEducationList(@Header("Authorization")String token);
+    @GET("educationLevels")
+    Call<TerminologyModel> getEducationLevels(@Header("Authorization")String token);
 
 
 }

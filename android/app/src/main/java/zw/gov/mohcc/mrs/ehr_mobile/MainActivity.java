@@ -7,7 +7,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -317,22 +317,22 @@ public class MainActivity extends FlutterActivity {
     }
 
     //Phineas
-    public void getEducationList(Token token, String baseUrl) {
+    public void getEducationLevels(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getEducationList("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getEducationLevels("Bearer " + token.getId_token());
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Education> educationList = new ArrayList<>();
+                List<EducationLevel> educationLevels = new ArrayList<>();
 
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
-                        educationList.add(new Education(item.getCode(), item.getName()));
+                        educationLevels.add(new EducationLevel(item.getCode(), item.getName()));
                     }
 
-                    if (educationList != null && !educationList.isEmpty()) {
-                        saveEducationToDB(educationList);
+                    if (educationLevels != null && !educationLevels.isEmpty()) {
+                        saveEducationLevelToDB(educationLevels);
                     }
                 }
             }
@@ -459,15 +459,15 @@ public class MainActivity extends FlutterActivity {
 
     }
 
-    void saveEducationToDB(List<Education> educationList) {
+    void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
 
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
 
-        ehrMobileDatabase.educationDao().insertEducationList(educationList);
+        ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
 
-        System.out.println("nationality from DB #################" + ehrMobileDatabase.educationDao().getEducationList());
+        System.out.println("nationality from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
 
 
     }
