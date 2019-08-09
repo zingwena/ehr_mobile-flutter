@@ -6,16 +6,30 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import java.lang.annotation.Native;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
+
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
+
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
+
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 
 
@@ -28,7 +42,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
  * Room persistence Library will help to create the cache
  */
 
-@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class}, version = 1,exportSchema = false)
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
+
+        Religion.class, Nationality.class, Occupation.class}, version = 1,exportSchema = false)
+
 
 
 public abstract class EhrMobileDatabase extends RoomDatabase {
@@ -37,6 +54,11 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract AuthoritiesDao authoritiesDao();
     public abstract CountryDao countryDao();
     public abstract MaritalStatusDao maritalStateDao();
+    public abstract ReligionDao religionDao();
+
+    public abstract OccupationDao occupationDao();
+    public abstract NationalityDao nationalityDao();
+
     public abstract PatientDao patientDao();
     public abstract FacilityDao facilityDao();
 
@@ -44,7 +66,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public static volatile EhrMobileDatabase INSTANCE;
 
 
-    public static EhrMobileDatabase getInstance(final Context context){
+    public static EhrMobileDatabase getDatabaseInstance(final Context context){
         if(INSTANCE==null){
             synchronized (EhrMobileDatabase.class){
                 if(INSTANCE==null){

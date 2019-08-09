@@ -7,6 +7,14 @@ public class BaseNameModel implements Serializable {
     private String code;
     private String name;
 
+    public BaseNameModel() {
+    }
+
+    public BaseNameModel(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
+
     public String getCode() {
         return code;
     }

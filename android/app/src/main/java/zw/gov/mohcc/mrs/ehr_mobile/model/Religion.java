@@ -1,20 +1,22 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Nationality extends BaseNameModel {
-
-    public Nationality() {
-    }
-
-    public Nationality(String code, String name) {
-        super(code, name);
-    }
+public class Religion extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    public Religion() {
+    }
+
+    @Ignore
+    public Religion(String code, String name) {
+        super(code, name);
+    }
 
     public int getId() {
         return id;
