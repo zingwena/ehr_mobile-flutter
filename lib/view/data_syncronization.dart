@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'edit_demographics.dart';
 import 'package:flutter/services.dart';
 
 class DataSyncronization extends StatefulWidget {
@@ -161,11 +162,13 @@ class _DataSyncronizationState extends State<DataSyncronization> {
 
                 onPressed: () async{
          if(_key.currentState.validate()){
-
+           DateTime date= DateTime.now();
+           Navigator.push(
+               context, MaterialPageRoute(builder: (context) => EditDemographics("ruzane","tinotenda",date,"male")));
              _key.currentState.save();
              String result;
              try {
-           result= await platform.invokeMethod("DataSync", [url, username, password]);
+//           result= await platform.invokeMethod("DataSync", [url, username, password]);
              }catch(e){
                print(e);
              }

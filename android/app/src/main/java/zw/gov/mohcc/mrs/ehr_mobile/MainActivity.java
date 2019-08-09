@@ -35,6 +35,8 @@ public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
 
+    final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+
 
     public Token token;
     public String url, username, password;
@@ -45,6 +47,17 @@ public class MainActivity extends FlutterActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
+
+        new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                        if(methodCall.method.equals("metaData")){
+                            result.success("zvaita");
+                        }
+                    }
+                }
+        );
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
