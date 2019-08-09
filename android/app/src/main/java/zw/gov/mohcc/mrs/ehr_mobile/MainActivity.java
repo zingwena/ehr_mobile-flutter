@@ -70,23 +70,7 @@ public class MainActivity extends FlutterActivity {
 
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-                        if(methodCall.method.equals("metaData")){
-                            try {
-                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
-                                Gson gson = new Gson();
-                                String religionList = gson.toJson(religions);
-                                result.success(religionList);
-                            }catch(Exception e){
-                                System.out.println("something went wrong "+ e.getMessage());
-                            }
-                        }
-                    }
-                }
-        );
+
 
 
 
@@ -142,6 +126,23 @@ public class MainActivity extends FlutterActivity {
                 }
             }
         });
+        new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                        if(methodCall.method.equals("metaData")){
+                            try {
+                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
+                                Gson gson = new Gson();
+                                String religionList = gson.toJson(religions);
+                                result.success(religionList);
+                            }catch(Exception e){
+                                System.out.println("something went wrong "+ e.getMessage());
+                            }
+                        }
+                    }
+                }
+        );
 
         new MethodChannel(getFlutterView(),PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override

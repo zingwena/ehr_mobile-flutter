@@ -49,7 +49,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
 
-        Religion.class, Facility.class, Nationality.class, Occupation.class,Education.class, EducationLevel.class}, version = 1,exportSchema = false)
+        Religion.class, Facility.class, Nationality.class, Occupation.class,Education.class, EducationLevel.class}, version = 2,exportSchema = false)
 
 
 
