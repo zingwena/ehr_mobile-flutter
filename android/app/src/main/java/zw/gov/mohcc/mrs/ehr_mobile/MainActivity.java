@@ -64,19 +64,27 @@ public class MainActivity extends FlutterActivity {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
 
+        ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                         if(methodCall.method.equals("metaData")){
-                            result.success("zvaita");
+                            try {
+                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
+                                Gson gson = new Gson();
+                                String religionList = gson.toJson(religions);
+                                result.success(religionList);
+                            }catch(Exception e){
+                                System.out.println("something went wrong "+ e.getMessage());
+                            }
                         }
                     }
                 }
         );
 
-        ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
+
 
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -403,11 +411,15 @@ public class MainActivity extends FlutterActivity {
     void saveCountriesToDB(List<Country> countries) {
         ehrMobileDatabase.countryDao().insertCountries(countries);
 
+        ehrMobileDatabase.countryDao().deleteCountries();
+
         System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
     }
 
     void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
 
+
+        ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
         ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
@@ -442,6 +454,7 @@ public class MainActivity extends FlutterActivity {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+        ehrMobileDatabase.religionDao().deleteReligions();
         ehrMobileDatabase.religionDao().insertReligions(religions);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
@@ -455,6 +468,7 @@ public class MainActivity extends FlutterActivity {
 
 
         System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.occupationDao().deleteOccupations();
         ehrMobileDatabase.occupationDao().insertOccupations(occupations);
         System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
 
@@ -464,7 +478,7 @@ public class MainActivity extends FlutterActivity {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
+         ehrMobileDatabase.nationalityDao().deleteNationalities();
         ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
 
         System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
@@ -477,7 +491,7 @@ public class MainActivity extends FlutterActivity {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
+         ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
         ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
 
         System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());

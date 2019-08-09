@@ -164,15 +164,20 @@ class _DataSyncronizationState extends State<DataSyncronization> {
          if(_key.currentState.validate()){
            DateTime date= DateTime.now();
            Navigator.push(
-               context, MaterialPageRoute(builder: (context) => EditDemographics("ruzane","tinotenda",date,"male")));
+               context, MaterialPageRoute(builder: (context) => EditDemographics("ruzane","tinotenda",date,"male")));           
              _key.currentState.save();
              String result;
              try {
-//           result= await platform.invokeMethod("DataSync", [url, username, password]);
+               
+           result= await platform.invokeMethod("DataSync", [url, username, password]);
+          
              }catch(e){
                print(e);
              }
+          
          }
+
+         
                 }
 
               ),

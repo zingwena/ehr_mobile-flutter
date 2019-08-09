@@ -21,6 +21,9 @@ public interface AuthoritiesDao {
     @Delete
     void delete(Authorities authority);
 
+    @Query("DELETE FROM authorities")
+    void deleteAuthorities();
+
     @Query("SELECT * FROM authorities")
     List<Authorities> getAllAuthorities();
 

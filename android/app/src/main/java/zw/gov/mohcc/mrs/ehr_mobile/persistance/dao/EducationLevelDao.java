@@ -14,6 +14,9 @@ public interface EducationLevelDao {
    @Insert
     void insertEducationLevels(List<EducationLevel> educationLevels);
 
+   @Query("DELETE FROM educationlevel")
+   void deleteEducationLevels();
+
    @Insert
     void insertEducation(EducationLevel EducationLevel);
 
