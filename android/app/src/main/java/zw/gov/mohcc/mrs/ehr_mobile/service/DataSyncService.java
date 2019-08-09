@@ -1,12 +1,17 @@
 package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import com.google.gson.JsonObject;
+
 
 import java.util.List;
 
@@ -17,6 +22,15 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface DataSyncService {
+
+
+
+
+    @GET("nationalities")
+    Call<Nationality> getNationality(@Header("Authorization") String token);
+
+    @GET("occupations")
+    Call<Occupation>getAllOccupations(@Header("Authorization") String token);
 
 
     @POST("authenticate")
@@ -43,5 +57,9 @@ public interface DataSyncService {
 
     @GET("religions")
     Call<TerminologyModel> getReligion(@Header("Authorization") String token);
+
+    @GET("educationLevels")
+    Call<TerminologyModel> getEducationLevels(@Header("Authorization")String token);
+
 
 }
