@@ -17,4 +17,8 @@ public class Occupation extends BaseNameModel {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Occupation(String code, String name) {
+        super(code, name);
+    }
 }
