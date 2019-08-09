@@ -16,7 +16,7 @@ public interface OccupationDao {
     void insertOccupations(List<Occupation> occupations);
 
     @Insert
-    void insertReligion(Occupation occupation);
+    void insertOccupation(Occupation occupation);
 
     @Query("SELECT * FROM Occupation")
     List<Occupation> getAllOccupations();

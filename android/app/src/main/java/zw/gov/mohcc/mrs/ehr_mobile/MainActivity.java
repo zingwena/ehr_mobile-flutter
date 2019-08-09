@@ -5,6 +5,7 @@ import android.util.Log;
 
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -81,10 +82,10 @@ public class MainActivity extends FlutterActivity {
                             getCountries(token, url + "/api/");
                             getOccupation(token, url + "/api/");
 
-
+                            getCountries(token, url + "/api/");
                             getMaritalStates(token, url + "/api/");
                            /* getUsers(token, url + "/api/");
-                            getCountries(token, url + "/api/");
+                             getFacilities(token, url + "/api/");
                             getOccupation(token, url + "/api/");*/
 
                             getReligion(token, url + "/api/");
@@ -196,18 +197,27 @@ public class MainActivity extends FlutterActivity {
     public void getFacilities(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<JsonObject> call = service.getFacilities("Bearer " + token.getId_token());
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+     Call<TerminologyModel> call = service.getFacilities("Bearer" + token.getId_token());
+     call.enqueue(new Callback<TerminologyModel>() {
+         @Override
+         public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+             List<Facility> facilities = new ArrayList<>();
+             if(response.isSuccessful()){
+                 for(BaseNameModel item : response.body().getContent()){
+                     facilities.add(new Facility(item.getCode(), item.getName()));
+                 }
+                 if (facilities != null && !facilities.isEmpty()) {
 
-            }
+                 }
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+             }
+         }
 
-            }
-        });
+         @Override
+         public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+         }
+     });
     }
 
 
@@ -241,42 +251,26 @@ public class MainActivity extends FlutterActivity {
 
 
     public void getCountries(Token token, String baseUrl) {
-        System.out.println("[[[[[[[[[[[[[[[[[[[[running first");
-
-
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<JsonObject> call = service.getCountries("Bearer " + token.getId_token());
-
-        call.enqueue(new Callback<JsonObject>() {
+        Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Country> countries = new ArrayList<>();
+
                 if (response.isSuccessful()) {
+                    for (BaseNameModel item : response.body().getContent()) {
+                        countries.add(new Country(item.getCode(), item.getName()));
+                    }
 
-                    JsonArray jsonCountries = response.body().getAsJsonArray("content");
-
-                    List<TerminologyModel> countries = new ArrayList<>();
-
-                    /*
-                    TODO brian refatcor this part
-                    jsonCountries.forEach(country -> {
-
-                        countries.add(new Country(country.getAsJsonObject().get("code").toString(), country.getAsJsonObject().get("name").toString()));
-                    });
-
-                    saveCountriesToDB(countries);*/
-
-                    System.out.println(countries.toString());
-
-                } else {
-                    response.message();
-                    System.out.println("something went wrong");
-
+                    if (countries != null && !countries.isEmpty()) {
+                        saveCountriesToDB(countries);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("onFailure", t.toString());
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
             }
         });
@@ -325,6 +319,7 @@ public class MainActivity extends FlutterActivity {
      */
 
     void saveCountriesToDB(List<Country> countries) {
+        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
         ehrMobileDatabase.countryDao().insertCountries(countries);
 
         System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
@@ -375,9 +370,7 @@ public class MainActivity extends FlutterActivity {
 
 
     void saveOccupationsToDB(List<Occupation> occupations) {
-        for (Occupation occupation : occupations) {
-            System.out.println("occupation = " + occupation);
-        }
+
 
         ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
         System.out.println("*****************   " + ehrMobileDatabase);
@@ -397,5 +390,7 @@ public class MainActivity extends FlutterActivity {
 
 
     }
+
+
 
 }
