@@ -11,16 +11,16 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
 @Dao
 public interface EducationDao {
 
-   @Insert
-    void insertEducationList(List<Education> educationList);
-
-   @Insert
-    void insertEducation(Education education);
-
-   @Query("SELECT * FROM Education")
-    List<Education> getEducationList();
-
-   @Query("SELECT * FROM Education WHERE id=:id")
-   Education findByEducationId(int id);
+//   @Insert
+//    void insertEducationList(List<Education> educationList);
+//
+//   @Insert
+//    void insertEducation(Education education);
+//
+//   @Query("SELECT * FROM e")
+//    List<Education> getEducationList();
+//
+//   @Query("SELECT * FROM Education WHERE id=:id")
+//   Education findByEducationId(int id);
 
 }

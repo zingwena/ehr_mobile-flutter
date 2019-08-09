@@ -14,6 +14,10 @@ public interface ReligionDao {
     @Insert
     void insertReligions(List<Religion> religions);
 
+    @Query("DELETE FROM religion")
+    void deleteReligions();
+
+
     @Insert
     void insertReligion(Religion religion);
 

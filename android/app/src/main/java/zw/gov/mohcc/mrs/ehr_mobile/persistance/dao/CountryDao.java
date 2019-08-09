@@ -14,6 +14,9 @@ public interface CountryDao {
     @Insert
     void insertCountry(Country country);
 
+    @Query("DELETE FROM country")
+    void deleteCountries();
+
     @Insert
     void insertCountries(List<Country> countries);
 

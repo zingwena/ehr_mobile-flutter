@@ -28,7 +28,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   DateTime selectedDate = DateFormat("yyyy/MM/dd").parse(date);
   List<String> _list;
 
-  String lastName, firstName;
+  String lastName, firstName, religion;
 
   List<DropdownMenuItem<String>> _dropDownMenuItems,
       _dropDownMenuItemsIdentified,
@@ -416,10 +416,10 @@ class _EditDemographicsState extends State<EditDemographics> {
     try{
       result= await dataChannel.invokeMethod('metaData');
       
-      print('result  $result');
+      print('result/////////////////////////////////////////////////  $result');
     }
     catch(e){
-      print('something went wrong $e');
+      print('something went wrong--------------------------- $e');
     }
   }
 
