@@ -7,7 +7,6 @@ import androidx.room.Query;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 
 @Dao
 public interface EducationDao {
@@ -18,9 +17,15 @@ public interface EducationDao {
     @Insert
     void insertReligion(Education education);
 
-    @Query("SELECT * FROM Education")
-    List<Religion> getAllEducations();
+   @Insert
+    void insertEducationList(List<Education> educationList);
 
-    @Query("SELECT * FROM Education WHERE id=:id")
-    Religion findEducationById(int id);
+   @Insert
+    void insertEducation(Education education);
+
+   @Query("SELECT * FROM Education")
+    List<Education> getEducationList();
+
+   @Query("SELECT * FROM Education WHERE id=:id")
+    Education findByEducationId(int id);
 }
