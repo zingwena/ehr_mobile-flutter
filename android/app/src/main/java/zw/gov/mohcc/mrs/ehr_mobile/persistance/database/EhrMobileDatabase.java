@@ -6,9 +6,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import java.lang.annotation.Native;
-
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
@@ -56,12 +53,11 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract AuthoritiesDao authoritiesDao();
     public abstract CountryDao countryDao();
     public abstract MaritalStatusDao maritalStateDao();
-    public abstract ReligionDao religionDao();
 
     public abstract OccupationDao occupationDao();
     public abstract NationalityDao nationalityDao();
     public abstract EducationLevelDao educationLevelDao();
-
+    public abstract ReligionDao religionDao();
     public abstract PatientDao patientDao();
 
     public static volatile EhrMobileDatabase INSTANCE;

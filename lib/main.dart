@@ -11,7 +11,7 @@ class EhrMobileApp extends StatelessWidget {
     return MaterialApp(
       title: 'EHR Mobile App',
       theme: ThemeData(
-   
+
         primarySwatch: Colors.blue,
       ),
       home: LandingScreen(),
