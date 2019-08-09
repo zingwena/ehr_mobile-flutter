@@ -30,6 +30,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 
 
@@ -61,6 +62,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract EducationDao educationDao();
 
 
+    public abstract ReligionDao religionDao();
     public abstract PatientDao patientDao();
 
     public static volatile EhrMobileDatabase INSTANCE;

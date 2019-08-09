@@ -59,6 +59,8 @@ android {
         applicationId "zw.gov.mohcc.mrs.ehr_mobile"
         minSdkVersion 16
         targetSdkVersion 28
+        multiDexEnabled true
+
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -86,6 +88,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.0.1")
     implementation 'com.apollographql.apollo:apollo-runtime:1.0.2'
     compileOnly 'org.jetbrains:annotations:13.0'
+    implementation 'com.android.support:multidex:1.0.3'
     testCompileOnly 'org.jetbrains:annotations:13.0'
     annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
     implementation "com.squareup.okhttp3:logging-interceptor:3.0.1"
