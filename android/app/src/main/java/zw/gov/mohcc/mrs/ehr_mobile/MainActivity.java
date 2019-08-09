@@ -7,6 +7,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -314,6 +315,36 @@ public class MainActivity extends FlutterActivity {
 
     }
 
+    //Phineas
+    public void getEducationLevels(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getEducationLevels("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<EducationLevel> educationLevels = new ArrayList<>();
+
+                if (response.isSuccessful()) {
+                    for (BaseNameModel item : response.body().getContent()) {
+                        educationLevels.add(new EducationLevel(item.getCode(), item.getName()));
+                    }
+
+                    if (educationLevels != null && !educationLevels.isEmpty()) {
+                        saveEducationLevelToDB(educationLevels);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
     void saveUsersToDB(List<User> userListInstance) {
 
         /*ehrMobileDatabase.userDao().insertUsers(userListInstance);
@@ -423,6 +454,19 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
 
         System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
+
+
+    }
+
+    void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
+
+
+
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+
+        ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
+
+        System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
 
 
     }

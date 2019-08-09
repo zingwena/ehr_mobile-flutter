@@ -3,16 +3,16 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-public class Education extends BaseNameModel {
+public class EducationLevel extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    public Education() {
+    public EducationLevel() {
     }
 
     @Ignore
-    public Education(String code, String name) {
+    public EducationLevel(String code, String name) {
         super(code, name);
     }
 
