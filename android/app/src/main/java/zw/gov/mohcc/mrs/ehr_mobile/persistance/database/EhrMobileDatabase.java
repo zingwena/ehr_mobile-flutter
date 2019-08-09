@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 
 import java.lang.annotation.Native;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -21,6 +22,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
@@ -43,7 +45,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
 
-        Religion.class, Nationality.class, Occupation.class}, version = 1,exportSchema = false)
+        Religion.class, Nationality.class, Occupation.class, Education.class}, version = 1,exportSchema = false)
 
 
 
@@ -57,6 +59,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract OccupationDao occupationDao();
     public abstract NationalityDao nationalityDao();
+    public abstract EducationDao educationDao();
 
     public abstract PatientDao patientDao();
 
