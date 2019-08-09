@@ -16,5 +16,9 @@ public class Facility extends BaseNameModel {
     public void setId(int id) {
         this.id = id;
     }
+    public Facility(String code, String name) {
+        super(code, name);
+    }
+
 
 }
