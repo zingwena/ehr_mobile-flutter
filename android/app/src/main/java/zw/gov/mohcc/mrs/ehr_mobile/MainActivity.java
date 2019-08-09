@@ -3,6 +3,8 @@ package zw.gov.mohcc.mrs.ehr_mobile;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.sqlite.db.SimpleSQLiteQuery;
+
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
@@ -17,10 +19,16 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+
+import com.google.gson.Gson;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -40,6 +48,7 @@ import retrofit2.Retrofit;
 public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
+    private final static String PATIENT_CHANNEL = "ehr_mobile.channel.patient";
 
 
     public Token token;
@@ -47,10 +56,14 @@ public class MainActivity extends FlutterActivity {
     EhrMobileDatabase ehrMobileDatabase;
     List<User> userList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
+
+        ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
+
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
@@ -100,8 +113,26 @@ public class MainActivity extends FlutterActivity {
                 }
             }
         });
-    }
 
+        new MethodChannel(getFlutterView(),PATIENT_CHANNEL).setMethodCallHandler((methodCall, result) -> {
+
+            final String arguments = methodCall.arguments();
+            if (methodCall.method.equals("searchPatient")) {
+                List<Patient> _list;
+
+                String searchItem = arguments;
+
+                PatientQuery patientQuery = new PatientQuery();
+                SimpleSQLiteQuery sqLiteQuery = patientQuery.SearchPatient(searchItem);
+                _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                Gson gson = new Gson();
+
+
+
+                result.success(gson.toJson(_list));
+
+            }});
+    }
 
     public void getMaritalStates(Token token, String baseUrl) {
 
@@ -202,6 +233,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
             }
+
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
@@ -331,7 +363,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
-        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
+
         ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
@@ -364,10 +396,8 @@ public class MainActivity extends FlutterActivity {
 
     void saveReligionToDB(List<Religion> religions) {
 
-        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
         ehrMobileDatabase.religionDao().insertReligions(religions);
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
@@ -379,7 +409,7 @@ public class MainActivity extends FlutterActivity {
             System.out.println("occupation = " + occupation);
         }
 
-        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
+
         System.out.println("*****************   " + ehrMobileDatabase);
         ehrMobileDatabase.occupationDao().insertOccupations(occupations);
         System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
@@ -387,7 +417,7 @@ public class MainActivity extends FlutterActivity {
     }
     void saveNationalityToDB(List<Nationality> nationalityList) {
 
-        ehrMobileDatabase = EhrMobileDatabase.getInstance(getApplication());
+
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
 

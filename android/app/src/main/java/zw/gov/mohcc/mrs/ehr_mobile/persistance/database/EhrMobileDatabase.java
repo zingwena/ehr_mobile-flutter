@@ -63,7 +63,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public static volatile EhrMobileDatabase INSTANCE;
 
 
-    public static EhrMobileDatabase getInstance(final Context context){
+    public static EhrMobileDatabase getDatabaseInstance(final Context context){
         if(INSTANCE==null){
             synchronized (EhrMobileDatabase.class){
                 if(INSTANCE==null){
