@@ -14,6 +14,9 @@ public interface MaritalStatusDao {
     @Insert
     void insertMaritalStates(List<MaritalStatus> maritalStatuses);
 
+    @Query("DELETE FROM maritalstatus")
+    void deleteMaritalStatuses();
+
     @Insert
     void insertMAritalState(MaritalStatus maritalStatus);
 

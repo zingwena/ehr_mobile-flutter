@@ -15,8 +15,11 @@ public interface OccupationDao {
     @Insert
     void insertOccupations(List<Occupation> occupations);
 
+    @Query("DELETE FROM occupation")
+    void deleteOccupations();
+
     @Insert
-    void insertReligion(Occupation occupation);
+    void insertOccupation(Occupation occupation);
 
     @Query("SELECT * FROM Occupation")
     List<Occupation> getAllOccupations();

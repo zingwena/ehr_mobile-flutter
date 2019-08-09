@@ -15,6 +15,9 @@ public interface NationalityDao {
     @Insert
     void insertNationalities(List<Nationality> nationalityList);
 
+    @Query("DELETE FROM nationality")
+    void deleteNationalities();
+
     @Insert
     void insertNationality(Nationality nationality);
 
