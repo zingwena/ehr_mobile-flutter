@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
@@ -302,5 +303,12 @@ public class MainActivity extends FlutterActivity {
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
     }
+    void saveFacilityToDB(List<Facility> facilities) {
+
+        ehrMobileDatabase.facilityDao().insertFacilities(facilities);
+
+        System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());
+    }
+
 
 }

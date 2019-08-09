@@ -13,6 +13,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
@@ -36,8 +37,9 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract AuthoritiesDao authoritiesDao();
     public abstract CountryDao countryDao();
     public abstract MaritalStatusDao maritalStateDao();
-
     public abstract PatientDao patientDao();
+    public abstract FacilityDao facilityDao();
+
 
     public static volatile EhrMobileDatabase INSTANCE;
 
