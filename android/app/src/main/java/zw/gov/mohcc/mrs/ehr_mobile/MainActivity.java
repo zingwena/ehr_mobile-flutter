@@ -20,7 +20,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
@@ -123,7 +122,7 @@ public class MainActivity extends FlutterActivity {
                 String searchItem = arguments;
 
                 PatientQuery patientQuery = new PatientQuery();
-                SimpleSQLiteQuery sqLiteQuery = patientQuery.SearchPatient(searchItem);
+                SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
                 _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
                 Gson gson = new Gson();
 

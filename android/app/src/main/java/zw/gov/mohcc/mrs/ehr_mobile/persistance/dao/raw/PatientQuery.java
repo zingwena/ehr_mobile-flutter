@@ -11,9 +11,8 @@ public class PatientQuery {
 
     String nationalIdRegex = "((\\d{8,10})([a-zA-Z])(\\d{2})\\b)";
 
-    public SimpleSQLiteQuery SearchPatient(String searchItem){
-        String firstName,lastName;
-
+    public SimpleSQLiteQuery searchPatient(String searchItem) {
+        String firstName, lastName;
 
 
         StringBuilder stringQuery = new StringBuilder("SELECT * FROM Patient");
@@ -21,13 +20,13 @@ public class PatientQuery {
 
         String searchItemNoSpace = getStringWithoutSpecialCharacters(searchItem);
 
-        if (isNationalId(searchItemNoSpace)){
+        if (isNationalId(searchItemNoSpace)) {
 
-            stringQuery.append(" WHERE number is ?");
+            stringQuery.append(" WHERE nationalId is ?");
             parameters.add(searchItemNoSpace);
-            System.out.println("----------=-=-=-"+searchItemNoSpace);
 
-        }else {
+
+        } else {
 
             String[] namesArray = getFirstNameAndLastName(searchItem);
 
@@ -35,46 +34,58 @@ public class PatientQuery {
             lastName = namesArray[1];
 
             //filter for fullName
-            String fullNameFilter = searchItemNoSpace.substring(0,3).concat("%");
-            String fullNameFilter2 = searchItemNoSpace.substring(searchItemNoSpace.length()-3).concat("%");
+            String fullNameFilter = searchItemNoSpace.substring(searchItemNoSpace.length() - 3).concat("%");
 
 
-            if (firstName.length() > 3 && lastName.length() > 3){
+            if (firstName.length() > 3 && lastName.length() > 3) {
                 //filters for searching first name
-                String firstNameFilter1 = firstName.substring(0,3).concat("%");
-                String firstNameFilter2 = "%".concat(firstName.substring((firstName.length()-3)));
+                String firstNameFilter1 = firstName.substring(0, 3).concat("%");
+                String firstNameFilter2 = "%".concat(firstName.substring((firstName.length() - 3)));
 
                 //filters for searching last name
-                String lastNameFilter1 = lastName.substring(0,3).concat("%");
-                String lastNameFilter2 = lastName.substring(lastName.length()-3).concat("%");
+                String lastNameFilter1 = lastName.substring(0, 3).concat("%");
 
 
                 stringQuery.append(" WHERE (firstName Like ? OR firstName Like ?) AND (lastName Like ? OR lastName Like ?)");
                 parameters.add(firstNameFilter1);
                 parameters.add(firstNameFilter2);
                 parameters.add(lastNameFilter1);
-                parameters.add(lastNameFilter2);
-
-            }else {
-                stringQuery.append(" WHERE firstName Like ? OR lastName Like ?");
                 parameters.add(fullNameFilter);
-                parameters.add(fullNameFilter2);
+
+            }
+            if (firstName.length() > 3 && lastName.length() <= 3) {
+                //filters for searching first name
+                String firstNameFilter1 = firstName.substring(0, 3).concat("%");
+                String firstNameFilter2 = "%".concat(firstName.substring((firstName.length() - 3)));
+
+
+                stringQuery.append(" WHERE firstName Like ? OR firstName Like ?");
+                parameters.add(firstNameFilter1);
+                parameters.add(firstNameFilter2);
+            }
+            if (firstName.length() <= 3 && lastName.length() > 3) {
+                //filters for searching last name
+                String lastNameFilter1 = lastName.substring(0, 3).concat("%");
+
+                stringQuery.append(" WHERE lastName Like ? OR lastName Like ?");
+                parameters.add(lastNameFilter1);
+                parameters.add(fullNameFilter);
             }
 
         }
 
-        SimpleSQLiteQuery query = new SimpleSQLiteQuery(stringQuery.toString(),parameters.toArray());
+        SimpleSQLiteQuery query = new SimpleSQLiteQuery(stringQuery.toString(), parameters.toArray());
 
         return query;
 
     }
 
-    public String getStringWithoutSpecialCharacters(@NotNull String rawString){
-        String rawStringNoSpecialCharacters= rawString.replaceAll("[^a-zA-Z0-9]","");
+    public String getStringWithoutSpecialCharacters(@NotNull String rawString) {
+        String rawStringNoSpecialCharacters = rawString.replaceAll("[^a-zA-Z0-9]", "");
         return rawStringNoSpecialCharacters;
     }
 
-    public String[] getFirstNameAndLastName(@NotNull String searchInput){
+    public String[] getFirstNameAndLastName(@NotNull String searchInput) {
 
         //split search string into firstName And lastName
         String[] searchItemArray = searchInput.trim().split("\\s+");
@@ -82,475 +93,9 @@ public class PatientQuery {
         return searchItemArray;
     }
 
-    public boolean isNationalId(@NotNull String input){
+    public boolean isNationalId(@NotNull String input) {
         return input.matches(nationalIdRegex) ? true : false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
