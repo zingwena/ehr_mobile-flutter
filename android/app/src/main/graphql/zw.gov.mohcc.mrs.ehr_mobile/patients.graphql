@@ -9,7 +9,7 @@ query GetPatientsQuery{
 
             sex
             identifications{number,type{name}}
-            occupation{name}
+            occupation{id,name}
             identifications{identificationId}
             selfIdentifiedGender
             religion{name,id}

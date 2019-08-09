@@ -20,6 +20,6 @@ public interface ReligionDao {
     @Query("SELECT * FROM Religion")
     List<Religion> getAllReligions();
 
-    @Query("SELECT * FROM Religion WHERE id=:id")
+    @Query("SELECT * FROM Religion WHERE religion_Id=:id")
     Religion findReligionById(int id);
 }

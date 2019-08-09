@@ -3,15 +3,16 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class Nationality extends BaseNameModel {
+@Entity()
+public class Nationality {
 
-    public Nationality() {
+    public Nationality(String nationalityName, String nationalityCode) {
+        this.nationalityName = nationalityName;
+        this.nationalityCode = nationalityCode;
     }
 
-    public Nationality(String code, String name) {
-        super(code, name);
-    }
+    private String nationalityName;
+    private String nationalityCode;
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -22,5 +23,21 @@ public class Nationality extends BaseNameModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNationalityName() {
+        return nationalityName;
+    }
+
+    public void setNationalityName(String nationalityName) {
+        this.nationalityName = nationalityName;
+    }
+
+    public String getNationalityCode() {
+        return nationalityCode;
+    }
+
+    public void setNationalityCode(String nationalityCode) {
+        this.nationalityCode = nationalityCode;
     }
 }
