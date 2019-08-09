@@ -5,16 +5,16 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class EducationLevel extends BaseNameModel {
+public class Education extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    public EducationLevel() {
+    public Education() {
     }
 
     @Ignore
-    public EducationLevel(String code, String name) {
+    public Education(String code, String name) {
         super(code, name);
     }
 
