@@ -1,10 +1,10 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 public enum SelfIdentifiedGender {
-    MALE("Male"),
-    FEMALE("Female"),
-    UNKNOWN("Unknown"),
-    NON_BINARY("Non_Binary");
+    MALE("MALE"),
+    FEMALE("FEMALE"),
+    OTHER("OTHER"),
+    NON_BINARY("NON_BINARY");
 
     private String name;
 
