@@ -149,6 +149,50 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong "+ e.getMessage());
                             }
                         }
+                        if(methodCall.method.equals("occupationOptions")){
+                            try {
+                                List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
+                                String occupationList = gson.toJson(occupations);
+                                result.success(occupationList);
+                            }catch (Exception e){
+                                System.out.println("something went wrong "+ e.getMessage());
+                            }
+                        }
+
+                        if(methodCall.method.equals("educationLevelOptions")){
+                          try{
+                              List<EducationLevel> educationLevels= ehrMobileDatabase.educationLevelDao().getEducationLevels();
+                              String educationLevelList= gson.toJson(educationLevels);
+                              result.success(educationLevelList);
+
+                          }catch (Exception e){
+                              System.out.println("something went wrong "+ e.getMessage());
+
+                          }
+                        }
+
+                        if(methodCall.method.equals("nationalityOptions")){
+                          try{
+                            List<Nationality> nationalities=ehrMobileDatabase.nationalityDao().selectAllNationalities();
+                            String nationalityList=gson.toJson(nationalities);
+                            result.success(nationalityList);
+                          }catch(Exception e){
+                              System.out.println("something went wrong "+ e.getMessage());
+
+                          }
+                        }
+
+                        if(methodCall.method.equals("maritalStatusOptions")){
+                         try{
+                             List<MaritalStatus> maritalStatuses= ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
+                             String maritalStatusList= gson.toJson(maritalStatuses);
+                             result.success(maritalStatusList);
+
+                         }catch(Exception e){
+                             System.out.println("something went wrong "+ e.getMessage());
+
+                         }
+                        }
                     }
                 }
         );

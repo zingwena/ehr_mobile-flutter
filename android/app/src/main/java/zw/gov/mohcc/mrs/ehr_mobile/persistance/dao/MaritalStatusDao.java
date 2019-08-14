@@ -20,7 +20,7 @@ public interface MaritalStatusDao {
     @Insert
     void insertMAritalState(MaritalStatus maritalStatus);
 
-    @Query("SELECT * FROM MaritalStatus")
+    @Query("SELECT * FROM MaritalStatus ")
     List<MaritalStatus> getAllMaritalStates();
 
     @Query("SELECT * FROM MaritalStatus WHERE id=:id")
