@@ -68,23 +68,6 @@ public class MainActivity extends FlutterActivity {
 
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-                        if(methodCall.method.equals("metaData")){
-                            try {
-                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
-                                Gson gson = new Gson();
-                                String religionList = gson.toJson(religions);
-                                result.success(religionList);
-                            }catch(Exception e){
-                                System.out.println("something went wrong "+ e.getMessage());
-                            }
-                        }
-                    }
-                }
-        );
 
 
 
@@ -140,6 +123,36 @@ public class MainActivity extends FlutterActivity {
                 }
             }
         });
+
+        new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                        Gson gson = new Gson();
+                        if(methodCall.method.equals("religionOptions")){
+                            try {
+                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
+
+                                String religionList = gson.toJson(religions);
+                                result.success(religionList);
+                            }catch(Exception e){
+                                System.out.println("something went wrong "+ e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("countryOptions")){
+                            try {
+                                List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
+                                System.out.println("*************************** native"+ countries);
+                                String countryList = gson.toJson(countries);
+                                result.success(countryList);
+                            }catch (Exception e){
+                                System.out.println("something went wrong "+ e.getMessage());
+                            }
+                        }
+                    }
+                }
+        );
+
 
         new MethodChannel(getFlutterView(),PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
@@ -320,41 +333,26 @@ public class MainActivity extends FlutterActivity {
 
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<JsonObject> call = service.getCountries("Bearer " + token.getId_token());
+       Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token());
+       call.enqueue(new Callback<TerminologyModel>() {
+           @Override
+           public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+               List<Country> countries= new ArrayList<>();
+               if(response.isSuccessful()){
+                   for(BaseNameModel item: response.body().getContent()){
+                       countries.add(new Country(item.getCode(), item.getName()));
+                   }
+                   if (countries != null && !countries.isEmpty()) {
+                       saveCountriesToDB(countries);
+                   }
+               }
+           }
 
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
+           @Override
+           public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-                    JsonArray jsonCountries = response.body().getAsJsonArray("content");
-
-                    List<TerminologyModel> countries = new ArrayList<>();
-
-                    /*
-                    TODO brian refatcor this part
-                    jsonCountries.forEach(country -> {
-
-                        countries.add(new Country(country.getAsJsonObject().get("code").toString(), country.getAsJsonObject().get("name").toString()));
-                    });
-
-                    saveCountriesToDB(countries);*/
-
-                    System.out.println(countries.toString());
-
-                } else {
-                    response.message();
-                    System.out.println("something went wrong");
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("onFailure", t.toString());
-
-            }
-        });
+           }
+       });
 
     }
 
@@ -458,9 +456,11 @@ public class MainActivity extends FlutterActivity {
      */
 
     void saveCountriesToDB(List<Country> countries) {
-        ehrMobileDatabase.countryDao().insertCountries(countries);
 
         ehrMobileDatabase.countryDao().deleteCountries();
+
+        ehrMobileDatabase.countryDao().insertCountries(countries);
+
 
         System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
     }
@@ -568,5 +568,7 @@ public class MainActivity extends FlutterActivity {
 //
 //
 //    }
+
+
 
 }
