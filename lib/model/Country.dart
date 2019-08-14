@@ -1,5 +1,6 @@
 
-class Country{
+import 'base_code.dart';
+class Country extends BaseCode{
   int id;
   String code;
   String name;
