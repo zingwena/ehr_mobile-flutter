@@ -90,12 +90,12 @@ public class Patient {
     }
 
 
-//    @Ignore
-//    public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull Gender sex) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.sex = sex;
-//    }
+    @Ignore
+    public Patient(@NonNull String firstName, @NonNull String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+
+    }
 
     public int getId() {
         return id;
@@ -187,7 +187,13 @@ public class Patient {
 //    }
 //
 //    public void setReligionCode(String religionCode) {
-//        this.religionCode = religionCode;
+//        this.religionCode = religionCode;//    @Ignore
+//    public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull Gender sex) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.sex = sex;
+//    }
+
 //    }
 //
 //    public String getOccupationCode() {
@@ -230,4 +236,16 @@ public class Patient {
 //        this.countryOfBirthCode = countryOfBirthCode;
 //
 //    }
+
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", personId='" + personId + '\'' +
+                ", nationalId='" + nationalId + '\'' +
+                '}';
+    }
 }

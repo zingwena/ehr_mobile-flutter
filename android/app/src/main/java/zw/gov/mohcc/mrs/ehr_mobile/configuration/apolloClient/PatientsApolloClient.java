@@ -80,21 +80,21 @@ public class PatientsApolloClient {
                                     int age = patientData.age().years();
 
 
-                                    patient = new Patient(firstName, lastName, sex);
-                                    patient.setReligionCode(patientData.religion().id());
-                                    patient.setAge(age);
-                                    patient.setCountryOfBirthCode(patientData.countryOfBirth().id());
-                                    patient.setEducationLevelCode(patientData.education().id());
-                                    patient.setAddress(address);
-                                    patient.setMaritalStatusCode(patientData.marital().id());
-                                    patient.setNationalityCode(patientData.nationality().id());
-                                    patient.setSelfIdentifiedGender(selfIdentifiedGender);
-                                    patient.setOccupationCode(patientData.occupation().id());
+                                    patient = new Patient(firstName, lastName);
+//                                    patient.setReligionCode(patientData.religion().id());
+//                                    patient.setAge(age);
+//                                    patient.setCountryOfBirthCode(patientData.countryOfBirth().id());
+//                                    patient.setEducationLevelCode(patientData.education().id());
+//                                    patient.setAddress(address);
+//                                    patient.setMaritalStatusCode(patientData.marital().id());
+//                                    patient.setNationalityCode(patientData.nationality().id());
+//                                    patient.setSelfIdentifiedGender(selfIdentifiedGender);
+//                                    patient.setOccupationCode(patientData.occupation().id());
 
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);
                                         System.out.println("dateOfBirth = " + dateOfBirth);
-                                        patient.setBirthDate(dateOfBirth);
+//                                        patient.setBirthDate(dateOfBirth);
 
 
                                     } catch (Exception e) {

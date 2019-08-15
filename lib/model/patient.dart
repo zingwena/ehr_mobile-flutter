@@ -6,15 +6,18 @@ part 'patient.g.dart';
 
 
 @JsonSerializable(explicitToJson: true)
-class Patient extends BaseEntity{
-
-  String email;
+class Patient {
 
 
-  Patient(int id,String name,this.email) {
-    this.id = id;
-    this.name = name;
-  }
+  int id;
+  String firstName;
+
+  String lastName;
+  String personId;
+  String nationalId;
+
+
+  Patient();
 
   factory Patient.fromJson(Map<String,dynamic> json) => _$PatientFromJson(json);
 
@@ -31,4 +34,11 @@ class Patient extends BaseEntity{
     }
     return patientList;
   }
+
+  @override
+  String toString() {
+    return super.toString() + 'Patient{personId: $personId, nationalId: $nationalId}';
+  }
+
+
 }

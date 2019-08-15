@@ -31,6 +31,7 @@ class _SearchPatientState extends State<SearchPatient> {
       _patientList = Patient.mapFromJson(list);
     });
 
+    print("=====================searched$_patientList");
   }
 
   @override
@@ -57,10 +58,10 @@ class _SearchPatientState extends State<SearchPatient> {
                 decoration: InputDecoration(
                   labelText: "Search",
                   hintText: "Search",
-                  suffix: IconButton(icon: Icon(Icons.search), onPressed: (){
+                  suffix: IconButton(icon: Icon(Icons.search), onPressed: () async{
                     if(_searchFormKey.currentState.validate()){
                       _searchFormKey.currentState.save();
-                      searchPatient(searchItem);
+                      await searchPatient(searchItem);
                     }
                      }),
                   border: OutlineInputBorder(),
@@ -74,12 +75,13 @@ class _SearchPatientState extends State<SearchPatient> {
             ),
 
           ),
+
           _patientList != null && _patientList.length != 0
               ? Expanded(
                   child: ListView(
                     padding: EdgeInsets.all(10.0),
                     children: _patientList.map((patient) {
-                      return ListTile(title: Text(patient.name));
+                      return ListTile(title: Text(patient.firstName));
                     }).toList(),
                   ),
                 )
