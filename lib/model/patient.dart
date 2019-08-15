@@ -21,4 +21,14 @@ class Patient extends BaseEntity{
 
   Map<String, dynamic> toJson() => _$PatientToJson(this);
 
+  static mapFromJson(List dynamicList){
+    List<Patient> patientList=[];
+    if(dynamicList!=null){
+      dynamicList.forEach((e){
+        Patient patient = Patient.fromJson(e);
+        patientList.add(patient);
+      });
+    }
+    return patientList;
+  }
 }
