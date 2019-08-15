@@ -7,7 +7,7 @@ public class RetrofitClientInstance  {
 
     private  static Retrofit retrofit;
 
-    private static  final String  BASE_URL="http://10.20.101.91:8080/api/";
+    private static  final String  BASE_URL="http://10.20.100.178:8080/api/";
 
 
     public static Retrofit getRetrofit(){
