@@ -7,21 +7,14 @@ import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 
-@Entity
-public class MaritalStatus {
-
-    public MaritalStatus() {
+@Entity()
+public class MaritalStatus extends BaseNameModel {
+    public MaritalStatus(String code,String name) {
+        super(code,name);
     }
-    private String maritalStatusName;
-    private String maritalStatusCode;
 
-    public MaritalStatus(String maritalStatusName, String maritalStatusCode) {
-        this.maritalStatusName = maritalStatusName;
-        this.maritalStatusCode = maritalStatusCode;
-    }
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "marital_status_id")
     private int id;
 
     public int getId() {
@@ -32,19 +25,6 @@ public class MaritalStatus {
         this.id = id;
     }
 
-    public String getMaritalStatusName() {
-        return maritalStatusName;
-    }
 
-    public void setMaritalStatusName(String maritalStatusName) {
-        this.maritalStatusName = maritalStatusName;
-    }
 
-    public String getMaritalStatusCode() {
-        return maritalStatusCode;
-    }
-
-    public void setMaritalStatusCode(String maritalStatusCode) {
-        this.maritalStatusCode = maritalStatusCode;
-    }
 }

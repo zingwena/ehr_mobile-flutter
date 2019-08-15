@@ -23,6 +23,6 @@ public interface MaritalStatusDao {
     @Query("SELECT * FROM MaritalStatus")
     List<MaritalStatus> getAllMaritalStates();
 
-    @Query("SELECT * FROM MaritalStatus WHERE marital_status_id=:id")
+    @Query("SELECT * FROM MaritalStatus WHERE id=:id")
     MaritalStatus findMaritalStateById(int id);
 }

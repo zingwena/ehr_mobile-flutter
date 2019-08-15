@@ -5,40 +5,21 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Facility{
+public class Facility extends BaseNameModel{
 
-    private String facilityCode;
-    private String  facilityName;
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "facility_id")
     private int id;
 
-    public Facility(String facilityCode, String facilityName) {
-        this.facilityCode = facilityCode;
-        this.facilityName = facilityName;
+    public Facility(String code, String name) {
+     super(code, name);
     }
 
     public int getId() {
         return id;
     }
 
+
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getFacilityName() {
-        return facilityName;
-    }
-
-    public void setFacilityName(String facilityName) {
-        this.facilityName = facilityName;
-    }
-
-    public String getFacilityCode() {
-        return facilityCode;
-    }
-
-    public void setFacilityCode(String facilityCode) {
-        this.facilityCode = facilityCode;
     }
 }

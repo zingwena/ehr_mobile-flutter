@@ -40,6 +40,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
 
 /**
@@ -54,7 +56,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
         Facility.class,
         Religion.class, Nationality.class, Occupation.class, EducationLevel.class}, version = 2, exportSchema = false)
-@TypeConverters({DataConverter.class})
+@TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class})
 
 public abstract class EhrMobileDatabase extends RoomDatabase {
 

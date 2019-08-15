@@ -18,6 +18,6 @@ public interface FacilityDao {
     @Query("SELECT * FROM Facility")
     List<Facility> getAllFacilities();
 
-    @Query("SELECT * FROM Facility WHERE facilityCode=:id")
+    @Query("SELECT * FROM Facility WHERE id=:id")
     Facility findFacilityById(int id);
 }

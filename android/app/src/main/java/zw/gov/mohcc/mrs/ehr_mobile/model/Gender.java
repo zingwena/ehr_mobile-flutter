@@ -2,21 +2,20 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 
 import androidx.room.Entity;
-import androidx.room.Ignore;
 @Entity()
 public enum Gender {
-    MALE("Male"),
-    FEMALE("Female"),
-    UNKNOWN("Unknown"),
-    NON_BINARY("Non_Binary");
+    MALE(0),
+    FEMALE(1),
+    UNKNOWN(2),
+    NON_BINARY(3);
 
-    private String gender;
+    private int gender;
 
-  Gender(String gender) {
+  Gender(int gender) {
          this.gender=gender;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 }

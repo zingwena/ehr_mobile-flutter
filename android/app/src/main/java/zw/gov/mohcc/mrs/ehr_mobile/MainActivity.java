@@ -76,7 +76,6 @@ public class MainActivity extends FlutterActivity {
 
 
 
-
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
@@ -178,6 +177,7 @@ public class MainActivity extends FlutterActivity {
     }
     // pull patients from EHR
     private void getPatients() {
+        ehrMobileDatabase.patientDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
     }
     public void getMaritalStates(Token token, String baseUrl) {
