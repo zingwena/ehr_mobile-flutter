@@ -1,21 +1,24 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 
-import androidx.room.Entity;
-@Entity()
 public enum Gender {
-    MALE(0),
-    FEMALE(1),
-    UNKNOWN(2),
-    NON_BINARY(3);
+    MALE,
+    FEMALE,
+    UNKNOWN,
+    NON_BINARY;
 
-    private int gender;
-
-  Gender(int gender) {
-         this.gender=gender;
-    }
-
-    public int getGender() {
-        return gender;
+    public static Gender get(String name) {
+        switch (name) {
+            case "MALE":
+                return MALE;
+            case "FEMALE":
+                return FEMALE;
+            case "UNKNOWN":
+                return UNKNOWN;
+            case "NON_BINARY":
+                return NON_BINARY;
+            default:
+                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+        }
     }
 }

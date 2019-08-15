@@ -21,7 +21,7 @@ public interface ReligionDao {
     @Insert
     void insertReligion(Religion religion);
 
-    @Query("SELECT * FROM Religion")
+    @Query("SELECT * FROM Religion ORDER BY  name ASC")
     List<Religion> getAllReligions();
 
     @Query("SELECT * FROM Religion WHERE id=:id")

@@ -21,7 +21,7 @@ public interface EducationLevelDao {
    @Insert
     void insertEducation(EducationLevel EducationLevel);
 
-   @Query("SELECT * FROM EducationLevel")
+   @Query("SELECT * FROM EducationLevel ")
     List<EducationLevel> getEducationLevels();
 
    @Query("SELECT * FROM EducationLevel WHERE id=:id")

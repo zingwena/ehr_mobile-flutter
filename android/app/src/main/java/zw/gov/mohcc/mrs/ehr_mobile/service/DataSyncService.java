@@ -44,7 +44,7 @@ public interface DataSyncService {
     Call<TerminologyModel> getMaritalStates(@Header("Authorization") String token);
 
     @GET("countries")
-    Call<JsonObject> getCountries(@Header("Authorization")String authToken);
+    Call<TerminologyModel> getCountries(@Header("Authorization")String authToken);
 
     @GET("nationalities")
     Call<TerminologyModel> getNationalities(@Header("Authorization")String authToken);
