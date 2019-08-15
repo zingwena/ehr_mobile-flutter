@@ -2,10 +2,20 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 
 public enum Gender {
-    MALE,
-    FEMALE,
-    UNKNOWN,
-    NON_BINARY;
+    MALE(0),
+    FEMALE(1),
+    UNKNOWN(2),
+    NON_BINARY(3);
+
+    private final int sex;
+
+    private Gender (int sex) {
+        this.sex = sex;
+    }
+
+    public int getSex() {
+        return sex;
+    }
 
     public static Gender get(String name) {
         switch (name) {

@@ -54,7 +54,7 @@ public class MainActivity extends FlutterActivity {
         GeneratedPluginRegistrant.registerWith(this);
 
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
-        
+
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
