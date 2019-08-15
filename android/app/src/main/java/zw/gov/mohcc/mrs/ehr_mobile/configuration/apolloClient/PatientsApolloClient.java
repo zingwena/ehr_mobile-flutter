@@ -54,7 +54,7 @@ public class PatientsApolloClient {
     }
 
 
-    public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
+    public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase) {
         PatientsApolloClient.getApolloClient().query(
                 GetPatientsQuery.builder()
                         .build()).enqueue(

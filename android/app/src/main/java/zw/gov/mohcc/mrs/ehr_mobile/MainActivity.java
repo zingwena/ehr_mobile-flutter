@@ -244,7 +244,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<MaritalStatus> maritalStatusList = new ArrayList<>();
+                List<MaritalStatus> maritalStatusList = new ArrayList<MaritalStatus>();
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
                         maritalStatusList.add(new MaritalStatus(item.getCode(), item.getName()));
@@ -279,7 +279,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Occupation> occupationList = new ArrayList<>();
+                List<Occupation> occupationList = new ArrayList<Occupation>();
                 for (BaseNameModel item : response.body().getContent()) {
                     occupationList.add(new Occupation(item.getCode(), item.getName()));
                 }
@@ -335,7 +335,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Facility> facilityList = new ArrayList<>();
+                List<Facility> facilityList = new ArrayList<Facility>();
                 for (BaseNameModel item : response.body().getContent()) {
                     facilityList.add(new Facility(item.getCode(), item.getName()));
                 }
@@ -366,7 +366,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Nationality> nationalities = new ArrayList<>();
+                List<Nationality> nationalities = new ArrayList<Nationality>();
 
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
@@ -394,7 +394,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Country> countries = new ArrayList<>();
+                List<Country> countries = new ArrayList<Country>();
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
                         countries.add(new Country(item.getCode(), item.getName()));
@@ -422,7 +422,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<EducationLevel> educationLevels = new ArrayList<>();
+                List<EducationLevel> educationLevels = new ArrayList<EducationLevel>();
 
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
@@ -482,7 +482,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     void saveAuthorities(List<User> usersFromDB) {
-        List<Authorities> authorities = new ArrayList<>();
+        List<Authorities> authorities = new ArrayList<Authorities>();
 
         /*
         TODO brian refactor this part
@@ -547,7 +547,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Religion> religionList = new ArrayList<>();
+                List<Religion> religionList = new ArrayList<Religion>();
                 for (BaseNameModel item : response.body().getContent()) {
                     religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
                 }
