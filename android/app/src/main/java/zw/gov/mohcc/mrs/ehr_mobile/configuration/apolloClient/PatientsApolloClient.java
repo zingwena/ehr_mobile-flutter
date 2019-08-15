@@ -6,7 +6,6 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
 
-import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
@@ -50,7 +49,7 @@ public class PatientsApolloClient {
 
 
     public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
-        PatientsApolloClient.getApolloClient().query(
+        /*PatientsApolloClient.getApolloClient().query(
                 GetPatientsQuery.builder()
                         .build()).enqueue(
                 new ApolloCall.Callback<GetPatientsQuery.Data>() {
@@ -140,7 +139,7 @@ public class PatientsApolloClient {
                         System.out.println("Error =========" + e.toString());
                     }
                 }
-        );
+        );*/
     }
 
 
