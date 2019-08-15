@@ -78,30 +78,19 @@ public class MainActivity extends FlutterActivity {
                         @Override
                         public void onResponse(Call<Token> call, Response<Token> response) {
 
-
                             Token token = response.body();
                             getNationalities(token, url + "/api/");
                             getFacilities(token, url + "/api/");
                             getCountries(token, url + "/api/");
                             getOccupation(token, url + "/api/");
-
                             getCountries(token, url + "/api/");
                             getMaritalStates(token, url + "/api/");
                             getEducationLevels(token, url + "/api/");
-
-
-
-                           /* getUsers(token, url + "/api/");
-                             getFacilities(token, url + "/api/");
-                            getOccupation(token, url + "/api/");*/
                             getReligion(token, url + "/api/");
-                            /*     System.out.println("%%%%%%%%%%%%%" + token);*/
-                            /* getUsers(token, url + "/api/");
-                             */
                             getPatients();
+
                             getReligion(token, url + "/api/");
                             System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-==============="+ehrMobileDatabase.patientDao().listPatients().toString());
-
 
 
                         }
@@ -115,23 +104,8 @@ public class MainActivity extends FlutterActivity {
             }
 
         });
-         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-                        if (methodCall.method.equals("metaData")) {
-                            try {
-                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
-                                Gson gson = new Gson();
-                                String religionList = gson.toJson(religions);
-                                result.success(religionList);
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
-                        }
-                    }
-                }
-        );
+
+
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
@@ -609,21 +583,5 @@ public class MainActivity extends FlutterActivity {
 
 
     }
-
-
-//    void saveEducationToDB(List<Education> educationList) {
-//
-//
-//
-//        System.out.println("?????????????????    " + ehrMobileDatabase);
-//
-//        ehrMobileDatabase.educationDao().insertEducationList(educationList);
-//
-//        System.out.println("education from DB +++++++++++++++++ :" + ehrMobileDatabase.educationDao().getEducationList());
-//
-//
-//    }
-
-
 }
 

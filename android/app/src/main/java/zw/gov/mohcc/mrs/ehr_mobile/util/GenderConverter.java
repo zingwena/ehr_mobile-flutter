@@ -7,6 +7,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 public class GenderConverter {
     @TypeConverter
     public static Gender toGender(int gender) {
+
         System.out.println("gender = " + gender);
         if (gender == Gender.MALE.getSex()) {
             return Gender.MALE;
