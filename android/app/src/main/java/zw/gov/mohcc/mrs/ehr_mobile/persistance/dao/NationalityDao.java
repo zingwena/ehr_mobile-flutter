@@ -15,10 +15,13 @@ public interface NationalityDao {
     @Insert
     void insertNationalities(List<Nationality> nationalityList);
 
+    @Query("DELETE FROM nationality")
+    void deleteNationalities();
+
     @Insert
     void insertNationality(Nationality nationality);
 
-    @Query("SELECT * FROM nationality")
+    @Query("SELECT * FROM nationality ORDER BY name ASC")
     List<Nationality> selectAllNationalities();
 
     @Query("SELECT * FROM nationality WHERE id=:id")

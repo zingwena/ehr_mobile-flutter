@@ -3,16 +3,22 @@ query GetPatientsQuery{
     people(text: "", page: 0, sort: "", size: 50) {
         content {
             personId
+
             firstname
             lastname
+
             sex
-            occupation{name}
             identifications{number,type{name}}
+            occupation{id,name}
+            identifications{identificationId}
             selfIdentifiedGender
-            religion{name}
-            education{name}
-            marital{name}
+            religion{name,id}
+            education{id,name}
+            marital{name,id}
             birthdate
+            nationality{id,name}
+            countryOfBirth{id,name}
+
             address {
                 city
                 town {

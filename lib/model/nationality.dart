@@ -16,4 +16,17 @@ class Nationality extends BaseCode{
 
   Map<String,dynamic> toJson() => _$NationalityToJson(this);
 
+  static mapFromJson(List dynamicList){
+    List<Nationality> nationalityList=[];
+    if(dynamicList!=null){
+      dynamicList.forEach((e){
+        Nationality nationality= Nationality.fromJson(e);
+        nationalityList.add(nationality);
+      });
+    }
+    return nationalityList;
+  }
+
+
+
 }

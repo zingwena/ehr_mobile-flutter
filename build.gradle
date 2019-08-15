@@ -1,1 +1,4 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+dependencies {
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+}// Top-level build file where you can add configuration options common to all sub-projects/modules.

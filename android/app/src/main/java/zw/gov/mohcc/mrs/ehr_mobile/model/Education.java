@@ -5,17 +5,16 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Religion extends BaseNameModel {
+public class Education extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-
-    public Religion() {
+    public Education() {
     }
 
     @Ignore
-    public Religion(String code, String name) {
+    public Education(String code, String name) {
         super(code, name);
     }
 

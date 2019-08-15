@@ -1,8 +1,13 @@
 import 'dart:convert';
+
+import 'package:ehr_mobile/model/country.dart';
+import 'package:ehr_mobile/model/religion.dart';
+import 'package:ehr_mobile/model/education_level.dart';
+import 'package:ehr_mobile/model/nationality.dart';
+import 'package:ehr_mobile/model/occupation.dart';
+import 'package:ehr_mobile/model/religion.dart';
 import 'package:intl/intl.dart';
-//import 'package:cbs_app/model/person.dart';
-//import 'package:cbs_app/widgets/list_people.dart';
-//import 'package:cbs_app/widgets/people_table.dart';
+import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'patient_address.dart';
@@ -28,7 +33,27 @@ class _EditDemographicsState extends State<EditDemographics> {
   DateTime selectedDate = DateFormat("yyyy/MM/dd").parse(date);
   List<String> _list;
 
-  String lastName, firstName;
+  String lastName, firstName, religion, country,occupation,educationLevel,nationality,maritalStatus;
+  List _religions= List();
+  List<Religion> _religionListDropdown= List();
+
+  List _countries= List();
+  List<Country> _countryListDropdown= List();
+
+  List _occupations= List();
+  List<Occupation> _occupationListDropdown= List();
+
+  List _nationalities= List();
+  List<Nationality> _nationalityListDropdown= List();
+
+  List _educationLevels= List();
+  List<EducationLevel> _educationLevelListDropdown= List();
+
+  List _maritalStatuses= List();
+  List<MaritalStatus> _maritalStatusListDropdown= List();
+
+
+
 
   List<DropdownMenuItem<String>> _dropDownMenuItems,
       _dropDownMenuItemsIdentified,
@@ -56,53 +81,24 @@ class _EditDemographicsState extends State<EditDemographics> {
     "Other",
     "Non-Binary"
   ];
-  List _maritalStatusList = [
-    "Marital Status",
-    "Never Married",
-    "Married",
-    "Divorced",
-    "Widowed",
-    "Other",
-    "Seperated"
-  ];
-  List _educationLevelList = [
-    "Education Level",
-    "Non",
-    "Primary",
-    "Secondary",
-    "Tertiary"
-  ];
-  List _occupationList = [
-    "Occupation",
-    "Self Employed",
-    "Student",
-    "Employed",
-    "Unemployed",
-    "N/A"
-  ];
-  List _religionList = [
-    "Religion",
-    "Christianity",
-    "Hinduism",
-    "Bhudaism",
-    "Atheist"
-  ];
-  List _nationalityList = ["Nationality", "Zimbabwean", "Malawian"];
-  List _countryList = ["Country", "Zimbabwe", "Malawi"];
+  List _maritalStatusList = List();
+  List _educationLevelList = List();
+  List _occupationList = List();
+  List _religionList = List();
+  List _nationalityList = List();
+  List _countryList = List();
 
   @override
   void initState() {
     _retrieveMetaDataFromDB();
+
+
+
     _dropDownMenuItems = getDropDownMenuItems();
+
     _dropDownMenuItemsIdentified = getDropDownMenuItemsIdentified();
-    _dropDownMenuItemsMaritalStatus =
-        getDropDownMenuItemsIdentifiedMaritalStatus();
-    _dropDownMenuItemsEducationLevel =
-        getDropDownMenuItemsIdentifiedEducationLevel();
-    _dropDownMenuItemsOccupation = getDropDownMenuItemsOccupation();
-    _dropDownMenuItemsReligion = getDropDownMenuItemsReligion();
-    _dropDownMenuItemsNationality = getDropDownMenuItemsNationality();
-    _dropDownMenuItemsCountry = getDropDownMenuItemsCountry();
+
+
 
     _currentGender = widget.sex;
     firstName = widget.firstName;
@@ -110,13 +106,8 @@ class _EditDemographicsState extends State<EditDemographics> {
     selectedDate = widget.birthDate;
     date = DateFormat("yyyy/MM/dd").format(widget.birthDate);
     _currentSiGender = _dropDownMenuItemsIdentified[0].value;
-    _currentMaritalStatus = _dropDownMenuItemsMaritalStatus[0].value;
-    _currentEducationLevel = _dropDownMenuItemsEducationLevel[0].value;
-    _currentOccupation = _dropDownMenuItemsOccupation[0].value;
-    _currentReligion = _dropDownMenuItemsReligion[0].value;
-    _currentNationality = _dropDownMenuItemsNationality[0].value;
-    _currentCountry = _dropDownMenuItemsCountry[0].value;
-  
+
+
     super.initState();
   }
 
@@ -177,6 +168,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   List<DropdownMenuItem<String>> getDropDownMenuItemsReligion() {
     List<DropdownMenuItem<String>> items = new List();
     for (String religion in _religionList) {
+
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(value: religion, child: Text(religion)));
@@ -412,14 +404,79 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
   
   Future<void> _retrieveMetaDataFromDB() async{
-    String result;
+    String result, countries, occupations,educationLevels,nationalities,maritalStates;
     try{
-      result= await dataChannel.invokeMethod('metaData');
-      
-      print('result  $result');
+      result= await dataChannel.invokeMethod('religionOptions');
+     countries= await dataChannel.invokeMethod('countryOptions');
+      occupations= await dataChannel.invokeMethod('occupationOptions');
+      educationLevels= await dataChannel.invokeMethod('educationLevelOptions');
+      nationalities= await dataChannel.invokeMethod('nationalityOptions');
+      maritalStates=await dataChannel.invokeMethod('maritalStatusOptions');
+     print('------------------------$countries');
+      setState(() {
+        religion=result;
+        _religions=jsonDecode(religion);
+        _religionListDropdown= Religion.mapFromJson(_religions);
+        _religionListDropdown.forEach((e){
+          _religionList.add(e.name);
+        });
+
+        _dropDownMenuItemsReligion = getDropDownMenuItemsReligion();
+        _currentReligion = _dropDownMenuItemsReligion[0].value;
+
+        country=countries;
+        _countries= jsonDecode(country);
+        _countryListDropdown=Country.mapFromJson(_countries);
+        _countryListDropdown.forEach((e){
+          _countryList.add(e.name);
+        });
+        _dropDownMenuItemsCountry = getDropDownMenuItemsCountry();
+        _currentCountry = _dropDownMenuItemsCountry[0].value;
+
+      });
+
+      occupation=occupations;
+      _occupations=jsonDecode(occupation);
+      _occupationListDropdown= Occupation.mapFromJson(_occupations);
+      _occupationListDropdown.forEach((e){
+        _occupationList.add(e.name);
+      });
+      _dropDownMenuItemsOccupation = getDropDownMenuItemsOccupation();
+      _currentOccupation = _dropDownMenuItemsOccupation[0].value;
+
+
+      maritalStatus=maritalStates;
+      _maritalStatuses=jsonDecode(maritalStatus);
+      _maritalStatusListDropdown= MaritalStatus.mapFromJson(_maritalStatuses);
+      _maritalStatusListDropdown.forEach((e){
+        _maritalStatusList.add(e.name);
+      });
+      _dropDownMenuItemsMaritalStatus =
+          getDropDownMenuItemsIdentifiedMaritalStatus();
+      _currentMaritalStatus = _dropDownMenuItemsMaritalStatus[0].value;
+
+      nationality=nationalities;
+      _nationalities=jsonDecode(nationality);
+      _nationalityListDropdown= Nationality.mapFromJson(_nationalities);
+      _nationalityListDropdown.forEach((e){
+        _nationalityList.add(e.name);
+      });
+      _dropDownMenuItemsNationality = getDropDownMenuItemsNationality();
+      _currentNationality = _dropDownMenuItemsNationality[0].value;
+
+      educationLevel=educationLevels;
+      _educationLevels= jsonDecode(educationLevel);
+      _educationLevelListDropdown= EducationLevel.mapFromJson(_educationLevels);
+      _educationLevelListDropdown.forEach((e){
+        _educationLevelList.add(e.name);
+      });
+      _dropDownMenuItemsEducationLevel =
+          getDropDownMenuItemsIdentifiedEducationLevel();
+      _currentEducationLevel = _dropDownMenuItemsEducationLevel[0].value;
+
     }
     catch(e){
-      print('something went wrong $e');
+      print('something went wrong--------------------------- $e');
     }
   }
 
@@ -515,4 +572,5 @@ class _EditDemographicsState extends State<EditDemographics> {
       _currentCountry = selectedCountry;
     });
   }
+
 }

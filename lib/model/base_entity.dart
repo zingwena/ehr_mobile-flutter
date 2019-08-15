@@ -1,5 +1,6 @@
-class BaseEntity{
+class BaseEntity {
   int id;
   String name;
 
 }
+

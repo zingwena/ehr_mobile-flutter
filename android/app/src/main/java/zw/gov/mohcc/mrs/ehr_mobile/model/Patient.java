@@ -1,53 +1,96 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
-@Entity()
+import java.time.LocalDate;
+
+import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
+
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("nationalityId"), @Index("occupationId")},
+        foreignKeys = {
+                @ForeignKey(entity = Country.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "countryId"),
+                @ForeignKey(entity = EducationLevel.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "educationLevelId")
+                ,
+                @ForeignKey(entity = Religion.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "educationLevelId")
+                ,
+                @ForeignKey(entity = MaritalStatus.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "educationLevelId")
+                ,
+                @ForeignKey(entity = Nationality.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "nationalityId")
+                ,
+                @ForeignKey(entity = Occupation.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "occupationId")
+
+
+        }
+
+
+)
 public class Patient {
+    @TypeConverters(SelfIdentifiedGenderConverter.class)
+    public SelfIdentifiedGender selfIdentifiedGender;
+    @TypeConverters(GenderConverter.class)
+    public Gender sex;
     @PrimaryKey(autoGenerate = true)
     private int id;
-
     @NonNull
     private String firstName;
     @NonNull
     private String lastName;
-
     private String personId;
-
-    private String sex;
     private String nationalId;
-
-
-    private String selfIdentifiedGender;
-
-    private String religion;
-
-    private String occupation;
-
-    private String maritalStatus;
-
-    private String educationLevel;
-
-
-    private String birthDate;
-
+    @ColumnInfo(name = "religionId")
+    @NonNull
+    private String religionCode;
+    @ColumnInfo(name = "occupationId")
+    @NonNull
+    private String occupationCode;
+    @NonNull
+    @ColumnInfo(name = "maritalStatusId")
+    private String maritalStatusCode;
+    @ColumnInfo(name = "educationLevelId")
+    private String educationLevelCode;
+    @TypeConverters(DataConverter.class)
+    private LocalDate birthDate;
     private int age;
+    @NonNull
+    @ColumnInfo(name = "nationalityId")
+    private String nationalityCode;
+    @NonNull
+    @ColumnInfo(name = "countryId")
+    private String countryOfBirthCode;
+    @Embedded
+    private Address address;
 
-
-    private String schoolHouse;
-
-    private String suburbVillage;
-
-    private String town;
 
     public Patient() {
     }
 
+
     @Ignore
-    public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull String sex) {
+    public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull Gender sex) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
@@ -61,17 +104,6 @@ public class Patient {
         this.id = id;
     }
 
-
-
-    public String getNationalId() {
-        return nationalId;
-    }
-
-    public void setNationalId(String nationalId) {
-        this.nationalId = nationalId;
-    }
-
-
     @NonNull
     public String getFirstName() {
         return firstName;
@@ -79,6 +111,22 @@ public class Patient {
 
     public void setFirstName(@NonNull String firstName) {
         this.firstName = firstName;
+    }
+
+    public SelfIdentifiedGender getSelfIdentifiedGender() {
+        return selfIdentifiedGender;
+    }
+
+    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
+        this.selfIdentifiedGender = selfIdentifiedGender;
+    }
+
+    public Gender getSex() {
+        return sex;
+    }
+
+    public void setSex(Gender sex) {
+        this.sex = sex;
     }
 
     @NonNull
@@ -90,87 +138,30 @@ public class Patient {
         this.lastName = lastName;
     }
 
-
-    @NonNull
-    public String getSex() {
-        return sex;
+    public String getPersonId() {
+        return personId;
     }
 
-    public void setSex(@NonNull String sex) {
-        this.sex = sex;
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
-    @NonNull
-    public String getBirthDate() {
+
+    public String getNationalId() {
+        return nationalId;
+    }
+
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
+    }
+
+
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(@NonNull String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public String getSelfIdentifiedGender() {
-        return selfIdentifiedGender;
-    }
-
-    public void setSelfIdentifiedGender(String selfIdentifiedGender) {
-        this.selfIdentifiedGender = selfIdentifiedGender;
-    }
-
-    public String getReligion() {
-        return religion;
-    }
-
-    public void setReligion(String religion) {
-        this.religion = religion;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getEducationLevel() {
-        return educationLevel;
-    }
-
-    public void setEducationLevel(String educationLevel) {
-        this.educationLevel = educationLevel;
-    }
-
-    public String getSchoolHouse() {
-        return schoolHouse;
-    }
-
-    public void setSchoolHouse(String schoolHouse) {
-        this.schoolHouse = schoolHouse;
-    }
-
-    public String getSuburbVillage() {
-        return suburbVillage;
-    }
-
-    public void setSuburbVillage(String suburbVillage) {
-        this.suburbVillage = suburbVillage;
-    }
-
-    public String getTown() {
-        return town;
-    }
-
-    public void setTown(String town) {
-        this.town = town;
     }
 
     public int getAge() {
@@ -181,32 +172,61 @@ public class Patient {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", sex='" + sex + '\'' +
-                ", nationalId='" + nationalId + '\'' +
-                ", selfIdentifiedGender='" + selfIdentifiedGender + '\'' +
-                ", religion='" + religion + '\'' +
-                ", occupation='" + occupation + '\'' +
-                ", maritalStatus='" + maritalStatus + '\'' +
-                ", educationLevel='" + educationLevel + '\'' +
-                ", birthDate=" + birthDate +
-                ", age=" + age +
-                ", schoolHouse='" + schoolHouse + '\'' +
-                ", suburbVillage='" + suburbVillage + '\'' +
-                ", town='" + town + '\'' +
-                '}';
+
+    public Address getAddress() {
+        return address;
     }
 
-    public String getPersonId() {
-        return personId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public void setPersonId(String personId) {
-        this.personId = personId;
+    public String getReligionCode() {
+        return religionCode;
+    }
+
+    public void setReligionCode(String religionCode) {
+        this.religionCode = religionCode;
+    }
+
+    public String getOccupationCode() {
+        return occupationCode;
+    }
+
+    public void setOccupationCode(String occupationCode) {
+        this.occupationCode = occupationCode;
+    }
+
+    public String getMaritalStatusCode() {
+        return maritalStatusCode;
+    }
+
+    public void setMaritalStatusCode(String maritalStatusCode) {
+        this.maritalStatusCode = maritalStatusCode;
+    }
+
+    public String getEducationLevelCode() {
+        return educationLevelCode;
+    }
+
+    public void setEducationLevelCode(String educationLevelCode) {
+        this.educationLevelCode = educationLevelCode;
+    }
+
+    public String getNationalityCode() {
+        return nationalityCode;
+    }
+
+    public void setNationalityCode(String nationalityCode) {
+        this.nationalityCode = nationalityCode;
+    }
+
+    public String getCountryOfBirthCode() {
+        return countryOfBirthCode;
+    }
+
+    public void setCountryOfBirthCode(String countryOfBirthCode) {
+        this.countryOfBirthCode = countryOfBirthCode;
+
     }
 }
