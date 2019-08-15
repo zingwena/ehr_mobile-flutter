@@ -6,10 +6,14 @@ import android.util.Log;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 
+import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -68,10 +72,6 @@ public class MainActivity extends FlutterActivity {
 
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-
-
-
-
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
@@ -101,17 +101,22 @@ public class MainActivity extends FlutterActivity {
                             getCountries(token, url + "/api/");
                             getOccupation(token, url + "/api/");
 
-
+                            getCountries(token, url + "/api/");
                             getMaritalStates(token, url + "/api/");
                             getEducationLevels(token,url+"/api/");
 
 
 
                            /* getUsers(token, url + "/api/");
-                            getCountries(token, url + "/api/");
+                             getFacilities(token, url + "/api/");
                             getOccupation(token, url + "/api/");*/
                            getReligion(token, url + "/api/");
                        /*     System.out.println("%%%%%%%%%%%%%" + token);*/
+                            /* getUsers(token, url + "/api/");
+                             */
+                            getPatients();
+                            getReligion(token, url + "/api/");
+                            System.out.println("%%%%%%%%%%%%%" + token);
 
                         }
 
@@ -123,6 +128,23 @@ public class MainActivity extends FlutterActivity {
                 }
             }
         });
+        new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                        if(methodCall.method.equals("metaData")){
+                            try {
+                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
+                                Gson gson = new Gson();
+                                String religionList = gson.toJson(religions);
+                                result.success(religionList);
+                            }catch(Exception e){
+                                System.out.println("something went wrong "+ e.getMessage());
+                            }
+                        }
+                    }
+                }
+        );
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
@@ -223,7 +245,10 @@ public class MainActivity extends FlutterActivity {
 
 
     }
-
+    // pull patients from EHR
+    private void getPatients() {
+        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
+    }
     public void getMaritalStates(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
@@ -317,6 +342,7 @@ public class MainActivity extends FlutterActivity {
     public void getFacilities(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+
         Call<TerminologyModel> call = service.getFacilities("Bearer " + token.getId_token());
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
@@ -340,6 +366,7 @@ public class MainActivity extends FlutterActivity {
 
             }
         });
+
     }
 
 
@@ -373,10 +400,8 @@ public class MainActivity extends FlutterActivity {
 
 
     public void getCountries(Token token, String baseUrl) {
-        System.out.println("[[[[[[[[[[[[[[[[[[[[running first");
-
-
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+
        Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token());
        call.enqueue(new Callback<TerminologyModel>() {
            @Override
@@ -397,6 +422,7 @@ public class MainActivity extends FlutterActivity {
 
            }
        });
+
 
     }
 
@@ -457,7 +483,6 @@ public class MainActivity extends FlutterActivity {
     }*/
 
 
-
     void saveUsersToDB(List<User> userListInstance) {
 
         /*ehrMobileDatabase.userDao().insertUsers(userListInstance);
@@ -501,6 +526,7 @@ public class MainActivity extends FlutterActivity {
 
     void saveCountriesToDB(List<Country> countries) {
 
+
         ehrMobileDatabase.countryDao().deleteCountries();
 
         ehrMobileDatabase.countryDao().insertCountries(countries);
@@ -535,7 +561,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 List<Religion> religionList = new ArrayList<>();
                 for (BaseNameModel item : response.body().getContent()) {
-                    religionList.add(new Religion(item.getCode(), item.getName()));
+                    religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (religionList != null && !religionList.isEmpty()) {
                     saveReligionToDB(religionList);
@@ -562,9 +588,7 @@ public class MainActivity extends FlutterActivity {
 
 
     void saveOccupationsToDB(List<Occupation> occupations) {
-        for (Occupation occupation : occupations) {
-            System.out.println("occupation = " + occupation);
-        }
+
 
 
         System.out.println("*****************   " + ehrMobileDatabase);
@@ -573,8 +597,8 @@ public class MainActivity extends FlutterActivity {
         System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
 
     }
-    void saveNationalityToDB(List<Nationality> nationalityList) {
 
+    void saveNationalityToDB(List<Nationality> nationalityList) {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
@@ -586,8 +610,8 @@ public class MainActivity extends FlutterActivity {
 
     }
 
-    void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
 
+    void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
@@ -615,4 +639,6 @@ public class MainActivity extends FlutterActivity {
 
 
 
+
 }
+

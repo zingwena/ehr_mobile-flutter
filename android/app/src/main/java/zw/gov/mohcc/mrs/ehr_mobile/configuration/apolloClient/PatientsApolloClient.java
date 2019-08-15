@@ -7,21 +7,34 @@ import com.apollographql.apollo.exception.ApolloException;
 
 
 import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
+import zw.gov.mohcc.mrs.ehr_mobile.model.SelfIdentifiedGender;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+
 
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-  private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
- //   private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+//   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
+    private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
     private static Patient patient;
 
     public static ApolloClient getApolloClient() {
@@ -42,30 +55,82 @@ public class PatientsApolloClient {
                         .build()).enqueue(
                 new ApolloCall.Callback<GetPatientsQuery.Data>() {
                     @Override
-                    public void onResponse(@NotNull Response<GetPatientsQuery.Data> response) {
+                    public void onResponse(@NotNull Response<GetPatientsQuery.Data> response) throws IndexOutOfBoundsException {
                         List<GetPatientsQuery.Content> patients = response.data().people().content();
                         for (GetPatientsQuery.Content patientData : patients) {
-                            //String number = patientData.identifications().get(0).number();
+                            Religion religion = new Religion(patientData.religion().id(),patientData.religion().name());
+
+                            System.out.println("religion = " + religion);
+                            Occupation occupation = new Occupation(patientData.occupation().id(),patientData.occupation().name());
+                            System.out.println("occupation = " + occupation);
+                            EducationLevel educationLevel = new EducationLevel(patientData.education().id(),patientData.education().name());
+                            System.out.println("educationLevel = " + educationLevel);
+                            MaritalStatus maritalStatus = new MaritalStatus();
+
+                            maritalStatus.setMaritalStatusCode(patientData.marital().id());
+                            maritalStatus.setMaritalStatusName(patientData.marital().name());
+                            System.out.println("maritalStatus = " + maritalStatus);
+                            Nationality nationality = new Nationality(patientData.nationality().id(),patientData.nationality().name());
+                            System.out.println("nationality = " + nationality);
 
 
-                            String firstName =patientData.firstname();
+                            Gender sex = Gender.valueOf(patientData.sex().rawValue());
+                            SelfIdentifiedGender selfIdentifiedGender = SelfIdentifiedGender.valueOf(patientData.selfIdentifiedGender().name());
+                            Country countryOfBirth = new Country();
+                            countryOfBirth.setCountryCode(patientData.countryOfBirth().id());
+                            countryOfBirth.setCountryName(patientData.countryOfBirth().name());
+                            Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
+
+
+                            int numberOfIdentifications = patientData.identifications().size();
+                            String firstName = patientData.firstname();
                             String lastName = patientData.lastname();
-                            String sex = patientData.sex().rawValue();
-                            if(patientData.identifications().size()>0){
-                                String nationalId=patientData.identifications().get(0).type().name();
+                            String date = patientData.birthdate();
+
+                            int age = patientData.age().years();
+
+
+                            patient = new Patient(firstName, lastName, sex);
+                            patient.setReligion(religion);
+                            patient.setAge(age);
+                            patient.setCountryOfBirth(countryOfBirth);
+                            patient.setEducationLevel(educationLevel);
+                            patient.setAddress(address);
+                            patient.setMaritalStatus(maritalStatus);
+                            patient.setNationality(nationality);
+                            patient.setSelfIdentifiedGender(selfIdentifiedGender);
+                            patient.setOccupation(occupation);
+
+                            try {
+                                Date dateOfBirth = new SimpleDateFormat("yyyy-mm-dd").parse(date);
+                                patient.setBirthDate(dateOfBirth);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
 
 
-                            patient = new Patient(firstName, lastName
-                                    , sex);
+                            if (numberOfIdentifications > 0) {
+                                String identifierType = patientData.identifications().get(0).type().name();
 
-                            ehrMobileDatabase.patientDao().createPatient(patient);                            System.out.println("Response =========" + patientData.toString());
-                            System.out.println("Response =========" + patientData.toString());
-                            System.out.println("Num of patients " + ehrMobileDatabase.patientDao().listPatients());
+                                if (identifierType.equals("National Id")) {
+                                    String nationalId = patientData.identifications().get(0).number();
+
+                                    patient.setNationalId(nationalId);
+                                } else {
+                                    patient.setNationalId(null);
+
+                                }
 
 
+                            }
 
+
+                            ehrMobileDatabase.patientDao().createPatient(patient);
+//                            System.out.println("Number of Patients  = " + ehrMobileDatabase.patientDao().listPatients().size());
                         }
+                        System.out.println("Number of Patients  = " + ehrMobileDatabase.patientDao().listPatients().size());
+
+                        System.out.println("\"Patient Table\" " + ehrMobileDatabase.patientDao().listPatients());
 
 
                     }
@@ -78,19 +143,5 @@ public class PatientsApolloClient {
         );
     }
 
-    private static boolean patientExists(String firstName, String lastName, EhrMobileDatabase ehrMobileDatabase) {
-      Patient patient=  ehrMobileDatabase.patientDao().findPatientByName(firstName, lastName);
-        if(patient!=null){
-            return true;
-        }
-        return false;
-    }
 
-
-    private static String handleNullField(String field) {
-        if (field == null) {
-            return " ";
-        }
-        return field;
-    }
 }

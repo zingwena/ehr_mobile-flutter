@@ -5,10 +5,13 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
+
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -23,7 +26,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 
@@ -34,6 +39,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 
 
 /**
@@ -46,25 +52,29 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
  */
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
-
-        Religion.class, Facility.class, Nationality.class, Occupation.class, EducationLevel.class}, version = 1,exportSchema = false)
-
-
+        Facility.class,
+        Religion.class, Nationality.class, Occupation.class, EducationLevel.class}, version = 3, exportSchema = false)
+@TypeConverters({DataConverter.class})
 
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
+
     public abstract AuthoritiesDao authoritiesDao();
+
     public abstract CountryDao countryDao();
+
     public abstract MaritalStatusDao maritalStateDao();
 
+    public abstract ReligionDao religionDao();
+
     public abstract OccupationDao occupationDao();
+
     public abstract NationalityDao nationalityDao();
+
     public abstract EducationLevelDao educationLevelDao();
     public abstract EducationDao educationDao();
 
-
-    public abstract ReligionDao religionDao();
     public abstract PatientDao patientDao();
     public abstract FacilityDao facilityDao();
 
@@ -80,7 +90,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                     INSTANCE= Room.databaseBuilder(context.getApplicationContext(),
                             EhrMobileDatabase.class,"ehrMobile")
                             .allowMainThreadQueries()
-                             .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
