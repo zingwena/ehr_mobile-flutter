@@ -18,76 +18,65 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("nationalityId"), @Index("occupationId")},
+@Entity(indices = {@Index("personId"), @Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
+        @Index("nationalityId"), @Index("occupationId", @Index("educationId"))},
         foreignKeys = {
                 @ForeignKey(entity = Country.class, onDelete = CASCADE,
-                        parentColumns = "id",
+                        parentColumns = "code",
                         childColumns = "countryId"),
                 @ForeignKey(entity = EducationLevel.class, onDelete = CASCADE,
-                        parentColumns = "id",
+                        parentColumns = "code",
                         childColumns = "educationLevelId")
                 ,
                 @ForeignKey(entity = Religion.class, onDelete = CASCADE,
-                        parentColumns = "id",
-                        childColumns = "educationLevelId")
+                        parentColumns = "code",
+                        childColumns = "religionId")
                 ,
                 @ForeignKey(entity = MaritalStatus.class, onDelete = CASCADE,
-                        parentColumns = "id",
-                        childColumns = "educationLevelId")
+                        parentColumns = "code",
+                        childColumns = "maritalStatusId")
                 ,
                 @ForeignKey(entity = Nationality.class, onDelete = CASCADE,
-                        parentColumns = "id",
+                        parentColumns = "code",
                         childColumns = "nationalityId")
                 ,
                 @ForeignKey(entity = Occupation.class, onDelete = CASCADE,
-                        parentColumns = "id",
+                        parentColumns = "code",
                         childColumns = "occupationId")
-
-
+                ,
+                @ForeignKey(entity = Education.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "education_Id")
         }
-
-
 )
 public class Patient {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     @TypeConverters(SelfIdentifiedGenderConverter.class)
     public SelfIdentifiedGender selfIdentifiedGender;
     @TypeConverters(GenderConverter.class)
     public Gender sex;
-    @PrimaryKey(autoGenerate = true)
-    private int id;
     @NonNull
     private String firstName;
     @NonNull
     private String lastName;
+    @ColumnInfo()
     private String personId;
     private String nationalId;
-    @ColumnInfo(name = "religionId")
-    @NonNull
-    private String religionCode;
-    @ColumnInfo(name = "occupationId")
-    @NonNull
-    private String occupationCode;
-    @NonNull
-    @ColumnInfo(name = "maritalStatusId")
-    private String maritalStatusCode;
-    @ColumnInfo(name = "educationLevelId")
-    private String educationLevelCode;
+    private String religionId;
+    private String occupationId;
+    private String maritalStatusId;
+    private String educationLevelId;
     @TypeConverters(DataConverter.class)
     private LocalDate birthDate;
-    private int age;
-    @NonNull
-    @ColumnInfo(name = "nationalityId")
-    private String nationalityCode;
-    @NonNull
-    @ColumnInfo(name = "countryId")
-    private String countryOfBirthCode;
+    private String nationalityId;
+    private String countryId;
     @Embedded
     private Address address;
 
-
     public Patient() {
     }
-
 
     @Ignore
     public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull Gender sex) {
@@ -164,15 +153,6 @@ public class Patient {
         this.birthDate = birthDate;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-
     public Address getAddress() {
         return address;
     }
@@ -181,52 +161,51 @@ public class Patient {
         this.address = address;
     }
 
-    public String getReligionCode() {
-        return religionCode;
+    public String getReligionId() {
+        return religionId;
     }
 
-    public void setReligionCode(String religionCode) {
-        this.religionCode = religionCode;
+    public void setReligionId(String religionId) {
+        this.religionId = religionId;
     }
 
-    public String getOccupationCode() {
-        return occupationCode;
+    public String getOccupationId() {
+        return occupationId;
     }
 
-    public void setOccupationCode(String occupationCode) {
-        this.occupationCode = occupationCode;
+    public void setOccupationId(String occupationId) {
+        this.occupationId = occupationId;
     }
 
-    public String getMaritalStatusCode() {
-        return maritalStatusCode;
+    public String getMaritalStatusId() {
+        return maritalStatusId;
     }
 
-    public void setMaritalStatusCode(String maritalStatusCode) {
-        this.maritalStatusCode = maritalStatusCode;
+    public void setMaritalStatusId(String maritalStatusId) {
+        this.maritalStatusId = maritalStatusId;
     }
 
-    public String getEducationLevelCode() {
-        return educationLevelCode;
+    public String getEducationLevelId() {
+        return educationLevelId;
     }
 
-    public void setEducationLevelCode(String educationLevelCode) {
-        this.educationLevelCode = educationLevelCode;
+    public void setEducationLevelId(String educationLevelId) {
+        this.educationLevelId = educationLevelId;
     }
 
-    public String getNationalityCode() {
-        return nationalityCode;
+    public String getNationalityId() {
+        return nationalityId;
     }
 
-    public void setNationalityCode(String nationalityCode) {
-        this.nationalityCode = nationalityCode;
+    public void setNationalityId(String nationalityId) {
+        this.nationalityId = nationalityId;
     }
 
-    public String getCountryOfBirthCode() {
-        return countryOfBirthCode;
+    public String getCountryId() {
+        return countryId;
     }
 
-    public void setCountryOfBirthCode(String countryOfBirthCode) {
-        this.countryOfBirthCode = countryOfBirthCode;
-
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
     }
 }
