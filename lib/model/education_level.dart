@@ -15,4 +15,15 @@ class EducationLevel extends BaseCode {
       _$EducationLevelFromJson(json);
 
   Map<String, dynamic> toJson() => _$EducationLevelToJson(this);
+
+  static mapFromJson(List dynamicList){
+    List<EducationLevel> educationLevelList=[];
+    if(dynamicList!=null){
+      dynamicList.forEach((e){
+        EducationLevel nationality= EducationLevel.fromJson(e);
+        educationLevelList.add(nationality);
+      });
+    }
+    return educationLevelList;
+  }
 }

@@ -15,4 +15,15 @@ class MaritalStatus extends BaseCode{
 
   Map<String, dynamic> toJson() => _$MaritalStatusToJson(this);
 
+  static mapFromJson(List dynamicList){
+    List<MaritalStatus> maritalStatusList=[];
+    if(dynamicList!=null){
+      dynamicList.forEach((e){
+        MaritalStatus nationality= MaritalStatus.fromJson(e);
+        maritalStatusList.add(nationality);
+      });
+    }
+    return maritalStatusList;
+  }
+
 }

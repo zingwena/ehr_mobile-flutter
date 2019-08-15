@@ -15,4 +15,15 @@ class Occupation extends BaseCode{
   factory Occupation.fromJson(Map<String,dynamic> json) => _$OccupationFromJson(json);
 
   Map<String, dynamic> toJson() => _$OccupationToJson(this);
+
+  static mapFromJson(List dynamicList){
+    List<Occupation> occupationList=[];
+    if(dynamicList!=null){
+      dynamicList.forEach((e){
+        Occupation nationality= Occupation.fromJson(e);
+        occupationList.add(nationality);
+      });
+    }
+    return occupationList;
+  }
 }

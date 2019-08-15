@@ -29,6 +29,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+
   build:
     dependency: transitive
     description:
@@ -92,6 +93,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.7.0"
+
   charcode:
     dependency: transitive
     description:
@@ -298,6 +300,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+<<<<<<< HEAD
   mime:
     dependency: transitive
     description:
@@ -327,6 +330,9 @@ packages:
     source: hosted
     version: "1.0.5"
   package_resolver:
+
+  path:
+>>>>>>> 2cae9358aa862426d025f7055c15a0edea43cb50
     dependency: transitive
     description:
       name: package_resolver
@@ -347,6 +353,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+
   pool:
     dependency: transitive
     description:
@@ -368,6 +375,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
+
   quiver:
     dependency: transitive
     description:
@@ -375,6 +383,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+
   shelf:
     dependency: transitive
     description:
@@ -403,6 +412,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.3"
+
   sky_engine:
     dependency: transitive
     description: flutter
