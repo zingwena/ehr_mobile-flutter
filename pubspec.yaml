@@ -9,7 +9,7 @@ description: A new Flutter project.
 # In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
+# Read more about iOS giversioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
 
@@ -24,10 +24,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   datetime_picker_formfield: ^0.4.1
+  json_annotation: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  build_runner: ^1.0.0
+  json_serializable: ^3.2.0
+
+  # Used by tests. Not required to use `json_serializable`.
+  build_verify: ^1.0.0
+  path: ^1.5.1
+  test: ^1.6.0
 
 
 # For information on the generic Dart part of this file, see the

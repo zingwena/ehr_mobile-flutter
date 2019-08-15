@@ -170,6 +170,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
              try {
                
            result= await platform.invokeMethod("DataSync", [url, username, password]);
+           print("======================"+result.toString());
           
              }catch(e){
                print(e);
