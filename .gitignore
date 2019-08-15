@@ -41,6 +41,8 @@ local.properties
 ../pubspec.lock
 ../local.properties
 app/.attach**
+pubspec.lock
+pubspec.yaml
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
