@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:ehr_mobile/model/Country.dart';
-import 'package:ehr_mobile/model/Religion.dart';
+import 'package:ehr_mobile/model/country.dart';
+import 'package:ehr_mobile/model/religion.dart';
 import 'package:intl/intl.dart';
 //import 'package:cbs_app/model/person.dart';
 //import 'package:cbs_app/widgets/list_people.dart';
