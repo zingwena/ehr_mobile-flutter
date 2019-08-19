@@ -6,6 +6,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class MainActivity extends FlutterActivity {
     public Token token;
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
+    int statusCode;
     List<User> userList;
 
 
@@ -78,30 +80,40 @@ public class MainActivity extends FlutterActivity {
                     DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
 
                     Call<Token> call = dataSyncService.dataSync(login);
+//                    try {
+//                        statusCode=call.execute().code();
+//                       Boolean isValid= LoginValidator.isValid(statusCode);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
 
-                    LoginValidator.validateUser(login.getUsername(),login.getPassword());
                     call.enqueue(new Callback<Token>() {
                         @Override
                         public void onResponse(Call<Token> call, Response<Token> response) {
 
-                            Token token = response.body();
-                            getNationalities(token, url + "/api/");
-                            getFacilities(token, url + "/api/");
-                            getCountries(token, url + "/api/");
-                            getOccupation(token, url + "/api/");
-                            getCountries(token, url + "/api/");
-                            getMaritalStates(token, url + "/api/");
-                            getEducationLevels(token, url + "/api/");
-                            getReligion(token, url + "/api/");
-                            getPatients(url);
+                            if (response.isSuccessful()) {
+                                Token token = response.body();
+                                getNationalities(token, url + "/api/");
+                                getFacilities(token, url + "/api/");
+                                getCountries(token, url + "/api/");
+                                getOccupation(token, url + "/api/");
+                                getCountries(token, url + "/api/");
+                                getMaritalStates(token, url + "/api/");
+                                getEducationLevels(token, url + "/api/");
+                                getReligion(token, url + "/api/");
+                                getPatients(url);
+                                getEntryPoints(token, url + "/api/");
+                                getHtsModels(token, url + "/api/");
+                                geReasonForNotIssuingResults(token, url + "/api/");
+                                getReligion(token, url + "/api/");
+                                System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
+                                result.success("Welcome "+login.getUsername());
 
-                            getEntryPoints(token, url + "/api/");
-                            getHtsModels(token, url + "/api/");
-                            geReasonForNotIssuingResults(token, url + "/api/");
+                            } else {
+                                statusCode = response.code();
+                                System.out.println("statussssssssssssssss" + statusCode);
 
-
-                            getReligion(token, url + "/api/");
-                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
+                            }
 
 
                         }
@@ -216,7 +228,7 @@ public class MainActivity extends FlutterActivity {
 
     private void getPatients(String baseUrl) {
         ehrMobileDatabase.patientDao().deleteAll();
-        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase,baseUrl);
+        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
 
     }
 

@@ -13,8 +13,7 @@
         android:label="ehr_mobile"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
-        <uses-library android:name="android.test.runner"
-            android:required="false" />
+
         <activity
             android:name="zw.gov.mohcc.mrs.ehr_mobile.MainActivity"
             android:launchMode="singleTop"
