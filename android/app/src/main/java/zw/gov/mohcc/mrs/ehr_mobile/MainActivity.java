@@ -16,6 +16,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
@@ -189,6 +190,33 @@ public class MainActivity extends FlutterActivity {
 
     }
 
+    public void getPurpose_Of_Tests(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getPurpose_Of_Tests("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Purpose_Of_Tests> purpose_of_testsList = new ArrayList<>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    purpose_of_testsList.add(new Purpose_Of_Tests(item.getCode(), item.getName()));
+                }
+                if (purpose_of_testsList != null && !purpose_of_testsList.isEmpty()) {
+
+                    savePurpose_Of_TestsToDB(purpose_of_testsList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+
+            }
+        });
+    }
     public void getOccupation(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
@@ -532,6 +560,19 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
 
         System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
+
+
+    }
+
+    void savePurpose_Of_TestsToDB(List<Purpose_Of_Tests> purpose_of_tests) {
+
+
+
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+
+        ehrMobileDatabase.purpose_of_testsDao().insertPurpose_Of_Tests(purpose_of_tests);
+
+        System.out.println("purpose of tests from DB #################" + ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests());
 
 
     }

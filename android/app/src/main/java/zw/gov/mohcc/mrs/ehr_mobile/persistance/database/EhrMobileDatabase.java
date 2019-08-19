@@ -18,6 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
@@ -32,6 +33,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.Purpose_Of_TestsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 
@@ -47,7 +49,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
 
-        Religion.class, Facility.class, Nationality.class, Occupation.class, EducationLevel.class}, version = 1,exportSchema = false)
+        Religion.class, Facility.class, Education.class, Nationality.class, Occupation.class, EducationLevel.class, Purpose_Of_Tests.class}, version = 1,exportSchema = false)
 
 
 
@@ -67,6 +69,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract ReligionDao religionDao();
     public abstract PatientDao patientDao();
     public abstract FacilityDao facilityDao();
+    public abstract Purpose_Of_TestsDao purpose_of_testsDao();
+
 
 
     public static volatile EhrMobileDatabase INSTANCE;

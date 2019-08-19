@@ -61,6 +61,9 @@ public interface DataSyncService {
     @GET("education-levels")
     Call<TerminologyModel> getEducationLevels(@Header("Authorization")String token);
 
+    @GET("purpose-of-tests")
+    Call<TerminologyModel> getPurpose_Of_Tests(@Header("Authorization")String token);
+
 
 
 
