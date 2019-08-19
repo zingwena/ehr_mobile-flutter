@@ -54,24 +54,19 @@ public class PatientQuery {
                 parameters.add(fullNameFilter);
 
             }
-            if (firstName.length() > 3 && lastName.length() <= 3) {
+            if (firstName.length() <= 3 || lastName.length() <= 3) {
                 //filters for searching first name
                 String firstNameFilter1 = firstName.substring(0, 3).concat("%");
                 String firstNameFilter2 = "%".concat(firstName.substring((firstName.length() - 3)));
 
 
-                stringQuery.append(" WHERE firstName Like ? OR firstName Like ?");
+                stringQuery.append(" WHERE (firstName Like ? OR firstName Like ?) OR (lastName Like ? OR lastName Like ?)");
+                parameters.add(firstNameFilter1);
+                parameters.add(firstNameFilter2);
                 parameters.add(firstNameFilter1);
                 parameters.add(firstNameFilter2);
             }
-            if (firstName.length() <= 3 && lastName.length() > 3) {
-                //filters for searching last name
-                String lastNameFilter1 = lastName.substring(0, 3).concat("%");
 
-                stringQuery.append(" WHERE lastName Like ? OR lastName Like ?");
-                parameters.add(lastNameFilter1);
-                parameters.add(fullNameFilter);
-            }
 
         }
 
