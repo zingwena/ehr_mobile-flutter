@@ -90,7 +90,7 @@ public class MainActivity extends FlutterActivity {
                             getPatients();
 
                             getReligion(token, url + "/api/");
-                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-==============="+ehrMobileDatabase.patientDao().listPatients().toString());
+                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
 
 
                         }
@@ -104,7 +104,6 @@ public class MainActivity extends FlutterActivity {
             }
 
         });
-
 
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
