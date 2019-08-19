@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
-public class VitalsEntity {
+public class Visit {
 
 
     private int visitId;

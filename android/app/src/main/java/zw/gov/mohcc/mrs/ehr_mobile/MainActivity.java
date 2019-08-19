@@ -36,7 +36,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.VitalsEntity;
 
 public class MainActivity extends FlutterActivity {
 
