@@ -70,6 +70,7 @@ public class MainActivity extends FlutterActivity {
 
 
                     DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
+
                     Call<Token> call = dataSyncService.dataSync(login);
 
 
@@ -86,7 +87,7 @@ public class MainActivity extends FlutterActivity {
                             getMaritalStates(token, url + "/api/");
                             getEducationLevels(token, url + "/api/");
                             getReligion(token, url + "/api/");
-                            getPatients();
+                            getPatients(url);
 
                             System.out.println("%%%%%%%%%%%%%" + token);
                         }
@@ -199,7 +200,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     // pull patients from EHR
-    private void getPatients() {
+    private void getPatients(String baseUrl) {
         ehrMobileDatabase.patientDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
     }
