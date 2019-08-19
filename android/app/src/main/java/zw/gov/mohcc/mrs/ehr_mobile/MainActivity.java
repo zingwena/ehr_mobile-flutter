@@ -33,10 +33,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.vitals.VitalsEntity;
 
 public class MainActivity extends FlutterActivity {
 
@@ -207,7 +207,7 @@ public class MainActivity extends FlutterActivity {
 
     // pull patients from EHR
     private void getPatients() {
-        ehrMobileDatabase.patientDao().deleteAll();
+//        ehrMobileDatabase.patientDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
     }
 
@@ -471,7 +471,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.authoritiesDao().insertAuthorities(authorities);
 */
         System.out.println("froooooooooooooom DB=================" + ehrMobileDatabase.authoritiesDao().getAllAuthorities());
-        //ehrMobileDatabase.permissionsDao().insertPermissions();
+//        ehrMobileDatabase.permissionsDao().insertPermissions();
         testById(1);
 
 

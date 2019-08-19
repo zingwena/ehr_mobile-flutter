@@ -4,27 +4,26 @@ import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'add_patient.dart';
+import 'list_patients.dart';
+
 class SearchPatient extends StatefulWidget {
   _SearchPatientState createState() => _SearchPatientState();
 }
 
 class _SearchPatientState extends State<SearchPatient> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
- String searchItem;
- final _searchFormKey = GlobalKey<FormState>();
- List<Patient> _patientList;
-
-
-
+  String searchItem;
+  final _searchFormKey = GlobalKey<FormState>();
+  List<Patient> _patientList;
 
   Future<void> searchPatient(String searchItem) async {
-
     List<dynamic> list;
 
     try {
       list =
           jsonDecode(await platform.invokeMethod('searchPatient', searchItem));
-    }  catch (e) {
+    } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
@@ -54,35 +53,58 @@ class _SearchPatientState extends State<SearchPatient> {
             child: Form(
               key: _searchFormKey,
               child: TextFormField(
-
                 decoration: InputDecoration(
                   labelText: "Search",
                   hintText: "Search",
-                  suffix: IconButton(icon: Icon(Icons.search), onPressed: () async{
-                    if(_searchFormKey.currentState.validate()){
-                      _searchFormKey.currentState.save();
-                      await searchPatient(searchItem);
-                    }
-                     }),
+                  suffix: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () async {
+                        if (_searchFormKey.currentState.validate()) {
+                          _searchFormKey.currentState.save();
+
+                          await searchPatient(searchItem);
+                        }
+                      }),
                   border: OutlineInputBorder(),
                 ),
-                onSaved: (value){
+                onSaved: (value) {
                   setState(() {
                     searchItem = value;
                   });
                 },
               ),
             ),
-
           ),
-
-          _patientList != null && _patientList.length != 0
-              ? Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.all(10.0),
-                    children: _patientList.map((patient) {
-                      return ListTile(title: Text(patient.firstName));
-                    }).toList(),
+          _patientList == null
+              ? SizedBox()
+              : _patientList != null && _patientList.isNotEmpty
+                  ? Expanded(
+                      child: ListPatients(_patientList),
+                    )
+                  : Center(
+                      child: Text("No Patients Found"),
+                    ),
+          _patientList != null
+              ? OutlineButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "Add Patient",
+                    style: TextStyle(
+                        fontSize: 23,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.blue, //Color of the border
+                    style: BorderStyle.solid, //Style of the border
+                    width: 3.0, //width of the border
+                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddPatient()),
                   ),
                 )
               : SizedBox(),

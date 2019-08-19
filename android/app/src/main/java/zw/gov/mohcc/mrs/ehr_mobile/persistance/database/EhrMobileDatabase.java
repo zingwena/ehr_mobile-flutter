@@ -87,4 +87,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract PatientDao patientDao();
 
     public abstract FacilityDao facilityDao();
+
+
 }
