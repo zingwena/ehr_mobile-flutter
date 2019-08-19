@@ -115,6 +115,7 @@ public class MainActivity extends FlutterActivity {
 
                             } else {
                                 statusCode = response.code();
+                                result.success("Username or password are invalid.");
                                 System.out.println("statussssssssssssssss" + statusCode);
 
 
@@ -125,6 +126,8 @@ public class MainActivity extends FlutterActivity {
 
                         @Override
                         public void onFailure(Call<Token> call, Throwable t) {
+                            result.success("Network Error. Either invalid Server Ip address or you are of of range.");
+
                             System.out.println("Error=============== " + t);
                         }
                     });
