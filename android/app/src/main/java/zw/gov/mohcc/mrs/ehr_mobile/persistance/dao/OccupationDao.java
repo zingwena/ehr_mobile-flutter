@@ -15,10 +15,13 @@ public interface OccupationDao {
     @Insert
     void insertOccupations(List<Occupation> occupations);
 
-    @Insert
-    void insertReligion(Occupation occupation);
+    @Query("DELETE FROM occupation")
+    void deleteOccupations();
 
-    @Query("SELECT * FROM Occupation")
+    @Insert
+    void insertOccupation(Occupation occupation);
+
+    @Query("SELECT * FROM Occupation ORDER BY name ASC")
     List<Occupation> getAllOccupations();
 
     @Query("SELECT * FROM Occupation WHERE id=:id")

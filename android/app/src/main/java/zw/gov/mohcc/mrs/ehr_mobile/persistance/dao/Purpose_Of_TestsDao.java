@@ -19,6 +19,9 @@ public interface Purpose_Of_TestsDao {
     @Insert
     void insertPurpose_Of_Tests(Purpose_Of_Tests purpose_of_tests);
 
+    @Query("DELETE FROM occupation")
+    void deletePurpose_Of_Tests();
+
     @Query("SELECT * FROM Purpose_Of_Tests")
     List<Purpose_Of_Tests> getAllPurpose_Of_Tests();
 

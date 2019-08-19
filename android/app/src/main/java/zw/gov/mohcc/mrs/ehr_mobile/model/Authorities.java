@@ -50,8 +50,7 @@ public class Authorities {
     @Override
     public String toString() {
         return "Authorities{" +
-                "id=" + id +
-                ", userId=" + userId +
+
                 ", authority='" + authority + '\'' +
                 '}';
     }

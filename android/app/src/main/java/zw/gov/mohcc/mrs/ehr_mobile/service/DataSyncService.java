@@ -44,7 +44,7 @@ public interface DataSyncService {
     Call<TerminologyModel> getMaritalStates(@Header("Authorization") String token);
 
     @GET("countries")
-    Call<JsonObject> getCountries(@Header("Authorization")String authToken);
+    Call<TerminologyModel> getCountries(@Header("Authorization")String authToken);
 
     @GET("nationalities")
     Call<TerminologyModel> getNationalities(@Header("Authorization")String authToken);
@@ -60,6 +60,15 @@ public interface DataSyncService {
 
     @GET("education-levels")
     Call<TerminologyModel> getEducationLevels(@Header("Authorization")String token);
+
+    @GET("entryPoints")
+    Call<TerminologyModel> getEntryPoints(@Header("Authorization")String token);
+
+    @GET("hts-models")
+    Call<TerminologyModel> getHtsModels(@Header("Authorization")String token);
+
+    @GET("reason-for-not-issuing-results")
+    Call<TerminologyModel> geReasonForNotIssuingResults(@Header("Authorization")String token);
 
     @GET("purpose-of-tests")
     Call<TerminologyModel> getPurpose_Of_Tests(@Header("Authorization")String token);

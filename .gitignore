@@ -38,6 +38,10 @@
 android/app/.gradle/
 local.properties
 .gradle/
+../pubspec.lock
+../local.properties
+app/.attach**
+pubspec.lock
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
