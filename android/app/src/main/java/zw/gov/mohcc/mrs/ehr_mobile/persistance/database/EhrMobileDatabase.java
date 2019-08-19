@@ -22,7 +22,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EntryPointDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
@@ -87,8 +86,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract NationalityDao nationalityDao();
 
     public abstract EducationLevelDao educationLevelDao();
-
-    public abstract EducationDao educationDao();
 
     public abstract PatientDao patientDao();
 

@@ -9,28 +9,16 @@ import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
-
-import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
-
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SelfIdentifiedGender;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -38,8 +26,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
- //       private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+    // private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
+    private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
     private static Patient patient;
 
     public static ApolloClient getApolloClient() {
@@ -53,8 +41,7 @@ public class PatientsApolloClient {
                 .okHttpClient(okHttpClient).build();
     }
 
-
-    public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase) {
+    public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
         PatientsApolloClient.getApolloClient().query(
                 GetPatientsQuery.builder()
                         .build()).enqueue(
@@ -80,16 +67,15 @@ public class PatientsApolloClient {
                                     int age = patientData.age().years();
 
 
-                                    patient = new Patient(firstName, lastName);
-//                                    patient.setReligionCode(patientData.religion().id());
-//                                    patient.setAge(age);
-//                                    patient.setCountryOfBirthCode(patientData.countryOfBirth().id());
-//                                    patient.setEducationLevelCode(patientData.education().id());
-//                                    patient.setAddress(address);
-//                                    patient.setMaritalStatusCode(patientData.marital().id());
-//                                    patient.setNationalityCode(patientData.nationality().id());
-//                                    patient.setSelfIdentifiedGender(selfIdentifiedGender);
-//                                    patient.setOccupationCode(patientData.occupation().id());
+                                    patient = new Patient(firstName, lastName, sex);
+                                    patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
+                                    patient.setCountryId(patientData.countryOfBirth() != null ? patientData.countryOfBirth().id() : null);
+                                    patient.setEducationLevelId(patientData.education() != null ? patientData.education().id() : null);
+                                    patient.setAddress(address);
+                                    patient.setMaritalStatusId(patientData.marital() != null ? patientData.marital().id() : null);
+                                    patient.setNationalityId(patientData.nationality() != null ? patientData.nationality().id() : null);
+                                    patient.setSelfIdentifiedGender(selfIdentifiedGender);
+                                    patient.setOccupationId(patientData.occupation() != null ? patientData.occupation().id() : null);
 
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);
@@ -101,7 +87,7 @@ public class PatientsApolloClient {
                                         e.printStackTrace();
                                     }
 
-                                    if (numberOfIdentifications > 0) {
+                                    /*if (numberOfIdentifications > 0) {
                                         String identifierType = patientData.identifications().get(0).type().name();
 
                                         if (identifierType.equals("National Id")) {
@@ -114,7 +100,7 @@ public class PatientsApolloClient {
                                         }
 
 
-                                    }
+                                    }*/
 
                                     ehrMobileDatabase.patientDao().createPatient(patient);
 
@@ -128,9 +114,9 @@ public class PatientsApolloClient {
                             }
 
 
-                        System.out.println("Number of Patients  = " + ehrMobileDatabase.patientDao().listPatients().size());
+                        System.out.println("Number of Patients  = ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ " + ehrMobileDatabase.patientDao().listPatients().size());
 
-                        System.out.println("\"Patient Table\" " + ehrMobileDatabase.patientDao().listPatients());
+                        System.out.println("\"Patient Table\" -------------------------------------------- " + ehrMobileDatabase.patientDao().listPatients());
 
 
                     }
