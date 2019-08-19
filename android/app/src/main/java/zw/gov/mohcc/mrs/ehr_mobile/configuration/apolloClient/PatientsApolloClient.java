@@ -9,14 +9,23 @@ import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
+import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SelfIdentifiedGender;
@@ -40,7 +49,6 @@ public class PatientsApolloClient {
                 .serverUrl(SERVER_URL)
                 .okHttpClient(okHttpClient).build();
     }
-
 
     public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
         PatientsApolloClient.getApolloClient().query(
@@ -81,7 +89,7 @@ public class PatientsApolloClient {
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);
                                         System.out.println("dateOfBirth = " + dateOfBirth);
-                                        patient.setBirthDate(dateOfBirth);
+//                                        patient.setBirthDate(dateOfBirth);
 
 
                                     } catch (Exception e) {

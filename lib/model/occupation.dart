@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'base_code.dart';
+
 part 'occupation.g.dart';
 
 @JsonSerializable()
@@ -16,6 +17,7 @@ class Occupation extends BaseCode{
 
   Map<String, dynamic> toJson() => _$OccupationToJson(this);
 
+
   static mapFromJson(List dynamicList){
     List<Occupation> occupationList=[];
     if(dynamicList!=null){
@@ -26,4 +28,5 @@ class Occupation extends BaseCode{
     }
     return occupationList;
   }
+
 }

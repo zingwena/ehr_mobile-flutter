@@ -19,15 +19,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(indices = {@Index("personId"), @Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
-        @Index("nationalityId"), @Index("occupationId", @Index("educationId"))},
+        @Index("nationalityId"), @Index("occupationId"), @Index("educationId")},
         foreignKeys = {
                 @ForeignKey(entity = Country.class, onDelete = CASCADE,
                         parentColumns = "code",
                         childColumns = "countryId"),
                 @ForeignKey(entity = EducationLevel.class, onDelete = CASCADE,
                         parentColumns = "code",
-                        childColumns = "educationLevelId")
-                ,
+                        childColumns = "educationLevelId"),
                 @ForeignKey(entity = Religion.class, onDelete = CASCADE,
                         parentColumns = "code",
                         childColumns = "religionId")
@@ -57,6 +56,7 @@ public class Patient {
     public SelfIdentifiedGender selfIdentifiedGender;
     @TypeConverters(GenderConverter.class)
     public Gender sex;
+
     @NonNull
     private String firstName;
     @NonNull
@@ -79,7 +79,7 @@ public class Patient {
     }
 
     @Ignore
-    public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull Gender sex) {
+    public Patient(@NonNull String firstName, @NonNull String lastName, Gender sex) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
@@ -143,7 +143,6 @@ public class Patient {
     public void setNationalId(String nationalId) {
         this.nationalId = nationalId;
     }
-
 
     public LocalDate getBirthDate() {
         return birthDate;

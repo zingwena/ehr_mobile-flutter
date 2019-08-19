@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(indices = {@Index(value = "code", unique = true)})
 public class EducationLevel extends BaseNameModel {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 

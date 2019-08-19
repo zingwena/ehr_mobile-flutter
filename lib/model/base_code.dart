@@ -1,4 +1,3 @@
-
 import 'base_entity.dart';
 
 abstract class BaseCode extends BaseEntity{

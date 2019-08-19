@@ -33,6 +33,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
@@ -41,7 +42,7 @@ public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
-    private final static String PATIENT_CHANNEL = "ehr_mobile.channel.patient";
+    private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
     public Token token;
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
@@ -88,7 +89,10 @@ public class MainActivity extends FlutterActivity {
                             getReligion(token, url + "/api/");
                             getPatients();
 
-                            System.out.println("%%%%%%%%%%%%%" + token);
+                            getReligion(token, url + "/api/");
+                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-==============="+ehrMobileDatabase.patientDao().listPatients().toString());
+
+
                         }
 
                         @Override
@@ -98,7 +102,10 @@ public class MainActivity extends FlutterActivity {
                     });
                 }
             }
+
         });
+
+
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
@@ -211,7 +218,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<MaritalStatus> maritalStatusList = new ArrayList<>();
+                List<MaritalStatus> maritalStatusList = new ArrayList<MaritalStatus>();
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
                         maritalStatusList.add(new MaritalStatus(item.getCode(), item.getName()));
@@ -246,7 +253,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Occupation> occupationList = new ArrayList<>();
+                List<Occupation> occupationList = new ArrayList<Occupation>();
                 for (BaseNameModel item : response.body().getContent()) {
                     occupationList.add(new Occupation(item.getCode(), item.getName()));
                 }
@@ -302,7 +309,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Facility> facilityList = new ArrayList<>();
+                List<Facility> facilityList = new ArrayList<Facility>();
                 for (BaseNameModel item : response.body().getContent()) {
                     facilityList.add(new Facility(item.getCode(), item.getName()));
                 }
@@ -333,7 +340,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Nationality> nationalities = new ArrayList<>();
+                List<Nationality> nationalities = new ArrayList<Nationality>();
 
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
@@ -361,7 +368,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Country> countries = new ArrayList<>();
+                List<Country> countries = new ArrayList<Country>();
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
                         countries.add(new Country(item.getCode(), item.getName()));
@@ -389,7 +396,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<EducationLevel> educationLevels = new ArrayList<>();
+                List<EducationLevel> educationLevels = new ArrayList<EducationLevel>();
 
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
@@ -449,7 +456,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     void saveAuthorities(List<User> usersFromDB) {
-        List<Authorities> authorities = new ArrayList<>();
+        List<Authorities> authorities = new ArrayList<Authorities>();
 
         /*
         TODO brian refactor this part
@@ -514,7 +521,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Religion> religionList = new ArrayList<>();
+                List<Religion> religionList = new ArrayList<Religion>();
                 for (BaseNameModel item : response.body().getContent()) {
                     religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
                 }
