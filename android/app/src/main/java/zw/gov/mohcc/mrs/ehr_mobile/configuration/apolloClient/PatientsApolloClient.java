@@ -10,6 +10,7 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
 
+import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
@@ -37,8 +38,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-//    private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
-        private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
+ //       private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
     private static Patient patient;
 
     public static ApolloClient getApolloClient() {
@@ -53,8 +54,8 @@ public class PatientsApolloClient {
     }
 
 
-    public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
-        /*PatientsApolloClient.getApolloClient().query(
+    public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase) {
+        PatientsApolloClient.getApolloClient().query(
                 GetPatientsQuery.builder()
                         .build()).enqueue(
                 new ApolloCall.Callback<GetPatientsQuery.Data>() {
@@ -79,21 +80,21 @@ public class PatientsApolloClient {
                                     int age = patientData.age().years();
 
 
-                                    patient = new Patient(firstName, lastName, sex);
-                                    patient.setReligionCode(patientData.religion().id());
-                                    patient.setAge(age);
-                                    patient.setCountryOfBirthCode(patientData.countryOfBirth().id());
-                                    patient.setEducationLevelCode(patientData.education().id());
-                                    patient.setAddress(address);
-                                    patient.setMaritalStatusCode(patientData.marital().id());
-                                    patient.setNationalityCode(patientData.nationality().id());
-                                    patient.setSelfIdentifiedGender(selfIdentifiedGender);
-                                    patient.setOccupationCode(patientData.occupation().id());
+                                    patient = new Patient(firstName, lastName);
+//                                    patient.setReligionCode(patientData.religion().id());
+//                                    patient.setAge(age);
+//                                    patient.setCountryOfBirthCode(patientData.countryOfBirth().id());
+//                                    patient.setEducationLevelCode(patientData.education().id());
+//                                    patient.setAddress(address);
+//                                    patient.setMaritalStatusCode(patientData.marital().id());
+//                                    patient.setNationalityCode(patientData.nationality().id());
+//                                    patient.setSelfIdentifiedGender(selfIdentifiedGender);
+//                                    patient.setOccupationCode(patientData.occupation().id());
 
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);
                                         System.out.println("dateOfBirth = " + dateOfBirth);
-                                        patient.setBirthDate(dateOfBirth);
+//                                        patient.setBirthDate(dateOfBirth);
 
 
                                     } catch (Exception e) {
@@ -139,7 +140,7 @@ public class PatientsApolloClient {
                         System.out.println("Error =========" + e.toString());
                     }
                 }
-        );*/
+        );
     }
 
 

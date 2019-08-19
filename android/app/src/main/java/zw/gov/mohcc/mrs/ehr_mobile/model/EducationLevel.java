@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class EducationLevel extends BaseNameModel {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 

@@ -48,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
       SizedBox(
         height: 30.0,
       ),
+
       Text(
         "EHR Mobile App",
         style: TextStyle(

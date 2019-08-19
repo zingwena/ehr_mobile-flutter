@@ -12,7 +12,7 @@ public class PatientQuery {
     String nationalIdRegex = "((\\d{8,10})([a-zA-Z])(\\d{2})\\b)";
 
     public SimpleSQLiteQuery searchPatient(String searchItem) {
-        String firstName, lastName;
+        String firstName = "", lastName = "";
 
 
         StringBuilder stringQuery = new StringBuilder("SELECT * FROM Patient");
@@ -29,10 +29,11 @@ public class PatientQuery {
         } else {
 
             String[] namesArray = getFirstNameAndLastName(searchItem);
-
             firstName = namesArray[0];
-            lastName = namesArray[1];
 
+            if (namesArray.length > 1) {
+                lastName = namesArray[1];
+            }
             //filter for fullName
             String fullNameFilter = searchItemNoSpace.substring(searchItemNoSpace.length() - 3).concat("%");
 
