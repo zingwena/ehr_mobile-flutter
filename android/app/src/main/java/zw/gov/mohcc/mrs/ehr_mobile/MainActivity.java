@@ -33,7 +33,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
@@ -90,7 +89,7 @@ public class MainActivity extends FlutterActivity {
                             getPatients();
 
                             getReligion(token, url + "/api/");
-                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-==============="+ehrMobileDatabase.patientDao().listPatients().toString());
+                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
 
 
                         }
@@ -104,7 +103,6 @@ public class MainActivity extends FlutterActivity {
             }
 
         });
-
 
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(

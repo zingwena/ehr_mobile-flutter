@@ -19,7 +19,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(indices = {@Index("personId"), @Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
-        @Index("nationalityId"), @Index("occupationId"), @Index("educationId")},
+        @Index("nationalityId"), @Index("occupationId")},
         foreignKeys = {
                 @ForeignKey(entity = Country.class, onDelete = CASCADE,
                         parentColumns = "code",
@@ -42,10 +42,6 @@ import static androidx.room.ForeignKey.CASCADE;
                 @ForeignKey(entity = Occupation.class, onDelete = CASCADE,
                         parentColumns = "code",
                         childColumns = "occupationId")
-                ,
-                @ForeignKey(entity = Education.class, onDelete = CASCADE,
-                        parentColumns = "code",
-                        childColumns = "education_Id")
         }
 )
 public class Patient {
