@@ -38,24 +38,25 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-   private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
- //       private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+   private static final String endpoint = "/api/graphql";
     private static Patient patient;
 
-    public static ApolloClient getApolloClient() {
-
+    public static ApolloClient getApolloClient(String baseUrl) {
+        System.out.println("baseUrl = " + baseUrl);
+        String url=baseUrl.concat(endpoint);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .build();
 
         return ApolloClient.builder()
-                .serverUrl(SERVER_URL)
+                .serverUrl(url)
                 .okHttpClient(okHttpClient).build();
     }
 
 
-    public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase) {
-        PatientsApolloClient.getApolloClient().query(
+    public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
+        System.out.println("baseUrl = " + baseUrl);
+        PatientsApolloClient.getApolloClient(baseUrl).query(
                 GetPatientsQuery.builder()
                         .build()).enqueue(
                 new ApolloCall.Callback<GetPatientsQuery.Data>() {

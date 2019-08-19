@@ -37,6 +37,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
 public class MainActivity extends FlutterActivity {
 
@@ -74,7 +75,7 @@ public class MainActivity extends FlutterActivity {
 
                     Call<Token> call = dataSyncService.dataSync(login);
 
-
+                    LoginValidator.validateUser(login.getUsername(),login.getPassword());
                     call.enqueue(new Callback<Token>() {
                         @Override
                         public void onResponse(Call<Token> call, Response<Token> response) {
@@ -209,7 +210,7 @@ public class MainActivity extends FlutterActivity {
     // pull patients from EHR
     private void getPatients(String baseUrl) {
         ehrMobileDatabase.patientDao().deleteAll();
-        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
+        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase,baseUrl);
     }
 
     public void getMaritalStates(Token token, String baseUrl) {
