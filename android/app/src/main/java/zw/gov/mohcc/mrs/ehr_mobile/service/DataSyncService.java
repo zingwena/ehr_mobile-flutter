@@ -61,6 +61,15 @@ public interface DataSyncService {
     @GET("education-levels")
     Call<TerminologyModel> getEducationLevels(@Header("Authorization")String token);
 
+    @GET("entryPoints")
+    Call<TerminologyModel> getEntryPoints(@Header("Authorization")String token);
+
+    @GET("hts-models")
+    Call<TerminologyModel> getHtsModels(@Header("Authorization")String token);
+
+    @GET("reason-for-not-issuing-results")
+    Call<TerminologyModel> geReasonForNotIssuingResults(@Header("Authorization")String token);
+
 
 
 

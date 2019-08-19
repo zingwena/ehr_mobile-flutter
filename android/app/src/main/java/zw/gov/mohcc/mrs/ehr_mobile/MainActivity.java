@@ -23,17 +23,19 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
@@ -87,6 +89,9 @@ public class MainActivity extends FlutterActivity {
                             getMaritalStates(token, url + "/api/");
                             getEducationLevels(token, url + "/api/");
                             getReligion(token, url + "/api/");
+                            getEntryPoints(token, url + "/api/");
+                            getHtsModels(token, url + "/api/");
+                            geReasonForNotIssuingResults(token, url + "/api/");
                             getPatients();
 
                             getReligion(token, url + "/api/");
@@ -417,6 +422,91 @@ public class MainActivity extends FlutterActivity {
     }
 
 
+    public void getEntryPoints(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getEntryPoints("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<EntryPoint> entryPointList = new ArrayList<EntryPoint>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    entryPointList.add(new EntryPoint(item.getCode(), item.getName()));
+                }
+                if (entryPointList != null && !entryPointList.isEmpty()) {
+
+                    saveEntryPointsToDB(entryPointList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+
+            }
+        });
+    }
+
+    public void getHtsModels(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<HtsModel> htsModelList = new ArrayList<HtsModel>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    htsModelList.add(new HtsModel(item.getCode(), item.getName()));
+                }
+                if (htsModelList != null && !htsModelList.isEmpty()) {
+
+                    saveHtsModelToDB(htsModelList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+
+            }
+        });
+    }
+
+    public void geReasonForNotIssuingResults(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.geReasonForNotIssuingResults("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<ReasonForNotIssuingResult> reasonForNotIssuingResultList = new ArrayList<ReasonForNotIssuingResult>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    reasonForNotIssuingResultList.add(new ReasonForNotIssuingResult(item.getCode(), item.getName()));
+                }
+                if (reasonForNotIssuingResultList != null && !reasonForNotIssuingResultList.isEmpty()) {
+
+                    saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+
+            }
+        });
+    }
+
+
  /*   public void getEducationList(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
@@ -581,6 +671,36 @@ public class MainActivity extends FlutterActivity {
 
         System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
 
+
+    }
+
+    void saveEntryPointsToDB(List<EntryPoint> entryPoints) {
+
+
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.entryPointDao().deleteEntryPoints();
+        ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
+        System.out.println("EntryPoint from DB *****" + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
+
+    }
+
+    void saveHtsModelToDB(List<HtsModel> htsModels) {
+
+
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.htsModelDao().deleteHtsModels();
+        ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
+        System.out.println("HtsModels from DB *****" + ehrMobileDatabase.htsModelDao().getAllHtsModels());
+
+    }
+
+    void saveReasonForNotIssuingResultToDB(List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
+
+
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
+        ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
+        System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
 
     }
 }
