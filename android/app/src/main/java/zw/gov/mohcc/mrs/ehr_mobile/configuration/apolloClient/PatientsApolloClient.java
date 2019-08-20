@@ -45,9 +45,11 @@ public class PatientsApolloClient {
 
 
 
+
     public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
         System.out.println("baseUrl = " + baseUrl);
         PatientsApolloClient.getApolloClient(baseUrl).query(
+
 
                 GetPatientsQuery.builder()
                         .build()).enqueue(
@@ -69,19 +71,24 @@ public class PatientsApolloClient {
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
                                     String date = patientData.birthdate();
+                                    String nationalId=patientData.nationality() != null ? patientData.nationality().id() : null;
 
                                     int age = patientData.age().years();
 
 
-                                    patient = new Patient(firstName, lastName, sex);
-                                    /*patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
+
+                                    patient = new Patient(firstName, lastName, nationalId);
+                                    patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
+
                                     patient.setCountryId(patientData.countryOfBirth() != null ? patientData.countryOfBirth().id() : null);
                                     patient.setEducationLevelId(patientData.education() != null ? patientData.education().id() : null);
                                     patient.setAddress(address);
                                     patient.setMaritalStatusId(patientData.marital() != null ? patientData.marital().id() : null);
-                                    patient.setNationalityId(patientData.nationality() != null ? patientData.nationality().id() : null);
-                                    patient.setSelfIdentifiedGender(selfIdentifiedGender);
-                                    patient.setOccupationId(patientData.occupation() != null ? patientData.occupation().id() : null);*/
+
+//                                    patient.setNationalityId(patientData.nationality() != null ? patientData.nationality().id() : null);
+                                    patient.setSelfIdentifiedGender(selfIdentifiedGender.name());
+                                    patient.setOccupationId(patientData.occupation() != null ? patientData.occupation().id() : null);
+
 
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);
