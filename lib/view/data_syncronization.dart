@@ -171,8 +171,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
          if(_key.currentState.validate()){
            DateTime date= DateTime.now();
 
-           Navigator.push(
-               context, MaterialPageRoute(builder: (context) => AddPatient()));
+
 
              _key.currentState.save();
 

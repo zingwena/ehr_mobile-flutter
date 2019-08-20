@@ -250,7 +250,7 @@ public class MainActivity extends FlutterActivity {
 
                     PatientQuery patientQuery = new PatientQuery();
                     SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
-                    _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                      _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
                     Gson gson = new Gson();
 
 
@@ -681,7 +681,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     void saveFacilityToDB(List<Facility> facilities) {
-
+        ehrMobileDatabase.facilityDao().deleteAllFacilities();
         ehrMobileDatabase.facilityDao().insertFacilities(facilities);
 
         System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());
