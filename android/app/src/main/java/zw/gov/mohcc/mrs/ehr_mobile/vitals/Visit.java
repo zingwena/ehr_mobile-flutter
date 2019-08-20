@@ -7,13 +7,15 @@ import androidx.room.PrimaryKey;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
+@Entity
 public class Visit {
 
 
+    @PrimaryKey(autoGenerate = true)
     private int visitId;
     private int patientId;
     private LocalDate startTime = LocalDate.now();
+
 
 
 

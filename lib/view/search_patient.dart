@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'add_patient.dart';
 import 'list_patients.dart';
+import 'reception_vitals.dart';
 
 class SearchPatient extends StatefulWidget {
   _SearchPatientState createState() => _SearchPatientState();
@@ -108,6 +109,28 @@ class _SearchPatientState extends State<SearchPatient> {
                   ),
                 )
               : SizedBox(),
+          OutlineButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+            color: Colors.white,
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "VITALS",
+              style: TextStyle(
+                  fontSize: 23,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500),
+            ),
+            borderSide: BorderSide(
+              color: Colors.blue, //Color of the border
+              style: BorderStyle.solid, //Style of the border
+              width: 3.0, //width of the border
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ReceptionVitals()),
+            ),
+          )
         ],
       ),
     );
