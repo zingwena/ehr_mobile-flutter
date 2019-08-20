@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile;
 
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.flutter.app.FlutterActivity;
-import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import retrofit2.Call;
@@ -40,6 +40,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
 public class MainActivity extends FlutterActivity {
 
@@ -58,6 +59,7 @@ public class MainActivity extends FlutterActivity {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
 
+       getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler((methodCall, result) -> {
@@ -82,6 +84,7 @@ public class MainActivity extends FlutterActivity {
 
                         if (response.isSuccessful()) {
                             Token token = response.body();
+                            getUsers(token, url + "/api/");
                             getNationalities(token, url + "/api/");
                             getFacilities(token, url + "/api/");
                             getCountries(token, url + "/api/");
@@ -124,56 +127,66 @@ public class MainActivity extends FlutterActivity {
                 System.out.println("url = " + url);
                 System.out.println("username = " + username);
                 System.out.println("password = " + password);
-                Login login = new Login(username, password);
+//                Login login = new Login(username, password);
 //                String url = "http://10.20.100.178:8080";
-                Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
+//                Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
+//
+//                DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
+//
+//                Call<Token> call = dataSyncService.dataSync(login);
+//
+//                call.enqueue(new Callback<Token>() {
+//                    @Override
+//                    public void onResponse(Call<Token> call, Response<Token> response) {
+//
+//                        if (response.isSuccessful()) {
+//                            Token token = response.body();
+//                            getUsers(token, url + "/api/");
+//                            getNationalities(token, url + "/api/");
+//                            getFacilities(token, url + "/api/");
+//                            getCountries(token, url + "/api/");
+//                            getOccupation(token, url + "/api/");
+//                            getCountries(token, url + "/api/");
+//                            getMaritalStates(token, url + "/api/");
+//                            getEducationLevels(token, url + "/api/");
+//                            getReligion(token, url + "/api/");
+//                            getPatients(url);
+//                            getEntryPoints(token, url + "/api/");
+//                            getHtsModels(token, url + "/api/");
+//                            geReasonForNotIssuingResults(token, url + "/api/");
+//                            getReligion(token, url + "/api/");
+//                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-=============== \n" + ehrMobileDatabase.patientDao().listPatients().toString());
+//                            result.success("Welcome " + login.getUsername());
+//
+//                        } else {
+//                            statusCode = response.code();
+//                            result.success("Username or password are invalid.");
+//                            System.out.println("statussssssssssssssss" + statusCode);
+//
+//
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<Token> call, Throwable t) {
+//                        result.success("Network Error. Either invalid Server Ip address or you are of of range.");
+//
+//                        System.out.println("Error=============== " + t);
+//                    }
+//                });
 
-                DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
+                Boolean isUserValid=LoginValidator.isUserValid(ehrMobileDatabase,username,password);
+                if(isUserValid){
+                    result.success("Welcome  " + username);
 
-                Call<Token> call = dataSyncService.dataSync(login);
-
-                call.enqueue(new Callback<Token>() {
-                    @Override
-                    public void onResponse(Call<Token> call, Response<Token> response) {
-
-                        if (response.isSuccessful()) {
-                            Token token = response.body();
-                            getUsers(token, url + "/api/");
-                            getNationalities(token, url + "/api/");
-                            getFacilities(token, url + "/api/");
-                            getCountries(token, url + "/api/");
-                            getOccupation(token, url + "/api/");
-                            getCountries(token, url + "/api/");
-                            getMaritalStates(token, url + "/api/");
-                            getEducationLevels(token, url + "/api/");
-                            getReligion(token, url + "/api/");
-                            getPatients(url);
-                            getEntryPoints(token, url + "/api/");
-                            getHtsModels(token, url + "/api/");
-                            geReasonForNotIssuingResults(token, url + "/api/");
-                            getReligion(token, url + "/api/");
-                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-=============== \n" + ehrMobileDatabase.patientDao().listPatients().toString());
-                            result.success("Welcome " + login.getUsername());
-
-                        } else {
-                            statusCode = response.code();
-                            result.success("Username or password are invalid.");
-                            System.out.println("statussssssssssssssss" + statusCode);
+                }
 
 
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Token> call, Throwable t) {
-                        result.success("Network Error. Either invalid Server Ip address or you are of of range.");
-
-                        System.out.println("Error=============== " + t);
-                    }
-                });
-
+                else {
+                         result.success("Username or password are invalid.");
+                }
             }
         });
 
@@ -353,7 +366,7 @@ public class MainActivity extends FlutterActivity {
 
                 userList = response.body();
 
-                System.out.println("user instance&&&&&&&&&&&&&&&&&&" + userList);
+                System.out.println("User response   : \n   " + userList);
 
                 saveUsersToDB(userList);
 
@@ -362,7 +375,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                System.out.println("-------------------" + t.getMessage());
+                System.out.println("Failed to get Patients \n-------------------" + t.getMessage());
             }
         });
     }
@@ -628,11 +641,11 @@ public class MainActivity extends FlutterActivity {
 
     void saveUsersToDB(List<User> userListInstance) {
 
-        /*ehrMobileDatabase.userDao().insertUsers(userListInstance);
+        ehrMobileDatabase.userDao().insertUsers(userListInstance);
         List<User> usersFromDB = ehrMobileDatabase.userDao().selectAllUsers();
-        System.out.println("froooooooooooooooom DB" + usersFromDB);
+        System.out.println("from database \n\n" + usersFromDB);
         saveAuthorities(usersFromDB);
-        System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));*/
+        System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));
 
     }
 
