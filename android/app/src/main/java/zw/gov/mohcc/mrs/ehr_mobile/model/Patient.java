@@ -1,48 +1,73 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
-@Entity()
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("personId"), @Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
+        @Index("nationalityId"), @Index("occupationId")},
+        foreignKeys = {
+                @ForeignKey(entity = Country.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "countryId"),
+                @ForeignKey(entity = EducationLevel.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "educationLevelId"),
+                @ForeignKey(entity = Religion.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "religionId")
+                ,
+                @ForeignKey(entity = MaritalStatus.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "maritalStatusId")
+                ,
+                @ForeignKey(entity = Nationality.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "nationalityId")
+                ,
+                @ForeignKey(entity = Occupation.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "occupationId")
+        }
+)
 public class Patient {
+
 
     public String selfIdentifiedGender;
 
     public String sex;
     @PrimaryKey(autoGenerate = true)
     private int id;
+
     @NonNull
     private String firstName;
     @NonNull
     private String lastName;
+    @ColumnInfo()
     private String personId;
     private String nationalId;
-    /*private Religion religion;
-
-
-    private Occupation occupation;
-
-
-    private MaritalStatus maritalStatus;
-
-
-    private EducationLevel educationLevel;*/
-    private Date birthDate;
-    private int age;
-    /*@Embedded
-    private Nationality nationality;
-
-    @Embedded
-    private Country countryOfBirth;*/
+    private String religionId;
+    private String occupationId;
+    private String maritalStatusId;
+    private String educationLevelId;
+    @TypeConverters(DataConverter.class)
+    private LocalDate birthDate;
+    private String nationalityId;
+    private String countryId;
     @Embedded
     private Address address;
 
@@ -52,7 +77,9 @@ public class Patient {
 
 
     @Ignore
+
     public Patient(@NonNull String firstName, @NonNull String lastName, String nationalId) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.nationalId = nationalId;
@@ -117,21 +144,12 @@ public class Patient {
         this.nationalId = nationalId;
     }
 
-
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public Address getAddress() {
@@ -142,19 +160,51 @@ public class Patient {
         this.address = address;
     }
 
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", personId='" + personId + '\'' +
-                ", nationalId='" + nationalId + '\'' +
-                ", selfIdentifiedGender=" + selfIdentifiedGender +
-                ", birthDate=" + birthDate +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", address=" + address +
-                '}';
+    public String getReligionId() {
+        return religionId;
+    }
+
+    public void setReligionId(String religionId) {
+        this.religionId = religionId;
+    }
+
+    public String getOccupationId() {
+        return occupationId;
+    }
+
+    public void setOccupationId(String occupationId) {
+        this.occupationId = occupationId;
+    }
+
+    public String getMaritalStatusId() {
+        return maritalStatusId;
+    }
+
+    public void setMaritalStatusId(String maritalStatusId) {
+        this.maritalStatusId = maritalStatusId;
+    }
+
+    public String getEducationLevelId() {
+        return educationLevelId;
+    }
+
+    public void setEducationLevelId(String educationLevelId) {
+        this.educationLevelId = educationLevelId;
+    }
+
+    public String getNationalityId() {
+        return nationalityId;
+    }
+
+    public void setNationalityId(String nationalityId) {
+        this.nationalityId = nationalityId;
+    }
+
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
     }
 }

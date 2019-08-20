@@ -1,9 +1,11 @@
+
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+
 import 'edit_demographics.dart';
 
 class AddPatient extends StatefulWidget {
@@ -15,8 +17,10 @@ class AddPatient extends StatefulWidget {
 
 class _AddPatient extends State<AddPatient> {
   final _formKey = GlobalKey<FormState>();
+
    static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   String lastName, firstName, nationalId;
+
   var selectedDate;
   DateTime date;
   int _gender = 0;
@@ -44,7 +48,9 @@ class _AddPatient extends State<AddPatient> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
+
         firstDate: DateTime(1900, 8),
+
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
@@ -62,6 +68,7 @@ class _AddPatient extends State<AddPatient> {
           break;
         case 2:
           gender = "FEMALE";
+
           break;
       }
     });
@@ -103,7 +110,9 @@ class _AddPatient extends State<AddPatient> {
                       return value.isEmpty ? 'Enter some text' : null;
                     },
                     onSaved: (value) => setState(() {
+
                       nationalId = value;
+
                     }),
                     decoration: InputDecoration(
                         labelText: _identifier == "Select Identifier"
@@ -176,14 +185,18 @@ class _AddPatient extends State<AddPatient> {
                             padding: const EdgeInsets.all(0.0),
                             child: TextFormField(
                               controller:
+
                               TextEditingController(text: selectedDate),
+
                               validator: (value) {
                                 return value.isEmpty ? 'Enter some text' : null;
                               },
                               decoration: InputDecoration(
+
                                   border: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.circular(0.0))),
+
                             ),
                           ),
                           width: 100,
@@ -215,12 +228,14 @@ class _AddPatient extends State<AddPatient> {
                             color: Colors.white,
                             fontWeight: FontWeight.w500),
                       ),
+
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
 
                            Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
                            await registerPatient(patient);
+
                           print("=--------------------=-=-=-=-=-");
                           print(selectedDate);
                           Navigator.push(
@@ -240,6 +255,7 @@ class _AddPatient extends State<AddPatient> {
     );
   }
 
+
  Future<void> registerPatient(Patient patient)async{
     String response;
     try {
@@ -250,4 +266,5 @@ class _AddPatient extends State<AddPatient> {
       print('Something went wrong...... cause $e');
     }
  }
+
 }

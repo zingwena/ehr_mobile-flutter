@@ -6,25 +6,25 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 
 public class GenderConverter {
     @TypeConverter
-    public static Gender toGender(String gender) {
-        if (gender ==Gender.MALE.getGender()) {
+    public static Gender toGender(int gender) {
+
+        System.out.println("gender = " + gender);
+        if (gender == Gender.MALE.getSex()) {
             return Gender.MALE;
-        } else if (gender ==Gender.FEMALE.getGender()) {
+        } else if (gender == Gender.FEMALE.getSex()) {
             return Gender.FEMALE;
-        } else if (gender ==Gender.UNKNOWN.getGender()) {
+        } else if (gender == Gender.UNKNOWN.getSex()) {
             return Gender.UNKNOWN;
 
-        }
-        else if (gender ==Gender.NON_BINARY.getGender()) {
+        } else if (gender == (Gender.NON_BINARY.getSex())) {
             return Gender.NON_BINARY;
-        }
-        else {
-            throw new IllegalArgumentException("Could not recognize status");
+        } else {
+            throw new IllegalArgumentException("Could not recognize status  " + gender);
         }
     }
 
     @TypeConverter
-    public static String toString(Gender gender) {
-        return gender.getGender();
+    public static int toInt(Gender gender) {
+        return gender.getSex();
     }
 }

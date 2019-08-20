@@ -1,45 +1,12 @@
 package zw.gov.mohcc.mrs.ehr_mobile;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
-
-import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Education;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
-import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
-import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
-import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
-import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
-
 import com.google.gson.Gson;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,19 +18,54 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
+import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
+import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
+import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
+
+import zw.gov.mohcc.mrs.ehr_mobile.vitals.VitalsEntity;
 
 public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
-    private final static String PATIENT_CHANNEL = "ehr_mobile.channel.patient";
-
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+
     final static  String PATIENTCHANNEL= "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
 
+
+
+    private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
 
     public Token token;
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
+    int statusCode;
     List<User> userList;
 
 
@@ -95,153 +97,149 @@ public class MainActivity extends FlutterActivity {
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
-            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+            public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
                 if (methodCall.method.equals("DataSync")) {
 
                     ArrayList args = methodCall.arguments();
                     url = args.get(0).toString();
                     username = args.get(1).toString();
                     password = args.get(2).toString();
-                    Login login = new Login(username, password);
+                    final Login login = new Login(username, password);
 
                     Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
 
 
                     DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
-                    Call<Token> call = dataSyncService.dataSync(login);
 
+                    Call<Token> call = dataSyncService.dataSync(login);
+//                    try {
+//                        statusCode=call.execute().code();
+//                       Boolean isValid= LoginValidator.isValid(statusCode);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
 
                     call.enqueue(new Callback<Token>() {
                         @Override
                         public void onResponse(Call<Token> call, Response<Token> response) {
 
+                            if (response.isSuccessful()) {
+                                Token token = response.body();
+                                getNationalities(token, url + "/api/");
+                                getFacilities(token, url + "/api/");
+                                getCountries(token, url + "/api/");
+                                getOccupation(token, url + "/api/");
+                                getCountries(token, url + "/api/");
+                                getMaritalStates(token, url + "/api/");
+                                getEducationLevels(token, url + "/api/");
+                                getReligion(token, url + "/api/");
+                                getPatients(url);
+                                getEntryPoints(token, url + "/api/");
+                                getHtsModels(token, url + "/api/");
+                                geReasonForNotIssuingResults(token, url + "/api/");
+                                getReligion(token, url + "/api/");
+                                System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
+                                result.success("Welcome "+login.getUsername());
 
-                            Token token = response.body();
-                            getNationalities(token, url + "/api/");
-                            getFacilities(token, url + "/api/");
-                            getCountries(token, url + "/api/");
-                            getOccupation(token, url + "/api/");
-
-                            getCountries(token, url + "/api/");
-                            getMaritalStates(token, url + "/api/");
-                            getEducationLevels(token,url+"/api/");
+                            } else {
+                                statusCode = response.code();
+                                result.success("Username or password are invalid.");
+                                System.out.println("statussssssssssssssss" + statusCode);
 
 
+                            }
 
-                           /* getUsers(token, url + "/api/");
-                             getFacilities(token, url + "/api/");
-                            getOccupation(token, url + "/api/");*/
-                           getReligion(token, url + "/api/");
-                       /*     System.out.println("%%%%%%%%%%%%%" + token);*/
-                            /* getUsers(token, url + "/api/");
-                             */
-                            getPatients();
-                            getReligion(token, url + "/api/");
-                            System.out.println("%%%%%%%%%%%%%" + token);
 
                         }
 
                         @Override
                         public void onFailure(Call<Token> call, Throwable t) {
+                            result.success("Network Error. Either invalid Server Ip address or you are of of range.");
+
                             System.out.println("Error=============== " + t);
                         }
                     });
                 }
             }
+
         });
-        new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-                        if(methodCall.method.equals("metaData")){
-                            try {
-                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
-                                Gson gson = new Gson();
-                                String religionList = gson.toJson(religions);
-                                result.success(religionList);
-                            }catch(Exception e){
-                                System.out.println("something went wrong "+ e.getMessage());
-                            }
-                        }
-                    }
-                }
-        );
+
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                         Gson gson = new Gson();
-                        if(methodCall.method.equals("religionOptions")){
+                        if (methodCall.method.equals("religionOptions")) {
                             try {
                                 List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
 
                                 String religionList = gson.toJson(religions);
                                 result.success(religionList);
-                            }catch(Exception e){
-                                System.out.println("something went wrong "+ e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                        if(methodCall.method.equals("countryOptions")){
+                        if (methodCall.method.equals("countryOptions")) {
                             try {
                                 List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
-                                System.out.println("*************************** native"+ countries);
+                                System.out.println("*************************** native" + countries);
                                 String countryList = gson.toJson(countries);
                                 result.success(countryList);
-                            }catch (Exception e){
-                                System.out.println("something went wrong "+ e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                        if(methodCall.method.equals("occupationOptions")){
+                        if (methodCall.method.equals("occupationOptions")) {
                             try {
                                 List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
                                 String occupationList = gson.toJson(occupations);
                                 result.success(occupationList);
-                            }catch (Exception e){
-                                System.out.println("something went wrong "+ e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
                             }
                         }
 
-                        if(methodCall.method.equals("educationLevelOptions")){
-                          try{
-                              List<EducationLevel> educationLevels= ehrMobileDatabase.educationLevelDao().getEducationLevels();
-                              String educationLevelList= gson.toJson(educationLevels);
-                              result.success(educationLevelList);
+                        if (methodCall.method.equals("educationLevelOptions")) {
+                            try {
+                                List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
+                                String educationLevelList = gson.toJson(educationLevels);
+                                result.success(educationLevelList);
 
-                          }catch (Exception e){
-                              System.out.println("something went wrong "+ e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
 
-                          }
+                            }
                         }
 
-                        if(methodCall.method.equals("nationalityOptions")){
-                          try{
-                            List<Nationality> nationalities=ehrMobileDatabase.nationalityDao().selectAllNationalities();
-                            String nationalityList=gson.toJson(nationalities);
-                            result.success(nationalityList);
-                          }catch(Exception e){
-                              System.out.println("something went wrong "+ e.getMessage());
+                        if (methodCall.method.equals("nationalityOptions")) {
+                            try {
+                                List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
+                                String nationalityList = gson.toJson(nationalities);
+                                result.success(nationalityList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
 
-                          }
+                            }
                         }
 
-                        if(methodCall.method.equals("maritalStatusOptions")){
-                         try{
-                             List<MaritalStatus> maritalStatuses= ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
-                             String maritalStatusList= gson.toJson(maritalStatuses);
-                             result.success(maritalStatusList);
+                        if (methodCall.method.equals("maritalStatusOptions")) {
+                            try {
+                                List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
+                                String maritalStatusList = gson.toJson(maritalStatuses);
+                                result.success(maritalStatusList);
 
-                         }catch(Exception e){
-                             System.out.println("something went wrong "+ e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
 
-                         }
+                            }
                         }
                     }
                 }
         );
 
 
-        new MethodChannel(getFlutterView(),PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+        new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                 final String arguments = methodCall.arguments();
@@ -256,7 +254,6 @@ public class MainActivity extends FlutterActivity {
                     Gson gson = new Gson();
 
 
-
                     result.success(gson.toJson(_list));
 
                 }
@@ -264,12 +261,16 @@ public class MainActivity extends FlutterActivity {
         });
 
 
+    }
+
+    // pull patients from EHR
+
+    private void getPatients(String baseUrl) {
+        ehrMobileDatabase.patientDao().deleteAll();
+        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
 
     }
-    // pull patients from EHR
-    private void getPatients() {
-        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
-    }
+
     public void getMaritalStates(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
@@ -277,7 +278,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<MaritalStatus> maritalStatusList = new ArrayList<>();
+                List<MaritalStatus> maritalStatusList = new ArrayList<MaritalStatus>();
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
                         maritalStatusList.add(new MaritalStatus(item.getCode(), item.getName()));
@@ -312,7 +313,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Occupation> occupationList = new ArrayList<>();
+                List<Occupation> occupationList = new ArrayList<Occupation>();
                 for (BaseNameModel item : response.body().getContent()) {
                     occupationList.add(new Occupation(item.getCode(), item.getName()));
                 }
@@ -368,7 +369,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Facility> facilityList = new ArrayList<>();
+                List<Facility> facilityList = new ArrayList<Facility>();
                 for (BaseNameModel item : response.body().getContent()) {
                     facilityList.add(new Facility(item.getCode(), item.getName()));
                 }
@@ -399,7 +400,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Nationality> nationalities = new ArrayList<>();
+                List<Nationality> nationalities = new ArrayList<Nationality>();
 
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
@@ -423,26 +424,26 @@ public class MainActivity extends FlutterActivity {
     public void getCountries(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
 
-       Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token());
-       call.enqueue(new Callback<TerminologyModel>() {
-           @Override
-           public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-               List<Country> countries= new ArrayList<>();
-               if(response.isSuccessful()){
-                   for(BaseNameModel item: response.body().getContent()){
-                       countries.add(new Country(item.getCode(), item.getName()));
-                   }
-                   if (countries != null && !countries.isEmpty()) {
-                       saveCountriesToDB(countries);
-                   }
-               }
-           }
+        Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Country> countries = new ArrayList<Country>();
+                if (response.isSuccessful()) {
+                    for (BaseNameModel item : response.body().getContent()) {
+                        countries.add(new Country(item.getCode(), item.getName()));
+                    }
+                    if (countries != null && !countries.isEmpty()) {
+                        saveCountriesToDB(countries);
+                    }
+                }
+            }
 
-           @Override
-           public void onFailure(Call<TerminologyModel> call, Throwable t) {
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-           }
-       });
+            }
+        });
 
 
     }
@@ -455,7 +456,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<EducationLevel> educationLevels = new ArrayList<>();
+                List<EducationLevel> educationLevels = new ArrayList<EducationLevel>();
 
                 if (response.isSuccessful()) {
                     for (BaseNameModel item : response.body().getContent()) {
@@ -470,6 +471,120 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    public void getEntryPoints(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getEntryPoints("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<EntryPoint> entryPointList = new ArrayList<EntryPoint>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    entryPointList.add(new EntryPoint(item.getCode(), item.getName()));
+                }
+                if (entryPointList != null && !entryPointList.isEmpty()) {
+
+                    saveEntryPointsToDB(entryPointList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+
+            }
+        });
+    }
+
+    public void getHtsModels(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<HtsModel> htsModelList = new ArrayList<HtsModel>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    htsModelList.add(new HtsModel(item.getCode(), item.getName()));
+                }
+                if (htsModelList != null && !htsModelList.isEmpty()) {
+
+                    saveHtsModelToDB(htsModelList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+
+            }
+        });
+    }
+
+
+    public void getPurpose_Of_Tests(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Purpose_Of_Tests> purpose_of_testsList = new ArrayList<Purpose_Of_Tests>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    purpose_of_testsList.add(new Purpose_Of_Tests(item.getCode(), item.getName()));
+                }
+                if (purpose_of_testsList != null && !purpose_of_testsList.isEmpty()) {
+
+                    savePurpose_Of_TestsToDB(purpose_of_testsList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
+
+            }
+        });
+    }
+
+    public void geReasonForNotIssuingResults(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.geReasonForNotIssuingResults("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<ReasonForNotIssuingResult> reasonForNotIssuingResultList = new ArrayList<ReasonForNotIssuingResult>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    reasonForNotIssuingResultList.add(new ReasonForNotIssuingResult(item.getCode(), item.getName()));
+                }
+                if (reasonForNotIssuingResultList != null && !reasonForNotIssuingResultList.isEmpty()) {
+
+                    saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                System.out.println("tttttttttttttttttttttttt" + t);
 
             }
         });
@@ -515,7 +630,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     void saveAuthorities(List<User> usersFromDB) {
-        List<Authorities> authorities = new ArrayList<>();
+        List<Authorities> authorities = new ArrayList<Authorities>();
 
         /*
         TODO brian refactor this part
@@ -530,7 +645,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.authoritiesDao().insertAuthorities(authorities);
 */
         System.out.println("froooooooooooooom DB=================" + ehrMobileDatabase.authoritiesDao().getAllAuthorities());
-        //ehrMobileDatabase.permissionsDao().insertPermissions();
+//        ehrMobileDatabase.permissionsDao().insertPermissions();
         testById(1);
 
 
@@ -564,6 +679,7 @@ public class MainActivity extends FlutterActivity {
 
         System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
     }
+
     void saveFacilityToDB(List<Facility> facilities) {
 
         ehrMobileDatabase.facilityDao().insertFacilities(facilities);
@@ -572,15 +688,14 @@ public class MainActivity extends FlutterActivity {
     }
 
 
-
-   public void getReligion(Token token, String baseUrl) {
+    public void getReligion(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
         Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Religion> religionList = new ArrayList<>();
+                List<Religion> religionList = new ArrayList<Religion>();
                 for (BaseNameModel item : response.body().getContent()) {
                     religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
                 }
@@ -611,7 +726,6 @@ public class MainActivity extends FlutterActivity {
     void saveOccupationsToDB(List<Occupation> occupations) {
 
 
-
         System.out.println("*****************   " + ehrMobileDatabase);
         ehrMobileDatabase.occupationDao().deleteOccupations();
         ehrMobileDatabase.occupationDao().insertOccupations(occupations);
@@ -623,7 +737,7 @@ public class MainActivity extends FlutterActivity {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-         ehrMobileDatabase.nationalityDao().deleteNationalities();
+        ehrMobileDatabase.nationalityDao().deleteNationalities();
         ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
 
         System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
@@ -636,7 +750,7 @@ public class MainActivity extends FlutterActivity {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-         ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
+        ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
         ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
 
         System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
@@ -644,22 +758,44 @@ public class MainActivity extends FlutterActivity {
 
     }
 
-
-//    void saveEducationToDB(List<Education> educationList) {
-//
-//
-//
-//        System.out.println("?????????????????    " + ehrMobileDatabase);
-//
-//        ehrMobileDatabase.educationDao().insertEducationList(educationList);
-//
-//        System.out.println("education from DB +++++++++++++++++ :" + ehrMobileDatabase.educationDao().getEducationList());
-//
-//
-//    }
+    void saveEntryPointsToDB(List<EntryPoint> entryPoints) {
 
 
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.entryPointDao().deleteEntryPoints();
+        ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
+        System.out.println("EntryPoint from DB *****" + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
+
+    }
+
+    void saveHtsModelToDB(List<HtsModel> htsModels) {
 
 
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.htsModelDao().deleteHtsModels();
+        ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
+        System.out.println("HtsModels from DB *****" + ehrMobileDatabase.htsModelDao().getAllHtsModels());
+
+    }
+
+    void savePurpose_Of_TestsToDB(List<Purpose_Of_Tests> purpose_of_tests) {
+
+
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.purpose_of_testsDao().deletePurpose_Of_Tests();
+        ehrMobileDatabase.purpose_of_testsDao().insertPurpose_Of_Tests(purpose_of_tests);
+        System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests());
+
+    }
+
+    void saveReasonForNotIssuingResultToDB(List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
+
+
+        System.out.println("*****************   " + ehrMobileDatabase);
+        ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
+        ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
+        System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
+
+    }
 }
 

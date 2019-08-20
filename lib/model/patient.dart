@@ -1,6 +1,6 @@
-import 'package:intl/intl.dart';
-import 'package:json_annotation/json_annotation.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+import 'package:intl/intl.dart';
 part 'patient.g.dart';
 
 @JsonSerializable()
@@ -61,6 +61,8 @@ class Patient {
       });
     }
 
+
     return patientList;
   }
+
 }

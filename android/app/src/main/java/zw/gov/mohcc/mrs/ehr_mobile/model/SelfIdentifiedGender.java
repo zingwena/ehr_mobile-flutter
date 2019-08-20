@@ -1,18 +1,18 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 public enum SelfIdentifiedGender {
-    MALE("MALE"),
-    FEMALE("FEMALE"),
-    OTHER("OTHER"),
-    NON_BINARY("NON_BINARY");
+    MALE(0),
+    FEMALE(1),
+    OTHER(2),
+    NON_BINARY(3);
 
-    private String name;
+    private int selfIdentifiedGender;
 
-    SelfIdentifiedGender(String name) {
-        this.name = name;
+    SelfIdentifiedGender(int selfIdentifiedGender) {
+        this.selfIdentifiedGender = selfIdentifiedGender;
     }
 
-    public String getName() {
-        return name;
+    public int getSelfIdentifiedGender() {
+        return selfIdentifiedGender;
     }
 }

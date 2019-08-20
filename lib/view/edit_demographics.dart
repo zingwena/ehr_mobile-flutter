@@ -1,15 +1,16 @@
 import 'dart:convert';
-import 'package:ehr_mobile/model/Country.dart';
-import 'package:ehr_mobile/model/EducationLevel.dart';
-import 'package:ehr_mobile/model/Nationality.dart';
-import 'package:ehr_mobile/model/Occupation.dart';
-import 'package:ehr_mobile/model/Religion.dart';
+
+
+import 'package:ehr_mobile/model/country.dart';
+import 'package:ehr_mobile/model/religion.dart';
+import 'package:ehr_mobile/model/education_level.dart';
+import 'package:ehr_mobile/model/nationality.dart';
+import 'package:ehr_mobile/model/occupation.dart';
+import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
+
 import 'package:intl/intl.dart';
-import 'package:ehr_mobile/model/MaritalStatus.dart';
-//import 'package:cbs_app/model/person.dart';
-//import 'package:cbs_app/widgets/list_people.dart';
-//import 'package:cbs_app/widgets/people_table.dart';
+import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'patient_address.dart';

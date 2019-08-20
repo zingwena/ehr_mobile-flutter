@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'edit_demographics.dart';
 import 'package:flutter/services.dart';
 
+import 'search_patient.dart';
+
 class DataSyncronization extends StatefulWidget {
   @override
   _DataSyncronizationState createState() => new _DataSyncronizationState();
@@ -21,8 +23,12 @@ class _DataSyncronizationState extends State<DataSyncronization> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: dataSyncBody(),
+      body: Builder(
+              builder: (BuildContext context){
+               return Center(
+          child: dataSyncBody(),
+        );
+              } 
       ),
     );
   }
@@ -164,14 +170,32 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                 onPressed: () async{
          if(_key.currentState.validate()){
            DateTime date= DateTime.now();
+
            Navigator.push(
                context, MaterialPageRoute(builder: (context) => AddPatient()));
+
              _key.currentState.save();
+
              String result;
              try {
-               
+
            result= await platform.invokeMethod("DataSync", [url, username, password]);
-          
+           if(result.contains("Welcome")){
+                Navigator.push(
+               context, MaterialPageRoute(builder: (context) => SearchPatient()));
+                          print("Response ================="+result.toString());
+
+           }
+         
+          else {
+      
+                Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Have a snack!'),
+            ),
+          );
+
+          }
              }catch(e){
                print(e);
              }
