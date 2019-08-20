@@ -26,9 +26,11 @@ class _DataSyncronizationState extends State<DataSyncronization> {
               builder: (BuildContext context){
                return Center(
           child: dataSyncBody(),
+          
         );
               } 
       ),
+      
     );
   }
 
@@ -184,12 +186,8 @@ class _DataSyncronizationState extends State<DataSyncronization> {
            }
          
           else {
-      
-                Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Have a snack!'),
-            ),
-          );
+            
+               
 
           }
              }catch(e){

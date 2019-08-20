@@ -27,6 +27,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   datetime_picker_formfield: ^0.4.1
   json_annotation: ^3.0.0
+  wifi: ^0.1.5
+
 
 dev_dependencies:
   flutter_test:
