@@ -1,4 +1,5 @@
 
+import 'package:ehr_mobile/view/add_patient.dart';
 import 'package:flutter/material.dart';
 import 'edit_demographics.dart';
 import 'package:flutter/services.dart';
@@ -164,7 +165,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
          if(_key.currentState.validate()){
            DateTime date= DateTime.now();
            Navigator.push(
-               context, MaterialPageRoute(builder: (context) => EditDemographics("ruzane","tinotenda",date,"male")));           
+               context, MaterialPageRoute(builder: (context) => AddPatient()));
              _key.currentState.save();
              String result;
              try {

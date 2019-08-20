@@ -7,6 +7,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 
@@ -57,6 +58,7 @@ public class MainActivity extends FlutterActivity {
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel.patient";
 
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+    final static  String PATIENTCHANNEL= "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
 
 
     public Token token;
@@ -71,6 +73,25 @@ public class MainActivity extends FlutterActivity {
         GeneratedPluginRegistrant.registerWith(this);
 
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
+
+        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+
+            @Override
+            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+
+                Gson gson = new Gson();
+                if(methodCall.method.equals("registerPatient")){
+                    String args = methodCall.arguments();
+
+                    System.out.println(args);
+                    PatientDto patientDto = gson.fromJson(args,PatientDto.class);
+
+                    Patient patient= new Patient(patientDto.getFirstName(),patientDto.getLastName(),patientDto.getNationalId());
+                    ehrMobileDatabase.patientDao().createPatient(patient);
+                    System.out.println("==================-=-=-=-=-fromDB "+ehrMobileDatabase.patientDao().listPatients());
+                }
+            }
+        });
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override

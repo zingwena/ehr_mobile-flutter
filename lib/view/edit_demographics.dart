@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/EducationLevel.dart';
 import 'package:ehr_mobile/model/Nationality.dart';
 import 'package:ehr_mobile/model/Occupation.dart';
 import 'package:ehr_mobile/model/Religion.dart';
+import 'package:ehr_mobile/view/add_patient.dart';
 import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/MaritalStatus.dart';
 //import 'package:cbs_app/model/person.dart';
@@ -385,10 +386,10 @@ class _EditDemographicsState extends State<EditDemographics> {
 
 //
 //              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
-//                              Navigator.push(
-//                                  context,
-//                                  MaterialPageRoute(
-//                                      builder: (context) => ListPeople()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddPatient()));
 //                            }
                           },
                         ),

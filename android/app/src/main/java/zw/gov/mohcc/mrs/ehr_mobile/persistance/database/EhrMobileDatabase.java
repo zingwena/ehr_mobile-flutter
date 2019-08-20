@@ -53,7 +53,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
         Facility.class,
-        Religion.class, Nationality.class, Occupation.class, EducationLevel.class}, version = 3, exportSchema = false)
+        Religion.class, Nationality.class, Occupation.class, EducationLevel.class}, version = 4, exportSchema = false)
 @TypeConverters({DataConverter.class})
 
 public abstract class EhrMobileDatabase extends RoomDatabase {

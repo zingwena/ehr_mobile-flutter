@@ -14,10 +14,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
 @Entity()
 public class Patient {
-    @TypeConverters(SelfIdentifiedGenderConverter.class)
-    public SelfIdentifiedGender selfIdentifiedGender;
-    @TypeConverters(GenderConverter.class)
-    public Gender sex;
+
+    public String selfIdentifiedGender;
+
+    public String sex;
     @PrimaryKey(autoGenerate = true)
     private int id;
     @NonNull
@@ -49,11 +49,13 @@ public class Patient {
     public Patient() {
     }
 
+
+
     @Ignore
-    public Patient(@NonNull String firstName, @NonNull String lastName, @NonNull Gender sex) {
+    public Patient(@NonNull String firstName, @NonNull String lastName, String nationalId) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sex = sex;
+        this.nationalId = nationalId;
     }
 
     public int getId() {
@@ -73,19 +75,19 @@ public class Patient {
         this.firstName = firstName;
     }
 
-    public SelfIdentifiedGender getSelfIdentifiedGender() {
+    public String getSelfIdentifiedGender() {
         return selfIdentifiedGender;
     }
 
-    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
+    public void setSelfIdentifiedGender(String selfIdentifiedGender) {
         this.selfIdentifiedGender = selfIdentifiedGender;
     }
 
-    public Gender getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Gender sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

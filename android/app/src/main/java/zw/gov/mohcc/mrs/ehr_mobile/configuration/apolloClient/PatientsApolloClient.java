@@ -50,7 +50,7 @@ public class PatientsApolloClient {
 
 
     public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
-        PatientsApolloClient.getApolloClient().query(
+       /* PatientsApolloClient.getApolloClient().query(
                 GetPatientsQuery.builder()
                         .build()).enqueue(
                 new ApolloCall.Callback<GetPatientsQuery.Data>() {
@@ -140,7 +140,7 @@ public class PatientsApolloClient {
                         System.out.println("Error =========" + e.toString());
                     }
                 }
-        );
+        );*/
     }
 
 
