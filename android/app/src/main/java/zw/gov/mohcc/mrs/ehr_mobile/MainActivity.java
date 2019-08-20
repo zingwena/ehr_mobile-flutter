@@ -50,7 +50,7 @@ public class MainActivity extends FlutterActivity {
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
-    public Token token;
+
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
     List<User> userList;
@@ -69,48 +69,69 @@ public class MainActivity extends FlutterActivity {
                 if (methodCall.method.equals("DataSync")) {
 
                     ArrayList args = methodCall.arguments();
-                    url = args.get(0).toString();
-                    username = args.get(1).toString();
-                    password = args.get(2).toString();
-                    Login login = new Login(username, password);
+                    url  = args.get(0).toString();
+                    String tokenString  = args.get(1).toString();
 
-                    Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
+                    System.out.println("&&&&&&&&&&&&&&&&&&"+tokenString);
 
+                    Token token = new Token(tokenString);
 
-                    DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
-                    Call<Token> call = dataSyncService.dataSync(login);
+                    getNationalities(token, url + "/api/");
+                    getFacilities(token, url + "/api/");
+                    getCountries(token, url + "/api/");
+                    getOccupation(token, url + "/api/");
+                    getCountries(token, url + "/api/");
+                    getMaritalStates(token, url + "/api/");
+                    getEducationLevels(token, url + "/api/");
+                    getReligion(token, url + "/api/");
+                    getEntryPoints(token, url + "/api/");
+                    getHtsModels(token, url + "/api/");
+                    getPurpose_Of_Tests(token, url + "/api/");
+                    geReasonForNotIssuingResults(token, url + "/api/");
+                    getPatients();
 
-
-                    call.enqueue(new Callback<Token>() {
-                        @Override
-                        public void onResponse(Call<Token> call, Response<Token> response) {
-
-                            Token token = response.body();
-                            getNationalities(token, url + "/api/");
-                            getFacilities(token, url + "/api/");
-                            getCountries(token, url + "/api/");
-                            getOccupation(token, url + "/api/");
-                            getCountries(token, url + "/api/");
-                            getMaritalStates(token, url + "/api/");
-                            getEducationLevels(token, url + "/api/");
-                            getReligion(token, url + "/api/");
-                            getEntryPoints(token, url + "/api/");
-                            getHtsModels(token, url + "/api/");
-                            getPurpose_Of_Tests(token, url + "/api/");
-                            geReasonForNotIssuingResults(token, url + "/api/");
-                            getPatients();
-
-                            getReligion(token, url + "/api/");
-                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
+                    getReligion(token, url + "/api/");
 
 
-                        }
 
-                        @Override
-                        public void onFailure(Call<Token> call, Throwable t) {
-                            System.out.println("Error=============== " + t);
-                        }
-                    });
+//                    Login login = new Login(username, password);
+
+
+
+//                    DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
+//                    Call<Token> call = dataSyncService.dataSync(login);
+//
+//
+//                    call.enqueue(new Callback<Token>() {
+//                        @Override
+//                        public void onResponse(Call<Token> call, Response<Token> response) {
+//
+//                            Token token = response.body();
+//                            getNationalities(token, url + "/api/");
+//                            getFacilities(token, url + "/api/");
+//                            getCountries(token, url + "/api/");
+//                            getOccupation(token, url + "/api/");
+//                            getCountries(token, url + "/api/");
+//                            getMaritalStates(token, url + "/api/");
+//                            getEducationLevels(token, url + "/api/");
+//                            getReligion(token, url + "/api/");
+//                            getEntryPoints(token, url + "/api/");
+//                            getHtsModels(token, url + "/api/");
+//                            getPurpose_Of_Tests(token, url + "/api/");
+//                            geReasonForNotIssuingResults(token, url + "/api/");
+//                            getPatients();
+//
+//                            getReligion(token, url + "/api/");
+//                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
+//
+//
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<Token> call, Throwable t) {
+//                            System.out.println("Error=============== " + t);
+//                        }
+//                    });
                 }
             }
 
@@ -245,13 +266,6 @@ public class MainActivity extends FlutterActivity {
             }
         });
 
-                    /*
-                    TODO brian refactor this part
-                    maritalStatesJson.forEach(maritalState ->
-                            maritalStates.add(new MaritalStatus(maritalState.getAsJsonObject().get("code").toString(), maritalState.getAsJsonObject().get("name").toString()))
-                    );
-
-                    saveMaritalStatesToDB(maritalStates);*/
 
 
     }

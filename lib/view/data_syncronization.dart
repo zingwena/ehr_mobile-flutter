@@ -1,7 +1,12 @@
 
+import 'dart:convert';
+
+import 'package:ehr_mobile/model/token.dart';
 import 'package:flutter/material.dart';
 import 'edit_demographics.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+
 
 import 'search_patient.dart';
 
@@ -12,6 +17,7 @@ class DataSyncronization extends StatefulWidget {
 
 class _DataSyncronizationState extends State<DataSyncronization> {
   static const MethodChannel platform= MethodChannel('Authentication');
+  Token token;
 
   String url,username,password;
 
@@ -169,16 +175,18 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                context, MaterialPageRoute(builder: (context) => SearchPatient()));
              _key.currentState.save();
 
-             String result;
-             try {
+//             String result;
+//             try {
+//
+//           result= await platform.invokeMethod("DataSync", [url, username, password]);
+//           print("======================result"+result.toString());
+//
+//             }catch(e){
+//               print(e);
+//             }
+             fetchPost();
 
-           result= await platform.invokeMethod("DataSync", [url, username, password]);
-           print("======================result"+result.toString());
-          
-             }catch(e){
-               print(e);
-             }
-          
+
          }
 
          
@@ -196,11 +204,34 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       )
 
 );
+
+  Future<String> fetchPost() async {
+    String ehr_url = url;
+    var body = json.encode({"username":username,"password":password});
+
+
+    final response = await http.post(url+"/api/authenticate",headers:{"Content-type" : "application/json",
+      "Accept": "application/json",},body: body);
+
+    if (response.statusCode == 200) {
+      // If server returns an OK response, parse the JSON.
+      token = Token.fromJson(json.decode(response.body));
+      print("tokeeeeeen===================="+token.id_token);
+      String result= await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
+      //print("======================result"+result.toString());
+
+
+    } else {
+      print(response.body);
+      // If that response was not OK, throw an error.
+      throw Exception('Failed to authenticate');
+    }
+  }
 }
 
 
 
-
+//https://apps.mohcc.gov.zw/impilo-ZW060383/api/authenticate
 
 
 
