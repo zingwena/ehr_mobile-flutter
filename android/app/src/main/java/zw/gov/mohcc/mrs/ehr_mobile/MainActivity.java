@@ -125,7 +125,7 @@ public class MainActivity extends FlutterActivity {
                 System.out.println("username = " + username);
                 System.out.println("password = " + password);
                 Login login = new Login(username, password);
-                String url = "http://10.20.100.178:8080";
+//                String url = "http://10.20.100.178:8080";
                 Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
 
                 DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
@@ -273,7 +273,7 @@ public class MainActivity extends FlutterActivity {
     // pull patients from EHR
 
     private void getPatients(String baseUrl) {
-        ehrMobileDatabase.patientDao().deleteAll();
+        //ehrMobileDatabase.patientDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
 
     }

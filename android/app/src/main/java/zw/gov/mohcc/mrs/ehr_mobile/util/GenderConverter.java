@@ -19,12 +19,15 @@ public class GenderConverter {
         } else if (gender == (Gender.NON_BINARY.getSex())) {
             return Gender.NON_BINARY;
         } else {
-            throw new IllegalArgumentException("Could not recognize status  " + gender);
+            return Gender.NULL_VALS;
         }
     }
 
     @TypeConverter
     public static int toInt(Gender gender) {
+        if (gender == null) {
+            return -1;
+        }
         return gender.getSex();
     }
 }
