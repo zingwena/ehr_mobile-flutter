@@ -2,9 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.util;
 
 import androidx.room.TypeConverter;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SelfIdentifiedGender;
 
 public class SelfIdentifiedGenderConverter {
+
     @TypeConverter
     public static SelfIdentifiedGender toSelfIdentifiedGender(int gender) {
         System.out.println("gender = " + gender);
@@ -20,12 +22,15 @@ public class SelfIdentifiedGenderConverter {
             return SelfIdentifiedGender.NON_BINARY;
         }
         else {
-            throw new IllegalArgumentException("Could not recognize status  "+gender);
+            return SelfIdentifiedGender.NULL_VALS;
         }
     }
 
     @TypeConverter
     public static int toInt(SelfIdentifiedGender gender) {
+        if (gender == null) {
+            return SelfIdentifiedGender.NULL_VALS.getSelfIdentifiedGender();
+        }
         return gender.getSelfIdentifiedGender();
     }
 

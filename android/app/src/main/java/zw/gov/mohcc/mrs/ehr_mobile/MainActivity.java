@@ -97,7 +97,7 @@ public class MainActivity extends FlutterActivity {
 
                             if (response.isSuccessful()) {
                                 Token token = response.body();
-                                getNationalities(token, url + "/api/");
+                                /*getNationalities(token, url + "/api/");
                                 getFacilities(token, url + "/api/");
                                 getCountries(token, url + "/api/");
                                 getOccupation(token, url + "/api/");
@@ -105,11 +105,11 @@ public class MainActivity extends FlutterActivity {
                                 getMaritalStates(token, url + "/api/");
                                 getEducationLevels(token, url + "/api/");
                                 getReligion(token, url + "/api/");
-                                getPatients(url);
                                 getEntryPoints(token, url + "/api/");
                                 getHtsModels(token, url + "/api/");
                                 geReasonForNotIssuingResults(token, url + "/api/");
-                                getReligion(token, url + "/api/");
+                                getReligion(token, url + "/api/");*/
+                                getPatients(url);
                                 System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
                                 result.success("Welcome "+login.getUsername());
 
@@ -235,7 +235,7 @@ public class MainActivity extends FlutterActivity {
     // pull patients from EHR
 
     private void getPatients(String baseUrl) {
-        ehrMobileDatabase.patientDao().deleteAll();
+        //ehrMobileDatabase.patientDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
 
     }
