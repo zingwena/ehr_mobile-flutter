@@ -203,4 +203,25 @@ public class Patient {
     public void setCountryId(String countryId) {
         this.countryId = countryId;
     }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", selfIdentifiedGender=" + selfIdentifiedGender +
+                ", sex=" + sex +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", personId='" + personId + '\'' +
+                ", nationalId='" + nationalId + '\'' +
+                ", religionId='" + religionId + '\'' +
+                ", occupationId='" + occupationId + '\'' +
+                ", maritalStatusId='" + maritalStatusId + '\'' +
+                ", educationLevelId='" + educationLevelId + '\'' +
+                ", birthDate=" + birthDate +
+                ", nationalityId='" + nationalityId + '\'' +
+                ", countryId='" + countryId + '\'' +
+                ", address=" + address +
+                '}';
+    }
 }

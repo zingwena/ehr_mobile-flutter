@@ -26,23 +26,29 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 public class PatientsApolloClient {
 
     // GraphQL endpoint
-    // private static final String SERVER_URL = "http://10.20.101.91:8080/api/graphql";
-    private static final String SERVER_URL = "http://10.20.100.178:8080/api/graphql";
+
+   private static final String endpoint = "/api/graphql";
+
     private static Patient patient;
 
-    public static ApolloClient getApolloClient() {
-
+    public static ApolloClient getApolloClient(String baseUrl) {
+        System.out.println("baseUrl = " + baseUrl);
+        String url=baseUrl.concat(endpoint);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .build();
 
         return ApolloClient.builder()
-                .serverUrl(SERVER_URL)
+                .serverUrl(url)
                 .okHttpClient(okHttpClient).build();
     }
 
-    public static void getPatientsFromEhr(EhrMobileDatabase ehrMobileDatabase) {
-        PatientsApolloClient.getApolloClient().query(
+
+
+    public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
+        System.out.println("baseUrl = " + baseUrl);
+        PatientsApolloClient.getApolloClient(baseUrl).query(
+
                 GetPatientsQuery.builder()
                         .build()).enqueue(
                 new ApolloCall.Callback<GetPatientsQuery.Data>() {
@@ -68,19 +74,19 @@ public class PatientsApolloClient {
 
 
                                     patient = new Patient(firstName, lastName, sex);
-                                    patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
+                                    /*patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
                                     patient.setCountryId(patientData.countryOfBirth() != null ? patientData.countryOfBirth().id() : null);
                                     patient.setEducationLevelId(patientData.education() != null ? patientData.education().id() : null);
                                     patient.setAddress(address);
                                     patient.setMaritalStatusId(patientData.marital() != null ? patientData.marital().id() : null);
                                     patient.setNationalityId(patientData.nationality() != null ? patientData.nationality().id() : null);
                                     patient.setSelfIdentifiedGender(selfIdentifiedGender);
-                                    patient.setOccupationId(patientData.occupation() != null ? patientData.occupation().id() : null);
+                                    patient.setOccupationId(patientData.occupation() != null ? patientData.occupation().id() : null);*/
 
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);
                                         System.out.println("dateOfBirth = " + dateOfBirth);
-//                                        patient.setBirthDate(dateOfBirth);
+                                        patient.setBirthDate(dateOfBirth);
 
 
                                     } catch (Exception e) {
@@ -103,7 +109,7 @@ public class PatientsApolloClient {
                                     }*/
 
                                     ehrMobileDatabase.patientDao().createPatient(patient);
-
+                                    System.out.println("*********** PATIENT ***********       "+ patient);
                                     System.out.println("Number of Patients  = " + ehrMobileDatabase.patientDao().listPatients().size());
                                 }
                             } catch (Exception e) {

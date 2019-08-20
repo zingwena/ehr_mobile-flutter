@@ -70,6 +70,9 @@ public interface DataSyncService {
     @GET("reason-for-not-issuing-results")
     Call<TerminologyModel> geReasonForNotIssuingResults(@Header("Authorization")String token);
 
+    @GET("purpose-of-tests")
+    Call<TerminologyModel> getPurpose_Of_Tests(@Header("Authorization")String token);
+
 
 
 
