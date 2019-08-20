@@ -6,6 +6,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
@@ -43,16 +47,25 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
+
 import zw.gov.mohcc.mrs.ehr_mobile.vitals.VitalsEntity;
 
 public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+
+    final static  String PATIENTCHANNEL= "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
+
+
+
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
+
 
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
+    int statusCode;
     List<User> userList;
 
 
@@ -63,12 +76,32 @@ public class MainActivity extends FlutterActivity {
 
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+
+                Gson gson = new Gson();
+                if(methodCall.method.equals("registerPatient")){
+                    String args = methodCall.arguments();
+
+                    System.out.println(args);
+                    PatientDto patientDto = gson.fromJson(args,PatientDto.class);
+
+                    Patient patient= new Patient(patientDto.getFirstName(),patientDto.getLastName(),patientDto.getNationalId());
+                    ehrMobileDatabase.patientDao().createPatient(patient);
+                    System.out.println("==================-=-=-=-=-fromDB "+ehrMobileDatabase.patientDao().listPatients());
+                }
+            }
+        });
+
+        new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
                 if (methodCall.method.equals("DataSync")) {
 
                     ArrayList args = methodCall.arguments();
+
                     url  = args.get(0).toString();
                     String tokenString  = args.get(1).toString();
 
@@ -88,50 +121,14 @@ public class MainActivity extends FlutterActivity {
                     getHtsModels(token, url + "/api/");
                     getPurpose_Of_Tests(token, url + "/api/");
                     geReasonForNotIssuingResults(token, url + "/api/");
-                    getPatients();
+                    getPatients(url);
 
                     getReligion(token, url + "/api/");
 
 
 
-//                    Login login = new Login(username, password);
 
 
-
-//                    DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
-//                    Call<Token> call = dataSyncService.dataSync(login);
-//
-//
-//                    call.enqueue(new Callback<Token>() {
-//                        @Override
-//                        public void onResponse(Call<Token> call, Response<Token> response) {
-//
-//                            Token token = response.body();
-//                            getNationalities(token, url + "/api/");
-//                            getFacilities(token, url + "/api/");
-//                            getCountries(token, url + "/api/");
-//                            getOccupation(token, url + "/api/");
-//                            getCountries(token, url + "/api/");
-//                            getMaritalStates(token, url + "/api/");
-//                            getEducationLevels(token, url + "/api/");
-//                            getReligion(token, url + "/api/");
-//                            getEntryPoints(token, url + "/api/");
-//                            getHtsModels(token, url + "/api/");
-//                            getPurpose_Of_Tests(token, url + "/api/");
-//                            geReasonForNotIssuingResults(token, url + "/api/");
-//                            getPatients();
-//
-//                            getReligion(token, url + "/api/");
-//                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-===============" + ehrMobileDatabase.patientDao().listPatients().toString());
-//
-//
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<Token> call, Throwable t) {
-//                            System.out.println("Error=============== " + t);
-//                        }
-//                    });
                 }
             }
 
@@ -223,7 +220,7 @@ public class MainActivity extends FlutterActivity {
 
                     PatientQuery patientQuery = new PatientQuery();
                     SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
-                    _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                      _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
                     Gson gson = new Gson();
 
 
@@ -237,9 +234,11 @@ public class MainActivity extends FlutterActivity {
     }
 
     // pull patients from EHR
-    private void getPatients() {
-//        ehrMobileDatabase.patientDao().deleteAll();
-        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase);
+
+    private void getPatients(String baseUrl) {
+        //ehrMobileDatabase.patientDao().deleteAll();
+        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
+
     }
 
     public void getMaritalStates(Token token, String baseUrl) {
@@ -645,7 +644,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     void saveFacilityToDB(List<Facility> facilities) {
-
+        ehrMobileDatabase.facilityDao().deleteAllFacilities();
         ehrMobileDatabase.facilityDao().insertFacilities(facilities);
 
         System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());

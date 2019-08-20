@@ -46,12 +46,12 @@ import static androidx.room.ForeignKey.CASCADE;
 )
 public class Patient {
 
+
+    public String selfIdentifiedGender;
+
+    public String sex;
     @PrimaryKey(autoGenerate = true)
     private int id;
-    @TypeConverters(SelfIdentifiedGenderConverter.class)
-    public SelfIdentifiedGender selfIdentifiedGender;
-    @TypeConverters(GenderConverter.class)
-    public Gender sex;
 
     @NonNull
     private String firstName;
@@ -74,11 +74,15 @@ public class Patient {
     public Patient() {
     }
 
+
+
     @Ignore
-    public Patient(@NonNull String firstName, @NonNull String lastName, Gender sex) {
+
+    public Patient(@NonNull String firstName, @NonNull String lastName, String nationalId) {
+
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sex = sex;
+        this.nationalId = nationalId;
     }
 
     public int getId() {
@@ -98,19 +102,19 @@ public class Patient {
         this.firstName = firstName;
     }
 
-    public SelfIdentifiedGender getSelfIdentifiedGender() {
+    public String getSelfIdentifiedGender() {
         return selfIdentifiedGender;
     }
 
-    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
+    public void setSelfIdentifiedGender(String selfIdentifiedGender) {
         this.selfIdentifiedGender = selfIdentifiedGender;
     }
 
-    public Gender getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Gender sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -202,5 +206,26 @@ public class Patient {
 
     public void setCountryId(String countryId) {
         this.countryId = countryId;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", selfIdentifiedGender=" + selfIdentifiedGender +
+                ", sex=" + sex +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", personId='" + personId + '\'' +
+                ", nationalId='" + nationalId + '\'' +
+                ", religionId='" + religionId + '\'' +
+                ", occupationId='" + occupationId + '\'' +
+                ", maritalStatusId='" + maritalStatusId + '\'' +
+                ", educationLevelId='" + educationLevelId + '\'' +
+                ", birthDate=" + birthDate +
+                ", nationalityId='" + nationalityId + '\'' +
+                ", countryId='" + countryId + '\'' +
+                ", address=" + address +
+                '}';
     }
 }

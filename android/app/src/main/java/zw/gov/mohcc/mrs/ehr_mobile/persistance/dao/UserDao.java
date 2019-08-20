@@ -33,4 +33,7 @@ public interface UserDao {
 
     @Insert
     void createUser(User user);
+
+    @Query("SELECT * FROM user where login=:username")
+    User findUserbyUsername(String username);
 }
