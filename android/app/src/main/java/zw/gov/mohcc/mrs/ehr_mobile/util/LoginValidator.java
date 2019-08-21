@@ -14,7 +14,14 @@ public class LoginValidator {
     }
 
 
+    public static Boolean isUserValid(EhrMobileDatabase database, String username, String password) {
 
-
+        User user = database.userDao().findUserbyUsername(username);
+     if(user!=null && password.equals("password")){
+         return true;
+     }
+     else
+     return false;
+    }
 }
 

@@ -366,7 +366,7 @@ class _EditDemographicsState extends State<EditDemographics> {
       educationLevels= await dataChannel.invokeMethod('educationLevelOptions');
       nationalities= await dataChannel.invokeMethod('nationalityOptions');
       maritalStates=await dataChannel.invokeMethod('maritalStatusOptions');
-     print('------------------------$countries');
+     print('------------------------***********************************$maritalStates');
       setState(() {
         religion=result;
         _religions=jsonDecode(religion);
@@ -427,7 +427,6 @@ class _EditDemographicsState extends State<EditDemographics> {
       _dropDownMenuItemsEducationLevel =
           getDropDownMenuItemsIdentifiedEducationLevel();
       _currentEducationLevel = _dropDownMenuItemsEducationLevel[0].value;
-
     }
     catch(e){
       print('something went wrong--------------------------- $e');
