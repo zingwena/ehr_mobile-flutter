@@ -74,12 +74,12 @@ public class PatientsApolloClient {
 
 
                                     patient = new Patient(firstName, lastName, sex);
-                                    /*patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
+                                    patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
                                     patient.setCountryId(patientData.countryOfBirth() != null ? patientData.countryOfBirth().id() : null);
                                     patient.setEducationLevelId(patientData.education() != null ? patientData.education().id() : null);
                                     patient.setAddress(address);
                                     patient.setMaritalStatusId(patientData.marital() != null ? patientData.marital().id() : null);
-                                    patient.setNationalityId(patientData.nationality() != null ? patientData.nationality().id() : null);
+                                    /*patient.setNationalityId(patientData.nationality() != null ? patientData.nationality().id() : null);
                                     patient.setSelfIdentifiedGender(selfIdentifiedGender);
                                     patient.setOccupationId(patientData.occupation() != null ? patientData.occupation().id() : null);*/
 
