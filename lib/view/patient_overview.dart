@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
-import 'package:cbs_app/view/hiv_screening.dart';
+
 
 class Overview extends StatefulWidget {
-  String patient;
+  Patient patient;
 
   Overview(this.patient);
 
@@ -16,17 +17,15 @@ class Overview extends StatefulWidget {
 }
 
 class OverviewState extends State<Overview> {
-  String patient,
-      fullName,
-      occupation,
-      education,
-      age,
-      sex,
-      address,
-      district,
-      maritalStatus;
-
+  Patient _patient;
   Map<String, dynamic> details;
+
+  @override
+  void initState() {
+    _patient = widget.patient;
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +82,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: 'Taurai Mandebvu'),
+                                                  text: _patient.firstName + " " + _patient.lastName),
                                               decoration: InputDecoration(
                                                 labelText: 'Full Name',
                                                 border: OutlineInputBorder(),
@@ -111,7 +110,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: 'Male'),
+                                                  text: _patient.sex),
                                               decoration: InputDecoration(
                                                 labelText: 'Sex',
                                                 border: OutlineInputBorder(),
@@ -139,7 +138,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: '63-1324567 18 VIT M'),
+                                                  text: _patient.nationalId),
                                               decoration: InputDecoration(
                                                 labelText: 'National ID',
                                                 border: OutlineInputBorder(),
@@ -167,7 +166,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: '20/01/1988'),
+                                                  text: _patient.birthDate),
                                               decoration: InputDecoration(
                                                 labelText: 'Date Of Birth',
                                                 border: OutlineInputBorder(),
@@ -195,7 +194,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: 'Married'),
+                                                  text: _patient.maritalStatus.name),
                                               decoration: InputDecoration(
                                                 labelText: 'Marital Status',
                                                 border: OutlineInputBorder(),
@@ -223,7 +222,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: 'Tertiary'),
+                                                  text: _patient.educationLevel.name),
                                               decoration: InputDecoration(
                                                 labelText: 'Education',
                                                 border: OutlineInputBorder(),
@@ -251,7 +250,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: 'Employed'),
+                                                  text: _patient.occupation.name),
                                               decoration: InputDecoration(
                                                 labelText: 'Occupation',
                                                 border: OutlineInputBorder(),
@@ -279,7 +278,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: 'Zimbabwean'),
+                                                  text: _patient.nationality.name),
                                               decoration: InputDecoration(
                                                 labelText: 'Nationality',
                                                 border: OutlineInputBorder(),
@@ -391,7 +390,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(0.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: '0774536627'),
+                                                text: _patient.phoneNumber),
                                             decoration: InputDecoration(
                                               labelText: 'Phone Number',
                                               border: OutlineInputBorder(),
@@ -425,16 +424,5 @@ class OverviewState extends State<Overview> {
     );
   }
 
-  @override
-  void initState() {
-    patient = widget.patient;
-    details = jsonDecode(patient);
-    fullName = details['firstName'] + "    " + details['lastName'];
-    sex = details['sex'];
-    education = details['educationLevel'];
-    maritalStatus = details['maritalStatus'];
-    occupation = details['occupation'];
 
-    print('/////////////////////////$patient');
-  }
 }
