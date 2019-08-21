@@ -172,39 +172,8 @@ class _DataSyncronizationState extends State<DataSyncronization> {
 
                       _key.currentState.save();
 
-//             String result;
-//             try {
-//
-//           result= await platform.invokeMethod("DataSync", [url, username, password]);
-//           print("======================result"+result.toString());
-//
-//             }catch(e){
-//               print(e);
-//             }
+                      fetchToken();
 
-                      fetchPost();
-
-//           result= await platform.invokeMethod("DataSync", [url, username, password]);
-//           if(result.contains("Welcome")){
-//                Navigator.push(
-//               context, MaterialPageRoute(builder: (context) => SearchPatient()));
-//                          print("Response ================="+result.toString());
-//
-//           }
-//
-//          else {
-//
-//                Scaffold.of(context).showSnackBar(
-//            SnackBar(
-//              content: Text('Have a snack!'),
-//            ),
-//          );
-//
-//          }
-//             }catch(e){
-//               print(e);
-//             }
-//
 
                     }
                   }),
@@ -216,7 +185,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
         ),
       ));
 
-  Future<String> fetchPost() async {
+  Future<String> fetchToken() async {
     String ehr_url = url;
     var body = json.encode({"username": username, "password": password});
 
