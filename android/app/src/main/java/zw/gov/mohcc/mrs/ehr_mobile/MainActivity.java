@@ -45,6 +45,7 @@ public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+    final static String HTSCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/htsChannel";
 
     final static String PATIENTCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
 
@@ -202,6 +203,58 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
                 );
+
+
+
+                new MethodChannel(getFlutterView(), HTSCHANNEL).setMethodCallHandler(
+                        (methodCall1, result1) -> {
+                            Gson gson = new Gson();
+                            if (methodCall1.method.equals("htsModelOptions")) {
+                                try {
+                                    List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
+
+                                    String htsModelList = gson.toJson(htsModels);
+                                    result1.success(htsModelList);
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
+                                }
+                            }
+
+                            if (methodCall1.method.equals("entryPointOptions")) {
+                                try {
+                                    List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                    System.out.println("*************************** native" + entryPoints);
+                                    String entryPointList = gson.toJson(entryPoints);
+                                    result1.success(entryPointList);
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
+                                }
+                            }
+
+                            if (methodCall1.method.equals("purposeOfTestsOptions")) {
+                                try {
+                                    List<Purpose_Of_Tests> purposeOfTests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
+                                    String purposeOfTestsList = gson.toJson(purposeOfTests);
+                                    result1.success(purposeOfTestsList);
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
+                                }
+                            }
+
+                            if (methodCall1.method.equals("reasonForNotIssuingResultsOptions")) {
+                                try {
+                                    List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
+                                    String reasonForNotIssuingResultsList = gson.toJson(reasonForNotIssuingResults);
+                                    result1.success(reasonForNotIssuingResultsList);
+
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
+
+                                }
+                            }
+                        }
+                );
+
 
 
                 new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler((call, result1) -> {
