@@ -73,7 +73,8 @@ public class MainActivity extends FlutterActivity {
                 String args = methodCall.arguments();
                 System.out.println(args);
                 PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-                Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getNationalId());
+
+                Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), null);
                 ehrMobileDatabase.patientDao().createPatient(patient);
                 System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
             }
@@ -119,8 +120,10 @@ public class MainActivity extends FlutterActivity {
                     System.out.println("url = " + url);
                     System.out.println("username = " + username);
                     System.out.println("password = " + password);
+
                     Boolean userIsValid = LoginValidator.isUserValid(ehrMobileDatabase, username, password);
                     if (userIsValid) {
+
                         result.success("Welcome  " + username);
                     } else {
                         result.success("Username or password are invalid.");
@@ -218,12 +221,11 @@ public class MainActivity extends FlutterActivity {
 
             }
 
-// pull patients from EHR
+            // pull patients from EHR
 
             private void getPatients(String baseUrl) {
-                //ehrMobileDatabase.patientDao().deleteAll();
+                ehrMobileDatabase.patientDao().deleteAll();
                 PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
-
             }
 
             public void getMaritalStates(Token token, String baseUrl) {
