@@ -30,6 +30,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -99,7 +100,7 @@ public class MainActivity extends FlutterActivity {
 
                     Token token = new Token(tokenString);
 
-                    /*getNationalities(token, url + "/api/");
+                    getNationalities(token, url + "/api/");
                     getFacilities(token, url + "/api/");
                     getCountries(token, url + "/api/");
                     getOccupation(token, url + "/api/");
@@ -112,7 +113,7 @@ public class MainActivity extends FlutterActivity {
                     getPurpose_Of_Tests(token, url + "/api/");
                     geReasonForNotIssuingResults(token, url + "/api/");
                     getUsers(token, url + "/api/");
-                    getReligion(token, url + "/api/");*/
+                    getReligion(token, url + "/api/");
                     getPatients(url);
                 }
                 if (methodCall.method.equals("login")) {
@@ -205,54 +206,53 @@ public class MainActivity extends FlutterActivity {
 
 
                 new MethodChannel(getFlutterView(), HTSCHANNEL).setMethodCallHandler(
-                        (methodCall1, result1) -> {
-                            Gson gson = new Gson();
-                            if (methodCall1.method.equals("htsModelOptions")) {
-                                try {
-                                    List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
+                        new MethodChannel.MethodCallHandler() {
+                            @Override
+                            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                                String arguments=methodCall.arguments();
+                                Gson gson = new Gson();
+                                if (methodCall.method.equals("htsModelOptions")) {
+                                    try {
+                                        List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
 
-                                    String htsModelList = gson.toJson(htsModels);
-                                    result1.success(htsModelList);
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                        String htsModelList = gson.toJson(htsModels);
+                                        result.success(htsModelList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
                                 }
-                            }
-
-                            if (methodCall1.method.equals("entryPointOptions")) {
-                                try {
-                                    List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
-                                    System.out.println("*************************** native" + entryPoints);
-                                    String entryPointList = gson.toJson(entryPoints);
-                                    result1.success(entryPointList);
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                if (methodCall.method.equals("entrypointOptions")) {
+                                    try {
+                                        List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                        System.out.println("*************************** native" + entryPoints);
+                                        String entrypointList = gson.toJson(entryPoints);
+                                        result.success(entrypointList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
                                 }
-                            }
-
-                            if (methodCall1.method.equals("purposeOfTestsOptions")) {
-                                try {
-                                    List<Purpose_Of_Tests> purposeOfTests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
-                                    String purposeOfTestsList = gson.toJson(purposeOfTests);
-                                    result1.success(purposeOfTestsList);
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                if (methodCall.method.equals("purposeOfTestsOptions")) {
+                                    try {
+                                        List<Purpose_Of_Tests> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
+                                        String purposeOfTestsList = gson.toJson(purpose_of_tests);
+                                        result.success(purpose_of_tests);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
                                 }
-                            }
+                                if (methodCall.method.equals("savePreTest")) {
+                                    try {
+                                        PreTest preTest=gson.fromJson(arguments, PreTest.class);
 
-                            if (methodCall1.method.equals("reasonForNotIssuingResultsOptions")) {
-                                try {
-                                    List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
-                                    String reasonForNotIssuingResultsList = gson.toJson(reasonForNotIssuingResults);
-                                    result1.success(reasonForNotIssuingResultsList);
-
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
-
+                                        ehrMobileDatabase.preTestDao().createPreTest(preTest);
+                                        System.out.println("List of pretest"+ehrMobileDatabase.preTestDao().listPreTests());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
                                 }
                             }
                         }
                 );
-
 
 
                 new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler((call, result1) -> {
