@@ -54,7 +54,6 @@ public class MainActivity extends FlutterActivity {
 
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
-    int statusCode;
     List<User> userList;
 
 
@@ -66,12 +65,12 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
+
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler((methodCall, result) -> {
 
             Gson gson = new Gson();
             if (methodCall.method.equals("registerPatient")) {
                 String args = methodCall.arguments();
-
                 System.out.println(args);
                 PatientDto patientDto = gson.fromJson(args, PatientDto.class);
 
@@ -85,6 +84,10 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
                 if (methodCall.method.equals("DataSync")) {
+                    // delete all users from database
+                    ehrMobileDatabase.userDao().deleteUsers();
+                    System.out.println("\n\n Users in database = \n  " + ehrMobileDatabase.userDao().selectAllUsers().size());
+
 
                     ArrayList args = methodCall.arguments();
 
@@ -120,24 +123,21 @@ public class MainActivity extends FlutterActivity {
                     System.out.println("username = " + username);
                     System.out.println("password = " + password);
 
-                    Boolean isUserValid = LoginValidator.isUserValid(ehrMobileDatabase, username, password);
-                    if (isUserValid) {
+                    Boolean userIsValid = LoginValidator.isUserValid(ehrMobileDatabase, username, password);
+                    if (userIsValid) {
+
                         result.success("Welcome  " + username);
-
-
                     } else {
                         result.success("Username or password are invalid.");
+
                     }
                 }
-
-
                 new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
                         (methodCall1, result1) -> {
                             Gson gson = new Gson();
                             if (methodCall1.method.equals("religionOptions")) {
                                 try {
                                     List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
-
                                     String religionList = gson.toJson(religions);
                                     result1.success(religionList);
                                 } catch (Exception e) {
@@ -269,7 +269,7 @@ public class MainActivity extends FlutterActivity {
                         for (BaseNameModel item : response.body().getContent()) {
                             occupationList.add(new Occupation(item.getCode(), item.getName()));
                         }
-                        if (occupationList != null && !occupationList.isEmpty()) {
+                        if (!occupationList.isEmpty()) {
 
                             saveOccupationsToDB(occupationList);
                         }
@@ -359,7 +359,7 @@ public class MainActivity extends FlutterActivity {
                                 nationalities.add(new Nationality(item.getCode(), item.getName()));
                             }
 
-                            if (nationalities != null && !nationalities.isEmpty()) {
+                            if (!nationalities.isEmpty()) {
                                 saveNationalityToDB(nationalities);
                             }
                         }
@@ -385,7 +385,7 @@ public class MainActivity extends FlutterActivity {
                             for (BaseNameModel item : response.body().getContent()) {
                                 countries.add(new Country(item.getCode(), item.getName()));
                             }
-                            if (countries != null && !countries.isEmpty()) {
+                            if (!countries.isEmpty()) {
                                 saveCountriesToDB(countries);
                             }
                         }

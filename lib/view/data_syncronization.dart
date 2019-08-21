@@ -181,6 +181,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
 //             }catch(e){
 //               print(e);
 //             }
+
                       fetchPost();
 
 //           result= await platform.invokeMethod("DataSync", [url, username, password]);
@@ -230,10 +231,11 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       // If server returns an OK response, parse the JSON.
       token = Token.fromJson(json.decode(response.body));
       print("tokeeeeeen====================" + token.id_token);
-      String result = await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
       Navigator.push(
           context, MaterialPageRoute(
           builder: (context) => SearchPatient()));
+      String result = await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
+      
       print("Response =================" + result.toString());
 
 
