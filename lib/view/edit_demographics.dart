@@ -15,7 +15,7 @@ import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'patient_address.dart';
- 
+
 class EditDemographics extends StatefulWidget {
   final String lastName, firstName, sex, nationalId;
   final DateTime birthDate;
@@ -129,11 +129,11 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedMaritalStatus() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String maritalStatus in _maritalStatusList) {
+    for (MaritalStatus maritalStatus in _maritalStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: maritalStatus, child: Text(maritalStatus)));
+          DropdownMenuItem(value: maritalStatus.code, child: Text(maritalStatus.name)));
     }
     return items;
   }
@@ -141,11 +141,11 @@ class _EditDemographicsState extends State<EditDemographics> {
   List<DropdownMenuItem<String>>
       getDropDownMenuItemsIdentifiedEducationLevel() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String educationLevel in _educationLevelList) {
+    for (EducationLevel educationLevel in _educationLevelList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: educationLevel, child: Text(educationLevel)));
+          DropdownMenuItem(value: educationLevel.code, child: Text(educationLevel.name)));
     }
     return items;
   }
@@ -162,11 +162,11 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsReligion() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String religion in _religionList) {
+    for (Religion religion in _religionList) {
 
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: religion, child: Text(religion)));
+      items.add(DropdownMenuItem(value: religion.code, child: Text(religion.name)));
     }
     return items;
   }
@@ -232,7 +232,7 @@ class _EditDemographicsState extends State<EditDemographics> {
         backgroundColor: Colors.teal,
         title: Text('Continue Patient Registration'),
       ),
-      body: SingleChildScrollView(
+      body:SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Form(
@@ -321,7 +321,23 @@ class _EditDemographicsState extends State<EditDemographics> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-//
+//                        Person person = Person(
+//                            firstName,
+//                            lastName,
+//                            _currentGender,
+//                            selectedDate,
+//                            _currentSiGender,
+//                            _currentReligion,
+//                            _currentOccupation,
+//                            _currentMaritalStatus,
+//                            _currentEducationLevel,
+//                            _currentNationality,
+//                            _currentCountry);
+                        print(_currentReligion);
+//                        Navigator.push(
+//                            context,
+//                            MaterialPageRoute(
+//                                builder: (context) => PersonAddress(person)));
                       },
                     ),
                     Row(
@@ -336,13 +352,26 @@ class _EditDemographicsState extends State<EditDemographics> {
                             "Skip",
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () async {
-
+                          onPressed: () {
+//                            if (_formKey.currentState.validate()) {
+//                              _formKey.currentState.save();
+//                              Person person = Person.basic(
+//                                  widget.firstName,
+//                                  widget.lastName,
+//                                  widget.sex,
+//                                  widget.birthDate);
 //
-                              Patient patient= Patient.basic(nationalId, firstName, lastName, _currentGender, birthDate);
-                              await registerPatient(patient);
+//                              addPerson(person);
 
-
+//                        _personBloc.dispatch(Create(firstName: firstName, lastName: lastName, sex: gender,birthDate: selectedDate));
+                             Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,_currentMaritalStatus,_currentEducationLevel);
+                            registerPatient(patient);
+//              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
+//                            Navigator.push(
+//                                context,
+//                                MaterialPageRoute(
+//                                    builder: (context) => AddPatient()));
+//                            }
                           },
                         ),
                       ],
@@ -356,23 +385,23 @@ class _EditDemographicsState extends State<EditDemographics> {
       ),
     );
   }
-  
+
   Future<void> _retrieveMetaDataFromDB() async{
     String result, countries, occupations,educationLevels,nationalities,maritalStates;
     try{
       result= await dataChannel.invokeMethod('religionOptions');
-     countries= await dataChannel.invokeMethod('countryOptions');
+      countries= await dataChannel.invokeMethod('countryOptions');
       occupations= await dataChannel.invokeMethod('occupationOptions');
       educationLevels= await dataChannel.invokeMethod('educationLevelOptions');
       nationalities= await dataChannel.invokeMethod('nationalityOptions');
       maritalStates=await dataChannel.invokeMethod('maritalStatusOptions');
-     print('------------------------***********************************$maritalStates');
+      print('------------------------$countries');
       setState(() {
         religion=result;
         _religions=jsonDecode(religion);
         _religionListDropdown= Religion.mapFromJson(_religions);
         _religionListDropdown.forEach((e){
-          _religionList.add(e.name);
+          _religionList.add(e);
         });
 
         _dropDownMenuItemsReligion = getDropDownMenuItemsReligion();
@@ -396,14 +425,14 @@ class _EditDemographicsState extends State<EditDemographics> {
         _occupationList.add(e.name);
       });
       _dropDownMenuItemsOccupation = getDropDownMenuItemsOccupation();
-      _currentOccupation = _dropDownMenuItemsOccupation[0].value;
+//      _currentOccupation = _dropDownMenuItemsOccupation[0].value;
 
 
       maritalStatus=maritalStates;
       _maritalStatuses=jsonDecode(maritalStatus);
       _maritalStatusListDropdown= MaritalStatus.mapFromJson(_maritalStatuses);
       _maritalStatusListDropdown.forEach((e){
-        _maritalStatusList.add(e.name);
+        _maritalStatusList.add(e);
       });
       _dropDownMenuItemsMaritalStatus =
           getDropDownMenuItemsIdentifiedMaritalStatus();
@@ -422,11 +451,12 @@ class _EditDemographicsState extends State<EditDemographics> {
       _educationLevels= jsonDecode(educationLevel);
       _educationLevelListDropdown= EducationLevel.mapFromJson(_educationLevels);
       _educationLevelListDropdown.forEach((e){
-        _educationLevelList.add(e.name);
+        _educationLevelList.add(e);
       });
       _dropDownMenuItemsEducationLevel =
           getDropDownMenuItemsIdentifiedEducationLevel();
       _currentEducationLevel = _dropDownMenuItemsEducationLevel[0].value;
+
     }
     catch(e){
       print('something went wrong--------------------------- $e');

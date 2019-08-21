@@ -1,12 +1,13 @@
 package zw.gov.mohcc.mrs.ehr_mobile;
 
-import android.app.Application;
 import android.os.Bundle;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,20 +18,17 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -71,21 +69,38 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler((methodCall, result) -> {
+        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-            Gson gson = new Gson();
-            if (methodCall.method.equals("registerPatient")) {
-                String args = methodCall.arguments();
+                Gson gson = new Gson();
+                if (methodCall.method.equals("registerPatient")) {
+                    String args = methodCall.arguments();
+                    String dob;
+                    String[] dateOfBirth;
+
 
 
                     System.out.println(args);
-                    PatientDto patientDto = gson.fromJson(args,PatientDto.class);
-                    System.out.println("==============================PatientDTO "+patientDto);
-                    Patient patient= new Patient(patientDto.getFirstName(),patientDto.getLastName(),patientDto.getNationalId());
+                    PatientDto patientDto = gson.fromJson(args, PatientDto.class);
+                    dateOfBirth = patientDto.getBirthDate().split("T");
+                    dob = dateOfBirth[0];
+                    System.out.println("==============================PatientDTO " + patientDto.getNationalId());
+                    Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
+                    LocalDate Date = LocalDate.parse(dob);
+                    patient.setNationalId(patientDto.getNationalId());
+                    patient.setReligionId(patientDto.getReligion());
+                    patient.setMaritalStatusId(patientDto.getMaritalStatus());
+                    patient.setEducationLevelId(patientDto.getEducationLevel());
+
+                    patient.setBirthDate(Date);
                     ehrMobileDatabase.patientDao().createPatient(patient);
-                    System.out.println("==================-=-=-=-=-fromDB "+ehrMobileDatabase.patientDao().listPatients());
+
+                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
                 }
 
+
+            }
         });
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -128,55 +143,6 @@ public class MainActivity extends FlutterActivity {
                     System.out.println("url = " + url);
                     System.out.println("username = " + username);
                     System.out.println("password = " + password);
-//                Login login = new Login(username, password);
-//                String url = "http://10.20.100.178:8080";
-//                Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
-//
-//                DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
-//
-//                Call<Token> call = dataSyncService.dataSync(login);
-//
-//                call.enqueue(new Callback<Token>() {
-//                    @Override
-//                    public void onResponse(Call<Token> call, Response<Token> response) {
-//
-//                        if (response.isSuccessful()) {
-//                            Token token = response.body();
-//                            getUsers(token, url + "/api/");
-//                            getNationalities(token, url + "/api/");
-//                            getFacilities(token, url + "/api/");
-//                            getCountries(token, url + "/api/");
-//                            getOccupation(token, url + "/api/");
-//                            getCountries(token, url + "/api/");
-//                            getMaritalStates(token, url + "/api/");
-//                            getEducationLevels(token, url + "/api/");
-//                            getReligion(token, url + "/api/");
-//                            getPatients(url);
-//                            getEntryPoints(token, url + "/api/");
-//                            getHtsModels(token, url + "/api/");
-//                            geReasonForNotIssuingResults(token, url + "/api/");
-//                            getReligion(token, url + "/api/");
-//                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-=============== \n" + ehrMobileDatabase.patientDao().listPatients().toString());
-//                            result.success("Welcome " + login.getUsername());
-//
-//                        } else {
-//                            statusCode = response.code();
-//                            result.success("Username or password are invalid.");
-//                            System.out.println("statussssssssssssssss" + statusCode);
-//
-//
-//                        }
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<Token> call, Throwable t) {
-//                        result.success("Network Error. Either invalid Server Ip address or you are of of range.");
-//
-//                        System.out.println("Error=============== " + t);
-//                    }
-//                });
 
                     Boolean isUserValid = LoginValidator.isUserValid(ehrMobileDatabase, username, password);
                     if (isUserValid) {
@@ -190,105 +156,113 @@ public class MainActivity extends FlutterActivity {
 
 
                 new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
-                        (methodCall1, result1) -> {
-                            Gson gson = new Gson();
-                            if (methodCall1.method.equals("religionOptions")) {
-                                try {
-                                    List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
-                                    System.out.println("meta data***********************"+ religions);
-                                    String religionList = gson.toJson(religions);
-                                    result1.success(religionList);
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                        new MethodChannel.MethodCallHandler() {
+                            @Override
+                            public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
+                                Gson gson = new Gson();
+                                if (methodCall1.method.equals("religionOptions")) {
+                                    try {
+                                        List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
+                                        System.out.println("meta data***********************" + religions);
+                                        String religionList = gson.toJson(religions);
+                                        result1.success(religionList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
                                 }
-                            }
-                            if (methodCall1.method.equals("countryOptions")) {
-                                try {
-                                    List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
-                                    System.out.println("*************************** native" + countries);
-                                    String countryList = gson.toJson(countries);
-                                    result1.success(countryList);
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                if (methodCall1.method.equals("countryOptions")) {
+                                    try {
+                                        List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
+                                        System.out.println("*************************** native" + countries);
+                                        String countryList = gson.toJson(countries);
+                                        result1.success(countryList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
                                 }
-                            }
-                            if (methodCall1.method.equals("occupationOptions")) {
-                                try {
-                                    List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
-                                    System.out.println("meta data***********************"+ occupations.size());
-                                    String occupationList = gson.toJson(occupations);
-                                    result1.success(occupationList);
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                if (methodCall1.method.equals("occupationOptions")) {
+                                    try {
+                                        List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
+                                        System.out.println("meta data occupation***********************" + occupations.size());
+                                        String occupationList = gson.toJson(occupations);
+                                        result1.success(occupationList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
                                 }
-                            }
 
-                            if (methodCall1.method.equals("educationLevelOptions")) {
-                                try {
-                                    List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
-                                    String educationLevelList = gson.toJson(educationLevels);
-                                    result1.success(educationLevelList);
+                                if (methodCall1.method.equals("educationLevelOptions")) {
+                                    try {
+                                        List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
+                                        System.out.println("meta data education level***********************" + educationLevels.size());
+                                        String educationLevelList = gson.toJson(educationLevels);
+                                        result1.success(educationLevelList);
 
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
 
+                                    }
                                 }
-                            }
 
-                            if (methodCall1.method.equals("nationalityOptions")) {
-                                try {
-                                    List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
-                                    String nationalityList = gson.toJson(nationalities);
-                                    result1.success(nationalityList);
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                if (methodCall1.method.equals("nationalityOptions")) {
+                                    try {
+                                        List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
+                                        System.out.println("meta data nationality***********************" + nationalities.size());
+                                        String nationalityList = gson.toJson(nationalities);
+                                        result1.success(nationalityList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
 
+                                    }
                                 }
-                            }
 
-                            if (methodCall1.method.equals("maritalStatusOptions")) {
-                                try {
-                                    List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
-                                    String maritalStatusList = gson.toJson(maritalStatuses);
-                                    result1.success(maritalStatusList);
+                                if (methodCall1.method.equals("maritalStatusOptions")) {
+                                    try {
+                                        List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
+                                        System.out.println("meta data marital States***********************" + maritalStatuses.size());
+                                        String maritalStatusList = gson.toJson(maritalStatuses);
+                                        result1.success(maritalStatusList);
 
-                                } catch (Exception e) {
-                                    System.out.println("something went wrong " + e.getMessage());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
 
+                                    }
                                 }
                             }
                         }
                 );
 
 
-                new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler((call, result1) -> {
-                    final String arguments = call.arguments();
-                    if (call.method.equals("searchPatient")) {
-                        List<Patient> _list;
+                new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
+                        final String arguments = call.arguments();
+                        if (call.method.equals("searchPatient")) {
+                            List<Patient> _list;
 
-                        String searchItem = arguments;
-
-
-                        PatientQuery patientQuery = new PatientQuery();
-                        SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
-                        _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
-                        Gson gson = new Gson();
+                            String searchItem = arguments;
 
 
-                        result1.success(gson.toJson(_list));
+                            PatientQuery patientQuery = new PatientQuery();
+                            SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
+                            _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                            Gson gson = new Gson();
 
+
+                            result1.success(gson.toJson(_list));
+
+                        }
                     }
                 });
 
 
             }
 
-// pull patients from EHR
+            // pull patients from EHR
 
             private void getPatients(String baseUrl) {
-                //ehrMobileDatabase.patientDao().deleteAll();
+                ehrMobileDatabase.patientDao().deleteAll();
                 PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
-
             }
 
             public void getMaritalStates(Token token, String baseUrl) {

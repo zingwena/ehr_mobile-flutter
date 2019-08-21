@@ -46,13 +46,8 @@ import static androidx.room.ForeignKey.CASCADE;
 )
 public class Patient {
 
-
-    public String selfIdentifiedGender;
-
-    public String sex;
     @PrimaryKey(autoGenerate = true)
     private int id;
-
     @NonNull
     private String firstName;
     @NonNull
@@ -70,6 +65,10 @@ public class Patient {
     private String countryId;
     @Embedded
     private Address address;
+    @TypeConverters(SelfIdentifiedGenderConverter.class)
+    public SelfIdentifiedGender selfIdentifiedGender;
+    @TypeConverters(SelfIdentifiedGenderConverter.class)
+    public Gender sex;
 
     public Patient() {
     }
@@ -77,12 +76,12 @@ public class Patient {
 
 
     @Ignore
-
-    public Patient(@NonNull String firstName, @NonNull String lastName, String nationalId) {
+    public Patient(@NonNull String firstName, @NonNull String lastName, Gender sex) {
 
         this.firstName = firstName;
         this.lastName = lastName;
-        this.nationalId = nationalId;
+        this.sex = sex;
+
     }
 
     public int getId() {
@@ -102,22 +101,6 @@ public class Patient {
         this.firstName = firstName;
     }
 
-    public String getSelfIdentifiedGender() {
-        return selfIdentifiedGender;
-    }
-
-    public void setSelfIdentifiedGender(String selfIdentifiedGender) {
-        this.selfIdentifiedGender = selfIdentifiedGender;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
     @NonNull
     public String getLastName() {
         return lastName;
@@ -134,7 +117,6 @@ public class Patient {
     public void setPersonId(String personId) {
         this.personId = personId;
     }
-
 
     public String getNationalId() {
         return nationalId;
@@ -206,6 +188,22 @@ public class Patient {
 
     public void setCountryId(String countryId) {
         this.countryId = countryId;
+    }
+
+    public SelfIdentifiedGender getSelfIdentifiedGender() {
+        return selfIdentifiedGender;
+    }
+
+    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
+        this.selfIdentifiedGender = selfIdentifiedGender;
+    }
+
+    public Gender getSex() {
+        return sex;
+    }
+
+    public void setSex(Gender sex) {
+        this.sex = sex;
     }
 
     @Override
