@@ -9,6 +9,7 @@ import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -71,20 +72,22 @@ public class PatientsApolloClient {
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
                                     String date = patientData.birthdate();
-                                    String nationalId=patientData.nationality() != null ? patientData.nationality().id() : null;
-
-                                    int age = patientData.age().years();
-
 
                                     patient = new Patient(firstName, lastName, sex);
-                                    patient.setReligionId(patientData.religion() != null ? patientData.religion().id() : null);
-                                    patient.setCountryId(patientData.countryOfBirth() != null ? patientData.countryOfBirth().id() : null);
-                                    patient.setEducationLevelId(patientData.education() != null ? patientData.education().id() : null);
-                                    patient.setAddress(address);
-                                    patient.setMaritalStatusId(patientData.marital() != null ? patientData.marital().id() : null);
-                                    /*patient.setNationalityId(patientData.nationality() != null ? patientData.nationality().id() : null);
                                     patient.setSelfIdentifiedGender(selfIdentifiedGender);
-                                    patient.setOccupationId(patientData.occupation() != null ? patientData.occupation().id() : null);*/
+                                    patient.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
+                                            ? patientData.religion().id() : null);
+                                    patient.setCountryId(patientData.countryOfBirth() != null && StringUtils.isNoneBlank(patientData.countryOfBirth().id())
+                                            ? patientData.countryOfBirth().id() : null);
+                                    patient.setEducationLevelId(patientData.education() != null && StringUtils.isNoneBlank(patientData.education().id())
+                                            ? patientData.education().id() : null);
+                                    patient.setAddress(address);
+                                    patient.setMaritalStatusId(patientData.marital() != null && StringUtils.isNoneBlank(patientData.marital().id())
+                                            ? patientData.marital().id() : null);
+                                    /*patient.setNationalityId(patientData.nationality() != null && StringUtils.isNoneBlank(patientData.nationality().id())
+                                            ? patientData.nationality().id() : null);*/
+                                    patient.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
+                                            ? patientData.occupation().id() : null);
 
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);

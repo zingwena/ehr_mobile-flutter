@@ -95,7 +95,7 @@ public class MainActivity extends FlutterActivity {
 
                     Token token = new Token(tokenString);
 
-                    getNationalities(token, url + "/api/");
+                    /*getNationalities(token, url + "/api/");
                     getFacilities(token, url + "/api/");
                     getCountries(token, url + "/api/");
                     getOccupation(token, url + "/api/");
@@ -107,11 +107,9 @@ public class MainActivity extends FlutterActivity {
                     getHtsModels(token, url + "/api/");
                     getPurpose_Of_Tests(token, url + "/api/");
                     geReasonForNotIssuingResults(token, url + "/api/");
-                    getPatients(url);
                     getUsers(token, url + "/api/");
-                    getReligion(token, url + "/api/");
-
-
+                    getReligion(token, url + "/api/");*/
+                    getPatients(url);
                 }
                 if (methodCall.method.equals("login")) {
 
