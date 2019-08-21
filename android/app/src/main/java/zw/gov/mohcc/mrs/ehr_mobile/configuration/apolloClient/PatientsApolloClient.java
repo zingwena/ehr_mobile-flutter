@@ -86,6 +86,7 @@ public class PatientsApolloClient {
                                             ? patientData.marital().id() : null);
                                     /*patient.setNationalityId(patientData.nationality() != null && StringUtils.isNoneBlank(patientData.nationality().id())
                                             ? patientData.nationality().id() : null);*/
+                                    patient.setNationalityId(null);
                                     patient.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
                                             ? patientData.occupation().id() : null);
 
