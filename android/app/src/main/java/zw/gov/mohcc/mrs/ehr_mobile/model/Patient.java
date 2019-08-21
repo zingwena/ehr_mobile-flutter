@@ -52,7 +52,6 @@ public class Patient {
     private String firstName;
     @NonNull
     private String lastName;
-    @ColumnInfo()
     private String personId;
     private String nationalId;
     private String religionId;
