@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Visit {
@@ -14,7 +15,7 @@ public class Visit {
     @PrimaryKey(autoGenerate = true)
     private int visitId;
     private int patientId;
-    private LocalDate startTime = LocalDate.now();
+    private LocalDateTime startTime = LocalDateTime.now();
 
 
 
@@ -35,11 +36,5 @@ public class Visit {
         this.patientId = patientId;
     }
 
-    public LocalDate getStartTime() {
-        return startTime;
-    }
 
-    public void setStartTime(LocalDate startTime) {
-        this.startTime = startTime;
-    }
 }
