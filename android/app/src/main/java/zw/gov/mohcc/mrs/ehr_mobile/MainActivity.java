@@ -87,7 +87,7 @@ public class MainActivity extends FlutterActivity {
 
                     System.out.println(args);
                     PatientDto patientDto = gson.fromJson(args,PatientDto.class);
-
+                    System.out.println("==============================PatientDTO "+patientDto);
                     Patient patient= new Patient(patientDto.getFirstName(),patientDto.getLastName(),patientDto.getNationalId());
                     ehrMobileDatabase.patientDao().createPatient(patient);
                     System.out.println("==================-=-=-=-=-fromDB "+ehrMobileDatabase.patientDao().listPatients());

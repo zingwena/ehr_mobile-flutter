@@ -27,7 +27,7 @@ class Patient {
 
 
 
-  Patient.basic(this.nationalId, this.firstName,this.lastName,this.sex);
+  Patient.basic(this.nationalId, this.firstName,this.lastName,this.sex,this.birthDate);
 
   Patient(
       this.firstName,

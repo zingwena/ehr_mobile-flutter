@@ -2,6 +2,7 @@ import 'dart:convert';
 
 
 import 'package:ehr_mobile/model/country.dart';
+import 'package:ehr_mobile/model/patient.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/model/education_level.dart';
 import 'package:ehr_mobile/model/nationality.dart';
@@ -16,10 +17,10 @@ import 'package:flutter/services.dart';
 //import 'patient_address.dart';
  
 class EditDemographics extends StatefulWidget {
-  final String lastName, firstName, sex;
+  final String lastName, firstName, sex, nationalId;
   final DateTime birthDate;
 
-  EditDemographics(this.lastName, this.firstName, this.birthDate, this.sex);
+  EditDemographics(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId);
 
   @override
   State createState() {
@@ -29,14 +30,14 @@ class EditDemographics extends StatefulWidget {
 
 class _EditDemographicsState extends State<EditDemographics> {
   static const platform = MethodChannel('example.channel.dev/people');
+  static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
 
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   final _formKey = GlobalKey<FormState>();
-  static var date = DateFormat("yyyy/MM/dd").format(DateTime.now());
-  DateTime selectedDate = DateFormat("yyyy/MM/dd").parse(date);
-  List<String> _list;
 
-  String lastName, firstName, religion, country,occupation,educationLevel,nationality,maritalStatus;
+  List<String> _list;
+  DateTime birthDate;
+  String lastName, firstName,nationalId, religion, country,occupation,educationLevel,nationality,maritalStatus;
   List _religions= List();
   List<Religion> _religionListDropdown= List();
 
@@ -94,23 +95,14 @@ class _EditDemographicsState extends State<EditDemographics> {
   @override
   void initState() {
     _retrieveMetaDataFromDB();
-
-
-
     _dropDownMenuItems = getDropDownMenuItems();
-
     _dropDownMenuItemsIdentified = getDropDownMenuItemsIdentified();
-
-
-
+    nationalId=widget.nationalId;
     _currentGender = widget.sex;
     firstName = widget.firstName;
     lastName = widget.lastName;
-    selectedDate = widget.birthDate;
-    date = DateFormat("yyyy/MM/dd").format(widget.birthDate);
+    birthDate = widget.birthDate;
     _currentSiGender = _dropDownMenuItemsIdentified[0].value;
-
-
     super.initState();
   }
 
@@ -203,19 +195,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     return cell == null ? "" : cell;
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: widget.birthDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        date = DateFormat("yyyy/MM/dd").format(picked);
-        selectedDate = DateFormat("yyyy/MM/dd").parse(date);
-      });
-    }
-  }
+
 
   DataTable table() {
     print("=============================================================");
@@ -341,23 +321,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-//                        Person person = Person(
-//                            firstName,
-//                            lastName,
-//                            _currentGender,
-//                            selectedDate,
-//                            _currentSiGender,
-//                            _currentReligion,
-//                            _currentOccupation,
-//                            _currentMaritalStatus,
-//                            _currentEducationLevel,
-//                            _currentNationality,
-//                            _currentCountry);
 //
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => PersonAddress(person)));
                       },
                     ),
                     Row(
@@ -372,26 +336,13 @@ class _EditDemographicsState extends State<EditDemographics> {
                             "Skip",
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {
-//                            if (_formKey.currentState.validate()) {
-//                              _formKey.currentState.save();
-//                              Person person = Person.basic(
-//                                  widget.firstName,
-//                                  widget.lastName,
-//                                  widget.sex,
-//                                  widget.birthDate);
-//
-//                              addPerson(person);
-
-//                        _personBloc.dispatch(Create(firstName: firstName, lastName: lastName, sex: gender,birthDate: selectedDate));
+                          onPressed: () async {
 
 //
-//              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddPatient()));
-//                            }
+                              Patient patient= Patient.basic(nationalId, firstName, lastName, _currentGender, birthDate);
+                              await registerPatient(patient);
+
+
                           },
                         ),
                       ],
@@ -574,6 +525,17 @@ class _EditDemographicsState extends State<EditDemographics> {
     setState(() {
       _currentCountry = selectedCountry;
     });
+  }
+
+  Future<void> registerPatient(Patient patient)async{
+    String response;
+    try {
+      String jsonPatient = jsonEncode(patient);
+      response= await addPatient.invokeMethod('registerPatient',jsonPatient);
+    }
+    catch(e){
+      print('Something went wrong...... cause $e');
+    }
   }
 
 }

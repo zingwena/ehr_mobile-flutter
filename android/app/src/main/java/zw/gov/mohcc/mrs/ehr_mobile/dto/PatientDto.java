@@ -12,7 +12,7 @@ public class PatientDto {
     private String nationalId;
 
     private int age;
-    private LocalDateTime birthDate;
+    private String birthDate;
     private String selfIdentifiedGender;
     private String religion;
     private String occupation;
@@ -24,7 +24,7 @@ public class PatientDto {
     private String town;
 
 
-    public PatientDto(int id, String firstName, String lastName, String sex, String identifier, String nationalId, int age, LocalDateTime birthDate, String selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String schoolHouse, String suburbVillage, String town) {
+    public PatientDto(int id, String firstName, String lastName, String sex, String identifier, String nationalId, int age, String birthDate, String selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String schoolHouse, String suburbVillage, String town) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -99,11 +99,11 @@ public class PatientDto {
         this.age = age;
     }
 
-    public LocalDateTime getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDateTime birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
