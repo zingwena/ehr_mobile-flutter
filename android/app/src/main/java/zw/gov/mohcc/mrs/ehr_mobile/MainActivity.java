@@ -1,6 +1,5 @@
 package zw.gov.mohcc.mrs.ehr_mobile;
 
-import android.app.Application;
 import android.os.Bundle;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
@@ -17,20 +16,16 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -59,7 +54,6 @@ public class MainActivity extends FlutterActivity {
 
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
-    int statusCode;
     List<User> userList;
 
 
@@ -71,15 +65,14 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
+        System.out.println("\n\n Users in database = \n  " + ehrMobileDatabase.userDao().selectAllUsers().size());
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler((methodCall, result) -> {
 
             Gson gson = new Gson();
             if (methodCall.method.equals("registerPatient")) {
                 String args = methodCall.arguments();
-
                 System.out.println(args);
                 PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-
                 Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getNationalId());
                 ehrMobileDatabase.patientDao().createPatient(patient);
                 System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
@@ -126,74 +119,19 @@ public class MainActivity extends FlutterActivity {
                     System.out.println("url = " + url);
                     System.out.println("username = " + username);
                     System.out.println("password = " + password);
-//                Login login = new Login(username, password);
-//                String url = "http://10.20.100.178:8080";
-//                Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance(url + "/api/");
-//
-//                DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
-//
-//                Call<Token> call = dataSyncService.dataSync(login);
-//
-//                call.enqueue(new Callback<Token>() {
-//                    @Override
-//                    public void onResponse(Call<Token> call, Response<Token> response) {
-//
-//                        if (response.isSuccessful()) {
-//                            Token token = response.body();
-//                            getUsers(token, url + "/api/");
-//                            getNationalities(token, url + "/api/");
-//                            getFacilities(token, url + "/api/");
-//                            getCountries(token, url + "/api/");
-//                            getOccupation(token, url + "/api/");
-//                            getCountries(token, url + "/api/");
-//                            getMaritalStates(token, url + "/api/");
-//                            getEducationLevels(token, url + "/api/");
-//                            getReligion(token, url + "/api/");
-//                            getPatients(url);
-//                            getEntryPoints(token, url + "/api/");
-//                            getHtsModels(token, url + "/api/");
-//                            geReasonForNotIssuingResults(token, url + "/api/");
-//                            getReligion(token, url + "/api/");
-//                            System.out.println("==========-=-=-=-=-PATIENTS=-=-=-=-=============== \n" + ehrMobileDatabase.patientDao().listPatients().toString());
-//                            result.success("Welcome " + login.getUsername());
-//
-//                        } else {
-//                            statusCode = response.code();
-//                            result.success("Username or password are invalid.");
-//                            System.out.println("statussssssssssssssss" + statusCode);
-//
-//
-//                        }
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<Token> call, Throwable t) {
-//                        result.success("Network Error. Either invalid Server Ip address or you are of of range.");
-//
-//                        System.out.println("Error=============== " + t);
-//                    }
-//                });
-
-                    Boolean isUserValid = LoginValidator.isUserValid(ehrMobileDatabase, username, password);
-                    if (isUserValid) {
+                    Boolean userIsValid = LoginValidator.isUserValid(ehrMobileDatabase, username, password);
+                    if (userIsValid) {
                         result.success("Welcome  " + username);
-
-
                     } else {
                         result.success("Username or password are invalid.");
                     }
                 }
-
-
                 new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
                         (methodCall1, result1) -> {
                             Gson gson = new Gson();
                             if (methodCall1.method.equals("religionOptions")) {
                                 try {
                                     List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
-
                                     String religionList = gson.toJson(religions);
                                     result1.success(religionList);
                                 } catch (Exception e) {
@@ -326,7 +264,7 @@ public class MainActivity extends FlutterActivity {
                         for (BaseNameModel item : response.body().getContent()) {
                             occupationList.add(new Occupation(item.getCode(), item.getName()));
                         }
-                        if (occupationList != null && !occupationList.isEmpty()) {
+                        if (!occupationList.isEmpty()) {
 
                             saveOccupationsToDB(occupationList);
                         }
@@ -416,7 +354,7 @@ public class MainActivity extends FlutterActivity {
                                 nationalities.add(new Nationality(item.getCode(), item.getName()));
                             }
 
-                            if (nationalities != null && !nationalities.isEmpty()) {
+                            if (!nationalities.isEmpty()) {
                                 saveNationalityToDB(nationalities);
                             }
                         }
@@ -442,7 +380,7 @@ public class MainActivity extends FlutterActivity {
                             for (BaseNameModel item : response.body().getContent()) {
                                 countries.add(new Country(item.getCode(), item.getName()));
                             }
-                            if (countries != null && !countries.isEmpty()) {
+                            if (!countries.isEmpty()) {
                                 saveCountriesToDB(countries);
                             }
                         }
