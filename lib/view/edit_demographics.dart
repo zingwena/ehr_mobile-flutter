@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+
 import 'package:ehr_mobile/model/country.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/model/education_level.dart';
 import 'package:ehr_mobile/model/nationality.dart';
 import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/model/religion.dart';
+import 'package:ehr_mobile/view/add_patient.dart';
+
 import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
@@ -384,10 +387,10 @@ class _EditDemographicsState extends State<EditDemographics> {
 
 //
 //              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
-//                              Navigator.push(
-//                                  context,
-//                                  MaterialPageRoute(
-//                                      builder: (context) => ListPeople()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddPatient()));
 //                            }
                           },
                         ),

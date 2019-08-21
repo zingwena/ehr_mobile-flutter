@@ -1,4 +1,6 @@
+
 import 'package:json_annotation/json_annotation.dart';
+
 import 'base_code.dart';
 
 part 'nationality.g.dart';

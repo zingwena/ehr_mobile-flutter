@@ -18,6 +18,9 @@ public interface FacilityDao {
     @Query("SELECT * FROM Facility")
     List<Facility> getAllFacilities();
 
+    @Query("DELETE FROM facility")
+    void deleteAllFacilities();
+
     @Query("SELECT * FROM Facility WHERE id=:id")
     Facility findFacilityById(int id);
 }

@@ -45,9 +45,11 @@ public class PatientsApolloClient {
 
 
 
+
     public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
         System.out.println("baseUrl = " + baseUrl);
         PatientsApolloClient.getApolloClient(baseUrl).query(
+
 
                 GetPatientsQuery.builder()
                         .build()).enqueue(
@@ -69,6 +71,7 @@ public class PatientsApolloClient {
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
                                     String date = patientData.birthdate();
+                                    String nationalId=patientData.nationality() != null ? patientData.nationality().id() : null;
 
                                     int age = patientData.age().years();
 
