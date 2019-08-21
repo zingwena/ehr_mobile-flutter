@@ -65,7 +65,7 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        System.out.println("\n\n Users in database = \n  " + ehrMobileDatabase.userDao().selectAllUsers().size());
+
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler((methodCall, result) -> {
 
             Gson gson = new Gson();
@@ -84,6 +84,10 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
                 if (methodCall.method.equals("DataSync")) {
+                    // delete all users from database
+                    ehrMobileDatabase.userDao().deleteUsers();
+                    System.out.println("\n\n Users in database = \n  " + ehrMobileDatabase.userDao().selectAllUsers().size());
+
 
                     ArrayList args = methodCall.arguments();
 
@@ -127,6 +131,7 @@ public class MainActivity extends FlutterActivity {
                         result.success("Welcome  " + username);
                     } else {
                         result.success("Username or password are invalid.");
+
                     }
                 }
                 new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
