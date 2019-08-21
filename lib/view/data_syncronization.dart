@@ -1,9 +1,10 @@
+import 'dart:convert';
 
+import 'package:ehr_mobile/model/token.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
-import 'edit_demographics.dart';
 import 'package:flutter/services.dart';
-
-import 'search_patient.dart';
+import 'package:http/http.dart' as http;
 
 class DataSyncronization extends StatefulWidget {
   @override
@@ -11,47 +12,51 @@ class DataSyncronization extends StatefulWidget {
 }
 
 class _DataSyncronizationState extends State<DataSyncronization> {
-  static const MethodChannel platform= MethodChannel('Authentication');
+  static const MethodChannel platform = MethodChannel('Authentication');
+  Token token;
 
-  String url,username,password;
+  String url, username, password;
 
-  final _key=GlobalKey<FormState>();
+  final _key = GlobalKey<FormState>();
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Builder(
-              builder: (BuildContext context){
-               return Center(
+      body: Builder(builder: (BuildContext context) {
+        return Center(
           child: dataSyncBody(),
+
         );
-              } 
-      ),
+      }),
     );
   }
 
-  dataSyncBody() =>
-      SingleChildScrollView(
+  dataSyncBody() => SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[dataSyncHeader(), loginFields()],
         ),
       );
 
-  dataSyncHeader() =>
-
-      Column(
+  dataSyncHeader() => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Image(image: AssetImage('images/mhc.png'),width: 150, height: 150,),
+          Image(
+            image: AssetImage('images/mhc.png'),
+            width: 150,
+            height: 150,
+          ),
           SizedBox(
             height: 20.0,
           ),
           Text(
             "EHR Mobile App",
-            style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey.shade600, fontSize: 30),
+            style: TextStyle(
+                fontWeight: FontWeight.w300,
+                color: Colors.grey.shade600,
+                fontSize: 30),
           ),
           SizedBox(
             height: 10.0,
@@ -66,10 +71,9 @@ class _DataSyncronizationState extends State<DataSyncronization> {
         ],
       );
 
-  loginFields() =>
-     Form(
-       key: _key,
-      child:Container(
+  loginFields() => Form(
+      key: _key,
+      child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.min,
@@ -78,17 +82,16 @@ class _DataSyncronizationState extends State<DataSyncronization> {
               padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
               child: TextFormField(
                 maxLines: 1,
-                validator: (value){
-                  if(value.isEmpty){
+                validator: (value) {
+                  if (value.isEmpty) {
                     return "required";
-                  }
-                  else{
+                  } else {
                     return null;
                   }
                 },
-                onSaved: (value){
+                onSaved: (value) {
                   setState(() {
-                    url=value;
+                    url = value;
                   });
                 },
                 decoration: InputDecoration(
@@ -103,18 +106,16 @@ class _DataSyncronizationState extends State<DataSyncronization> {
               padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
               child: TextFormField(
                 maxLines: 1,
-
-                validator: (value){
-                  if(value.isEmpty){
+                validator: (value) {
+                  if (value.isEmpty) {
                     return "required";
-                  }
-                  else{
+                  } else {
                     return null;
                   }
                 },
-                onSaved: (value){
+                onSaved: (value) {
                   setState(() {
-                    username=value;
+                    username = value;
                   });
                 },
                 decoration: InputDecoration(
@@ -129,22 +130,21 @@ class _DataSyncronizationState extends State<DataSyncronization> {
               padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
               child: TextFormField(
                 maxLines: 1,
-                validator: (value){
-                  if(value.isEmpty){
+                validator: (value) {
+                  if (value.isEmpty) {
                     return "required";
-                  }
-                  else{
+                  } else {
                     return null;
                   }
                 },
-                onSaved: (value){
+                onSaved: (value) {
                   setState(() {
-                    password=value;
+                    password = value;
                   });
                 },
                 obscureText: true,
                 decoration: InputDecoration(
-                 border: OutlineInputBorder(),
+                  border: OutlineInputBorder(),
                   hintText: "Enter your Password",
                   labelText: "Password",
                 ),
@@ -157,71 +157,98 @@ class _DataSyncronizationState extends State<DataSyncronization> {
               padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
               width: double.infinity,
               child: RaisedButton(
-                elevation: 4.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                color: Colors.teal,
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  "LOGIN",
-                  style: TextStyle(color: Colors.white),
-                ),
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
+                  color: Colors.teal,
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    "LOGIN",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    if (_key.currentState.validate()) {
+                      DateTime date = DateTime.now();
 
-                onPressed: () async{
-         if(_key.currentState.validate()){
-           DateTime date= DateTime.now();
-          
-             _key.currentState.save();
+                      _key.currentState.save();
 
-             String result;
-             try {
+//             String result;
+//             try {
+//
+//           result= await platform.invokeMethod("DataSync", [url, username, password]);
+//           print("======================result"+result.toString());
+//
+//             }catch(e){
+//               print(e);
+//             }
+                      fetchPost();
 
-           result= await platform.invokeMethod("DataSync", [url, username, password]);
-           if(result.contains("Welcome")){
-                Navigator.push(
-               context, MaterialPageRoute(builder: (context) => SearchPatient()));
-                          print("Response ================="+result.toString());
+//           result= await platform.invokeMethod("DataSync", [url, username, password]);
+//           if(result.contains("Welcome")){
+//                Navigator.push(
+//               context, MaterialPageRoute(builder: (context) => SearchPatient()));
+//                          print("Response ================="+result.toString());
+//
+//           }
+//
+//          else {
+//
+//                Scaffold.of(context).showSnackBar(
+//            SnackBar(
+//              content: Text('Have a snack!'),
+//            ),
+//          );
+//
+//          }
+//             }catch(e){
+//               print(e);
+//             }
+//
 
-           }
-         
-          else {
-      
-                Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Have a snack!'),
-            ),
-          );
-
-          }
-             }catch(e){
-               print(e);
-             }
-          
-         }
-
-         
-                }
-
-              ),
+                    }
+                  }),
             ),
             SizedBox(
               height: 30.0,
             ),
-
           ],
         ),
+      ));
 
-      )
+  Future<String> fetchPost() async {
+    String ehr_url = url;
+    var body = json.encode({"username": username, "password": password});
 
-);
+    final response = await http.post(url + "/api/authenticate",
+        headers: {
+          "Content-type": "application/json",
+          "Accept": "application/json",
+        },
+        body: body);
+
+    if (response.statusCode == 200) {
+      // If server returns an OK response, parse the JSON.
+      token = Token.fromJson(json.decode(response.body));
+      print("tokeeeeeen====================" + token.id_token);
+      String result = await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
+      Navigator.push(
+          context, MaterialPageRoute(
+          builder: (context) => SearchPatient()));
+      print("Response =================" + result.toString());
+
+
+    } else {
+      print(response.body);
+      // If that response was not OK, throw an error.
+      Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Authentication failed'),
+            ),
+          );
+
+      throw Exception('Failed to authenticate');
+    }
+  }
 }
 
-
-
-
-
-
-
-
-
-
-
+//https://apps.mohcc.gov.zw/impilo-ZW060383/api/authenticate

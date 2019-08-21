@@ -28,7 +28,7 @@ class _SearchPatientState extends State<SearchPatient> {
       print("channel failure: '$e'");
     }
     setState(() {
-      _patientList = Patient.mapFromJson(list);
+      _patientList = Patient.fromJsonDecodedMap(list);
     });
 
     print("=====================searched$_patientList");

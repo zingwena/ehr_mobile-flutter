@@ -166,7 +166,7 @@ class OverviewState extends State<Overview> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextField(
                                               controller: TextEditingController(
-                                                  text: _patient.birthDate),
+                                                  text: _patient.birthDate.toString()),
                                               decoration: InputDecoration(
                                                 labelText: 'Date Of Birth',
                                                 border: OutlineInputBorder(),

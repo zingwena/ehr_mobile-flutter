@@ -7,45 +7,40 @@ part of 'patient.dart';
 // **************************************************************************
 
 Patient _$PatientFromJson(Map<String, dynamic> json) {
-  return Patient()
+  return Patient(
+    json['firstName'] as String,
+    json['lastName'] as String,
+    json['sex'] as String,
+    json['nationalId'] as String,
+    json['birthDate'] == null
+        ? null
+        : DateTime.parse(json['birthDate'] as String),
+    json['selfIdentifiedGender'] as String,
+    json['religion'] as String,
+    json['occupation'] as String,
+    json['maritalStatus'] as String,
+    json['educationLevel'] as String,
+  )
     ..id = json['id'] as int
-    ..firstName = json['firstName'] as String
-    ..lastName = json['lastName'] as String
-    ..personId = json['personId'] as String
-    ..nationalId = json['nationalId'] as String
-    ..sex = json['sex'] as String
-    ..birthDate = json['birthDate'] as String
-    ..phoneNumber = json['phoneNumber'] as String
-    ..country = json['country'] == null
-        ? null
-        : Country.fromJson(json['country'] as Map<String, dynamic>)
-    ..educationLevel = json['educationLevel'] == null
-        ? null
-        : EducationLevel.fromJson(
-            json['educationLevel'] as Map<String, dynamic>)
-    ..maritalStatus = json['maritalStatus'] == null
-        ? null
-        : MaritalStatus.fromJson(json['maritalStatus'] as Map<String, dynamic>)
-    ..nationality = json['nationality'] == null
-        ? null
-        : Nationality.fromJson(json['nationality'] as Map<String, dynamic>)
-    ..occupation = json['occupation'] == null
-        ? null
-        : Occupation.fromJson(json['occupation'] as Map<String, dynamic>);
+
 }
 
 Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{
       'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
-      'personId': instance.personId,
-      'nationalId': instance.nationalId,
       'sex': instance.sex,
-      'birthDate': instance.birthDate,
-      'phoneNumber': instance.phoneNumber,
-      'country': instance.country?.toJson(),
-      'educationLevel': instance.educationLevel?.toJson(),
-      'maritalStatus': instance.maritalStatus?.toJson(),
-      'nationality': instance.nationality?.toJson(),
-      'occupation': instance.occupation?.toJson(),
+      'nationalId': instance.nationalId,
+
+      'birthDate': instance.birthDate?.toIso8601String(),
+      'age': instance.age,
+      'selfIdentifiedGender': instance.selfIdentifiedGender,
+      'religion': instance.religion,
+      'occupation': instance.occupation,
+      'maritalStatus': instance.maritalStatus,
+      'educationLevel': instance.educationLevel,
+      'schoolHouse': instance.schoolHouse,
+      'suburbVillage': instance.suburbVillage,
+      'town': instance.town,
+
     };
