@@ -223,6 +223,7 @@ public class MainActivity extends FlutterActivity {
                 getReligion(token, url + "/api/");
                 getTestKits(token, url + "/api/");
                 getPatients(url);
+
             }
 
 
@@ -348,28 +349,86 @@ public class MainActivity extends FlutterActivity {
 
             public void getTestKits(Token token, String url) {
                 DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
-                Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token());
-                call.enqueue(new Callback<TerminologyModel>() {
+                //Call First Level Test Kits
+                Call<List<TestKit>> call = service.getTestKits("Bearer " + token.getId_token(),"FIRST");
+
+                call.enqueue(new Callback<List<TestKit>>() {
                     @Override
-                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                    public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
                         List<TestKit> testKits = new ArrayList<>();
-
-                        if (response.isSuccessful()) {
-                            for (BaseNameModel item : response.body().getContent()) {
-                                testKits.add(new TestKit(item.getCode(), item.getName()));
+                        if(response.isSuccessful()){
+                            for (TestKit item : response.body()) {
+                                testKits.add(new TestKit(item.getCode(),item.getName(),item.getDescription(),"FIRST"));
                             }
 
-                            if (!testKits.isEmpty()) {
-                                saveTestKitsToDB(testKits);
-                            }
+                            System.out.println("test kiiiiiiiiiiiiiits =========="+testKits);
+
+                            saveTestKitsToDB(testKits);
+
+                        }else {
+
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+                    public void onFailure(Call<List<TestKit>> call, Throwable t) {
 
                     }
                 });
+
+                //Call All Second Level Test kits
+                Call<List<TestKit>> callSecond = service.getTestKits("Bearer " + token.getId_token(),"SECOND");
+                callSecond.enqueue(new Callback<List<TestKit>>() {
+                    @Override
+                    public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
+                        List<TestKit> secondTestKits = new ArrayList<>();
+                        if(response.isSuccessful()){
+                            for (TestKit item : response.body()) {
+                                secondTestKits.add(new TestKit(item.getCode(),item.getName(),item.getDescription(),"SECOND"));
+                            }
+
+                            System.out.println("******Secondtest kiiiiiiiiiiiiiits =========="+secondTestKits);
+                            saveTestKitsToDB(secondTestKits);
+
+
+                        }else{
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<TestKit>> call, Throwable t) {
+
+                    }
+                });
+                //Call all Third Level Test Kits
+                Call<List<TestKit>> callThird = service.getTestKits("Bearer " + token.getId_token(),"THIRD");
+                callThird.enqueue(new Callback<List<TestKit>>() {
+                    @Override
+                    public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
+                        List<TestKit> thirdTestKits = new ArrayList<>();
+                        if(response.isSuccessful()){
+                            for (TestKit item : response.body()) {
+                                thirdTestKits.add(new TestKit(item.getCode(),item.getName(),item.getDescription(),"THIRD"));
+                            }
+
+                            System.out.println("******Third test kiiiiiiiiiiiiiits =========="+thirdTestKits);
+                            saveTestKitsToDB(thirdTestKits);
+                            System.out.println("All test kits$$$$$$$$$$$$$"+ehrMobileDatabase.testKitDao().getAllTestKits());
+
+                        }else{
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<TestKit>> call, Throwable t) {
+
+                    }
+                });
+
             }
 
             //tino
