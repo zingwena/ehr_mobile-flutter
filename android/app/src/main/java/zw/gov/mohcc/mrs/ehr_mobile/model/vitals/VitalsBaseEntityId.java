@@ -1,38 +1,39 @@
-package zw.gov.mohcc.mrs.ehr_mobile.vitals;
+package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class VitalsBaseEntityId {
     @PrimaryKey(autoGenerate = true)
-    private int id;
-    private int visitId;
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private long id;
+    private long visitId;
+    private Date dateTime = new Date();
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getVisitId() {
+    public long getVisitId() {
         return visitId;
     }
 
-    public void setVisitId(int visitId) {
+    public void setVisitId(long visitId) {
         this.visitId = visitId;
     }
 
-    public LocalDateTime getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 

@@ -1,4 +1,4 @@
-package zw.gov.mohcc.mrs.ehr_mobile.vitals;
+package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
 import androidx.room.Entity;
 

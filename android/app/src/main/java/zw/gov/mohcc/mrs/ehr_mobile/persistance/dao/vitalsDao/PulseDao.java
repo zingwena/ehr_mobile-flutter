@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Pulse;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
 
 @Dao
 public interface PulseDao {

@@ -7,6 +7,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.flutter.app.FlutterActivity;
@@ -40,13 +41,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.BloodPressure;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Height;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Pulse;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.RespiratoryRate;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Temperature;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Visit;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Weight;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
@@ -70,7 +71,8 @@ public class MainActivity extends FlutterActivity {
     EhrMobileDatabase ehrMobileDatabase;
     int statusCode;
     List<User> userList;
-    Visit visit = new Visit();
+    Visit visit;
+
 
 
     @Override
@@ -80,7 +82,7 @@ public class MainActivity extends FlutterActivity {
 
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
-        final Visit visit = new Visit();
+
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
@@ -94,8 +96,9 @@ public class MainActivity extends FlutterActivity {
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
 
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), null);
-                    ehrMobileDatabase.patientDao().createPatient(patient);
-                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
+                   Long patientId = ehrMobileDatabase.patientDao().createPatient(patient);
+                   createVisit(patientId);
+
                 }
             }
         });
@@ -109,16 +112,14 @@ public class MainActivity extends FlutterActivity {
 
                     url = args.get(0).toString();
                     String tokenString = args.get(1).toString();
-
-                    System.out.println("&&&&&&&&&&&&&&&&&&" + tokenString);
-
                     Token token = new Token(tokenString);
+
+                    clearTables();
 
                     getNationalities(token, url + "/api/");
                     getFacilities(token, url + "/api/");
                     getCountries(token, url + "/api/");
                     getOccupation(token, url + "/api/");
-                    getCountries(token, url + "/api/");
                     getMaritalStates(token, url + "/api/");
                     getEducationLevels(token, url + "/api/");
                     getReligion(token, url + "/api/");
@@ -128,7 +129,7 @@ public class MainActivity extends FlutterActivity {
                     geReasonForNotIssuingResults(token, url + "/api/");
                     getPatients(url);
                     getUsers(token, url + "/api/");
-                    getReligion(token, url + "/api/");
+
 
 
                 }
@@ -240,10 +241,14 @@ public class MainActivity extends FlutterActivity {
                                 public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
                                     final String arguments = methodCall.arguments();
+
                                     Gson gson = new Gson();
 
+                                    if (methodCall.method.equals("visit")){
+                                        final int patientId = methodCall.arguments();
+                                        createVisit(patientId);
 
-                                    if (methodCall.method.equals("bloodPressure")) {
+                                    } else if (methodCall.method.equals("bloodPressure")) {
                                         BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
                                         if (bloodPressure.getVisitId() == 0) {
                                             bloodPressure.setVisitId(visit.getVisitId());
@@ -328,10 +333,9 @@ public class MainActivity extends FlutterActivity {
 
             }
 
-            // pull patients from EHR
 
             private void getPatients(String baseUrl) {
-                ehrMobileDatabase.patientDao().deleteAll();
+
                 PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
             }
 
@@ -719,7 +723,7 @@ public class MainActivity extends FlutterActivity {
             void saveCountriesToDB(List<Country> countries) {
 
 
-                ehrMobileDatabase.countryDao().deleteCountries();
+
 
                 ehrMobileDatabase.countryDao().insertCountries(countries);
 
@@ -730,14 +734,14 @@ public class MainActivity extends FlutterActivity {
             void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
 
 
-                ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
+
                 ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
 
                 System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
             }
 
             void saveFacilityToDB(List<Facility> facilities) {
-                ehrMobileDatabase.facilityDao().deleteAllFacilities();
+
                 ehrMobileDatabase.facilityDao().insertFacilities(facilities);
 
                 System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());
@@ -772,7 +776,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-                ehrMobileDatabase.religionDao().deleteReligions();
+
                 ehrMobileDatabase.religionDao().insertReligions(religions);
 
                 System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
@@ -783,7 +787,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("*****************   " + ehrMobileDatabase);
-                ehrMobileDatabase.occupationDao().deleteOccupations();
+
                 ehrMobileDatabase.occupationDao().insertOccupations(occupations);
                 System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
 
@@ -793,7 +797,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-                ehrMobileDatabase.nationalityDao().deleteNationalities();
+
                 ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
 
                 System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
@@ -806,7 +810,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-                ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
+
                 ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
 
                 System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
@@ -818,7 +822,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("*****************   " + ehrMobileDatabase);
-                ehrMobileDatabase.entryPointDao().deleteEntryPoints();
+
                 ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
                 System.out.println("EntryPoint from DB *****" + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
 
@@ -828,7 +832,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("*****************   " + ehrMobileDatabase);
-                ehrMobileDatabase.htsModelDao().deleteHtsModels();
+
                 ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
                 System.out.println("HtsModels from DB *****" + ehrMobileDatabase.htsModelDao().getAllHtsModels());
 
@@ -838,7 +842,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("*****************   " + ehrMobileDatabase);
-                ehrMobileDatabase.purpose_of_testsDao().deletePurpose_Of_Tests();
+
                 ehrMobileDatabase.purpose_of_testsDao().insertPurpose_Of_Tests(purpose_of_tests);
                 System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests());
 
@@ -848,7 +852,7 @@ public class MainActivity extends FlutterActivity {
 
 
                 System.out.println("*****************   " + ehrMobileDatabase);
-                ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
+
                 ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
                 System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
 
@@ -856,5 +860,33 @@ public class MainActivity extends FlutterActivity {
 
 
         });
+
     }
+    public void createVisit(long patientId){
+        Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndStartTime(patientId,new Date());
+        if(visit1 == null){
+            visit = new Visit(patientId);
+            ehrMobileDatabase.visitDao().insert(visit);
+        }
+
+    }
+
+
+    public void clearTables(){
+
+        ehrMobileDatabase.countryDao().deleteCountries();
+        ehrMobileDatabase.patientDao().deleteAll();
+        ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
+        ehrMobileDatabase.facilityDao().deleteAllFacilities();
+        System.out.println("========================herw");
+        ehrMobileDatabase.religionDao().deleteReligions();
+        ehrMobileDatabase.occupationDao().deleteOccupations();
+        ehrMobileDatabase.nationalityDao().deleteNationalities();
+        ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
+        ehrMobileDatabase.entryPointDao().deleteEntryPoints();
+        ehrMobileDatabase.htsModelDao().deleteHtsModels();
+        ehrMobileDatabase.purpose_of_testsDao().deletePurpose_Of_Tests();
+        ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
+    }
+
 }

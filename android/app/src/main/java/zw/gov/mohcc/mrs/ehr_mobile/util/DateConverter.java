@@ -11,13 +11,12 @@ import java.util.TimeZone;
 
 public class DateConverter {
     @TypeConverter
-    public static LocalDateTime fromTimestamp(Long value) {
-        return value == null ? null : LocalDateTime.ofInstant(Instant.ofEpochMilli(value),
-                TimeZone.getDefault().toZoneId());
+    public static Date fromTimestamp(Long value) {
+        return value == null ? null : new Date(value);
     }
 
     @TypeConverter
-    public static Long dateToTimestamp(LocalDateTime dateTime) {
-        return dateTime == null ? null : dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+    public static Long dateToTimestamp(Date dateTime) {
+        return dateTime == null ? null : dateTime.getTime();
     }
 }

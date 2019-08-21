@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Temperature;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 
 @Dao
 public interface TemperatureDao {

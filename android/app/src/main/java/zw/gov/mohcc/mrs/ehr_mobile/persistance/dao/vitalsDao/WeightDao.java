@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Weight;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 
 @Dao
 public interface WeightDao {

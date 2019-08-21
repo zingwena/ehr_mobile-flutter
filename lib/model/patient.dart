@@ -17,7 +17,7 @@ class Patient {
   String lastName;
   String sex;
   String nationalId;
-  String sex;
+
 
   String phoneNumber;
   Country country;

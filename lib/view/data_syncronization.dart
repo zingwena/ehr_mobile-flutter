@@ -229,13 +229,13 @@ class _DataSyncronizationState extends State<DataSyncronization> {
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON.
       token = Token.fromJson(json.decode(response.body));
-      print("tokeeeeeen====================" + token.id_token);
-      String result = await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
+
       Navigator.push(
           context, MaterialPageRoute(
           builder: (context) => SearchPatient()));
-      print("Response =================" + result.toString());
 
+
+      String result = await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
 
     } else {
       print(response.body);

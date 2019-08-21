@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.BloodPressure;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 
 @Dao
 public interface BloodPressureDao {

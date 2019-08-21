@@ -21,6 +21,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
@@ -40,17 +41,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.HeightDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.PulseDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.RespiratoryRateDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.TemperatureDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.VisitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.BloodPressure;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Height;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Pulse;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.RespiratoryRate;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Temperature;
-import zw.gov.mohcc.mrs.ehr_mobile.vitals.Weight;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 
 
 /**
@@ -63,7 +65,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.vitals.Weight;
  */
 
 
-@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,Facility.class, Religion.class, Nationality.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class}, version = 4, exportSchema = false)
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,Facility.class, Religion.class, Nationality.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class}, version = 4, exportSchema = false)
 @TypeConverters({DateConverter.class,DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class})
 
 public abstract class EhrMobileDatabase extends RoomDatabase {
@@ -128,5 +130,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract RespiratoryRateDao respiratoryRateDao();
 
     public abstract PulseDao pulseDao();
+
+    public abstract VisitDao visitDao();
 
 }

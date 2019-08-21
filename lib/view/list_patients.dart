@@ -79,6 +79,7 @@ class _ListPatients extends State<ListPatients> {
                   RaisedButton(
                     color: Colors.blue,
                     onPressed: () {
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
