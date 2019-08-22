@@ -222,86 +222,6 @@ public class MainActivity extends FlutterActivity {
 
                             String searchItem = arguments;
 
-                            new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
-                                @Override
-                                public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-
-                                    final String arguments = methodCall.arguments();
-
-                                    Gson gson = new Gson();
-
-                                    if (methodCall.method.equals("visit")){
-                                        final int patientId = methodCall.arguments();
-                                        createVisit(patientId);
-
-                                    } else if (methodCall.method.equals("bloodPressure")) {
-                                        BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                                        if (bloodPressure.getVisitId() == 0) {
-                                            bloodPressure.setVisitId(visit.getVisitId());
-                                        }
-                                        ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
-                                        System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
-
-
-                                    } else if (methodCall.method.equals("temperature")) {
-
-                                        Temperature temperature = gson.fromJson(arguments, Temperature.class);
-
-                                        if (temperature.getVisitId() == 0) {
-                                            temperature.setVisitId(visit.getVisitId());
-                                        }
-                                        ehrMobileDatabase.temperatureDao().insert(temperature);
-                                        System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
-
-
-                                    } else if (methodCall.method.equals("respiratoryRate")) {
-
-                                        RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
-
-                                        if (respiratoryRate.getVisitId() == 0) {
-                                            respiratoryRate.setVisitId(visit.getVisitId());
-                                        }
-                                        ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
-                                        System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
-
-
-                                    } else if (methodCall.method.equals("height")) {
-
-                                        Height height = gson.fromJson(arguments, Height.class);
-
-                                        if (height.getVisitId() == 0) {
-                                            height.setVisitId(visit.getVisitId());
-                                        }
-                                        ehrMobileDatabase.heightDao().insert(height);
-                                        System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
-
-
-                                    } else if (methodCall.method.equals("weight")) {
-
-                                        Weight weight = gson.fromJson(arguments, Weight.class);
-                                        if (weight.getVisitId() == 0) {
-                                            weight.setVisitId(visit.getVisitId());
-                                        }
-                                        ehrMobileDatabase.weightDao().insert(weight);
-
-
-                                    } else if (methodCall.method.equals("pulse")) {
-
-                                        Pulse pulse = gson.fromJson(arguments, Pulse.class);
-                                        if (pulse.getVisitId() == 0) {
-                                            pulse.setVisitId(visit.getVisitId());
-                                            System.out.println("=-=-=-=pulse" + pulse.getVisitId());
-                                        }
-                                        ehrMobileDatabase.pulseDao().insert(pulse);
-                                        System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
-
-
-                                    } else {
-                                        result.notImplemented();
-                                    }
-
-                                }
-                            });
 
 
                             PatientQuery patientQuery = new PatientQuery();
@@ -316,8 +236,91 @@ public class MainActivity extends FlutterActivity {
                     }
                 });
 
+                new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+
+                        final String arguments = methodCall.arguments();
+
+                        Gson gson = new Gson();
+
+                        if (methodCall.method.equals("visit")){
+                            final int patientId = methodCall.arguments();
+                            createVisit(patientId);
+
+                        } else if (methodCall.method.equals("bloodPressure")) {
+                            BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
+                            if (bloodPressure.getVisitId() == 0) {
+                                bloodPressure.setVisitId(visit.getVisitId());
+                            }
+                            ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
+                            System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
+
+
+                        } else if (methodCall.method.equals("temperature")) {
+
+                            Temperature temperature = gson.fromJson(arguments, Temperature.class);
+
+                            if (temperature.getVisitId() == 0) {
+                                temperature.setVisitId(visit.getVisitId());
+                            }
+                            ehrMobileDatabase.temperatureDao().insert(temperature);
+                            System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
+
+
+                        } else if (methodCall.method.equals("respiratoryRate")) {
+
+                            RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
+
+                            if (respiratoryRate.getVisitId() == 0) {
+                                respiratoryRate.setVisitId(visit.getVisitId());
+                            }
+                            ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
+                            System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
+
+
+                        } else if (methodCall.method.equals("height")) {
+
+                            Height height = gson.fromJson(arguments, Height.class);
+
+                            if (height.getVisitId() == 0) {
+                                height.setVisitId(visit.getVisitId());
+                            }
+                            ehrMobileDatabase.heightDao().insert(height);
+                            System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
+
+
+                        } else if (methodCall.method.equals("weight")) {
+
+                            Weight weight = gson.fromJson(arguments, Weight.class);
+                            if (weight.getVisitId() == 0) {
+                                weight.setVisitId(visit.getVisitId());
+                            }
+                            ehrMobileDatabase.weightDao().insert(weight);
+
+
+                        } else if (methodCall.method.equals("pulse")) {
+
+                            Pulse pulse = gson.fromJson(arguments, Pulse.class);
+                            if (pulse.getVisitId() == 0) {
+                                pulse.setVisitId(visit.getVisitId());
+                                System.out.println("=-=-=-=pulse" + pulse.getVisitId());
+                            }
+                            ehrMobileDatabase.pulseDao().insert(pulse);
+                            System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
+
+
+                        } else {
+                            result.notImplemented();
+                        }
+
+                    }
+                });
+
 
             }
+
+
             // pulling meta-data from the server
 
             private void pullData(Token token, String url) {
@@ -464,7 +467,7 @@ public class MainActivity extends FlutterActivity {
                 call.enqueue(new Callback<TerminologyModel>() {
                     @Override
                     public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                        List<TestKit> testKits = new ArrayList<>();
+                        List<TestKit> testKits = new ArrayList<TestKit>();
 
                         if (response.isSuccessful()) {
                             for (BaseNameModel item : response.body().getContent()) {
