@@ -8,24 +8,23 @@ part of 'patient.dart';
 
 Patient _$PatientFromJson(Map<String, dynamic> json) {
   return Patient(
+    json['id'] as int,
     json['firstName'] as String,
     json['lastName'] as String,
     json['sex'] as String,
     json['nationalId'] as String,
-    json['birthDate'] == null
-        ? null
-        : DateTime.parse(json['birthDate'] as String),
+    json['age'] as int,
     json['selfIdentifiedGender'] as String,
     json['religion'] as String,
     json['occupation'] as String,
     json['maritalStatus'] as String,
     json['educationLevel'] as String,
+    json['address'] == null
+        ? null
+        : Address.fromJson(json['address'] as Map<String, dynamic>),
   )
-    ..id = json['id'] as int
-    ..age = json['age'] as int
-    ..schoolHouse = json['schoolHouse'] as String
-    ..suburbVillage = json['suburbVillage'] as String
-    ..town = json['town'] as String;
+    ..nationality = json['nationality'] as String
+    ..countryOfBirth = json['countryOfBirth'] as String;
 }
 
 Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{
@@ -34,14 +33,13 @@ Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{
       'lastName': instance.lastName,
       'sex': instance.sex,
       'nationalId': instance.nationalId,
-      'birthDate': instance.birthDate?.toIso8601String(),
       'age': instance.age,
       'selfIdentifiedGender': instance.selfIdentifiedGender,
       'religion': instance.religion,
       'occupation': instance.occupation,
       'maritalStatus': instance.maritalStatus,
       'educationLevel': instance.educationLevel,
-      'schoolHouse': instance.schoolHouse,
-      'suburbVillage': instance.suburbVillage,
-      'town': instance.town,
+      'nationality': instance.nationality,
+      'countryOfBirth': instance.countryOfBirth,
+      'address': instance.address,
     };

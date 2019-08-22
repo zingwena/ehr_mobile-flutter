@@ -268,12 +268,12 @@ class _HivScreening extends State<HivScreening> {
 
                           print("=--------------------=-=-=-=-=-");
                           print(selectedDate);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditDemographics(
-                                      lastName, firstName, date, result)));
-////
+//                          Navigator.push(
+//                              context,
+//                              MaterialPageRoute(
+//                                  builder: (context) => EditDemographics(
+//                                      lastName, firstName, date, result)));
+//////
 //              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
                         }
                       },

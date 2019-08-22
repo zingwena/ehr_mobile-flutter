@@ -217,7 +217,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
         ),
       ));
 
-  Future<String> fetchPost() async {
+  Future<void> fetchPost() async {
     String ehr_url = url;
     var body = json.encode({"username": username, "password": password});
 
@@ -237,7 +237,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
           builder: (context) => SearchPatient()));
 
 
-      String result = await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
+      await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
 
     } else {
       print(response.body);

@@ -89,7 +89,7 @@ class OverviewState extends State<Overview> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ReceptionVitals()),
+                                                      ReceptionVitals(_patient.id)),
                                             ),
                                           ),
                                         ),
@@ -257,7 +257,7 @@ class OverviewState extends State<Overview> {
                                             controller: TextEditingController(
                                                 text: '20/01/1988'),
                                             decoration: InputDecoration(
-                                              labelText:_patient.birthDate.toString(),
+                                              labelText:"date",
                                               border: OutlineInputBorder(),
                                             ),
                                             style: TextStyle(
@@ -274,7 +274,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.maritalStatus.name),
+                                                text: _patient.maritalStatus),
                                             decoration: InputDecoration(
                                               labelText: 'Marital Status',
                                               border: OutlineInputBorder(),
@@ -302,7 +302,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.educationLevel.name),
+                                                text: _patient.educationLevel),
                                             decoration: InputDecoration(
                                               labelText: 'Education',
                                               border: OutlineInputBorder(),
@@ -321,7 +321,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:  _patient.occupation.name),
+                                                text:  _patient.occupation),
                                             decoration: InputDecoration(
                                               labelText: 'Occupation',
                                               border: OutlineInputBorder(),
@@ -340,7 +340,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.nationality.name),
+                                                text: _patient.nationality),
                                             decoration: InputDecoration(
                                               labelText: 'Nationality',
                                               border: OutlineInputBorder(),
@@ -398,7 +398,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:_patient.phoneNumber),
+                                                text:"phone number"),
                                             decoration: InputDecoration(
                                               labelText: 'Phone Number',
                                               border: OutlineInputBorder(),

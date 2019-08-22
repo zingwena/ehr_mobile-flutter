@@ -51,4 +51,13 @@ public class Visit {
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
+
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "visitId=" + visitId +
+                ", patientId=" + patientId +
+                ", startTime=" + startTime +
+                '}';
+    }
 }

@@ -495,7 +495,6 @@ class _EditDemographicsState extends State<EditDemographics> {
                               lastName,
                               _currentGender,
                               nationalId,
-                              birthDate,
                               _currentReligion,
                               _currentMaritalStatus,
                               _currentEducationLevel,
@@ -526,7 +525,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
-                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,
+                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,_currentReligion,
                                   _currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender);
                               registerPatient(patient);
                             }

@@ -94,8 +94,8 @@ class _SearchPatientState extends State<SearchPatient> {
                                 nullHandler(patient.lastName)),
                             leading: Text(nullHandler(patient.sex)),
                             subtitle:
-                                Text(nullHandler(patient.birthDate.toString())),
-                            trailing: Text(patient.nationalId),
+                                Text(nullHandler("date")),
+                            trailing: Text(nullHandler(patient.nationalId)),
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -133,28 +133,7 @@ class _SearchPatientState extends State<SearchPatient> {
                   ),
                 )
               : SizedBox(),
-          OutlineButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
-            color: Colors.white,
-            padding: const EdgeInsets.all(10.0),
-            child: Text(
-              "VITALS",
-              style: TextStyle(
-                  fontSize: 23,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            ),
-            borderSide: BorderSide(
-              color: Colors.blue, //Color of the border
-              style: BorderStyle.solid, //Style of the border
-              width: 3.0, //width of the border
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ReceptionVitals()),
-            ),
-          )
+
         ],
       ),
     );

@@ -5,14 +5,15 @@ import 'package:ehr_mobile/vitals/height.dart';
 import 'package:ehr_mobile/vitals/pulse.dart';
 import 'package:ehr_mobile/vitals/respiratory_rate.dart';
 import 'package:ehr_mobile/vitals/temperature.dart';
+import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:ehr_mobile/vitals/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ReceptionVitals extends StatefulWidget {
-  ReceptionVitals({Key key, this.title}) : super(key: key);
+  final int patientId;
+  ReceptionVitals(this.patientId);
 
-  final String title;
 
   @override
   _ReceptionVitalsState createState() => _ReceptionVitalsState();
@@ -27,6 +28,30 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
   RespiratoryRate _respiratoryRate = RespiratoryRate();
   Height _height = Height();
   Weight _weight = Weight();
+  Visit _visit;
+
+
+  @override
+  void initState() {
+    getVisit(widget.patientId);
+super.initState();
+  }
+
+  Future<void> getVisit(int patientId) async {
+    Visit visit;
+
+    try {
+      visit = jsonDecode(
+          await platform.invokeMethod('visit', patientId)
+      );
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+      _visit = visit;
+    });
+  }
+
 
   Future<void> saveVitals(var object,String method) async {
     List<dynamic> list;
@@ -38,6 +63,18 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
     } catch (e) {
       print("channel failure: '$e'");
     }
+  }
+
+  setVisit(){
+    setState(() {
+      _bloodPressure.visitId = _visit.visitId;
+      _temperature.visitId = _visit.visitId;
+      _pulse.visitId = _visit.visitId;
+      _respiratoryRate.visitId = _visit.visitId;
+      _height.visitId = _visit.visitId;
+      _weight.visitId = _visit.visitId;
+
+    });
   }
 
   @override
