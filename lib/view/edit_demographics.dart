@@ -153,10 +153,10 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsOccupation() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String occupation in _occupationList) {
+    for (Occupation occupation in _occupationList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: occupation, child: Text(occupation)));
+      items.add(DropdownMenuItem(value: occupation.code, child: Text(occupation.name)));
     }
     return items;
   }
@@ -495,13 +495,13 @@ class _EditDemographicsState extends State<EditDemographics> {
                               lastName,
                               _currentGender,
                               nationalId,
-                              birthDate,
                               _currentReligion,
                               _currentMaritalStatus,
                               _currentEducationLevel,
                               _currentNationality,
                               _currentCountry,
-                              _currentSiGender);
+                              _currentSiGender,
+                                _currentOccupation);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -523,12 +523,17 @@ class _EditDemographicsState extends State<EditDemographics> {
                             "Skip",
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {
+                          onPressed: () async{
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
-                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,
-                                  _currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender);
-                              registerPatient(patient);
+                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,_currentReligion,
+                                  _currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
+
+//                              MaterialPageRoute(
+//                                  builder: (context) =>
+//                                      (patient));
+
+                              await registerPatient(patient);
                             }
                           },
                         ),
@@ -580,7 +585,7 @@ class _EditDemographicsState extends State<EditDemographics> {
       _occupations=jsonDecode(occupation);
       _occupationListDropdown= Occupation.mapFromJson(_occupations);
       _occupationListDropdown.forEach((e){
-        _occupationList.add(e.name);
+        _occupationList.add(e);
       });
       _dropDownMenuItemsOccupation = getDropDownMenuItemsOccupation();
 //      _currentOccupation = _dropDownMenuItemsOccupation[0].value;
@@ -705,10 +710,11 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   Future<void> registerPatient(Patient patient)async{
-    String response;
+    int response;
     try {
       String jsonPatient = jsonEncode(patient);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
+      print('========================= $response');
     }
     catch(e){
       print('Something went wrong...... cause $e');

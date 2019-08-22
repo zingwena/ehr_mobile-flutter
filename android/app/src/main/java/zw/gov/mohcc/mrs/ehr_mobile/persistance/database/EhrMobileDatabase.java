@@ -53,7 +53,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
 
-        Facility.class, Religion.class, Nationality.class, Occupation.class, TestKit.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class}, version = 15, exportSchema = false)
+        Facility.class, Religion.class, Nationality.class, Occupation.class, TestKit.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class}, version = 16, exportSchema = false)
 
 @TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {

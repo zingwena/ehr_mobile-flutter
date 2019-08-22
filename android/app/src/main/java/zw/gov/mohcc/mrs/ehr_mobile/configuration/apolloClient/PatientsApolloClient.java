@@ -75,7 +75,7 @@ public class PatientsApolloClient {
 
                                     patient = new Patient(firstName, lastName, sex);
                                     patient.setSelfIdentifiedGender(selfIdentifiedGender);
-                                    patient.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
+                                    /*patient.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
                                             ? patientData.religion().id() : null);
                                     patient.setCountryId(patientData.countryOfBirth() != null && StringUtils.isNoneBlank(patientData.countryOfBirth().id())
                                             ? patientData.countryOfBirth().id() : null);
@@ -84,11 +84,11 @@ public class PatientsApolloClient {
                                     patient.setAddress(address);
                                     patient.setMaritalStatusId(patientData.marital() != null && StringUtils.isNoneBlank(patientData.marital().id())
                                             ? patientData.marital().id() : null);
-                                    /*patient.setNationalityId(patientData.nationality() != null && StringUtils.isNoneBlank(patientData.nationality().id())
-                                            ? patientData.nationality().id() : null);*/
+                                    patient.setNationalityId(patientData.nationality() != null && StringUtils.isNoneBlank(patientData.nationality().id())
+                                            ? patientData.nationality().id() : null);
                                     patient.setNationalityId(null);
                                     patient.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
-                                            ? patientData.occupation().id() : null);
+                                            ? patientData.occupation().id() : null);*/
 
                                     try {
                                         LocalDate dateOfBirth = LocalDate.parse(date);

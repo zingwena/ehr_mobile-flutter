@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/address.dart';
 import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -24,7 +25,8 @@ class _PatientAddressState extends State<PatientAddress> {
   MethodChannel('example.channel.dev/singlePatient');
 
   final _formKey = GlobalKey<FormState>();
-  String schoolHouse, suburbVillage, town, patient;
+  String schoolHouse, suburbVillage, town, patient, registeredPatient;
+
 
   List<DropdownMenuItem<String>> _dropDownMenuItems, _dropDownMenuItemsTown;
 
@@ -142,13 +144,15 @@ class _PatientAddressState extends State<PatientAddress> {
       Patient patient = widget.patient;
       Address address = Address(schoolHouse, suburbVillage, town);
       patient.address = address;
-      registerPatient(patient);
+      await registerPatient(patient).then((value){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Overview(registeredPatient)));
+      });
 
       print('%%%%%%%%%%%%%%%%%%$patient');
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => Overview(patient)));
+
     }
                       },
                     ),
@@ -162,10 +166,17 @@ class _PatientAddressState extends State<PatientAddress> {
     );
   }
   Future<void> registerPatient(Patient patient)async{
-    String response;
+    int response;
+    String patientResponse;
     try {
       String jsonPatient = jsonEncode(patient);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
+      print('=========================================== Patient Id $response');
+      patientResponse= await addPatient.invokeMethod("getPatientById", response);
+      setState(() {
+        registeredPatient=patientResponse;
+      });
+
     }
     catch(e){
       print('Something went wrong...... cause $e');

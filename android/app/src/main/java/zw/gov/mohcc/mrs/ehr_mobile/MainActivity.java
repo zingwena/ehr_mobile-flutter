@@ -84,11 +84,11 @@ public class MainActivity extends FlutterActivity {
 
                     System.out.println(args);
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-                    dateOfBirth = patientDto.getBirthDate().split("T");
-                    dob = dateOfBirth[0];
+//                    dateOfBirth = patientDto.getBirthDate().split("T");
+//                    dob = dateOfBirth[0];
                     System.out.println("==============================PatientDTO " + patientDto.getNationalId());
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
-                    LocalDate Date = LocalDate.parse(dob);
+//                    LocalDate Date = LocalDate.parse(dob);
                     patient.setNationalId(patientDto.getNationalId());
                     patient.setReligionId(patientDto.getReligion());
                     patient.setMaritalStatusId(patientDto.getMaritalStatus());
@@ -97,10 +97,18 @@ public class MainActivity extends FlutterActivity {
                     patient.setCountryId(patientDto.getCountryOfBirth());
                     patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
                     patient.setAddress(patientDto.getAddress());
-                    patient.setBirthDate(Date);
-                    ehrMobileDatabase.patientDao().createPatient(patient);
+                    patient.setOccupationId(patientDto.getOccupation());
+//                    patient.setBirthDate(Date);
+                 int id=ehrMobileDatabase.patientDao().createPatient(patient).intValue();
+                 result.success(id);
 
                     System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
+                }
+                if(methodCall.method.equals("getPatientById")){
+                    int ags= methodCall.arguments();
+                    Patient patient=ehrMobileDatabase.patientDao().findPatientById(ags);
+                    String response= gson.toJson(patient);
+                    result.success(response);
                 }
 
 
@@ -395,7 +403,7 @@ public class MainActivity extends FlutterActivity {
                 call.enqueue(new Callback<TerminologyModel>() {
                     @Override
                     public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                        List<TestKit> testKits = new ArrayList<>();
+                        List<TestKit> testKits = new ArrayList();
 
                         if (response.isSuccessful()) {
                             for (BaseNameModel item : response.body().getContent()) {
