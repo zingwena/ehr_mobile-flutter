@@ -21,7 +21,7 @@ public interface OccupationDao {
     @Insert
     void insertOccupation(Occupation occupation);
 
-    @Query("SELECT * FROM Occupation ORDER BY name ASC")
+    @Query("SELECT * FROM occupation ORDER BY name ASC")
     List<Occupation> getAllOccupations();
 
     @Query("SELECT * FROM Occupation WHERE id=:id")

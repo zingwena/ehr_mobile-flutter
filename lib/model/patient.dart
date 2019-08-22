@@ -1,12 +1,11 @@
-
 import 'package:json_annotation/json_annotation.dart';
-import 'package:intl/intl.dart';
+import 'package:ehr_mobile/model/address.dart';
+import 'package:ehr_mobile/model/education_level.dart';
+import 'package:ehr_mobile/model/marital_status.dart';
+import 'package:ehr_mobile/model/occupation.dart';
+import 'package:ehr_mobile/model/religion.dart';
 
-import 'country.dart';
-import 'education_level.dart';
-import 'marital_status.dart';
-import 'nationality.dart';
-import 'occupation.dart';
+import 'package:intl/intl.dart';
 part 'patient.g.dart';
 
 @JsonSerializable()
@@ -18,47 +17,34 @@ class Patient {
   String sex;
   String nationalId;
 
-
-  String phoneNumber;
-  Country country;
-  EducationLevel educationLevel;
-  MaritalStatus maritalStatus;
-  Nationality nationality;
-  Occupation occupation;
-
   DateTime birthDate;
   int age;
 
   String selfIdentifiedGender;
   String religion;
-  String schoolHouse;
-  String suburbVillage;
-  String town;
+  String occupation;
+  String maritalStatus;
+  String educationLevel;
+  String nationality;
+  String countryOfBirth;
 
 
+  Address address;
 
-  Patient.basic(this.nationalId, this.firstName,this.lastName,this.sex);
+  Patient.basic(this.firstName, this.lastName,this.sex,this.nationalId, this.birthDate,this.religion,this.maritalStatus,this.educationLevel, this.nationality, this.countryOfBirth, this.selfIdentifiedGender);
 
-  Patient(
-      this.firstName,
-      this.lastName,
-      this.sex,
-      this.nationalId,
-      this.birthDate,
-      this.selfIdentifiedGender,
-      this.religion,
-      this.occupation,
-      this.maritalStatus,
-      this.educationLevel);
+  Patient(this.id, this.firstName, this.lastName, this.sex, this.nationalId,
+      this.birthDate, this.age, this.selfIdentifiedGender, this.religion,
+      this.occupation, this.maritalStatus, this.educationLevel, this.address);
 
- factory Patient.fromJson(Map<String, dynamic> json) => _$PatientFromJson(json);
+  factory Patient.fromJson(Map<String, dynamic> json) => _$PatientFromJson(json);
 
 
   Map<String, dynamic> toJson() => _$PatientToJson(this);
 
   @override
   String toString() {
-    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate,age: $age selfIdentifiedGender: $selfIdentifiedGender, religion: $religion, occupation: $occupation, maritalStatus: $maritalStatus, educationLevel: $educationLevel, schoolHouse: $schoolHouse, suburbVillage: $suburbVillage, town: $town}';
+    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, age: $age, selfIdentifiedGender: $selfIdentifiedGender, religion: $religion, occupation: $occupation, maritalStatus: $maritalStatus, educationLevel: $educationLevel, address: $address}';
   }
 
   static List<Patient> fromJsonDecodedMap(List dynamicList) {

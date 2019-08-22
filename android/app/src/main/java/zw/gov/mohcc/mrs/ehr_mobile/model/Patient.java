@@ -80,6 +80,7 @@ public class Patient {
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
+
     }
 
     public int getId() {

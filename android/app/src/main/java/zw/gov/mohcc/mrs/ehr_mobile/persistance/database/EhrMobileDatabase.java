@@ -66,6 +66,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
  * Room persistence Library will help to create the cache
  */
 
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
+
+        Facility.class, Religion.class, Nationality.class, Occupation.class, TestKit.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class}, version = 15, exportSchema = false)
+
+@TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class})
 
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,Facility.class, Religion.class, Nationality.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class}, version = 4, exportSchema = false)

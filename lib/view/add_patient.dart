@@ -233,8 +233,8 @@ class _AddPatient extends State<AddPatient> {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
 
-                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
-                           await registerPatient(patient);
+//                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
+//                           await registerPatient(patient);
 
                           print("=--------------------=-=-=-=-=-");
                           print(selectedDate);
@@ -242,7 +242,7 @@ class _AddPatient extends State<AddPatient> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => EditDemographics(
-                                      lastName, firstName, date, gender)));
+                                      lastName, firstName, date, gender, nationalId)));
 
                         }
                       },

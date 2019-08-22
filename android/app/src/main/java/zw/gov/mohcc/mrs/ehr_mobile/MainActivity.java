@@ -6,6 +6,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
@@ -92,15 +95,34 @@ public class MainActivity extends FlutterActivity {
                 Gson gson = new Gson();
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
+                    String dob;
+                    String[] dateOfBirth;
+
+
 
                     System.out.println(args);
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
+                    dateOfBirth = patientDto.getBirthDate().split("T");
+                    dob = dateOfBirth[0];
+                    System.out.println("==============================PatientDTO " + patientDto.getNationalId());
+                    Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
+                    LocalDate Date = LocalDate.parse(dob);
+                    patient.setNationalId(patientDto.getNationalId());
+                    patient.setReligionId(patientDto.getReligion());
+                    patient.setMaritalStatusId(patientDto.getMaritalStatus());
+                    patient.setEducationLevelId(patientDto.getEducationLevel());
+                    patient.setNationalityId(patientDto.getNationality());
+                    patient.setCountryId(patientDto.getCountryOfBirth());
+                    patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
+                    patient.setAddress(patientDto.getAddress());
+                    patient.setBirthDate(Date);
+                    ehrMobileDatabase.patientDao().createPatient(patient);
 
-                    Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), null);
-                   Long patientId = ehrMobileDatabase.patientDao().createPatient(patient);
-                   createVisit(patientId);
-
+                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
                 }
+
+
+
             }
         });
 
@@ -171,7 +193,8 @@ public class MainActivity extends FlutterActivity {
                                         result1.success(occupationList);
                                     } catch (Exception e) {
                                         System.out.println("something went wrong " + e.getMessage());
-                                    }
+                                    } Patient.basic(this.nationalId, this.firstName,this.lastName,this.sex);
+
                                 }
 
                                 if (methodCall1.method.equals("educationLevelOptions")) {
@@ -231,7 +254,7 @@ public class MainActivity extends FlutterActivity {
 
 
                             result1.success(gson.toJson(_list));
-
+                    }
                         }
                     }
                 });
@@ -314,13 +337,10 @@ public class MainActivity extends FlutterActivity {
                             result.notImplemented();
                         }
 
-                    }
                 });
 
 
             }
-
-
             // pulling meta-data from the server
 
             private void pullData(Token token, String url) {
@@ -417,7 +437,9 @@ public class MainActivity extends FlutterActivity {
 
                         System.out.println("User response   : \n   " + userList);
 
-                        saveUsersToDB(userList);
+                 Patient.basic(this.nationalId, this.firstName,this.lastName,this.sex);
+
+        saveUsersToDB(userList);
 
 
                     }
@@ -487,7 +509,9 @@ public class MainActivity extends FlutterActivity {
                 });
             }
 
-            //tino
+            //tinoPatient.basic(this.nationalId, this.firstName,this.lastName,this.sex);
+
+
             public void getNationalities(Token token, String baseUrl) {
 
                 DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
