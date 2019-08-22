@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 
 import 'add_patient.dart';
 import 'list_patients.dart';
+import 'patient_overview.dart';
+import 'reception_vitals.dart';
 
 class SearchPatient extends StatefulWidget {
   _SearchPatientState createState() => _SearchPatientState();
@@ -31,6 +33,10 @@ class _SearchPatientState extends State<SearchPatient> {
     });
 
     print("=====================searched$_patientList");
+  }
+
+  String nullHandler(String value) {
+    return value == null ? "" : value;
   }
 
   @override
@@ -79,7 +85,26 @@ class _SearchPatientState extends State<SearchPatient> {
               ? SizedBox()
               : _patientList != null && _patientList.isNotEmpty
                   ? Expanded(
-                      child: ListPatients(_patientList),
+                      child: ListView(
+                        padding: EdgeInsets.all(10.0),
+                        children: _patientList.map((patient) {
+                          return ListTile(
+                            title: Text(nullHandler(patient.firstName) +
+                                " " +
+                                nullHandler(patient.lastName)),
+                            leading: Text(nullHandler(patient.sex)),
+                            subtitle:
+                                Text(nullHandler("date")),
+                            trailing: Text(nullHandler(patient.nationalId)),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Overview(patient)));
+                            },
+                          );
+                        }).toList(),
+                      ),
                     )
                   : Center(
                       child: Text("No Patients Found"),
@@ -108,6 +133,7 @@ class _SearchPatientState extends State<SearchPatient> {
                   ),
                 )
               : SizedBox(),
+
         ],
       ),
     );

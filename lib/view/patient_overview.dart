@@ -1,11 +1,14 @@
 import 'dart:convert';
-
-import 'package:ehr_mobile/model/address.dart';
+import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
 
+import 'hiv_screening.dart';
+import 'home_page.dart';
+import 'reception_vitals.dart';
+import 'package:ehr_mobile/model/address.dart';
 
 class Overview extends StatefulWidget {
-  String patient;
+  final Patient patient;
 
   Overview(this.patient);
 
@@ -17,19 +20,15 @@ class Overview extends StatefulWidget {
 }
 
 class OverviewState extends State<Overview> {
-  String patient,
-      fullName,
-      occupation,
-      education,
-      age,
-      sex,
-      district,
-      maritalStatus,
-  nationalId;
 
-  Address address;
-
+  Patient _patient;
   Map<String, dynamic> details;
+
+  @override
+  void initState() {
+    _patient = widget.patient;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,7 @@ class OverviewState extends State<Overview> {
                               children: <Widget>[
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -72,9 +71,7 @@ class OverviewState extends State<Overview> {
                                           child: RaisedButton(
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(5.0)),
-                                            color: Colors.blue,
+                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
                                               "Vitals",
@@ -82,13 +79,12 @@ class OverviewState extends State<Overview> {
                                                   fontSize: 15,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
+                                            ),onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ReceptionVitals(_patient.id)),
                                             ),
-//                                            onPressed: () => Navigator.push(
-//                                              context,
-//                                              MaterialPageRoute(
-//                                                  builder: (context) =>
-//                                                      ReceptionVitals()),
-//                                            ),
                                           ),
                                         ),
                                         width: 100,
@@ -101,9 +97,7 @@ class OverviewState extends State<Overview> {
                                           child: RaisedButton(
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(5.0)),
-                                            color: Colors.blue,
+                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
                                               "HTS",
@@ -112,12 +106,12 @@ class OverviewState extends State<Overview> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
-//                                            onPressed: () => Navigator.push(
-//                                              context,
-//                                              MaterialPageRoute(
-//                                                  builder: (context) =>
-//                                                      HivScreening()),
-//                                            ),
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HivScreening()),
+                                            ),
                                           ),
                                         ),
                                         width: 100,
@@ -131,7 +125,8 @@ class OverviewState extends State<Overview> {
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(5.0)),
+                                                    BorderRadius.circular(5.0)),
+
                                             color: Colors.red,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
@@ -141,12 +136,13 @@ class OverviewState extends State<Overview> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
-//                                            onPressed: () => Navigator.push(
-//                                              context,
-//                                              MaterialPageRoute(
-//                                                  builder: (context) =>
-//                                                      HomePage()),
-//                                            ),
+                               onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HomePage()),
+                                            ),
+
                                           ),
                                         ),
                                         width: 100,
@@ -178,9 +174,9 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: fullName),
+                                                text:  _patient.firstName + " " + _patient.lastName),
                                             decoration: InputDecoration(
-                                              labelText: 'Fullname',
+                                              labelText: 'Full Name',
                                               border: OutlineInputBorder(),
                                             ),
                                             style: TextStyle(
@@ -197,8 +193,8 @@ class OverviewState extends State<Overview> {
                                   height: 15,
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -206,7 +202,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: sex),
+                                          text: _patient.sex),
+
                                             decoration: InputDecoration(
                                               labelText: 'Sex',
                                               border: OutlineInputBorder(),
@@ -225,7 +222,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: nationalId),
+                                                text: _patient.nationalId),
                                             decoration: InputDecoration(
                                               labelText: 'National ID',
                                               border: OutlineInputBorder(),
@@ -245,7 +242,7 @@ class OverviewState extends State<Overview> {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -272,7 +269,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: 'Married'),
+                                                text: _patient.maritalStatus),
                                             decoration: InputDecoration(
                                               labelText: 'Marital Status',
                                               border: OutlineInputBorder(),
@@ -292,7 +289,8 @@ class OverviewState extends State<Overview> {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
+
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -300,7 +298,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: 'Tertiary'),
+                                  text: _patient.educationLevel),
                                             decoration: InputDecoration(
                                               labelText: 'Education',
                                               border: OutlineInputBorder(),
@@ -319,7 +317,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: 'Employed'),
+                                                text:  _patient.occupation),
+
                                             decoration: InputDecoration(
                                               labelText: 'Occupation',
                                               border: OutlineInputBorder(),
@@ -338,7 +337,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: 'Zimbabwean'),
+                                                text: _patient.nationality),
+
                                             decoration: InputDecoration(
                                               labelText: 'Nationality',
                                               border: OutlineInputBorder(),
@@ -369,7 +369,8 @@ class OverviewState extends State<Overview> {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
+
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -377,7 +378,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextFormField(
                                             controller: TextEditingController(
-                                                text: address.street+" "+address.town+" "+address.city),
+
+                                                text: _patient.address.street+" "+ _patient.address.town+" "+_patient.address.city),
                                             decoration: InputDecoration(
                                               labelText: 'Address',
                                               border: OutlineInputBorder(),
@@ -397,6 +399,7 @@ class OverviewState extends State<Overview> {
                                           child: TextField(
                                             controller: TextEditingController(
                                                 text: '0774536627'),
+
                                             decoration: InputDecoration(
                                               labelText: 'Phone Number',
                                               border: OutlineInputBorder(),
@@ -430,18 +433,5 @@ class OverviewState extends State<Overview> {
     );
   }
 
-  @override
-  void initState() {
-    patient = widget.patient;
-    details = jsonDecode(patient);
-    fullName = details['firstName'] + "    " + details['lastName'];
-    sex = details['sex'];
-    education = details['educationLevel'];
-    maritalStatus = details['maritalStatus'];
-    occupation = details['occupation'];
-   nationalId = details['nationalId'];
-   address=Address.fromJson(details['address']);
 
-    print('///////////////////////// in oveiview    ${address.city}');
-  }
 }

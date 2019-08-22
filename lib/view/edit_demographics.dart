@@ -526,14 +526,15 @@ class _EditDemographicsState extends State<EditDemographics> {
                           onPressed: () async{
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
-                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,_currentReligion,
-                                  _currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
+                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,_currentReligion,_currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
 
 //                              MaterialPageRoute(
 //                                  builder: (context) =>
 //                                      (patient));
 
                               await registerPatient(patient);
+
+
                             }
                           },
                         ),

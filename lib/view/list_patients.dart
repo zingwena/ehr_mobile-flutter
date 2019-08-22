@@ -4,6 +4,8 @@ import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'patient_overview.dart';
+
 class ListPatients extends StatefulWidget {
   final List<Patient> patientList;
 
@@ -77,11 +79,12 @@ class _ListPatients extends State<ListPatients> {
                   RaisedButton(
                     color: Colors.blue,
                     onPressed: () {
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) =>
-//                                  Overview(jsonEncode(patient))));
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Overview(patient)));
                     },
                     child: Text('View',
                         style: TextStyle(fontSize: 20, color: Colors.white)),

@@ -47,7 +47,7 @@ public class PatientQuery {
                 String lastNameFilter1 = lastName.substring(0, 3).concat("%");
 
 
-                stringQuery.append(" WHERE (firstName Like ? OR firstName Like ?) AND (lastName Like ? OR lastName Like ?)");
+                stringQuery.append(" WHERE ((firstName Like ? OR firstName Like ?) AND (lastName Like ? OR lastName Like ?)) OR ((lastName Like ? OR lastName Like ?) AND (firstName Like ? OR firstName Like ?))");
                 parameters.add(firstNameFilter1);
                 parameters.add(firstNameFilter2);
                 parameters.add(lastNameFilter1);

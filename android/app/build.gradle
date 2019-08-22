@@ -27,6 +27,7 @@ apply plugin: 'com.apollographql.android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+
     compileSdkVersion 28
 
     lintOptions {
@@ -64,7 +65,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "zw.gov.mohcc.mrs.ehr_mobile"
-        minSdkVersion 26
+        minSdkVersion 16
         targetSdkVersion 28
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

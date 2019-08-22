@@ -22,6 +22,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
@@ -37,9 +38,23 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.Purpose_Of_TestsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.BloodPressureDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.HeightDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.PulseDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.RespiratoryRateDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.TemperatureDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.VisitDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 
 
 /**
@@ -51,11 +66,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
  * Room persistence Library will help to create the cache
  */
 
-@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
 
-        Facility.class, Religion.class, Nationality.class, Occupation.class, TestKit.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class}, version = 16, exportSchema = false)
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,Facility.class, Religion.class, Nationality.class,TestKit.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class}, version = 1, exportSchema = false)
+@TypeConverters({DateConverter.class,DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class})
 
-@TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
 
@@ -108,5 +122,19 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract TestKitDao testKitDao();
 
     public abstract ReasonForNotIssuingResultDao reasonForNotIssuingResultDao();
+
+    public abstract BloodPressureDao bloodPressureDao();
+
+    public abstract TemperatureDao temperatureDao();
+
+    public abstract WeightDao weightDao();
+
+    public abstract HeightDao heightDao();
+
+    public abstract RespiratoryRateDao respiratoryRateDao();
+
+    public abstract PulseDao pulseDao();
+
+    public abstract VisitDao visitDao();
 
 }
