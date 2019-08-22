@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/token.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
@@ -202,7 +203,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       print("tokeeeeeen====================" + token.id_token);
       Navigator.push(
           context, MaterialPageRoute(
-          builder: (context) => SearchPatient()));
+          builder: (context) =>LoginScreen()));
       String result = await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
       
       print("Response =================" + result.toString());
