@@ -216,6 +216,7 @@ public class MainActivity extends FlutterActivity {
                                         List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
 
                                         String htsModelList = gson.toJson(htsModels);
+                                        System.out.println("htsModel=====:"+htsModels);
                                         result.success(htsModelList);
                                     } catch (Exception e) {
                                         System.out.println("something went wrong " + e.getMessage());
@@ -235,7 +236,7 @@ public class MainActivity extends FlutterActivity {
                                     try {
                                         List<Purpose_Of_Tests> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
                                         String purposeOfTestsList = gson.toJson(purpose_of_tests);
-                                        result.success(purpose_of_tests);
+                                        result.success(purposeOfTestsList);
                                     } catch (Exception e) {
                                         System.out.println("something went wrong " + e.getMessage());
                                     }

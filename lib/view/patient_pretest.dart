@@ -21,30 +21,31 @@ class _PatientPretest extends State<PatientPretest> {
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   final _formKey = GlobalKey<FormState>();
   PreTest preTest;
-  List<HtsModel> _htsModelList;
-  List<PurposeOfTest> _purposeOfTestList;
+  List<HtsModel> _htsModelList=List();
+  List<PurposeOfTest> _purposeOfTestList= List();
 
   int _hts = 0;
-  int _coupleCounselling = 0;
+  String _coupleCounselling="" ;
+  String _newTest="" ;
+  String _htsApproach="" ;
+  String _preTestInfoGiven="" ;
+  String _optOutOfTest="" ;
+  int coupleCounselling=0;
   int _patientPretest = 0;
   int _optOutTest = 0;
-  int _newTest = 0;
+  int newTest = 0;
 
 
   @override
   void initState() {
-    getDropDrowns();
-    _dropDownMenuItemsHtsModel =
-        getDropDownMenuItemsHtsModel();
+  getDropDrowns();
 
-    _dropDownMenuItemsPurposeOfTest =
-    getDropDownMenuItemsPurposeOfTest();
-//    List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
-//    _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
-//    _identifier = _identifierDropdownMenuItem[0].value;
+  print('=================================== htsModelList ${_htsModelList.length}');
+  print('=================================== purposeOfTestList ${_purposeOfTestList.length}');
 
-    _currentHtsModel = _dropDownMenuItemsHtsModel[0].value;
-    _currentPurposeOfTest = _dropDownMenuItemsPurposeOfTest[0].value;
+
+
+
 
     super.initState();
   }
@@ -54,7 +55,7 @@ class _PatientPretest extends State<PatientPretest> {
 
     try {
 
-          await platform.invokeMethod('savePreTest',  jsonEncode(preTest));
+          await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -62,114 +63,8 @@ class _PatientPretest extends State<PatientPretest> {
 
   }
 
-
-  Future<void> getDropDrowns() async {
-
-    List htsModelList;
-    List purposeOfTestList;
-
-
-    try {
-      htsModelList= jsonDecode(await platform.invokeMethod('htsModelOptions'));
-      purposeOfTestList= jsonDecode(await platform.invokeMethod('purposeOfTestsOptions'));
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-
-    setState(() {
-      _htsModelList = PreTest.mapFromJson(htsModelList);
-      _purposeOfTestList = PreTest.mapFromJson(purposeOfTestList);
-    });
-
-
-  }
-
-
-   void _handleHtsChange(int value) {
-    setState(() {
-      _hts = value;
-
-      switch (_hts) {
-        case 0:
-          preTest.htsApproach = "PITC";
-          break;
-        case 1:
-          preTest.htsApproach = "CITC";
-          break;
-      }
-    });
-  }
-
-   void _handleCoupleCounsellingChange(int value) {
-    setState(() {
-      _coupleCounselling = value;
-
-      switch (_coupleCounselling) {
-        case 0:
-          preTest.coupleCounselling = "Yes";
-          break;
-        case 1:
-          preTest.coupleCounselling = "No";
-          break;
-      }
-    });
-  }
-
-   void _handlePatientPretestChange(int value) {
-    setState(() {
-      _patientPretest = value;
-
-      switch (_patientPretest) {
-        case 0:
-          preTest.preTestInfoGiven = "Yes";
-          break;
-        case 1:
-          preTest.preTestInfoGiven = "No";
-          break;
-      }
-    });
-  }
-
-    void _handleOptOutTestChange(int value) {
-    setState(() {
-      _optOutTest = value;
-
-      switch (_optOutTest) {
-        case 0:
-          preTest.optOutOfTest = "Yes";
-          break;
-        case 1:
-          preTest.optOutOfTest = "No";
-          break;
-      }
-    });
-  }
-
-  void _handleNewTestChange(int value) {
-    setState(() {
-      _newTest = value;
-
-      switch (_newTest) {
-        case 0:
-          preTest.newTest = "Yes";
-          break;
-        case 1:
-          preTest.newTest = "No";
-          break;
-      }
-    });
-  }
-
   List<DropdownMenuItem<String>>
-      _dropDownMenuItemsHtsModel,
-      _dropDownMenuItemsPurposeOfTest;
-
-
-  String  _currentHtsModel;
-  String _currentPurposeOfTest;
-
-  List<DropdownMenuItem<String>>
-      getDropDownMenuItemsHtsModel() {
+  getDropDownMenuItemsHtsModel() {
     List<DropdownMenuItem<String>> items = new List();
     for (HtsModel htsModel in _htsModelList) {
       // here we are creating the drop down menu items, you can customize the item right here
@@ -193,8 +88,133 @@ class _PatientPretest extends State<PatientPretest> {
   }
 
 
+  Future<void> getDropDrowns() async {
+
+    List htsModelList = [];
+    List purposeOfTestList = [];
+
+    try {
+      htsModelList= jsonDecode(await htsChannel.invokeMethod('htsModelOptions'));
+
+      purposeOfTestList= jsonDecode(await htsChannel.invokeMethod('purposeOfTestsOptions'));
+
+       } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+    setState(() {
+      _htsModelList = HtsModel.mapFromJson(htsModelList);
+      _purposeOfTestList = PurposeOfTest.mapFromJson(purposeOfTestList);
+
+
+      _dropDownMenuItemsHtsModel =
+          getDropDownMenuItemsHtsModel();
+
+      _dropDownMenuItemsPurposeOfTest =
+          getDropDownMenuItemsPurposeOfTest();
+
+      _currentHtsModel = _dropDownMenuItemsHtsModel[0].value;
+      _currentPurposeOfTest = _dropDownMenuItemsPurposeOfTest[0].value;
+    });
+
+
+
+
+
+
+  }
+
+
+   void _handleHtsChange(int value) {
+    setState(() {
+      _hts = value;
+
+      switch (_hts) {
+        case 1:
+          _htsApproach = "PITC";
+          break;
+        case 2:
+          _htsApproach = "CITC";
+          break;
+      }
+    });
+  }
+
+   void _handleCoupleCounsellingChange(int value) {
+    setState(() {
+
+  coupleCounselling=value;
+      switch (coupleCounselling) {
+        case 1:
+          _coupleCounselling = "Yes";
+          break;
+        case 2:
+          _coupleCounselling = "No";
+          break;
+      }
+    });
+  }
+
+   void _handlePatientPretestChange(int value) {
+    setState(() {
+      _patientPretest = value;
+
+      switch (_patientPretest) {
+        case 1:
+          _preTestInfoGiven = "Yes";
+          break;
+        case 2:
+          _preTestInfoGiven = "No";
+          break;
+      }
+    });
+  }
+
+    void _handleOptOutTestChange(int value) {
+    setState(() {
+      _optOutTest = value;
+
+      switch (_optOutTest) {
+        case 1:
+          _optOutOfTest = "Yes";
+          break;
+        case 2:
+          _optOutOfTest = "No";
+          break;
+      }
+    });
+  }
+
+  void _handleNewTestChange(int value) {
+    setState(() {
+      newTest = value;
+
+      switch (newTest) {
+        case 1:
+          _newTest = "Yes";
+          break;
+        case 2:
+          _newTest = "No";
+          break;
+      }
+    });
+  }
+
+  List<DropdownMenuItem<String>>
+      _dropDownMenuItemsHtsModel,
+      _dropDownMenuItemsPurposeOfTest;
+
+
+  String  _currentHtsModel;
+  String _currentPurposeOfTest;
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
 
     return Scaffold(
       //  appBar: AppBar(
@@ -223,12 +243,12 @@ class _PatientPretest extends State<PatientPretest> {
                       ),
                       Text('PITC'),
                       Radio(
-                          value: 0,
+                          value: 1,
                           groupValue: _hts,
                           onChanged: _handleHtsChange),
                       Text('CITC'),
                       Radio(
-                          value: 1,
+                          value: 2,
                           groupValue: _hts,
                           onChanged: _handleHtsChange)
                     ],
@@ -281,12 +301,12 @@ class _PatientPretest extends State<PatientPretest> {
                       ),
                       Text('PITC'),
                       Radio(
-                          value: 0,
+                          value: 1,
                           groupValue: _hts,
                           onChanged: _handleHtsChange),
                       Text('CITC'),
                       Radio(
-                          value: 1,
+                          value: 2,
                           groupValue: _hts,
                           onChanged: _handleHtsChange)
                     ],
@@ -304,13 +324,13 @@ class _PatientPretest extends State<PatientPretest> {
                       ),
                       Text('Yes'),
                       Radio(
-                          value: 0,
-                          groupValue: _coupleCounselling,
+                          value: 1,
+                          groupValue: coupleCounselling,
                           onChanged: _handleCoupleCounsellingChange),
                       Text('No'),
                       Radio(
-                          value: 1,
-                          groupValue: _coupleCounselling,
+                          value: 2,
+                          groupValue: coupleCounselling,
                           onChanged: _handleCoupleCounsellingChange)
                     ],
                   ),
@@ -335,7 +355,7 @@ class _PatientPretest extends State<PatientPretest> {
                           iconEnabledColor: Colors.black,
                           value: _currentPurposeOfTest,
                           items: _dropDownMenuItemsPurposeOfTest,
-                          onChanged: changedDropDownItemHtsModel,
+                          onChanged: changedDropDownItemPurposeOfTest,
                         ),
                       ),
                       borderSide: BorderSide(
@@ -362,12 +382,12 @@ class _PatientPretest extends State<PatientPretest> {
                       ),
                       Text('Yes'),
                       Radio(
-                          value: 0,
+                          value: 1,
                           groupValue: _patientPretest,
                           onChanged: _handlePatientPretestChange),
                       Text('No'),
                       Radio(
-                          value: 1,
+                          value: 2,
                           groupValue: _patientPretest,
                           onChanged: _handlePatientPretestChange)
                     ],
@@ -385,12 +405,12 @@ class _PatientPretest extends State<PatientPretest> {
                       ),
                       Text('Yes'),
                       Radio(
-                          value: 0,
+                          value: 1,
                           groupValue: _optOutTest,
                           onChanged: _handleOptOutTestChange),
                       Text('No'),
                       Radio(
-                          value: 1,
+                          value: 2,
                           groupValue: _optOutTest,
                           onChanged: _handleOptOutTestChange)
                     ],
@@ -409,51 +429,20 @@ class _PatientPretest extends State<PatientPretest> {
                       ),
                       Text('Yes'),
                       Radio(
-                          value: 0,
-                          groupValue: _newTest,
+                          value: 1,
+                          groupValue: newTest,
                           onChanged: _handleNewTestChange),
                       Text('No'),
                       Radio(
-                          value: 1,
-                          groupValue: _newTest,
+                          value: 2,
+                          groupValue: newTest,
                           onChanged: _handleNewTestChange)
                     ],
                   ),
                   SizedBox(
                     height: 15.0,
                   ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                    width: double.infinity,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 30.0),
-                        child: DropdownButton(
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          iconEnabledColor: Colors.black,
-                          value: _currentHtsModel,
-                          items: _dropDownMenuItemsHtsModel,
-                          onChanged: changedDropDownItemHtsModel,
-                        ),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.blue, //Color of the border
-                        style: BorderStyle.solid, //Style of the border
-                        width: 2.0, //width of the border
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                  SizedBox(
-                    height: 35.0,
-                  ),
+
                   Container(
                     width: double.infinity,
                     child: RaisedButton(

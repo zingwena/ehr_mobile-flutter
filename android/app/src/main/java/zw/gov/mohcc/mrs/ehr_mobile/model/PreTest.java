@@ -1,8 +1,8 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -10,7 +10,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 @Entity
 public class PreTest {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name="pretest_id")
+    /*@ColumnInfo(name="pretest_id")*/
     private int id;
     @TypeConverters(GenderConverter.class)
     @ColumnInfo(name="pretest_htsApproach")
@@ -30,10 +30,10 @@ public class PreTest {
     @TypeConverters(GenderConverter.class)
     @ColumnInfo(name="pretest_pregLact")
     public NewTestPregLact newTestPregLact;
-    @Embedded
-    private HtsModel htsModel;
-    @Embedded
-    private Purpose_Of_Tests purpose_of_tests;
+
+    String HtsModel_id;
+
+    String  purpose_of_test_id;
 
 
     public int getId() {
@@ -44,20 +44,7 @@ public class PreTest {
         this.id = id;
     }
 
-    public HtsModel getHtsModel() {
-        return htsModel;
-    }
 
-    public void setHtsModel(HtsModel htsModel) {
-        this.htsModel = htsModel;
-    }
-    public Purpose_Of_Tests getPurpose_of_tests() {
-        return purpose_of_tests;
-    }
-
-    public void setPurpose_of_tests(Purpose_Of_Tests purpose_of_tests) {
-        this.purpose_of_tests = purpose_of_tests;
-    }
     public NewTest getNewTest() {
         return newTest;
     }
@@ -101,5 +88,21 @@ public class PreTest {
 
     public void setHtsApproach(HtsApproach htsApproach) {
         this.htsApproach = htsApproach;
+    }
+
+    public String getHtsModel_id() {
+        return HtsModel_id;
+    }
+
+    public void setHtsModel_id(String htsModel_id) {
+        HtsModel_id = htsModel_id;
+    }
+
+    public String getPurpose_of_test_id() {
+        return purpose_of_test_id;
+    }
+
+    public void setPurpose_of_test_id(String purpose_of_test_id) {
+        this.purpose_of_test_id = purpose_of_test_id;
     }
 }
