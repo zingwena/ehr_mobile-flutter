@@ -37,6 +37,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
@@ -114,32 +115,16 @@ public class MainActivity extends FlutterActivity {
                     // delete all users from database
                     ehrMobileDatabase.userDao().deleteUsers();
                     System.out.println("\n\n Users in database = \n  " + ehrMobileDatabase.userDao().selectAllUsers().size());
-
-
                     ArrayList args = methodCall.arguments();
-
                     url = args.get(0).toString();
                     String tokenString = args.get(1).toString();
-
                     System.out.println("&&&&&&&&&&&&&&&&&&" + tokenString);
-
                     Token token = new Token(tokenString);
 
-                    getNationalities(token, url + "/api/");
-                    getFacilities(token, url + "/api/");
-                    getCountries(token, url + "/api/");
-                    getOccupation(token, url + "/api/");
-                    getCountries(token, url + "/api/");
-                    getMaritalStates(token, url + "/api/");
-                    getEducationLevels(token, url + "/api/");
-                    getReligion(token, url + "/api/");
-                    getEntryPoints(token, url + "/api/");
-                    getHtsModels(token, url + "/api/");
-                    getPurpose_Of_Tests(token, url + "/api/");
-                    geReasonForNotIssuingResults(token, url + "/api/");
-                    getUsers(token, url + "/api/");
-                    getPatients(url);
+                    pullData(token, url);
+
                 }
+
                 if (methodCall.method.equals("login")) {
 
                     ArrayList args = methodCall.arguments();
@@ -262,6 +247,27 @@ public class MainActivity extends FlutterActivity {
 
 
             }
+            // pulling meta-data from the server
+
+            private void pullData(Token token, String url) {
+                getNationalities(token, url + "/api/");
+                getFacilities(token, url + "/api/");
+                getCountries(token, url + "/api/");
+                getOccupation(token, url + "/api/");
+                getCountries(token, url + "/api/");
+                getMaritalStates(token, url + "/api/");
+                getEducationLevels(token, url + "/api/");
+                getReligion(token, url + "/api/");
+                getEntryPoints(token, url + "/api/");
+                getHtsModels(token, url + "/api/");
+                getPurpose_Of_Tests(token, url + "/api/");
+                geReasonForNotIssuingResults(token, url + "/api/");
+                getUsers(token, url + "/api/");
+                getReligion(token, url + "/api/");
+                getTestKits(token, url + "/api/");
+                getPatients(url);
+            }
+
 
             // pull patients from EHR
 
@@ -382,6 +388,32 @@ public class MainActivity extends FlutterActivity {
 
             }
 
+
+            public void getTestKits(Token token, String url) {
+                DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<TestKit> testKits = new ArrayList<>();
+
+                        if (response.isSuccessful()) {
+                            for (BaseNameModel item : response.body().getContent()) {
+                                testKits.add(new TestKit(item.getCode(), item.getName()));
+                            }
+
+                            if (!testKits.isEmpty()) {
+                                saveTestKitsToDB(testKits);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                    }
+                });
+            }
 
             //tino
             public void getNationalities(Token token, String baseUrl) {
@@ -792,4 +824,12 @@ public class MainActivity extends FlutterActivity {
 
         });
     }
+
+    private void saveTestKitsToDB(List<TestKit> testKits) {
+        ehrMobileDatabase.testKitDao().insertTestKits(testKits);
+        int testKitsCount = ehrMobileDatabase.testKitDao().getAllTestKits().size();
+        System.out.println("Test Kits *****" + testKitsCount);
+
+    }
+
 }
