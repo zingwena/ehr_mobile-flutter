@@ -181,7 +181,9 @@ class _DataSyncronizationState extends State<DataSyncronization> {
 //             }catch(e){
 //               print(e);
 //             }
+
                      await fetchPost();
+
 
 //           result= await platform.invokeMethod("DataSync", [url, username, password]);
 //           if(result.contains("Welcome")){

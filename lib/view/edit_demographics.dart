@@ -9,6 +9,7 @@ import 'package:ehr_mobile/model/nationality.dart';
 import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
+import 'package:ehr_mobile/view/patient_address.dart';
 
 import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
@@ -80,10 +81,10 @@ class _EditDemographicsState extends State<EditDemographics> {
   List _genderList = ["", "Male", "Female", "Other"];
   List _genderListIdentified = [
     "Self Identified Gender",
-    "Male",
-    "Female",
-    "Other",
-    "Non-Binary"
+    "MALE",
+    "FEMALE",
+    "OTHER",
+    "NON_BINARY"
   ];
   List _maritalStatusList = List();
   List _educationLevelList = List();
@@ -173,20 +174,20 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsNationality() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String nationality in _nationalityList) {
+    for (Nationality nationality in _nationalityList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: nationality, child: Text(nationality)));
+      items.add(DropdownMenuItem(value: nationality.code, child: Text(nationality.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsCountry() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String country in _countryList) {
+    for (Country country in _countryList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: country, child: Text(country)));
+      items.add(DropdownMenuItem(value: country.code, child: Text(country.name)));
     }
     return items;
   }
@@ -229,84 +230,249 @@ class _EditDemographicsState extends State<EditDemographics> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.blue,
         title: Text('Continue Patient Registration'),
       ),
       body:SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
-          child: Form(
+          child:  Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                  width: 300.0,
-                  child: DropdownButton(
-                    value: _currentMaritalStatus,
-                    items: _dropDownMenuItemsMaritalStatus,
-                    onChanged: changedDropDownItemMaritalStatus,
+                  padding:
+                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                  width: double.infinity,
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      child: DropdownButton(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconEnabledColor: Colors.black,
+                        value: _currentSiGender,
+                        items: _dropDownMenuItemsIdentified,
+                        onChanged: changedDropDownItemSi,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 2.0, //width of the border
+                    ),
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
+                Divider(),
                 Container(
-                  width: 300.0,
-                  child: DropdownButton(
-                    value: _currentEducationLevel,
-                    items: _dropDownMenuItemsEducationLevel,
-                    onChanged: changedDropDownItemEducationLevel,
+                  padding:
+                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                  width: double.infinity,
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      child: DropdownButton(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconEnabledColor: Colors.black,
+                        value: _currentMaritalStatus,
+                        items: _dropDownMenuItemsMaritalStatus,
+                        onChanged: changedDropDownItemMaritalStatus,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 2.0, //width of the border
+                    ),
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
+                Divider(),
                 Container(
-                  width: 300.0,
-                  child: DropdownButton(
-                    value: _currentOccupation,
-                    items: _dropDownMenuItemsOccupation,
-                    onChanged: changedDropDownItemOccupation,
+                  padding:
+                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                  width: double.infinity,
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      child: DropdownButton(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconEnabledColor: Colors.black,
+                        value: _currentEducationLevel,
+                        items: _dropDownMenuItemsEducationLevel,
+                        onChanged: changedDropDownItemEducationLevel,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 2.0, //width of the border
+                    ),
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
+                Divider(),
                 Container(
-                  width: 300.0,
-                  child: DropdownButton(
-                    value: _currentReligion,
-                    items: _dropDownMenuItemsReligion,
-                    onChanged: changedDropDownItemReligion,
+                  padding:
+                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                  width: double.infinity,
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      child: DropdownButton(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconEnabledColor: Colors.black,
+                        value: _currentOccupation,
+                        items: _dropDownMenuItemsOccupation,
+                        onChanged: changedDropDownItemOccupation,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 2.0, //width of the border
+                    ),
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
+                Divider(),
                 Container(
-                  width: 300.0,
-                  child: DropdownButton(
-                    value: _currentNationality,
-                    items: _dropDownMenuItemsNationality,
-                    onChanged: changedDropDownItemNationality,
+                  padding:
+                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                  width: double.infinity,
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      child: DropdownButton(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconEnabledColor: Colors.black,
+                        value: _currentReligion,
+                        items: _dropDownMenuItemsReligion,
+                        onChanged: changedDropDownItemReligion,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 2.0, //width of the border
+                    ),
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
+                Divider(),
                 Container(
-                  width: 300.0,
-                  child: DropdownButton(
-                    value: _currentCountry,
-                    items: _dropDownMenuItemsCountry,
-                    onChanged: changedDropDownItemCountry,
+                  padding:
+                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                  width: double.infinity,
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      child: DropdownButton(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconEnabledColor: Colors.black,
+                        value: _currentNationality,
+                        items: _dropDownMenuItemsNationality,
+                        onChanged: changedDropDownItemNationality,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 2.0, //width of the border
+                    ),
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
+                Divider(),
+                Container(
+                  padding:
+                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                  width: double.infinity,
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      child: DropdownButton(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconEnabledColor: Colors.black,
+                        value: _currentCountry,
+                        items: _dropDownMenuItemsCountry,
+                        onChanged: changedDropDownItemCountry,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.blue, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 2.0, //width of the border
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -314,30 +480,35 @@ class _EditDemographicsState extends State<EditDemographics> {
                       elevation: 8.0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.teal,
+                      color: Colors.blue,
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
                         "Next",
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-//                        Person person = Person(
-//                            firstName,
-//                            lastName,
-//                            _currentGender,
-//                            selectedDate,
-//                            _currentSiGender,
-//                            _currentReligion,
-//                            _currentOccupation,
-//                            _currentMaritalStatus,
-//                            _currentEducationLevel,
-//                            _currentNationality,
-//                            _currentCountry);
-                        print(_currentReligion);
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => PersonAddress(person)));
+
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          Patient patient = Patient.basic(
+                              firstName,
+                              lastName,
+                              _currentGender,
+                              nationalId,
+                              birthDate,
+                              _currentReligion,
+                              _currentMaritalStatus,
+                              _currentEducationLevel,
+                              _currentNationality,
+                              _currentCountry,
+                              _currentSiGender);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PatientAddress(patient)));
+                        }
+
                       },
                     ),
                     Row(
@@ -346,32 +517,19 @@ class _EditDemographicsState extends State<EditDemographics> {
                           elevation: 4.0,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0)),
-                          color: Colors.teal,
+                          color: Colors.blue,
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
                             "Skip",
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
-//                            if (_formKey.currentState.validate()) {
-//                              _formKey.currentState.save();
-//                              Person person = Person.basic(
-//                                  widget.firstName,
-//                                  widget.lastName,
-//                                  widget.sex,
-//                                  widget.birthDate);
-//
-//                              addPerson(person);
-
-//                        _personBloc.dispatch(Create(firstName: firstName, lastName: lastName, sex: gender,birthDate: selectedDate));
-                             Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,_currentMaritalStatus,_currentEducationLevel);
-                            registerPatient(patient);
-//              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
-//                            Navigator.push(
-//                                context,
-//                                MaterialPageRoute(
-//                                    builder: (context) => AddPatient()));
-//                            }
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,
+                                  _currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender);
+                              registerPatient(patient);
+                            }
                           },
                         ),
                       ],
@@ -411,7 +569,7 @@ class _EditDemographicsState extends State<EditDemographics> {
         _countries= jsonDecode(country);
         _countryListDropdown=Country.mapFromJson(_countries);
         _countryListDropdown.forEach((e){
-          _countryList.add(e.name);
+          _countryList.add(e);
         });
         _dropDownMenuItemsCountry = getDropDownMenuItemsCountry();
         _currentCountry = _dropDownMenuItemsCountry[0].value;
@@ -442,7 +600,7 @@ class _EditDemographicsState extends State<EditDemographics> {
       _nationalities=jsonDecode(nationality);
       _nationalityListDropdown= Nationality.mapFromJson(_nationalities);
       _nationalityListDropdown.forEach((e){
-        _nationalityList.add(e.name);
+        _nationalityList.add(e);
       });
       _dropDownMenuItemsNationality = getDropDownMenuItemsNationality();
       _currentNationality = _dropDownMenuItemsNationality[0].value;
@@ -467,17 +625,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 //    confirmDialog(context).then((bool value) async {});
 //  }
 
-//  Future<void> addPerson(Person person) async {
-//    print("==============================================");
-//
-//    try {
-//      await platform.invokeMethod('savePerson', jsonEncode(person));
-//    } on PlatformException catch (e) {
-//      print("failed to save : '${e.message}'");
-//    }
-//    Navigator.push(
-//        context, MaterialPageRoute(builder: (context) => PeopleTable()));
-//  }
+
 //
 //  Future<bool> confirmDialog(BuildContext context) async {
 //    return showDialog<bool>(

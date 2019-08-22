@@ -25,11 +25,13 @@ class Patient {
   String occupation;
   String maritalStatus;
   String educationLevel;
+  String nationality;
+  String countryOfBirth;
 
 
   Address address;
 
-  Patient.basic(this.firstName, this.lastName,this.sex,this.nationalId, this.birthDate,this.religion,this.maritalStatus,this.educationLevel);
+  Patient.basic(this.firstName, this.lastName,this.sex,this.nationalId, this.birthDate,this.religion,this.maritalStatus,this.educationLevel, this.nationality, this.countryOfBirth, this.selfIdentifiedGender);
 
   Patient(this.id, this.firstName, this.lastName, this.sex, this.nationalId,
       this.birthDate, this.age, this.selfIdentifiedGender, this.religion,

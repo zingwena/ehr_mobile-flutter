@@ -8,6 +8,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.model.SelfIdentifiedGender;
 
 public class PatientDto {
 
@@ -20,15 +21,16 @@ public class PatientDto {
 
     private int age;
     private String birthDate;
-    private Gender selfIdentifiedGender;
+    private SelfIdentifiedGender selfIdentifiedGender;
     private String religion;
     private String occupation;
     private String maritalStatus;
     private String educationLevel;
-
+    private  String nationality;
+    private String countryOfBirth;
    private Address address;
 
-    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, int age, String birthDate, Gender selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, Address address) {
+    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, int age, String birthDate, SelfIdentifiedGender selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String nationality, String countryOfBirth, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,6 +44,8 @@ public class PatientDto {
         this.occupation = occupation;
         this.maritalStatus = maritalStatus;
         this.educationLevel = educationLevel;
+        this.nationality = nationality;
+        this.countryOfBirth = countryOfBirth;
         this.address = address;
     }
 
@@ -59,6 +63,22 @@ public class PatientDto {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getCountryOfBirth() {
+        return countryOfBirth;
+    }
+
+    public void setCountryOfBirth(String countryOfBirth) {
+        this.countryOfBirth = countryOfBirth;
     }
 
     public String getLastName() {
@@ -109,11 +129,11 @@ public class PatientDto {
         this.birthDate = birthDate;
     }
 
-    public Gender getSelfIdentifiedGender() {
+    public SelfIdentifiedGender getSelfIdentifiedGender() {
         return selfIdentifiedGender;
     }
 
-    public void setSelfIdentifiedGender(Gender selfIdentifiedGender) {
+    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
         this.selfIdentifiedGender = selfIdentifiedGender;
     }
 
@@ -169,10 +189,12 @@ public class PatientDto {
                 ", age=" + age +
                 ", birthDate='" + birthDate + '\'' +
                 ", selfIdentifiedGender=" + selfIdentifiedGender +
-                ", religion=" + religion +
-                ", occupation=" + occupation +
-                ", maritalStatus=" + maritalStatus +
-                ", educationLevel=" + educationLevel +
+                ", religion='" + religion + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", educationLevel='" + educationLevel + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", countryOfBirth='" + countryOfBirth + '\'' +
                 ", address=" + address +
                 '}';
     }
