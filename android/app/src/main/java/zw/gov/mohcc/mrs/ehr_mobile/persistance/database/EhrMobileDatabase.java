@@ -20,6 +20,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
@@ -35,6 +36,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReasonForNotIssuingResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.Purpose_Of_TestsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.BloodPressureDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.HeightDao;
@@ -63,6 +65,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
  * <p>
  * Room persistence Library will help to create the cache
  */
+
+
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
+        Facility.class, Religion.class, Nationality.class, Occupation.class, TestKit.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class}, version = 13, exportSchema = false)
+@TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class})
 
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,Facility.class, Religion.class, Nationality.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class}, version = 4, exportSchema = false)
@@ -116,6 +123,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract EntryPointDao entryPointDao();
 
     public abstract HtsModelDao htsModelDao();
+
+    public abstract TestKitDao testKitDao();
 
     public abstract ReasonForNotIssuingResultDao reasonForNotIssuingResultDao();
 
