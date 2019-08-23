@@ -88,8 +88,8 @@ class _PatientPostTest extends State<PatientPostTest> {
 
   Future<void> getDropDrowns() async {
 
-   /* List htsModelList = [];
-    List purposeOfTestList = [];*/
+   //* List htsModelList = [];
+    List purposeOfTestList = [];
 
     List reasonForNotIssuingResultList = [];
 
