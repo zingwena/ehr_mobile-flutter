@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/view/patient_post_test.dart';
+import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:flutter/material.dart';
 
 import 'hiv_screening.dart';
@@ -28,6 +30,10 @@ class OverviewState extends State<Overview> {
   void initState() {
     _patient = widget.patient;
     super.initState();
+  }
+
+  String nullHandler(String value) {
+    return value == null ? "" : value;
   }
 
   @override
@@ -117,6 +123,65 @@ class OverviewState extends State<Overview> {
                                         width: 100,
                                       ),
                                     ),
+
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: RaisedButton(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Pre-Test",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PatientPretest()),
+                                            ),
+                                          ),
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: RaisedButton(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Post Test Counselling",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PatientPostTest()),
+                                            ),
+                                          ),
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+
+
+
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -202,7 +267,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                          text: _patient.sex),
+                                          text: nullHandler(_patient.sex)),
 
                                             decoration: InputDecoration(
                                               labelText: 'Sex',
@@ -222,7 +287,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.nationalId),
+                                                text: nullHandler(_patient.nationalId)),
                                             decoration: InputDecoration(
                                               labelText: 'National ID',
                                               border: OutlineInputBorder(),
@@ -269,7 +334,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.maritalStatus),
+                                                text: nullHandler(_patient.maritalStatus)),
                                             decoration: InputDecoration(
                                               labelText: 'Marital Status',
                                               border: OutlineInputBorder(),
@@ -298,7 +363,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                  text: _patient.educationLevel),
+                                  text: nullHandler(_patient.educationLevel)),
                                             decoration: InputDecoration(
                                               labelText: 'Education',
                                               border: OutlineInputBorder(),
@@ -317,7 +382,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:  _patient.occupation),
+                                                text:  nullHandler(_patient.occupation)),
 
                                             decoration: InputDecoration(
                                               labelText: 'Occupation',
@@ -337,7 +402,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.nationality),
+                                                text: nullHandler(_patient.nationality)),
 
                                             decoration: InputDecoration(
                                               labelText: 'Nationality',
@@ -379,7 +444,7 @@ class OverviewState extends State<Overview> {
                                           child: TextFormField(
                                             controller: TextEditingController(
 
-                                                text: _patient.address.street+" "+ _patient.address.town+" "+_patient.address.city),
+                                                text: "address"),
                                             decoration: InputDecoration(
                                               labelText: 'Address',
                                               border: OutlineInputBorder(),

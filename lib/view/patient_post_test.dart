@@ -144,6 +144,9 @@ class _PatientPostTest extends State<PatientPostTest> {
                       Checkbox(
                         value:_resultReceived,
                         onChanged: (bool value) {
+                          setState(() {
+                            _resultReceived=value;
+                          });
                           if(value) {
                             setState(() {
                               resultReceived="YES";
@@ -202,6 +205,9 @@ class _PatientPostTest extends State<PatientPostTest> {
                       Checkbox(
                         value:_postTestCounselled,
                         onChanged: (bool value) {
+                          setState(() {
+                            _postTestCounselled=value;
+                          });
                           if(value) {
                             setState(() {
                               postTestCounselled="YES";
