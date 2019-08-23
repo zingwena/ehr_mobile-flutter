@@ -31,6 +31,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -54,6 +56,7 @@ public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+    final static String HTSCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/htsChannel";
 
     final static String PATIENTCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
 
@@ -92,11 +95,11 @@ public class MainActivity extends FlutterActivity {
 
                     System.out.println(args);
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-                    dateOfBirth = patientDto.getBirthDate().split("T");
-                    dob = dateOfBirth[0];
+//                    dateOfBirth = patientDto.getBirthDate().split("T");
+//                    dob = dateOfBirth[0];
                     System.out.println("==============================PatientDTO " + patientDto.getNationalId());
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
-                    //LocalDate Date = LocalDate.parse(dob);
+
                     patient.setNationalId(patientDto.getNationalId());
                     patient.setReligionId(patientDto.getReligion());
                     patient.setMaritalStatusId(patientDto.getMaritalStatus());
@@ -105,10 +108,19 @@ public class MainActivity extends FlutterActivity {
                     patient.setCountryId(patientDto.getCountryOfBirth());
                     patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
                     patient.setAddress(patientDto.getAddress());
-                    //patient.setBirthDate(Date);
-                    ehrMobileDatabase.patientDao().createPatient(patient);
+
+//                    patient.setBirthDate(Date);
+                    int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
+                    result.success(id);
+
 
                     System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
+                }
+                if (methodCall.method.equals("getPatientById")) {
+                    int ags = methodCall.arguments();
+                    Patient patient = ehrMobileDatabase.patientDao().findPatientById(ags);
+                    String response = gson.toJson(patient);
+                    result.success(response);
                 }
 
 
@@ -229,8 +241,6 @@ public class MainActivity extends FlutterActivity {
                             List<Patient> _list;
 
                             String searchItem = arguments;
-
-
                             PatientQuery patientQuery = new PatientQuery();
                             SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
                             _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
@@ -247,461 +257,582 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-                        if (methodCall.method.equals("visit")){
+                        if (methodCall.method.equals("visit")) {
                             final int patientId = methodCall.arguments();
                             createVisit(patientId);
-                            System.out.println("===================visit"+ehrMobileDatabase.visitDao().getAll().toString());
+                            System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
 
-                        }else {
-                        final String arguments = methodCall.arguments();
+                        } else {
+                            final String arguments = methodCall.arguments();
 
-                        Gson gson = new Gson();
+                            Gson gson = new Gson();
+                            if (methodCall.method.equals("bloodPressure")) {
+                                BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
+                                if (bloodPressure.getVisitId() == 0) {
+                                    bloodPressure.setVisitId(visit.getVisitId());
+                                }
+                                ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
+                                System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
 
-                       if (methodCall.method.equals("bloodPressure")) {
-                            BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                            if (bloodPressure.getVisitId() == 0) {
-                                bloodPressure.setVisitId(visit.getVisitId());
+
+                            } else if (methodCall.method.equals("temperature")) {
+
+                                Temperature temperature = gson.fromJson(arguments, Temperature.class);
+
+                                if (temperature.getVisitId() == 0) {
+                                    temperature.setVisitId(visit.getVisitId());
+                                }
+                                ehrMobileDatabase.temperatureDao().insert(temperature);
+                                System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
+
+
+                            } else if (methodCall.method.equals("respiratoryRate")) {
+
+                                RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
+
+                                if (respiratoryRate.getVisitId() == 0) {
+                                    respiratoryRate.setVisitId(visit.getVisitId());
+                                }
+                                ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
+                                System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
+
+
+                            } else if (methodCall.method.equals("height")) {
+
+                                Height height = gson.fromJson(arguments, Height.class);
+
+                                if (height.getVisitId() == 0) {
+                                    height.setVisitId(visit.getVisitId());
+                                }
+                                ehrMobileDatabase.heightDao().insert(height);
+                                System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
+
+
+                            } else if (methodCall.method.equals("weight")) {
+
+                                Weight weight = gson.fromJson(arguments, Weight.class);
+                                if (weight.getVisitId() == 0) {
+                                    weight.setVisitId(visit.getVisitId());
+                                }
+                                ehrMobileDatabase.weightDao().insert(weight);
+
+
+                            } else if (methodCall.method.equals("pulse")) {
+
+                                Pulse pulse = gson.fromJson(arguments, Pulse.class);
+                                if (pulse.getVisitId() == 0) {
+                                    pulse.setVisitId(visit.getVisitId());
+                                    System.out.println("=-=-=-=pulse" + pulse.getVisitId());
+                                }
+                                ehrMobileDatabase.pulseDao().insert(pulse);
+                                System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
+
+
+                            } else {
+                                result.notImplemented();
                             }
-                            ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
-                            System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
+                        }
+                    }
+                });
 
+                new MethodChannel(getFlutterView(), HTSCHANNEL).setMethodCallHandler(
+                        new MethodChannel.MethodCallHandler() {
+                            @Override
+                            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                                String arguments = methodCall.arguments();
+                                Gson gson = new Gson();
+                                if (methodCall.method.equals("htsModelOptions")) {
+                                    try {
+                                        List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
 
-                        } else if (methodCall.method.equals("temperature")) {
+                                        String htsModelList = gson.toJson(htsModels);
+                                        System.out.println("htsModel=====:" + htsModels);
+                                        result.success(htsModelList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
+                                if (methodCall.method.equals("entrypointOptions")) {
+                                    try {
+                                        List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                        System.out.println("*************************** native" + entryPoints);
+                                        String entrypointList = gson.toJson(entryPoints);
+                                        result.success(entrypointList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
+                                if (methodCall.method.equals("purposeOfTestsOptions")) {
+                                    try {
+                                        List<Purpose_Of_Tests> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
+                                        String purposeOfTestsList = gson.toJson(purpose_of_tests);
+                                        result.success(purposeOfTestsList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
 
-                            Temperature temperature = gson.fromJson(arguments, Temperature.class);
+                                if (methodCall.method.equals("reasonForNotIssuingResultOptions")) {
 
-                            if (temperature.getVisitId() == 0) {
-                                temperature.setVisitId(visit.getVisitId());
+                                    try {
+                                        List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
+                                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&& reason for not issuing results :" + reasonForNotIssuingResults);
+                                        String reasonForNotIssuingResultList = gson.toJson(reasonForNotIssuingResults);
+                                        result.success(reasonForNotIssuingResultList);
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong" + e.getMessage());
+                                    }
+                                }
+
+                                if (methodCall.method.equals("savePreTest")) {
+                                    try {
+                                        PreTest preTest = gson.fromJson(arguments, PreTest.class);
+
+                                        ehrMobileDatabase.preTestDao().createPreTest(preTest);
+                                        System.out.println("List of pretest" + ehrMobileDatabase.preTestDao().listPreTests());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
+
+                                if (methodCall.method.equals("savePostTest")) {
+                                    try {
+                                        PostTest postTest = gson.fromJson(arguments, PostTest.class);
+
+                                        ehrMobileDatabase.postTestDao().createPostTest(postTest);
+                                        System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
                             }
-                            ehrMobileDatabase.temperatureDao().insert(temperature);
-                            System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
+                        }
+                );
 
+            }
 
-                        } else if (methodCall.method.equals("respiratoryRate")) {
+            private void pullData(Token token, String url) {
+                getNationalities(token, url + "/api/");
+                getFacilities(token, url + "/api/");
+                getCountries(token, url + "/api/");
+                getOccupation(token, url + "/api/");
+                getMaritalStates(token, url + "/api/");
+                getEducationLevels(token, url + "/api/");
+                getReligion(token, url + "/api/");
+                getEntryPoints(token, url + "/api/");
+                getHtsModels(token, url + "/api/");
+                getPurpose_Of_Tests(token, url + "/api/");
+                getReasonForNotIssuingResults(token, url + "/api/");
+                getUsers(token, url + "/api/");
+                getTestKits(token, url + "/api/");
+                getPatients(url);
+            }
 
-                            RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
+            private void getPatients(String baseUrl) {
+                ehrMobileDatabase.patientDao().deleteAll();
+                PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
+            }
 
-                            if (respiratoryRate.getVisitId() == 0) {
-                                respiratoryRate.setVisitId(visit.getVisitId());
+            public void getMaritalStates(Token token, String baseUrl) {
+
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getMaritalStates("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<MaritalStatus> maritalStatusList = new ArrayList<MaritalStatus>();
+                        if (response.isSuccessful()) {
+                            for (BaseNameModel item : response.body().getContent()) {
+                                maritalStatusList.add(new MaritalStatus(item.getCode(), item.getName()));
                             }
-                            ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
-                            System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
-
-
-                        } else if (methodCall.method.equals("height")) {
-
-                            Height height = gson.fromJson(arguments, Height.class);
-
-                            if (height.getVisitId() == 0) {
-                                height.setVisitId(visit.getVisitId());
+                            if (maritalStatusList != null && !maritalStatusList.isEmpty()) {
+                                saveMaritalStatesToDB(maritalStatusList);
                             }
-                            ehrMobileDatabase.heightDao().insert(height);
-                            System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                    }
+                });
+            }
+
+            public void getOccupation(Token token, String baseUrl) {
+
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getOccupation("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<Occupation> occupationList = new ArrayList<Occupation>();
+                        for (BaseNameModel item : response.body().getContent()) {
+                            occupationList.add(new Occupation(item.getCode(), item.getName()));
+                        }
+                        if (!occupationList.isEmpty()) {
+
+                            saveOccupationsToDB(occupationList);
+                        }
 
 
-                        } else if (methodCall.method.equals("weight")) {
+                    }
 
-                            Weight weight = gson.fromJson(arguments, Weight.class);
-                            if (weight.getVisitId() == 0) {
-                                weight.setVisitId(visit.getVisitId());
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                        System.out.println("tttttttttttttttttttttttt" + t);
+
+                    }
+                });
+            }
+
+
+            public void getUsers(Token token, String baseUrl) {
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<List<User>> call = service.getAllUsers("Bearer " + token.getId_token());
+
+                call.enqueue(new Callback<List<User>>() {
+                    @Override
+                    public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+
+
+                        userList = response.body();
+
+                        System.out.println("User response   : \n   " + userList);
+                        saveUsersToDB(userList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<User>> call, Throwable t) {
+                        System.out.println("Failed to get Patients \n-------------------" + t.getMessage());
+                    }
+                });
+            }
+
+            //liberty
+            public void getFacilities(Token token, String baseUrl) {
+
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+
+                Call<TerminologyModel> call = service.getFacilities("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<Facility> facilityList = new ArrayList<Facility>();
+                        for (BaseNameModel item : response.body().getContent()) {
+                            facilityList.add(new Facility(item.getCode(), item.getName()));
+                        }
+                        if (facilityList != null && !facilityList.isEmpty()) {
+
+                            saveFacilityToDB(facilityList);
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                        System.out.println("facility tttttttttttttttttttttttt" + t);
+
+                    }
+                });
+
+            }
+
+
+            public void getTestKits(Token token, String url) {
+                DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
+                //Call First Level Test Kits
+                Call<List<TestKit>> call = service.getTestKits("Bearer " + token.getId_token(), "FIRST");
+
+                call.enqueue(new Callback<List<TestKit>>() {
+                    @Override
+                    public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
+                        List<TestKit> testKits = new ArrayList<>();
+                        if (response.isSuccessful()) {
+                            for (TestKit item : response.body()) {
+                                testKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "FIRST"));
                             }
-                            ehrMobileDatabase.weightDao().insert(weight);
 
+                            System.out.println("test kiiiiiiiiiiiiiits ==========" + testKits);
 
-                        } else if (methodCall.method.equals("pulse")) {
+                            saveTestKitsToDB(testKits);
 
-                            Pulse pulse = gson.fromJson(arguments, Pulse.class);
-                            if (pulse.getVisitId() == 0) {
-                                pulse.setVisitId(visit.getVisitId());
-                                System.out.println("=-=-=-=pulse" + pulse.getVisitId());
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<TestKit>> call, Throwable t) {
+
+                    }
+                });
+                //Call All Second Level Test kits
+                Call<List<TestKit>> callSecond = service.getTestKits("Bearer " + token.getId_token(), "SECOND");
+                callSecond.enqueue(new Callback<List<TestKit>>() {
+                    @Override
+                    public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
+                        List<TestKit> secondTestKits = new ArrayList<>();
+                        if (response.isSuccessful()) {
+                            for (TestKit item : response.body()) {
+                                secondTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "SECOND"));
                             }
-                            ehrMobileDatabase.pulseDao().insert(pulse);
-                            System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
+
+                            System.out.println("******Secondtest kiiiiiiiiiiiiiits ==========" + secondTestKits);
+                            saveTestKitsToDB(secondTestKits);
 
 
                         } else {
-                            result.notImplemented();
+
                         }
 
                     }
+
+                    @Override
+                    public void onFailure(Call<List<TestKit>> call, Throwable t) {
+
+                    }
+                });
+                //Call all Third Level Test Kits
+                Call<List<TestKit>> callThird = service.getTestKits("Bearer " + token.getId_token(), "THIRD");
+                callThird.enqueue(new Callback<List<TestKit>>() {
+                    @Override
+                    public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
+                        List<TestKit> thirdTestKits = new ArrayList<>();
+                        if (response.isSuccessful()) {
+                            for (TestKit item : response.body()) {
+                                thirdTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "THIRD"));
+                            }
+
+                            System.out.println("******Third test kiiiiiiiiiiiiiits ==========" + thirdTestKits);
+                            saveTestKitsToDB(thirdTestKits);
+                            System.out.println("All test kits$$$$$$$$$$$$$" + ehrMobileDatabase.testKitDao().getAllTestKits());
+
+                        } else {
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<TestKit>> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+
+            public void getNationalities(Token token, String baseUrl) {
+
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<Nationality> nationalities = new ArrayList<Nationality>();
+
+                        if (response.isSuccessful()) {
+                            for (BaseNameModel item : response.body().getContent()) {
+                                nationalities.add(new Nationality(item.getCode(), item.getName()));
+                            }
+
+                            if (!nationalities.isEmpty()) {
+                                saveNationalityToDB(nationalities);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                    }
+                });
+            }
+
+
+            public void getCountries(Token token, String baseUrl) {
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+
+                Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<Country> countries = new ArrayList<Country>();
+                        if (response.isSuccessful()) {
+                            for (BaseNameModel item : response.body().getContent()) {
+                                countries.add(new Country(item.getCode(), item.getName()));
+                            }
+                            if (!countries.isEmpty()) {
+                                saveCountriesToDB(countries);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
                     }
                 });
 
 
             }
-        });
-    }
 
-    private void pullData(Token token, String url) {
-        getNationalities(token, url + "/api/");
-        getFacilities(token, url + "/api/");
-        getCountries(token, url + "/api/");
-        getOccupation(token, url + "/api/");
-        getMaritalStates(token, url + "/api/");
-        getEducationLevels(token, url + "/api/");
-        getReligion(token, url + "/api/");
-        getEntryPoints(token, url + "/api/");
-        getHtsModels(token, url + "/api/");
-        getPurpose_Of_Tests(token, url + "/api/");
-        geReasonForNotIssuingResults(token, url + "/api/");
-        getUsers(token, url + "/api/");
-        getTestKits(token, url + "/api/");
-        getPatients(url);
-    }
+            //Phineas
+            public void getEducationLevels(Token token, String baseUrl) {
 
-    private void getPatients(String baseUrl) {
-        ehrMobileDatabase.patientDao().deleteAll();
-        PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
-    }
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getEducationLevels("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<EducationLevel> educationLevels = new ArrayList<EducationLevel>();
 
-    public void getMaritalStates(Token token, String baseUrl) {
+                        if (response.isSuccessful()) {
+                            for (BaseNameModel item : response.body().getContent()) {
+                                educationLevels.add(new EducationLevel(item.getCode(), item.getName()));
+                            }
 
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getMaritalStates("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<MaritalStatus> maritalStatusList = new ArrayList<MaritalStatus>();
-                if (response.isSuccessful()) {
-                    for (BaseNameModel item : response.body().getContent()) {
-                        maritalStatusList.add(new MaritalStatus(item.getCode(), item.getName()));
-                    }
-                    if (maritalStatusList != null && !maritalStatusList.isEmpty()) {
-                        saveMaritalStatesToDB(maritalStatusList);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void getOccupation(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getOccupation("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Occupation> occupationList = new ArrayList<Occupation>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    occupationList.add(new Occupation(item.getCode(), item.getName()));
-                }
-                if (!occupationList.isEmpty()) {
-
-                    saveOccupationsToDB(occupationList);
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
-
-            }
-        });
-    }
-
-
-    public void getUsers(Token token, String baseUrl) {
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<List<User>> call = service.getAllUsers("Bearer " + token.getId_token());
-
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-
-
-                userList = response.body();
-
-                System.out.println("User response   : \n   " + userList);
-
-
-                saveUsersToDB(userList);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                System.out.println("Failed to get Patients \n-------------------" + t.getMessage());
-            }
-        });
-    }
-
-    //liberty
-    public void getFacilities(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-
-        Call<TerminologyModel> call = service.getFacilities("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Facility> facilityList = new ArrayList<Facility>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    facilityList.add(new Facility(item.getCode(), item.getName()));
-                }
-                if (facilityList != null && !facilityList.isEmpty()) {
-
-                    saveFacilityToDB(facilityList);
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("facility tttttttttttttttttttttttt" + t);
-
-            }
-        });
-
-    }
-
-
-    public void getTestKits(Token token, String url) {
-        DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<TestKit> testKits = new ArrayList<TestKit>();
-
-                if (response.isSuccessful()) {
-                    for (BaseNameModel item : response.body().getContent()) {
-                        testKits.add(new TestKit(item.getCode(), item.getName()));
+                            if (educationLevels != null && !educationLevels.isEmpty()) {
+                                saveEducationLevelToDB(educationLevels);
+                            }
+                        }
                     }
 
-                    if (!testKits.isEmpty()) {
-                        saveTestKitsToDB(testKits);
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
                     }
-                }
+                });
             }
 
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-            }
-        });
-    }
+            public void getEntryPoints(Token token, String baseUrl) {
 
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getEntryPoints("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<EntryPoint> entryPointList = new ArrayList<EntryPoint>();
+                        for (BaseNameModel item : response.body().getContent()) {
+                            entryPointList.add(new EntryPoint(item.getCode(), item.getName()));
+                        }
+                        if (entryPointList != null && !entryPointList.isEmpty()) {
 
-    public void getNationalities(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Nationality> nationalities = new ArrayList<Nationality>();
-
-                if (response.isSuccessful()) {
-                    for (BaseNameModel item : response.body().getContent()) {
-                        nationalities.add(new Nationality(item.getCode(), item.getName()));
-                    }
-
-                    if (!nationalities.isEmpty()) {
-                        saveNationalityToDB(nationalities);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-            }
-        });
-    }
+                            saveEntryPointsToDB(entryPointList);
+                        }
 
 
-    public void getCountries(Token token, String baseUrl) {
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-
-        Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Country> countries = new ArrayList<Country>();
-                if (response.isSuccessful()) {
-                    for (BaseNameModel item : response.body().getContent()) {
-                        countries.add(new Country(item.getCode(), item.getName()));
-                    }
-                    if (!countries.isEmpty()) {
-                        saveCountriesToDB(countries);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-            }
-        });
-
-
-    }
-
-    //Phineas
-    public void getEducationLevels(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getEducationLevels("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<EducationLevel> educationLevels = new ArrayList<EducationLevel>();
-
-                if (response.isSuccessful()) {
-                    for (BaseNameModel item : response.body().getContent()) {
-                        educationLevels.add(new EducationLevel(item.getCode(), item.getName()));
                     }
 
-                    if (educationLevels != null && !educationLevels.isEmpty()) {
-                        saveEducationLevelToDB(educationLevels);
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                        System.out.println("tttttttttttttttttttttttt" + t);
+
                     }
-                }
+                });
             }
 
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+            public void getHtsModels(Token token, String baseUrl) {
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<HtsModel> htsModelList = new ArrayList<HtsModel>();
+                        for (BaseNameModel item : response.body().getContent()) {
+                            htsModelList.add(new HtsModel(item.getCode(), item.getName()));
+                        }
+                        if (htsModelList != null && !htsModelList.isEmpty()) {
 
-            }
-        });
-    }
-
-
-    public void getEntryPoints(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getEntryPoints("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<EntryPoint> entryPointList = new ArrayList<EntryPoint>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    entryPointList.add(new EntryPoint(item.getCode(), item.getName()));
-                }
-                if (entryPointList != null && !entryPointList.isEmpty()) {
-
-                    saveEntryPointsToDB(entryPointList);
-                }
+                            saveHtsModelToDB(htsModelList);
+                        }
 
 
-            }
+                    }
 
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-                System.out.println("tttttttttttttttttttttttt" + t);
+                        System.out.println("tttttttttttttttttttttttt" + t);
 
-            }
-        });
-    }
-
-    public void getHtsModels(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<HtsModel> htsModelList = new ArrayList<HtsModel>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    htsModelList.add(new HtsModel(item.getCode(), item.getName()));
-                }
-                if (htsModelList != null && !htsModelList.isEmpty()) {
-
-                    saveHtsModelToDB(htsModelList);
-                }
-
-
+                    }
+                });
             }
 
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-                System.out.println("tttttttttttttttttttttttt" + t);
+            public void getPurpose_Of_Tests(Token token, String baseUrl) {
 
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<Purpose_Of_Tests> purpose_of_testsList = new ArrayList<Purpose_Of_Tests>();
+                        for (BaseNameModel item : response.body().getContent()) {
+                            purpose_of_testsList.add(new Purpose_Of_Tests(item.getCode(), item.getName()));
+                        }
+                        if (purpose_of_testsList != null && !purpose_of_testsList.isEmpty()) {
+
+                            savePurpose_Of_TestsToDB(purpose_of_testsList);
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                        System.out.println("tttttttttttttttttttttttt" + t);
+
+                    }
+                });
             }
-        });
-    }
+
+            public void getReasonForNotIssuingResults(Token token, String baseUrl) {
+
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.geReasonForNotIssuingResults("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<ReasonForNotIssuingResult> reasonForNotIssuingResultList = new ArrayList<ReasonForNotIssuingResult>();
+                        for (BaseNameModel item : response.body().getContent()) {
+                            reasonForNotIssuingResultList.add(new ReasonForNotIssuingResult(item.getCode(), item.getName()));
+                        }
+                        if (reasonForNotIssuingResultList != null && !reasonForNotIssuingResultList.isEmpty()) {
+
+                            saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
+                        }
 
 
-    public void getPurpose_Of_Tests(Token token, String baseUrl) {
+                    }
 
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Purpose_Of_Tests> purpose_of_testsList = new ArrayList<Purpose_Of_Tests>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    purpose_of_testsList.add(new Purpose_Of_Tests(item.getCode(), item.getName()));
-                }
-                if (purpose_of_testsList != null && !purpose_of_testsList.isEmpty()) {
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-                    savePurpose_Of_TestsToDB(purpose_of_testsList);
-                }
+                        System.out.println("tttttttttttttttttttttttt" + t);
 
-
+                    }
+                });
             }
 
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+            void saveUsersToDB(List<User> userListInstance) {
 
-                System.out.println("tttttttttttttttttttttttt" + t);
-
-            }
-        });
-    }
-
-    public void geReasonForNotIssuingResults(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.geReasonForNotIssuingResults("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<ReasonForNotIssuingResult> reasonForNotIssuingResultList = new ArrayList<ReasonForNotIssuingResult>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    reasonForNotIssuingResultList.add(new ReasonForNotIssuingResult(item.getCode(), item.getName()));
-                }
-                if (reasonForNotIssuingResultList != null && !reasonForNotIssuingResultList.isEmpty()) {
-
-                    saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
-                }
-
+                ehrMobileDatabase.userDao().insertUsers(userListInstance);
+                List<User> usersFromDB = ehrMobileDatabase.userDao().selectAllUsers();
+                System.out.println("from database \n\n" + usersFromDB);
+                saveAuthorities(usersFromDB);
+                System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));
 
             }
 
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
-
-            }
-        });
-    }
-
-    void saveUsersToDB(List<User> userListInstance) {
-
-        ehrMobileDatabase.userDao().insertUsers(userListInstance);
-        List<User> usersFromDB = ehrMobileDatabase.userDao().selectAllUsers();
-        System.out.println("from database \n\n" + usersFromDB);
-        saveAuthorities(usersFromDB);
-        System.out.println("user by iiiiiidd%%%%%%%%%%%%%%%%%%" + ehrMobileDatabase.userDao().findUserByid(1));
-
-    }
-
-    void saveAuthorities(List<User> usersFromDB) {
-        List<Authorities> authorities = new ArrayList<Authorities>();
+            void saveAuthorities(List<User> usersFromDB) {
+                List<Authorities> authorities = new ArrayList<Authorities>();
 
         /*
         TODO brian refactor this part
@@ -715,192 +846,196 @@ public class MainActivity extends FlutterActivity {
         );
         ehrMobileDatabase.authoritiesDao().insertAuthorities(authorities);
 */
-        System.out.println("froooooooooooooom DB=================" + ehrMobileDatabase.authoritiesDao().getAllAuthorities());
+                System.out.println("froooooooooooooom DB=================" + ehrMobileDatabase.authoritiesDao().getAllAuthorities());
 //        ehrMobileDatabase.permissionsDao().insertPermissions();
-        testById(1);
+                testById(1);
 
 
-    }
-
-    void testById(int id) {
-        System.out.println("get by id --------------" + ehrMobileDatabase.authoritiesDao().findAuthoritiesByUserId(1));
-    }
-
-
-    /**
-     * Save to DB methods
-     */
-
-    void saveCountriesToDB(List<Country> countries) {
-
-
-        ehrMobileDatabase.countryDao().insertCountries(countries);
-
-
-        System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
-    }
-
-    void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
-
-
-        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
-
-        System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
-    }
-
-    void saveFacilityToDB(List<Facility> facilities) {
-
-        ehrMobileDatabase.facilityDao().insertFacilities(facilities);
-
-        System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());
-    }
-
-
-    public void getReligion(Token token, String baseUrl) {
-
-        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
-        call.enqueue(new Callback<TerminologyModel>() {
-            @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Religion> religionList = new ArrayList<Religion>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
-                }
-                if (religionList != null && !religionList.isEmpty()) {
-                    saveReligionToDB(religionList);
-                }
             }
 
-            @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
+            void testById(int id) {
+                System.out.println("get by id --------------" + ehrMobileDatabase.authoritiesDao().findAuthoritiesByUserId(1));
             }
-        });
-    }
-
-    void saveReligionToDB(List<Religion> religions) {
 
 
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+            /**
+             * Save to DB methods
+             */
 
-        ehrMobileDatabase.religionDao().insertReligions(religions);
-
-        System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
-    }
-
-
-    void saveOccupationsToDB(List<Occupation> occupations) {
+            void saveCountriesToDB(List<Country> countries) {
 
 
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.occupationDao().insertOccupations(occupations);
-        System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
-
-    }
-
-    void saveNationalityToDB(List<Nationality> nationalityList) {
+                ehrMobileDatabase.countryDao().insertCountries(countries);
 
 
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+                System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
+            }
 
-        ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
-
-        System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
-
-
-    }
+            void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
 
 
-    void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
+                ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
+
+                System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
+            }
+
+            void saveFacilityToDB(List<Facility> facilities) {
+
+                ehrMobileDatabase.facilityDao().insertFacilities(facilities);
+
+                System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());
+            }
 
 
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+            public void getReligion(Token token, String baseUrl) {
 
-        ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
+                DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<Religion> religionList = new ArrayList<Religion>();
+                        for (BaseNameModel item : response.body().getContent()) {
+                            religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
+                        }
+                        if (religionList != null && !religionList.isEmpty()) {
+                            saveReligionToDB(religionList);
+                        }
+                    }
 
-        System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
+                        System.out.println("tttttttttttttttttttttttt" + t);
+                    }
+                });
+            }
 
-    }
-
-    void saveEntryPointsToDB(List<EntryPoint> entryPoints) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
-        System.out.println("EntryPoint from DB *****" + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
-
-    }
-
-    void saveHtsModelToDB(List<HtsModel> htsModels) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
-        System.out.println("HtsModels from DB *****" + ehrMobileDatabase.htsModelDao().getAllHtsModels());
-
-    }
-
-    void savePurpose_Of_TestsToDB(List<Purpose_Of_Tests> purpose_of_tests) {
+            void saveReligionToDB(List<Religion> religions) {
 
 
-        System.out.println("*****************   " + ehrMobileDatabase);
+                System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
 
-        ehrMobileDatabase.purpose_of_testsDao().insertPurpose_Of_Tests(purpose_of_tests);
-        System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests());
+                ehrMobileDatabase.religionDao().insertReligions(religions);
 
-    }
-
-    void saveReasonForNotIssuingResultToDB(List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
+                System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
+            }
 
 
-        System.out.println("*****************   " + ehrMobileDatabase);
+            void saveOccupationsToDB(List<Occupation> occupations) {
 
-        ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
-        System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
 
-    }
+                System.out.println("*****************   " + ehrMobileDatabase);
+
+                ehrMobileDatabase.occupationDao().insertOccupations(occupations);
+                System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
+
+            }
+
+            void saveNationalityToDB(List<Nationality> nationalityList) {
+
+
+                System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+
+                ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
+
+                System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
+
+
+            }
+
+
+            void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
+
+
+                System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+
+                ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
+
+                System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
+
+
+            }
+
+            void saveEntryPointsToDB(List<EntryPoint> entryPoints) {
+
+
+                System.out.println("*****************   " + ehrMobileDatabase);
+
+                ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
+                System.out.println("EntryPoint from DB *****" + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
+
+            }
+
+            void saveHtsModelToDB(List<HtsModel> htsModels) {
+
+
+                System.out.println("*****************   " + ehrMobileDatabase);
+
+                ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
+                System.out.println("HtsModels from DB *****" + ehrMobileDatabase.htsModelDao().getAllHtsModels());
+
+            }
+
+            void savePurpose_Of_TestsToDB(List<Purpose_Of_Tests> purpose_of_tests) {
+
+
+                System.out.println("*****************   " + ehrMobileDatabase);
+
+                ehrMobileDatabase.purpose_of_testsDao().insertPurpose_Of_Tests(purpose_of_tests);
+                System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests());
+
+            }
+
+            void saveReasonForNotIssuingResultToDB
+                    (List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
+
+
+                System.out.println("*****************   " + ehrMobileDatabase);
+
+                ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
+                System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
+
+            }
 
     public void createVisit(long patientId) {
-        Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndBetweenStartTimeAndEndDate(patientId, new Date());
+        Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndBetweenStartTimeAndEndDate(patientId, new Date().getTime());
         System.out.println("==========================-=-=-=-=-="+visit1.toString());
         if (visit1 == null) {
             visit = new Visit(patientId);
             ehrMobileDatabase.visitDao().insert(visit);
         }
 
+
+            }
+
+            public void clearTables() {
+
+                ehrMobileDatabase.countryDao().deleteCountries();
+                ehrMobileDatabase.patientDao().deleteAll();
+                ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
+                ehrMobileDatabase.facilityDao().deleteAllFacilities();
+
+                ehrMobileDatabase.religionDao().deleteReligions();
+                ehrMobileDatabase.occupationDao().deleteOccupations();
+                ehrMobileDatabase.nationalityDao().deleteNationalities();
+                ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
+                ehrMobileDatabase.entryPointDao().deleteEntryPoints();
+                ehrMobileDatabase.htsModelDao().deleteHtsModels();
+                ehrMobileDatabase.purpose_of_testsDao().deletePurpose_Of_Tests();
+                ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
+                ehrMobileDatabase.userDao().deleteUsers();
+
+            }
+
+
+            private void saveTestKitsToDB(List<TestKit> testKits) {
+                ehrMobileDatabase.testKitDao().insertTestKits(testKits);
+                int testKitsCount = ehrMobileDatabase.testKitDao().getAllTestKits().size();
+                System.out.println("Test Kits *****" + testKitsCount);
+
+            }
+
+        });
     }
-
-    public void clearTables() {
-
-        ehrMobileDatabase.countryDao().deleteCountries();
-        ehrMobileDatabase.patientDao().deleteAll();
-        ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
-        ehrMobileDatabase.facilityDao().deleteAllFacilities();
-
-        ehrMobileDatabase.religionDao().deleteReligions();
-        ehrMobileDatabase.occupationDao().deleteOccupations();
-        ehrMobileDatabase.nationalityDao().deleteNationalities();
-        ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
-        ehrMobileDatabase.entryPointDao().deleteEntryPoints();
-        ehrMobileDatabase.htsModelDao().deleteHtsModels();
-        ehrMobileDatabase.purpose_of_testsDao().deletePurpose_Of_Tests();
-        ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
-        ehrMobileDatabase.userDao().deleteUsers();
-
-    }
-
-
-    private void saveTestKitsToDB(List<TestKit> testKits) {
-        ehrMobileDatabase.testKitDao().insertTestKits(testKits);
-        int testKitsCount = ehrMobileDatabase.testKitDao().getAllTestKits().size();
-        System.out.println("Test Kits *****" + testKitsCount);
-
-    }
-
 }

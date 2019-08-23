@@ -20,7 +20,7 @@ public class PatientDto {
     private String nationalId;
 
     private int age;
-    private String birthDate;
+//    private String birthDate;
     private SelfIdentifiedGender selfIdentifiedGender;
     private String religion;
     private String occupation;
@@ -30,7 +30,7 @@ public class PatientDto {
     private String countryOfBirth;
    private Address address;
 
-    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, int age, String birthDate, SelfIdentifiedGender selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String nationality, String countryOfBirth, Address address) {
+    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, int age, SelfIdentifiedGender selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String nationality, String countryOfBirth, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,7 +38,6 @@ public class PatientDto {
         this.identifier = identifier;
         this.nationalId = nationalId;
         this.age = age;
-        this.birthDate = birthDate;
         this.selfIdentifiedGender = selfIdentifiedGender;
         this.religion = religion;
         this.occupation = occupation;
@@ -121,14 +120,6 @@ public class PatientDto {
         this.age = age;
     }
 
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public SelfIdentifiedGender getSelfIdentifiedGender() {
         return selfIdentifiedGender;
     }
@@ -187,7 +178,6 @@ public class PatientDto {
                 ", identifier='" + identifier + '\'' +
                 ", nationalId='" + nationalId + '\'' +
                 ", age=" + age +
-                ", birthDate='" + birthDate + '\'' +
                 ", selfIdentifiedGender=" + selfIdentifiedGender +
                 ", religion='" + religion + '\'' +
                 ", occupation='" + occupation + '\'' +

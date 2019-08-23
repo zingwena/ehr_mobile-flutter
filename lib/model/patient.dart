@@ -17,8 +17,6 @@ class Patient {
   String sex;
   String nationalId;
 
-  int age;
-
   String selfIdentifiedGender;
   String religion;
   String occupation;
@@ -30,9 +28,10 @@ class Patient {
 
   Address address;
 
-  Patient.basic(this.firstName, this.lastName,this.sex,this.nationalId,this.religion,this.maritalStatus,this.educationLevel, this.nationality, this.countryOfBirth, this.selfIdentifiedGender);
 
-  Patient(this.id, this.firstName, this.lastName, this.sex, this.nationalId,this.age, this.selfIdentifiedGender, this.religion,
+  Patient.basic(this.firstName, this.lastName,this.sex,this.nationalId,this.religion,this.maritalStatus,this.educationLevel, this.nationality, this.countryOfBirth, this.selfIdentifiedGender, this.occupation);
+
+  Patient(this.id, this.firstName, this.lastName, this.sex, this.nationalId, this.selfIdentifiedGender, this.religion,
       this.occupation, this.maritalStatus, this.educationLevel, this.address);
 
   factory Patient.fromJson(Map<String, dynamic> json) => _$PatientFromJson(json);
@@ -42,7 +41,9 @@ class Patient {
 
   @override
   String toString() {
-    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId,age: $age, selfIdentifiedGender: $selfIdentifiedGender, religion: $religion, occupation: $occupation, maritalStatus: $maritalStatus, educationLevel: $educationLevel, address: $address}';
+
+    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, selfIdentifiedGender: $selfIdentifiedGender, religion: $religion, occupation: $occupation, maritalStatus: $maritalStatus, educationLevel: $educationLevel, address: $address}';
+
   }
 
   static List<Patient> fromJsonDecodedMap(List dynamicList) {

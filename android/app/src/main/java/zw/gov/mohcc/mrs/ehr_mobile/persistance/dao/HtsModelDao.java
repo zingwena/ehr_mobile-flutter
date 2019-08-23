@@ -15,7 +15,7 @@ public interface HtsModelDao {
     @Insert
     void insertHtsModels(List<HtsModel> htsModels);
 
-    @Query("DELETE FROM htsmodel")
+    @Query("DELETE FROM HtsModel")
     void deleteHtsModels();
 
     @Insert

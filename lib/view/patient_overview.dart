@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
 
 import 'hiv_screening.dart';
 import 'home_page.dart';
 import 'reception_vitals.dart';
+import 'package:ehr_mobile/model/address.dart';
 
 class Overview extends StatefulWidget {
   final Patient patient;
@@ -21,16 +21,13 @@ class Overview extends StatefulWidget {
 
 class OverviewState extends State<Overview> {
 
-
-
   Patient _patient;
   Map<String, dynamic> details;
 
   @override
   void initState() {
     _patient = widget.patient;
-
-
+    super.initState();
   }
 
   @override
@@ -74,9 +71,7 @@ class OverviewState extends State<Overview> {
                                           child: RaisedButton(
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0)),
-                                            color: Colors.blue,
+                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
                                               "Vitals",
@@ -84,8 +79,7 @@ class OverviewState extends State<Overview> {
                                                   fontSize: 15,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
-                                            ),
-                                            onPressed: () => Navigator.push(
+                                            ),onPressed: () => Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
@@ -103,9 +97,7 @@ class OverviewState extends State<Overview> {
                                           child: RaisedButton(
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0)),
-                                            color: Colors.blue,
+                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
                                               "HTS",
@@ -134,6 +126,7 @@ class OverviewState extends State<Overview> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0)),
+
                                             color: Colors.red,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
@@ -143,12 +136,13 @@ class OverviewState extends State<Overview> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
-                                            onPressed: () => Navigator.push(
+                               onPressed: () => Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       HomePage()),
                                             ),
+
                                           ),
                                         ),
                                         width: 100,
@@ -199,8 +193,8 @@ class OverviewState extends State<Overview> {
                                   height: 15,
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -208,7 +202,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.sex),
+                                          text: _patient.sex),
+
                                             decoration: InputDecoration(
                                               labelText: 'Sex',
                                               border: OutlineInputBorder(),
@@ -257,7 +252,7 @@ class OverviewState extends State<Overview> {
                                             controller: TextEditingController(
                                                 text: '20/01/1988'),
                                             decoration: InputDecoration(
-                                              labelText:"date",
+                                              labelText: 'Date Of Birth',
                                               border: OutlineInputBorder(),
                                             ),
                                             style: TextStyle(
@@ -295,6 +290,7 @@ class OverviewState extends State<Overview> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -302,7 +298,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.educationLevel),
+                                  text: _patient.educationLevel),
                                             decoration: InputDecoration(
                                               labelText: 'Education',
                                               border: OutlineInputBorder(),
@@ -322,6 +318,7 @@ class OverviewState extends State<Overview> {
                                           child: TextField(
                                             controller: TextEditingController(
                                                 text:  _patient.occupation),
+
                                             decoration: InputDecoration(
                                               labelText: 'Occupation',
                                               border: OutlineInputBorder(),
@@ -341,6 +338,7 @@ class OverviewState extends State<Overview> {
                                           child: TextField(
                                             controller: TextEditingController(
                                                 text: _patient.nationality),
+
                                             decoration: InputDecoration(
                                               labelText: 'Nationality',
                                               border: OutlineInputBorder(),
@@ -372,6 +370,7 @@ class OverviewState extends State<Overview> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -379,7 +378,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextFormField(
                                             controller: TextEditingController(
-                                                text: '24 Gamu Drive Seke 2'),
+
+                                                text: _patient.address.street+" "+ _patient.address.town+" "+_patient.address.city),
                                             decoration: InputDecoration(
                                               labelText: 'Address',
                                               border: OutlineInputBorder(),
@@ -398,7 +398,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:"phone number"),
+                                                text: '0774536627'),
+
                                             decoration: InputDecoration(
                                               labelText: 'Phone Number',
                                               border: OutlineInputBorder(),
