@@ -995,12 +995,14 @@ public class MainActivity extends FlutterActivity {
 
             }
 
-            public void createVisit(long patientId) {
-                Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndStartTime(patientId, new Date());
-                if (visit1 == null) {
-                    visit = new Visit(patientId);
-                    ehrMobileDatabase.visitDao().insert(visit);
-                }
+    public void createVisit(long patientId) {
+        Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndBetweenStartTimeAndEndDate(patientId, new Date().getTime());
+        System.out.println("==========================-=-=-=-=-="+visit1.toString());
+        if (visit1 == null) {
+            visit = new Visit(patientId);
+            ehrMobileDatabase.visitDao().insert(visit);
+        }
+
 
             }
 

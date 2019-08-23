@@ -14,9 +14,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import com.google.gson.JsonObject;
 
-
-import org.bouncycastle.util.test.Test;
-
 import java.util.List;
 
 import retrofit2.Call;

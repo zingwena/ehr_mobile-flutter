@@ -4,10 +4,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 @Entity
 public class Visit {
@@ -16,7 +19,11 @@ public class Visit {
     @PrimaryKey(autoGenerate = true)
     private long visitId;
     private long patientId;
+    @TypeConverters(DateConverter.class)
     private Date startTime = new Date();
+    @TypeConverters(DateConverter.class)
+    private Date endDate = new Date(System.currentTimeMillis() + (24 * 3600 * 10^3));
+
 
 
     public Visit() {
@@ -52,12 +59,21 @@ public class Visit {
         this.startTime = startTime;
     }
 
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
         return "Visit{" +
                 "visitId=" + visitId +
                 ", patientId=" + patientId +
                 ", startTime=" + startTime +
+                ", endDate=" + endDate +
                 '}';
     }
 }
