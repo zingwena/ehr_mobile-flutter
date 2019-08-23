@@ -15,8 +15,8 @@ public interface VisitDao {
     @Insert
     void insert(Visit visit);
 
-    @Query("SELECT * FROM Visit WHERE patientId = :patientId AND startTime = :startTime")
-    Visit findByPatientIdAndStartTime(long patientId, Date startTime);
+    @Query("SELECT * FROM Visit WHERE patientId = :patientId AND :currentDate Between startTime and endDate")
+    Visit findByPatientIdAndBetweenStartTimeAndEndDate(long patientId, Date currentDate);
 
     @Query("SELECT * FROM Visit")
     List<Visit> getAll();

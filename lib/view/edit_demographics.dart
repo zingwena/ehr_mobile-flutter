@@ -543,7 +543,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     );
   }
 
-  Future<void> _retrieveMetaDataFromDB() async{
+  Future<void>  _retrieveMetaDataFromDB() async{
     String result, countries, occupations,educationLevels,nationalities,maritalStates;
     try{
       result= await dataChannel.invokeMethod('religionOptions');
