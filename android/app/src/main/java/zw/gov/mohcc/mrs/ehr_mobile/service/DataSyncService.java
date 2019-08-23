@@ -14,9 +14,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import com.google.gson.JsonObject;
 
-
-import org.bouncycastle.util.test.Test;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -73,7 +70,7 @@ public interface DataSyncService {
     Call<TerminologyModel> getHtsModels(@Header("Authorization")String token);
 
     @GET("reason-for-not-issuing-results")
-    Call<TerminologyModel> geReasonForNotIssuingResults(@Header("Authorization")String token);
+    Call<TerminologyModel> getReasonForNotIssuingResults(@Header("Authorization")String token);
 
     @GET("purpose-of-tests")
     Call<TerminologyModel> getPurpose_Of_Tests(@Header("Authorization")String token);

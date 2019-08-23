@@ -796,7 +796,7 @@ public class MainActivity extends FlutterActivity {
             public void getReasonForNotIssuingResults(Token token, String baseUrl) {
 
                 DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-                Call<TerminologyModel> call = service.geReasonForNotIssuingResults("Bearer " + token.getId_token());
+                Call<TerminologyModel> call = service.getReasonForNotIssuingResults("Bearer " + token.getId_token());
                 call.enqueue(new Callback<TerminologyModel>() {
                     @Override
                     public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -998,12 +998,14 @@ public class MainActivity extends FlutterActivity {
 
             }
 
-            public void createVisit(long patientId) {
-                Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndStartTime(patientId, new Date());
-                if (visit1 == null) {
-                    visit = new Visit(patientId);
-                    ehrMobileDatabase.visitDao().insert(visit);
-                }
+    public void createVisit(long patientId) {
+        Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndBetweenStartTimeAndEndDate(patientId, new Date().getTime());
+        System.out.println("==========================-=-=-=-=-="+visit1.toString());
+        if (visit1 == null) {
+            visit = new Visit(patientId);
+            ehrMobileDatabase.visitDao().insert(visit);
+        }
+
 
             }
 

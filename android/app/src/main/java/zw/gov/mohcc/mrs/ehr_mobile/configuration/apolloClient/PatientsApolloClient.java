@@ -90,15 +90,15 @@ public class PatientsApolloClient {
                                     patient.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
                                             ? patientData.occupation().id() : null);*/
 
-                                    try {
-                                        LocalDate dateOfBirth = LocalDate.parse(date);
-                                        System.out.println("dateOfBirth = " + dateOfBirth);
-                                        patient.setBirthDate(dateOfBirth);
-
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+//                                    try {
+//                                        LocalDate dateOfBirth = LocalDate.parse(date);
+//                                        System.out.println("dateOfBirth = " + dateOfBirth);
+//                                        patient.setBirthDate(dateOfBirth);
+//
+//
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
 
                                     /*if (numberOfIdentifications > 0) {
                                         String identifierType = patientData.identifications().get(0).type().name();

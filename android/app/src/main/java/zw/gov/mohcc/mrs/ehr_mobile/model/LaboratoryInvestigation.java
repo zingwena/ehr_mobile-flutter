@@ -3,7 +3,6 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 
-import org.stringtemplate.v4.ST;
 
 import java.time.LocalDate;
 
@@ -12,7 +11,7 @@ public class LaboratoryInvestigation {
 
     private int id;
 
-    @Embedded
+
     private int facilityId;
 
     private String personInvestigationId;
@@ -27,11 +26,11 @@ public class LaboratoryInvestigation {
         this.id = id;
     }
 
-    public BaseNameModel getFacilityId() {
+    public int getFacilityId() {
         return facilityId;
     }
 
-    public void setFacilityId(BaseNameModel facilityId) {
+    public void setFacilityId(int facilityId) {
         this.facilityId = facilityId;
     }
 

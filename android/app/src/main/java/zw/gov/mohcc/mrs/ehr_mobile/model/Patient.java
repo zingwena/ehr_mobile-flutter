@@ -11,8 +11,10 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
@@ -58,8 +60,8 @@ public class Patient {
     private String occupationId;
     private String maritalStatusId;
     private String educationLevelId;
-    @TypeConverters(DataConverter.class)
-    private LocalDate birthDate;
+    @TypeConverters(DateConverter.class)
+    private Date birthDate;
     private String nationalityId;
     private String countryId;
     @Embedded
@@ -123,14 +125,6 @@ public class Patient {
 
     public void setNationalId(String nationalId) {
         this.nationalId = nationalId;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
     }
 
     public Address getAddress() {
@@ -205,12 +199,18 @@ public class Patient {
         this.sex = sex;
     }
 
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
                 "id=" + id +
-                ", selfIdentifiedGender=" + selfIdentifiedGender +
-                ", sex=" + sex +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", personId='" + personId + '\'' +
@@ -223,6 +223,8 @@ public class Patient {
                 ", nationalityId='" + nationalityId + '\'' +
                 ", countryId='" + countryId + '\'' +
                 ", address=" + address +
+                ", selfIdentifiedGender=" + selfIdentifiedGender +
+                ", sex=" + sex +
                 '}';
     }
 }

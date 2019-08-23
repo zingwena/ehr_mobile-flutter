@@ -5,9 +5,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.android.tools.r8.org.intellij.lang.annotations.Identifier;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
