@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wifi/wifi.dart';
 //import 'package:cbs_app/view/home_page.dart';
 //import 'package:cbs_app/view/add_patient.dart';
 
@@ -36,11 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-Future<InternetAddress> get selfIP async {
-    String ip = await Wifi.ip;
-    print('Ip address : $ip');
-    return InternetAddress(ip);
-}
 
   loginBody(BuildContext context) => SingleChildScrollView(
     
@@ -184,7 +178,7 @@ Future<InternetAddress> get selfIP async {
                 }
                 }
                 catch(e){
-                     print('Exception : $e $selfIP');
+                     print('Exception : $e ');
                 }
                  
                       }

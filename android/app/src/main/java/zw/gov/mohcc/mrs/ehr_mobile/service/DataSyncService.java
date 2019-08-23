@@ -2,16 +2,20 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 
 
+import retrofit2.http.Path;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import com.google.gson.JsonObject;
 
+
+import org.bouncycastle.util.test.Test;
 
 import java.util.List;
 
@@ -39,6 +43,7 @@ public interface DataSyncService {
 
     @GET("users")
     Call<List<User>>getAllUsers(@Header("Authorization") String token);
+
 
     @GET("marital-states")
     Call<TerminologyModel> getMaritalStates(@Header("Authorization") String token);
@@ -73,6 +78,8 @@ public interface DataSyncService {
     @GET("purpose-of-tests")
     Call<TerminologyModel> getPurpose_Of_Tests(@Header("Authorization")String token);
 
+    @GET("test-kits/test-level/{LEVEL}")
+    Call<List<TestKit>> getTestKits(@Header("Authorization")String token, @Path("LEVEL")String level);
 
 
 

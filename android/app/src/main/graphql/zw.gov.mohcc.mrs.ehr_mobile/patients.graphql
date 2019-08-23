@@ -6,6 +6,7 @@ query GetPatientsQuery{
 
             firstname
             lastname
+            phones{number,phoneId}
 
             sex
             identifications{number,type{name}}

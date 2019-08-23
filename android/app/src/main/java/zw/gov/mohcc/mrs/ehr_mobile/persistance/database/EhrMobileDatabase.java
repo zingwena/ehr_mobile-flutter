@@ -19,8 +19,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
@@ -35,9 +35,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PostTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PreTestDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReasonForNotIssuingResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.Purpose_Of_TestsDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReasonForNotIssuingResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 import zw.gov.mohcc.mrs.ehr_mobile.util.CoupleCounsellingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
@@ -60,15 +61,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
  */
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
-        Facility.class, PreTest.class, PostTest.class, Religion.class, Nationality.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class}, version = 4, exportSchema = false)
+        Facility.class, PreTest.class, PostTest.class, Religion.class, Nationality.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class}, version = 4, exportSchema = false)
 @TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, NewPregLactConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
-
-
-
-
-
 
     public static volatile EhrMobileDatabase INSTANCE;
 
@@ -111,6 +107,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract EntryPointDao entryPointDao();
 
     public abstract HtsModelDao htsModelDao();
+
+    public abstract TestKitDao testKitDao();
 
     public abstract ReasonForNotIssuingResultDao reasonForNotIssuingResultDao();
 
