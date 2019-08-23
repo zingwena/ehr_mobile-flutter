@@ -106,7 +106,7 @@ class _PatientPostTest extends State<PatientPostTest> {
       /*_htsModelList = HtsModel.mapFromJson(htsModelList);
       _purposeOfTestList = PurposeOfTest.mapFromJson(purposeOfTestList);*/
 
-      _reasonForNotIssuingResultList = ReasonForNotIssuingResult.mapFromJson(reasonForNotIssuingResultList);
+      reasonForNotIssuingResultList = ReasonForNotIssuingResult.mapFromJson(reasonForNotIssuingResultList);
 
 
       _dropDownMenuItemsReasonForNotIssuingResult =

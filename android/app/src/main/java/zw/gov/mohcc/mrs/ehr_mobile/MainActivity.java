@@ -162,74 +162,71 @@ public class MainActivity extends FlutterActivity {
                     }
                 }
                 new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
-                        new MethodChannel.MethodCallHandler() {
-                            @Override
-                            public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
-                                Gson gson = new Gson();
-                                if (methodCall1.method.equals("religionOptions")) {
-                                    try {
-                                        List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
+                        (methodCall1, result1) -> {
+                            Gson gson = new Gson();
+                            if (methodCall1.method.equals("religionOptions")) {
+                                try {
+                                    List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
 
-                                        String religionList = gson.toJson(religions);
-                                        result1.success(religionList);
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
-                                    }
+                                    String religionList = gson.toJson(religions);
+                                    result1.success(religionList);
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
                                 }
-                                if (methodCall1.method.equals("countryOptions")) {
-                                    try {
-                                        List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
-                                        System.out.println("*************************** native" + countries);
-                                        String countryList = gson.toJson(countries);
-                                        result1.success(countryList);
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
-                                    }
+                            }
+                            if (methodCall1.method.equals("countryOptions")) {
+                                try {
+                                    List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
+                                    System.out.println("*************************** native" + countries);
+                                    String countryList = gson.toJson(countries);
+                                    result1.success(countryList);
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
                                 }
-                                if (methodCall1.method.equals("occupationOptions")) {
-                                    try {
-                                        List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
-                                        String occupationList = gson.toJson(occupations);
-                                        result1.success(occupationList);
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
-                                    }
-
+                            }
+                            if (methodCall1.method.equals("occupationOptions")) {
+                                try {
+                                    List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
+                                    String occupationList = gson.toJson(occupations);
+                                    result1.success(occupationList);
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
                                 }
 
-                                if (methodCall1.method.equals("educationLevelOptions")) {
-                                    try {
-                                        List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
-                                        String educationLevelList = gson.toJson(educationLevels);
-                                        result1.success(educationLevelList);
+                            }
 
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
+                            if (methodCall1.method.equals("educationLevelOptions")) {
+                                try {
+                                    List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
+                                    String educationLevelList = gson.toJson(educationLevels);
+                                    result1.success(educationLevelList);
 
-                                    }
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
+
                                 }
+                            }
 
-                                if (methodCall1.method.equals("nationalityOptions")) {
-                                    try {
-                                        List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
-                                        String nationalityList = gson.toJson(nationalities);
-                                        result1.success(nationalityList);
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
+                            if (methodCall1.method.equals("nationalityOptions")) {
+                                try {
+                                    List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
+                                    String nationalityList = gson.toJson(nationalities);
+                                    result1.success(nationalityList);
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
 
-                                    }
                                 }
+                            }
 
-                                if (methodCall1.method.equals("maritalStatusOptions")) {
-                                    try {
-                                        List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
-                                        String maritalStatusList = gson.toJson(maritalStatuses);
-                                        result1.success(maritalStatusList);
+                            if (methodCall1.method.equals("maritalStatusOptions")) {
+                                try {
+                                    List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
+                                    String maritalStatusList = gson.toJson(maritalStatuses);
+                                    result1.success(maritalStatusList);
 
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
+                                } catch (Exception e) {
+                                    System.out.println("something went wrong " + e.getMessage());
 
-                                    }
                                 }
                             }
                         });
