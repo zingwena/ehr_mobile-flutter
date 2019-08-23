@@ -18,8 +18,8 @@ PostTest _$PostTestFromJson(Map<String, dynamic> json) {
     json['dateOfPostTestCounsel'] == null
         ? null
         : DateTime.parse(json['dateOfPostTestCounsel'] as String),
-    json['finalResult'] as String,
-    json['resultReceived'] as String,
+    json['finalResult'] as bool,
+    json['resultReceived'] as bool,
   );
 }
 
