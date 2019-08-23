@@ -30,6 +30,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
@@ -111,7 +112,7 @@ public class MainActivity extends FlutterActivity {
                     getEntryPoints(token, url + "/api/");
                     getHtsModels(token, url + "/api/");
                     getPurpose_Of_Tests(token, url + "/api/");
-                    geReasonForNotIssuingResults(token, url + "/api/");
+                    getReasonForNotIssuingResults(token, url + "/api/");
                     getUsers(token, url + "/api/");
                     getReligion(token, url + "/api/");
                     getPatients(url);
@@ -241,12 +242,36 @@ public class MainActivity extends FlutterActivity {
                                         System.out.println("something went wrong " + e.getMessage());
                                     }
                                 }
+
+                                if (methodCall.method.equals("reasonForNotIssuingResultOptions")){
+
+                                    try {
+                                        List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
+                                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&& reason for not issuing results :" + reasonForNotIssuingResults);
+                                        String reasonForNotIssuingResultList = gson.toJson(reasonForNotIssuingResults);
+                                        result.success(reasonForNotIssuingResultList);
+                                    }catch (Exception e){
+                                        System.out.println("something went wrong" + e.getMessage());
+                                    }
+                                }
+
                                 if (methodCall.method.equals("savePreTest")) {
                                     try {
                                         PreTest preTest=gson.fromJson(arguments, PreTest.class);
 
                                         ehrMobileDatabase.preTestDao().createPreTest(preTest);
                                         System.out.println("List of pretest"+ehrMobileDatabase.preTestDao().listPreTests());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
+
+                                if (methodCall.method.equals("savePostTest")) {
+                                    try {
+                                        PostTest postTest=gson.fromJson(arguments, PostTest.class);
+
+                                        ehrMobileDatabase.postTestDao().createPostTest(postTest);
+                                        System.out.println("List of postTest"+ehrMobileDatabase.postTestDao().listPostTest());
                                     } catch (Exception e) {
                                         System.out.println("something went wrong " + e.getMessage());
                                     }
@@ -543,7 +568,7 @@ public class MainActivity extends FlutterActivity {
             public void getPurpose_Of_Tests(Token token, String baseUrl) {
 
                 DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-                Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+                Call<TerminologyModel> call = service.getPurpose_Of_Tests("Bearer " + token.getId_token());
                 call.enqueue(new Callback<TerminologyModel>() {
                     @Override
                     public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -568,7 +593,7 @@ public class MainActivity extends FlutterActivity {
                 });
             }
 
-            public void geReasonForNotIssuingResults(Token token, String baseUrl) {
+            public void getReasonForNotIssuingResults(Token token, String baseUrl) {
 
                 DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
                 Call<TerminologyModel> call = service.geReasonForNotIssuingResults("Bearer " + token.getId_token());
