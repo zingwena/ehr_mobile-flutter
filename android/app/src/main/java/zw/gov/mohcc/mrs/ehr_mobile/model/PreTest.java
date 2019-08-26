@@ -18,18 +18,22 @@ public class PreTest {
     @TypeConverters(GenderConverter.class)
     @ColumnInfo(name="pretest_newtest")
     public NewTest newTest;
-    @TypeConverters(GenderConverter.class)
+   /* @TypeConverters(GenderConverter.class)
     @ColumnInfo(name="pretest_counselling")
-    public CoupleCounselling coupleCounselling;
-    @TypeConverters(GenderConverter.class)
+    public CoupleCounselling coupleCounselling;*/
+    /*@TypeConverters(GenderConverter.class)
     @ColumnInfo(name="pretest_testinfo")
-    public PreTestInfoGiven preTestInfoGiven;
-    @TypeConverters(GenderConverter.class)
+    public PreTestInfoGiven preTestInfoGiven;*/
+    /*@TypeConverters(GenderConverter.class)
     @ColumnInfo(name="pretest_optout")
-    public OptOutOfTest optOutOfTest;
+    public OptOutOfTest optOutOfTest;*/
     @TypeConverters(GenderConverter.class)
     @ColumnInfo(name="pretest_pregLact")
     public NewTestPregLact newTestPregLact;
+
+    String coupleCounselling;
+    String optOutOfTest;
+    String preTestInfoGiven;
 
     String HtsModel_id;
 
@@ -60,26 +64,29 @@ public class PreTest {
     public void setNewTestPregLact(NewTestPregLact newTestPregLact) {
         this.newTestPregLact = newTestPregLact;
     }
-    public PreTestInfoGiven getPreTestInfoGiven() {
-        return preTestInfoGiven;
-    }
 
-    public void setPreTestInfoGiven(PreTestInfoGiven preTestInfoGiven) {
-        this.preTestInfoGiven = preTestInfoGiven;
-    }
-    public OptOutOfTest getOptOutOfTest() {
-        return optOutOfTest;
-    }
-
-    public void setOptOutOfTest(OptOutOfTest optOutOfTest) {
-        this.optOutOfTest = optOutOfTest;
-    }
-    public CoupleCounselling getCoupleCounselling() {
+    public String getCoupleCounselling() {
         return coupleCounselling;
     }
 
-    public void setCoupleCounselling(CoupleCounselling coupleCounselling) {
+    public void setCoupleCounselling(String coupleCounselling) {
         this.coupleCounselling = coupleCounselling;
+    }
+
+    public String getOptOutOfTest() {
+        return optOutOfTest;
+    }
+
+    public void setOptOutOfTest(String optOutOfTest) {
+        this.optOutOfTest = optOutOfTest;
+    }
+
+    public String getPreTestInfoGiven() {
+        return preTestInfoGiven;
+    }
+
+    public void setPreTestInfoGiven(String preTestInfoGiven) {
+        this.preTestInfoGiven = preTestInfoGiven;
     }
 
     public HtsApproach getHtsApproach() {

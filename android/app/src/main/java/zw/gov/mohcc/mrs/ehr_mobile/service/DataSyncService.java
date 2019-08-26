@@ -70,7 +70,7 @@ public interface DataSyncService {
     Call<TerminologyModel> getHtsModels(@Header("Authorization")String token);
 
     @GET("reason-for-not-issuing-results")
-    Call<TerminologyModel> geReasonForNotIssuingResults(@Header("Authorization")String token);
+    Call<TerminologyModel> getReasonForNotIssuingResults(@Header("Authorization")String token);
 
     @GET("purpose-of-tests")
     Call<TerminologyModel> getPurpose_Of_Tests(@Header("Authorization")String token);

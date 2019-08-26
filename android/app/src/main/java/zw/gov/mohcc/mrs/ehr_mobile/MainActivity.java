@@ -549,7 +549,7 @@ public class MainActivity extends FlutterActivity {
                 call.enqueue(new Callback<List<TestKit>>() {
                     @Override
                     public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                        List<TestKit> testKits = new ArrayList<>();
+                        List<TestKit> testKits = new ArrayList<TestKit>();
                         if (response.isSuccessful()) {
                             for (TestKit item : response.body()) {
                                 testKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "FIRST"));
@@ -574,7 +574,7 @@ public class MainActivity extends FlutterActivity {
                 callSecond.enqueue(new Callback<List<TestKit>>() {
                     @Override
                     public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                        List<TestKit> secondTestKits = new ArrayList<>();
+                        List<TestKit> secondTestKits = new ArrayList<TestKit>();
                         if (response.isSuccessful()) {
                             for (TestKit item : response.body()) {
                                 secondTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "SECOND"));
@@ -600,7 +600,7 @@ public class MainActivity extends FlutterActivity {
                 callThird.enqueue(new Callback<List<TestKit>>() {
                     @Override
                     public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                        List<TestKit> thirdTestKits = new ArrayList<>();
+                        List<TestKit> thirdTestKits = new ArrayList<TestKit>();
                         if (response.isSuccessful()) {
                             for (TestKit item : response.body()) {
                                 thirdTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "THIRD"));
@@ -796,7 +796,7 @@ public class MainActivity extends FlutterActivity {
             public void getReasonForNotIssuingResults(Token token, String baseUrl) {
 
                 DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-                Call<TerminologyModel> call = service.geReasonForNotIssuingResults("Bearer " + token.getId_token());
+                Call<TerminologyModel> call = service.getReasonForNotIssuingResults("Bearer " + token.getId_token());
                 call.enqueue(new Callback<TerminologyModel>() {
                     @Override
                     public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
