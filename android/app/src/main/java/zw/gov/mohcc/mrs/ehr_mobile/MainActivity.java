@@ -33,6 +33,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
@@ -411,7 +412,19 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                    }
+                        if (methodCall.method.equals("getSample")) {
+
+                            try {
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
+                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                String sampleString = gson.toJson(sample);
+                                System.out.println(" investigation***************"+sample);
+                                result.success(sampleString);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                                            }
                 }
         );
 

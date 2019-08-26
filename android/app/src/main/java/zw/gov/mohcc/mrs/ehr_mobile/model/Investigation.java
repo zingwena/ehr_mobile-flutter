@@ -1,8 +1,11 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+
+import com.android.tools.r8.org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
@@ -17,9 +20,10 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Investigation implements Serializable {
 
     @PrimaryKey
+    @NonNull
     private String investigationId;
     private String laboratoryTestId;
-    private String sampleId;
+    private int sampleId;
 
     public String getInvestigationId() {
         return investigationId;
@@ -37,11 +41,11 @@ public class Investigation implements Serializable {
         this.laboratoryTestId = laboratoryTestId;
     }
 
-    public String getSampleId() {
+    public int getSampleId() {
         return sampleId;
     }
 
-    public void setSampleId(String sampleId) {
+    public void setSampleId(int sampleId) {
         this.sampleId = sampleId;
     }
 }

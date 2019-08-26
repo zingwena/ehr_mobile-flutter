@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'hiv_screening.dart';
 import 'home_page.dart';
+import 'hts_testscreening.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
@@ -119,6 +120,35 @@ class OverviewState extends State<Overview> {
                                                       HivScreening()),
                                             ),
                                           ),
+
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: RaisedButton(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Testing",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HtsScreeningTest()),
+                                            ),
+                                          ),
+
                                         ),
                                         width: 100,
                                       ),

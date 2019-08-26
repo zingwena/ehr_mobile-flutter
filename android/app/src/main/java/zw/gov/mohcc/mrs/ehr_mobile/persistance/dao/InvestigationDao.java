@@ -20,7 +20,7 @@ public interface InvestigationDao {
     @Insert
     void insertInvestigation(Investigation investigation);
 
-    @Query("SELECT * FROM EducationLevel ")
+    @Query("SELECT * FROM  Investigation")
     List<Investigation> getInvestigations();
 
     @Query("SELECT * FROM Investigation WHERE investigationId=:investigationId")

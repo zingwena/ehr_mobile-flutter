@@ -32,6 +32,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     "National Id",
     "Driver's Licence"
   ];
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     date = DateTime.now();
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
+    getPersonInvestigation();
     super.initState();
   }
 
@@ -52,6 +54,20 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
       });
+  }
+
+  Future<void> getPersonInvestigation() async {
+
+
+    try {
+
+      String sample = await htsChannel.invokeMethod('getSample');
+      print("*********sample from android"+sample.toString());
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+
   }
 
   void _handleTestKitChange(int value) {
