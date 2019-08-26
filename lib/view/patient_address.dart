@@ -148,7 +148,7 @@ class _PatientAddressState extends State<PatientAddress> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Overview(patient)));
+                builder: (context) => Overview(registeredPatient)));
       });
 
       print('%%%%%%%%%%%%%%%%%%$patient');
@@ -174,7 +174,7 @@ class _PatientAddressState extends State<PatientAddress> {
 
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
-        registeredPatient = jsonDecode(patientResponse);
+        registeredPatient = Patient.fromJson(jsonDecode(patientResponse));
       });
 
     }

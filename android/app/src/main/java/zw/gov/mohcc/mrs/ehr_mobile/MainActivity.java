@@ -94,7 +94,7 @@ public class MainActivity extends FlutterActivity {
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
 //                    dateOfBirth = patientDto.getBirthDate().split("T");
 //                    dob = dateOfBirth[0];
-                    System.out.println("==============================PatientDTO " + patientDto.getNationalId());
+                    System.out.println("==============================PatientDTO " + patientDto.getOccupation());
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
                     patient.setNationalId(patientDto.getNationalId());
@@ -105,6 +105,7 @@ public class MainActivity extends FlutterActivity {
                     patient.setCountryId(patientDto.getCountryOfBirth());
                     patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
                     patient.setAddress(patientDto.getAddress());
+                    patient.setOccupationId(patientDto.getOccupation());
 
 //                    patient.setBirthDate(Date);
                  int id=ehrMobileDatabase.patientDao().createPatient(patient).intValue();

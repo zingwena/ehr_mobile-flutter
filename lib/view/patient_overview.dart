@@ -379,7 +379,7 @@ class OverviewState extends State<Overview> {
                                           child: TextFormField(
                                             controller: TextEditingController(
 
-                                                text: _patient.address.street+" "+ _patient.address.town+" "+_patient.address.city),
+                                                text: "Address"),
                                             decoration: InputDecoration(
                                               labelText: 'Address',
                                               border: OutlineInputBorder(),
