@@ -26,4 +26,5 @@ public class Sample extends BaseNameModel {
     public void setId(int id) {
         this.id = id;
     }
+
 }

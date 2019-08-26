@@ -1,5 +1,4 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
-
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
@@ -27,3 +26,4 @@ public class LaboratoryTest extends BaseNameModel {
         this.id = id;
     }
 }
+
