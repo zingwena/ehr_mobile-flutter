@@ -21,4 +21,5 @@ public interface ResultDao {
     void insertReligion(Result result);
 
     @Query("SELECT * FROM Result ")
-    List<Result> getAllReligions();
+    List<Result> getallResults();
+    }

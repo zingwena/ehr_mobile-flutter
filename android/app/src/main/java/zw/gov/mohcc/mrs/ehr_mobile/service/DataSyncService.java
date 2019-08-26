@@ -3,6 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 
 import retrofit2.http.Path;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 
 
@@ -78,6 +79,14 @@ public interface DataSyncService {
     @GET("test-kits/test-level/{LEVEL}")
     Call<List<TestKit>> getTestKits(@Header("Authorization")String token, @Path("LEVEL")String level);
 
+    @GET("laboratory-tests")
+    Call<TerminologyModel> getLaboratoryTests(@Header("Authorization")String token);
+
+    @GET("samples")
+    Call<TerminologyModel> getSamples(@Header("Authorization")String token);
+
+    @GET("investigations")
+    Call<List<Investigation>> getInvestigations(@Header("Authorization")String token);
 
 
 }
