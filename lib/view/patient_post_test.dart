@@ -38,6 +38,8 @@ class _PatientPostTest extends State<PatientPostTest> {
   int _optOutTest = 0;
   int newTest = 0;
 
+  List _reasonForNotIssuingResultList=[];
+
 
   @override
   void initState() {
