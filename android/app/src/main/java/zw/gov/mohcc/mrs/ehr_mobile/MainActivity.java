@@ -27,6 +27,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -405,6 +406,17 @@ public class MainActivity extends FlutterActivity {
                                         System.out.println("something went wrong " + e.getMessage());
                                     }
                                 }
+                                if (methodCall.method.equals("saveHtsRegistration")) {
+                                    try {
+                                        HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
+
+                                        ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                                        System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
+
                             }
                         }
                 );

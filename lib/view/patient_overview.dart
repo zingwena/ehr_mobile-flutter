@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'hiv_screening.dart';
 import 'home_page.dart';
+import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
@@ -116,7 +117,7 @@ class OverviewState extends State<Overview> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      HivScreening()),
+                                                      Registration()),
                                             ),
                                           ),
                                         ),
