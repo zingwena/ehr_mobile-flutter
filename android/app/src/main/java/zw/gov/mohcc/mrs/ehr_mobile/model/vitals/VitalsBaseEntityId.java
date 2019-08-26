@@ -1,15 +1,20 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+
 public class VitalsBaseEntityId {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private long visitId;
+    @TypeConverters(DateConverter.class)
     private Date dateTime = new Date();
 
 
