@@ -23,6 +23,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
@@ -47,6 +48,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.Purpose_Of_TestsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReasonForNotIssuingResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TownsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.BloodPressureDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.HeightDao;
@@ -75,7 +77,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
  * Room persistence Library will help to create the cache
  */
 
-@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class, Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class, PostTest.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Authorities.class, Country.class, Town.class, MaritalStatus.class, Patient.class, Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class, PostTest.class}, version = 3, exportSchema = false)
 @TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, NewPregLactConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
@@ -99,6 +101,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     }
 
     public abstract UserDao userDao();
+
+    public abstract TownsDao townsDao();
 
     public abstract AuthoritiesDao authoritiesDao();
 

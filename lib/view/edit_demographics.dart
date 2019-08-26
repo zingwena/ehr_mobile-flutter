@@ -58,7 +58,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   bool selfIdentifiedGenderIsValid=false;
 
   bool _formValid=false;
-  bool showError=true;
+  bool showError=false;
   List _religions= List();
   List<Religion> _religionListDropdown= List();
 
@@ -290,7 +290,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
-                showError
+                !showError
                     ? SizedBox.shrink()
                     : Text(
                   _selfIdentifiedGenderError ?? "",
@@ -330,7 +330,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
-                showError
+                !showError
                     ? SizedBox.shrink()
                     : Text(
                   _maritalStatusError ?? "",
@@ -370,7 +370,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
-                showError
+                !showError
                     ? SizedBox.shrink()
                     : Text(
                   _educationLevelError ?? "",
@@ -410,7 +410,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
-                showError
+                !showError
                     ? SizedBox.shrink()
                     : Text(
                   _occupationError ?? "",
@@ -450,7 +450,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
-                showError
+                !showError
                     ? SizedBox.shrink()
                     : Text(
                   _religionError ?? "",
@@ -490,7 +490,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
-                showError
+                !showError
                     ? SizedBox.shrink()
                     : Text(
                   _nationalityError ?? "",
@@ -530,7 +530,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
-                showError
+                !showError
                     ? SizedBox.shrink()
                     : Text(
                   _dropdownError ?? "",
@@ -563,7 +563,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                         }
                         else{
                           setState(() {
-                            showError= false;
+                            showError= true;
                           });
                         }
 
@@ -612,7 +612,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                             }
                             else{
                               setState(() {
-                                showError= false;
+                                showError= true;
                               });
                             }
 

@@ -39,6 +39,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
@@ -130,7 +131,7 @@ public class MainActivity extends FlutterActivity {
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
-            public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
+            public void onMethodCall(final MethodCall methodCall, final MethodChannel.Result result) {
                 if (methodCall.method.equals("DataSync")) {
 
                     ArrayList args = methodCall.arguments();
@@ -167,6 +168,16 @@ public class MainActivity extends FlutterActivity {
                             @Override
                             public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
                                 Gson gson = new Gson();
+                                if(methodCall1.method.equals("townOptions")){
+                                    try{
+                                        List<Town> towns= ehrMobileDatabase.townsDao().getAllTowns();
+                                        String townList= gson.toJson(towns);
+                                        result1.success(townList);
+                                    }
+                                    catch(Exception e){
+                                        System.out.println("Something went wrong "+e);
+                                    }
+                                }
                                 if (methodCall1.method.equals("religionOptions")) {
                                     try {
                                         List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
@@ -427,6 +438,7 @@ public class MainActivity extends FlutterActivity {
                 getUsers(token, url + "/api/");
                 getTestKits(token, url + "/api/");
                 getPatients(url);
+                getTowns(token,url+"/api/");
             }
 
             private void getPatients(String baseUrl) {
@@ -912,6 +924,34 @@ public class MainActivity extends FlutterActivity {
                 });
             }
 
+            public void getTowns(Token token, String baseUrl){
+                DataSyncService service= RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+                Call<TerminologyModel> call= service.getTowns("Bearer "+ token.getId_token());
+                call.enqueue(new Callback<TerminologyModel>() {
+                    @Override
+                    public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                        List<Town> townList= new ArrayList<Town>();
+                        for(BaseNameModel item : response.body().getContent()){
+                            townList.add(new Town(String.valueOf(item.getCode()),item.getName()));
+                        }
+                        if(townList!=null&& !townList.isEmpty()){
+                            saveTownToDB(townList);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+                    }
+                });
+            }
+
+            void saveTownToDB(List<Town> towns){
+                ehrMobileDatabase.townsDao().createTowns(towns);
+
+                System.out.println("towns from DB ################################"+ ehrMobileDatabase.townsDao().getAllTowns());
+            }
+
             void saveReligionToDB(List<Religion> religions) {
 
 
@@ -1026,6 +1066,7 @@ public class MainActivity extends FlutterActivity {
                 ehrMobileDatabase.purpose_of_testsDao().deletePurpose_Of_Tests();
                 ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
                 ehrMobileDatabase.userDao().deleteUsers();
+                ehrMobileDatabase.townsDao().deleteAllTowns();
 
             }
 

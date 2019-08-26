@@ -41,7 +41,8 @@ public interface DataSyncService {
     @GET("users")
     Call<List<User>>getAllUsers(@Header("Authorization") String token);
 
-
+     @GET("towns")
+     Call<TerminologyModel> getTowns(@Header("Authorization") String token);
     @GET("marital-states")
     Call<TerminologyModel> getMaritalStates(@Header("Authorization") String token);
 
