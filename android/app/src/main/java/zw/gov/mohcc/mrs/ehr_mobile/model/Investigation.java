@@ -1,14 +1,16 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = {@ForeignKey(entity = LaboratoryTest.class, onDelete = CASCADE,
+@Entity(indices = {@Index("laboratoryTestId"), @Index("sampleId")}, foreignKeys = {@ForeignKey(entity = LaboratoryTest.class, onDelete = CASCADE,
         parentColumns = "code",
         childColumns = "laboratoryTestId"),
         @ForeignKey(entity = Sample.class, onDelete = CASCADE,
@@ -17,9 +19,13 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Investigation implements Serializable {
 
     @PrimaryKey
+    @NonNull
     private String investigationId;
     private String laboratoryTestId;
     private String sampleId;
+
+    public Investigation() {
+    }
 
     public String getInvestigationId() {
         return investigationId;
