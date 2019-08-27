@@ -31,9 +31,9 @@ class Patient {
   Address address;
 
 
-  Patient.basic(this.firstName, this.lastName,this.sex,this.nationalId,this.religion,this.maritalStatus,this.educationLevel, this.nationality, this.countryOfBirth, this.selfIdentifiedGender, this.occupation);
+  Patient.basic(this.firstName, this.lastName,this.sex, this.birthDate,this.nationalId,this.religion,this.maritalStatus,this.educationLevel, this.nationality, this.countryOfBirth, this.selfIdentifiedGender, this.occupation);
 
-  Patient(this.id, this.firstName, this.lastName, this.sex, this.nationalId, this.selfIdentifiedGender, this.religion,
+  Patient(this.id, this.firstName, this.lastName, this.sex,this.birthDate, this.nationalId, this.selfIdentifiedGender, this.religion,
       this.occupation, this.maritalStatus, this.educationLevel, this.address);
 
   factory Patient.fromJson(Map<String, dynamic> json) => _$PatientFromJson(json);

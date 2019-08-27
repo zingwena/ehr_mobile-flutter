@@ -17,12 +17,13 @@ class AddPatient extends StatefulWidget {
 
 class _AddPatient extends State<AddPatient> {
   final _formKey = GlobalKey<FormState>();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
    static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
-  String lastName, firstName, nationalId;
+  String lastName, firstName, nationalId, nationalIdNumber;
 
   var selectedDate;
   DateTime date;
+  bool showError=false;
   int _gender = 0;
   String gender = "";
   String _identifier;
@@ -34,6 +35,7 @@ class _AddPatient extends State<AddPatient> {
     "National Id",
     "Driver's Licence"
   ];
+  String _nationalIdError="National Id number is invalid";
 
   @override
   void initState() {
@@ -88,6 +90,7 @@ class _AddPatient extends State<AddPatient> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text('Add Patient'),
@@ -107,7 +110,7 @@ class _AddPatient extends State<AddPatient> {
                   ),
                   TextFormField(
                     validator: (value) {
-                      return value.isEmpty ? 'Enter some text' : null;
+                      return value.isEmpty ? 'Enter National Id number' : null;
                     },
                     onSaved: (value) => setState(() {
 
@@ -115,17 +118,25 @@ class _AddPatient extends State<AddPatient> {
 
                     }),
                     decoration: InputDecoration(
+
                         labelText: _identifier == "Select Identifier"
                             ? "ID Number"
                             : _identifier + " Number",
                         border: OutlineInputBorder()),
+
+                  ),
+                  !showError
+                      ? SizedBox.shrink()
+                      : Text(
+                    _nationalIdError ?? "",
+                    style: TextStyle(color: Colors.red),
                   ),
                   SizedBox(
                     height: 30.0,
                   ),
                   TextFormField(
                     validator: (value) {
-                      return value.isEmpty ? 'Enter some text' : null;
+                      return value.isEmpty ? 'Enter Last Name' : null;
                     },
                     onSaved: (value) => setState(() {
                       lastName = value;
@@ -138,7 +149,7 @@ class _AddPatient extends State<AddPatient> {
                   ),
                   TextFormField(
                     validator: (value) {
-                      return value.isEmpty ? 'Enter some text' : null;
+                      return value.isEmpty ? 'Enter First Name' : null;
                     },
                     onSaved: (value) => setState(() {
                       firstName = value;
@@ -235,15 +246,26 @@ class _AddPatient extends State<AddPatient> {
 
 //                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
 //                           await registerPatient(patient);
+                          setState(() {
+                            nationalIdNumber = nationalId.replaceAll(
+                                new RegExp(r'[^\w\s]+'), '');
+                          });
+                          RegExp regex = new RegExp(
+                              r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
+                          if (regex.hasMatch(nationalIdNumber)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditDemographics(
+                                            lastName, firstName, date, gender,
+                                            nationalId)));
+                          }
+                          else{
 
-                          print("=--------------------=-=-=-=-=-");
-                          print(selectedDate);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditDemographics(
-                                      lastName, firstName, date, gender, nationalId)));
+                            showError=true;
 
+                          }
                         }
                       },
                     ),

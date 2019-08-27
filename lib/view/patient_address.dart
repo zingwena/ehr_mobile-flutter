@@ -193,7 +193,7 @@ class _PatientAddressState extends State<PatientAddress> {
                   builder: (context) => Overview(registeredPatient)));
         });
 
-        print('%%%%%%%%%%%%%%%%%%$patient');
+
       }
     }
                       },
@@ -211,7 +211,7 @@ class _PatientAddressState extends State<PatientAddress> {
     int response;
     var patientResponse;
     try {
-      String jsonPatient = jsonEncode(patient);
+      String jsonPatient = jsonEncode(patient.toJson());
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
 
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
