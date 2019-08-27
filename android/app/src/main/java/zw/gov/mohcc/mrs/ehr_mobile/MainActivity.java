@@ -78,6 +78,7 @@ public class MainActivity extends FlutterActivity {
     int statusCode;
     List<User> userList;
     Visit visit;
+    InvestigationEhr investigationEhr;
 
 
     @Override
@@ -428,11 +429,11 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getSample")) {
 
                             try {
-                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
-                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                                String sampleString = gson.toJson(sample);
-                                System.out.println(" investigation***************"+sample);
-                                result.success(sampleString);
+//                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
+//                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                String investigationString = gson.toJson(investigationEhr);
+                                System.out.println(" investigation***************"+investigationString);
+                                result.success(investigationString);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
@@ -1135,6 +1136,8 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<InvestigationEhr> call, Response<InvestigationEhr> response) {
                 if(response.isSuccessful()){
                     System.out.println("investigation ********"+response.body().toString());
+                    investigationEhr = response.body();
+
                 }
             }
 
