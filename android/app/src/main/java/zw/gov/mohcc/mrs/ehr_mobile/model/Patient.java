@@ -13,6 +13,7 @@ import androidx.room.TypeConverters;
 import java.time.LocalDate;
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
@@ -206,6 +207,7 @@ public class Patient {
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
+
 
     @Override
     public String toString() {

@@ -22,6 +22,8 @@ Patient _$PatientFromJson(Map<String, dynamic> json) {
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>),
   )
+    ..birthDate =
+        const CustomDateTimeConverter().fromJson(json['birthDate'] as String)
     ..nationality = json['nationality'] as String
     ..countryOfBirth = json['countryOfBirth'] as String;
 }
@@ -32,6 +34,7 @@ Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{
       'lastName': instance.lastName,
       'sex': instance.sex,
       'nationalId': instance.nationalId,
+      'birthDate': const CustomDateTimeConverter().toJson(instance.birthDate),
       'selfIdentifiedGender': instance.selfIdentifiedGender,
       'religion': instance.religion,
       'occupation': instance.occupation,

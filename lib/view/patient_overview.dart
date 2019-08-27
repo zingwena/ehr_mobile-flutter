@@ -250,7 +250,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: '20/01/1988'),
+                                                text: _patient.birthDate.toString()),
                                             decoration: InputDecoration(
                                               labelText: 'Date Of Birth',
                                               border: OutlineInputBorder(),
@@ -380,6 +380,7 @@ class OverviewState extends State<Overview> {
                                             controller: TextEditingController(
 
                                                 text: "Address"),
+
                                             decoration: InputDecoration(
                                               labelText: 'Address',
                                               border: OutlineInputBorder(),

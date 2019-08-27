@@ -4,11 +4,13 @@ import 'package:ehr_mobile/model/education_level.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/model/religion.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 
 import 'package:intl/intl.dart';
 part 'patient.g.dart';
 
 @JsonSerializable()
+@CustomDateTimeConverter()
 class Patient {
   int id;
 
@@ -16,7 +18,7 @@ class Patient {
   String lastName;
   String sex;
   String nationalId;
-
+  DateTime birthDate;
   String selfIdentifiedGender;
   String religion;
   String occupation;
@@ -39,11 +41,10 @@ class Patient {
 
   Map<String, dynamic> toJson() => _$PatientToJson(this);
 
+
   @override
   String toString() {
-
-    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, selfIdentifiedGender: $selfIdentifiedGender, religion: $religion, occupation: $occupation, maritalStatus: $maritalStatus, educationLevel: $educationLevel, address: $address}';
-
+    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religion: $religion, occupation: $occupation, maritalStatus: $maritalStatus, educationLevel: $educationLevel, nationality: $nationality, countryOfBirth: $countryOfBirth, address: $address}';
   }
 
   static List<Patient> fromJsonDecodedMap(List dynamicList) {
