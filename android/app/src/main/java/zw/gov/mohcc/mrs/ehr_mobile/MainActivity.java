@@ -252,6 +252,7 @@ public class MainActivity extends FlutterActivity {
                             PatientQuery patientQuery = new PatientQuery();
                             SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
                             _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                            System.out.println("==============-=-=-=-=-=-==list"+_list);
                             Gson gson = new Gson();
 
 
