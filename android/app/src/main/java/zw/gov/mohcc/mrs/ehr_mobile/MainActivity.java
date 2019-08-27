@@ -29,11 +29,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
@@ -423,8 +425,22 @@ public class MainActivity extends FlutterActivity {
                                     }
                                 }
 
+                        if (methodCall.method.equals("getSample")) {
+
+                            try {
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
+                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                String sampleString = gson.toJson(sample);
+                                System.out.println(" investigation***************"+sample);
+                                result.success(sampleString);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+
+                            }
+                        }
+
                 );
 
     }
@@ -1110,19 +1126,21 @@ public class MainActivity extends FlutterActivity {
     }
 
     public void getInvestigations(Token token, String baseUrl) {
+        System.out.println("in investigation");
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<List<Investigation>> call = service.getInvestigations("Bearer " + token.getId_token());
-        call.enqueue(new Callback<List<Investigation>>() {
+        Call<InvestigationEhr> call = service.getInvestigations("Bearer " + token.getId_token(),"36069471-adee-11e7-b30f-3372a2d8551e");
+        call.enqueue(new Callback<InvestigationEhr>() {
             @Override
-            public void onResponse(Call<List<Investigation>> call, Response<List<Investigation>> response) {
-                saveInvestigations(response.body());
+            public void onResponse(Call<InvestigationEhr> call, Response<InvestigationEhr> response) {
+                if(response.isSuccessful()){
+                    System.out.println("investigation ********"+response.body().toString());
+                }
             }
 
             @Override
-            public void onFailure(Call<List<Investigation>> call, Throwable t) {
+            public void onFailure(Call<InvestigationEhr> call, Throwable t) {
 
-                System.out.println("tttttttttttttttttttttttt" + t);
             }
         });
     }

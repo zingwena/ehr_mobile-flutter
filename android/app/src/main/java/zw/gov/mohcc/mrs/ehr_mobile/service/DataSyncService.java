@@ -4,6 +4,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import retrofit2.http.Path;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 
 
@@ -85,8 +86,8 @@ public interface DataSyncService {
     @GET("samples")
     Call<TerminologyModel> getSamples(@Header("Authorization")String token);
 
-    @GET("investigations")
-    Call<List<Investigation>> getInvestigations(@Header("Authorization")String token);
+    @GET("investigations/{ID}")
+    Call <InvestigationEhr> getInvestigations(@Header("Authorization")String token, @Path("ID")String id);
 
 
 }
