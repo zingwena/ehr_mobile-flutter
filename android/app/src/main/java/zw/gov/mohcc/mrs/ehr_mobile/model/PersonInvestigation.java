@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 public class PersonInvestigation {
     @PrimaryKey(autoGenerate = true)
-    private String personInvestigationId;
+    private int personInvestigationId;
 
     @ColumnInfo(name = "personId")
     private String personId;
@@ -20,26 +20,34 @@ public class PersonInvestigation {
     private String investigationId;
 
     @ColumnInfo(name = "sample")
-    private BaseNameModel sample;
+    private int sampleId;
 
     @ColumnInfo(name = "test")
-    private BaseNameModel test;
+    private String test;
 
     @ColumnInfo(name = "date")
-    private Date date;
+    private String date;
 
     @ColumnInfo(name = "note")
     private  String note;
 
     @ColumnInfo(name = "result")
-    private BaseNameModel result;
+    private String result;
 
-    public String getPersonInvestigationId() {
-        return personInvestigationId;
+
+    public PersonInvestigation(int personInvestigationId, String personId, String investigationId, int sampleId, String test, String date, String note, String result) {
+        this.personInvestigationId = personInvestigationId;
+        this.personId = personId;
+        this.investigationId = investigationId;
+        this.sampleId = sampleId;
+        this.test = test;
+        this.date = date;
+        this.note = note;
+        this.result = result;
     }
 
-    public void setPersonInvestigationId(String personInvestigationId) {
-        this.personInvestigationId = personInvestigationId;
+    public int getPersonInvestigationId() {
+        return personInvestigationId;
     }
 
     public String getPersonId() {
@@ -58,19 +66,31 @@ public class PersonInvestigation {
         this.investigationId = investigationId;
     }
 
-    public BaseNameModel getSample() {
-        return sample;
+    public int getSampleId() {
+        return sampleId;
     }
 
-    public void setSample(BaseNameModel sample) {
-        this.sample = sample;
+    public void setSampleId(int sampleId) {
+        this.sampleId = sampleId;
     }
 
-    public Date getDate() {
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+
+    public void setPersonInvestigationId(int personInvestigationId) {
+        this.personInvestigationId = personInvestigationId;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -82,11 +102,11 @@ public class PersonInvestigation {
         this.note = note;
     }
 
-    public BaseNameModel getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(BaseNameModel result) {
+    public void setResult(String result) {
         this.result = result;
     }
 }

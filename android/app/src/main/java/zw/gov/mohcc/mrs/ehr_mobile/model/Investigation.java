@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import com.android.tools.r8.org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 import static androidx.room.ForeignKey.CASCADE;
@@ -22,7 +24,7 @@ public class Investigation implements Serializable {
     @NonNull
     private String investigationId;
     private String laboratoryTestId;
-    private String sampleId;
+    private int sampleId;
 
     public Investigation() {
     }
@@ -43,11 +45,11 @@ public class Investigation implements Serializable {
         this.laboratoryTestId = laboratoryTestId;
     }
 
-    public String getSampleId() {
+    public int getSampleId() {
         return sampleId;
     }
 
-    public void setSampleId(String sampleId) {
+    public void setSampleId(int sampleId) {
         this.sampleId = sampleId;
     }
 }
