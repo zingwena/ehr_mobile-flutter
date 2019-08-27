@@ -10,6 +10,7 @@ import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
 import 'package:ehr_mobile/view/patient_address.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 
 import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
@@ -38,7 +39,26 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   List<String> _list;
   DateTime birthDate;
-  String lastName, firstName,nationalId, religion, country,occupation,educationLevel,nationality,maritalStatus;
+  Patient registeredPatient;
+  String lastName,  firstName,nationalId, religion, country,occupation,educationLevel,nationality,maritalStatus;
+  String _dropdownError="Select Country of birth";
+  String _maritalStatusError="Select Marital status";
+  String _nationalityError="Select Nationality";
+  String _educationLevelError="Select Education Level";
+  String _religionError="Select Religion";
+  String _selfIdentifiedGenderError="Select Self Identified gender";
+  String _occupationError="Select Occupation";
+
+  bool occupationIsValid=false;
+  bool countryIsValid=false;
+  bool maritalStatusIsValid=false;
+  bool nationalityIsValid=false;
+  bool educationLevelIsValid=false;
+  bool religionIsValid=false;
+  bool selfIdentifiedGenderIsValid=false;
+
+  bool _formValid=false;
+  bool showError=false;
   List _religions= List();
   List<Religion> _religionListDropdown= List();
 
@@ -70,7 +90,7 @@ class _EditDemographicsState extends State<EditDemographics> {
       _dropDownMenuItemsCountry;
 
   String _currentGender,
-      _currentSiGender = 'Self Identified Gender',
+      _currentSiGender,
       _currentMaritalStatus,
       _currentEducationLevel,
       _currentOccupation,
@@ -80,7 +100,6 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   List _genderList = ["", "Male", "Female", "Other"];
   List _genderListIdentified = [
-    "Self Identified Gender",
     "MALE",
     "FEMALE",
     "OTHER",
@@ -103,7 +122,6 @@ class _EditDemographicsState extends State<EditDemographics> {
     firstName = widget.firstName;
     lastName = widget.lastName;
     birthDate = widget.birthDate;
-    _currentSiGender = _dropDownMenuItemsIdentified[0].value;
     super.initState();
   }
 
@@ -257,6 +275,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                       child: DropdownButton(
                         icon: Icon(Icons.keyboard_arrow_down),
+                        hint:Text("Self Identified Gender"),
                         iconEnabledColor: Colors.black,
                         value: _currentSiGender,
                         items: _dropDownMenuItemsIdentified,
@@ -271,6 +290,12 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
+                !showError
+                    ? SizedBox.shrink()
+                    : Text(
+                  _selfIdentifiedGenderError ?? "",
+                  style: TextStyle(color: Colors.red),
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -290,6 +315,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                       child: DropdownButton(
                         icon: Icon(Icons.keyboard_arrow_down),
+                        hint: Text("Marital Status"),
                         iconEnabledColor: Colors.black,
                         value: _currentMaritalStatus,
                         items: _dropDownMenuItemsMaritalStatus,
@@ -304,6 +330,12 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
+                !showError
+                    ? SizedBox.shrink()
+                    : Text(
+                  _maritalStatusError ?? "",
+                  style: TextStyle(color: Colors.red),
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -323,6 +355,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                       child: DropdownButton(
                         icon: Icon(Icons.keyboard_arrow_down),
+                        hint: Text("Education Level"),
                         iconEnabledColor: Colors.black,
                         value: _currentEducationLevel,
                         items: _dropDownMenuItemsEducationLevel,
@@ -337,6 +370,12 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
+                !showError
+                    ? SizedBox.shrink()
+                    : Text(
+                  _educationLevelError ?? "",
+                  style: TextStyle(color: Colors.red),
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -356,6 +395,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                       child: DropdownButton(
                         icon: Icon(Icons.keyboard_arrow_down),
+                        hint: Text("Occupation"),
                         iconEnabledColor: Colors.black,
                         value: _currentOccupation,
                         items: _dropDownMenuItemsOccupation,
@@ -370,6 +410,12 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
+                !showError
+                    ? SizedBox.shrink()
+                    : Text(
+                  _occupationError ?? "",
+                  style: TextStyle(color: Colors.red),
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -389,6 +435,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                       child: DropdownButton(
                         icon: Icon(Icons.keyboard_arrow_down),
+                        hint: Text("Religion"),
                         iconEnabledColor: Colors.black,
                         value: _currentReligion,
                         items: _dropDownMenuItemsReligion,
@@ -403,6 +450,12 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
+                !showError
+                    ? SizedBox.shrink()
+                    : Text(
+                  _religionError ?? "",
+                  style: TextStyle(color: Colors.red),
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -422,6 +475,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                       child: DropdownButton(
                         icon: Icon(Icons.keyboard_arrow_down),
+                        hint: Text("Nationality"),
                         iconEnabledColor: Colors.black,
                         value: _currentNationality,
                         items: _dropDownMenuItemsNationality,
@@ -436,6 +490,12 @@ class _EditDemographicsState extends State<EditDemographics> {
                     onPressed: () {},
                   ),
                 ),
+                !showError
+                    ? SizedBox.shrink()
+                    : Text(
+                  _nationalityError ?? "",
+                  style: TextStyle(color: Colors.red),
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -455,6 +515,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                       child: DropdownButton(
                         icon: Icon(Icons.keyboard_arrow_down),
+                        hint: Text("Country of Birth"),
                         iconEnabledColor: Colors.black,
                         value: _currentCountry,
                         items: _dropDownMenuItemsCountry,
@@ -468,6 +529,12 @@ class _EditDemographicsState extends State<EditDemographics> {
                     ),
                     onPressed: () {},
                   ),
+                ),
+                !showError
+                    ? SizedBox.shrink()
+                    : Text(
+                  _dropdownError ?? "",
+                  style: TextStyle(color: Colors.red),
                 ),
                 SizedBox(
                   height: 30.0,
@@ -487,8 +554,20 @@ class _EditDemographicsState extends State<EditDemographics> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
+                        if (countryIsValid && maritalStatusIsValid && educationLevelIsValid
+                            && religionIsValid && selfIdentifiedGenderIsValid
+                            && nationalityIsValid && occupationIsValid ) {
+                          setState(() {
+                            _formValid = true;
+                          });
+                        }
+                        else{
+                          setState(() {
+                            showError= true;
+                          });
+                        }
 
-                        if (_formKey.currentState.validate()) {
+                        if (_formValid) {
                           _formKey.currentState.save();
                           Patient patient = Patient.basic(
                               firstName,
@@ -524,7 +603,20 @@ class _EditDemographicsState extends State<EditDemographics> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () async{
-                            if (_formKey.currentState.validate()) {
+                            if (countryIsValid && maritalStatusIsValid && educationLevelIsValid
+                                && religionIsValid && selfIdentifiedGenderIsValid
+                                && nationalityIsValid && occupationIsValid ) {
+                              setState(() {
+                                _formValid = true;
+                              });
+                            }
+                            else{
+                              setState(() {
+                                showError= true;
+                              });
+                            }
+
+                              if (_formValid) {
                               _formKey.currentState.save();
                               Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,_currentReligion,_currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
 
@@ -532,7 +624,12 @@ class _EditDemographicsState extends State<EditDemographics> {
 //                                  builder: (context) =>
 //                                      (patient));
 
-                              await registerPatient(patient);
+                              await registerPatient(patient).then((value){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Overview(registeredPatient)));
+                                });
 
 
                             }
@@ -569,7 +666,6 @@ class _EditDemographicsState extends State<EditDemographics> {
         });
 
         _dropDownMenuItemsReligion = getDropDownMenuItemsReligion();
-        _currentReligion = _dropDownMenuItemsReligion[0].value;
 
         country=countries;
         _countries= jsonDecode(country);
@@ -578,7 +674,6 @@ class _EditDemographicsState extends State<EditDemographics> {
           _countryList.add(e);
         });
         _dropDownMenuItemsCountry = getDropDownMenuItemsCountry();
-        _currentCountry = _dropDownMenuItemsCountry[0].value;
 
       });
 
@@ -589,7 +684,6 @@ class _EditDemographicsState extends State<EditDemographics> {
         _occupationList.add(e);
       });
       _dropDownMenuItemsOccupation = getDropDownMenuItemsOccupation();
-//      _currentOccupation = _dropDownMenuItemsOccupation[0].value;
 
 
       maritalStatus=maritalStates;
@@ -600,7 +694,6 @@ class _EditDemographicsState extends State<EditDemographics> {
       });
       _dropDownMenuItemsMaritalStatus =
           getDropDownMenuItemsIdentifiedMaritalStatus();
-      _currentMaritalStatus = _dropDownMenuItemsMaritalStatus[0].value;
 
       nationality=nationalities;
       _nationalities=jsonDecode(nationality);
@@ -609,7 +702,6 @@ class _EditDemographicsState extends State<EditDemographics> {
         _nationalityList.add(e);
       });
       _dropDownMenuItemsNationality = getDropDownMenuItemsNationality();
-      _currentNationality = _dropDownMenuItemsNationality[0].value;
 
       educationLevel=educationLevels;
       _educationLevels= jsonDecode(educationLevel);
@@ -619,7 +711,6 @@ class _EditDemographicsState extends State<EditDemographics> {
       });
       _dropDownMenuItemsEducationLevel =
           getDropDownMenuItemsIdentifiedEducationLevel();
-      _currentEducationLevel = _dropDownMenuItemsEducationLevel[0].value;
 
     }
     catch(e){
@@ -671,50 +762,73 @@ class _EditDemographicsState extends State<EditDemographics> {
   void changedDropDownItemSi(String selectedGenderIdentified) {
     setState(() {
       _currentSiGender = selectedGenderIdentified;
+      selfIdentifiedGenderIsValid=!selfIdentifiedGenderIsValid;
+      _selfIdentifiedGenderError=null;
     });
   }
 
   void changedDropDownItemMaritalStatus(String selectedMaritalStatus) {
     setState(() {
       _currentMaritalStatus = selectedMaritalStatus;
+      maritalStatusIsValid=!maritalStatusIsValid;
+      _maritalStatusError=null;
     });
   }
 
   void changedDropDownItemEducationLevel(String selectedEducationLevel) {
     setState(() {
       _currentEducationLevel = selectedEducationLevel;
+      educationLevelIsValid=!educationLevelIsValid;
+      _educationLevelError=null;
     });
   }
 
   void changedDropDownItemOccupation(String selectedOccupation) {
     setState(() {
       _currentOccupation = selectedOccupation;
+      occupationIsValid=!occupationIsValid;
+      _occupationError=null;
     });
   }
 
   void changedDropDownItemReligion(String selectedReligion) {
     setState(() {
       _currentReligion = selectedReligion;
+      religionIsValid=!religionIsValid;
+      _religionError=null;
     });
   }
 
   void changedDropDownItemNationality(String selectedNationality) {
     setState(() {
       _currentNationality = selectedNationality;
+      nationalityIsValid=!nationalityIsValid;
+      _nationalityError=null;
     });
   }
 
   void changedDropDownItemCountry(String selectedCountry) {
-    setState(() {
-      _currentCountry = selectedCountry;
-    });
+          if(selectedCountry!=null) {
+            setState(() {
+              _currentCountry = selectedCountry;
+              _dropdownError = null;
+              countryIsValid = !countryIsValid;
+            });
+          }
   }
 
   Future<void> registerPatient(Patient patient)async{
     int response;
+    String patientResponse;
     try {
       String jsonPatient = jsonEncode(patient);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
+
+      patientResponse= await addPatient.invokeMethod("getPatientById", response);
+
+      setState(() {
+        registeredPatient = Patient.fromJson(jsonDecode(patientResponse));
+      });
       print('========================= $response');
     }
     catch(e){
