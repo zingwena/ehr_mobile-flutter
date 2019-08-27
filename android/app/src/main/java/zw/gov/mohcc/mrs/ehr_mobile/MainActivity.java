@@ -27,6 +27,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
@@ -405,15 +406,26 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 PostTest postTest = gson.fromJson(arguments, PostTest.class);
 
-                                ehrMobileDatabase.postTestDao().createPostTest(postTest);
-                                System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
+                                        ehrMobileDatabase.postTestDao().createPostTest(postTest);
+                                        System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
+                                if (methodCall.method.equals("saveHtsRegistration")) {
+                                    try {
+                                        HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
+
+                                        ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                                        System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+                                    } catch (Exception e) {
+                                        System.out.println("something went wrong " + e.getMessage());
+                                    }
+                                }
+
                             }
                         }
-                    }
-                }
-        );
+                );
 
     }
 
