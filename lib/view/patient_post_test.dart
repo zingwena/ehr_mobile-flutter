@@ -5,6 +5,8 @@ import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/model/reasonForNotIssuingResult.dart';
 import 'package:flutter/material.dart';
 
+import 'package:intl/intl.dart';
+
 import 'package:flutter/services.dart';
 
 
@@ -19,7 +21,13 @@ class _PatientPostTest extends State<PatientPostTest> {
   static const platform = MethodChannel('example.channel.dev/people');
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+
+
   final _formKey = GlobalKey<FormState>();
+
+  var selectedDate;
+  DateTime date;
+
   PostTest postTest;
   List<ReasonForNotIssuingResult> _reasonForNotIssuingResultList=List();
   bool _resultReceived=false;
@@ -29,16 +37,36 @@ class _PatientPostTest extends State<PatientPostTest> {
 
 
 
+
   @override
   void initState() {
+
+    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    date = DateTime.now();
+
+
   getDropDrowns();
 
   print('reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
 
 
 
-
     super.initState();
+
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+
+        firstDate: DateTime(1900, 8),
+
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+      });
   }
 
   Future<void> insertPostTest(PostTest postTest) async {
@@ -218,9 +246,43 @@ class _PatientPostTest extends State<PatientPostTest> {
                     ],
                   ),
 
-
                   SizedBox(
                     height: 10.0,
+                  ),
+
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: TextFormField(
+                              controller:
+
+                              TextEditingController(text: selectedDate),
+
+                              validator: (value) {
+                                return value.isEmpty ? 'Enter some text' : null;
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Date Post Test Counselled',
+                                  border: OutlineInputBorder()),
+
+                            ),
+                          ),
+                          width: 100,
+                        ),
+                      ),
+                      IconButton(
+                          icon: Icon(Icons.calendar_today),
+                          color: Colors.blue,
+                          onPressed: () {
+                            _selectDate(context);
+                          })
+                    ],
+                  ),
+                  SizedBox(
+                    height: 35.0,
                   ),
 
 
