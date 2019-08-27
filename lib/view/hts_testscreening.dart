@@ -24,6 +24,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String testKit = "";
   String result = "";
   String _identifier;
+  String sample="";
   List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
   List _identifierList = [
     "Select Identifier",
@@ -40,7 +41,13 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     date = DateTime.now();
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
-    getPersonInvestigation();
+
+    getPersonInvestigation().then(
+      (response)=>{
+        sample=response
+        
+      }
+    );
     super.initState();
   }
 
@@ -56,18 +63,13 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       });
   }
 
-  Future<void> getPersonInvestigation() async {
-
-
+  Future<String> getPersonInvestigation() async {
     try {
-
       String sample = await htsChannel.invokeMethod('getSample');
       print("*********sample from android"+sample.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
-
-
   }
 
   void _handleTestKitChange(int value) {
@@ -167,7 +169,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              "Blood",
+                                             sample,
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,

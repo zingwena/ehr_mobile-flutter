@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../login_screen.dart';
 
 
@@ -22,6 +23,8 @@ class _HtsTestingState extends State<HtsTesting> {
   String testDate;
   List<DropdownMenuItem<String>> _sampleDropdownMenuItem;
   String _currentSample;
+    static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+
   List _sampleList = [
     "Blood",
     "Oral Fluid",

@@ -67,24 +67,10 @@ public class HtsTest {
         String test="HIV";
         InvestigationEhr investigation=new InvestigationEhr(investigationId,sample,test);
 
-       HtsTestProcedure htsTestProcedure=new HtsTestProcedure(investigation);
-
-      int count= htsTestProcedure.getTestCount();
-
-       Assert.assertEquals(0,count);
-    }
-
-
-    public void getInitialTestCount(){
-        String sample="Blood";
-        String investigationId=" ee7d91fc-b27f-11e8-b121-c48e8faf029b";
-        String test="HIV";
-        InvestigationEhr investigation=new InvestigationEhr(investigationId,sample,test);
-
         HtsTestProcedure htsTestProcedure=new HtsTestProcedure(investigation);
-        htsTestProcedure.getTestKits(int count);
-
-        Assert.assertEquals(0,count);
+//        htsTestProcedure.getTestKits(count);
+//
+//        Assert.assertEquals(0,count);
     }
     @Test
     public void getLabTestId() throws NullPointerException {
