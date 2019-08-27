@@ -60,19 +60,12 @@ public class MainActivity extends FlutterActivity {
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
     final static String HTSCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/htsChannel";
-
     final static String PATIENTCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
-
-
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
-
     private final static String VITALS_CHANNEL = "ehr_mobile.channel/vitals";
     public Token token;
-
-
     public String url, username, password;
     EhrMobileDatabase ehrMobileDatabase;
-    int statusCode;
     List<User> userList;
     Visit visit;
 
@@ -86,48 +79,45 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
 
-        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
-            @Override
-            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler((methodCall, result) -> {
 
-                Gson gson = new Gson();
-                if (methodCall.method.equals("registerPatient")) {
-                    String args = methodCall.arguments();
-                    String dob;
-                    String[] dateOfBirth;
+            Gson gson = new Gson();
+            if (methodCall.method.equals("registerPatient")) {
+                String args = methodCall.arguments();
+                String dob;
+                String[] dateOfBirth;
 
-                    System.out.println(args);
-                    PatientDto patientDto = gson.fromJson(args, PatientDto.class);
+                System.out.println(args);
+                PatientDto patientDto = gson.fromJson(args, PatientDto.class);
 //                    dateOfBirth = patientDto.getBirthDate().split("T");
 //                    dob = dateOfBirth[0];
-                    System.out.println("==============================PatientDTO " + patientDto.getNationalId());
-                    Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
+                System.out.println("==============================PatientDTO " + patientDto.getNationalId());
+                Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
-                    patient.setNationalId(patientDto.getNationalId());
-                    patient.setReligionId(patientDto.getReligion());
-                    patient.setMaritalStatusId(patientDto.getMaritalStatus());
-                    patient.setEducationLevelId(patientDto.getEducationLevel());
-                    patient.setNationalityId(patientDto.getNationality());
-                    patient.setCountryId(patientDto.getCountryOfBirth());
-                    patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
-                    patient.setAddress(patientDto.getAddress());
+                patient.setNationalId(patientDto.getNationalId());
+                patient.setReligionId(patientDto.getReligion());
+                patient.setMaritalStatusId(patientDto.getMaritalStatus());
+                patient.setEducationLevelId(patientDto.getEducationLevel());
+                patient.setNationalityId(patientDto.getNationality());
+                patient.setCountryId(patientDto.getCountryOfBirth());
+                patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
+                patient.setAddress(patientDto.getAddress());
 
 //                    patient.setBirthDate(Date);
-                    int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
-                    result.success(id);
+                int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
+                result.success(id);
 
 
-                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
-                }
-                if (methodCall.method.equals("getPatientById")) {
-                    int ags = methodCall.arguments();
-                    Patient patient = ehrMobileDatabase.patientDao().findPatientById(ags);
-                    String response = gson.toJson(patient);
-                    result.success(response);
-                }
-
-
+                System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
             }
+            if (methodCall.method.equals("getPatientById")) {
+                int ags = methodCall.arguments();
+                Patient patient = ehrMobileDatabase.patientDao().findPatientById(ags);
+                String response = gson.toJson(patient);
+                result.success(response);
+            }
+
+
         });
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler((methodCall, result) -> {
@@ -236,105 +226,97 @@ public class MainActivity extends FlutterActivity {
                 });
 
 
+        new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler((call, result1) -> {
+            final String arguments = call.arguments();
+            if (call.method.equals("searchPatient")) {
+                List<Patient> _list;
 
-        new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
-            @Override
-            public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
-                final String arguments = call.arguments();
-                if (call.method.equals("searchPatient")) {
-                    List<Patient> _list;
-
-                    String searchItem = arguments;
-                    PatientQuery patientQuery = new PatientQuery();
-                    SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
-                    _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
-                    Gson gson = new Gson();
+                String searchItem = arguments;
+                PatientQuery patientQuery = new PatientQuery();
+                SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
+                _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                Gson gson = new Gson();
 
 
-                    result1.success(gson.toJson(_list));
-                }
+                result1.success(gson.toJson(_list));
             }
-
         });
 
-        new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
-            @Override
-            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+        new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler((methodCall, result) -> {
 
-                if (methodCall.method.equals("visit")) {
-                    final int patientId = methodCall.arguments();
-                    createVisit(patientId);
-                    System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
+            if (methodCall.method.equals("visit")) {
+                final int patientId = methodCall.arguments();
+                createVisit(patientId);
+                System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
+
+            } else {
+                final String arguments = methodCall.arguments();
+
+                Gson gson = new Gson();
+                if (methodCall.method.equals("bloodPressure")) {
+                    BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
+                    if (bloodPressure.getVisitId() == 0) {
+                        bloodPressure.setVisitId(visit.getVisitId());
+                    }
+                    ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
+                    System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
+
+
+                } else if (methodCall.method.equals("temperature")) {
+
+                    Temperature temperature = gson.fromJson(arguments, Temperature.class);
+
+                    if (temperature.getVisitId() == 0) {
+                        temperature.setVisitId(visit.getVisitId());
+                    }
+                    ehrMobileDatabase.temperatureDao().insert(temperature);
+                    System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
+
+
+                } else if (methodCall.method.equals("respiratoryRate")) {
+
+                    RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
+
+                    if (respiratoryRate.getVisitId() == 0) {
+                        respiratoryRate.setVisitId(visit.getVisitId());
+                    }
+                    ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
+                    System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
+
+
+                } else if (methodCall.method.equals("height")) {
+
+                    Height height = gson.fromJson(arguments, Height.class);
+
+                    if (height.getVisitId() == 0) {
+                        height.setVisitId(visit.getVisitId());
+                    }
+                    ehrMobileDatabase.heightDao().insert(height);
+                    System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
+
+
+                } else if (methodCall.method.equals("weight")) {
+
+                    Weight weight = gson.fromJson(arguments, Weight.class);
+                    if (weight.getVisitId() == 0) {
+                        weight.setVisitId(visit.getVisitId());
+                    }
+                    ehrMobileDatabase.weightDao().insert(weight);
+
+
+                } else if (methodCall.method.equals("pulse")) {
+
+                    Pulse pulse = gson.fromJson(arguments, Pulse.class);
+                    if (pulse.getVisitId() == 0) {
+                        pulse.setVisitId(visit.getVisitId());
+                        System.out.println("=-=-=-=pulse" + pulse.getVisitId());
+                    }
+                    ehrMobileDatabase.pulseDao().insert(pulse);
+                    System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
+
 
                 } else {
-                    final String arguments = methodCall.arguments();
-
-                    Gson gson = new Gson();
-                    if (methodCall.method.equals("bloodPressure")) {
-                        BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                        if (bloodPressure.getVisitId() == 0) {
-                            bloodPressure.setVisitId(visit.getVisitId());
-                        }
-                        ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
-                        System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
-
-
-                    } else if (methodCall.method.equals("temperature")) {
-
-                        Temperature temperature = gson.fromJson(arguments, Temperature.class);
-
-                        if (temperature.getVisitId() == 0) {
-                            temperature.setVisitId(visit.getVisitId());
-                        }
-                        ehrMobileDatabase.temperatureDao().insert(temperature);
-                        System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
-
-
-                    } else if (methodCall.method.equals("respiratoryRate")) {
-
-                        RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
-
-                        if (respiratoryRate.getVisitId() == 0) {
-                            respiratoryRate.setVisitId(visit.getVisitId());
-                        }
-                        ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
-                        System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
-
-
-                    } else if (methodCall.method.equals("height")) {
-
-                        Height height = gson.fromJson(arguments, Height.class);
-
-                        if (height.getVisitId() == 0) {
-                            height.setVisitId(visit.getVisitId());
-                        }
-                        ehrMobileDatabase.heightDao().insert(height);
-                        System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
-
-
-                    } else if (methodCall.method.equals("weight")) {
-
-                        Weight weight = gson.fromJson(arguments, Weight.class);
-                        if (weight.getVisitId() == 0) {
-                            weight.setVisitId(visit.getVisitId());
-                        }
-                        ehrMobileDatabase.weightDao().insert(weight);
-
-
-                    } else if (methodCall.method.equals("pulse")) {
-
-                        Pulse pulse = gson.fromJson(arguments, Pulse.class);
-                        if (pulse.getVisitId() == 0) {
-                            pulse.setVisitId(visit.getVisitId());
-                            System.out.println("=-=-=-=pulse" + pulse.getVisitId());
-                        }
-                        ehrMobileDatabase.pulseDao().insert(pulse);
-                        System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
-
-
-                    } else {
-                        result.notImplemented();
-                    }
+                    result.notImplemented();
                 }
             }
         });
@@ -411,9 +393,6 @@ public class MainActivity extends FlutterActivity {
         );
 
     }
-
-
-
 
 
     private void pullData(Token token, String url) {
