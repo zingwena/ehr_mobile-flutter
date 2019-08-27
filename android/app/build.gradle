@@ -37,6 +37,14 @@ android {
         javaMaxHeapSize "4g" // 2g should be also OK
         incremental true
     }
+
+
+    configurations {
+        androidTestImplementation.exclude module: 'guava'
+        androidTestImplementation.exclude module: 'error_prone_annotations'
+        androidTestImplementation.exclude module: 'checker-qual'
+    }
+
     testOptions {
         unitTests.returnDefaultValues = true
     }
@@ -149,11 +157,12 @@ dependencies {
 
     // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.ext:truth:1.2.0'
-    androidTestImplementation 'com.google.truth:truth:0.42'
+  //  androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+//    androidTestImplementation 'com.google.truth:truth:0.42'
     androidTestImplementation 'androidx.test:core:1.2.1-alpha02'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02'
     androidTestImplementation 'androidx.test:core:1.2.1-alpha02'
+
 
     // Espresso dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
