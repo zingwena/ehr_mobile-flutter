@@ -1,4 +1,5 @@
 import 'package:ehr_mobile/view/data_syncronization.dart';
+import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:flutter/material.dart';
 
 import 'login_screen.dart';
@@ -101,7 +102,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => LoginScreen()),),
+                      builder: (context) => HtsScreeningTest()),),
               ),
             ),
 

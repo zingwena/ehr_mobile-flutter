@@ -3,22 +3,22 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 public class InvestigationEhr {
 
-    String InvestigationId;
+    String investigationId;
     String sample;
     String test;
 
     public InvestigationEhr(String investigationId, String sample, String test) {
-        InvestigationId = investigationId;
+        this.investigationId = investigationId;
         this.sample = sample;
         this.test = test;
     }
 
     public String getInvestigationId() {
-        return InvestigationId;
+        return investigationId;
     }
 
     public void setInvestigationId(String investigationId) {
-        InvestigationId = investigationId;
+        this.investigationId = investigationId;
     }
 
     public String getSample() {
@@ -36,14 +36,5 @@ public class InvestigationEhr {
 
     public void setTest(String test) {
         this.test = test;
-    }
-
-    @Override
-    public String toString() {
-        return "InvestigationEhr{" +
-                "InvestigationId='" + InvestigationId + '\'' +
-                ", sample='" + sample + '\'' +
-                ", test='" + test + '\'' +
-                '}';
     }
 }

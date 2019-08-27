@@ -36,13 +36,13 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
-  void initState() {
+  void initState() async {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
 
-    getPersonInvestigation().then(
+    await getPersonInvestigation().then(
       (response)=>{
         sample=response
         
