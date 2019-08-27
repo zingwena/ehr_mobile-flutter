@@ -12,6 +12,7 @@ Patient _$PatientFromJson(Map<String, dynamic> json) {
     json['firstName'] as String,
     json['lastName'] as String,
     json['sex'] as String,
+    const CustomDateTimeConverter().fromJson(json['birthDate'] as String),
     json['nationalId'] as String,
     json['selfIdentifiedGender'] as String,
     json['religion'] as String,
@@ -22,8 +23,6 @@ Patient _$PatientFromJson(Map<String, dynamic> json) {
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>),
   )
-    ..birthDate =
-        const CustomDateTimeConverter().fromJson(json['birthDate'] as String)
     ..nationality = json['nationality'] as String
     ..countryOfBirth = json['countryOfBirth'] as String;
 }
