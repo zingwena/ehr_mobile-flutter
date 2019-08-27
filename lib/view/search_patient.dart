@@ -94,7 +94,7 @@ class _SearchPatientState extends State<SearchPatient> {
                                 nullHandler(patient.lastName)),
                             leading: Text(nullHandler(patient.sex)),
                             subtitle:
-                                Text(nullHandler("date")),
+                                Text(nullHandler(patient.birthDate.toString())),
                             trailing: Text(nullHandler(patient.nationalId)),
                             onTap: () {
                               Navigator.push(

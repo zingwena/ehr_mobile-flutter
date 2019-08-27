@@ -75,7 +75,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
  * Room persistence Library will help to create the cache
  */
 
-@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class, Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class, PostTest.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class, Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class, HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class, Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class, PostTest.class}, version = 2, exportSchema = false)
 @TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, NewPregLactConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {

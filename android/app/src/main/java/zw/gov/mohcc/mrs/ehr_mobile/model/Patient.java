@@ -13,6 +13,7 @@ import androidx.room.TypeConverters;
 import java.time.LocalDate;
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
@@ -206,6 +207,31 @@ public class Patient {
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
+
+//    public PatientDto toPatientDto(){
+//        PatientDto patientDto = new PatientDto();
+//        patientDto.setId(this.id);
+//        patientDto.setFirstName(this.firstName);
+//        patientDto.setLastName(this.lastName);
+//        patientDto.setPersonId(this.personId);
+//        patientDto.setNationalId(this.nationalId);
+//        patientDto.setReligion(this.religionId);
+//        patientDto.setOccupation(this.occupationId);
+//        patientDto.setMaritalStatus(this.maritalStatusId);
+//        patientDto.setEducationLevel(this.educationLevelId);
+//        patientDto.setBirthDate();
+//        @TypeConverters(DateConverter.class)
+//        private Date birthDate;
+//        private String nationalityId;
+//        private String countryId;
+//        @Embedded
+//        private Address address;
+//        @TypeConverters(SelfIdentifiedGenderConverter.class)
+//        public SelfIdentifiedGender selfIdentifiedGender;
+//        @TypeConverters(SelfIdentifiedGenderConverter.class)
+//        public Gender sex;
+//
+//    }
 
     @Override
     public String toString() {
