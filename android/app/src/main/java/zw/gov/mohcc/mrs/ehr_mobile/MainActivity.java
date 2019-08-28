@@ -6,9 +6,12 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodChannel;
@@ -29,6 +32,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
@@ -70,6 +75,7 @@ public class MainActivity extends FlutterActivity {
     List<User> userList;
     Visit visit;
     InvestigationEhr investigationEhr;
+    public Long visitIdPatient;
 
 
     @Override
@@ -323,6 +329,7 @@ public class MainActivity extends FlutterActivity {
             }
         });
 
+        /*   ===============================================HTS TESTING  =============================================================== */
         new MethodChannel(getFlutterView(), HTSCHANNEL).setMethodCallHandler(
                 (methodCall, result) -> {
                     String arguments = methodCall.arguments();
@@ -381,7 +388,14 @@ public class MainActivity extends FlutterActivity {
                         }
                     }
 
+                    if(methodCall.method.equals("saveResult")){
+                        try {
+                            // get variables
+                            LaboratoryInvestigationTest laboratoryInvestigationTest=new LaboratoryInvestigationTest();
 
+
+                        }catch (Exception e){}
+                    }
                     if (methodCall.method.equals("savePostTest")) {
                         try {
                             PostTest postTest = gson.fromJson(arguments, PostTest.class);
@@ -411,6 +425,25 @@ public class MainActivity extends FlutterActivity {
                             String investigationString = gson.toJson(investigationEhr);
                             System.out.println(" investigation***************" + investigationString);
                             result.success(investigationString);
+                        } catch (Exception e) {
+                            System.out.println("something went wrong " + e.getMessage());
+                        }
+                    }
+                    if (methodCall.method.equals("getLabInvestigation")) {
+
+                        try {
+
+                            LaboratoryInvestigation laboratoryInvestigation = getLabInvestigation();
+                            int labId = laboratoryInvestigation.getId();
+                            System.out.println(" investigation***************" +
+                                    labId);
+                            Map<String, Integer> map = new HashMap<>();
+                            System.out.println("visitIdPatient = " + visitIdPatient);
+                            System.out.println("labId = " + labId);
+                            map.put("visitPatientId", 1);
+                            map.put("labId", labId);
+                            String mapData = gson.toJson(map);
+                            result.success(mapData);
                         } catch (Exception e) {
                             System.out.println("something went wrong " + e.getMessage());
                         }
@@ -617,6 +650,13 @@ public class MainActivity extends FlutterActivity {
 
     }
 
+    public LaboratoryInvestigation getLabInvestigation() {
+        LocalDate now = LocalDate.now();
+        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(1, 1, "1", LocalDate.now());
+
+        return laboratoryInvestigation;
+
+    }
 
     public void getTestKits(Token token, String url) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
@@ -1080,7 +1120,8 @@ public class MainActivity extends FlutterActivity {
         System.out.println("==========================-=-=-=-=-=" + visit1.toString());
         if (visit1 == null) {
             visit = new Visit(patientId);
-            ehrMobileDatabase.visitDao().insert(visit);
+            visitIdPatient = ehrMobileDatabase.visitDao().insert(visit);
+            System.out.println("visitIdPatient = " + visitIdPatient);
         }
 
 

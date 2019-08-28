@@ -26,7 +26,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   int _testKit = 0;
   int testCount=0;
   List<dynamic>_testKits=[];
-
+  String labId;
   String testKit = "";
   String result = "";
   String _identifier;
@@ -51,6 +51,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
      getPersonInvestigation();
          getTestKitsByCount(testCount);
+         getLabId();
     super.initState();
   }
 
@@ -84,7 +85,27 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     return sample;
   }
 
+  Future<dynamic> getLabId() async {
+    try {
+      Map <String,dynamic> data= json.decode(await htsChannel.invokeMethod('getLabInvestigation')) ;
+      var labId= data["labId"];
+      var visitPatientId= data["visitPatientId"];
+            print("Visit Patient Id : $visitPatientId || Lab Id : $labId"  );
 
+          // setState(() {
+          // this.labId = labIdFromChannel;
+
+          // });
+     
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  
+  }
+
+// void getTestKits(){
+//   _testKits.forEach((f)=>{})
+// }
 Future<dynamic> getTestKitsByCount(int count) async {
     try {
 
@@ -115,22 +136,34 @@ Future<dynamic> getTestKitsByCount(int count) async {
     });
   }
 
-  void _handleResultChange(int value) {
-    setState(() {
+
+
+  void _handleResultChange(int value)  {
+    if(testCount==0)
+    {
+      setState(() {
       _result = value;
 
       switch (_result) {
         case 1:
           result = "Positive";
+          testCount+=1;
+
           break;
+        
         case 2:
           result = "Negative";
+          
+          htsChannel.invokeMapMethod('saveResult',result);
+
           break;
         case 3:
           result = "Inconclusive";
           break;
       }
+
     });
+    }
   }
 
   List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
@@ -145,6 +178,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
 
 Widget _body(List <dynamic> list){
+
+  
 return  ListView(
         children: <Widget>[
           Stack(
@@ -249,8 +284,11 @@ return  ListView(
                                 SizedBox(
                                   height: 16,
                                 ),
-                                Row(
+                                                               
+
+                                 Row(
                                   children: <Widget>[
+                                    
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -462,6 +500,7 @@ return  ListView(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
+                                            
 //                                            onPressed: () => Navigator.push(
 //                                              context,
 //                                              MaterialPageRoute(
@@ -525,6 +564,7 @@ return  ListView(
   @override
   Widget build(BuildContext context) {
     var list=this._testKits ;
+    print("+++++++++++  $list");
     return Scaffold(
       // appBar: AppBar(
       //  backgroundColor: Colors.blue,
