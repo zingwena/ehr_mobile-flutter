@@ -25,5 +25,7 @@ public interface LaboratoryTestDao {
 
     @Query("SELECT * FROM LaboratoryTest WHERE id=:id")
     LaboratoryTest findByLaboratoryTestId(int id);
+    @Query("SELECT * FROM LaboratoryTest ")
+    List<LaboratoryTest>  findAll();
 
 }

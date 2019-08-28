@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
+
 public class InvestigationEhr {
 
     String investigationId;
@@ -27,6 +28,7 @@ public class InvestigationEhr {
     public void setSample(String sample) {
         this.sample = sample;
     }
+
 
     public String getTest() {
         return test;

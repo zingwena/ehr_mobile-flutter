@@ -6,7 +6,6 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import com.android.tools.r8.org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 

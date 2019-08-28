@@ -124,7 +124,7 @@ class _PatientPostTest extends State<PatientPostTest> {
     setState(() {
 
 
-      _reasonForNotIssuingResultList = ReasonForNotIssuingResult.mapFromJson(reasonForNotIssuingResultList);
+      reasonForNotIssuingResultList = ReasonForNotIssuingResult.mapFromJson(reasonForNotIssuingResultList);
 
 
       _dropDownMenuItemsReasonForNotIssuingResult =
