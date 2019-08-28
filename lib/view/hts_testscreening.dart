@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:ehr_mobile/model/investigation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -21,10 +24,12 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   DateTime date;
   int _result = 0;
   int _testKit = 0;
+
   String testKit = "";
   String result = "";
   String _identifier;
-  String sample="";
+  String test;
+  String sample;
   List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
   List _identifierList = [
     "Select Identifier",
@@ -36,18 +41,13 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
-  void initState() async {
+  void initState()  {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
 
-    await getPersonInvestigation().then(
-      (response)=>{
-        sample=response
-        
-      }
-    );
+     getPersonInvestigation();
     super.initState();
   }
 
@@ -63,13 +63,22 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       });
   }
 
-  Future<String> getPersonInvestigation() async {
+  Future<dynamic> getPersonInvestigation() async {
     try {
-      String sample = await htsChannel.invokeMethod('getSample');
-      print("*********sample from android"+sample.toString());
+      Map<String,dynamic> map = json.decode(await htsChannel.invokeMethod('getSample')) ;
+      Investigation investigation = Investigation.fromJson(map)  ;
+            print("********Investigation sample from android "+investigation.sample);
+
+          setState(() {
+          this.sample=investigation.sample;
+          this.test=investigation.test;
+
+          });
+      print("*********sample from android"+map.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
+    return sample;
   }
 
   void _handleTestKitChange(int value) {
@@ -210,7 +219,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              "HIV",
+                                              (test),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
