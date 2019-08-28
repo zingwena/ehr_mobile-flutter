@@ -28,8 +28,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsTestProcedure;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
+import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
@@ -57,10 +60,10 @@ public class HtsTest {
         Retrofit retrofitInstance = RetrofitClient.getRetrofitInstance("http://10.20.101.91:8080" + "/api/");
         DataSyncService dataSyncService = retrofitInstance.create(DataSyncService.class);
         Call<Token> call = dataSyncService.dataSync(login);
+        call.execute();
     }
 
     @Test
-
     public void getInitialTestCount(){
         String sample="Blood";
         String investigationId=" ee7d91fc-b27f-11e8-b121-c48e8faf029b";
@@ -72,7 +75,21 @@ public class HtsTest {
 //
 //        Assert.assertEquals(0,count);
     }
+
+
     @Test
+    public void getTestKits(){
+        List<Patient> patients= db.patientDao().listPatients();
+        Assert.assertEquals(0,patients.size());
+
+    }
+
+    @Test
+    public void assertThatTestKitsAreNotFound(){
+        List<TestKit> testKits= db.testKitDao().findTestKitsByLevel("THIRD");
+        Assert.assertEquals(8,testKits.size());
+
+    }
     public void getLabTestId() throws NullPointerException {
         LaboratoryTestDao laboratoryTestDao = db.laboratoryTestDao();
         List<LaboratoryTest> laboratoryTests=laboratoryTestDao.getLaboratoryTests();

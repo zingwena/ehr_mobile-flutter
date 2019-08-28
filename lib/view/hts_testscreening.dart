@@ -24,6 +24,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   DateTime date;
   int _result = 0;
   int _testKit = 0;
+  int testCount=0;
+  List<dynamic>_testKits=[];
 
   String testKit = "";
   String result = "";
@@ -48,6 +50,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     _identifier = _identifierDropdownMenuItem[0].value;
 
      getPersonInvestigation();
+         getTestKitsByCount(testCount);
     super.initState();
   }
 
@@ -75,6 +78,22 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
           });
       print("*********sample from android"+map.toString());
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    return sample;
+  }
+
+
+Future<dynamic> getTestKitsByCount(int count) async {
+    try {
+
+      List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('getTestKitsByLevel',count.toString()) );
+ 
+       setState(() {
+         _testKits=testKits;
+       });
+      print("*********sample from android"+testKits.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -124,15 +143,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     return items;
   }
 
-  @override
-  Widget build(BuildContext context) {
 
-    return Scaffold(
-      // appBar: AppBar(
-      //  backgroundColor: Colors.blue,
-      //  title: Text('Add Patient'),
-      //  ),
-      body: ListView(
+Widget _body(List <dynamic> list){
+return  ListView(
         children: <Widget>[
           Stack(
             children: <Widget>[
@@ -505,7 +518,25 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
             ],
           ),
         ],
-      ),
+      );
+  
+  
+}
+  @override
+  Widget build(BuildContext context) {
+    var list=this._testKits ;
+    return Scaffold(
+      // appBar: AppBar(
+      //  backgroundColor: Colors.blue,
+      //  title: Text('Add Patient'),
+      //  ),
+    
+      body:_body(list)
     );
   }
+
+
+  
 }
+
+

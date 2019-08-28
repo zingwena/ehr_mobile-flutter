@@ -382,40 +382,77 @@ public class MainActivity extends FlutterActivity {
                     }
 
 
+                    if (methodCall.method.equals("savePostTest")) {
+                        try {
+                            PostTest postTest = gson.fromJson(arguments, PostTest.class);
 
-                        if (methodCall.method.equals("savePostTest")) {
-                            try {
-                                PostTest postTest = gson.fromJson(arguments, PostTest.class);
+                            ehrMobileDatabase.postTestDao().createPostTest(postTest);
+                            System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
+                        } catch (Exception e) {
+                            System.out.println("something went wrong " + e.getMessage());
+                        }
+                    }
+                    if (methodCall.method.equals("saveHtsRegistration")) {
+                        try {
+                            HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 
-                                        ehrMobileDatabase.postTestDao().createPostTest(postTest);
-                                        System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
-                                    }
-                                }
-                                if (methodCall.method.equals("saveHtsRegistration")) {
-                                    try {
-                                        HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
+                            ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                            System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+                        } catch (Exception e) {
+                            System.out.println("something went wrong " + e.getMessage());
+                        }
+                    }
 
-                                        ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-                                        System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-                                    } catch (Exception e) {
-                                        System.out.println("something went wrong " + e.getMessage());
-                                    }
-                                }
+                    if (methodCall.method.equals("getSample")) {
 
-                        if (methodCall.method.equals("getSample")) {
-
-                            try {
+                        try {
 //                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
 //                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                                String investigationString = gson.toJson(investigationEhr);
-                                System.out.println(" investigation***************"+investigationString);
-                                result.success(investigationString);
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
+                            String investigationString = gson.toJson(investigationEhr);
+                            System.out.println(" investigation***************" + investigationString);
+                            result.success(investigationString);
+                        } catch (Exception e) {
+                            System.out.println("something went wrong " + e.getMessage());
                         }
+                    }
+
+                    if (methodCall.method.equals("getTestKitsByLevel")) {
+
+                        try {
+//
+                            String testKits;
+                            int count = Integer.valueOf(arguments);
+                            switch (count) {
+                                case 0: {
+                                    List<TestKit> firstLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("FIRST");
+                                    testKits = gson.toJson(firstLevelTestKits);
+                                    result.success(testKits);
+
+                                }
+                                break;
+
+                                case 1: {
+                                    List<TestKit> secondLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("SECOND");
+                                    testKits = gson.toJson(secondLevelTestKits);
+                                    result.success(testKits);
+
+                                }
+                                break;
+                                case 2: {
+                                    List<TestKit> thirdLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("THIRD");
+                                    testKits = gson.toJson(thirdLevelTestKits);
+                                    result.success(testKits);
+
+                                }
+                                break;
+                                default:
+                                    throw new IllegalStateException("Cannot read" + arguments);
+                            }
+
+                        } catch (Exception e) {
+                            System.out.println("something went wrong " + e.getMessage());
+                        }
+                    }
 
                     if (methodCall.method.equals("saveHtsRegistration")) {
                         try {
@@ -432,8 +469,8 @@ public class MainActivity extends FlutterActivity {
 
                         try {
                             Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
-
-                            InvestigationEhr investigationEhr=new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e","Blood","HIV");
+                            System.out.println("arguments = " + arguments);
+                            InvestigationEhr investigationEhr = new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e", "Blood", "HIV");
                             Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
                             String investigationString = gson.toJson(investigationEhr);
                             System.out.println(" investigation***************" + sample);
@@ -1065,7 +1102,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.purpose_of_testsDao().deletePurpose_Of_Tests();
         ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
         ehrMobileDatabase.userDao().deleteUsers();
-
+        ehrMobileDatabase.testKitDao().deleteTestKits();
         ehrMobileDatabase.investigationDao().deleteInvestigations();
         ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
@@ -1137,8 +1174,8 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<InvestigationEhr> call, Response<InvestigationEhr> response) {
 
-                if(response.isSuccessful()){
-                    System.out.println("investigation ********"+response.body().toString());
+                if (response.isSuccessful()) {
+                    System.out.println("investigation ********" + response.body().toString());
                     investigationEhr = response.body();
 
                 }
