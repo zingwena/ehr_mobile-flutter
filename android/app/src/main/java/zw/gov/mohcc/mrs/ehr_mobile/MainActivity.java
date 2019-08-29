@@ -416,11 +416,24 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("saveLabInvestTest")) {
+                            try {
+                                LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
+
+                                ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
+                                System.out.println("List of LabInvestigations" + ehrMobileDatabase.labInvestTestdao().findAll());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
 
                         if (methodCall.method.equals("saveResult")) {
                             try {
                                 // get variables
+                                Result result1 = gson.fromJson(arguments, Result.class);
+                                System.out.println("HTS RESULT FROM FLUTTER" + result1);
                                 LaboratoryInvestigationTest laboratoryInvestigationTest = new LaboratoryInvestigationTest();
+                                laboratoryInvestigationTest.setResult(result1);
 
 
                             } catch (Exception e) {
