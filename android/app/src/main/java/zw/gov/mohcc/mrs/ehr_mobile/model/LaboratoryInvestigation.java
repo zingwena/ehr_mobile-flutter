@@ -11,7 +11,6 @@ public class LaboratoryInvestigation {
 
     private int id;
 
-
     private int facilityId;
 
     private String personInvestigationId;

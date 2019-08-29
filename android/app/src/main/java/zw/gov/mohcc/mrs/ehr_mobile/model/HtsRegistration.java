@@ -7,17 +7,15 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 @Entity
 public class HtsRegistration {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    @TypeConverters(GenderConverter.class)
-    public HtsType htsType;
+    private HtsType htsType;
     @TypeConverters(DateConverter.class)
-
-    Date patientDate;
+    private Date dateOfHivTest;
+    private String entryPointId;
 
     public int getId() {
         return id;
@@ -26,12 +24,28 @@ public class HtsRegistration {
     public void setId(int id) {
         this.id = id;
     }
-    public Date getPatientDate() {
-        return patientDate;
+
+    public HtsType getHtsType() {
+        return htsType;
     }
 
-    public void setPatientDate(Date patientDate) {
-        this.patientDate = patientDate;
+    public void setHtsType(HtsType htsType) {
+        this.htsType = htsType;
     }
 
+    public Date getDateOfHivTest() {
+        return dateOfHivTest;
+    }
+
+    public void setDateOfHivTest(Date dateOfHivTest) {
+        this.dateOfHivTest = dateOfHivTest;
+    }
+
+    public String getEntryPointId() {
+        return entryPointId;
+    }
+
+    public void setEntryPointId(String entryPointId) {
+        this.entryPointId = entryPointId;
+    }
 }
