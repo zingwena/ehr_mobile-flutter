@@ -189,6 +189,8 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
                         Gson gson = new Gson();
+
+                        final String arguments=methodCall1.arguments();
                         if (methodCall1.method.equals("religionOptions")) {
                             try {
                                 List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
@@ -264,6 +266,18 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+
+                        if (methodCall1.method.equals("saveHtsRegistration")){
+                            try {
+                                HtsRegistration htsRegistration=gson.fromJson(arguments,HtsRegistration.class);
+//                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration()
+                            }
+                            catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
                     }
                 });
         new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {

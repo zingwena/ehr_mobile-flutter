@@ -96,10 +96,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
         Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class,
-        HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
+        HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
+<<<<<<< HEAD
         PostTest.class,HtsRegistration.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, LaboratoryInvestigationTest.class}, version = 20, exportSchema = false)
 
+=======
+
+        PostTest.class,HtsRegistration.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 20, exportSchema = false)
+>>>>>>> bd4ebed332a6db61a7a2ae779e66131069e55bb8
 
 @TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, NewPregLactConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class, HtsTypeConverter.class})
@@ -182,6 +187,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract InvestigationDao investigationDao();
 
     public abstract PersonInvestigationDao personInvestigationDao();
+
 
     public abstract HtsDao htsDao();
     public  abstract ResultDao resultDao();
