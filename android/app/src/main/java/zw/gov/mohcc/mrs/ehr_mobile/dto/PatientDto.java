@@ -1,13 +1,9 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
-import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SelfIdentifiedGender;
 
 public class PatientDto {
@@ -15,29 +11,30 @@ public class PatientDto {
     private int id;
     private String firstName;
     private String lastName;
+    private String personId;
     private Gender sex;
     private String identifier;
     private String nationalId;
-
-    private int age;
-//    private String birthDate;
+    private Date birthDate;
     private SelfIdentifiedGender selfIdentifiedGender;
     private String religion;
     private String occupation;
     private String maritalStatus;
     private String educationLevel;
-    private  String nationality;
+    private String nationality;
     private String countryOfBirth;
-   private Address address;
+    private Address address;
 
-    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, int age, SelfIdentifiedGender selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String nationality, String countryOfBirth, Address address) {
+    public PatientDto() {
+    }
+
+    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, SelfIdentifiedGender selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String nationality, String countryOfBirth, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
         this.identifier = identifier;
         this.nationalId = nationalId;
-        this.age = age;
         this.selfIdentifiedGender = selfIdentifiedGender;
         this.religion = religion;
         this.occupation = occupation;
@@ -112,13 +109,6 @@ public class PatientDto {
         this.nationalId = nationalId;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 
     public SelfIdentifiedGender getSelfIdentifiedGender() {
         return selfIdentifiedGender;
@@ -168,6 +158,22 @@ public class PatientDto {
         this.address = address;
     }
 
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
     @Override
     public String toString() {
         return "PatientDto{" +
@@ -177,7 +183,7 @@ public class PatientDto {
                 ", sex=" + sex +
                 ", identifier='" + identifier + '\'' +
                 ", nationalId='" + nationalId + '\'' +
-                ", age=" + age +
+                ", birthDate=" + birthDate +
                 ", selfIdentifiedGender=" + selfIdentifiedGender +
                 ", religion='" + religion + '\'' +
                 ", occupation='" + occupation + '\'' +

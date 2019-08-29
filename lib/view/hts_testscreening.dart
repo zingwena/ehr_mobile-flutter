@@ -120,6 +120,20 @@ Future<dynamic> getTestKitsByCount(int count) async {
     }
     return sample;
   }
+  Future<dynamic> getResults() async {
+    try {
+
+      String response = await htsChannel.invokeMethod('getResults');
+      print("*********Response"+response);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    return sample;
+  }
+
+
+
+
 
   void _handleTestKitChange(int value) {
     setState(() {
