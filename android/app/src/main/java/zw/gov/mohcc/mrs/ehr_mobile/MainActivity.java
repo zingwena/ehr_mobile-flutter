@@ -483,6 +483,7 @@ public class MainActivity extends FlutterActivity {
 
                             try {
 //
+<<<<<<< HEAD
                                 String testKits;
                                 int count = Integer.valueOf(arguments);
                                 switch (count) {
@@ -510,6 +511,17 @@ public class MainActivity extends FlutterActivity {
                                     break;
                                     default:
                                         throw new IllegalStateException("Cannot read" + arguments);
+=======
+                            String testKits;
+                            int count = Integer.valueOf(arguments);
+                            switch (count) {
+                                case 0: {
+                                    List<TestKit> firstLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("FIRST");
+                                    testKits = gson.toJson(firstLevelTestKits);
+                                    System.out.println("firstLevelTestKits = " + firstLevelTestKits);
+                                    result.success(testKits);
+
+>>>>>>> e40ab8eeb9be190d4103770c57334ed9835e47c6
                                 }
 
                             } catch (Exception e) {
