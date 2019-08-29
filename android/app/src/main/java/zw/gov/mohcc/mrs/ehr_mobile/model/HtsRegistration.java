@@ -16,6 +16,7 @@ public class HtsRegistration {
     @TypeConverters(DateConverter.class)
     private Date dateOfHivTest;
     private String entryPointId;
+    private String visitId;
 
     public int getId() {
         return id;
@@ -47,5 +48,13 @@ public class HtsRegistration {
 
     public void setEntryPointId(String entryPointId) {
         this.entryPointId = entryPointId;
+    }
+
+    public String getVisitId() {
+        return visitId;
+    }
+
+    public void setVisitId(String visitId) {
+        this.visitId = visitId;
     }
 }
