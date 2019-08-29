@@ -101,9 +101,7 @@ public class MainActivity extends FlutterActivity {
 
                     System.out.println(args);
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-//                    dateOfBirth = patientDto.getBirthDate().split("T");
-//                    dob = dateOfBirth[0];
-                    System.out.println("==============================PatientDTO " + patientDto.getNationalId());
+
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
                     patient.setNationalId(patientDto.getNationalId());
@@ -125,6 +123,9 @@ public class MainActivity extends FlutterActivity {
                     patient.setAddress(patientDto.getAddress());
                     patient.setOccupationId(patientDto.getOccupation());
 
+
+                    patient.setBirthDate(patientDto.getBirthDate());
+
                     int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
                     result.success(id);
 
@@ -142,6 +143,25 @@ public class MainActivity extends FlutterActivity {
                     String name = ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
                     result.success(name);
                 }
+
+                if(methodCall.method.equals("getEducationLevel")){
+                    String code=methodCall.arguments();
+                    String name= ehrMobileDatabase.educationLevelDao().findByEducationLevelId(code);
+                    result.success(name);
+                }
+                if(methodCall.method.equals("getOccupation")){
+                    String code=methodCall.arguments();
+                    String name= ehrMobileDatabase.occupationDao().findOccupationsById(code);
+                    result.success(name);
+                }
+                if(methodCall.method.equals("getNationality")){
+                    String code=methodCall.arguments();
+                    String name= ehrMobileDatabase.nationalityDao().selectNationality(code);
+                    result.success(name);
+                }
+
+
+
             }
         });
 
@@ -156,9 +176,11 @@ public class MainActivity extends FlutterActivity {
                     String tokenString = args.get(1).toString();
                     Token token = new Token(tokenString);
 
-                    MainActivity.this.clearTables();
-                    MainActivity.this.pullData(token, url);
-                    MainActivity.this.saveResultstoDB();
+
+                    clearTables();
+                    pullData(token, url);
+                    saveResultstoDB();
+
                 }
 
                 if (methodCall.method.equals("login")) {

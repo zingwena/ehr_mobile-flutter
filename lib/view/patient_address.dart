@@ -185,6 +185,7 @@ class _PatientAddressState extends State<PatientAddress> {
       }
       if(_formIsValid){
         Patient patient = widget.patient;
+
         patient.address = Address(schoolHouse, suburbVillage, _currentTown);
         await registerPatient(patient).then((value) {
           Navigator.push(
