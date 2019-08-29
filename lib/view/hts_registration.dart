@@ -1,14 +1,19 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/entry_point.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 
 
 class Registration extends StatefulWidget {
+
+  int visitId;
+  Registration(this.visitId);
   @override
   State createState() {
+
     return _Registration();
   }
 }
@@ -16,7 +21,8 @@ class Registration extends StatefulWidget {
 class _Registration extends State<Registration> {
   final _formKey = GlobalKey<FormState>();
    static const dataChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
-  String lastName, firstName;
+   static const htsChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  int visitId;
   var selectedDate;
   bool _showError=false;
   bool _entryPointIsValid=false;
@@ -38,6 +44,7 @@ class _Registration extends State<Registration> {
 
   @override
   void initState() {
+    visitId=widget.visitId;
   getFacilities();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
@@ -72,6 +79,7 @@ class _Registration extends State<Registration> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        date=DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
 
@@ -233,7 +241,7 @@ class _Registration extends State<Registration> {
                         "SAVE",
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {
+                      onPressed: () async{
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
                           if (_entryPointIsValid) {
@@ -247,7 +255,8 @@ class _Registration extends State<Registration> {
                             });
                           }
                           if (_formIsValid) {
-                            // write save logic
+                            HtsRegistration htsDetails= HtsRegistration(visitId, htsType, date, _currentEntryPoint);
+                           await  registration(htsDetails);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -264,6 +273,17 @@ class _Registration extends State<Registration> {
       ),
     );
   }
+
+Future<void> registration(HtsRegistration htsRegistration) async{
+    int id;
+    try{
+      id= await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
+      print('---------------------saved file id  $id');
+    }
+    catch(e){
+      print('--------------something went wrong  $e');
+    }
+}
 
   void changedDropDownItemEntryPoint(String selectedEntryPoint) {
     setState(() {

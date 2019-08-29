@@ -18,7 +18,7 @@ class Result{
        return 'Result{code: $code, name: $name}';
     }
 
-    List<Result> fromJsonDecodedMap(List dynamicList) {
+     static List<Result> fromJsonDecodedMap(List dynamicList) {
       List<Result> resultList = [];
 
       if (dynamicList != null) {
