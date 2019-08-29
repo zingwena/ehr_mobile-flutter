@@ -18,6 +18,10 @@ class _Registration extends State<Registration> {
    static const dataChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   String lastName, firstName;
   var selectedDate;
+  bool _showError=false;
+  bool _entryPointIsValid=false;
+  bool _formIsValid=false;
+  String _entryPointError="Select Entry Point";
   DateTime date;
   int _htsType = 0;
   String htsType = "";
@@ -34,8 +38,7 @@ class _Registration extends State<Registration> {
 
   @override
   void initState() {
-    _dropDownMenuItemsEntryPoint =
-        getDropDownMenuItemsIdentifiedEntryPoint();
+  getFacilities();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     super.initState();
@@ -53,7 +56,6 @@ class _Registration extends State<Registration> {
          _entryPointList.add(e);
        });
        _dropDownMenuItemsEntryPoint=getDropDownMenuItemsIdentifiedEntryPoint();
-       _currentEntryPoint=_dropDownMenuItemsEntryPoint[0].value;
      });
 
    }catch(e){
@@ -107,9 +109,9 @@ class _Registration extends State<Registration> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      /* appBar: AppBar(
-        title: Text('Patient Registration'),
-      ), */
+      appBar: AppBar(
+        title: Text('HTS Registration'),
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
@@ -194,6 +196,7 @@ class _Registration extends State<Registration> {
                         padding: EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 30.0),
                         child: DropdownButton(
+                          hint: Text('Select Entry Point'),
                           icon: Icon(Icons.keyboard_arrow_down),
                           iconEnabledColor: Colors.black,
                           value: _currentEntryPoint,
@@ -208,6 +211,12 @@ class _Registration extends State<Registration> {
                       ),
                       onPressed: () {},
                     ),
+                  ),
+                  !_showError?
+                  SizedBox.shrink()
+                      : Text(
+                    _entryPointError ?? "",
+                    style: TextStyle(color: Colors.red),
                   ),
                   SizedBox(
                     height: 30.0,
@@ -227,13 +236,25 @@ class _Registration extends State<Registration> {
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
+                          if (_entryPointIsValid) {
+                            setState(() {
+                              _formIsValid = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              _showError = true;
+                            });
+                          }
+                          if (_formIsValid) {
+                            // write save logic
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-
-//              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
-                          ));}
+                                ));
+                          }
+                        }
                       },
                     ),
                   ),
@@ -247,6 +268,8 @@ class _Registration extends State<Registration> {
   void changedDropDownItemEntryPoint(String selectedEntryPoint) {
     setState(() {
       _currentEntryPoint = selectedEntryPoint;
+      _entryPointError=null;
+      _entryPointIsValid=!_entryPointIsValid;
     });
   }
 }
