@@ -94,7 +94,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
         Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class,
         HtsModel.class, EntryPoint.class, Town.class ,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
-        PostTest.class,HtsRegistration.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class}, version = 2, exportSchema = false)
+        PostTest.class,HtsRegistration.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, Town.class}, version = 20, exportSchema = false)
 
 @TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, NewPregLactConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class, HtsTypeConverter.class})
