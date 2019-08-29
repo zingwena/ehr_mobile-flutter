@@ -102,7 +102,7 @@ class OverviewState extends State<Overview> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ReceptionVitals(_patient.id)),
+                                                      ReceptionVitals(_visit.visitId)),
                                             ),
                                           ),
                                         ),
