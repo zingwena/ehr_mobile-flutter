@@ -25,4 +25,7 @@ public interface MaritalStatusDao {
 
     @Query("SELECT * FROM MaritalStatus WHERE id=:id")
     MaritalStatus findMaritalStateById(int id);
+
+    @Query("SELECT name FROM maritalstatus WHERE code=:code")
+    String getMaritalStatusNameByCode(String code);
 }

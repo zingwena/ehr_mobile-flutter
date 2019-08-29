@@ -12,19 +12,20 @@ Patient _$PatientFromJson(Map<String, dynamic> json) {
     json['firstName'] as String,
     json['lastName'] as String,
     json['sex'] as String,
-    const CustomDateTimeConverter().fromJson(json['birthDate'] as String),
     json['nationalId'] as String,
     json['selfIdentifiedGender'] as String,
-    json['religion'] as String,
-    json['occupation'] as String,
-    json['maritalStatus'] as String,
-    json['educationLevel'] as String,
+    json['religionId'] as String,
+    json['occupationId'] as String,
+    json['maritalStatusId'] as String,
+    json['educationLevelId'] as String,
     json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>),
   )
-    ..nationality = json['nationality'] as String
-    ..countryOfBirth = json['countryOfBirth'] as String;
+    ..birthDate =
+        const CustomDateTimeConverter().fromJson(json['birthDate'] as String)
+    ..nationalityId = json['nationalityId'] as String
+    ..countryId = json['countryId'] as String;
 }
 
 Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{
@@ -35,11 +36,11 @@ Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{
       'nationalId': instance.nationalId,
       'birthDate': const CustomDateTimeConverter().toJson(instance.birthDate),
       'selfIdentifiedGender': instance.selfIdentifiedGender,
-      'religion': instance.religion,
-      'occupation': instance.occupation,
-      'maritalStatus': instance.maritalStatus,
-      'educationLevel': instance.educationLevel,
-      'nationality': instance.nationality,
-      'countryOfBirth': instance.countryOfBirth,
+      'religionId': instance.religionId,
+      'occupationId': instance.occupationId,
+      'maritalStatusId': instance.maritalStatusId,
+      'educationLevelId': instance.educationLevelId,
+      'nationalityId': instance.nationalityId,
+      'countryId': instance.countryId,
       'address': instance.address,
     };

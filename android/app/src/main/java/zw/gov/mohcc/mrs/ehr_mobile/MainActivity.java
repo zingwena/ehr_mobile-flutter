@@ -107,18 +107,24 @@ public class MainActivity extends FlutterActivity {
                     patient.setAddress(patientDto.getAddress());
                     patient.setOccupationId(patientDto.getOccupation());
 
-                    patient.setBirthDate(patientDto.getBirthDate());
+//                    patient.setBirthDate(patientDto.getBirthDate());
                     int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
                     result.success(id);
 
 
-                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().listPatients());
+                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().findPatientById(id));
                 }
                 if (methodCall.method.equals("getPatientById")) {
                     int ags = methodCall.arguments();
                     Patient patient = ehrMobileDatabase.patientDao().findPatientById(ags);
+
                     String response = gson.toJson(patient);
                     result.success(response);
+                }
+                if(methodCall.method.equals("getPatientMaritalStatus")){
+                    String code=methodCall.arguments();
+                    String name= ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
+                    result.success(name);
                 }
 
 

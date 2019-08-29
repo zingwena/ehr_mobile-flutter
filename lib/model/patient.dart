@@ -20,21 +20,21 @@ class Patient {
   String nationalId;
   DateTime birthDate;
   String selfIdentifiedGender;
-  String religion;
-  String occupation;
-  String maritalStatus;
-  String educationLevel;
-  String nationality;
-  String countryOfBirth;
+  String religionId;
+  String occupationId;
+  String maritalStatusId;
+  String educationLevelId;
+  String nationalityId;
+  String countryId;
 
 
   Address address;
 
 
-  Patient.basic(this.firstName, this.lastName,this.sex, this.birthDate,this.nationalId,this.religion,this.maritalStatus,this.educationLevel, this.nationality, this.countryOfBirth, this.selfIdentifiedGender, this.occupation);
+  Patient.basic(this.firstName, this.lastName,this.sex,this.nationalId,this.religionId,this.maritalStatusId,this.educationLevelId, this.nationalityId, this.countryId, this.selfIdentifiedGender, this.occupationId);
 
-  Patient(this.id, this.firstName, this.lastName, this.sex,this.birthDate, this.nationalId, this.selfIdentifiedGender, this.religion,
-      this.occupation, this.maritalStatus, this.educationLevel, this.address);
+  Patient(this.id, this.firstName, this.lastName, this.sex, this.nationalId, this.selfIdentifiedGender, this.religionId,
+      this.occupationId, this.maritalStatusId, this.educationLevelId, this.address);
 
   factory Patient.fromJson(Map<String, dynamic> json) => _$PatientFromJson(json);
 
@@ -44,7 +44,7 @@ class Patient {
 
   @override
   String toString() {
-    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religion: $religion, occupation: $occupation, maritalStatus: $maritalStatus, educationLevel: $educationLevel, nationality: $nationality, countryOfBirth: $countryOfBirth, address: $address}';
+    return 'Patient{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religionId: $religionId, occupationId: $occupationId, maritalStatusId: $maritalStatusId, educationLevelId: $educationLevelId, nationalityId: $nationalityId, countryId: $countryId, address: $address}';
   }
 
   static List<Patient> fromJsonDecodedMap(List dynamicList) {

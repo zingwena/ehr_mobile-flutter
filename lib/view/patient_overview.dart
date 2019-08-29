@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'hiv_screening.dart';
 import 'home_page.dart';
@@ -20,6 +21,7 @@ class Overview extends StatefulWidget {
 }
 
 class OverviewState extends State<Overview> {
+  static final MethodChannel patientChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
 
   Patient _patient;
   Map<String, dynamic> details;
@@ -27,6 +29,8 @@ class OverviewState extends State<Overview> {
   @override
   void initState() {
     _patient = widget.patient;
+    print(_patient.toString());
+    getMaritalStatusName(_patient.maritalStatusId);
     super.initState();
   }
 
@@ -250,7 +254,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.birthDate.toString()),
+                                                text: "date"),
                                             decoration: InputDecoration(
                                               labelText: 'Date Of Birth',
                                               border: OutlineInputBorder(),
@@ -269,7 +273,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.maritalStatus),
+                                                text: _patient.maritalStatusId),
                                             decoration: InputDecoration(
                                               labelText: 'Marital Status',
                                               border: OutlineInputBorder(),
@@ -298,7 +302,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                  text: _patient.educationLevel),
+                                  text: _patient.educationLevelId),
                                             decoration: InputDecoration(
                                               labelText: 'Education',
                                               border: OutlineInputBorder(),
@@ -317,7 +321,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:  _patient.occupation),
+                                                text:  _patient.occupationId),
 
                                             decoration: InputDecoration(
                                               labelText: 'Occupation',
@@ -337,7 +341,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.nationality),
+                                                text: _patient.nationalityId),
 
                                             decoration: InputDecoration(
                                               labelText: 'Nationality',
@@ -434,5 +438,15 @@ class OverviewState extends State<Overview> {
     );
   }
 
-
+  Future<void> getMaritalStatusName(String  code) async{
+    String maritalStatus;
+    try{
+      print("------------${_patient.maritalStatusId}");
+      maritalStatus= await patientChannel.invokeMethod('getPatientMaritalStatus',code);
+      print('===================== patient marital Status $maritalStatus');
+    }
+    catch(e){
+      print('Something went wrong during getting marital status........cause $e');
+    }
+  }
 }

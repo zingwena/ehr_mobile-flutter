@@ -19,11 +19,12 @@ class _DataSyncronizationState extends State<DataSyncronization> {
   String url, username, password;
 
   final _key = GlobalKey<FormState>();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Builder(builder: (BuildContext context) {
         return Center(
@@ -236,7 +237,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
     } else {
       print(response.body);
       // If that response was not OK, throw an error.
-      Scaffold.of(context).showSnackBar(
+      _scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Text('Authentication failed'),
             ),
@@ -244,6 +245,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
 
       throw Exception('Failed to authenticate');
     }
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text("Network error please check your connections")));
   }
 }
 

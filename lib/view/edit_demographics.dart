@@ -573,7 +573,6 @@ class _EditDemographicsState extends State<EditDemographics> {
                               firstName,
                               lastName,
                               _currentGender,
-                              birthDate,
                               nationalId,
                               _currentReligion,
                               _currentMaritalStatus,
@@ -582,6 +581,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                               _currentCountry,
                               _currentSiGender,
                                 _currentOccupation);
+                          print('================marital status   $_currentMaritalStatus');
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -619,7 +619,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
                               if (_formValid) {
                               _formKey.currentState.save();
-                              Patient patient= Patient.basic(firstName, lastName, _currentGender,birthDate, nationalId,_currentReligion,_currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
+                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,_currentReligion,_currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
 
 //                              MaterialPageRoute(
 //                                  builder: (context) =>
