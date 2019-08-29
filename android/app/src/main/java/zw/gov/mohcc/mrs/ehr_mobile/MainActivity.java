@@ -572,6 +572,8 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
                                 System.out.println("arguments = " + arguments);
+
+
                                 InvestigationEhr investigationEhr = new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e", "Blood", "HIV");
                                 Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
                                 String investigationString = gson.toJson(investigationEhr);
