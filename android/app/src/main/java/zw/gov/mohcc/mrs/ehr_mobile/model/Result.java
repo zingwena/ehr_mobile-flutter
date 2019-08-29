@@ -1,30 +1,47 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
-public enum Result {
-    NEGATIVE(0),
-    POSITIVE(1),
-    INCONCLUSIVE(2);
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
-    private final int resultId;
+@Entity
+public class Result {
 
-    private Result (int resultId) {
-        this.resultId = resultId;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private  String code ;
+    private  String name ;
+
+     @Ignore
+    public Result( String code, String name) {
+        this.code = code;
+        this.name = name;
     }
 
-    public int getResultId() {
-        return resultId;
+    public Result() {
+
+    }
+    public int getId() {
+        return id;
     }
 
-    public static Result get(String name) {
-        switch (name) {
-            case "POSITIVE":
-                return POSITIVE;
-            case "NEGATIVE":
-                return NEGATIVE;
-            case "INCONCLUSIVE":
-                return INCONCLUSIVE;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -8,23 +8,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsType;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 public class HtsRegDTO {
 
     private int id;
 
-    @TypeConverters(GenderConverter.class)
+    @TypeConverters(HtsTypeConverter.class)
     private HtsType htsType;
     @TypeConverters(DateConverter.class)
-    Date registrationDate;
-    private Hts hts;
+    Date dateOfHivTest;
 
-    public HtsRegDTO(int id, HtsType htsType, Date registrationDate, Hts hts) {
-        this.id = id;
-        this.htsType = htsType;
-        this.registrationDate = registrationDate;
-        this.hts = hts;
-    }
+    private Hts hts;
+    String entryPointId;
+
+
 
     public int getId() {
         return id;
@@ -42,12 +40,20 @@ public class HtsRegDTO {
         this.htsType = htsType;
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public Date getDateOfHivTest() {
+        return dateOfHivTest;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setDateOfHivTest(Date dateOfHivTest) {
+        this.dateOfHivTest = dateOfHivTest;
+    }
+
+    public String getEntryPointId() {
+        return entryPointId;
+    }
+
+    public void setEntryPointId(String entryPointId) {
+        this.entryPointId = entryPointId;
     }
 
     public Hts getHts() {
@@ -63,8 +69,9 @@ public class HtsRegDTO {
         return "HtsRegDTO{" +
                 "id=" + id +
                 ", htsType=" + htsType +
-                ", registrationDate=" + registrationDate +
+                ", dateOfHivTest=" + dateOfHivTest +
                 ", hts=" + hts +
+                ", entryPointId='" + entryPointId + '\'' +
                 '}';
     }
 }

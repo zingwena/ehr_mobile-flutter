@@ -11,7 +11,6 @@ public class LaboratoryInvestigation {
 
     private int id;
 
-
     private int facilityId;
 
     private String personInvestigationId;
@@ -28,6 +27,13 @@ public class LaboratoryInvestigation {
 
     public int getFacilityId() {
         return facilityId;
+    }
+
+    public LaboratoryInvestigation(int id, int facilityId, String personInvestigationId, LocalDate resultDate) {
+        this.id = id;
+        this.facilityId = facilityId;
+        this.personInvestigationId = personInvestigationId;
+        this.resultDate = resultDate;
     }
 
     public void setFacilityId(int facilityId) {

@@ -24,7 +24,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   DateTime date;
   int _result = 0;
   int _testKit = 0;
-
+  int testCount=0;
+  List<dynamic>_testKits=[];
+  String labId;
   String testKit = "";
   String result = "";
   String _identifier;
@@ -48,6 +50,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     _identifier = _identifierDropdownMenuItem[0].value;
 
      getPersonInvestigation();
+         getTestKitsByCount(testCount);
+         getLabId();
     super.initState();
   }
 
@@ -81,6 +85,56 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     return sample;
   }
 
+  Future<dynamic> getLabId() async {
+    try {
+      Map <String,dynamic> data= json.decode(await htsChannel.invokeMethod('getLabInvestigation')) ;
+      var labId= data["labId"];
+      var visitPatientId= data["visitPatientId"];
+            print("Visit Patient Id : $visitPatientId || Lab Id : $labId"  );
+
+          // setState(() {
+          // this.labId = labIdFromChannel;
+
+          // });
+     
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  
+  }
+
+// void getTestKits(){
+//   _testKits.forEach((f)=>{})
+// }
+Future<dynamic> getTestKitsByCount(int count) async {
+    try {
+
+      List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('getTestKitsByLevel',count.toString()) );
+ 
+       setState(() {
+         _testKits=testKits;
+       });
+      print("*********sample from android"+testKits.toString());
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    return sample;
+  }
+  Future<dynamic> getResults() async {
+    try {
+
+      String response = await htsChannel.invokeMethod('getResults');
+      print("*********Response"+response);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    return sample;
+  }
+
+
+
+
+
   void _handleTestKitChange(int value) {
     setState(() {
       _testKit = value;
@@ -96,22 +150,34 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     });
   }
 
-  void _handleResultChange(int value) {
-    setState(() {
+
+
+  void _handleResultChange(int value)  {
+    if(testCount==0)
+    {
+      setState(() {
       _result = value;
 
       switch (_result) {
         case 1:
           result = "Positive";
+          testCount+=1;
+
           break;
+        
         case 2:
           result = "Negative";
+          
+          htsChannel.invokeMapMethod('saveResult',result);
+
           break;
         case 3:
           result = "Inconclusive";
           break;
       }
+
     });
+    }
   }
 
   List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
@@ -124,15 +190,11 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     return items;
   }
 
-  @override
-  Widget build(BuildContext context) {
 
-    return Scaffold(
-      // appBar: AppBar(
-      //  backgroundColor: Colors.blue,
-      //  title: Text('Add Patient'),
-      //  ),
-      body: ListView(
+Widget _body(List <dynamic> list){
+
+  
+return  ListView(
         children: <Widget>[
           Stack(
             children: <Widget>[
@@ -236,8 +298,11 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
                                 SizedBox(
                                   height: 16,
                                 ),
-                                Row(
+                                                               
+
+                                 Row(
                                   children: <Widget>[
+                                    
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -449,6 +514,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
+                                            
 //                                            onPressed: () => Navigator.push(
 //                                              context,
 //                                              MaterialPageRoute(
@@ -505,7 +571,26 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
             ],
           ),
         ],
-      ),
+      );
+  
+  
+}
+  @override
+  Widget build(BuildContext context) {
+    var list=this._testKits ;
+    print("+++++++++++  $list");
+    return Scaffold(
+      // appBar: AppBar(
+      //  backgroundColor: Colors.blue,
+      //  title: Text('Add Patient'),
+      //  ),
+    
+      body:_body(list)
     );
   }
+
+
+  
 }
+
+

@@ -14,6 +14,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 @Entity
 public class Hts {
@@ -22,11 +23,11 @@ public class Hts {
     private int id;
 
     //Hts registration fields
-    @TypeConverters(GenderConverter.class)
+    @TypeConverters(HtsTypeConverter.class)
     public HtsType htsType;
     @TypeConverters(DateConverter.class)
 
-    Date patientDate;
+    Date dateOfHivTest;
     //Hts registration fields
 
 
@@ -56,6 +57,8 @@ public class Hts {
     String  purpose_of_test_id;
     //Pre-test fields
 
+    private String entryPointId;
+
     //Post test fields
     @TypeConverters(DataConverter.class)
     private LocalDate dateOfPostTestCounsel;
@@ -63,6 +66,7 @@ public class Hts {
     private String finalResult;
     private String postTestCounselled;
     private String ReasonForNotIssuingResult_id;
+
     //Post test fields
 
 
@@ -82,12 +86,12 @@ public class Hts {
         this.htsType = htsType;
     }
 
-    public Date getPatientDate() {
-        return patientDate;
+    public Date getDateOfHivTest() {
+        return dateOfHivTest;
     }
 
-    public void setPatientDate(Date patientDate) {
-        this.patientDate = patientDate;
+    public void setDateOfHivTest(Date dateOfHivTest) {
+        this.dateOfHivTest = dateOfHivTest;
     }
 
     public HtsApproach getHtsApproach() {
@@ -194,10 +198,19 @@ public class Hts {
         ReasonForNotIssuingResult_id = reasonForNotIssuingResult_id;
     }
 
+    public String getEntryPointId() {
+        return entryPointId;
+    }
+
+    public void setEntryPointId(String entryPointId) {
+        this.entryPointId = entryPointId;
+    }
+
     public static Hts getHtsRegInstance (HtsRegDTO htsRegDTO) {
         Hts hts = htsRegDTO.getHts();
         hts.setHtsType(htsRegDTO.getHtsType());
-        hts.setPatientDate(htsRegDTO.getRegistrationDate());
+        hts.setDateOfHivTest(htsRegDTO.getDateOfHivTest());
+        hts.setEntryPointId(htsRegDTO.getEntryPointId());
 
         return hts;
     }

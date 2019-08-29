@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ReceptionVitals extends StatefulWidget {
-  final int patientId;
-  ReceptionVitals(this.patientId);
+  final int visitId;
+  ReceptionVitals(this.visitId);
 
 
   @override
@@ -20,62 +20,53 @@ class ReceptionVitals extends StatefulWidget {
 }
 
 class _ReceptionVitalsState extends State<ReceptionVitals> {
-  static const platform = MethodChannel('ehr_mobile.channel/vitals');
+    static const platform = MethodChannel('ehr_mobile.channel/vitals');
   final _formKey = GlobalKey<FormState>();
+  final _formKeyHeight = GlobalKey<FormState>();
+  final _formKeyTemperature = GlobalKey<FormState>();
+  final _formKeyPulse = GlobalKey<FormState>();
+  final _formKeyRespiratoryRate = GlobalKey<FormState>();
+  final _formKeyWeight = GlobalKey<FormState>();
   BloodPressure _bloodPressure = BloodPressure();
   Temperature _temperature = Temperature();
   Pulse _pulse = Pulse();
   RespiratoryRate _respiratoryRate = RespiratoryRate();
   Height _height = Height();
   Weight _weight = Weight();
-  Visit _visit;
+
 
 
   @override
   void initState() {
-    getVisit(widget.patientId);
+
 super.initState();
   }
 
-  Future<void> getVisit(int patientId) async {
-    Visit visit;
-
-    try {
-      visit = jsonDecode(
-          await platform.invokeMethod('visit', patientId)
-      );
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      _visit = visit;
-    });
-  }
 
 
   Future<void> saveVitals(var object,String method) async {
-    List<dynamic> list;
+
 
     try {
-      list = jsonDecode(
-          await platform.invokeMethod(method, jsonEncode(object))
-      );
+
+          await platform.invokeMethod(method, jsonEncode(object));
     } catch (e) {
       print("channel failure: '$e'");
     }
   }
 
-  setVisit(){
+  setVisit() {
     setState(() {
-      _bloodPressure.visitId = _visit.visitId;
-      _temperature.visitId = _visit.visitId;
-      _pulse.visitId = _visit.visitId;
-      _respiratoryRate.visitId = _visit.visitId;
-      _height.visitId = _visit.visitId;
-      _weight.visitId = _visit.visitId;
-
+      _bloodPressure.visitId = widget.visitId;
+      _temperature.visitId = widget.visitId;
+      _pulse.visitId = widget.visitId;
+      _respiratoryRate.visitId = widget.visitId;
+      _height.visitId =  widget.visitId;
+      _weight.visitId = widget.visitId;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +83,7 @@ super.initState();
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: Column(
+                   Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
@@ -125,70 +114,79 @@ super.initState();
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: TextFormField(
-                                                onSaved: (value) {
-                                                  setState(() {
-                                                    _bloodPressure.systolic =
-                                                        value;
-                                                  });
-                                                },
-                                                decoration: InputDecoration(
-                                                  labelText: 'systolic',
-                                                  border: OutlineInputBorder(),
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ),
-                                            width: 20,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: TextFormField(
-                                                onSaved: (value) {
-                                                  setState(() {
-                                                    _bloodPressure.diastolic =
-                                                        value;
-                                                  });
-                                                },
-                                                decoration: InputDecoration(
-                                                  labelText: 'diastolic',
-                                                  border: OutlineInputBorder(),
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey,
+                                    Form(
+                                      key: _formKey,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: SizedBox(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: TextFormField(
+                                                  onSaved: (value) {
+                                                    setState(() {
+                                                      _bloodPressure.systolic =
+                                                          value;
+                                                    });
+                                                  },
+                                                  validator: (value){
+                                                   return value.isEmpty ? "Please fill this field" : null;
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    labelText: 'systolic',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ),
+                                              width: 20,
                                             ),
-                                            width: 20,
                                           ),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.save),
-                                          onPressed: () {
-                                            if (_formKey.currentState
-                                                .validate()) {
-                                              _formKey.currentState.save();
+                                          Expanded(
+                                            child: SizedBox(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: TextFormField(
+                                                  onSaved: (value) {
+                                                    setState(() {
+                                                      _bloodPressure.diastolic =
+                                                          value;
+                                                    });
+                                                  },
+                                                  validator: (value){
+                                                    return value.isEmpty ? "Please fill this field" : null;
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    labelText: 'diastolic',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                              width: 20,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.save),
+                                            onPressed: () {
+                                              if (_formKey.currentState
+                                                  .validate()) {
+                                                _formKey.currentState.save();
 
-                                              saveVitals(_bloodPressure,'bloodPressure');
-                                            }
-                                          },
-                                        )
-                                      ],
+                                                saveVitals(_bloodPressure,'bloodPressure');
+                                              }
+                                            },
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -222,41 +220,47 @@ super.initState();
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(0.0),
-                                              child: TextFormField(
-                                                onSaved: (value) {
-                                                  _temperature.value = value;
-                                                },
-                                                decoration: InputDecoration(
-                                                  labelText: 'temperature',
-                                                  border: OutlineInputBorder(),
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey,
+                                    Form(
+                                      key: _formKeyTemperature,
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: SizedBox(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(0.0),
+                                                child: TextFormField(
+                                                  onSaved: (value) {
+                                                    _temperature.value = value;
+                                                  },
+                                                  validator: (value){
+                                                    return value.isEmpty ? "Please fill this field" : null;
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    labelText: 'temperature',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ),
+                                              width: 100,
                                             ),
-                                            width: 100,
                                           ),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.save),
-                                          onPressed: () {
-                                            if (_formKey.currentState
-                                                .validate()) {
-                                              _formKey.currentState.save();
+                                          IconButton(
+                                            icon: Icon(Icons.save),
+                                            onPressed: () {
+                                              if (_formKeyTemperature.currentState
+                                                  .validate()) {
+                                                _formKeyTemperature.currentState.save();
 
-                                              saveVitals(_temperature,'temperature');
-                                            }
-                                          },
-                                        )
-                                      ],
+                                                saveVitals(_temperature,'temperature');
+                                              }
+                                            },
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -290,41 +294,47 @@ super.initState();
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(0.0),
-                                              child: TextFormField(
-                                                onSaved: (value) {
-                                                  _pulse.value = value;
-                                                },
-                                                decoration: InputDecoration(
-                                                  labelText: 'pulse',
-                                                  border: OutlineInputBorder(),
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey,
+                                    Form(
+                                      key: _formKeyPulse,
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: SizedBox(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(0.0),
+                                                child: TextFormField(
+                                                  onSaved: (value) {
+                                                    _pulse.value = value;
+                                                  },
+                                                  validator: (value){
+                                                    return value.isEmpty ? "Please fill this field" : null;
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    labelText: 'pulse',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ),
+                                              width: 100,
                                             ),
-                                            width: 100,
                                           ),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.save),
-                                          onPressed: () {
-                                            if (_formKey.currentState
-                                                .validate()) {
-                                              _formKey.currentState.save();
+                                          IconButton(
+                                            icon: Icon(Icons.save),
+                                            onPressed: () {
+                                              if (_formKeyPulse.currentState
+                                                  .validate()) {
+                                                _formKeyPulse.currentState.save();
 
-                                              saveVitals(_pulse,'pulse');
-                                            }
-                                          },
-                                        )
-                                      ],
+                                                saveVitals(_pulse,'pulse');
+                                              }
+                                            },
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -358,39 +368,45 @@ super.initState();
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: TextFormField(
-                                              onSaved: (value) {
-                                                _respiratoryRate.value = value;
-                                              },
-                                              decoration: InputDecoration(
-                                                labelText: '',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              style: TextStyle(
-                                                color: Colors.grey,
+                                  Form(
+                                    key: _formKeyRespiratoryRate,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: SizedBox(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(0.0),
+                                              child: TextFormField(
+                                                onSaved: (value) {
+                                                  _respiratoryRate.value = value;
+                                                },
+                                                validator: (value){
+                                                  return value.isEmpty ? "Please fill this field" : null;
+                                                },
+                                                decoration: InputDecoration(
+                                                  labelText: '',
+                                                  border: OutlineInputBorder(),
+                                                ),
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.save),
-                                        onPressed: () {
-                                          if (_formKey.currentState
-                                              .validate()) {
-                                            _formKey.currentState.save();
+                                        IconButton(
+                                          icon: Icon(Icons.save),
+                                          onPressed: () {
+                                            if (_formKeyRespiratoryRate.currentState
+                                                .validate()) {
+                                              _formKeyRespiratoryRate.currentState.save();
 
-                                            saveVitals(_respiratoryRate,'respiratoryRate');
-                                          }
-                                        },
-                                      )
-                                    ],
+                                              saveVitals(_respiratoryRate,'respiratoryRate');
+                                            }
+                                          },
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -425,41 +441,48 @@ super.initState();
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: TextFormField(
-                                              onSaved: (value) {
-                                                setState(() {
-                                                  _height.value = value;
-                                                });
-                                              },
-                                              decoration: InputDecoration(
-                                                labelText: 'Height',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              style: TextStyle(
-                                                color: Colors.grey,
+                                  Form(
+                                    key: _formKeyHeight,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: SizedBox(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: TextFormField(
+                                                onSaved: (value) {
+                                                  setState(() {
+                                                    _height.value = value;
+                                                  });
+                                                },
+                                                keyboardType:  TextInputType.number,
+                                                validator: (value){
+                                                  return value.isEmpty ? "Please fill this field" : null;
+                                                },
+                                                decoration: InputDecoration(
+                                                  labelText: 'Height',
+                                                  border: OutlineInputBorder(),
+                                                ),
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                ),
                                               ),
                                             ),
+                                            width: 100,
                                           ),
-                                          width: 100,
                                         ),
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.save),
-                                        onPressed: () {
-                                          if (_formKey.currentState
-                                              .validate()) {
-                                            _formKey.currentState.save();
-                                            saveVitals(_height,'height');
-                                          }
-                                        },
-                                      )
-                                    ],
+                                        IconButton(
+                                          icon: Icon(Icons.save),
+                                          onPressed: () {
+                                            if (_formKeyHeight.currentState
+                                                .validate()) {
+                                              _formKeyHeight.currentState.save();
+                                              saveVitals(_height,'height');
+                                            }
+                                          },
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -494,41 +517,47 @@ super.initState();
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: TextFormField(
-                                              onSaved: (value) {
-                                                setState(() {
-                                                  _weight.value = value;
-                                                });
-                                              },
-                                              decoration: InputDecoration(
-                                                labelText: 'Weight',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              style: TextStyle(
-                                                color: Colors.grey,
+                                  Form(
+                                    key: _formKeyWeight,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: SizedBox(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: TextFormField(
+                                                onSaved: (value) {
+                                                  setState(() {
+                                                    _weight.value = value;
+                                                  });
+                                                },
+                                                validator: (value){
+                                                  return value.isEmpty ? "Please fill this field" : null;
+                                                },
+                                                decoration: InputDecoration(
+                                                  labelText: 'Weight',
+                                                  border: OutlineInputBorder(),
+                                                ),
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                ),
                                               ),
                                             ),
+                                            width: 20,
                                           ),
-                                          width: 20,
                                         ),
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.save),
-                                        onPressed: () {
-                                      if(_formKey.currentState.validate()){
-                                        _formKey.currentState.save();
-                                        saveVitals(_weight,'weight');
+                                        IconButton(
+                                          icon: Icon(Icons.save),
+                                          onPressed: () {
+                                        if(_formKeyWeight.currentState.validate()){
+                                          _formKeyWeight.currentState.save();
+                                          saveVitals(_weight,'weight');
 
-                                      }
-                                        },
-                                      )
-                                    ],
+                                        }
+                                          },
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -540,7 +569,7 @@ super.initState();
                         ),
                       ],
                     ),
-                  ),
+
                 ],
               ),
             ],

@@ -3,15 +3,16 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.room.Entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class LaboratoryInvestigationTest {
 
     private int id;
     private String laboratoryInvestigationId;
-    private LocalDateTime time;
-    private Result result;
-    private String visitId;
+    private Date startTime;
+    private Date endTime;
+    private String resultId;
 
     public int getId() {
         return id;
@@ -29,27 +30,27 @@ public class LaboratoryInvestigationTest {
         this.laboratoryInvestigationId = laboratoryInvestigationId;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Result getResult() {
-        return result;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
-    public String getVisitId() {
-        return visitId;
+    public String getResultId() {
+        return resultId;
     }
 
-    public void setVisitId(String visitId) {
-        this.visitId = visitId;
+    public void setResultId(String resultId) {
+        this.resultId = resultId;
     }
 }
