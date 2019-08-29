@@ -459,6 +459,7 @@ public class MainActivity extends FlutterActivity {
                                 case 0: {
                                     List<TestKit> firstLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("FIRST");
                                     testKits = gson.toJson(firstLevelTestKits);
+                                    System.out.println("firstLevelTestKits = " + firstLevelTestKits);
                                     result.success(testKits);
 
                                 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/investigation.dart';
+import 'package:ehr_mobile/model/testKit.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -110,9 +111,11 @@ Future<dynamic> getTestKitsByCount(int count) async {
     try {
 
       List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('getTestKitsByLevel',count.toString()) );
- 
+
+      var list=TestKit.mapFromJson(testKits);
+
        setState(() {
-         _testKits=testKits;
+         _testKits=list;
        });
       print("*********sample from android"+testKits.toString());
     } catch (e) {
@@ -120,6 +123,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
     }
     return sample;
   }
+
+L
 
   void _handleTestKitChange(int value) {
     setState(() {
@@ -176,10 +181,31 @@ Future<dynamic> getTestKitsByCount(int count) async {
     return items;
   }
 
+ListView _testKitsData(BuildContext context){
 
-Widget _body(List <dynamic> list){
+print("Length of test kits :  ${this._testKits.length}");
+return ListView.builder(
+  itemCount: this._testKits.length,
+  itemBuilder: (context,int){
+           return Row(
+             children: <Widget>[
+               Text(this._testKits[int]),
+                //  Radio(
+                //                        value: 1,
+                //                         groupValue: _testKit,
+                //                         activeColor: Colors.blue,
+                //                         onChanged: _handleTestKitChange),
+                                        
+             ],
+           );
+          
 
-  
+                                    
+  }
+);
+}
+Widget _body(BuildContext context){
+
 return  ListView(
         children: <Widget>[
           Stack(
@@ -305,18 +331,8 @@ return  ListView(
                                         width: 250,
                                       ),
                                     ),
-                                    Text('Standard Q HIV 1/2 Ab'),
-                                    Radio(
-                                        value: 1,
-                                        groupValue: _testKit,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleTestKitChange),
-                                    Text('Determine'),
-                                    Radio(
-                                        value: 2,
-                                        groupValue: _testKit,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleTestKitChange)
+                               
+                                   
                                   ],
                                 ),
                                 SizedBox(
@@ -571,7 +587,7 @@ return  ListView(
       //  title: Text('Add Patient'),
       //  ),
     
-      body:_body(list)
+      body:_body(context)
     );
   }
 
