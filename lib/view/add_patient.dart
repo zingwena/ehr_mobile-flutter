@@ -21,8 +21,7 @@ class _AddPatient extends State<AddPatient> {
    static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   String lastName, firstName, nationalId, nationalIdNumber;
 
-  var selectedDate;
-  DateTime date;
+  var birthDate,displayDate;
   bool showError=false;
   int _gender = 0;
   String gender = "";
@@ -39,8 +38,9 @@ class _AddPatient extends State<AddPatient> {
 
   @override
   void initState() {
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
+    displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    birthDate = DateTime.now();
+
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
     super.initState();
@@ -54,9 +54,10 @@ class _AddPatient extends State<AddPatient> {
         firstDate: DateTime(1900, 8),
 
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != birthDate)
       setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        birthDate = picked;
+        displayDate = DateFormat("yyyy/MM/dd").format(picked);
       });
   }
 
@@ -197,7 +198,7 @@ class _AddPatient extends State<AddPatient> {
                             child: TextFormField(
                               controller:
 
-                              TextEditingController(text: selectedDate),
+                              TextEditingController(text: displayDate),
 
                               validator: (value) {
                                 return value.isEmpty ? 'Enter some text' : null;
@@ -258,7 +259,7 @@ class _AddPatient extends State<AddPatient> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         EditDemographics(
-                                            lastName, firstName, date, gender,
+                                            lastName, firstName, birthDate, gender,
                                             nationalId)));
                           }
                           else{

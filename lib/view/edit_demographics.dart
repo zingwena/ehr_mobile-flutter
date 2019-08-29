@@ -216,33 +216,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
 
 
-  DataTable table() {
-    print("=============================================================");
-    print(_list);
-    return DataTable(
-        sortColumnIndex: 0,
-        columns: [
-          DataColumn(
-            label: Text('Name'),
-          ),
-          DataColumn(
-            label: Text('Action'),
-          ),
-        ],
-        rows: _list
-            .map(
-              (item) => DataRow(cells: [
-                DataCell(Text(nullValidator(item))),
-                DataCell(
-                  RaisedButton(
-                      child: Text("Select"),
-                      color: Colors.teal,
-                      onPressed: () {}),
-                ),
-              ]),
-            )
-            .toList());
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

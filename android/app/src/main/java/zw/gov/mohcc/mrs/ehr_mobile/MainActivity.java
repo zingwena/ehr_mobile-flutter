@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +52,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
 public class MainActivity extends FlutterActivity {
@@ -88,12 +90,14 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Date.class,new DateDeserializer()).create();
+
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
 
 
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
+                    System.out.println("===================date");
 
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
@@ -136,7 +140,7 @@ public class MainActivity extends FlutterActivity {
                     String tokenString = args.get(1).toString();
                     Token token = new Token(tokenString);
 
-                    clearTables();
+//                    clearTables();
                     pullData(token, url);
                 }
 
@@ -559,7 +563,7 @@ public class MainActivity extends FlutterActivity {
                 call.enqueue(new Callback<List<TestKit>>() {
                     @Override
                     public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                        List<TestKit> testKits = new ArrayList<>();
+                        List<TestKit> testKits = new ArrayList<TestKit>();
                         if (response.isSuccessful()) {
                             for (TestKit item : response.body()) {
                                 testKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "FIRST"));
@@ -584,7 +588,7 @@ public class MainActivity extends FlutterActivity {
                 callSecond.enqueue(new Callback<List<TestKit>>() {
                     @Override
                     public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                        List<TestKit> secondTestKits = new ArrayList<>();
+                        List<TestKit> secondTestKits = new ArrayList<TestKit>();
                         if (response.isSuccessful()) {
                             for (TestKit item : response.body()) {
                                 secondTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "SECOND"));
@@ -610,7 +614,7 @@ public class MainActivity extends FlutterActivity {
                 callThird.enqueue(new Callback<List<TestKit>>() {
                     @Override
                     public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                        List<TestKit> thirdTestKits = new ArrayList<>();
+                        List<TestKit> thirdTestKits = new ArrayList<TestKit>();
                         if (response.isSuccessful()) {
                             for (TestKit item : response.body()) {
                                 thirdTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "THIRD"));

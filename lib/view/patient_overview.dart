@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'hiv_screening.dart';
 import 'home_page.dart';
@@ -20,14 +22,31 @@ class Overview extends StatefulWidget {
 }
 
 class OverviewState extends State<Overview> {
-
+  static const platform = MethodChannel('ehr_mobile.channel/vitals');
   Patient _patient;
+  Visit _visit;
   Map<String, dynamic> details;
 
   @override
   void initState() {
     _patient = widget.patient;
+    getVisit(_patient.id);
     super.initState();
+  }
+
+  Future<void> getVisit(int patientId) async {
+    Visit visit;
+
+    try {
+      visit = jsonDecode(
+          await platform.invokeMethod('visit', patientId)
+      );
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+      _visit = visit;
+    });
   }
 
   @override
