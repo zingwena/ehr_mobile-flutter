@@ -12,6 +12,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
@@ -30,6 +31,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
@@ -43,6 +45,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EntryPointDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
@@ -61,6 +64,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SampleDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TownsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.BloodPressureDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.HeightDao;
@@ -92,9 +96,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
         Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class,
-        HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
+        HtsModel.class, EntryPoint.class,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
-        PostTest.class,HtsRegistration.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, LaboratoryInvestigationTest.class}, version = 2, exportSchema = false)
+        PostTest.class,HtsRegistration.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, LaboratoryInvestigationTest.class}, version = 20, exportSchema = false)
+
 
 @TypeConverters({DataConverter.class, GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, NewPregLactConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class, HtsTypeConverter.class})
@@ -119,6 +124,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     }
 
     public abstract UserDao userDao();
+
+    public abstract TownsDao townsDao();
 
     public abstract AuthoritiesDao authoritiesDao();
 
@@ -175,6 +182,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract InvestigationDao investigationDao();
 
     public abstract PersonInvestigationDao personInvestigationDao();
+
+    public abstract HtsDao htsDao();
     public  abstract ResultDao resultDao();
     public  abstract LaboratoryInvestigationTestDao labInvestTestdao();
 }

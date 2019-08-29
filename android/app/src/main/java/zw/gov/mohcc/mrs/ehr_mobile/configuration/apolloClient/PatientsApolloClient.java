@@ -12,8 +12,11 @@ import com.apollographql.apollo.exception.ApolloException;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
@@ -64,6 +67,7 @@ public class PatientsApolloClient {
                                 {
 
 
+                                    System.out.println("=============-=-=-=-=============1=1=1=1=1=1=1=1=patientData"+patientData.birthdate());
                                     Gender sex = Gender.valueOf(patientData.sex().rawValue());
                                     SelfIdentifiedGender selfIdentifiedGender = SelfIdentifiedGender.valueOf(patientData.selfIdentifiedGender().rawValue());
                                     Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
@@ -71,7 +75,7 @@ public class PatientsApolloClient {
                                     int numberOfIdentifications = patientData.identifications().size();
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
-                                    String date = patientData.birthdate();
+
 
                                     patient = new Patient(firstName, lastName, sex);
                                     patient.setSelfIdentifiedGender(selfIdentifiedGender);
@@ -90,15 +94,15 @@ public class PatientsApolloClient {
                                     patient.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
                                             ? patientData.occupation().id() : null);*/
 
-//                                    try {
-//                                        LocalDate dateOfBirth = LocalDate.parse(date);
-//                                        System.out.println("dateOfBirth = " + dateOfBirth);
-//                                        patient.setBirthDate(dateOfBirth);
-//
-//
-//                                    } catch (Exception e) {
-//                                        e.printStackTrace();
-//                                    }
+                                    try {
+
+                                        Date dateOfBirth = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(patientData.birthdate());
+                                        patient.setBirthDate(dateOfBirth);
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
                                     /*if (numberOfIdentifications > 0) {
                                         String identifierType = patientData.identifications().get(0).type().name();

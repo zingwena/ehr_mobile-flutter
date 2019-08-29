@@ -17,12 +17,12 @@ class AddPatient extends StatefulWidget {
 
 class _AddPatient extends State<AddPatient> {
   final _formKey = GlobalKey<FormState>();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
    static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
-  String lastName, firstName, nationalId;
+  String lastName, firstName, nationalId, nationalIdNumber;
 
-  var selectedDate;
-  DateTime date;
+  var birthDate,displayDate;
+  bool showError=false;
   int _gender = 0;
   String gender = "";
   String _identifier;
@@ -34,11 +34,13 @@ class _AddPatient extends State<AddPatient> {
     "National Id",
     "Driver's Licence"
   ];
+  String _nationalIdError="National Id number is invalid";
 
   @override
   void initState() {
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
+    displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    birthDate = DateTime.now();
+
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
     super.initState();
@@ -52,9 +54,10 @@ class _AddPatient extends State<AddPatient> {
         firstDate: DateTime(1900, 8),
 
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != birthDate)
       setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        birthDate = picked;
+        displayDate = DateFormat("yyyy/MM/dd").format(picked);
       });
   }
 
@@ -88,6 +91,7 @@ class _AddPatient extends State<AddPatient> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text('Add Patient'),
@@ -107,7 +111,7 @@ class _AddPatient extends State<AddPatient> {
                   ),
                   TextFormField(
                     validator: (value) {
-                      return value.isEmpty ? 'Enter some text' : null;
+                      return value.isEmpty ? 'Enter National Id number' : null;
                     },
                     onSaved: (value) => setState(() {
 
@@ -115,17 +119,25 @@ class _AddPatient extends State<AddPatient> {
 
                     }),
                     decoration: InputDecoration(
+
                         labelText: _identifier == "Select Identifier"
                             ? "ID Number"
                             : _identifier + " Number",
                         border: OutlineInputBorder()),
+
+                  ),
+                  !showError
+                      ? SizedBox.shrink()
+                      : Text(
+                    _nationalIdError ?? "",
+                    style: TextStyle(color: Colors.red),
                   ),
                   SizedBox(
                     height: 30.0,
                   ),
                   TextFormField(
                     validator: (value) {
-                      return value.isEmpty ? 'Enter some text' : null;
+                      return value.isEmpty ? 'Enter Last Name' : null;
                     },
                     onSaved: (value) => setState(() {
                       lastName = value;
@@ -138,7 +150,7 @@ class _AddPatient extends State<AddPatient> {
                   ),
                   TextFormField(
                     validator: (value) {
-                      return value.isEmpty ? 'Enter some text' : null;
+                      return value.isEmpty ? 'Enter First Name' : null;
                     },
                     onSaved: (value) => setState(() {
                       firstName = value;
@@ -186,7 +198,7 @@ class _AddPatient extends State<AddPatient> {
                             child: TextFormField(
                               controller:
 
-                              TextEditingController(text: selectedDate),
+                              TextEditingController(text: displayDate),
 
                               validator: (value) {
                                 return value.isEmpty ? 'Enter some text' : null;
@@ -235,15 +247,26 @@ class _AddPatient extends State<AddPatient> {
 
 //                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
 //                           await registerPatient(patient);
+                          setState(() {
+                            nationalIdNumber = nationalId.replaceAll(
+                                new RegExp(r'[^\w\s]+'), '');
+                          });
+                          RegExp regex = new RegExp(
+                              r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
+                          if (regex.hasMatch(nationalIdNumber)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditDemographics(
+                                            lastName, firstName, birthDate, gender,
+                                            nationalId)));
+                          }
+                          else{
 
-                          print("=--------------------=-=-=-=-=-");
-                          print(selectedDate);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditDemographics(
-                                      lastName, firstName, date, gender, nationalId)));
+                            showError=true;
 
+                          }
                         }
                       },
                     ),

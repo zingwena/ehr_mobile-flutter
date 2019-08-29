@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.time.LocalDate;
@@ -8,10 +9,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
-
 @Entity
 public class LaboratoryInvestigationTest {
-
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String laboratoryInvestigationId;
     @TypeConverters(DateConverter.class)
@@ -22,11 +22,27 @@ public class LaboratoryInvestigationTest {
     private Date readingdate;
     @TypeConverters(DateConverter.class)
     private Date readingtime;
-    private Result result;
+
     private String visitId;
+    @TypeConverters(DateConverter.class)
+    private Date endTime;
+    private String resultId;
+
 
     public int getId() {
         return id;
+    }
+
+
+
+
+
+    public String getVisitId() {
+        return visitId;
+    }
+
+    public void setVisitId(String visitId) {
+        this.visitId = visitId;
     }
 
     public void setId(int id) {
@@ -73,19 +89,19 @@ public class LaboratoryInvestigationTest {
         this.readingtime = readingtime;
     }
 
-    public Result getResult() {
-        return result;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
-    public String getVisitId() {
-        return visitId;
+    public String getResultId() {
+        return resultId;
     }
 
-    public void setVisitId(String visitId) {
-        this.visitId = visitId;
+    public void setResultId(String resultId) {
+        this.resultId = resultId;
     }
 }

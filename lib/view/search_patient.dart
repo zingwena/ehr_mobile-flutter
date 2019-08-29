@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+
 import 'package:ehr_mobile/model/patient.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import 'add_patient.dart';
 import 'list_patients.dart';
@@ -89,14 +92,60 @@ class _SearchPatientState extends State<SearchPatient> {
                         padding: EdgeInsets.all(10.0),
                         children: _patientList.map((patient) {
                           return ListTile(
-                            title: Text(nullHandler(patient.firstName) +
-                                " " +
-                                nullHandler(patient.lastName)),
-                            leading: Text(nullHandler(patient.sex)),
-                            subtitle:
-                                Text(nullHandler("date")),
-                            trailing: Text(nullHandler(patient.nationalId)),
-                            onTap: () {
+                            isThreeLine: true,
+                            leading: Container(
+                              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                              child: IconButton(
+                                // For this situation your icon name should be humanFemale
+                                icon: new Icon(patient.sex == "MALE" ? MdiIcons.humanMale : MdiIcons.humanFemale,
+                                    color: Colors.blue, size: 35),
+                                onPressed: () {},
+                              ),
+                            ),
+                            title: Text(
+                              patient.firstName + " " + patient.lastName,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Text(
+                                    'ID Number : ' + nullHandler(patient.nationalId),
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    'DOB : ' + nullHandler(DateFormat("yyyy/MM/dd").format(patient.birthDate)),
+                                    style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            trailing: Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                              child: Icon(
+                                Icons.chevron_right,
+                                size: 36,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            onTap: (){
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
