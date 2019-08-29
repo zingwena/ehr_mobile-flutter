@@ -90,47 +90,50 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
 
-        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler((methodCall, result) -> {
+        new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-            Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
 
-            if (methodCall.method.equals("registerPatient")) {
-                String args = methodCall.arguments();
+                if (methodCall.method.equals("registerPatient")) {
+                    String args = methodCall.arguments();
 
 
-                PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-                System.out.println("===================date");
+                    PatientDto patientDto = gson.fromJson(args, PatientDto.class);
+                    System.out.println("===================date");
 
-                Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
+                    Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
-                patient.setNationalId(patientDto.getNationalId());
-                patient.setReligionId(patientDto.getReligion());
-                patient.setMaritalStatusId(patientDto.getMaritalStatus());
-                patient.setEducationLevelId(patientDto.getEducationLevel());
-                patient.setNationalityId(patientDto.getNationality());
-                patient.setCountryId(patientDto.getCountryOfBirth());
-                patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
-                patient.setAddress(patientDto.getAddress());
-                patient.setOccupationId(patientDto.getOccupation());
+                    patient.setNationalId(patientDto.getNationalId());
+                    patient.setReligionId(patientDto.getReligion());
+                    patient.setMaritalStatusId(patientDto.getMaritalStatus());
+                    patient.setEducationLevelId(patientDto.getEducationLevel());
+                    patient.setNationalityId(patientDto.getNationality());
+                    patient.setCountryId(patientDto.getCountryOfBirth());
+                    patient.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
+                    patient.setAddress(patientDto.getAddress());
+                    patient.setOccupationId(patientDto.getOccupation());
 
 //                    patient.setBirthDate(patientDto.getBirthDate());
-                int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
-                result.success(id);
+                    int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
+                    result.success(id);
 
 
-                System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().findPatientById(id));
-            }
-            if (methodCall.method.equals("getPatientById")) {
-                int ags = methodCall.arguments();
-                Patient patient = ehrMobileDatabase.patientDao().findPatientById(ags);
+                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().findPatientById(id));
+                }
+                if (methodCall.method.equals("getPatientById")) {
+                    int ags = methodCall.arguments();
+                    Patient patient = ehrMobileDatabase.patientDao().findPatientById(ags);
 
-                String response = gson.toJson(patient);
-                result.success(response);
-            }
-            if (methodCall.method.equals("getPatientMaritalStatus")) {
-                String code = methodCall.arguments();
-                String name = ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
-                result.success(name);
+                    String response = gson.toJson(patient);
+                    result.success(response);
+                }
+                if (methodCall.method.equals("getPatientMaritalStatus")) {
+                    String code = methodCall.arguments();
+                    String name = ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
+                    result.success(name);
+                }
             }
         });
 
@@ -173,73 +176,76 @@ public class MainActivity extends FlutterActivity {
 
 
         new MethodChannel(getFlutterView(), DATACHANNEL).setMethodCallHandler(
-                (methodCall1, result1) -> {
-                    Gson gson = new Gson();
-                    if (methodCall1.method.equals("religionOptions")) {
-                        try {
-                            List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
+                        Gson gson = new Gson();
+                        if (methodCall1.method.equals("religionOptions")) {
+                            try {
+                                List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
 
-                            String religionList = gson.toJson(religions);
-                            result1.success(religionList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                                String religionList = gson.toJson(religions);
+                                result1.success(religionList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
-                    if (methodCall1.method.equals("countryOptions")) {
-                        try {
-                            List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
-                            System.out.println("*************************** native" + countries);
-                            String countryList = gson.toJson(countries);
-                            result1.success(countryList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                        if (methodCall1.method.equals("countryOptions")) {
+                            try {
+                                List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
+                                System.out.println("*************************** native" + countries);
+                                String countryList = gson.toJson(countries);
+                                result1.success(countryList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
-                    if (methodCall1.method.equals("occupationOptions")) {
-                        try {
-                            List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
-                            String occupationList = gson.toJson(occupations);
-                            result1.success(occupationList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
-                        }
-
-                    }
-
-                    if (methodCall1.method.equals("educationLevelOptions")) {
-                        try {
-                            List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
-                            String educationLevelList = gson.toJson(educationLevels);
-                            result1.success(educationLevelList);
-
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                        if (methodCall1.method.equals("occupationOptions")) {
+                            try {
+                                List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
+                                String occupationList = gson.toJson(occupations);
+                                result1.success(occupationList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
 
                         }
-                    }
 
-                    if (methodCall1.method.equals("nationalityOptions")) {
-                        try {
-                            List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
-                            String nationalityList = gson.toJson(nationalities);
-                            result1.success(nationalityList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                        if (methodCall1.method.equals("educationLevelOptions")) {
+                            try {
+                                List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
+                                String educationLevelList = gson.toJson(educationLevels);
+                                result1.success(educationLevelList);
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
                         }
-                    }
-                    if (methodCall1.method.equals("maritalStatusOptions")) {
-                        try {
-                            List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
-                            String maritalStatusList = gson.toJson(maritalStatuses);
-                            result1.success(maritalStatusList);
 
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
-
+                        if (methodCall1.method.equals("nationalityOptions")) {
+                            try {
+                                List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
+                                String nationalityList = gson.toJson(nationalities);
+                                result1.success(nationalityList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
+                        if (methodCall1.method.equals("maritalStatusOptions")) {
+                            try {
+                                List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
+                                String maritalStatusList = gson.toJson(maritalStatuses);
+                                result1.success(maritalStatusList);
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
+
                     }
-
-
                 });
         new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
@@ -264,97 +270,103 @@ public class MainActivity extends FlutterActivity {
         });
 
 
-        new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler((call, result1) -> {
-            final String arguments = call.arguments();
-            if (call.method.equals("searchPatient")) {
-                List<Patient> _list;
+        new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
+                final String arguments = call.arguments();
+                if (call.method.equals("searchPatient")) {
+                    List<Patient> _list;
 
-                String searchItem = arguments;
-                PatientQuery patientQuery = new PatientQuery();
-                SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
-                _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
-                Gson gson = new Gson();
+                    String searchItem = arguments;
+                    PatientQuery patientQuery = new PatientQuery();
+                    SimpleSQLiteQuery sqLiteQuery = patientQuery.searchPatient(searchItem);
+                    _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                    Gson gson = new Gson();
 
 
-                result1.success(gson.toJson(_list));
+                    result1.success(gson.toJson(_list));
+                }
             }
         });
 
-        new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler((methodCall, result) -> {
+        new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-            if (methodCall.method.equals("visit")) {
-                final int patientId = methodCall.arguments();
-                createVisit(patientId);
-                System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
-
-            } else {
-                final String arguments = methodCall.arguments();
-
-                Gson gson = new Gson();
-                if (methodCall.method.equals("bloodPressure")) {
-                    BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                    if (bloodPressure.getVisitId() == 0) {
-                        bloodPressure.setVisitId(visit.getVisitId());
-                    }
-                    ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
-                    System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
-
-
-                } else if (methodCall.method.equals("temperature")) {
-
-                    Temperature temperature = gson.fromJson(arguments, Temperature.class);
-
-                    if (temperature.getVisitId() == 0) {
-                        temperature.setVisitId(visit.getVisitId());
-                    }
-                    ehrMobileDatabase.temperatureDao().insert(temperature);
-                    System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
-
-
-                } else if (methodCall.method.equals("respiratoryRate")) {
-
-                    RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
-
-                    if (respiratoryRate.getVisitId() == 0) {
-                        respiratoryRate.setVisitId(visit.getVisitId());
-                    }
-                    ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
-                    System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
-
-
-                } else if (methodCall.method.equals("height")) {
-
-                    Height height = gson.fromJson(arguments, Height.class);
-
-                    if (height.getVisitId() == 0) {
-                        height.setVisitId(visit.getVisitId());
-                    }
-                    ehrMobileDatabase.heightDao().insert(height);
-                    System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
-
-
-                } else if (methodCall.method.equals("weight")) {
-
-                    Weight weight = gson.fromJson(arguments, Weight.class);
-                    if (weight.getVisitId() == 0) {
-                        weight.setVisitId(visit.getVisitId());
-                    }
-                    ehrMobileDatabase.weightDao().insert(weight);
-
-
-                } else if (methodCall.method.equals("pulse")) {
-
-                    Pulse pulse = gson.fromJson(arguments, Pulse.class);
-                    if (pulse.getVisitId() == 0) {
-                        pulse.setVisitId(visit.getVisitId());
-                        System.out.println("=-=-=-=pulse" + pulse.getVisitId());
-                    }
-                    ehrMobileDatabase.pulseDao().insert(pulse);
-                    System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
-
+                if (methodCall.method.equals("visit")) {
+                    final int patientId = methodCall.arguments();
+                    MainActivity.this.createVisit(patientId);
+                    System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
 
                 } else {
-                    result.notImplemented();
+                    final String arguments = methodCall.arguments();
+
+                    Gson gson = new Gson();
+                    if (methodCall.method.equals("bloodPressure")) {
+                        BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
+                        if (bloodPressure.getVisitId() == 0) {
+                            bloodPressure.setVisitId(visit.getVisitId());
+                        }
+                        ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
+                        System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
+
+
+                    } else if (methodCall.method.equals("temperature")) {
+
+                        Temperature temperature = gson.fromJson(arguments, Temperature.class);
+
+                        if (temperature.getVisitId() == 0) {
+                            temperature.setVisitId(visit.getVisitId());
+                        }
+                        ehrMobileDatabase.temperatureDao().insert(temperature);
+                        System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
+
+
+                    } else if (methodCall.method.equals("respiratoryRate")) {
+
+                        RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
+
+                        if (respiratoryRate.getVisitId() == 0) {
+                            respiratoryRate.setVisitId(visit.getVisitId());
+                        }
+                        ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
+                        System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
+
+
+                    } else if (methodCall.method.equals("height")) {
+
+                        Height height = gson.fromJson(arguments, Height.class);
+
+                        if (height.getVisitId() == 0) {
+                            height.setVisitId(visit.getVisitId());
+                        }
+                        ehrMobileDatabase.heightDao().insert(height);
+                        System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
+
+
+                    } else if (methodCall.method.equals("weight")) {
+
+                        Weight weight = gson.fromJson(arguments, Weight.class);
+                        if (weight.getVisitId() == 0) {
+                            weight.setVisitId(visit.getVisitId());
+                        }
+                        ehrMobileDatabase.weightDao().insert(weight);
+
+
+                    } else if (methodCall.method.equals("pulse")) {
+
+                        Pulse pulse = gson.fromJson(arguments, Pulse.class);
+                        if (pulse.getVisitId() == 0) {
+                            pulse.setVisitId(visit.getVisitId());
+                            System.out.println("=-=-=-=pulse" + pulse.getVisitId());
+                        }
+                        ehrMobileDatabase.pulseDao().insert(pulse);
+                        System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
+
+
+                    } else {
+                        result.notImplemented();
+                    }
                 }
             }
         });
@@ -362,190 +374,193 @@ public class MainActivity extends FlutterActivity {
 
         /*   ===============================================HTS TESTING  =============================================================== */
         new MethodChannel(getFlutterView(), HTSCHANNEL).setMethodCallHandler(
-                (methodCall, result) -> {
-                    String arguments = methodCall.arguments();
-                    Gson gson = new Gson();
-                    if (methodCall.method.equals("htsModelOptions")) {
-                        try {
-                            List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                        String arguments = methodCall.arguments();
+                        Gson gson = new Gson();
+                        if (methodCall.method.equals("htsModelOptions")) {
+                            try {
+                                List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
 
-                            String htsModelList = gson.toJson(htsModels);
-                            System.out.println("htsModel=====:" + htsModels);
-                            result.success(htsModelList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                                String htsModelList = gson.toJson(htsModels);
+                                System.out.println("htsModel=====:" + htsModels);
+                                result.success(htsModelList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
-                    if (methodCall.method.equals("entrypointOptions")) {
-                        try {
-                            List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
-                            System.out.println("*************************** native" + entryPoints);
-                            String entrypointList = gson.toJson(entryPoints);
-                            result.success(entrypointList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                        if (methodCall.method.equals("entrypointOptions")) {
+                            try {
+                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                System.out.println("*************************** native" + entryPoints);
+                                String entrypointList = gson.toJson(entryPoints);
+                                result.success(entrypointList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
-                    if (methodCall.method.equals("purposeOfTestsOptions")) {
-                        try {
-                            List<Purpose_Of_Tests> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
-                            String purposeOfTestsList = gson.toJson(purpose_of_tests);
-                            result.success(purposeOfTestsList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                        if (methodCall.method.equals("purposeOfTestsOptions")) {
+                            try {
+                                List<Purpose_Of_Tests> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
+                                String purposeOfTestsList = gson.toJson(purpose_of_tests);
+                                result.success(purposeOfTestsList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
 
-                    if (methodCall.method.equals("reasonForNotIssuingResultOptions")) {
+                        if (methodCall.method.equals("reasonForNotIssuingResultOptions")) {
 
-                        try {
-                            List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
-                            System.out.println("&&&&&&&&&&&&&&&&&&&&&&& reason for not issuing results :" + reasonForNotIssuingResults);
-                            String reasonForNotIssuingResultList = gson.toJson(reasonForNotIssuingResults);
-                            result.success(reasonForNotIssuingResultList);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong" + e.getMessage());
+                            try {
+                                List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
+                                System.out.println("&&&&&&&&&&&&&&&&&&&&&&& reason for not issuing results :" + reasonForNotIssuingResults);
+                                String reasonForNotIssuingResultList = gson.toJson(reasonForNotIssuingResults);
+                                result.success(reasonForNotIssuingResultList);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong" + e.getMessage());
+                            }
                         }
-                    }
 
-                    if (methodCall.method.equals("savePreTest")) {
-                        try {
-                            PreTest preTest = gson.fromJson(arguments, PreTest.class);
+                        if (methodCall.method.equals("savePreTest")) {
+                            try {
+                                PreTest preTest = gson.fromJson(arguments, PreTest.class);
 
-                            ehrMobileDatabase.preTestDao().createPreTest(preTest);
-                            System.out.println("List of pretest" + ehrMobileDatabase.preTestDao().listPreTests());
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                                ehrMobileDatabase.preTestDao().createPreTest(preTest);
+                                System.out.println("List of pretest" + ehrMobileDatabase.preTestDao().listPreTests());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
 
-                    if (methodCall.method.equals("saveResult")) {
-                        try {
-                            // get variables
-                            LaboratoryInvestigationTest laboratoryInvestigationTest = new LaboratoryInvestigationTest();
+                        if (methodCall.method.equals("saveResult")) {
+                            try {
+                                // get variables
+                                LaboratoryInvestigationTest laboratoryInvestigationTest = new LaboratoryInvestigationTest();
 
 
-                        } catch (Exception e) {
+                            } catch (Exception e) {
+                            }
                         }
-                    }
-                    if (methodCall.method.equals("savePostTest")) {
-                        try {
-                            PostTest postTest = gson.fromJson(arguments, PostTest.class);
+                        if (methodCall.method.equals("savePostTest")) {
+                            try {
+                                PostTest postTest = gson.fromJson(arguments, PostTest.class);
 
-                            ehrMobileDatabase.postTestDao().createPostTest(postTest);
-                            System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                                ehrMobileDatabase.postTestDao().createPostTest(postTest);
+                                System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
-                    if (methodCall.method.equals("saveHtsRegistration")) {
-                        try {
-                            HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
+                        if (methodCall.method.equals("saveHtsRegistration")) {
+                            try {
+                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 
-                            ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-                            System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                                System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
 
-                    if (methodCall.method.equals("getSample")) {
+                        if (methodCall.method.equals("getSample")) {
 
-                        try {
+                            try {
 //                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
 //                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                            String investigationString = gson.toJson(investigationEhr);
-                            System.out.println(" investigation***************" + investigationString);
-                            result.success(investigationString);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
-                        }
-                    }
-                    if (methodCall.method.equals("getLabInvestigation")) {
-
-                        try {
-
-                            LaboratoryInvestigation laboratoryInvestigation = getLabInvestigation();
-                            int labId = laboratoryInvestigation.getId();
-                            System.out.println(" investigation***************" +
-                                    labId);
-                            Map<String, Integer> map = new HashMap<>();
-                            System.out.println("visitIdPatient = " + visitIdPatient);
-                            System.out.println("labId = " + labId);
-                            map.put("visitPatientId", 1);
-                            map.put("labId", labId);
-                            String mapData = gson.toJson(map);
-                            result.success(mapData);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
-                        }
-                    }
-
-                    if (methodCall.method.equals("getTestKitsByLevel")) {
-
-                        try {
-//
-                            String testKits;
-                            int count = Integer.valueOf(arguments);
-                            switch (count) {
-                                case 0: {
-                                    List<TestKit> firstLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("FIRST");
-                                    testKits = gson.toJson(firstLevelTestKits);
-                                    System.out.println("firstLevelTestKits = " + firstLevelTestKits);
-                                    result.success(testKits);
-
-                                }
-                                break;
-
-                                case 1: {
-                                    List<TestKit> secondLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("SECOND");
-                                    testKits = gson.toJson(secondLevelTestKits);
-                                    result.success(testKits);
-
-                                }
-                                break;
-                                case 2: {
-                                    List<TestKit> thirdLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("THIRD");
-                                    testKits = gson.toJson(thirdLevelTestKits);
-                                    result.success(testKits);
-
-                                }
-                                break;
-                                default:
-                                    throw new IllegalStateException("Cannot read" + arguments);
+                                String investigationString = gson.toJson(investigationEhr);
+                                System.out.println(" investigation***************" + investigationString);
+                                result.success(investigationString);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
                             }
-
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
                         }
-                    }
+                        if (methodCall.method.equals("getLabInvestigation")) {
 
-                    if (methodCall.method.equals("saveHtsRegistration")) {
-                        try {
-                            HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
+                            try {
 
-                            ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-                            System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                                LaboratoryInvestigation laboratoryInvestigation = MainActivity.this.getLabInvestigation();
+                                int labId = laboratoryInvestigation.getId();
+                                System.out.println(" investigation***************" +
+                                        labId);
+                                Map<String, Integer> map = new HashMap<String, Integer>();
+                                System.out.println("visitIdPatient = " + visitIdPatient);
+                                System.out.println("labId = " + labId);
+                                map.put("visitPatientId", 1);
+                                map.put("labId", labId);
+                                String mapData = gson.toJson(map);
+                                result.success(mapData);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
 
-                    if (methodCall.method.equals("getSample")) {
+                        if (methodCall.method.equals("getTestKitsByLevel")) {
 
-                        try {
-                            Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
-                            System.out.println("arguments = " + arguments);
-                            InvestigationEhr investigationEhr = new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e", "Blood", "HIV");
-                            Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                            String investigationString = gson.toJson(investigationEhr);
-                            System.out.println(" investigation***************" + sample);
-                            result.success(investigationString);
-                        } catch (Exception e) {
-                            System.out.println("something went wrong " + e.getMessage());
+                            try {
+//
+                                String testKits;
+                                int count = Integer.valueOf(arguments);
+                                switch (count) {
+                                    case 0: {
+                                        List<TestKit> firstLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("FIRST");
+                                        testKits = gson.toJson(firstLevelTestKits);
+                                        System.out.println("firstLevelTestKits = " + firstLevelTestKits);
+                                        result.success(testKits);
+
+                                    }
+                                    break;
+
+                                    case 1: {
+                                        List<TestKit> secondLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("SECOND");
+                                        testKits = gson.toJson(secondLevelTestKits);
+                                        result.success(testKits);
+
+                                    }
+                                    break;
+                                    case 2: {
+                                        List<TestKit> thirdLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("THIRD");
+                                        testKits = gson.toJson(thirdLevelTestKits);
+                                        result.success(testKits);
+
+                                    }
+                                    break;
+                                    default:
+                                        throw new IllegalStateException("Cannot read" + arguments);
+                                }
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
                         }
-                    }
 
+                        if (methodCall.method.equals("saveHtsRegistration")) {
+                            try {
+                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
+
+                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                                System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+
+                        if (methodCall.method.equals("getSample")) {
+
+                            try {
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
+                                System.out.println("arguments = " + arguments);
+                                InvestigationEhr investigationEhr = new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e", "Blood", "HIV");
+                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                String investigationString = gson.toJson(investigationEhr);
+                                System.out.println(" investigation***************" + sample);
+                                result.success(investigationString);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+
+                    }
                 });
 
     }
