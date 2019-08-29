@@ -29,6 +29,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
@@ -91,7 +92,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
         Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class,
-        HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
+        HtsModel.class, EntryPoint.class, Town.class ,Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
         PostTest.class,HtsRegistration.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class}, version = 2, exportSchema = false)
 

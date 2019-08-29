@@ -240,6 +240,7 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+
                         if (methodCall1.method.equals("maritalStatusOptions")) {
                             try {
                                 List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
@@ -247,6 +248,18 @@ public class MainActivity extends FlutterActivity {
                                 result1.success(maritalStatusList);
 
                             } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
+                        if (methodCall1.method.equals("getEntryPointsOptions")){
+                            try {
+                                List<EntryPoint> entryPoints=ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                String list =gson.toJson(entryPoints);
+                                result1.success(list);
+                            }
+                            catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
                             }
@@ -456,6 +469,8 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+
+                        /* */
 
                         if (methodCall.method.equals("getSample")) {
 
