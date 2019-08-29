@@ -16,7 +16,7 @@ public class PatientQuery {
 
 
         StringBuilder stringQuery = new StringBuilder("SELECT * FROM Patient");
-        List<Object> parameters = new ArrayList<>();
+        List<Object> parameters = new ArrayList<Object>();
 
         String searchItemNoSpace = getStringWithoutSpecialCharacters(searchItem);
 
