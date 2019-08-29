@@ -79,6 +79,7 @@ class _Registration extends State<Registration> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        date=DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
 
@@ -254,7 +255,7 @@ class _Registration extends State<Registration> {
                             });
                           }
                           if (_formIsValid) {
-                            HtsRegistration htsDetails= HtsRegistration(visitId, htsType, selectedDate, _currentEntryPoint);
+                            HtsRegistration htsDetails= HtsRegistration(visitId, htsType, date, _currentEntryPoint);
                            await  registration(htsDetails);
                             Navigator.push(
                                 context,
@@ -276,7 +277,7 @@ class _Registration extends State<Registration> {
 Future<void> registration(HtsRegistration htsRegistration) async{
     int id;
     try{
-      id= await htsChannel.invokeMethod('htsRegistration', htsRegistration);
+      id= await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
       print('---------------------saved file id  $id');
     }
     catch(e){
