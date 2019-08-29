@@ -16,7 +16,6 @@ public class HtsRegistration {
     @TypeConverters(GenderConverter.class)
     public HtsType htsType;
     @TypeConverters(DateConverter.class)
-
     Date patientDate;
 
     public int getId() {

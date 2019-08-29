@@ -18,13 +18,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
@@ -370,7 +374,8 @@ public class MainActivity extends FlutterActivity {
                         }
                     }
 
-                    if (methodCall.method.equals("savePreTest")) {
+                    //Old pre-test,post-test,hts
+              /*      if (methodCall.method.equals("savePreTest")) {
                         try {
                             PreTest preTest = gson.fromJson(arguments, PreTest.class);
 
@@ -402,7 +407,94 @@ public class MainActivity extends FlutterActivity {
                                     } catch (Exception e) {
                                         System.out.println("something went wrong " + e.getMessage());
                                     }
-                                }
+                                }*/
+
+                                //Old pretest,hts,post-test
+
+
+                    //New hts,pre-test,post-test
+
+                    /*new MethodChannel(getFlutterView(), HTSCHANNEL).setMethodCallHandler((call, result1) -> {*/
+
+                    if (methodCall.method.equals("saveHtsRegistration")) {
+
+                        String args = methodCall.arguments();
+                        System.out.println(args);
+
+
+                        HtsRegDTO htsRegDTO = gson.fromJson(args,HtsRegDTO.class);
+//
+                        System.out.println("==============================HtsRegDTO " + htsRegDTO.getId());
+                        Hts hts = new  Hts();
+                        hts.setId(htsRegDTO.getId());
+                        hts.setHtsType(htsRegDTO.getHtsType());
+                        hts.setPatientDate(htsRegDTO.getRegistrationDate());
+                        int id = ehrMobileDatabase.htsDao().createHts(hts).intValue();
+                        result.success(id);
+
+
+                        System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.htsDao().listHts());
+                    }
+
+
+                    if (methodCall.method.equals("savePreTest")) {
+
+                        String args = methodCall.arguments();
+                        System.out.println(args);
+
+
+                        PreTestDTO preTestDTO = gson.fromJson(args,PreTestDTO.class);
+//
+                        System.out.println("==============================PreTestDTO " + preTestDTO.getId());
+                        Hts hts = new  Hts();
+                        hts.setId(preTestDTO.getId());
+                        hts.setHtsApproach(preTestDTO.getHtsApproach());
+                        hts.setNewTest(preTestDTO.getNewTest());
+                        hts.setNewTestPregLact(preTestDTO.getNewTestPregLact());
+                        hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
+                        hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
+                        hts.setPreTestInfoGiven(preTestDTO.getPreTestInfoGiven());
+                        hts.setHtsModel_id(preTestDTO.getHtsModel_id());
+                        hts.setPurpose_of_test_id(preTestDTO.getPurpose_of_test_id());
+                        int id = ehrMobileDatabase.htsDao().createHts(hts).intValue();
+                        result.success(id);
+
+
+                        System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.htsDao().listHts());
+                    }
+
+                    if (methodCall.method.equals("savePostTest")) {
+
+                        String args = methodCall.arguments();
+                        System.out.println(args);
+
+
+                        PostTestDTO postTestDTO = gson.fromJson(args,PostTestDTO.class);
+//
+                        System.out.println("==============================PostTestDTO " + postTestDTO.getId());
+                        Hts hts = new  Hts();
+                        hts.setId(postTestDTO.getId());
+                        hts.setDateOfPostTestCounsel(postTestDTO.getDateOfPostTestCounsel());
+                        hts.setResultReceived(postTestDTO.getResultReceived());
+                        hts.setFinalResult(postTestDTO.getFinalResult());
+                        hts.setPostTestCounselled(postTestDTO.getPostTestCounselled());
+                        hts.setReasonForNotIssuingResult_id(postTestDTO.getReasonForNotIssuingResult_id());
+                        int id = ehrMobileDatabase.htsDao().createHts(hts).intValue();
+                        result.success(id);
+
+
+                        System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.htsDao().listHts());
+                    }
+
+
+                    if (methodCall.method.equals("getHtsById")) {
+                        int ags = methodCall.arguments();
+                        Hts hts = ehrMobileDatabase.htsDao().findHtsById(ags);
+                        String response = gson.toJson(hts);
+                        result.success(response);
+                    }
+
+                    //New hts,pre-test,post-test
 
                         if (methodCall.method.equals("getSample")) {
 
