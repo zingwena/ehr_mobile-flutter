@@ -1,0 +1,172 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+MERGED from [com.google.android.material:material:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00dd8b170dd6338f72c750b57c9da7bb/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat:1.0.2] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/f2ab138b4fc8bca754988608f1b7cf5e/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1bb0fd4389d55f2708f8bad5311a13de/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.fragment:fragment:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a64ba4211be21b79e247405119ef1836/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b1bee8156d27a9f3387fa7076934df48/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/d540013f6747f9f587b3b7c608a20da3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/4fc949fdfc173a679143f1af2acd8a8f/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b1491cc115728dafbbbd98bb55c38a30/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00c66d6330974a77c51ef4b25613bd1a/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/bbf63f2d1e46b6e2b4196c60e32549e6/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/e3ec6e887dc4977fa7a5fca3653edea1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a22b034de9cdee441f09c1b800c69933/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/855bf3bbd048889e27420b28f8fc529f/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/15e5f3478f154d25686c4343bb139fa7/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/33fd358fbfdb7d9479c4bbf6371c33ba/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1cdb39fd6e55e94a6a8b23949eaa0fd1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9b4f10cad5bd20b29ff71515f8d4664b/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/78b2413604039817bc03a182f1d24db9/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b119966fea0f68c4df0b5ac83a6af7ff/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/3436626868323dff985c6a3651ccbb52/AndroidManifest.xml:17:1-25:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/dfa3fc363d450638c8e4d21ea6129873/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9545f26e1874309efd99205da5ed37ac/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/42a9b84e870ec15ebf33959ab8f02c96/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/0c4ff904f68b93c9b15f6006a96a9b76/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/04a1546fb313057c08496333d257d6e7/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/201d6a950c691247fb083bc541e6edc9/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a21689b64e854f7c7d5ba97617471606/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/4d30f4a37583890e62e06294ce7fce3c/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/c92d543d2469f32cc12fe6e7d07bb4a4/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9bb66a8ce803b28f3a5c3fb5457a35c5/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/40a8e3cd006c02ab6934c2c57f9f8827/AndroidManifest.xml:17:1-22:12
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+	package
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:3:5-35
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:1-24:12
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:5:5-22:19
+MERGED from [com.google.android.material:material:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00dd8b170dd6338f72c750b57c9da7bb/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00dd8b170dd6338f72c750b57c9da7bb/AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1bb0fd4389d55f2708f8bad5311a13de/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1bb0fd4389d55f2708f8bad5311a13de/AndroidManifest.xml:9:5-20
+MERGED from [androidx.core:core:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b119966fea0f68c4df0b5ac83a6af7ff/AndroidManifest.xml:22:5-89
+MERGED from [androidx.core:core:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b119966fea0f68c4df0b5ac83a6af7ff/AndroidManifest.xml:22:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/3436626868323dff985c6a3651ccbb52/AndroidManifest.xml:22:5-23:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/3436626868323dff985c6a3651ccbb52/AndroidManifest.xml:22:5-23:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b119966fea0f68c4df0b5ac83a6af7ff/AndroidManifest.xml:22:18-86
+	android:supportsRtl
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:10:9-35
+	android:label
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:8:9-41
+	android:roundIcon
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:9:9-54
+	android:icon
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:7:9-43
+	android:allowBackup
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:6:9-35
+	android:theme
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:11:9-40
+activity#com.example.retrofit.MainActivity
+ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:12:9-21:20
+	android:label
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:14:13-45
+	android:theme
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:15:13-56
+	android:name
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:13:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:16:13-20:29
+action#android.intent.action.MAIN
+ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:17:17-69
+	android:name
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:17:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:19:17-77
+	android:name
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml:19:27-74
+uses-sdk
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+MERGED from [com.google.android.material:material:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00dd8b170dd6338f72c750b57c9da7bb/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00dd8b170dd6338f72c750b57c9da7bb/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.2] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/f2ab138b4fc8bca754988608f1b7cf5e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.2] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/f2ab138b4fc8bca754988608f1b7cf5e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1bb0fd4389d55f2708f8bad5311a13de/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1bb0fd4389d55f2708f8bad5311a13de/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.fragment:fragment:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a64ba4211be21b79e247405119ef1836/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a64ba4211be21b79e247405119ef1836/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b1bee8156d27a9f3387fa7076934df48/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b1bee8156d27a9f3387fa7076934df48/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/d540013f6747f9f587b3b7c608a20da3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/d540013f6747f9f587b3b7c608a20da3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/4fc949fdfc173a679143f1af2acd8a8f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/4fc949fdfc173a679143f1af2acd8a8f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b1491cc115728dafbbbd98bb55c38a30/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b1491cc115728dafbbbd98bb55c38a30/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00c66d6330974a77c51ef4b25613bd1a/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/00c66d6330974a77c51ef4b25613bd1a/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/bbf63f2d1e46b6e2b4196c60e32549e6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/bbf63f2d1e46b6e2b4196c60e32549e6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/e3ec6e887dc4977fa7a5fca3653edea1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/e3ec6e887dc4977fa7a5fca3653edea1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a22b034de9cdee441f09c1b800c69933/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a22b034de9cdee441f09c1b800c69933/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/855bf3bbd048889e27420b28f8fc529f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/855bf3bbd048889e27420b28f8fc529f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/15e5f3478f154d25686c4343bb139fa7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/15e5f3478f154d25686c4343bb139fa7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/33fd358fbfdb7d9479c4bbf6371c33ba/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/33fd358fbfdb7d9479c4bbf6371c33ba/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1cdb39fd6e55e94a6a8b23949eaa0fd1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/1cdb39fd6e55e94a6a8b23949eaa0fd1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9b4f10cad5bd20b29ff71515f8d4664b/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9b4f10cad5bd20b29ff71515f8d4664b/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/78b2413604039817bc03a182f1d24db9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/78b2413604039817bc03a182f1d24db9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b119966fea0f68c4df0b5ac83a6af7ff/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.1] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/b119966fea0f68c4df0b5ac83a6af7ff/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/3436626868323dff985c6a3651ccbb52/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/3436626868323dff985c6a3651ccbb52/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/dfa3fc363d450638c8e4d21ea6129873/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/dfa3fc363d450638c8e4d21ea6129873/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9545f26e1874309efd99205da5ed37ac/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9545f26e1874309efd99205da5ed37ac/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/42a9b84e870ec15ebf33959ab8f02c96/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/42a9b84e870ec15ebf33959ab8f02c96/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/0c4ff904f68b93c9b15f6006a96a9b76/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/0c4ff904f68b93c9b15f6006a96a9b76/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/04a1546fb313057c08496333d257d6e7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/04a1546fb313057c08496333d257d6e7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/201d6a950c691247fb083bc541e6edc9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/201d6a950c691247fb083bc541e6edc9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a21689b64e854f7c7d5ba97617471606/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/a21689b64e854f7c7d5ba97617471606/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/4d30f4a37583890e62e06294ce7fce3c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/4d30f4a37583890e62e06294ce7fce3c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/c92d543d2469f32cc12fe6e7d07bb4a4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/c92d543d2469f32cc12fe6e7d07bb4a4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9bb66a8ce803b28f3a5c3fb5457a35c5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/9bb66a8ce803b28f3a5c3fb5457a35c5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/40a8e3cd006c02ab6934c2c57f9f8827/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/nokuthaba/.gradle/caches/transforms-2/files-2.1/40a8e3cd006c02ab6934c2c57f9f8827/AndroidManifest.xml:20:5-44
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+		ADDED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml
+		INJECTED from /home/nokuthaba/AndroidStudioProjects/ehr_mobile/Retrofit/app/src/main/AndroidManifest.xml

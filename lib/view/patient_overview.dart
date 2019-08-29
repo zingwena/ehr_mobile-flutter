@@ -1,12 +1,18 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/patient.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
+import 'package:ehr_mobile/view/patient_post_test.dart';
+import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'hiv_screening.dart';
 import 'home_page.dart';
+
+import 'hts_testscreening.dart';
+import 'hts_registration.dart';
+
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
@@ -24,7 +30,8 @@ class Overview extends StatefulWidget {
 
 class OverviewState extends State<Overview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
-  static final MethodChannel patientChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
+  static final MethodChannel patientChannel = MethodChannel(
+      'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   Patient _patient;
   Visit _visit;
   Map<String, dynamic> details;
@@ -35,7 +42,9 @@ class OverviewState extends State<Overview> {
     _patient = widget.patient;
     getVisit(_patient.id);
     print(_patient.toString());
+
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId);
+
     super.initState();
   }
 
@@ -52,10 +61,16 @@ class OverviewState extends State<Overview> {
     setState(() {
       _visit = visit;
     });
+
+
+  }
+  String nullHandler(String value) {
+    return value == null ? "" : value;
   }
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -86,7 +101,7 @@ class OverviewState extends State<Overview> {
                               children: <Widget>[
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -95,7 +110,9 @@ class OverviewState extends State<Overview> {
                                           child: RaisedButton(
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
+                                                borderRadius: BorderRadius
+                                                    .circular(5.0)),
+                                            color: Colors.blue,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
                                               "Vitals",
@@ -103,12 +120,15 @@ class OverviewState extends State<Overview> {
                                                   fontSize: 15,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
-                                            ),onPressed: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ReceptionVitals(_visit.visitId)),
                                             ),
+                                            onPressed: () =>
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ReceptionVitals(
+                                                              _patient.id)),
+                                                ),
                                           ),
                                         ),
                                         width: 100,
@@ -121,7 +141,9 @@ class OverviewState extends State<Overview> {
                                           child: RaisedButton(
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(5.0)),color: Colors.blue,
+                                                borderRadius: BorderRadius
+                                                    .circular(5.0)),
+                                            color: Colors.blue,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
                                               "HTS",
@@ -130,17 +152,114 @@ class OverviewState extends State<Overview> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
-                                            onPressed: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      HivScreening()),
+                                            onPressed: () =>
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Registration()),
+                                                ),
+                                          ),
+
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: RaisedButton(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius
+                                                    .circular(5.0)),
+                                            color: Colors.blue,
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Testing",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
                                             ),
+                                            onPressed: () =>
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HtsScreeningTest()),
+                                                ),
+                                          ),
+
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: RaisedButton(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius
+                                                    .circular(5.0)),
+                                            color: Colors.blue,
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Pre-Test",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            onPressed: () =>
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PatientPretest()),
+                                                ),
                                           ),
                                         ),
                                         width: 100,
                                       ),
                                     ),
+
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: RaisedButton(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius
+                                                    .circular(5.0)),
+                                            color: Colors.blue,
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Post Test Counselling",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            onPressed: () =>
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PatientPostTest()),
+                                                ),
+                                          ),
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+
+
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -149,7 +268,7 @@ class OverviewState extends State<Overview> {
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(5.0)),
+                                                BorderRadius.circular(5.0)),
 
                                             color: Colors.red,
                                             padding: const EdgeInsets.all(20.0),
@@ -160,12 +279,13 @@ class OverviewState extends State<Overview> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
-                               onPressed: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      HomePage()),
-                                            ),
+                                            onPressed: () =>
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HomePage()),
+                                                ),
 
                                           ),
                                         ),
@@ -198,7 +318,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:  _patient.firstName + " " + _patient.lastName),
+                                                text: _patient.firstName + " " +
+                                                    _patient.lastName),
                                             decoration: InputDecoration(
                                               labelText: 'Full Name',
                                               border: OutlineInputBorder(),
@@ -217,7 +338,8 @@ class OverviewState extends State<Overview> {
                                   height: 15,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
 
                                   children: <Widget>[
                                     Expanded(
@@ -226,7 +348,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                          text: _patient.sex),
+                                                text: nullHandler(
+                                                    _patient.sex)),
 
                                             decoration: InputDecoration(
                                               labelText: 'Sex',
@@ -246,7 +369,8 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.nationalId),
+                                                text: nullHandler(
+                                                    _patient.nationalId)),
                                             decoration: InputDecoration(
                                               labelText: 'National ID',
                                               border: OutlineInputBorder(),
@@ -266,7 +390,7 @@ class OverviewState extends State<Overview> {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
@@ -275,6 +399,7 @@ class OverviewState extends State<Overview> {
                                           child: TextField(
                                             controller: TextEditingController(
                                                 text: DateFormat("dd/MM/yyyy").format(_patient.birthDate)),
+
                                             decoration: InputDecoration(
                                               labelText: 'Date Of Birth',
                                               border: OutlineInputBorder(),
@@ -293,7 +418,9 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _maritalStatus),
+                                                text: nullHandler(
+                                                    _patient.maritalStatusId)),
+
                                             decoration: InputDecoration(
                                               labelText: 'Marital Status',
                                               border: OutlineInputBorder(),
@@ -313,7 +440,7 @@ class OverviewState extends State<Overview> {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
 
                                   children: <Widget>[
                                     Expanded(
@@ -322,7 +449,10 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                  text: _educationLevel),
+
+                                                text: nullHandler(
+                                                    _patient.educationLevelId)),
+
                                             decoration: InputDecoration(
                                               labelText: 'Education',
                                               border: OutlineInputBorder(),
@@ -341,7 +471,10 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:  _occupation),
+
+                                                text: nullHandler(
+                                                    _patient.occupationId)),
+
 
                                             decoration: InputDecoration(
                                               labelText: 'Occupation',
@@ -361,7 +494,10 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _nationality),
+
+                                                text: nullHandler(
+                                                    _patient.nationalityId)),
+
 
                                             decoration: InputDecoration(
                                               labelText: 'Nationality',
@@ -393,7 +529,7 @@ class OverviewState extends State<Overview> {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
 
                                   children: <Widget>[
                                     Expanded(
@@ -403,8 +539,7 @@ class OverviewState extends State<Overview> {
                                           child: TextFormField(
                                             controller: TextEditingController(
 
-                                                text: "Address"),
-
+                                                text: "address"),
                                             decoration: InputDecoration(
                                               labelText: 'Address',
                                               border: OutlineInputBorder(),
@@ -458,6 +593,7 @@ class OverviewState extends State<Overview> {
     );
   }
 
+
   Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId) async{
     String maritalStatus,educationLevel,occupation,nationality;
     try{
@@ -468,8 +604,9 @@ class OverviewState extends State<Overview> {
       nationality = await patientChannel.invokeMethod('getNationality',nationalityId);
 
     }
-    catch(e){
-      print('Something went wrong during getting marital status........cause $e');
+    catch (e) {
+      print(
+          'Something went wrong during getting marital status........cause $e');
     }
 
     setState(() {
@@ -483,3 +620,5 @@ class OverviewState extends State<Overview> {
   }
 
 }
+
+
