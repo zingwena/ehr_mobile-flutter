@@ -25,15 +25,23 @@ class _PatientPretest extends State<PatientPretest> {
   List<PurposeOfTest> _purposeOfTestList= List();
 
   int _hts = 0;
-  String _coupleCounselling="" ;
+ // String _coupleCounselling="" ;
   String _newTest="" ;
   String _htsApproach="" ;
-  String _preTestInfoGiven="" ;
-  String _optOutOfTest="" ;
-  int coupleCounselling=0;
+
   int _patientPretest = 0;
-  int _optOutTest = 0;
+  //int _optOutTest = 0;
   int newTest = 0;
+
+
+  bool _preTestInfoGiven=false ;
+  String preTestInfoGiven = "NO";
+
+  bool _optOutOfTest=false ;
+  String optOutOfTest = "NO";
+
+  bool _coupleCounselling=false;
+  String coupleCounselling="NO";
 
 
   @override
@@ -135,51 +143,6 @@ class _PatientPretest extends State<PatientPretest> {
           break;
         case 2:
           _htsApproach = "CITC";
-          break;
-      }
-    });
-  }
-
-   void _handleCoupleCounsellingChange(int value) {
-    setState(() {
-
-  coupleCounselling=value;
-      switch (coupleCounselling) {
-        case 1:
-          _coupleCounselling = "Yes";
-          break;
-        case 2:
-          _coupleCounselling = "No";
-          break;
-      }
-    });
-  }
-
-   void _handlePatientPretestChange(int value) {
-    setState(() {
-      _patientPretest = value;
-
-      switch (_patientPretest) {
-        case 1:
-          _preTestInfoGiven = "Yes";
-          break;
-        case 2:
-          _preTestInfoGiven = "No";
-          break;
-      }
-    });
-  }
-
-    void _handleOptOutTestChange(int value) {
-    setState(() {
-      _optOutTest = value;
-
-      switch (_optOutTest) {
-        case 1:
-          _optOutOfTest = "Yes";
-          break;
-        case 2:
-          _optOutOfTest = "No";
           break;
       }
     });
@@ -311,32 +274,36 @@ class _PatientPretest extends State<PatientPretest> {
                           onChanged: _handleHtsChange)
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Couple Counselling'),
-                          ),
-                          width: 250,
-                        ),
-                      ),
-                      Text('Yes'),
-                      Radio(
-                          value: 1,
-                          groupValue: coupleCounselling,
-                          onChanged: _handleCoupleCounsellingChange),
-                      Text('No'),
-                      Radio(
-                          value: 2,
-                          groupValue: coupleCounselling,
-                          onChanged: _handleCoupleCounsellingChange)
-                    ],
-                  ),
+
                   SizedBox(
                     height: 10.0,
                   ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Couple Counselling"),
+                      Checkbox(
+                        value:_coupleCounselling,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _coupleCounselling=value;
+                          });
+                          if(value) {
+                            setState(() {
+                              coupleCounselling="YES";
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+
+
+                  SizedBox(
+                    height: 10.0,
+                  ),
+
                   Container(
                     padding:
                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
@@ -369,52 +336,34 @@ class _PatientPretest extends State<PatientPretest> {
                   SizedBox(
                     height: 10.0,
                   ),
+
+
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Pre-Test information given.'),
-                          ),
-                          width: 250,
-                        ),
+                      Text("Pre-test Information given"),
+                      Checkbox(
+                        value:_preTestInfoGiven,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _preTestInfoGiven=value;
+                          });
+                          if(value) {
+                            setState(() {
+                              preTestInfoGiven="YES";
+                            });
+                          }
+                        },
                       ),
-                      Text('Yes'),
-                      Radio(
-                          value: 1,
-                          groupValue: _patientPretest,
-                          onChanged: _handlePatientPretestChange),
-                      Text('No'),
-                      Radio(
-                          value: 2,
-                          groupValue: _patientPretest,
-                          onChanged: _handlePatientPretestChange)
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Opt out of test'),
-                          ),
-                          width: 250,
-                        ),
-                      ),
-                      Text('Yes'),
-                      Radio(
-                          value: 1,
-                          groupValue: _optOutTest,
-                          onChanged: _handleOptOutTestChange),
-                      Text('No'),
-                      Radio(
-                          value: 2,
-                          groupValue: _optOutTest,
-                          onChanged: _handleOptOutTestChange)
-                    ],
+
+
+                  SizedBox(
+                    height: 10.0,
                   ),
+
+
                   Row(
                     children: <Widget>[
                       Expanded(
@@ -442,6 +391,33 @@ class _PatientPretest extends State<PatientPretest> {
                   SizedBox(
                     height: 15.0,
                   ),
+
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Opt Out Of Test"),
+                      Checkbox(
+                        value:_optOutOfTest,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _optOutOfTest=value;
+                          });
+                          if(value) {
+                            setState(() {
+                              optOutOfTest="YES";
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+
+
+                  SizedBox(
+                    height: 10.0,
+                  ),
+
 
                   Container(
                     width: double.infinity,

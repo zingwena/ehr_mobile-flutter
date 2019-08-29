@@ -30,6 +30,6 @@ public interface TestKitDao {
     TestKit findTestKitById(int id);
 
     @Query("SELECT * FROM TestKit WHERE level=:level")
-    TestKit findTestKitsByLevel(String level);
+    List<TestKit> findTestKitsByLevel(String level);
 
 }

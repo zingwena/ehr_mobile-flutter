@@ -13,7 +13,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 @Dao
 public interface VisitDao {
     @Insert
-    void insert(Visit visit);
+    Long insert(Visit visit);
 
     @Query("SELECT * FROM Visit WHERE patientId = :patientId AND :currentDate Between startTime and endDate")
     Visit findByPatientIdAndBetweenStartTimeAndEndDate(long patientId, long currentDate);

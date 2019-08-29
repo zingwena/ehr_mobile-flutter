@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/postTest.dart';
-import 'package:ehr_mobile/model/preTest.dart';
-import 'package:ehr_mobile/model/purposeOfTest.dart';
-import 'package:ehr_mobile/model/htsModel.dart';
+
 import 'package:ehr_mobile/model/reasonForNotIssuingResult.dart';
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
+
 import 'package:flutter/services.dart';
-import 'edit_demographics.dart';
+
 
 class PatientPostTest extends StatefulWidget {
   @override
@@ -21,31 +21,52 @@ class _PatientPostTest extends State<PatientPostTest> {
   static const platform = MethodChannel('example.channel.dev/people');
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-  final _formKey = GlobalKey<FormState>();
-  PostTest postTest;
-  List<ReasonForNotIssuingResult> _reasonForNotIssuingResult=List();
-  bool _resultReceived;
-  bool _postTestCounselled;
 
-  int _hts = 0;
-  String _coupleCounselling="" ;
-  String _newTest="" ;
-  String _htsApproach="" ;
-  String _preTestInfoGiven="" ;
-  String _optOutOfTest="" ;
-  int coupleCounselling=0;
-  int _patientPretest = 0;
-  int _optOutTest = 0;
-  int newTest = 0;
+
+  final _formKey = GlobalKey<FormState>();
+
+  var selectedDate;
+  DateTime date;
+
+  PostTest postTest;
+  List<ReasonForNotIssuingResult> _reasonForNotIssuingResultList=List();
+  bool _resultReceived=false;
+  String resultReceived="NO";
+  bool _postTestCounselled = false;
+  String postTestCounselled = "NO";
+
+
 
 
   @override
   void initState() {
+
+    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    date = DateTime.now();
+
+
   getDropDrowns();
 
- /* print('=================================== htsModelList ${_htsModelList.length}');
-  print('=================================== purposeOfTestList ${_purposeOfTestList.length}');*/
+  print('reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
+
+
+
     super.initState();
+
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+
+        firstDate: DateTime(1900, 8),
+
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+      });
   }
 
   Future<void> insertPostTest(PostTest postTest) async {
@@ -88,128 +109,37 @@ class _PatientPostTest extends State<PatientPostTest> {
 
   Future<void> getDropDrowns() async {
 
-   /* List htsModelList = [];
-    List purposeOfTestList = [];*/
 
     List reasonForNotIssuingResultList = [];
 
     try {
       reasonForNotIssuingResultList= jsonDecode(await htsChannel.invokeMethod('reasonForNotIssuingResultOptions'));
 
-      purposeOfTestList= jsonDecode(await htsChannel.invokeMethod('purposeOfTestsOptions'));
+
 
        } catch (e) {
       print("channel failure: '$e'");
     }
 
     setState(() {
-      /*_htsModelList = HtsModel.mapFromJson(htsModelList);
-      _purposeOfTestList = PurposeOfTest.mapFromJson(purposeOfTestList);*/
 
-      _reasonForNotIssuingResultList = ReasonForNotIssuingResult.mapFromJson(reasonForNotIssuingResultList);
+
+      reasonForNotIssuingResultList = ReasonForNotIssuingResult.mapFromJson(reasonForNotIssuingResultList);
 
 
       _dropDownMenuItemsReasonForNotIssuingResult =
           getDropDownMenuItemsReasonForNotIssuingResult();
 
-
-      _currentHtsModel = _dropDownMenuItemsHtsModel[0].value;
-      _currentPurposeOfTest = _dropDownMenuItemsPurposeOfTest[0].value;
-
       _currentReasonForNotIssuingResult = _dropDownMenuItemsReasonForNotIssuingResult[0].value;
     });
-
-
-
-
-
-
   }
 
 
-   void _handleHtsChange(int value) {
-    setState(() {
-      _hts = value;
-
-      switch (_hts) {
-        case 1:
-          _htsApproach = "PITC";
-          break;
-        case 2:
-          _htsApproach = "CITC";
-          break;
-      }
-    });
-  }
-
-   void _handleCoupleCounsellingChange(int value) {
-    setState(() {
-
-  coupleCounselling=value;
-      switch (coupleCounselling) {
-        case 1:
-          _coupleCounselling = "Yes";
-          break;
-        case 2:
-          _coupleCounselling = "No";
-          break;
-      }
-    });
-  }
-
-   void _handlePatientPretestChange(int value) {
-    setState(() {
-      _patientPretest = value;
-
-      switch (_patientPretest) {
-        case 1:
-          _preTestInfoGiven = "Yes";
-          break;
-        case 2:
-          _preTestInfoGiven = "No";
-          break;
-      }
-    });
-  }
-
-    void _handleOptOutTestChange(int value) {
-    setState(() {
-      _optOutTest = value;
-
-      switch (_optOutTest) {
-        case 1:
-          _optOutOfTest = "Yes";
-          break;
-        case 2:
-          _optOutOfTest = "No";
-          break;
-      }
-    });
-  }
-
-  void _handleNewTestChange(int value) {
-    setState(() {
-      newTest = value;
-
-      switch (newTest) {
-        case 1:
-          _newTest = "Yes";
-          break;
-        case 2:
-          _newTest = "No";
-          break;
-      }
-    });
-  }
 
   List<DropdownMenuItem<String>>
-      _dropDownMenuItemsHtsModel,
-      _dropDownMenuItemsPurposeOfTest,
+
   _dropDownMenuItemsReasonForNotIssuingResult;
 
-
-  String  _currentHtsModel;
-  String _currentPurposeOfTest;
   String _currentReasonForNotIssuingResult;
 
 
@@ -234,61 +164,29 @@ class _PatientPostTest extends State<PatientPostTest> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('HTS Approach'),
-                          ),
-                          width: 250,
-                        ),
+                      Text("Results Recieved"),
+                      Checkbox(
+                        value:_resultReceived,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _resultReceived=value;
+                          });
+                          if(value) {
+                            setState(() {
+                              resultReceived="YES";
+                            });
+                          }
+                        },
                       ),
-                      Text('PITC'),
-                      Radio(
-                          value: 1,
-                          groupValue: _hts,
-                          onChanged: _handleHtsChange),
-                      Text('CITC'),
-                      Radio(
-                          value: 2,
-                          groupValue: _hts,
-                          onChanged: _handleHtsChange)
                     ],
                   ),
                   SizedBox(
                     height: 20.0,
                   ),
-             /*     Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                    width: double.infinity,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 30.0),
-                        child: DropdownButton(
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          iconEnabledColor: Colors.black,
-                          value: _currentHtsModel,
-                          items: _dropDownMenuItemsHtsModel,
-                          onChanged: changedDropDownItemHtsModel,
-                        ),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.blue, //Color of the border
-                        style: BorderStyle.solid, //Style of the border
-                        width: 2.0, //width of the border
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),*/
 
 
 
@@ -324,162 +222,71 @@ class _PatientPostTest extends State<PatientPostTest> {
 
 
                   SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
+
+
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('New test in patients life?'),
-                          ),
-                          width: 250,
-                        ),
+                      Text("Post Test Counselled"),
+                      Checkbox(
+                        value:_postTestCounselled,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _postTestCounselled=value;
+                          });
+                          if(value) {
+                            setState(() {
+                              postTestCounselled="YES";
+                            });
+                          }
+                        },
                       ),
-                      Text('PITC'),
-                      Radio(
-                          value: 1,
-                          groupValue: _hts,
-                          onChanged: _handleHtsChange),
-                      Text('CITC'),
-                      Radio(
-                          value: 2,
-                          groupValue: _hts,
-                          onChanged: _handleHtsChange)
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Couple Counselling'),
-                          ),
-                          width: 250,
-                        ),
-                      ),
-                      Text('Yes'),
-                      Radio(
-                          value: 1,
-                          groupValue: coupleCounselling,
-                          onChanged: _handleCoupleCounsellingChange),
-                      Text('No'),
-                      Radio(
-                          value: 2,
-                          groupValue: coupleCounselling,
-                          onChanged: _handleCoupleCounsellingChange)
-                    ],
-                  ),
+
                   SizedBox(
                     height: 10.0,
                   ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                    width: double.infinity,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 30.0),
-                        child: DropdownButton(
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          iconEnabledColor: Colors.black,
-                          value: _currentPurposeOfTest,
-                          items: _dropDownMenuItemsPurposeOfTest,
-                          onChanged: changedDropDownItemPurposeOfTest,
-                        ),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.blue, //Color of the border
-                        style: BorderStyle.solid, //Style of the border
-                        width: 2.0, //width of the border
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
+
                   Row(
                     children: <Widget>[
                       Expanded(
                         child: SizedBox(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Pre-Test information given.'),
+                            padding: const EdgeInsets.all(0.0),
+                            child: TextFormField(
+                              controller:
+
+                              TextEditingController(text: selectedDate),
+
+                              validator: (value) {
+                                return value.isEmpty ? 'Enter some text' : null;
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Date Post Test Counselled',
+                                  border: OutlineInputBorder()),
+
+                            ),
                           ),
-                          width: 250,
+                          width: 100,
                         ),
                       ),
-                      Text('Yes'),
-                      Radio(
-                          value: 1,
-                          groupValue: _patientPretest,
-                          onChanged: _handlePatientPretestChange),
-                      Text('No'),
-                      Radio(
-                          value: 2,
-                          groupValue: _patientPretest,
-                          onChanged: _handlePatientPretestChange)
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Opt out of test'),
-                          ),
-                          width: 250,
-                        ),
-                      ),
-                      Text('Yes'),
-                      Radio(
-                          value: 1,
-                          groupValue: _optOutTest,
-                          onChanged: _handleOptOutTestChange),
-                      Text('No'),
-                      Radio(
-                          value: 2,
-                          groupValue: _optOutTest,
-                          onChanged: _handleOptOutTestChange)
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                'New test for pregnant and lactating women.'),
-                          ),
-                          width: 250,
-                        ),
-                      ),
-                      Text('Yes'),
-                      Radio(
-                          value: 1,
-                          groupValue: newTest,
-                          onChanged: _handleNewTestChange),
-                      Text('No'),
-                      Radio(
-                          value: 2,
-                          groupValue: newTest,
-                          onChanged: _handleNewTestChange)
+                      IconButton(
+                          icon: Icon(Icons.calendar_today),
+                          color: Colors.blue,
+                          onPressed: () {
+                            _selectDate(context);
+                          })
                     ],
                   ),
                   SizedBox(
-                    height: 15.0,
+                    height: 35.0,
                   ),
+
+
+
 
                   Container(
                     width: double.infinity,
@@ -510,18 +317,6 @@ class _PatientPostTest extends State<PatientPostTest> {
     );
   }
 
-  void changedDropDownItemHtsModel(String value) {
-    setState(() {
-      _currentHtsModel = value;
-
-    });
-  }
-  void changedDropDownItemPurposeOfTest(String value) {
-    setState(() {
-      _currentPurposeOfTest = value;
-
-    });
-  }
 
   void changedDropDownItemReasonForNotIssuingResult(String value) {
     setState(() {
