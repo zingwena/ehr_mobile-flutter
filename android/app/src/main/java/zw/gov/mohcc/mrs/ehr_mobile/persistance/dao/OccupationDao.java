@@ -25,6 +25,6 @@ public interface OccupationDao {
     List<Occupation> getAllOccupations();
 
     @Query("SELECT * FROM Occupation WHERE id=:id")
-    Occupation findOccupationsById(int id);
+    String findOccupationsById(String id);
 
 }

@@ -97,7 +97,7 @@ public class MainActivity extends FlutterActivity {
 
 
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-                    System.out.println("===================date");
+                    System.out.println("==============-=-=-=dto" + patientDto.toString());
 
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
@@ -111,7 +111,7 @@ public class MainActivity extends FlutterActivity {
                     patient.setAddress(patientDto.getAddress());
                     patient.setOccupationId(patientDto.getOccupation());
 
-//                    patient.setBirthDate(patientDto.getBirthDate());
+                    patient.setBirthDate(patientDto.getBirthDate());
                     int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
                     result.success(id);
 
@@ -130,6 +130,21 @@ public class MainActivity extends FlutterActivity {
                     String name= ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
                     result.success(name);
                 }
+                if(methodCall.method.equals("getEducationLevel")){
+                    String code=methodCall.arguments();
+                    String name= ehrMobileDatabase.educationLevelDao().findByEducationLevelId(code);
+                    result.success(name);
+                }
+                if(methodCall.method.equals("getOccupation")){
+                    String code=methodCall.arguments();
+                    String name= ehrMobileDatabase.occupationDao().findOccupationsById(code);
+                    result.success(name);
+                }
+                if(methodCall.method.equals("getNationality")){
+                    String code=methodCall.arguments();
+                    String name= ehrMobileDatabase.nationalityDao().selectNationality(code);
+                    result.success(name);
+                }
 
 
             }
@@ -146,7 +161,7 @@ public class MainActivity extends FlutterActivity {
                     String tokenString = args.get(1).toString();
                     Token token = new Token(tokenString);
 
-//                    clearTables();
+                    clearTables();
                     pullData(token, url);
                 }
 

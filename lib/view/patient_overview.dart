@@ -3,6 +3,7 @@ import 'package:ehr_mobile/model/patient.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import 'hiv_screening.dart';
 import 'home_page.dart';
@@ -27,13 +28,14 @@ class OverviewState extends State<Overview> {
   Patient _patient;
   Visit _visit;
   Map<String, dynamic> details;
+  String _maritalStatus,_educationLevel,_occupation,_nationality;
 
   @override
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
     print(_patient.toString());
-    getMaritalStatusName(_patient.maritalStatusId);
+    getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId);
     super.initState();
   }
 
@@ -208,7 +210,7 @@ class OverviewState extends State<Overview> {
                                         ),
                                         width: 100,
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                                 SizedBox(
@@ -272,7 +274,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: "date"),
+                                                text: DateFormat("dd/MM/yyyy").format(_patient.birthDate)),
                                             decoration: InputDecoration(
                                               labelText: 'Date Of Birth',
                                               border: OutlineInputBorder(),
@@ -291,7 +293,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.maritalStatusId),
+                                                text: _maritalStatus),
                                             decoration: InputDecoration(
                                               labelText: 'Marital Status',
                                               border: OutlineInputBorder(),
@@ -320,7 +322,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                  text: _patient.educationLevelId),
+                                  text: _educationLevel),
                                             decoration: InputDecoration(
                                               labelText: 'Education',
                                               border: OutlineInputBorder(),
@@ -339,7 +341,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text:  _patient.occupationId),
+                                                text:  _occupation),
 
                                             decoration: InputDecoration(
                                               labelText: 'Occupation',
@@ -359,7 +361,7 @@ class OverviewState extends State<Overview> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: TextField(
                                             controller: TextEditingController(
-                                                text: _patient.nationalityId),
+                                                text: _nationality),
 
                                             decoration: InputDecoration(
                                               labelText: 'Nationality',
@@ -456,15 +458,28 @@ class OverviewState extends State<Overview> {
     );
   }
 
-  Future<void> getMaritalStatusName(String  code) async{
-    String maritalStatus;
+  Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId) async{
+    String maritalStatus,educationLevel,occupation,nationality;
     try{
-      print("------------${_patient.maritalStatusId}");
-      maritalStatus= await patientChannel.invokeMethod('getPatientMaritalStatus',code);
-      print('===================== patient marital Status $maritalStatus');
+
+      maritalStatus = await patientChannel.invokeMethod('getPatientMaritalStatus',maritalStatusId);
+      educationLevel = await patientChannel.invokeMethod('getEducationLevel',educationLevelId);
+      occupation = await patientChannel.invokeMethod('getOccupation',occupationId);
+      nationality = await patientChannel.invokeMethod('getNationality',nationalityId);
+
     }
     catch(e){
       print('Something went wrong during getting marital status........cause $e');
     }
+
+    setState(() {
+      _maritalStatus = maritalStatus;
+      _educationLevel = educationLevel;
+      _occupation = occupation;
+      _nationality = nationality;
+    });
+    print('9999999999999999999999999999999999999999999999999999 $_maritalStatus');
+
   }
+
 }
