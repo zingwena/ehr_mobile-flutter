@@ -170,17 +170,17 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                           fontWeight: FontWeight.w500),
                     ),
                     onPressed: ()
-//  async {
-//                      if (_key.currentState.validate()) {
-//                        _key.currentState.save();
-//                        await fetchPost();
-//                      }
-//                    }
-                  => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginScreen()),
-                  ),
+  async {
+                      if (_key.currentState.validate()) {
+                        _key.currentState.save();
+                        await fetchPost();
+                      }
+                    }
+//                  => Navigator.push(
+//                    context,
+//                    MaterialPageRoute(
+//                        builder: (context) => LoginScreen()),
+//                  ),
                     ),
               ),
               SizedBox(
