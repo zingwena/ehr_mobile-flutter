@@ -1,7 +1,10 @@
+import 'dart:convert';
+
+import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
-import 'edit_demographics.dart';
+
 
 class Registration extends StatefulWidget {
   @override
@@ -12,31 +15,50 @@ class Registration extends StatefulWidget {
 
 class _Registration extends State<Registration> {
   final _formKey = GlobalKey<FormState>();
+   static const dataChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   String lastName, firstName;
   var selectedDate;
   DateTime date;
   int _htsType = 0;
   String htsType = "";
-  List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
-  List _identifierList = [
-    "Select Identifier",
-    "Passport",
-    "Birth Certificate",
-    "National Id",
-    "Driver's Licence"
-  ];
+  String _entryPoint;
+  List entryPoints=List();
+  List _dropDownListEntryPoints=List();
+
+  List<DropdownMenuItem<String>>
+  _dropDownMenuItemsEntryPoint;
+  List<EntryPoint> _entryPointList = List();
+
+  String _currentEntryPoint;
+
 
   @override
   void initState() {
-    _dropDownMenuItemsEducationLevel =
-        getDropDownMenuItemsIdentifiedEducationLevel();
+    _dropDownMenuItemsEntryPoint =
+        getDropDownMenuItemsIdentifiedEntryPoint();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
-    _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
-
-
-    _currentEducationLevel = _dropDownMenuItemsEducationLevel[0].value;
     super.initState();
+  }
+
+  Future<void> getFacilities() async{
+   String response;
+   try{
+     response= await dataChannel.invokeMethod('getEntryPointsOptions');
+     setState(() {
+       _entryPoint=response;
+       entryPoints=jsonDecode(_entryPoint);
+       _dropDownListEntryPoints= EntryPoint.mapFromJson(entryPoints);
+       _dropDownListEntryPoints.forEach((e){
+         _entryPointList.add(e);
+       });
+       _dropDownMenuItemsEntryPoint=getDropDownMenuItemsIdentifiedEntryPoint();
+       _currentEntryPoint=_dropDownMenuItemsEntryPoint[0].value;
+     });
+
+   }catch(e){
+     print('--------------------Something went wrong  $e');
+   }
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -66,37 +88,17 @@ class _Registration extends State<Registration> {
     });
   }
 
-  List<DropdownMenuItem<String>> _dropDownMenuItems,
-      _dropDownMenuItemsEducationLevel;
 
-  String _currentGender, _currentEducationLevel;
 
-  List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String identifier in _identifierList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: identifier, child: Text(identifier)));
-    }
-    return items;
-  }
-
-  List _educationLevelList = [
-    "Default HTS Campaign",
-    "Entry Point 1",
-    "Entry Point 2",
-    "Entry Point 3",
-    "Entry Point 4"
-  ];
 
   List<DropdownMenuItem<String>>
-      getDropDownMenuItemsIdentifiedEducationLevel() {
+      getDropDownMenuItemsIdentifiedEntryPoint() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String educationLevel in _educationLevelList) {
+    for (EntryPoint entryPoint in _entryPointList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: educationLevel, child: Text(educationLevel)));
+          DropdownMenuItem(value:entryPoint.code , child: Text(entryPoint.name)));
     }
     return items;
   }
@@ -178,35 +180,35 @@ class _Registration extends State<Registration> {
                   SizedBox(
                     height: 20.0,
                   ),
-//                  Container(
-//                    padding:
-//                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-//                    width: double.infinity,
-//                    child: OutlineButton(
-//                      shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.circular(5.0)),
-//                      color: Colors.white,
-//                      padding: const EdgeInsets.all(0.0),
-//                      child: Container(
-//                        width: double.infinity,
-//                        padding: EdgeInsets.symmetric(
-//                            vertical: 8.0, horizontal: 30.0),
-//                        child: DropdownButton(
-//                          icon: Icon(Icons.keyboard_arrow_down),
-//                          iconEnabledColor: Colors.black,
-//                          value: _currentEducationLevel,
-//                          items: _dropDownMenuItemsEducationLevel,
-//                          onChanged: changedDropDownItemEducationLevel,
-//                        ),
-//                      ),
-//                      borderSide: BorderSide(
-//                        color: Colors.blue, //Color of the border
-//                        style: BorderStyle.solid, //Style of the border
-//                        width: 2.0, //width of the border
-//                      ),
-//                      onPressed: () {},
-//                    ),
-//                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                    width: double.infinity,
+                    child: OutlineButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 30.0),
+                        child: DropdownButton(
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          iconEnabledColor: Colors.black,
+                          value: _currentEntryPoint,
+                          items: _dropDownMenuItemsEntryPoint,
+                          onChanged: changedDropDownItemEntryPoint,
+                        ),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.blue, //Color of the border
+                        style: BorderStyle.solid, //Style of the border
+                        width: 2.0, //width of the border
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -242,9 +244,9 @@ class _Registration extends State<Registration> {
     );
   }
 
-  void changedDropDownItemEducationLevel(String selectedEducationLevel) {
+  void changedDropDownItemEntryPoint(String selectedEntryPoint) {
     setState(() {
-      _currentEducationLevel = selectedEducationLevel;
+      _currentEntryPoint = selectedEntryPoint;
     });
   }
 }
