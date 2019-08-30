@@ -6,7 +6,6 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-
 import java.io.Serializable;
 
 import static androidx.room.ForeignKey.CASCADE;

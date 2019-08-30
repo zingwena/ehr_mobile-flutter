@@ -6,7 +6,6 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
 
 

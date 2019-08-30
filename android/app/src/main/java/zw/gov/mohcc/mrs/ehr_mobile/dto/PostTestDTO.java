@@ -2,10 +2,10 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.room.TypeConverters;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 public class PostTestDTO {
 
@@ -13,8 +13,8 @@ public class PostTestDTO {
 
     Hts hts;
 
-    @TypeConverters(DataConverter.class)
-    private LocalDate dateOfPostTestCounsel;
+    @TypeConverters(DateConverter.class)
+    private Date dateOfPostTestCounsel;
 
     private String resultReceived;
 
@@ -24,7 +24,7 @@ public class PostTestDTO {
 
     private String ReasonForNotIssuingResult_id;
 
-    public PostTestDTO(int id, Hts hts, LocalDate dateOfPostTestCounsel, String resultReceived, String finalResult, String postTestCounselled, String reasonForNotIssuingResult_id) {
+    public PostTestDTO(int id, Hts hts, Date dateOfPostTestCounsel, String resultReceived, String finalResult, String postTestCounselled, String reasonForNotIssuingResult_id) {
         this.id = id;
         this.hts = hts;
         this.dateOfPostTestCounsel = dateOfPostTestCounsel;
@@ -50,11 +50,11 @@ public class PostTestDTO {
         this.hts = hts;
     }
 
-    public LocalDate getDateOfPostTestCounsel() {
+    public Date getDateOfPostTestCounsel() {
         return dateOfPostTestCounsel;
     }
 
-    public void setDateOfPostTestCounsel(LocalDate dateOfPostTestCounsel) {
+    public void setDateOfPostTestCounsel(Date dateOfPostTestCounsel) {
         this.dateOfPostTestCounsel = dateOfPostTestCounsel;
     }
 

@@ -1,21 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 
-
-import retrofit2.http.Path;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
-
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
-import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-import com.google.gson.JsonObject;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -23,6 +8,15 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
+import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 
 public interface DataSyncService {
 

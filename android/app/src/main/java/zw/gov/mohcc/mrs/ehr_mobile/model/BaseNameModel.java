@@ -1,7 +1,5 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
-import androidx.room.ColumnInfo;
-
 import java.io.Serializable;
 
 public class BaseNameModel implements Serializable {

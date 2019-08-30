@@ -1,6 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.util;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-import static java.lang.System.out;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 /**

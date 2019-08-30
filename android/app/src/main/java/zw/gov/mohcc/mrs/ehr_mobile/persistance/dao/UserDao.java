@@ -4,9 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-
 import java.util.List;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 
 /**
  * Created by Tinotenda Ruzane

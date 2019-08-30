@@ -7,9 +7,10 @@ import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.sqlite.db.SimpleSQLiteQuery;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 
 import java.util.List;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 
 @Dao
 public interface PatientDao {

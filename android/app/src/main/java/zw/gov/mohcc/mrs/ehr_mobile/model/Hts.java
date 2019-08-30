@@ -5,13 +5,11 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
@@ -60,8 +58,8 @@ public class Hts {
     private String entryPointId;
 
     //Post test fields
-    @TypeConverters(DataConverter.class)
-    private LocalDate dateOfPostTestCounsel;
+    @TypeConverters(DateConverter.class)
+    private Date dateOfPostTestCounsel;
     private String resultReceived;
     private String finalResult;
     private String postTestCounselled;
@@ -158,11 +156,11 @@ public class Hts {
         this.purpose_of_test_id = purpose_of_test_id;
     }
 
-    public LocalDate getDateOfPostTestCounsel() {
+    public Date getDateOfPostTestCounsel() {
         return dateOfPostTestCounsel;
     }
 
-    public void setDateOfPostTestCounsel(LocalDate dateOfPostTestCounsel) {
+    public void setDateOfPostTestCounsel(Date dateOfPostTestCounsel) {
         this.dateOfPostTestCounsel = dateOfPostTestCounsel;
     }
 

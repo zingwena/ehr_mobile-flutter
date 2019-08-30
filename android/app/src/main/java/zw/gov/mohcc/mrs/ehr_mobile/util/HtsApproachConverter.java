@@ -2,7 +2,6 @@ package zw.gov.mohcc.mrs.ehr_mobile.util;
 
 import androidx.room.TypeConverter;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsApproach;
 
 public class HtsApproachConverter {

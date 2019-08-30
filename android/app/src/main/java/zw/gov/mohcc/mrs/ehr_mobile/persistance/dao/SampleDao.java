@@ -6,7 +6,6 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
 
 @Dao
