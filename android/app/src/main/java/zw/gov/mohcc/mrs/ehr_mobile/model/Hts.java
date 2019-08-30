@@ -21,8 +21,8 @@ public class Hts {
     private int id;
 
     //Hts registration fields
-    @TypeConverters(HtsTypeConverter.class)
-    public HtsType htsType;
+
+    public String htsType;
     @TypeConverters(DateConverter.class)
 
     Date dateOfHivTest;
@@ -76,11 +76,11 @@ public class Hts {
         this.id = id;
     }
 
-    public HtsType getHtsType() {
+    public String getHtsType() {
         return htsType;
     }
 
-    public void setHtsType(HtsType htsType) {
+    public void setHtsType(String htsType) {
         this.htsType = htsType;
     }
 

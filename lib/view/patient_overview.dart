@@ -159,38 +159,7 @@ class OverviewState extends State<Overview> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          Registration(visitId)),
-                                                ),
-                                          ),
-
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: RaisedButton(
-                                            elevation: 4.0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(5.0)),
-                                            color: Colors.blue,
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "Testing",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          HtsScreeningTest()),
+                                                          Registration(_patient.id,visitId)),
                                                 ),
                                           ),
 
@@ -199,67 +168,6 @@ class OverviewState extends State<Overview> {
                                       ),
                                     ),
 
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: RaisedButton(
-                                            elevation: 4.0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(5.0)),
-                                            color: Colors.blue,
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "Pre-Test",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PatientPretest()),
-                                                ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: RaisedButton(
-                                            elevation: 4.0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(5.0)),
-                                            color: Colors.blue,
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "Post Test Counselling",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PatientPostTest()),
-                                                ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
 
 
                                     Expanded(

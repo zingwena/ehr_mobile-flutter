@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import androidx.annotation.NonNull;
+import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -11,31 +13,28 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 public class HtsRegDTO {
 
-    private int id;
+    private int visitId;
 
-    @TypeConverters(HtsTypeConverter.class)
-    private HtsType htsType;
-    @TypeConverters(DateConverter.class)
-    Date dateOfHivTest;
+    private String htsType;
+   private Date dateOfHivTest;
 
     private Hts hts;
-    String entryPointId;
+   private String entryPointId;
 
 
-
-    public int getId() {
-        return id;
+    public void setVisitId(int visitId) {
+        this.visitId = visitId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getVisitId() {
+        return visitId;
     }
 
-    public HtsType getHtsType() {
+    public String getHtsType() {
         return htsType;
     }
 
-    public void setHtsType(HtsType htsType) {
+    public void setHtsType(String htsType) {
         this.htsType = htsType;
     }
 
@@ -66,11 +65,13 @@ public class HtsRegDTO {
     @Override
     public String toString() {
         return "HtsRegDTO{" +
-                "id=" + id +
+                "id=" + visitId +
                 ", htsType=" + htsType +
                 ", dateOfHivTest=" + dateOfHivTest +
                 ", hts=" + hts +
                 ", entryPointId='" + entryPointId + '\'' +
                 '}';
     }
+
+
 }

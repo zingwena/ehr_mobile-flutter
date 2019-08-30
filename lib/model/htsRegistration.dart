@@ -4,12 +4,13 @@ part 'htsRegistration.g.dart';
 @JsonSerializable(explicitToJson: true)
 @CustomDateTimeConverter()
 class HtsRegistration {
-  int id;
+
+  int visitId;
   DateTime dateOfHivTest;
   String htsType;
   String entryPointId;
 
-  HtsRegistration(this.id, this.htsType, this.dateOfHivTest,this.entryPointId);
+  HtsRegistration(this.visitId, this.htsType, this.dateOfHivTest,this.entryPointId);
 
 
 
@@ -27,6 +28,11 @@ class HtsRegistration {
       });
     }
     return htsRegistrationList;
+  }
+
+  @override
+  String toString() {
+    return 'HtsRegistration{id: $visitId, dateOfHivTest: $dateOfHivTest, htsType: $htsType, entryPointId: $entryPointId}';
   }
 
 

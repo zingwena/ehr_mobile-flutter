@@ -13,6 +13,17 @@ public class PersonInvestigation {
     @ColumnInfo(name = "patientId")
     private String patientId;
 
+    @Override
+    public String toString() {
+        return "PersonInvestigation{" +
+                "personInvestigationId=" + personInvestigationId +
+                ", patientId='" + patientId + '\'' +
+                ", investigationId='" + investigationId + '\'' +
+                ", date='" + date + '\'' +
+                ", resultId='" + resultId + '\'' +
+                '}';
+    }
+
     @ColumnInfo(name = "investigationId")
     private String investigationId;
 
