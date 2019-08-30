@@ -34,6 +34,13 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
   Height _height = Height();
   Weight _weight = Weight();
 
+    bool isPressed = false;
+    bool isPressed1 = false;
+    bool isPressed2 = false;
+    bool isPressed3 = false;
+    bool isPressed4 = false;
+    bool isPressed5 = false;
+
 
 
   @override
@@ -135,6 +142,7 @@ super.initState();
                                                   validator: (value){
                                                    return value.isEmpty ? "Please fill this field" : null;
                                                   },
+                                                  keyboardType: TextInputType.number,
                                                   decoration: InputDecoration(
                                                     labelText: 'systolic',
                                                     border: OutlineInputBorder(),
@@ -159,6 +167,7 @@ super.initState();
                                                           value;
                                                     });
                                                   },
+                                                  keyboardType: TextInputType.number,
                                                   validator: (value){
                                                     return value.isEmpty ? "Please fill this field" : null;
                                                   },
@@ -175,12 +184,13 @@ super.initState();
                                             ),
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.save),
+                                            icon: Icon((isPressed == true)? Icons.done_outline :Icons.save,
+                                                color: Colors.green),
                                             onPressed: () {
                                               if (_formKey.currentState
                                                   .validate()) {
                                                 _formKey.currentState.save();
-
+                                                isPressed = true;
                                                 saveVitals(_bloodPressure,'bloodPressure');
                                               }
                                             },
@@ -236,6 +246,7 @@ super.initState();
                                                   validator: (value){
                                                     return value.isEmpty ? "Please fill this field" : null;
                                                   },
+                                                  keyboardType: TextInputType.number,
                                                   decoration: InputDecoration(
                                                     labelText: 'temperature',
                                                     border: OutlineInputBorder(),
@@ -249,11 +260,13 @@ super.initState();
                                             ),
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.save),
+                                            icon: Icon((isPressed1 == true)? Icons.done_outline :Icons.save,
+                                                color: Colors.green),
                                             onPressed: () {
                                               if (_formKeyTemperature.currentState
                                                   .validate()) {
                                                 _formKeyTemperature.currentState.save();
+                                                isPressed1 = true;
 
                                                 saveVitals(_temperature,'temperature');
                                               }
@@ -323,11 +336,13 @@ super.initState();
                                             ),
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.save),
+                                            icon: Icon((isPressed2 == true)? Icons.done_outline :Icons.save,
+                                                color: Colors.green),
                                             onPressed: () {
                                               if (_formKeyPulse.currentState
                                                   .validate()) {
                                                 _formKeyPulse.currentState.save();
+                                                isPressed2 = true;
 
                                                 saveVitals(_pulse,'pulse');
                                               }
@@ -395,11 +410,13 @@ super.initState();
                                           ),
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.save),
+                                          icon: Icon((isPressed3 == true)? Icons.done_outline :Icons.save,
+                                              color: Colors.green),
                                           onPressed: () {
                                             if (_formKeyRespiratoryRate.currentState
                                                 .validate()) {
                                               _formKeyRespiratoryRate.currentState.save();
+                                              isPressed3 = true;
 
                                               saveVitals(_respiratoryRate,'respiratoryRate');
                                             }
@@ -472,11 +489,13 @@ super.initState();
                                           ),
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.save),
+                                          icon: Icon((isPressed4 == true)? Icons.done_outline :Icons.save,
+                                              color: Colors.green),
                                           onPressed: () {
                                             if (_formKeyHeight.currentState
                                                 .validate()) {
                                               _formKeyHeight.currentState.save();
+                                              isPressed4 = true;
                                               saveVitals(_height,'height');
                                             }
                                           },
@@ -534,6 +553,7 @@ super.initState();
                                                 validator: (value){
                                                   return value.isEmpty ? "Please fill this field" : null;
                                                 },
+                                                keyboardType: TextInputType.number,
                                                 decoration: InputDecoration(
                                                   labelText: 'Weight',
                                                   border: OutlineInputBorder(),
@@ -547,10 +567,12 @@ super.initState();
                                           ),
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.save),
+                                          icon: Icon((isPressed5 == true)? Icons.done_outline :Icons.save,
+                                              color: Colors.green),
                                           onPressed: () {
                                         if(_formKeyWeight.currentState.validate()){
                                           _formKeyWeight.currentState.save();
+                                          isPressed5 = true;
                                           saveVitals(_weight,'weight');
 
                                         }

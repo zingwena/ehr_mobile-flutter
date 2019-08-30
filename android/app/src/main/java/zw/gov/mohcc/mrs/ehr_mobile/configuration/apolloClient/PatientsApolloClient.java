@@ -79,7 +79,7 @@ public class PatientsApolloClient {
 
                                     patient = new Patient(firstName, lastName, sex);
                                     patient.setSelfIdentifiedGender(selfIdentifiedGender);
-                                    /*patient.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
+                                    patient.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
                                             ? patientData.religion().id() : null);
                                     patient.setCountryId(patientData.countryOfBirth() != null && StringUtils.isNoneBlank(patientData.countryOfBirth().id())
                                             ? patientData.countryOfBirth().id() : null);
@@ -92,7 +92,7 @@ public class PatientsApolloClient {
                                             ? patientData.nationality().id() : null);
                                     patient.setNationalityId(null);
                                     patient.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
-                                            ? patientData.occupation().id() : null);*/
+                                            ? patientData.occupation().id() : null);
 
                                     try {
 
@@ -104,7 +104,8 @@ public class PatientsApolloClient {
                                         e.printStackTrace();
                                     }
 
-                                    /*if (numberOfIdentifications > 0) {
+
+                                    if (numberOfIdentifications > 0) {
                                         String identifierType = patientData.identifications().get(0).type().name();
 
                                         if (identifierType.equals("National Id")) {
@@ -117,7 +118,7 @@ public class PatientsApolloClient {
                                         }
 
 
-                                    }*/
+                                    }
 
                                     ehrMobileDatabase.patientDao().createPatient(patient);
                                     System.out.println("*********** PATIENT ***********       "+ patient);

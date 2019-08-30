@@ -1252,7 +1252,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
         ehrMobileDatabase.facilityDao().deleteAllFacilities();
         ehrMobileDatabase.townsDao().deleteAllTowns();
-
+        ehrMobileDatabase.patientDao().deleteAll();
         ehrMobileDatabase.religionDao().deleteReligions();
         ehrMobileDatabase.occupationDao().deleteOccupations();
         ehrMobileDatabase.nationalityDao().deleteNationalities();
