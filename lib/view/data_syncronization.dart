@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/token.dart';
-import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,6 +20,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
   String url, username, password;
   final _key = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,19 +169,17 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                           color: Colors.white,
                           fontWeight: FontWeight.w500),
                     ),
-                    onPressed: ()
-  async {
+                    onPressed: () async {
                       if (_key.currentState.validate()) {
                         _key.currentState.save();
                         await fetchPost();
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
                       }
-                    }
-//                  => Navigator.push(
-//                    context,
-//                    MaterialPageRoute(
-//                        builder: (context) => LoginScreen()),
-//                  ),
-                    ),
+                    }),
               ),
               SizedBox(
                 height: 20.0,
@@ -223,14 +221,14 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       // If that response was not OK, throw an error.
 
       _scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text('Authentication failed'),
-            ),
-          );
-
+        SnackBar(
+          content: Text('Authentication failed'),
+        ),
+      );
 
       throw Exception('Failed to authenticate');
     }
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text("Network error please check your connections")));
+    Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text("Network error please check your connections")));
   }
 }

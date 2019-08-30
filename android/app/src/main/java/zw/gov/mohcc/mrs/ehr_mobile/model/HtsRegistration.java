@@ -11,6 +11,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 @Entity
 public class HtsRegistration {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     private HtsType htsType;

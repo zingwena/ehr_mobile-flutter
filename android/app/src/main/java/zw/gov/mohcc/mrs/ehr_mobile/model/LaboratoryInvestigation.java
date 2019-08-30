@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
+
 @Entity
 public class LaboratoryInvestigation {
     @PrimaryKey(autoGenerate = true)
@@ -16,9 +18,11 @@ public class LaboratoryInvestigation {
 
     private int facilityId;
 
+
     private int personInvestigationId;
    @TypeConverters(DateConverter.class)
     private Date resultDate;
+
 
     public int getId() {
         return id;
