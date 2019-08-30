@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,6 +62,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
 public class MainActivity extends FlutterActivity {
@@ -93,13 +94,10 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Date.class,new DateDeserializer()).create();
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
-                    String dob;
-                    String[] dateOfBirth;
 
-                    System.out.println(args);
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
 
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
@@ -144,22 +142,21 @@ public class MainActivity extends FlutterActivity {
                     result.success(name);
                 }
 
-                if(methodCall.method.equals("getEducationLevel")){
-                    String code=methodCall.arguments();
-                    String name= ehrMobileDatabase.educationLevelDao().findByEducationLevelId(code);
+                if (methodCall.method.equals("getEducationLevel")) {
+                    String code = methodCall.arguments();
+                    String name = ehrMobileDatabase.educationLevelDao().findByEducationLevelId(code);
                     result.success(name);
                 }
-                if(methodCall.method.equals("getOccupation")){
-                    String code=methodCall.arguments();
-                    String name= ehrMobileDatabase.occupationDao().findOccupationsById(code);
+                if (methodCall.method.equals("getOccupation")) {
+                    String code = methodCall.arguments();
+                    String name = ehrMobileDatabase.occupationDao().findOccupationsById(code);
                     result.success(name);
                 }
-                if(methodCall.method.equals("getNationality")){
-                    String code=methodCall.arguments();
-                    String name= ehrMobileDatabase.nationalityDao().selectNationality(code);
+                if (methodCall.method.equals("getNationality")) {
+                    String code = methodCall.arguments();
+                    String name = ehrMobileDatabase.nationalityDao().selectNationality(code);
                     result.success(name);
                 }
-
 
 
             }
@@ -211,6 +208,17 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
                         Gson gson = new Gson();
+                        if(methodCall1.method.equals("townOptions")){
+                            try{
+                                System.out.println("----------==-=-="+"here");
+                                List<Town> towns= ehrMobileDatabase.townsDao().getAllTowns();
+                                String townList= gson.toJson(towns);
+                                result1.success(townList);
+                            }
+                            catch(Exception e){
+                                System.out.println("Something went wrong "+e);
+                            }
+                        }
                         if (methodCall1.method.equals("religionOptions")) {
                             try {
                                 List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
@@ -301,7 +309,7 @@ public class MainActivity extends FlutterActivity {
 
                 if (methodCall.method.equals("visit")) {
                     final int patientId = methodCall.arguments();
-                    MainActivity.this.createVisit(patientId);
+                    createVisit(patientId);
                     System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
 
                 } else {
@@ -599,6 +607,7 @@ public class MainActivity extends FlutterActivity {
         getLaboratoryTest(token, url + "/api/");
         getInvestigations(token, url + "/api/");
         getPatients(url);
+        getTowns(token,url + "/api/");
 
     }
 
@@ -713,8 +722,8 @@ public class MainActivity extends FlutterActivity {
     }
 
     public LaboratoryInvestigation getLabInvestigation() {
-        LocalDate now = LocalDate.now();
-        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(1, 1, "1", LocalDate.now());
+        Date now = new Date();
+        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(1, 1, "1", now);
 
         return laboratoryInvestigation;
 
@@ -1226,7 +1235,7 @@ public class MainActivity extends FlutterActivity {
 
     public void createVisit(long patientId) {
         Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndBetweenStartTimeAndEndDate(patientId, new Date().getTime());
-        System.out.println("==========================-=-=-=-=-=" + visit1.toString());
+        System.out.println("==========================-=-=-=-=-=" + visit1);
         if (visit1 == null) {
             visit = new Visit(patientId);
             visitIdPatient = ehrMobileDatabase.visitDao().insert(visit);
@@ -1242,6 +1251,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.patientDao().deleteAll();
         ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
         ehrMobileDatabase.facilityDao().deleteAllFacilities();
+        ehrMobileDatabase.townsDao().deleteAllTowns();
 
         ehrMobileDatabase.religionDao().deleteReligions();
         ehrMobileDatabase.occupationDao().deleteOccupations();

@@ -1,15 +1,21 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+import androidx.room.TypeConverters;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
+
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 @Entity
 public class LaboratoryInvestigationTest {
 
     private int id;
     private String laboratoryInvestigationId;
-    private LocalDateTime time;
+    @TypeConverters(DateConverter.class)
+    private Date time;
     private Result result;
     private String visitId;
 
@@ -29,11 +35,11 @@ public class LaboratoryInvestigationTest {
         this.laboratoryInvestigationId = laboratoryInvestigationId;
     }
 
-    public LocalDateTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

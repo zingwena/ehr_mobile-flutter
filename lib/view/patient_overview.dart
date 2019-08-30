@@ -419,7 +419,7 @@ class OverviewState extends State<Overview> {
                                           child: TextField(
                                             controller: TextEditingController(
                                                 text: nullHandler(
-                                                    _patient.maritalStatusId)),
+                                                    _maritalStatus)),
 
                                             decoration: InputDecoration(
                                               labelText: 'Marital Status',

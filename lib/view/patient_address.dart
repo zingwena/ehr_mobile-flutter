@@ -41,6 +41,7 @@ class _PatientAddressState extends State<PatientAddress> {
 
   @override
   void initState() {
+    print("=======");
  getTowns();
     super.initState();
   }
@@ -235,6 +236,7 @@ class _PatientAddressState extends State<PatientAddress> {
     });
   }
   Future<void> getTowns() async{
+    print("here");
     String towns;
     try{
       towns= await dataChannel.invokeMethod('townOptions');

@@ -11,13 +11,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 @Entity
 public class HtsRegistration {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
     @TypeConverters(GenderConverter.class)
     public HtsType htsType;
     @TypeConverters(DateConverter.class)
-
     Date patientDate;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     public int getId() {
         return id;
@@ -26,6 +25,7 @@ public class HtsRegistration {
     public void setId(int id) {
         this.id = id;
     }
+
     public Date getPatientDate() {
         return patientDate;
     }

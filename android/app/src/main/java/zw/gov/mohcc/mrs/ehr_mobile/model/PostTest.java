@@ -5,9 +5,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.util.DataConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 
 @Entity
@@ -15,8 +15,8 @@ public class PostTest {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @TypeConverters(DataConverter.class)
-    private LocalDate dateOfPostTestCounsel;
+    @TypeConverters(DateConverter.class)
+    private Date dateOfPostTestCounsel;
 
     private String resultReceived;
 
@@ -28,8 +28,6 @@ public class PostTest {
     private String ReasonForNotIssuingResult_id;
 
 
-
-
     public int getId() {
         return id;
     }
@@ -38,11 +36,11 @@ public class PostTest {
         this.id = id;
     }
 
-    public LocalDate getDateOfPostTestCounsel() {
+    public Date getDateOfPostTestCounsel() {
         return dateOfPostTestCounsel;
     }
 
-    public void setDateOfPostTestCounsel(LocalDate dateOfPostTestCounsel) {
+    public void setDateOfPostTestCounsel(Date dateOfPostTestCounsel) {
         this.dateOfPostTestCounsel = dateOfPostTestCounsel;
     }
 
