@@ -54,7 +54,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
             height: 20.0,
           ),
           Text(
-            "EHR Mobile App",
+            "Implilo Mobile App",
             style: TextStyle(
                 fontWeight: FontWeight.w300,
                 color: Colors.grey.shade600,
@@ -98,7 +98,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                   },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "XXX.XXX.X.XX",
+
                     labelText: "Facility Server IP",
                   ),
                 ),
