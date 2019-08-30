@@ -17,18 +17,18 @@ public class PatientDto {
     private String nationalId;
     private Date birthDate;
     private SelfIdentifiedGender selfIdentifiedGender;
-    private String religion;
-    private String occupation;
-    private String maritalStatus;
-    private String educationLevel;
-    private String nationality;
-    private String countryOfBirth;
+    private String religionId;
+    private String occupationId;
+    private String maritalStatusId;
+    private String educationLevelId;
+    private String nationalityId;
+    private String countryOfBirthId;
     private Address address;
 
     public PatientDto() {
     }
 
-    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, SelfIdentifiedGender selfIdentifiedGender, String religion, String occupation, String maritalStatus, String educationLevel, String nationality, String countryOfBirth, Address address) {
+    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, SelfIdentifiedGender selfIdentifiedGender, String religionId, String occupationId, String maritalStatusId, String educationLevelId, String nationalityId, String countryOfBirthId, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,12 +36,12 @@ public class PatientDto {
         this.identifier = identifier;
         this.nationalId = nationalId;
         this.selfIdentifiedGender = selfIdentifiedGender;
-        this.religion = religion;
-        this.occupation = occupation;
-        this.maritalStatus = maritalStatus;
-        this.educationLevel = educationLevel;
-        this.nationality = nationality;
-        this.countryOfBirth = countryOfBirth;
+        this.religionId = religionId;
+        this.occupationId = occupationId;
+        this.maritalStatusId = maritalStatusId;
+        this.educationLevelId = educationLevelId;
+        this.nationalityId = nationalityId;
+        this.countryOfBirthId = countryOfBirthId;
         this.address = address;
     }
 
@@ -62,19 +62,19 @@ public class PatientDto {
     }
 
     public String getNationality() {
-        return nationality;
+        return nationalityId;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setNationality(String nationalityId) {
+        this.nationalityId = nationalityId;
     }
 
     public String getCountryOfBirth() {
-        return countryOfBirth;
+        return countryOfBirthId;
     }
 
-    public void setCountryOfBirth(String countryOfBirth) {
-        this.countryOfBirth = countryOfBirth;
+    public void setCountryOfBirth(String countryOfBirthId) {
+        this.countryOfBirthId = countryOfBirthId;
     }
 
     public String getLastName() {
@@ -119,35 +119,35 @@ public class PatientDto {
     }
 
     public String getReligion() {
-        return religion;
+        return religionId;
     }
 
-    public void setReligion(String religion) {
-        this.religion = religion;
+    public void setReligion(String religionId) {
+        this.religionId = religionId;
     }
 
     public String getOccupation() {
-        return occupation;
+        return occupationId;
     }
 
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
+    public void setOccupation(String occupationId) {
+        this.occupationId = occupationId;
     }
 
     public String getMaritalStatus() {
-        return maritalStatus;
+        return maritalStatusId;
     }
 
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
+    public void setMaritalStatus(String maritalStatusId) {
+        this.maritalStatusId = maritalStatusId;
     }
 
     public String getEducationLevel() {
-        return educationLevel;
+        return educationLevelId;
     }
 
-    public void setEducationLevel(String educationLevel) {
-        this.educationLevel = educationLevel;
+    public void setEducationLevel(String educationLevelId) {
+        this.educationLevelId = educationLevelId;
     }
 
     public Address getAddress() {
@@ -185,12 +185,12 @@ public class PatientDto {
                 ", nationalId='" + nationalId + '\'' +
                 ", birthDate=" + birthDate +
                 ", selfIdentifiedGender=" + selfIdentifiedGender +
-                ", religion='" + religion + '\'' +
-                ", occupation='" + occupation + '\'' +
-                ", maritalStatus='" + maritalStatus + '\'' +
-                ", educationLevel='" + educationLevel + '\'' +
-                ", nationality='" + nationality + '\'' +
-                ", countryOfBirth='" + countryOfBirth + '\'' +
+                ", religionId='" + religionId + '\'' +
+                ", occupationId='" + occupationId + '\'' +
+                ", maritalStatusId='" + maritalStatusId + '\'' +
+                ", educationLevelId='" + educationLevelId + '\'' +
+                ", nationalityId='" + nationalityId + '\'' +
+                ", countryOfBirthId='" + countryOfBirthId + '\'' +
                 ", address=" + address +
                 '}';
     }

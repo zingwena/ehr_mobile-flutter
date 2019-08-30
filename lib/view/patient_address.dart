@@ -41,6 +41,7 @@ class _PatientAddressState extends State<PatientAddress> {
 
   @override
   void initState() {
+    print("=======");
  getTowns();
     super.initState();
   }
@@ -185,6 +186,7 @@ class _PatientAddressState extends State<PatientAddress> {
       }
       if(_formIsValid){
         Patient patient = widget.patient;
+
         patient.address = Address(schoolHouse, suburbVillage, _currentTown);
         await registerPatient(patient).then((value) {
           Navigator.push(
@@ -234,6 +236,7 @@ class _PatientAddressState extends State<PatientAddress> {
     });
   }
   Future<void> getTowns() async{
+    print("here");
     String towns;
     try{
       towns= await dataChannel.invokeMethod('townOptions');

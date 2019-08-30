@@ -12,6 +12,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 @Entity
 public class HtsRegistration {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 

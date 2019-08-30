@@ -2,13 +2,12 @@ package zw.gov.mohcc.mrs.ehr_mobile;
 
 import android.os.Bundle;
 
+import androidx.room.Transaction;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Type;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
@@ -98,17 +98,12 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
-                    String dob;
-                    String[] dateOfBirth;
 
-                    System.out.println(args);
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-//                    dateOfBirth = patientDto.getBirthDate().split("T");
-//                    dob = dateOfBirth[0];
-                    System.out.println("==============================PatientDTO " + patientDto.getNationalId());
+
                     Patient patient = new Patient(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
                     patient.setNationalId(patientDto.getNationalId());
@@ -130,6 +125,9 @@ public class MainActivity extends FlutterActivity {
                     patient.setAddress(patientDto.getAddress());
                     patient.setOccupationId(patientDto.getOccupation());
 
+
+                    patient.setBirthDate(patientDto.getBirthDate());
+
                     int id = ehrMobileDatabase.patientDao().createPatient(patient).intValue();
                     result.success(id);
 
@@ -147,6 +145,24 @@ public class MainActivity extends FlutterActivity {
                     String name = ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
                     result.success(name);
                 }
+
+                if (methodCall.method.equals("getEducationLevel")) {
+                    String code = methodCall.arguments();
+                    String name = ehrMobileDatabase.educationLevelDao().findByEducationLevelId(code);
+                    result.success(name);
+                }
+                if (methodCall.method.equals("getOccupation")) {
+                    String code = methodCall.arguments();
+                    String name = ehrMobileDatabase.occupationDao().findOccupationsById(code);
+                    result.success(name);
+                }
+                if (methodCall.method.equals("getNationality")) {
+                    String code = methodCall.arguments();
+                    String name = ehrMobileDatabase.nationalityDao().selectNationality(code);
+                    result.success(name);
+                }
+
+
             }
         });
 
@@ -161,9 +177,11 @@ public class MainActivity extends FlutterActivity {
                     String tokenString = args.get(1).toString();
                     Token token = new Token(tokenString);
 
-                    MainActivity.this.clearTables();
-                    MainActivity.this.pullData(token, url);
-                    MainActivity.this.saveResultstoDB();
+
+                    clearTables();
+                    pullData(token, url);
+                    saveResultstoDB();
+
                 }
 
                 if (methodCall.method.equals("login")) {
@@ -194,8 +212,19 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
                         Gson gson = new Gson();
+                        final String arguments = methodCall1.arguments();
 
-                        final String arguments=methodCall1.arguments();
+                        if (methodCall1.method.equals("townOptions")) {
+                            try {
+                                System.out.println("----------==-=-=" + "here");
+                                List<Town> towns = ehrMobileDatabase.townsDao().getAllTowns();
+                                String townList = gson.toJson(towns);
+                                result1.success(townList);
+                            } catch (Exception e) {
+                                System.out.println("Something went wrong " + e);
+                            }
+                        }
+
                         if (methodCall1.method.equals("religionOptions")) {
                             try {
                                 List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
@@ -260,24 +289,22 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
 
-                        if (methodCall1.method.equals("getEntryPointsOptions")){
+                        if (methodCall1.method.equals("getEntryPointsOptions")) {
                             try {
-                                List<EntryPoint> entryPoints=ehrMobileDatabase.entryPointDao().getAllEntryPoints();
-                                String list =gson.toJson(entryPoints);
+                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                String list = gson.toJson(entryPoints);
                                 result1.success(list);
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
                             }
                         }
 
-                        if (methodCall1.method.equals("saveHtsRegistration")){
+                        if (methodCall1.method.equals("saveHtsRegistration")) {
                             try {
-                                HtsRegistration htsRegistration=gson.fromJson(arguments,HtsRegistration.class);
+                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 //                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration()
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
                             }
@@ -311,7 +338,7 @@ public class MainActivity extends FlutterActivity {
 
                 if (methodCall.method.equals("visit")) {
                     final int patientId = methodCall.arguments();
-                    MainActivity.this.createVisit(patientId);
+                    createVisit(patientId);
                     System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
 
                 } else {
@@ -394,7 +421,7 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                         String arguments = methodCall.arguments();
-                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class,new DateDeserializer()).create();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
 
                         if (methodCall.method.equals("getResults")) {
                             try {
@@ -428,17 +455,17 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("htsRegistration")) {
                             try {
-                                HtsRegDTO htsRegDTO= gson.fromJson(arguments, HtsRegDTO.class);
+                                HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
                                 System.out.println("htsRegDTO = " + htsRegDTO.toString());
-                                HtsRegistration htsRegistration= new HtsRegistration();
+                                HtsRegistration htsRegistration = new HtsRegistration();
                                 htsRegistration.setDateOfHivTest(htsRegDTO.getDateOfHivTest());
                                 htsRegistration.setHtsType(htsRegDTO.getHtsType());
                                 htsRegistration.setEntryPointId(htsRegDTO.getEntryPointId());
                                 htsRegistration.setVisitId(htsRegDTO.getVisitId());
-                                Long id=ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                                Long id = ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
 
                                 System.out.println("listHtsRegistration() = " + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-                                PersonInvestigation personInvestigation=gson.fromJson(arguments, PersonInvestigation.class);
+                                PersonInvestigation personInvestigation = gson.fromJson(arguments, PersonInvestigation.class);
                                 ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
                                 System.out.println("personInvestigation.toString() = " + personInvestigation.toString());
                                 result.success(id.intValue());
@@ -446,7 +473,6 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-
 
 
                         if (methodCall.method.equals("purposeOfTestsOptions")) {
@@ -498,8 +524,8 @@ public class MainActivity extends FlutterActivity {
                                 Result result1 = gson.fromJson(arguments, Result.class);
                                 System.out.println("HTS RESULT FROM FLUTTER" + result1);
                                 LaboratoryInvestigationTest laboratoryInvestigationTest = new LaboratoryInvestigationTest();
-                             //
-                              //  laboratoryInvestigationTest.setResultId(result1.getId());
+                                //
+                                //  laboratoryInvestigationTest.setResultId(result1.getId());
 
 
                             } catch (Exception e) {
@@ -515,16 +541,7 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                        if (methodCall.method.equals("saveHtsRegistration")) {
-                            try {
-                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 
-                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-                                System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
-                        }
 
                         /* */
 
@@ -602,8 +619,7 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 
-                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-                                System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+                                htsRegistration(htsRegistration);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
@@ -650,6 +666,7 @@ public class MainActivity extends FlutterActivity {
         getLaboratoryTest(token, url + "/api/");
         getInvestigations(token, url + "/api/");
         getPatients(url);
+        getTowns(token, url + "/api/");
 
     }
 
@@ -764,8 +781,10 @@ public class MainActivity extends FlutterActivity {
     }
 
     public LaboratoryInvestigation getLabInvestigation() {
-       Date now = new Date();
+
+        Date now = new Date();
         LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation();
+
         return laboratoryInvestigation;
 
     }
@@ -1276,7 +1295,7 @@ public class MainActivity extends FlutterActivity {
 
     public void createVisit(long patientId) {
         Visit visit1 = ehrMobileDatabase.visitDao().findByPatientIdAndBetweenStartTimeAndEndDate(patientId, new Date().getTime());
-        System.out.println("==========================-=-=-=-=-=" + visit1.toString());
+        System.out.println("==========================-=-=-=-=-=" + visit1);
         if (visit1 == null) {
             visit = new Visit(patientId);
             visitIdPatient = ehrMobileDatabase.visitDao().insert(visit);
@@ -1292,6 +1311,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.patientDao().deleteAll();
         ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
         ehrMobileDatabase.facilityDao().deleteAllFacilities();
+        ehrMobileDatabase.townsDao().deleteAllTowns();
 
         ehrMobileDatabase.religionDao().deleteReligions();
         ehrMobileDatabase.occupationDao().deleteOccupations();
@@ -1420,5 +1440,29 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.investigationDao().insertInvestigations(investigations);
 
         System.out.println("samples from db #################" + ehrMobileDatabase.investigationDao().getInvestigations());
+    }
+
+    @Transaction
+    void htsRegistration(HtsRegistration htsRegistration) {
+        saveHtsRegistration(htsRegistration);
+
+    }
+
+    void saveHtsRegistration(HtsRegistration htsRegistration) {
+        try {
+            ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+            System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    void saveLaboratoryInvestigation(int personInvestigationId, LaboratoryInvestigationDTO laboratoryInvestigationDTO) {
+        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation();
+        laboratoryInvestigation.setFacilityId(laboratoryInvestigationDTO.getFacilityId());
+        laboratoryInvestigation.setResultDate(laboratoryInvestigationDTO.getResultDate());
+        laboratoryInvestigation.setPersonInvestigationId(personInvestigationId);
+        ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
     }
 }
