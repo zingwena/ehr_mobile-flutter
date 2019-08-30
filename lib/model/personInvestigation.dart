@@ -16,7 +16,7 @@ class PersonInvestigation {
   String resultId;
 
 
-  PersonInvestigation(this.personInvestigationId, this.patientId,
+  PersonInvestigation(this.patientId,
       this.investigationId, this.date, this.resultId);
 
   factory PersonInvestigation.fromJson(Map<String,dynamic> json) => _$PersonInvestigationFromJson(json);
@@ -25,14 +25,14 @@ class PersonInvestigation {
 
 
   static mapFromJson(List dynamicList){
-    List<PersonInvestigation> PersonInvestigationList=[];
+    List<PersonInvestigation> personInvestigationList=[];
     if(dynamicList!=null){
       dynamicList.forEach((e){
         PersonInvestigation personInvestigation= PersonInvestigation.fromJson(e);
-        PersonInvestigationList.add(personInvestigation);
+        personInvestigationList.add(personInvestigation);
       });
     }
-    return PersonInvestigationList;
+    return personInvestigationList;
   }
 
 }

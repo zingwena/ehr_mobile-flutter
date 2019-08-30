@@ -151,7 +151,7 @@ class OverviewState extends State<Overview> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          Registration(visitId)),
+                                                          Registration(_patient.id,visitId)),
                                                 ),
                                           ),
 

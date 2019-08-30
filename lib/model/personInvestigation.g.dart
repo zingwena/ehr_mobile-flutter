@@ -8,12 +8,11 @@ part of 'personInvestigation.dart';
 
 PersonInvestigation _$PersonInvestigationFromJson(Map<String, dynamic> json) {
   return PersonInvestigation(
-    json['personInvestigationId'] as int,
     json['patientId'] as String,
     json['investigationId'] as String,
     json['date'] == null ? null : DateTime.parse(json['date'] as String),
     json['resultId'] as String,
-  );
+  )..personInvestigationId = json['personInvestigationId'] as int;
 }
 
 Map<String, dynamic> _$PersonInvestigationToJson(

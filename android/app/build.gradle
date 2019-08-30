@@ -31,11 +31,6 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-
-    if (project.hasProperty('devBuild')){
-        splits.abi.enable = false
-        splits.density.enable = false
-    }
     dexOptions {
         incremental = true
         preDexLibraries = false
@@ -71,7 +66,7 @@ android {
 
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8 
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
@@ -82,7 +77,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionName flutterVersionName
-        multiDexEnabled false
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

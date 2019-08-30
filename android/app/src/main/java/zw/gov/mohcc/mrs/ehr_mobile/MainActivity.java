@@ -43,6 +43,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
@@ -428,15 +429,18 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("htsRegistration")) {
                             try {
                                 HtsRegDTO htsRegDTO= gson.fromJson(arguments, HtsRegDTO.class);
-
                                 System.out.println("htsRegDTO = " + htsRegDTO.toString());
-
                                 HtsRegistration htsRegistration= new HtsRegistration();
                                 htsRegistration.setDateOfHivTest(htsRegDTO.getDateOfHivTest());
                                 htsRegistration.setHtsType(htsRegDTO.getHtsType());
                                 htsRegistration.setEntryPointId(htsRegDTO.getEntryPointId());
                                 htsRegistration.setVisitId(htsRegDTO.getVisitId());
                                 Long id=ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+
+
+                                PersonInvestigation personInvestigation=gson.fromJson(arguments, PersonInvestigation.class);
+                                ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
+                                System.out.println("personInvestigation.toString() = " + personInvestigation.toString());
                                 result.success(id.intValue());
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

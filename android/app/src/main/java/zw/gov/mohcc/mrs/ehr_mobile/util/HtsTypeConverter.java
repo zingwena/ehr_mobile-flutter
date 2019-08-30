@@ -24,3 +24,4 @@ public class HtsTypeConverter {
         return htsType.getHtsType();
     }
 }
+
