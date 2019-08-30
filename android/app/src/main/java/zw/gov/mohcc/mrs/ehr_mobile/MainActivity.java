@@ -211,6 +211,8 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
                         Gson gson = new Gson();
+
+                        final String arguments=methodCall1.arguments();
                         if (methodCall1.method.equals("religionOptions")) {
                             try {
                                 List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
@@ -262,6 +264,7 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+
                         if (methodCall1.method.equals("maritalStatusOptions")) {
                             try {
                                 List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
@@ -273,6 +276,30 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+
+                        if (methodCall1.method.equals("getEntryPointsOptions")){
+                            try {
+                                List<EntryPoint> entryPoints=ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                String list =gson.toJson(entryPoints);
+                                result1.success(list);
+                            }
+                            catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
+                        if (methodCall1.method.equals("saveHtsRegistration")){
+                            try {
+                                HtsRegistration htsRegistration=gson.fromJson(arguments,HtsRegistration.class);
+//                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration()
+                            }
+                            catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
                     }
                 });
         new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -448,11 +475,25 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("saveLabInvestTest")) {
+                            try {
+                                LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
+
+                                ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
+                                System.out.println("List of LabInvestigations" + ehrMobileDatabase.labInvestTestdao().findAll());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
 
                         if (methodCall.method.equals("saveResult")) {
                             try {
                                 // get variables
+                                Result result1 = gson.fromJson(arguments, Result.class);
+                                System.out.println("HTS RESULT FROM FLUTTER" + result1);
                                 LaboratoryInvestigationTest laboratoryInvestigationTest = new LaboratoryInvestigationTest();
+                             //
+                              //  laboratoryInvestigationTest.setResultId(result1.getId());
 
 
                             } catch (Exception e) {
@@ -478,6 +519,8 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+
+                        /* */
 
                         if (methodCall.method.equals("getSample")) {
 
