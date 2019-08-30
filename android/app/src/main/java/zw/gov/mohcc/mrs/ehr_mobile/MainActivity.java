@@ -437,7 +437,7 @@ public class MainActivity extends FlutterActivity {
                                 htsRegistration.setVisitId(htsRegDTO.getVisitId());
                                 Long id=ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
 
-
+                                System.out.println("listHtsRegistration() = " + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
                                 PersonInvestigation personInvestigation=gson.fromJson(arguments, PersonInvestigation.class);
                                 ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
                                 System.out.println("personInvestigation.toString() = " + personInvestigation.toString());
