@@ -16,6 +16,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
@@ -49,6 +50,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
@@ -99,7 +101,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
         HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
 
-        PostTest.class,HtsRegistration.class,LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 22, exportSchema = false)
+        PostTest.class,HtsRegistration.class,LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class, LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 23, exportSchema = false)
 
 
 
@@ -189,4 +191,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract HtsDao htsDao();
     public  abstract ResultDao resultDao();
     public  abstract LaboratoryInvestigationTestDao labInvestTestdao();
+
+    public abstract LaboratoryInvestigationDao laboratoryInvestigationDao();
 }

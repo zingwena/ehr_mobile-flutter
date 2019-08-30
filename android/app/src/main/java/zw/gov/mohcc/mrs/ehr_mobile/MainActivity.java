@@ -2,6 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile;
 
 import android.os.Bundle;
 
+import androidx.room.Transaction;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
@@ -487,16 +489,7 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                        if (methodCall.method.equals("saveHtsRegistration")) {
-                            try {
-                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 
-                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-                                System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
-                        }
 
                         /* */
 
@@ -574,8 +567,7 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 
-                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-                                System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+                                htsRegistration(htsRegistration);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
@@ -734,8 +726,8 @@ public class MainActivity extends FlutterActivity {
     }
 
     public LaboratoryInvestigation getLabInvestigation() {
-        LocalDate now = LocalDate.now();
-        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(1, 1, "1", LocalDate.now());
+        Date now = new Date();
+        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation();
 
         return laboratoryInvestigation;
 
@@ -1391,5 +1383,29 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.investigationDao().insertInvestigations(investigations);
 
         System.out.println("samples from db #################" + ehrMobileDatabase.investigationDao().getInvestigations());
+    }
+
+    @Transaction
+    void htsRegistration( HtsRegistration htsRegistration){
+           saveHtsRegistration(htsRegistration);
+
+    }
+
+    void saveHtsRegistration(HtsRegistration htsRegistration){
+        try{
+            ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+            System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
+
+        }catch(Exception e){
+
+        }
+    }
+
+    void saveLaboratoryInvestigation(int personInvestigationId, LaboratoryInvestigationDTO laboratoryInvestigationDTO){
+      LaboratoryInvestigation laboratoryInvestigation= new LaboratoryInvestigation();
+      laboratoryInvestigation.setFacilityId(laboratoryInvestigationDTO.getFacilityId());
+      laboratoryInvestigation.setResultDate(laboratoryInvestigationDTO.getResultDate());
+      laboratoryInvestigation.setPersonInvestigationId(personInvestigationId);
+      ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
     }
 }

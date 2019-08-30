@@ -2,6 +2,10 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/view/home_page.dart';
+import 'package:ehr_mobile/view/hts_testscreening.dart';
+import 'package:ehr_mobile/view/patient_post_test.dart';
+import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -132,6 +136,139 @@ class _Registration extends State<Registration> {
                 children: <Widget>[
                   SizedBox(
                     height: 20.0,
+                  ),
+                  Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: RaisedButton(
+                              elevation: 4.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius
+                                      .circular(5.0)),
+                              color: Colors.blue,
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Testing",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onPressed: () =>
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            HtsScreeningTest()),
+                                  ),
+                            ),
+
+                          ),
+                          width: 100,
+                        ),
+                      ),
+
+                      Expanded(
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: RaisedButton(
+                              elevation: 4.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius
+                                      .circular(5.0)),
+                              color: Colors.blue,
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Pre-Test",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onPressed: () =>
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PatientPretest()),
+                                  ),
+                            ),
+                          ),
+                          width: 100,
+                        ),
+                      ),
+
+                      Expanded(
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: RaisedButton(
+                              elevation: 4.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius
+                                      .circular(5.0)),
+                              color: Colors.blue,
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Post Test Counselling",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onPressed: () =>
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PatientPostTest()),
+                                  ),
+                            ),
+                          ),
+                          width: 100,
+                        ),
+                      ),
+
+
+                      Expanded(
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: RaisedButton(
+                              elevation: 4.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(5.0)),
+
+                              color: Colors.red,
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Close Patient Record",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onPressed: () =>
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            HomePage()),
+                                  ),
+
+                            ),
+                          ),
+                          width: 100,
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     children: <Widget>[
