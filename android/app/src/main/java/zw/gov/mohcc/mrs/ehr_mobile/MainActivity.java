@@ -94,7 +94,7 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-                Gson gson = new GsonBuilder().registerTypeAdapter(Date.class,new DateDeserializer()).create();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
 
@@ -208,17 +208,19 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall1, MethodChannel.Result result1) {
                         Gson gson = new Gson();
-                        if(methodCall1.method.equals("townOptions")){
-                            try{
-                                System.out.println("----------==-=-="+"here");
-                                List<Town> towns= ehrMobileDatabase.townsDao().getAllTowns();
-                                String townList= gson.toJson(towns);
+                        final String arguments = methodCall1.arguments();
+
+                        if (methodCall1.method.equals("townOptions")) {
+                            try {
+                                System.out.println("----------==-=-=" + "here");
+                                List<Town> towns = ehrMobileDatabase.townsDao().getAllTowns();
+                                String townList = gson.toJson(towns);
                                 result1.success(townList);
-                            }
-                            catch(Exception e){
-                                System.out.println("Something went wrong "+e);
+                            } catch (Exception e) {
+                                System.out.println("Something went wrong " + e);
                             }
                         }
+
                         if (methodCall1.method.equals("religionOptions")) {
                             try {
                                 List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();
@@ -270,6 +272,7 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+
                         if (methodCall1.method.equals("maritalStatusOptions")) {
                             try {
                                 List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
@@ -281,6 +284,28 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+
+                        if (methodCall1.method.equals("getEntryPointsOptions")) {
+                            try {
+                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                String list = gson.toJson(entryPoints);
+                                result1.success(list);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
+                        if (methodCall1.method.equals("saveHtsRegistration")) {
+                            try {
+                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
+//                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration()
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
                     }
                 });
         new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -456,11 +481,25 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("saveLabInvestTest")) {
+                            try {
+                                LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
+
+                                ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
+                                System.out.println("List of LabInvestigations" + ehrMobileDatabase.labInvestTestdao().findAll());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
 
                         if (methodCall.method.equals("saveResult")) {
                             try {
                                 // get variables
+                                Result result1 = gson.fromJson(arguments, Result.class);
+                                System.out.println("HTS RESULT FROM FLUTTER" + result1);
                                 LaboratoryInvestigationTest laboratoryInvestigationTest = new LaboratoryInvestigationTest();
+                                //
+                                //  laboratoryInvestigationTest.setResultId(result1.getId());
 
 
                             } catch (Exception e) {
@@ -486,6 +525,8 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+
+                        /* */
 
                         if (methodCall.method.equals("getSample")) {
 
@@ -607,7 +648,7 @@ public class MainActivity extends FlutterActivity {
         getLaboratoryTest(token, url + "/api/");
         getInvestigations(token, url + "/api/");
         getPatients(url);
-        getTowns(token,url + "/api/");
+        getTowns(token, url + "/api/");
 
     }
 

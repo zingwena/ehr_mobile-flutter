@@ -37,6 +37,8 @@ class OverviewState extends State<Overview> {
   Map<String, dynamic> details;
   String _maritalStatus,_educationLevel,_occupation,_nationality;
 
+  int visitId=1;
+
   @override
   void initState() {
     _patient = widget.patient;
@@ -157,7 +159,7 @@ class OverviewState extends State<Overview> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          Registration()),
+                                                          Registration(visitId)),
                                                 ),
                                           ),
 

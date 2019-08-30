@@ -1,42 +1,73 @@
+import 'dart:convert';
+
+import 'package:ehr_mobile/model/entry_point.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
-import 'edit_demographics.dart';
+
 
 class Registration extends StatefulWidget {
+
+  int visitId;
+  Registration(this.visitId);
   @override
   State createState() {
+
     return _Registration();
   }
 }
 
 class _Registration extends State<Registration> {
   final _formKey = GlobalKey<FormState>();
-  String lastName, firstName;
+   static const dataChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+   static const htsChannel= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  int visitId;
   var selectedDate;
+  bool _showError=false;
+  bool _entryPointIsValid=false;
+  bool _formIsValid=false;
+  String _entryPointError="Select Entry Point";
   DateTime date;
   int _htsType = 0;
   String htsType = "";
-  List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
-  List _identifierList = [
-    "Select Identifier",
-    "Passport",
-    "Birth Certificate",
-    "National Id",
-    "Driver's Licence"
-  ];
+  String _entryPoint;
+  List entryPoints=List();
+  List _dropDownListEntryPoints=List();
+
+  List<DropdownMenuItem<String>>
+  _dropDownMenuItemsEntryPoint;
+  List<EntryPoint> _entryPointList = List();
+
+  String _currentEntryPoint;
+
 
   @override
   void initState() {
-    _dropDownMenuItemsEducationLevel =
-        getDropDownMenuItemsIdentifiedEducationLevel();
+    visitId=widget.visitId;
+  getFacilities();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
-    _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
-
-
-    _currentEducationLevel = _dropDownMenuItemsEducationLevel[0].value;
     super.initState();
+  }
+
+  Future<void> getFacilities() async{
+   String response;
+   try{
+     response= await dataChannel.invokeMethod('getEntryPointsOptions');
+     setState(() {
+       _entryPoint=response;
+       entryPoints=jsonDecode(_entryPoint);
+       _dropDownListEntryPoints= EntryPoint.mapFromJson(entryPoints);
+       _dropDownListEntryPoints.forEach((e){
+         _entryPointList.add(e);
+       });
+       _dropDownMenuItemsEntryPoint=getDropDownMenuItemsIdentifiedEntryPoint();
+     });
+
+   }catch(e){
+     print('--------------------Something went wrong  $e');
+   }
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -48,6 +79,7 @@ class _Registration extends State<Registration> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        date=DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
 
@@ -66,37 +98,17 @@ class _Registration extends State<Registration> {
     });
   }
 
-  List<DropdownMenuItem<String>> _dropDownMenuItems,
-      _dropDownMenuItemsEducationLevel;
 
-  String _currentGender, _currentEducationLevel;
 
-  List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String identifier in _identifierList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: identifier, child: Text(identifier)));
-    }
-    return items;
-  }
-
-  List _educationLevelList = [
-    "Default HTS Campaign",
-    "Entry Point 1",
-    "Entry Point 2",
-    "Entry Point 3",
-    "Entry Point 4"
-  ];
 
   List<DropdownMenuItem<String>>
-      getDropDownMenuItemsIdentifiedEducationLevel() {
+      getDropDownMenuItemsIdentifiedEntryPoint() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String educationLevel in _educationLevelList) {
+    for (EntryPoint entryPoint in _entryPointList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: educationLevel, child: Text(educationLevel)));
+          DropdownMenuItem(value:entryPoint.code , child: Text(entryPoint.name)));
     }
     return items;
   }
@@ -105,9 +117,9 @@ class _Registration extends State<Registration> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      /* appBar: AppBar(
-        title: Text('Patient Registration'),
-      ), */
+      appBar: AppBar(
+        title: Text('HTS Registration'),
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
@@ -178,35 +190,42 @@ class _Registration extends State<Registration> {
                   SizedBox(
                     height: 20.0,
                   ),
-//                  Container(
-//                    padding:
-//                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-//                    width: double.infinity,
-//                    child: OutlineButton(
-//                      shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.circular(5.0)),
-//                      color: Colors.white,
-//                      padding: const EdgeInsets.all(0.0),
-//                      child: Container(
-//                        width: double.infinity,
-//                        padding: EdgeInsets.symmetric(
-//                            vertical: 8.0, horizontal: 30.0),
-//                        child: DropdownButton(
-//                          icon: Icon(Icons.keyboard_arrow_down),
-//                          iconEnabledColor: Colors.black,
-//                          value: _currentEducationLevel,
-//                          items: _dropDownMenuItemsEducationLevel,
-//                          onChanged: changedDropDownItemEducationLevel,
-//                        ),
-//                      ),
-//                      borderSide: BorderSide(
-//                        color: Colors.blue, //Color of the border
-//                        style: BorderStyle.solid, //Style of the border
-//                        width: 2.0, //width of the border
-//                      ),
-//                      onPressed: () {},
-//                    ),
-//                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                    width: double.infinity,
+                    child: OutlineButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 30.0),
+                        child: DropdownButton(
+                          hint: Text('Select Entry Point'),
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          iconEnabledColor: Colors.black,
+                          value: _currentEntryPoint,
+                          items: _dropDownMenuItemsEntryPoint,
+                          onChanged: changedDropDownItemEntryPoint,
+                        ),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.blue, //Color of the border
+                        style: BorderStyle.solid, //Style of the border
+                        width: 2.0, //width of the border
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  !_showError?
+                  SizedBox.shrink()
+                      : Text(
+                    _entryPointError ?? "",
+                    style: TextStyle(color: Colors.red),
+                  ),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -222,16 +241,29 @@ class _Registration extends State<Registration> {
                         "SAVE",
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {
+                      onPressed: () async{
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
+                          if (_entryPointIsValid) {
+                            setState(() {
+                              _formIsValid = true;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              _showError = true;
+                            });
+                          }
+                          if (_formIsValid) {
+                            HtsRegistration htsDetails= HtsRegistration(visitId, htsType, date, _currentEntryPoint);
+                           await  registration(htsDetails);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-
-//              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Contact saved')));
-                          ));}
+                                ));
+                          }
+                        }
                       },
                     ),
                   ),
@@ -242,9 +274,22 @@ class _Registration extends State<Registration> {
     );
   }
 
-  void changedDropDownItemEducationLevel(String selectedEducationLevel) {
+Future<void> registration(HtsRegistration htsRegistration) async{
+    int id;
+    try{
+      id= await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
+      print('---------------------saved file id  $id');
+    }
+    catch(e){
+      print('--------------something went wrong  $e');
+    }
+}
+
+  void changedDropDownItemEntryPoint(String selectedEntryPoint) {
     setState(() {
-      _currentEducationLevel = selectedEducationLevel;
+      _currentEntryPoint = selectedEntryPoint;
+      _entryPointError=null;
+      _entryPointIsValid=!_entryPointIsValid;
     });
   }
 }

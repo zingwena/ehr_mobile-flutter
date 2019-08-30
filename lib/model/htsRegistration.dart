@@ -1,11 +1,15 @@
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'htsRegistration.g.dart';
 @JsonSerializable(explicitToJson: true)
+@CustomDateTimeConverter()
 class HtsRegistration {
   int id;
+  DateTime dateOfHivTest;
   String htsType;
+  String entryPointId;
 
-  HtsRegistration(this.id, this.htsType);
+  HtsRegistration(this.id, this.htsType, this.dateOfHivTest,this.entryPointId);
 
 
 
