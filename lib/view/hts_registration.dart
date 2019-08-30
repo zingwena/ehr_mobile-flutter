@@ -262,7 +262,11 @@ class _Registration extends State<Registration> {
                           if (_formIsValid) {
                             HtsRegistration htsDetails = HtsRegistration(
                                 visitId, htsType, date, _currentEntryPoint);
+                            print('*************************htsType ${htsDetails.toString()}');
+
+
                             await registration(htsDetails);
+
                             Navigator.push(context, MaterialPageRoute());
                           }
                         }
@@ -278,6 +282,7 @@ class _Registration extends State<Registration> {
 
   Future<void> registration(HtsRegistration htsRegistration) async {
     int id;
+    print('*************************htsType ${htsRegistration.toString()}');
     try {
       id = await htsChannel.invokeMethod(
           'htsRegistration', jsonEncode(htsRegistration));

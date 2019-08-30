@@ -764,9 +764,8 @@ public class MainActivity extends FlutterActivity {
     }
 
     public LaboratoryInvestigation getLabInvestigation() {
-        LocalDate now = LocalDate.now();
-        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(1, 1, "1", LocalDate.now());
-
+       Date now = new Date();
+        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation();
         return laboratoryInvestigation;
 
     }

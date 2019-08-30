@@ -29,12 +29,6 @@ public class LaboratoryInvestigation {
         return facilityId;
     }
 
-    public LaboratoryInvestigation(int id, int facilityId, String personInvestigationId, LocalDate resultDate) {
-        this.id = id;
-        this.facilityId = facilityId;
-        this.personInvestigationId = personInvestigationId;
-        this.resultDate = resultDate;
-    }
 
     public void setFacilityId(int facilityId) {
         this.facilityId = facilityId;

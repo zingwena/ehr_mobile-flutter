@@ -99,7 +99,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
         HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
 
-        PostTest.class,HtsRegistration.class,LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 22, exportSchema = false)
+        PostTest.class,HtsRegistration.class,LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 24, exportSchema = false)
 
 
 

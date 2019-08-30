@@ -14,13 +14,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 public class HtsRegistration {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    @TypeConverters(HtsTypeConverter.class)
-    private HtsType htsType;
+
+    private String htsType;
     @TypeConverters(DateConverter.class)
     private Date dateOfHivTest;
     private String entryPointId;
     @NonNull
-    private String visitId;
+    private int visitId;
 
     public int getId() {
         return id;
@@ -30,11 +30,11 @@ public class HtsRegistration {
         this.id = id;
     }
 
-    public HtsType getHtsType() {
+    public String getHtsType() {
         return htsType;
     }
 
-    public void setHtsType(HtsType htsType) {
+    public void setHtsType(String htsType) {
         this.htsType = htsType;
     }
 
@@ -54,11 +54,11 @@ public class HtsRegistration {
         this.entryPointId = entryPointId;
     }
 
-    public String getVisitId() {
+    public int getVisitId() {
         return visitId;
     }
 
-    public void setVisitId(String visitId) {
+    public void setVisitId(int visitId) {
         this.visitId = visitId;
     }
 }

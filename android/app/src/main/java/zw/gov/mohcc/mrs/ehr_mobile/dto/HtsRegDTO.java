@@ -14,32 +14,28 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 public class HtsRegDTO {
 
-    private int id;
+    private int visitId;
 
-    private HtsType htsType;
+    private String htsType;
    private Date dateOfHivTest;
 
     private Hts hts;
    private String entryPointId;
-    @NonNull
-    private String visitId;
 
 
-
-
-    public int getId() {
-        return id;
+    public void setVisitId(int visitId) {
+        this.visitId = visitId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getVisitId() {
+        return visitId;
     }
 
-    public HtsType getHtsType() {
+    public String getHtsType() {
         return htsType;
     }
 
-    public void setHtsType(HtsType htsType) {
+    public void setHtsType(String htsType) {
         this.htsType = htsType;
     }
 
@@ -70,7 +66,7 @@ public class HtsRegDTO {
     @Override
     public String toString() {
         return "HtsRegDTO{" +
-                "id=" + id +
+                "id=" + visitId +
                 ", htsType=" + htsType +
                 ", dateOfHivTest=" + dateOfHivTest +
                 ", hts=" + hts +
@@ -78,12 +74,5 @@ public class HtsRegDTO {
                 '}';
     }
 
-    @NonNull
-    public String getVisitId() {
-        return visitId;
-    }
 
-    public void setVisitId(@NonNull String visitId) {
-        this.visitId = visitId;
-    }
 }
