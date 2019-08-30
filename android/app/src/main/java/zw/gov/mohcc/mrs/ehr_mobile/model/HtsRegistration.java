@@ -8,11 +8,13 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 @Entity
 public class HtsRegistration {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @TypeConverters(HtsTypeConverter.class)
     private HtsType htsType;
     @TypeConverters(DateConverter.class)
     private Date dateOfHivTest;

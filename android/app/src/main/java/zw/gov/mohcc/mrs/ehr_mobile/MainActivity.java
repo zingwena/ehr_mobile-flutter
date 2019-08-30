@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
@@ -62,6 +65,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PatientQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
 public class MainActivity extends FlutterActivity {
@@ -389,7 +393,7 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                         String arguments = methodCall.arguments();
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class,new DateDeserializer()).create();
 
                         if (methodCall.method.equals("getResults")) {
                             try {
@@ -421,6 +425,26 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("htsRegistration")) {
+                            try {
+                                HtsRegDTO htsRegDTO= gson.fromJson(arguments, HtsRegDTO.class);
+
+                                System.out.println("htsRegDTO = " + htsRegDTO.toString());
+
+                                HtsRegistration htsRegistration= new HtsRegistration();
+                                htsRegistration.setDateOfHivTest(htsRegDTO.getDateOfHivTest());
+                                htsRegistration.setHtsType(htsRegDTO.getHtsType());
+                                htsRegistration.setEntryPointId(htsRegDTO.getEntryPointId());
+                                htsRegistration.setVisitId(htsRegDTO.getVisitId());
+                                Long id=ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                                result.success(id.intValue());
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+
+
+
                         if (methodCall.method.equals("purposeOfTestsOptions")) {
                             try {
                                 List<Purpose_Of_Tests> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();

@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import androidx.annotation.NonNull;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -21,6 +22,9 @@ public class HtsRegDTO {
 
     private Hts hts;
     String entryPointId;
+    @NonNull
+    private String visitId;
+
 
 
 
@@ -73,5 +77,14 @@ public class HtsRegDTO {
                 ", hts=" + hts +
                 ", entryPointId='" + entryPointId + '\'' +
                 '}';
+    }
+
+    @NonNull
+    public String getVisitId() {
+        return visitId;
+    }
+
+    public void setVisitId(@NonNull String visitId) {
+        this.visitId = visitId;
     }
 }

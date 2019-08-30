@@ -84,6 +84,7 @@ class _Registration extends State<Registration> {
   }
 
   void _handleHtsTypeChange(int value) {
+    print("hts value : $value");
     setState(() {
       _htsType = value;
 
@@ -278,6 +279,8 @@ Future<void> registration(HtsRegistration htsRegistration) async{
     int id;
     try{
       id= await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
+
+      PersonInvestigation personInvestigation=new PersonInvestigation();
       print('---------------------saved file id  $id');
     }
     catch(e){
