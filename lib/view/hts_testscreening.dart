@@ -23,15 +23,20 @@ class HtsScreeningTest extends StatefulWidget {
 class _HtsScreeningTest extends State<HtsScreeningTest> {
   final _formKey = GlobalKey<FormState>();
   var selectedDate, selectedStarttime, selectedReadingtime, selectedReadingDate;
-  DateTime date;
+  DateTime date, startTime, readingTime,  readingDate;
   int _result = 0;
   int _testKit = 0;
   int testCount=0;
+  int id =1;
+  String visit_id = "2";
   List<dynamic>_testKits=[];
   String labId;
   List<Result>results = List ();
   String testKit = "";
   Result result ;
+  bool _entryPointIsValid = false;
+  bool _formIsValid = false;
+  bool _showError = false;
   LaboratoryInvestigationTest labInvestTest;
   String _identifier;
   String test;
@@ -53,13 +58,12 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
 
-     getPersonInvestigation();
+         getPersonInvestigation();
          getTestKitsByCount(testCount);
          getLabId();
          getResults();
     super.initState();
   }
-
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -69,53 +73,47 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        labInvestTest.startdate = picked;
-
+        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
 
-  Future<Null> _selectDateStartTime(BuildContext context) async {
+  Future<Null> _selectedStarttime(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedStarttime)
       setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        labInvestTest.starttime = picked;
-
+        selectedStarttime = DateFormat("yyyy/MM/dd").format(picked);
+        print(">>>>>>>>>>>>>>>>>>>>> selected starttime date" + selectedStarttime);
+        startTime = DateFormat("yyyy/MM/dd").parse(selectedStarttime);
       });
   }
-
-  Future<Null> _selectDateReadingDate(BuildContext context) async {
+  Future<Null> _selectedReadingtime(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedReadingtime)
       setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        labInvestTest.readingdate =picked;
-
+        selectedReadingtime = DateFormat("yyyy/MM/dd").format(picked);
+        readingTime = DateFormat("yyyy/MM/dd").parse(selectedReadingtime);
       });
   }
-  Future<Null> _selectDateReadingTime(BuildContext context) async {
+  Future<Null> _selectedReadingDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedReadingDate)
       setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        labInvestTest.readingtime = picked;
-
-
+        selectedReadingDate = DateFormat("yyyy/MM/dd").format(picked);
+        readingDate = DateFormat("yyyy/MM/dd").parse(selectedReadingDate);
       });
   }
-
   Future<dynamic> getPersonInvestigation() async {
     try {
       Map<String,dynamic> map = json.decode(await htsChannel.invokeMethod('getSample')) ;
@@ -293,7 +291,7 @@ return  ListView(
                                             child: Padding(
                                               padding: const EdgeInsets.all(0.0),
                                               child: Text(
-                                               sample,
+                                               'sample',
                                                 style: TextStyle(
                                                   color: Colors.grey.shade600,
                                                   fontSize: 18,
@@ -334,7 +332,7 @@ return  ListView(
                                             child: Padding(
                                               padding: const EdgeInsets.all(0.0),
                                               child: Text(
-                                                (test),
+                                                ('test'),
                                                 style: TextStyle(
                                                   color: Colors.grey.shade600,
                                                   fontSize: 18,
@@ -441,7 +439,7 @@ return  ListView(
                                           icon: Icon(Icons.calendar_today),
                                           color: Colors.blue,
                                           onPressed: () {
-                                            _selectDateStartTime(context);
+                                            _selectedStarttime(context);
                                           })
                                     ],
                                   ),
@@ -474,7 +472,7 @@ return  ListView(
                                           icon: Icon(Icons.calendar_today),
                                           color: Colors.blue,
                                           onPressed: () {
-                                            _selectDateReadingDate(context);
+                                            _selectedReadingDate(context);
                                           }),
                                       Expanded(
                                         child: SizedBox(
@@ -500,7 +498,7 @@ return  ListView(
                                           icon: Icon(Icons.calendar_today),
                                           color: Colors.blue,
                                           onPressed: () {
-                                            _selectDateReadingTime(context);
+                                            _selectedReadingtime(context);
                                           })
                                     ],
                                   ),
@@ -567,7 +565,41 @@ return  ListView(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w500),
                                               ),
+                                                onPressed: () async {
+                                                  if (_formKey.currentState.validate()) {
+                                                    _formKey.currentState.save();
+                                                    if (_entryPointIsValid) {
+                                                      setState(() {
+                                                        _formIsValid = true;
+                                                      });
+                                                    } else {
+                                                      setState(() {
+                                                        _showError = true;
+                                                      });
+                                                    }
+                                                    if (_formIsValid) {
 
+
+                                                      LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(id, date, startTime, readingDate, readingTime, result, visit_id);
+                                                      print('************************* SAVE LAB TEST ${labInvestTest.toString()}');
+
+
+                                                      await saveLabInvestigationTest(labInvestTest);
+
+                                                      Navigator.push(context, MaterialPageRoute());
+                                                    }
+                                                  }
+                                                }
+                                             /*   onPressed: () {
+                                                print(">>>>>>>>>>>>>>> save button pressed");
+                                                  *//*labInvestTest.result  = result;*//*
+                                                  labInvestTest.startdate = date;
+                                                  labInvestTest.starttime = startTime;
+                                                  labInvestTest.readingdate = readingDate;
+                                                  labInvestTest.readingtime = readingTime;
+                                                  saveLabInvestigationTest(labInvestTest);
+                                              }
+*/
 //                                            onPressed: () => Navigator.push(
 //                                              context,
 //                                              MaterialPageRoute(
@@ -596,9 +628,7 @@ return  ListView(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w500),
                                               ),
-                                              onPressed: () {
-                                                labInvestTest.result  = result;
-                                                saveLabInvestigationTest(labInvestTest);}
+
                                             ),
                                           ),
                                           width: 100,
@@ -642,8 +672,10 @@ return  ListView(
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestigationTest)async{
     int response;
+    print(">>>>>>>>>>>>>>>>>> SAVE LAB INVESTIGATION TEST");
     var labInvestTestResponse;
     try {
+
       String jsonPatient = jsonEncode(laboratoryInvestigationTest);
       response= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
       setState(() {

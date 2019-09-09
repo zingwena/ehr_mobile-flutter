@@ -189,7 +189,6 @@ public class MainActivity extends FlutterActivity {
                     ArrayList args = methodCall.arguments();
                     username = args.get(0).toString();
                     password = args.get(1).toString();
-                    System.out.println("url = " + url);
                     System.out.println("username = " + username);
                     System.out.println("password = " + password);
 
