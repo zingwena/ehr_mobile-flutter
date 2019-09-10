@@ -6,7 +6,6 @@ import androidx.room.TypeConverters;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsApproach;
 import zw.gov.mohcc.mrs.ehr_mobile.model.NewTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.NewTestPregLact;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 public class PreTestDTO {

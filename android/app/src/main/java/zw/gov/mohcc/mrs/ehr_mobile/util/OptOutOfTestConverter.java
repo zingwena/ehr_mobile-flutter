@@ -2,8 +2,6 @@ package zw.gov.mohcc.mrs.ehr_mobile.util;
 
 import androidx.room.TypeConverter;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.OptOutOfTest;
-
 public class OptOutOfTestConverter {
     @TypeConverter
     public static OptOutOfTest toOptOutOfTest(int optOutOfTest) {

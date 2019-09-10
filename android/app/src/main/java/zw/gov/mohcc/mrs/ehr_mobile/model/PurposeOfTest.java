@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Purpose_Of_Tests extends BaseNameModel {
+public class PurposeOfTest extends BaseNameModel {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -18,7 +18,7 @@ public class Purpose_Of_Tests extends BaseNameModel {
         this.id = id;
     }
 
-    public Purpose_Of_Tests(String code, String name) {
+    public PurposeOfTest(String code, String name) {
         super(code, name);
     }
 }

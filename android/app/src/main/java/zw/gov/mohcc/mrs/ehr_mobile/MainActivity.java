@@ -44,9 +44,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Purpose_Of_Tests;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
@@ -476,7 +474,7 @@ public class MainActivity extends FlutterActivity {
 
                         if (methodCall.method.equals("purposeOfTestsOptions")) {
                             try {
-                                List<Purpose_Of_Tests> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
+                                List<PurposeOfTest> purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().getAllPurpose_Of_Tests();
                                 String purposeOfTestsList = gson.toJson(purpose_of_tests);
                                 result.success(purposeOfTestsList);
                             } catch (Exception e) {
@@ -1020,13 +1018,13 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<Purpose_Of_Tests> purpose_of_testsList = new ArrayList<Purpose_Of_Tests>();
+                List<PurposeOfTest> purpose_of_testList = new ArrayList<PurposeOfTest>();
                 for (BaseNameModel item : response.body().getContent()) {
-                    purpose_of_testsList.add(new Purpose_Of_Tests(item.getCode(), item.getName()));
+                    purpose_of_testList.add(new PurposeOfTest(item.getCode(), item.getName()));
                 }
-                if (purpose_of_testsList != null && !purpose_of_testsList.isEmpty()) {
+                if (purpose_of_testList != null && !purpose_of_testList.isEmpty()) {
 
-                    savePurpose_Of_TestsToDB(purpose_of_testsList);
+                    savePurpose_Of_TestsToDB(purpose_of_testList);
                 }
 
 
@@ -1256,7 +1254,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     void savePurpose_Of_TestsToDB
-            (List<Purpose_Of_Tests> purpose_of_tests) {
+            (List<PurposeOfTest> purpose_of_tests) {
 
 
         System.out.println("*****************   " + ehrMobileDatabase);

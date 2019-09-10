@@ -5,6 +5,7 @@ import androidx.room.TypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsType;
 
 public class HtsTypeConverter {
+
     @TypeConverter
     public static HtsType toHtsType(int htsType) {
 

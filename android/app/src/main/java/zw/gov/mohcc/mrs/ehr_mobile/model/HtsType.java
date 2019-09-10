@@ -7,12 +7,8 @@ public enum HtsType {
 
     private final int htsType;
 
-    private HtsType(int htsType) {
+    HtsType(int htsType) {
         this.htsType = htsType;
-    }
-
-    public int getHtsType() {
-        return htsType;
     }
 
     public static HtsType get(String name) {
@@ -25,5 +21,18 @@ public enum HtsType {
             default:
                 throw new IllegalArgumentException("Unknown argument passes to method : " + name);
         }
+    }
+
+    public static HtsType getInt(int htsType) {
+        for (HtsType type : values()) {
+            if (type.getHtsType() == htsType) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + htsType);
+    }
+
+    public int getHtsType() {
+        return htsType;
     }
 }
