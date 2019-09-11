@@ -74,8 +74,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsApproachConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.NewTestConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.OptOutOfTestConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.PreTestInfoGivenConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 

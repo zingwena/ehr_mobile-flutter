@@ -2,7 +2,6 @@ package zw.gov.mohcc.mrs.ehr_mobile;
 
 import android.os.Bundle;
 
-import androidx.room.Transaction;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
@@ -25,7 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
@@ -44,7 +42,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -76,12 +73,12 @@ public class MainActivity extends FlutterActivity {
     final static String PATIENTCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
     private final static String VITALS_CHANNEL = "ehr_mobile.channel/vitals";
+    private final static String TAG = "Main Activity";
     public Token token;
     public String url, username, password;
     private EhrMobileDatabase ehrMobileDatabase;
     private InvestigationEhr investigationEhr;
     private VisitService visitService;
-    private final static String TAG = "Main Activity";
 
     public MainActivity() {
     }
@@ -365,7 +362,7 @@ public class MainActivity extends FlutterActivity {
 
                         Temperature temperature = gson.fromJson(arguments, Temperature.class);
 
-                        if (StringUtils.isBlank(temperature.getVisitId()) ){
+                        if (StringUtils.isBlank(temperature.getVisitId())) {
                             //temperature.setVisitId(visit.getVisitId());
                         }
                         ehrMobileDatabase.temperatureDao().insert(temperature);
@@ -1455,7 +1452,7 @@ public class MainActivity extends FlutterActivity {
         System.out.println("samples from db #################" + ehrMobileDatabase.investigationDao().getInvestigations());
     }
 
-    @Transaction
+    /*@Transaction
     void htsRegistration(HtsRegistration htsRegistration) {
         saveHtsRegistration(htsRegistration);
 
@@ -1469,13 +1466,13 @@ public class MainActivity extends FlutterActivity {
         } catch (Exception e) {
 
         }
-    }
+    }*/
 
     void saveLaboratoryInvestigation(int personInvestigationId, LaboratoryInvestigationDTO laboratoryInvestigationDTO) {
         LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation();
-        laboratoryInvestigation.setFacilityId(laboratoryInvestigationDTO.getFacilityId());
+        //laboratoryInvestigation.setFacilityId(laboratoryInvestigationDTO.getFacilityId());
         laboratoryInvestigation.setResultDate(laboratoryInvestigationDTO.getResultDate());
-        laboratoryInvestigation.setPersonInvestigationId(personInvestigationId);
+        //laboratoryInvestigation.setPersonInvestigationId(personInvestigationId);
         ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
     }
 }
