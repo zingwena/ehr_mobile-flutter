@@ -24,6 +24,9 @@ public interface NationalityDao {
     @Query("SELECT * FROM nationality ORDER BY name ASC")
     List<Nationality> selectAllNationalities();
 
-    @Query("SELECT name FROM nationality WHERE id=:id")
-    String selectNationality(String id);
+    /*@Query("SELECT name FROM nationality WHERE code=:id")
+    String selectNationality(String id);*/
+
+    @Query("SELECT name FROM nationality WHERE code=:code")
+    String selectNationality(String code);
 }

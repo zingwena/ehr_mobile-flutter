@@ -26,6 +26,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClie
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -160,6 +161,14 @@ public class MainActivity extends FlutterActivity {
                     String code = methodCall.arguments();
                     String name = ehrMobileDatabase.nationalityDao().selectNationality(code);
                     result.success(name);
+                }
+                if (methodCall.method.equals("getAddress")){
+                    int code = methodCall.arguments();
+                    Patient patient = ehrMobileDatabase.patientDao().findPatientById(code);
+                    Address address = patient.getAddress();
+                    String patient_address = address.getStreet()+ " "+ address.getTown() + "  ,"+  address.getCity();
+                    System.out.println("ADDRESSS "+ "street"+ address.getStreet()+"town"+ address.getTown()+"city"+address.getCity());
+                    result.success(patient_address);
                 }
 
 
