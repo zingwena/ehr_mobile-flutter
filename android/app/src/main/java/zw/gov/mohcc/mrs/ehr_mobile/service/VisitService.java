@@ -21,13 +21,14 @@ public class VisitService {
 
     public String getCurrentVisit(String personId) {
 
-        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, DateUtil.getStartOfDay(new Date()),
+        /*Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, DateUtil.getStartOfDay(new Date()),
                 DateUtil.getEndOfDay(new Date()));
         Log.d(TAG, "Visit retrieved " + visit);
         if (visit == null) {
             visit = new Visit(UUID.randomUUID().toString(), personId, new Date());
             return ehrMobileDatabase.visitDao().insert(visit);
         }
-        return visit.getVisitId();
+        return visit.getVisitId();*/
+        return "01";
     }
 }

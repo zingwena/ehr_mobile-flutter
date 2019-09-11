@@ -130,14 +130,14 @@ public class MainActivity extends FlutterActivity {
 
                     person.setBirthDate(patientDto.getBirthDate());
 
-                    int id = ehrMobileDatabase.patientDao().createPatient(person).intValue();
-                    result.success(id);
+                    ehrMobileDatabase.personDao().createPatient(person);
+                    result.success(person.getId());
 
-                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().findPatientById(id));
+                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.personDao().findPatientById(person.getId()));
                 }
                 if (methodCall.method.equals("getPatientById")) {
-                    int ags = methodCall.arguments();
-                    Person person = ehrMobileDatabase.patientDao().findPatientById(ags);
+                    String ags = methodCall.arguments();
+                    Person person = ehrMobileDatabase.personDao().findPatientById(ags);
 
                     String response = gson.toJson(person);
                     result.success(response);
@@ -324,7 +324,7 @@ public class MainActivity extends FlutterActivity {
                     String searchItem = arguments;
                     PersonQuery personQuery = new PersonQuery();
                     SimpleSQLiteQuery sqLiteQuery = personQuery.searchPerson(searchItem);
-                    _list = ehrMobileDatabase.patientDao().searchPatient(sqLiteQuery);
+                    _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery);
                     System.out.println("==============-=-=-=-=-=-==list" + _list);
                     Gson gson = new Gson();
                     result1.success(gson.toJson(_list));
@@ -681,7 +681,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void getPatients(String baseUrl) {
-        ehrMobileDatabase.patientDao().deleteAll();
+        ehrMobileDatabase.personDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
     }
 
@@ -1318,11 +1318,11 @@ public class MainActivity extends FlutterActivity {
     public void clearTables() {
 
         ehrMobileDatabase.countryDao().deleteCountries();
-        ehrMobileDatabase.patientDao().deleteAll();
+        ehrMobileDatabase.personDao().deleteAll();
         ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
         ehrMobileDatabase.facilityDao().deleteAllFacilities();
         ehrMobileDatabase.townsDao().deleteAllTowns();
-        ehrMobileDatabase.patientDao().deleteAll();
+        ehrMobileDatabase.personDao().deleteAll();
         ehrMobileDatabase.religionDao().deleteReligions();
         ehrMobileDatabase.occupationDao().deleteOccupations();
         ehrMobileDatabase.nationalityDao().deleteNationalities();

@@ -7,9 +7,16 @@ import java.io.Serializable;
 
 public class BaseEntity implements Serializable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
     private String id;
+
+    public BaseEntity() {
+    }
+
+    public BaseEntity(@NonNull String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;

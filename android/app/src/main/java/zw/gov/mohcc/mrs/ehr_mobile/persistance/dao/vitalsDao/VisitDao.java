@@ -12,11 +12,16 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 @Dao
 public interface VisitDao {
     @Insert
-    String insert(Visit visit);
+    void insert(Visit visit);
 
-    @Query("SELECT * FROM Visit WHERE personId = :personId AND (visitDate Between :startTime and :endTime)")
-    Visit findByPersonVisit(String personId, Date startTime, Date endTime);
+    //@Query("SELECT * FROM Visit WHERE personId = :personId AND visitDate Between :startTime and :endTime")
+    //Visit findByPersonVisit(String personId, Date startTime, Date endTime);
 
     @Query("SELECT * FROM Visit")
     List<Visit> getAll();
+
+    /*
+    @Query("SELECT * FROM Person WHERE firstName=:firstName AND lastName=:lastName")
+    Person findPatientByName (String firstName, String lastName);
+     */
 }

@@ -16,6 +16,7 @@ public class TestKit extends BaseNameModel {
     public TestKit() {
     }
 
+    @Ignore
     public TestKit(String code, String name, String description, String level) {
         super(code, name);
         this.description = description;

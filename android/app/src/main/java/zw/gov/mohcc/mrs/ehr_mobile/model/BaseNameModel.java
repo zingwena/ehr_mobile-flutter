@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class BaseNameModel implements Serializable {
 
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
     private String code;
     private String name;

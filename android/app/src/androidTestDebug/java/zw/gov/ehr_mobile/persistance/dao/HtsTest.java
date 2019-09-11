@@ -69,7 +69,7 @@ public class HtsTest {
 
     @Test
     public void getTestKits(){
-        List<Person> people = db.patientDao().listPatients();
+        List<Person> people = db.personDao().listPatients();
         Assert.assertEquals(0, people.size());
 
     }

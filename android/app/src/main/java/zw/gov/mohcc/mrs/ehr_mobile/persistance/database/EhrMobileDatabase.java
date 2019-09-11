@@ -95,7 +95,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
-        OptOutOfTestConverter.class, PreTestInfoGivenConverter.class, HtsTypeConverter.class})
+        HtsTypeConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -134,7 +134,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract EducationLevelDao educationLevelDao();
 
-    public abstract PersonDao patientDao();
+    public abstract PersonDao personDao();
 
     public abstract FacilityDao facilityDao();
 

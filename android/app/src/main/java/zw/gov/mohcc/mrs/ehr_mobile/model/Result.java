@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 
 @Entity
 public class Result extends BaseNameModel {
@@ -9,6 +10,7 @@ public class Result extends BaseNameModel {
 
     }
 
+    @Ignore
     public Result(String code, String name) {
         super(code, name);
     }

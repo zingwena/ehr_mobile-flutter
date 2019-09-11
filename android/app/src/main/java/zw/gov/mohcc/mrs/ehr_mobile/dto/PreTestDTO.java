@@ -1,41 +1,32 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
-import androidx.room.ColumnInfo;
 import androidx.room.TypeConverters;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsApproach;
 import zw.gov.mohcc.mrs.ehr_mobile.model.NewTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.TestForPregnantLactatingMother;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 public class PreTestDTO {
 
-    private int id;
-    Hts hts;
     @TypeConverters(GenderConverter.class)
-    @ColumnInfo(name="pretest_htsApproach")
     public HtsApproach htsApproach;
     @TypeConverters(GenderConverter.class)
-    @ColumnInfo(name="pretest_newtest")
     public NewTest newTest;
     @TypeConverters(GenderConverter.class)
-    @ColumnInfo(name="pretest_pregLact")
-    public NewTestPregLact newTestPregLact;
+    public TestForPregnantLactatingMother newTestPregLact;
 
     String coupleCounselling;
     String optOutOfTest;
     String preTestInfoGiven;
     String HtsModel_id;
-    String  purpose_of_test_id;
+    String purpose_of_test_id;
 
-    public PreTestDTO(int id, Hts hts, HtsApproach htsApproach,
-                      NewTest newTest, NewTestPregLact newTestPregLact,
+    public PreTestDTO(HtsApproach htsApproach,
+                      NewTest newTest, TestForPregnantLactatingMother newTestPregLact,
                       String coupleCounselling, String optOutOfTest,
                       String preTestInfoGiven, String htsModel_id,
-                      String purpose_of_test_id)
-    {
-        this.id = id;
-        this.hts = hts;
+                      String purpose_of_test_id) {
         this.htsApproach = htsApproach;
         this.newTest = newTest;
         this.newTestPregLact = newTestPregLact;
@@ -44,22 +35,6 @@ public class PreTestDTO {
         this.preTestInfoGiven = preTestInfoGiven;
         HtsModel_id = htsModel_id;
         this.purpose_of_test_id = purpose_of_test_id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Hts getHts() {
-        return hts;
-    }
-
-    public void setHts(Hts hts) {
-        this.hts = hts;
     }
 
     public HtsApproach getHtsApproach() {
@@ -78,11 +53,11 @@ public class PreTestDTO {
         this.newTest = newTest;
     }
 
-    public NewTestPregLact getNewTestPregLact() {
+    public TestForPregnantLactatingMother getNewTestPregLact() {
         return newTestPregLact;
     }
 
-    public void setNewTestPregLact(NewTestPregLact newTestPregLact) {
+    public void setNewTestPregLact(TestForPregnantLactatingMother newTestPregLact) {
         this.newTestPregLact = newTestPregLact;
     }
 

@@ -15,25 +15,25 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 @Dao
 public interface PersonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long createPatient(Person person);
+    void createPatient(Person person);
 
     @Query("DELETE from Person")
     void deleteAll();
 
     @Query("SELECT COUNT(id) FROM Person WHERE id =:id")
-    int getNumberOfRows(int id);
+    int getNumberOfRows(String id);
 
     @Update
-    int updatePatient(Person person);
+    void updatePatient(Person person);
 
     @Query("SELECT * FROM Person ORDER BY firstName Asc")
     List<Person> listPatients();
 
     @Query("SELECT * FROM Person WHERE id =:id")
-    Person findPatientById(int id);
+    Person findPatientById(String id);
 
     @Query("DELETE FROM Person where id = :id")
-    void deleteById(Long id);
+    void deleteById(String id);
 
     @RawQuery
     List<Person> searchPatient(SimpleSQLiteQuery query);

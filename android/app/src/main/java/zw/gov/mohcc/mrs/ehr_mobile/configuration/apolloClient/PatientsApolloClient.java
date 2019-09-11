@@ -45,9 +45,6 @@ public class PatientsApolloClient {
                 .okHttpClient(okHttpClient).build();
     }
 
-
-
-
     public static void getPatientsFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
         System.out.println("baseUrl = " + baseUrl);
         PatientsApolloClient.getApolloClient(baseUrl).query(
@@ -67,7 +64,7 @@ public class PatientsApolloClient {
 
                                     System.out.println("=============-=-=-=-=============1=1=1=1=1=1=1=1=patientData"+patientData.birthdate());
                                     Gender sex = Gender.valueOf(patientData.sex().rawValue());
-                                    SelfIdentifiedGender selfIdentifiedGender = SelfIdentifiedGender.valueOf(patientData.selfIdentifiedGender().rawValue());
+                                    Gender selfIdentifiedGender = Gender.valueOf(patientData.selfIdentifiedGender().rawValue());
                                     Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
 
                                     int numberOfIdentifications = patientData.identifications().size();
@@ -118,9 +115,9 @@ public class PatientsApolloClient {
 
                                     }
 
-                                    ehrMobileDatabase.patientDao().createPatient(person);
+                                    ehrMobileDatabase.personDao().createPatient(person);
                                     System.out.println("*********** PATIENT ***********       "+ person);
-                                    System.out.println("Number of Patients  = " + ehrMobileDatabase.patientDao().listPatients().size());
+                                    System.out.println("Number of Patients  = " + ehrMobileDatabase.personDao().listPatients().size());
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace()
@@ -130,9 +127,9 @@ public class PatientsApolloClient {
                             }
 
 
-                        System.out.println("Number of Patients  = ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ " + ehrMobileDatabase.patientDao().listPatients().size());
+                        System.out.println("Number of Patients  = ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ " + ehrMobileDatabase.personDao().listPatients().size());
 
-                        System.out.println("\"Person Table\" -------------------------------------------- " + ehrMobileDatabase.patientDao().listPatients());
+                        System.out.println("\"Person Table\" -------------------------------------------- " + ehrMobileDatabase.personDao().listPatients());
 
 
                     }

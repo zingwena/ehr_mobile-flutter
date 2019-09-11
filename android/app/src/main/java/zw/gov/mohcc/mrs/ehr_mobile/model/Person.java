@@ -6,7 +6,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -16,7 +15,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("personId"), @Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
+@Entity(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
         @Index("nationalityId"), @Index("occupationId")},
         foreignKeys = {
                 @ForeignKey(entity = Country.class, onDelete = CASCADE,
@@ -42,19 +41,16 @@ import static androidx.room.ForeignKey.CASCADE;
                         childColumns = "occupationId")
         }
 )
-public class Person {
+public class Person extends BaseEntity {
 
     @TypeConverters(GenderConverter.class)
     public Gender selfIdentifiedGender;
     @TypeConverters(GenderConverter.class)
     public Gender sex;
-    @PrimaryKey(autoGenerate = true)
-    private int id;
     @NonNull
     private String firstName;
     @NonNull
     private String lastName;
-    private String personId;
     private String nationalId;
     private String religionId;
     private String occupationId;
@@ -80,14 +76,6 @@ public class Person {
 
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @NonNull
     public String getFirstName() {
         return firstName;
@@ -104,14 +92,6 @@ public class Person {
 
     public void setLastName(@NonNull String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(String personId) {
-        this.personId = personId;
     }
 
     public String getNationalId() {
@@ -205,10 +185,9 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", personId='" + personId + '\'' +
                 ", nationalId='" + nationalId + '\'' +
                 ", religionId='" + religionId + '\'' +
                 ", occupationId='" + occupationId + '\'' +

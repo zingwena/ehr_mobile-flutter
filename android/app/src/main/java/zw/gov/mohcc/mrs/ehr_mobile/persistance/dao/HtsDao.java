@@ -17,7 +17,7 @@ public interface HtsDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long createHts(Hts hts);
+    void createHts(Hts hts);
 
     @Query("DELETE from Hts")
     void deleteAll();
@@ -26,7 +26,7 @@ public interface HtsDao {
     int getNumberOfRows(String htsId);
 
     @Update
-    int updateHts(Hts hts);
+    void updateHts(Hts hts);
 
     @Query("SELECT * FROM Hts")
     List<Hts> listHts();

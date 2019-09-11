@@ -10,7 +10,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 
 /**
  * Created by Tinotenda Ruzane
- *
+ * <p>
  * This is the Room Data Accessing interface for the users table in the local cache
  */
 @Dao
