@@ -20,5 +20,5 @@ public interface LaboratoryInvestigationDao {
     List<LaboratoryInvestigation> getAllLaboratoryInvestigations();
 
     @Query("SELECT * from laboratoryinvestigation WHERE id=:id")
-    LaboratoryInvestigation findLaboratoryInvestigationById(int id);
+    LaboratoryInvestigation findLaboratoryInvestigationById(String id);
 }

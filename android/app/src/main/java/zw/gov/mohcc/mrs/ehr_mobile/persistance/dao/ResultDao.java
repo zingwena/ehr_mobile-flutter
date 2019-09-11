@@ -24,7 +24,7 @@ public interface ResultDao {
     @Query("SELECT * FROM Result ORDER BY  name ASC")
     List<Result> getAllResults();
 
-    @Query("SELECT * FROM Result WHERE id=:id")
-    Result findByResultId(int id);
+    @Query("SELECT * FROM Result WHERE code=:id")
+    Result findByResultId(String id);
 }
 

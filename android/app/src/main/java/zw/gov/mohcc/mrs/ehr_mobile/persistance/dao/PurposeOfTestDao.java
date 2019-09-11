@@ -16,15 +16,15 @@ public interface PurposeOfTestDao {
     void insertPurpose_Of_Tests(List<PurposeOfTest> purpose_of_tests);
 
     @Insert
-    void insertPurpose_Of_Tests(PurposeOfTest purpose_of_test);
+    void insertPurposeOfTests(PurposeOfTest purpose_of_test);
 
     @Query("DELETE FROM occupation")
-    void deletePurpose_Of_Tests();
+    void deletePurposeOfTests();
 
     @Query("SELECT * FROM PurposeOfTest")
     List<PurposeOfTest> getAllPurpose_Of_Tests();
 
-    @Query("SELECT * FROM PurposeOfTest WHERE id=:id")
-    PurposeOfTest findPurpose_Of_TestsById(int id);
+    @Query("SELECT * FROM PurposeOfTest WHERE code=:id")
+    PurposeOfTest findPurposeOfTestsById(String id);
 
 }

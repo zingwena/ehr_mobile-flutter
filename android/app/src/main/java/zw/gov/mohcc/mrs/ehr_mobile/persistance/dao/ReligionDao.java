@@ -24,6 +24,6 @@ public interface ReligionDao {
     @Query("SELECT * FROM Religion ORDER BY  name ASC")
     List<Religion> getAllReligions();
 
-    @Query("SELECT * FROM Religion WHERE id=:id")
-    Religion findReligionById(int id);
+    @Query("SELECT * FROM Religion WHERE code=:id")
+    Religion findReligionById(String id);
 }

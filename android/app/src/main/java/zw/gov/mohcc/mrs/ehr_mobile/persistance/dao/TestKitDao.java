@@ -26,8 +26,8 @@ public interface TestKitDao {
     @Query("SELECT * FROM TestKit ORDER BY  name ASC")
     List<TestKit> getAllTestKits();
 
-    @Query("SELECT * FROM TestKit WHERE id=:id")
-    TestKit findTestKitById(int id);
+    @Query("SELECT * FROM TestKit WHERE code=:id")
+    TestKit findTestKitById(String id);
 
     @Query("SELECT * FROM TestKit WHERE level=:level")
     List<TestKit> findTestKitsByLevel(String level);

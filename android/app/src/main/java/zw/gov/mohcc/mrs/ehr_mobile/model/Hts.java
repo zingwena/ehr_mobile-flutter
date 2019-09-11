@@ -14,10 +14,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 @Entity
-public class Hts {
+public class Hts extends BaseEntity {
 
-    @PrimaryKey
-    private String htsId;
     private String visitId;
     @TypeConverters(HtsTypeConverter.class)
     private HtsType htsType;
@@ -37,6 +35,7 @@ public class Hts {
     private boolean resultReceived;
     private String reasonForNotIssuingResultId;
     private boolean postTestCounselled;
+    @TypeConverters(DateConverter.class)
     private Date datePostTestCounselled;
     private boolean consentToIndexTesting;
 
@@ -46,14 +45,6 @@ public class Hts {
     @Ignore
     public Hts(String visitId) {
         this.visitId = visitId;
-    }
-
-    public String getHtsId() {
-        return htsId;
-    }
-
-    public void setHtsId(String htsId) {
-        this.htsId = htsId;
     }
 
     public String getVisitId() {

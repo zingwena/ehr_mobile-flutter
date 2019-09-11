@@ -2,22 +2,15 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import androidx.room.Ignore;
 
 @Entity
 public class PurposeOfTest extends BaseNameModel {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
-    public int getId() {
-        return id;
+    public PurposeOfTest() {
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @Ignore
     public PurposeOfTest(String code, String name) {
         super(code, name);
     }

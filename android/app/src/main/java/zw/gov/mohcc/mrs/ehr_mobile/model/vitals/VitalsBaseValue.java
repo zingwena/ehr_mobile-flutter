@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
 public class VitalsBaseValue extends VitalsBaseEntityId {
+
     private String value;
 
     public String getValue() {

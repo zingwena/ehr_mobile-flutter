@@ -14,7 +14,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
@@ -22,7 +21,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
@@ -46,7 +45,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EntryPointDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationTestDao;
@@ -54,7 +52,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PurposeOfTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReasonForNotIssuingResultDao;
@@ -75,11 +73,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.CoupleCounsellingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsApproachConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.NewTestConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.OptOutOfTestConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.PreTestInfoGivenConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 
 /**
@@ -91,14 +88,16 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
  * Room persistence Library will help to create the cache
  */
 
-@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Patient.class,
+@Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Person.class,
         Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class,
         HtsModel.class, EntryPoint.class, PurposeOfTest.class, ReasonForNotIssuingResult.class, BloodPressure.class,
-        Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
-        PostTest.class, HtsRegistration.class, LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class, LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 23, exportSchema = false)
+        Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
+        LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
+        LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 25, exportSchema = false)
 
-@TypeConverters({GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
-        HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class, HtsTypeConverter.class})
+@TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
+        HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
+        OptOutOfTestConverter.class, PreTestInfoGivenConverter.class, HtsTypeConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -137,7 +136,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract EducationLevelDao educationLevelDao();
 
-    public abstract PatientDao patientDao();
+    public abstract PersonDao patientDao();
 
     public abstract FacilityDao facilityDao();
 
@@ -163,13 +162,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract VisitDao visitDao();
 
-    public abstract PreTestDao preTestDao();
-
     public abstract PurposeOfTestDao purpose_of_testsDao();
-
-    public abstract HtsRegistrationDao htsRegistrationDao();
-
-    public abstract PostTestDao postTestDao();
 
     public abstract SampleDao sampleDao();
 
@@ -178,7 +171,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract InvestigationDao investigationDao();
 
     public abstract PersonInvestigationDao personInvestigationDao();
-
 
     public abstract HtsDao htsDao();
 

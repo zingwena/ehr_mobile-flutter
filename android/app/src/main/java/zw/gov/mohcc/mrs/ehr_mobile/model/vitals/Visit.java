@@ -12,65 +12,48 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 @Entity
 public class Visit {
 
-
-    @PrimaryKey(autoGenerate = true)
-    private long visitId;
-    private long patientId;
+    @PrimaryKey
+    private String visitId;
+    private String personId;
     @TypeConverters(DateConverter.class)
-    private Date startTime = new Date();
-    @TypeConverters(DateConverter.class)
-    private Date endDate = new Date(System.currentTimeMillis() + (24 * 3600 * 10^3));
-
-
+    private Date visitDate;
 
     public Visit() {
     }
 
     @Ignore
-    public Visit(long patientId) {
-        this.patientId = patientId;
+    public Visit(String visitId, String personId, Date visitDate) {
+        this.visitId = visitId;
+        this.personId = personId;
+        this.visitDate = visitDate;
     }
 
+    @Ignore
+    public Visit(String personId) {
+        this.personId = personId;
+    }
 
-    public long getVisitId() {
+    public String getVisitId() {
         return visitId;
     }
 
-    public void setVisitId(long visitId) {
+    public void setVisitId(String visitId) {
         this.visitId = visitId;
     }
 
-    public long getPatientId() {
-        return patientId;
+    public String getPersonId() {
+        return personId;
     }
 
-    public void setPatientId(long patientId) {
-        this.patientId = patientId;
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getVisitDate() {
+        return visitDate;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Visit{" +
-                "visitId=" + visitId +
-                ", patientId=" + patientId +
-                ", startTime=" + startTime +
-                ", endDate=" + endDate +
-                '}';
+    public void setVisitDate(Date visitDate) {
+        this.visitDate = visitDate;
     }
 }

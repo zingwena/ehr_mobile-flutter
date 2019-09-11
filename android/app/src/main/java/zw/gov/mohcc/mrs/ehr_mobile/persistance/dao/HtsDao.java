@@ -22,20 +22,20 @@ public interface HtsDao {
     @Query("DELETE from Hts")
     void deleteAll();
 
-    @Query("SELECT COUNT(id) FROM Hts WHERE id =:id")
-    int getNumberOfRows(int id);
+    @Query("SELECT COUNT(id) FROM Hts WHERE id =:htsId")
+    int getNumberOfRows(String htsId);
 
     @Update
     int updateHts(Hts hts);
 
-    @Query("SELECT * FROM Hts ORDER BY id Asc")
+    @Query("SELECT * FROM Hts")
     List<Hts> listHts();
 
-    @Query("SELECT * FROM Hts WHERE id =:id")
-    Hts findHtsById(int id);
+    @Query("SELECT * FROM Hts WHERE id =:htsId")
+    Hts findHtsById(String htsId);
 
     @Query("DELETE FROM Hts where id = :id")
-    void deleteById(Long id);
+    void deleteById(String id);
 
     @RawQuery
     List<Hts> searchHts(SimpleSQLiteQuery query);

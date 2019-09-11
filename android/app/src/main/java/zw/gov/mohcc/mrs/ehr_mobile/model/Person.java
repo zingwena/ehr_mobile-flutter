@@ -12,7 +12,7 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -42,8 +42,12 @@ import static androidx.room.ForeignKey.CASCADE;
                         childColumns = "occupationId")
         }
 )
-public class Patient {
+public class Person {
 
+    @TypeConverters(GenderConverter.class)
+    public Gender selfIdentifiedGender;
+    @TypeConverters(GenderConverter.class)
+    public Gender sex;
     @PrimaryKey(autoGenerate = true)
     private int id;
     @NonNull
@@ -62,18 +66,13 @@ public class Patient {
     private String countryId;
     @Embedded
     private Address address;
-    @TypeConverters(SelfIdentifiedGenderConverter.class)
-    public SelfIdentifiedGender selfIdentifiedGender;
-    @TypeConverters(SelfIdentifiedGenderConverter.class)
-    public Gender sex;
 
-    public Patient() {
+    public Person() {
     }
 
 
-
     @Ignore
-    public Patient(@NonNull String firstName, @NonNull String lastName, Gender sex) {
+    public Person(@NonNull String firstName, @NonNull String lastName, Gender sex) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -179,11 +178,11 @@ public class Patient {
         this.countryId = countryId;
     }
 
-    public SelfIdentifiedGender getSelfIdentifiedGender() {
+    public Gender getSelfIdentifiedGender() {
         return selfIdentifiedGender;
     }
 
-    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
+    public void setSelfIdentifiedGender(Gender selfIdentifiedGender) {
         this.selfIdentifiedGender = selfIdentifiedGender;
     }
 
@@ -203,36 +202,9 @@ public class Patient {
         this.birthDate = birthDate;
     }
 
-//    public PatientDto toPatientDto(){
-//        PatientDto patientDto = new PatientDto();
-//        patientDto.setId(this.id);
-//        patientDto.setFirstName(this.firstName);
-//        patientDto.setLastName(this.lastName);
-//        patientDto.setPersonId(this.personId);
-//        patientDto.setNationalId(this.nationalId);
-//        patientDto.setReligion(this.religionId);
-//        patientDto.setOccupation(this.occupationId);
-//        patientDto.setMaritalStatus(this.maritalStatusId);
-//        patientDto.setEducationLevel(this.educationLevelId);
-//        patientDto.setBirthDate();
-//        @TypeConverters(DateConverter.class)
-//        private Date birthDate;
-//        private String nationalityId;
-//        private String countryId;
-//        @Embedded
-//        private Address address;
-//        @TypeConverters(SelfIdentifiedGenderConverter.class)
-//        public SelfIdentifiedGender selfIdentifiedGender;
-//        @TypeConverters(SelfIdentifiedGenderConverter.class)
-//        public Gender sex;
-//
-//    }
-
-
-
     @Override
     public String toString() {
-        return "Patient{" +
+        return "Person{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

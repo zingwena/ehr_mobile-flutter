@@ -7,15 +7,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientQuery {
+public class PersonQuery {
 
     String nationalIdRegex = "((\\d{8,10})([a-zA-Z])(\\d{2})\\b)";
 
-    public SimpleSQLiteQuery searchPatient(String searchItem) {
+    public SimpleSQLiteQuery searchPerson(String searchItem) {
         String firstName = "", lastName = "";
 
 
-        StringBuilder stringQuery = new StringBuilder("SELECT * FROM Patient");
+        StringBuilder stringQuery = new StringBuilder("SELECT * FROM Person");
         List<Object> parameters = new ArrayList<Object>();
 
         String searchItemNoSpace = getStringWithoutSpecialCharacters(searchItem);
@@ -90,7 +90,7 @@ public class PatientQuery {
     }
 
     public boolean isNationalId(@NotNull String input) {
-        return input.matches(nationalIdRegex) ? true : false;
+        return input.matches(nationalIdRegex);
     }
 
 

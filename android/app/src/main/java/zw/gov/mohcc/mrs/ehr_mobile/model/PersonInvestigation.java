@@ -3,50 +3,25 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 @Entity
-public class PersonInvestigation {
-    @PrimaryKey(autoGenerate = true)
-    private int personInvestigationId;
+public class PersonInvestigation extends BaseEntity {
 
-    @ColumnInfo(name = "patientId")
-    private String patientId;
-
-    @Override
-    public String toString() {
-        return "PersonInvestigation{" +
-                "personInvestigationId=" + personInvestigationId +
-                ", patientId='" + patientId + '\'' +
-                ", investigationId='" + investigationId + '\'' +
-                ", date='" + date + '\'' +
-                ", resultId='" + resultId + '\'' +
-                '}';
-    }
-
+    @ColumnInfo(name = "personId")
+    private String personId;
     @ColumnInfo(name = "investigationId")
     private String investigationId;
-
     @ColumnInfo(name = "date")
     private String date;
-
     @ColumnInfo(name = "resultId")
     private String resultId;
 
-    public int getPersonInvestigationId() {
-        return personInvestigationId;
+    public String getPersonId() {
+        return personId;
     }
 
-    public void setPersonInvestigationId(int personInvestigationId) {
-        this.personInvestigationId = personInvestigationId;
-    }
-
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
     public String getInvestigationId() {
@@ -71,5 +46,16 @@ public class PersonInvestigation {
 
     public void setResultId(String resultId) {
         this.resultId = resultId;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonInvestigation{" +
+                "personInvestigationId=" + getId() +
+                ", patientId='" + personId + '\'' +
+                ", investigationId='" + investigationId + '\'' +
+                ", date='" + date + '\'' +
+                ", resultId='" + resultId + '\'' +
+                '}';
     }
 }

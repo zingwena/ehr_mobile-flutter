@@ -23,7 +23,7 @@ public interface EducationLevelDao {
    @Query("SELECT * FROM EducationLevel ")
     List<EducationLevel> getEducationLevels();
 
-   @Query("SELECT name FROM EducationLevel WHERE id=:id")
-   String findByEducationLevelId(String id);
+   @Query("SELECT name FROM EducationLevel WHERE code=:code")
+   String findByEducationLevelId(String code);
 
 }
