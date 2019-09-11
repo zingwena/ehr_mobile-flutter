@@ -108,6 +108,7 @@ public class MainActivity extends FlutterActivity {
 
                     Person person = new Person(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
 
+                    person.setId(patientDto.getPersonId());
                     person.setNationalId(patientDto.getNationalId());
                     person.setReligionId(patientDto.getReligion());
                     person.setMaritalStatusId(patientDto.getMaritalStatus());
@@ -116,7 +117,6 @@ public class MainActivity extends FlutterActivity {
                     person.setCountryId(patientDto.getCountryOfBirth());
                     person.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
                     person.setAddress(patientDto.getAddress());
-
                     person.setNationalId(patientDto.getNationalId());
                     person.setReligionId(patientDto.getReligion());
                     person.setMaritalStatusId(patientDto.getMaritalStatus());
@@ -126,8 +126,6 @@ public class MainActivity extends FlutterActivity {
                     person.setSelfIdentifiedGender(patientDto.getSelfIdentifiedGender());
                     person.setAddress(patientDto.getAddress());
                     person.setOccupationId(patientDto.getOccupation());
-
-
                     person.setBirthDate(patientDto.getBirthDate());
 
                     ehrMobileDatabase.personDao().createPatient(person);
