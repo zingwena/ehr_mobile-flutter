@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/patient.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
-import 'package:ehr_mobile/view/patient_post_test.dart';
-import 'package:ehr_mobile/view/patient_pretest.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 
-import 'hiv_screening.dart';
+
+import 'rounded_button.dart';
 import 'home_page.dart';
 
 import 'hts_testscreening.dart';
@@ -36,6 +37,9 @@ class OverviewState extends State<Overview> {
   Visit _visit;
   Map<String, dynamic> details;
   String _maritalStatus,_educationLevel,_occupation,_nationality;
+
+  bool showInput = true;
+  bool showInputTabOptions = true;
 
   int visitId=1;
 
@@ -66,437 +70,307 @@ class OverviewState extends State<Overview> {
 
 
   }
+
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text('Patient Record'),
-      ),
-      backgroundColor: Colors.blue.shade200,
-      body: ListView(
+      body: Stack(
         children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          Container(
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.blue, Colors.blue],
+              ),
+            ),
+            height: 210.0,
+          ),
+          new AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            centerTitle: true,
+            title: new Text(
+                "Patient OverView"
+            ),
+          ),
+          Positioned.fill(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery
+                      .of(context)
+                      .padding
+                      .top + 40.0),
+              child: new Column(
                 children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: 860,
-                        child: Card(
-                          margin: new EdgeInsets.only(
-                              left: 30.0, right: 30.0, top: 50.0, bottom: 5.0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          elevation: 0.0,
-                          child: new Padding(
-                            padding: new EdgeInsets.all(25.0),
-                            child: new Column(
+                  _buildButtonsRow(),
+                  Expanded(child: WillPopScope(
+                    onWillPop: () {
+                      if (!showInput) {
+                        setState(() {
+                          showInput = true;
+                          showInputTabOptions = true;
+                        });
+                        return Future(() => false);
+                      } else {
+                        return Future(() => true);
+                      }
+                    },
+                    child: new Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.all(8.0),
+                      child: DefaultTabController(
+                        child: new LayoutBuilder(
+                          builder:
+                              (BuildContext context,
+                              BoxConstraints viewportConstraints) {
+                            return Column(
                               children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: RaisedButton(
-                                            elevation: 4.0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(5.0)),
-                                            color: Colors.blue,
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "Vitals",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ReceptionVitals(
-                                                              _patient.id)),
-                                                ),
-                                          ),
-                                        ),
-                                        width: 100,
+                                //   _buildTabBar(),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: new ConstrainedBox(
+                                      constraints: new BoxConstraints(
+                                        minHeight: viewportConstraints
+                                            .maxHeight - 48.0,
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: RaisedButton(
-                                            elevation: 4.0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(5.0)),
-                                            color: Colors.blue,
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "HTS",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Registration(_patient.id,visitId)),
+                                      child: new IntrinsicHeight(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Form(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(16.0),
+                                                  child: Column(
+                                                    children: <Widget>[
+
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: _patient.firstName +" "+
+                                                                        _patient.lastName),
+                                                                decoration: InputDecoration(
+                                                                    icon: Icon(Icons.person, color: Colors.blue),
+                                                                    labelText: "Full Name",
+                                                                    hintText: "Full Name"
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        _patient.sex)),
+                                                                decoration: InputDecoration(
+                                                                    icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
+                                                                    labelText: "Sex",
+                                                                    hintText: "Sex"
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        _patient.nationalId)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'National ID',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: DateFormat("dd/MM/yyyy").format(_patient.birthDate)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Date Of Birth',
+                                                                  icon: Icon(Icons.date_range, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                        ],
+                                                      ),
+
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        _maritalStatus)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Marital Status',
+                                                                  icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        _patient.educationLevelId)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Education',
+                                                                  icon: Icon(Icons.book, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                        ],
+                                                      ),
+
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        _patient.nationalityId)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Nationality',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: '0774536627'),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Phone Number',
+                                                                  icon: Icon(Icons.smartphone, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+
+                                                      Padding(
+                                                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 64.0, 8.0),
+                                                        child: TextFormField(
+                                                          controller: TextEditingController(
+                                                              text: "address"),
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Address',
+                                                            icon: Icon(Icons.home, color: Colors.blue),
+                                                          ),
+
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                          ),
+                                              ),
+                                              Expanded(child: Container()),
+                                              /*  Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 16.0, top: 8.0),
+                                              child: FloatingActionButton(
+                                                onPressed: () =>
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AddPatient()),
+                                                    ),
+                                                child: Icon(
+                                                    Icons.add, size: 36.0),
+                                              ),
+                                            ), */
+                                            ],
+                                          )
 
-                                        ),
-                                        width: 100,
                                       ),
-                                    ),
-
-
-
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: RaisedButton(
-                                            elevation: 4.0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(5.0)),
-
-                                            color: Colors.red,
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "Close Patient Record",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            onPressed: () =>
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          HomePage()),
-                                                ),
-
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                new Container(
-                                  child: new Text(
-                                    "Demographic Details",
-                                    style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-                                                text: _patient.firstName + " " +
-                                                    _patient.lastName),
-                                            decoration: InputDecoration(
-                                              labelText: 'Full Name',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween,
-
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-                                                text: nullHandler(
-                                                    _patient.sex)),
-
-                                            decoration: InputDecoration(
-                                              labelText: 'Sex',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-                                                text: nullHandler(
-                                                    _patient.nationalId)),
-                                            decoration: InputDecoration(
-                                              labelText: 'National ID',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-                                                text: DateFormat("dd/MM/yyyy").format(_patient.birthDate)),
-
-                                            decoration: InputDecoration(
-                                              labelText: 'Date Of Birth',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-                                                text: nullHandler(
-                                                    _maritalStatus)),
-
-                                            decoration: InputDecoration(
-                                              labelText: 'Marital Status',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-
-                                                text: nullHandler(
-                                                    _patient.educationLevelId)),
-
-                                            decoration: InputDecoration(
-                                              labelText: 'Education',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-
-                                                text: nullHandler(
-                                                    _patient.occupationId)),
-
-
-                                            decoration: InputDecoration(
-                                              labelText: 'Occupation',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-
-                                                text: nullHandler(
-                                                    _patient.nationalityId)),
-
-
-                                            decoration: InputDecoration(
-                                              labelText: 'Nationality',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 24,
-                                ),
-                                Text(
-                                  "Address And Contact Details",
-                                  style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 18,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextFormField(
-                                            controller: TextEditingController(
-
-                                                text: "address"),
-                                            decoration: InputDecoration(
-                                              labelText: 'Address',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: TextField(
-                                            controller: TextEditingController(
-                                                text: '0774536627'),
-
-                                            decoration: InputDecoration(
-                                              labelText: 'Phone Number',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                                )
+                              ]
+                              ,
+                            );
+                          },
                         ),
+                        length: 3,
                       ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                    ],
+                    ),
+                  ),
                   ),
                 ],
               ),
-            ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(text: "VITALS", onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ReceptionVitals(
+                        _patient.id)),
+          ),
+          ),
+          new RoundedButton(text: "HTS", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Registration(_patient.id,visitId)),
+          ),
+          ),
+          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    HomePage()),
+          ),
           ),
         ],
       ),
@@ -529,6 +403,11 @@ class OverviewState extends State<Overview> {
 
   }
 
+
 }
+
+
+
+
 
 
