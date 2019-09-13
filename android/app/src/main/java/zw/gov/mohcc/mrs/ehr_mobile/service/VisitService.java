@@ -12,8 +12,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class VisitService {
 
-    private EhrMobileDatabase ehrMobileDatabase;
     private final String TAG = "Visit Service";
+    private EhrMobileDatabase ehrMobileDatabase;
 
     public VisitService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
@@ -21,14 +21,14 @@ public class VisitService {
 
     public String getCurrentVisit(String personId) {
 
-        /*Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, DateUtil.getStartOfDay(new Date()),
-                DateUtil.getEndOfDay(new Date()));
+        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, DateUtil.getStartOfDay(new Date()));
         Log.d(TAG, "Visit retrieved " + visit);
-        if (visit == null) {
-            visit = new Visit(UUID.randomUUID().toString(), personId, new Date());
-            return ehrMobileDatabase.visitDao().insert(visit);
+        if (visit != null) {
+            return visit.getId();
         }
-        return visit.getVisitId();*/
-        return "01";
+        String visitId = UUID.randomUUID().toString();
+        visit = new Visit(visitId, personId, new Date(), DateUtil.getEndOfDay(new Date()));
+        ehrMobileDatabase.visitDao().insert(visit);
+        return visitId;
     }
 }

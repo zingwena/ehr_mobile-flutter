@@ -323,7 +323,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.ehrMobile;
+				PRODUCT_BUNDLE_IDENTIFIER = zw.gov.mohcc.mrs.ehr_mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -14,6 +14,7 @@ public class VitalsBaseEntityId extends BaseEntity {
     @TypeConverters(DateConverter.class)
     private Date dateTime = new Date();
 
+
     public String getVisitId() {
         return visitId;
     }

@@ -14,14 +14,9 @@ public interface VisitDao {
     @Insert
     void insert(Visit visit);
 
-    //@Query("SELECT * FROM Visit WHERE personId = :personId AND visitDate Between :startTime and :endTime")
-    //Visit findByPersonVisit(String personId, Date startTime, Date endTime);
+    @Query("SELECT * FROM Visit WHERE personId = :personId AND visitStartDate Between :visitStartDate and visitEndDate")
+    Visit findByPersonVisit(String personId, Date visitStartDate);
 
     @Query("SELECT * FROM Visit")
     List<Visit> getAll();
-
-    /*
-    @Query("SELECT * FROM Person WHERE firstName=:firstName AND lastName=:lastName")
-    Person findPatientByName (String firstName, String lastName);
-     */
 }

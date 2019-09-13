@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
@@ -8,22 +9,24 @@ import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 @Entity
 public class Visit extends BaseEntity {
 
     private String personId;
     @TypeConverters(DateConverter.class)
-    private Date visitDate;
+    private Date visitStartDate = new Date();
+    private Date visitEndDate = DateUtil.getEndOfDay(new Date());
 
     public Visit() {
     }
 
-    @Ignore
-    public Visit(String visitId, String personId, Date visitDate) {
-        super(visitId);
+    public Visit(@NonNull String id, String personId, Date visitStartDate, Date visitEndDate) {
+        super(id);
         this.personId = personId;
-        this.visitDate = visitDate;
+        this.visitStartDate = visitStartDate;
+        this.visitEndDate = visitEndDate;
     }
 
     public String getPersonId() {
@@ -34,11 +37,19 @@ public class Visit extends BaseEntity {
         this.personId = personId;
     }
 
-    public Date getVisitDate() {
-        return visitDate;
+    public Date getVisitStartDate() {
+        return visitStartDate;
     }
 
-    public void setVisitDate(Date visitDate) {
-        this.visitDate = visitDate;
+    public void setVisitStartDate(Date visitStartDate) {
+        this.visitStartDate = visitStartDate;
+    }
+
+    public Date getVisitEndDate() {
+        return visitEndDate;
+    }
+
+    public void setVisitEndDate(Date visitEndDate) {
+        this.visitEndDate = visitEndDate;
     }
 }
