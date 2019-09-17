@@ -7,8 +7,7 @@ part 'purposeOfTest.g.dart';
 
 @JsonSerializable()
 class PurposeOfTest extends BaseCode{
-  PurposeOfTest(int id,String name,String code){
-    this.id = id;
+  PurposeOfTest(String name,String code){
     this.name = name;
     this.code = code;
   }

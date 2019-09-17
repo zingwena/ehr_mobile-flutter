@@ -9,25 +9,22 @@ part 'preTest.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PreTest {
-  int id;
-  String firstName;
-
-  PreTest(this.id, this.firstName, this.lastName, this.htsApproach,
-      this.newTest, this.coupleCounselling, this.preTestInfoGiven,
-      this.optOutOfTest, this.newTestPregLact, this.htsModel,
-      this.purposeOfTest, this.reasonForNotIssuingResult);
-
-  String lastName;
+  String htsId;
   String htsApproach;
+  HtsModel htsModel;
   String newTest;
   String coupleCounselling;
-  String preTestInfoGiven;
+  bool preTestInformationGiven;
   String optOutOfTest;
   String newTestPregLact;
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
   ReasonForNotIssuingResult reasonForNotIssuingResult;
 
+
+  PreTest(this.htsId, this.htsApproach, this.htsModel, this.newTest,
+      this.coupleCounselling, this.preTestInformationGiven, this.optOutOfTest,
+      this.newTestPregLact, this.purposeOfTest, this.reasonForNotIssuingResult);
 
   factory PreTest.fromJson(Map<String, dynamic> json) => _$PreTestFromJson(json);
 

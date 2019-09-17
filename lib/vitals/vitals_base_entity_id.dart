@@ -1,5 +1,5 @@
 class VitalsBaseEntityId {
-  int id;
-  int visitId;
+  String id;
+  String visitId;
   DateTime dateTime;
 }

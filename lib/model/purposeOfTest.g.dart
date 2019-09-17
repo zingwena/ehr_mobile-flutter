@@ -8,7 +8,6 @@ part of 'purposeOfTest.dart';
 
 PurposeOfTest _$PurposeOfTestFromJson(Map<String, dynamic> json) {
   return PurposeOfTest(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
@@ -16,7 +15,6 @@ PurposeOfTest _$PurposeOfTestFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PurposeOfTestToJson(PurposeOfTest instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

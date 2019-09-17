@@ -8,11 +8,11 @@ part of 'visit.dart';
 
 Visit _$VisitFromJson(Map<String, dynamic> json) {
   return Visit()
-    ..visitId = json['visitId'] as int
-    ..patientId = json['patientId'] as int;
+    ..visitId = json['visitId'] as String
+    ..personId = json['personId'] as String;
 }
 
 Map<String, dynamic> _$VisitToJson(Visit instance) => <String, dynamic>{
       'visitId': instance.visitId,
-      'patientId': instance.patientId,
+      'personId': instance.personId,
     };

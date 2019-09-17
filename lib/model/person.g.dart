@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'patient.dart';
+part of 'person.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Patient _$PatientFromJson(Map<String, dynamic> json) {
-  return Patient(
-    json['id'] as int,
+Person _$PersonFromJson(Map<String, dynamic> json) {
+  return Person(
+    json['id'] as String,
     json['firstName'] as String,
     json['lastName'] as String,
     json['sex'] as String,
@@ -27,7 +27,7 @@ Patient _$PatientFromJson(Map<String, dynamic> json) {
     ..countryId = json['countryId'] as String;
 }
 
-Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{
+Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,

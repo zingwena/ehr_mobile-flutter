@@ -8,7 +8,6 @@ part of 'nationality.dart';
 
 Nationality _$NationalityFromJson(Map<String, dynamic> json) {
   return Nationality(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
@@ -16,7 +15,6 @@ Nationality _$NationalityFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$NationalityToJson(Nationality instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

@@ -5,7 +5,7 @@ part 'htsRegistration.g.dart';
 @CustomDateTimeConverter()
 class HtsRegistration {
 
-  int visitId;
+  String visitId;
   DateTime dateOfHivTest;
   String htsType;
   String entryPointId;

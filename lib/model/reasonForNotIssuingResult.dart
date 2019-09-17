@@ -5,8 +5,7 @@ part 'reasonForNotIssuingResult.g.dart';
 
 @JsonSerializable()
 class ReasonForNotIssuingResult extends BaseCode {
-  ReasonForNotIssuingResult(int id, String name, String code) {
-    this.id = id;
+  ReasonForNotIssuingResult(String name, String code) {
     this.name = name;
     this.code = code;
   }

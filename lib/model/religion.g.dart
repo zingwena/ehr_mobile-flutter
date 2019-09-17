@@ -8,14 +8,12 @@ part of 'religion.dart';
 
 Religion _$ReligionFromJson(Map<String, dynamic> json) {
   return Religion(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
 }
 
 Map<String, dynamic> _$ReligionToJson(Religion instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

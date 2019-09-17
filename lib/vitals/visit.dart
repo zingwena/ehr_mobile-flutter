@@ -3,8 +3,9 @@ part 'visit.g.dart';
 
 @JsonSerializable()
 class Visit {
-int visitId;
-int patientId;
+String visitId;
+String personId;
+String personId;
 
 Visit();
 

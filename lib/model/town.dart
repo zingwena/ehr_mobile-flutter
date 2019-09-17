@@ -6,8 +6,7 @@ part 'town.g.dart';
 @JsonSerializable()
 class Town extends BaseCode{
 
-  Town(int id, String name, String code){
-    this.id=id;
+  Town(String name, String code){
     this.name=name;
     this.code=code;
   }

@@ -8,7 +8,6 @@ part of 'entry_point.dart';
 
 EntryPoint _$EntryPointFromJson(Map<String, dynamic> json) {
   return EntryPoint(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
@@ -16,7 +15,6 @@ EntryPoint _$EntryPointFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$EntryPointToJson(EntryPoint instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

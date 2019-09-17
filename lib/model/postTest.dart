@@ -7,18 +7,14 @@ part 'postTest.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PostTest {
-  int id;
-  String firstName;
-  DateTime dateOfPostTestCounsel;
-  String resultReceived;
-  String finalResult;
-
-  PostTest(this.id, this.firstName, this.lastName, this.reasonForNotIssuingResult,this.dateOfPostTestCounsel,this.finalResult,this.resultReceived);
-
-  String lastName;
-
+  String htsId;
+  DateTime datePostTestCounselled;
+  bool resultReceived;
   ReasonForNotIssuingResult reasonForNotIssuingResult;
+  String finalResult;
+  bool consentToIndexTesting;
 
+  PostTest(this.htsId, this.datePostTestCounselled,this.resultReceived,this.reasonForNotIssuingResult, this.finalResult, this.consentToIndexTesting);
 
   factory PostTest.fromJson(Map<String, dynamic> json) => _$PostTestFromJson(json);
 

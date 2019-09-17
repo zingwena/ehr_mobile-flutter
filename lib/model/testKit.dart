@@ -7,8 +7,7 @@ part 'testKit.g.dart';
 @JsonSerializable()
 class TestKit extends BaseCode{
   String description; String level;
-  TestKit(int id, String code,String name, String description, String level){
-    this.id=id;
+  TestKit(String code,String name, String description, String level){
     this.code = code;
     this.name = name;
     this.description = description;

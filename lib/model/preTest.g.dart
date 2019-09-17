@@ -8,18 +8,16 @@ part of 'preTest.dart';
 
 PreTest _$PreTestFromJson(Map<String, dynamic> json) {
   return PreTest(
-    json['id'] as int,
-    json['firstName'] as String,
-    json['lastName'] as String,
+    json['htsId'] as String,
     json['htsApproach'] as String,
-    json['newTest'] as String,
-    json['coupleCounselling'] as String,
-    json['preTestInfoGiven'] as String,
-    json['optOutOfTest'] as String,
-    json['newTestPregLact'] as String,
     json['htsModel'] == null
         ? null
         : HtsModel.fromJson(json['htsModel'] as Map<String, dynamic>),
+    json['newTest'] as String,
+    json['coupleCounselling'] as String,
+    json['preTestInformationGiven'] as bool,
+    json['optOutOfTest'] as String,
+    json['newTestPregLact'] as String,
     json['purposeOfTest'] == null
         ? null
         : PurposeOfTest.fromJson(json['purposeOfTest'] as Map<String, dynamic>),
@@ -31,13 +29,11 @@ PreTest _$PreTestFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PreTestToJson(PreTest instance) => <String, dynamic>{
-      'id': instance.id,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
+      'htsId': instance.htsId,
       'htsApproach': instance.htsApproach,
       'newTest': instance.newTest,
       'coupleCounselling': instance.coupleCounselling,
-      'preTestInfoGiven': instance.preTestInfoGiven,
+      'preTestInformationGiven': instance.preTestInformationGiven,
       'optOutOfTest': instance.optOutOfTest,
       'newTestPregLact': instance.newTestPregLact,
       'htsModel': instance.htsModel?.toJson(),

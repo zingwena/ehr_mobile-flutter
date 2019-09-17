@@ -8,8 +8,7 @@ part 'occupation.g.dart';
 @JsonSerializable()
 class Occupation extends BaseCode{
 
-  Occupation(int id,String name,String code){
-    this.id = id;
+  Occupation(String name,String code){
     this.name = name;
     this.code = code;
   }

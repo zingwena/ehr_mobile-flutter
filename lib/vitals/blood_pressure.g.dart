@@ -8,8 +8,8 @@ part of 'blood_pressure.dart';
 
 BloodPressure _$BloodPressureFromJson(Map<String, dynamic> json) {
   return BloodPressure()
-    ..id = json['id'] as int
-    ..visitId = json['visitId'] as int
+    ..id = json['id'] as String
+    ..visitId = json['visitId'] as String
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)
