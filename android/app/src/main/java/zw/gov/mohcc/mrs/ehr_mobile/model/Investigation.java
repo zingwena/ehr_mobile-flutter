@@ -22,7 +22,7 @@ public class Investigation implements Serializable {
     @NonNull
     private String investigationId;
     private String laboratoryTestId;
-    private int sampleId;
+    private String sampleId;
 
     public Investigation() {
     }
@@ -43,11 +43,11 @@ public class Investigation implements Serializable {
         this.laboratoryTestId = laboratoryTestId;
     }
 
-    public int getSampleId() {
+    public String getSampleId() {
         return sampleId;
     }
 
-    public void setSampleId(int sampleId) {
+    public void setSampleId(String sampleId) {
         this.sampleId = sampleId;
     }
 }
