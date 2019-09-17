@@ -30,12 +30,15 @@ public class PreTest {
     @ColumnInfo(name="pretest_pregLact")
     public NewTestPregLact newTestPregLact;
 
+    @ColumnInfo(name = "couplecounselling")
     String coupleCounselling;
+    @ColumnInfo(name = "optoutoftesting")
     String optOutOfTest;
+    @ColumnInfo(name = "pretestinfogiven")
     String preTestInfoGiven;
-
+    @ColumnInfo(name = "htsmodelid")
     String HtsModel_id;
-
+    @ColumnInfo(name = "purposeoftestid")
     String  purpose_of_test_id;
 
 

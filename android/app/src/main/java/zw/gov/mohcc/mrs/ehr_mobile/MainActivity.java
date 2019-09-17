@@ -26,6 +26,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClie
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
@@ -44,6 +45,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
@@ -170,8 +172,46 @@ public class MainActivity extends FlutterActivity {
                     System.out.println("ADDRESSS "+ "street"+ address.getStreet()+"town"+ address.getTown()+"city"+address.getCity());
                     result.success(patient_address);
                 }
+                if(methodCall.method.equals("savephonenumber")){
 
+                    String args = methodCall.arguments();
+                    System.out.println("PATIENT FROM FLUTTER"+ args);
+                    PatientPhoneDto patientPhoneDto = gson.fromJson(args, PatientPhoneDto.class);
+                    System.out.println("PATIENT DTO" + patientPhoneDto);
+                    PatientPhoneNumber patientPhoneNumber = new PatientPhoneNumber(patientPhoneDto.getPatientId(), patientPhoneDto.getPhonenumber_1(), patientPhoneDto.getPhonenumber_2()) ;
+                    int phonenumber_id = ehrMobileDatabase.patientPhoneDao().insertpatientphonenumber(patientPhoneNumber).intValue();
+                    System.out.println("PATIENT NUMBER SAVED HERE ");
+                  /*  PatientPhoneNumber patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(phonenumber_id);
+                    System.out.println("NUMBER 1" + patient_PhoneNumber.getPhonenumber_1());*/
+                    /*System.out.println("PATIENT ID HERE"+ patient_PhoneNumber.getPatientId());*/
+                    result.success(phonenumber_id);
 
+/*
+                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().findPatientById(id));
+*/
+                }
+                if(methodCall.method.equals("getPhonenumber")){
+                    int args = methodCall.arguments();
+                    System.out.println("PATIENT ID FROM FLUTTER "+ args);
+                    PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPatientId(args);
+                    System.out.println("HERE IS OUR PHONE NUMBER OBJECT "+ patientPhoneNumber);
+/*
+                    PatientPhoneNumber patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(args);
+*/
+                    System.out.println("NUMBER 1" + patientPhoneNumber.getPhonenumber_1());
+                    String phonenumber_1 = patientPhoneNumber.getPhonenumber_1();
+                    String phonenumber_2 = patientPhoneNumber.getPhonenumber_2();
+                    if(phonenumber_1 == null){
+                        phonenumber_1 = " ";
+
+                    }
+                    if(phonenumber_2 == null){
+                        phonenumber_2 = " ";
+                    }
+                    String phonenumber = phonenumber_1 + " / " + phonenumber_2;
+                    result.success(phonenumber);
+                }
+                
             }
         });
 
@@ -509,7 +549,9 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 PreTest preTest = gson.fromJson(arguments, PreTest.class);
 
-                                ehrMobileDatabase.preTestDao().createPreTest(preTest);
+                              Long pretest_id =  ehrMobileDatabase.preTestDao().createPreTest(preTest);
+                                PreTest pretest = ehrMobileDatabase.preTestDao().findPreTestById(pretest_id.intValue());
+                                System.out.println("PRETEST PRETEST PRETEST ");
                                 System.out.println("List of pretest" + ehrMobileDatabase.preTestDao().listPreTests());
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -519,7 +561,9 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
 
-                                ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
+                               Long labinvestTest_id =  ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
+                               LaboratoryInvestigationTest laboratoryInvestigationTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(labinvestTest_id.intValue());
+                                System.out.println("LABORATORY TEST LABORATORY TEST" + laboratoryInvestigationTest.getResultId());
                                 System.out.println("List of LabInvestigations" + ehrMobileDatabase.labInvestTestdao().findAll());
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

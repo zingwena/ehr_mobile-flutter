@@ -23,6 +23,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PostTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PreTest;
@@ -57,6 +58,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientPhoneDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PostTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PreTestDao;
@@ -99,7 +101,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
         Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class,
         HtsModel.class, EntryPoint.class, Purpose_Of_Tests.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class, PreTest.class,
-        PostTest.class, HtsRegistration.class, LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class, LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class}, version = 23, exportSchema = false)
+        PostTest.class, HtsRegistration.class, LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class, LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class}, version = 24, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, SelfIdentifiedGenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, NewPregLactConverter.class, NewTestConverter.class, OptOutOfTestConverter.class, PreTestInfoGivenConverter.class, HtsTypeConverter.class})
@@ -191,4 +193,5 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract LaboratoryInvestigationTestDao labInvestTestdao();
 
     public abstract LaboratoryInvestigationDao laboratoryInvestigationDao();
+    public abstract PatientPhoneDao patientPhoneDao();
 }
