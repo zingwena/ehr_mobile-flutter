@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/address.dart';
 import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/town.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,9 @@ class _PatientAddressState extends State<PatientAddress> {
   bool _townIsValid=false;
   bool _formIsValid=false;
   String _townError="Select Town";
-  String schoolHouse, suburbVillage, town;
+  String schoolHouse, suburbVillage, town, phonenumber_1, phonenumber_2, patient_phonenumber_string;
   Patient registeredPatient;
+  PatientPhoneNumber patientPhoneNumber;
   List<DropdownMenuItem<String>>  _dropDownMenuItemsTown;
   String _currentTown,_towns;
   List _townList = List();
@@ -72,6 +74,36 @@ class _PatientAddressState extends State<PatientAddress> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                TextFormField(
+                  validator: (value) {
+                    return value.isEmpty ? 'Enter some text' : null;
+                  },
+                  onSaved: (value) => setState(() {
+                    phonenumber_1 = value;
+                  }),
+                  decoration: InputDecoration(
+                      labelText: 'Phone No 1.',
+                      border: OutlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Divider(),
+                TextFormField(
+                  validator: (value) {
+                    return value.isEmpty ? 'Enter some text' : null;
+                  },
+                  onSaved: (value) => setState(() {
+                    phonenumber_2 = value;
+                  }),
+                  decoration: InputDecoration(
+                      labelText: 'Phone No 2.',
+                      border: OutlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Divider(),
                 TextFormField(
                   validator: (value) {
                     return value.isEmpty ? 'Enter some text' : null;
@@ -123,6 +155,7 @@ class _PatientAddressState extends State<PatientAddress> {
                         items: _dropDownMenuItemsTown,
                         onChanged: changedDropDownItemTown,
                       ),
+
                     ),
                     borderSide: BorderSide(
                       color: Colors.blue, //Color of the border
@@ -189,11 +222,15 @@ class _PatientAddressState extends State<PatientAddress> {
 
         patient.address = Address(schoolHouse, suburbVillage, _currentTown);
         await registerPatient(patient).then((value) {
+
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => Overview(registeredPatient)));
         });
+        SnackBar(
+          content: Text("Patient saved"),
+        );
 
 
       }
@@ -219,7 +256,11 @@ class _PatientAddressState extends State<PatientAddress> {
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
         registeredPatient = Patient.fromJson(jsonDecode(patientResponse));
+        savephonenumber();
+
+
       });
+
 
     }
     catch(e){
@@ -227,6 +268,19 @@ class _PatientAddressState extends State<PatientAddress> {
     }
   }
 
+  Future <void> savephonenumber()async{
+    var phonenumber_response;
+    var patientphonenumberresponse, patientphonenumber;
+
+    print('SAVE PHONE NUMBER HERE');
+
+    PatientPhoneNumber patientphone = PatientPhoneNumber(registeredPatient.id, phonenumber_1, phonenumber_2);
+    String jsonPatientPhoneNumber = jsonEncode(patientphone.toJson());
+    print('PATIENT PHONENUMBER FROM JSON'+ jsonPatientPhoneNumber);
+    phonenumber_response = await addPatient.invokeMethod("savephonenumber", jsonPatientPhoneNumber);
+
+
+  }
 
   void changedDropDownItemTown(String selectedTown) {
     setState(() {

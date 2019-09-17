@@ -163,6 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   
               if(result.contains("Welcome"))
                 {
+
                   // display Search Patient Screen
                        Navigator.push(
                   context,

@@ -1,53 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../login_screen.dart';
 
 
-class HtsTesting extends StatefulWidget {
-  HtsTesting({Key key, this.title}) : super(key: key);
+class HtcTesting extends StatefulWidget {
+  HtcTesting({Key key, this.title}) : super(key: key);
 
   final String title;
   var selectedDate;
 
   @override
-  _HtsTestingState createState() => _HtsTestingState();
+  _HtcTestingState createState() => _HtcTestingState();
 }
 
 
 
-class _HtsTestingState extends State<HtsTesting> {
-
-  String sample;
-  String test;
-  String Status;
-  String testDate;
-  List<DropdownMenuItem<String>> _sampleDropdownMenuItem;
-  String _currentSample;
-    static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-
-  List _sampleList = [
-    "Blood",
-    "Oral Fluid",
-  ];
-
-  List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String sample in _sampleList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: sample, child: Text(sample)));
-    }
-    return items;
-  }
-
-
-
-  @override
-  void initState() {
-   _currentSample = _sampleList[0].value;
-
-  }
-
+class _HtcTestingState extends State<HtcTesting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,16 +53,16 @@ class _HtsTestingState extends State<HtsTesting> {
                                         child: SizedBox(
                                           child: Padding(
                                             padding: const EdgeInsets.all(10.0),
-                                            child: Container(
-                                              width: double.infinity,
-                                              padding:
-                                              EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                              child: DropdownButton(
-                                                icon: Icon(Icons.keyboard_arrow_down),
-                                                iconEnabledColor: Colors.black,
-                                                value: _currentSample,
-                                                items: _sampleDropdownMenuItem,
-                                                onChanged: changedDropDownItemSamples
+                                            child: TextFormField(
+                                              controller: TextEditingController(
+                                                  text: 'Oral Fluid'),
+                                              decoration: InputDecoration(
+                                                labelText: 'Sample',
+                                                hintText: '',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                              style: TextStyle(
+                                                color: Colors.grey,
                                               ),
                                             ),
                                           ),
@@ -160,7 +126,6 @@ class _HtsTestingState extends State<HtsTesting> {
                                             padding: const EdgeInsets.all(0.0),
                                             child: TextFormField(
 
-
                                               validator: (value) {
                                                 return value.isEmpty
                                                     ? 'Enter some text'
@@ -199,7 +164,7 @@ class _HtsTestingState extends State<HtsTesting> {
                                             elevation: 4.0,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(5.0)),
+                                                    BorderRadius.circular(5.0)),
                                             color: Colors.blue,
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
@@ -209,12 +174,12 @@ class _HtsTestingState extends State<HtsTesting> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500),
                                             ),
-//                                            onPressed: () => Navigator.push(
-//                                              context,
-//                                              MaterialPageRoute(
-//                                                  builder: (context) =>
-//                                                      HtsScreeningTest()),
-//                                            ),
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HtcTesting()),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -238,11 +203,5 @@ class _HtsTestingState extends State<HtsTesting> {
         ],
       ),
     );
-  }
-
-  void changedDropDownItemSamples(String selectedSample) {
-    setState(() {
-      _currentSample = selectedSample;
-    });
   }
 }

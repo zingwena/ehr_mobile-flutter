@@ -11,6 +11,7 @@ import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'rounded_button.dart';
 
 class Registration extends StatefulWidget {
   int visitId;
@@ -44,6 +45,9 @@ class _Registration extends State<Registration> {
   String _entryPoint;
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
+
+  bool showInput = true;
+  bool showInputTabOptions = true;
 
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<EntryPoint> _entryPointList = List();
@@ -126,293 +130,265 @@ class _Registration extends State<Registration> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('HTS Registration'),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.blue, Colors.blue],
+              ),
+            ),
+            height: 210.0,
+          ),
+          new AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            centerTitle: true,
+            title: new Text("HTS Patient Registration"),
+          ),
+          Positioned.fill(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + 40.0),
+              child: new Column(
                 children: <Widget>[
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: RaisedButton(
-                              elevation: 4.0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius
-                                      .circular(5.0)),
-                              color: Colors.blue,
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text(
-                                "Testing",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              onPressed: () =>
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            HtsScreeningTest()),
-                                  ),
-                            ),
-
-                          ),
-                          width: 100,
-                        ),
-                      ),
-
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: RaisedButton(
-                              elevation: 4.0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius
-                                      .circular(5.0)),
-                              color: Colors.blue,
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text(
-                                "Pre-Test",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              onPressed: () =>
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            PatientPretest()),
-                                  ),
-                            ),
-                          ),
-                          width: 100,
-                        ),
-                      ),
-
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: RaisedButton(
-                              elevation: 4.0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius
-                                      .circular(5.0)),
-                              color: Colors.blue,
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text(
-                                "Post Test Counselling",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              onPressed: () =>
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            PatientPostTest()),
-                                  ),
-                            ),
-                          ),
-                          width: 100,
-                        ),
-                      ),
-
-
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: RaisedButton(
-                              elevation: 4.0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(5.0)),
-
-                              color: Colors.red,
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text(
-                                "Close Patient Record",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              onPressed: () =>
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            HomePage()),
-                                  ),
-
-                            ),
-                          ),
-                          width: 100,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0.0, horizontal: 30.0),
-                            child: TextFormField(
-                              controller:
-                                  TextEditingController(text: selectedDate),
-                              validator: (value) {
-                                return value.isEmpty ? 'Enter some text' : null;
-                              },
-                              decoration: InputDecoration(
-                                  labelText: 'Date of HIV Test',
-                                  border: OutlineInputBorder()),
-                            ),
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                          icon: Icon(Icons.calendar_today),
-                          color: Colors.blue,
-                          onPressed: () {
-                            _selectDate(context);
-                          })
-                    ],
-                  ),
-                  SizedBox(
-                    height: 25.0,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(30.0),
-                            child: Text('HTS Type'),
-                          ),
-                          width: 250,
-                        ),
-                      ),
-                      Text('Self'),
-                      Radio(
-                          value: 1,
-                          groupValue: _htsType,
-                          onChanged: _handleHtsTypeChange),
-                      Text('Rapid'),
-                      Radio(
-                          value: 2,
-                          groupValue: _htsType,
-                          onChanged: _handleHtsTypeChange)
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                    width: double.infinity,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 30.0),
-                        child: DropdownButton(
-                          hint: Text('Select Entry Point'),
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          iconEnabledColor: Colors.black,
-                          value: _currentEntryPoint,
-                          items: _dropDownMenuItemsEntryPoint,
-                          onChanged: changedDropDownItemEntryPoint,
-                        ),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.blue, //Color of the border
-                        style: BorderStyle.solid, //Style of the border
-                        width: 2.0, //width of the border
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                  !_showError
-                      ? SizedBox.shrink()
-                      : Text(
-                          _entryPointError ?? "",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: RaisedButton(
-                      elevation: 4.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.blue,
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        "SAVE",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                          if (_entryPointIsValid) {
-                            setState(() {
-                              _formIsValid = true;
-                            });
-                          } else {
-                            setState(() {
-                              _showError = true;
-                            });
-                          }
-                          if (_formIsValid) {
-                            HtsRegistration htsDetails = HtsRegistration(
-                                visitId, htsType, date, _currentEntryPoint);
-                            print('*************************htsType ${htsDetails.toString()}');
-
-
-                            await registration(htsDetails);
-
-                            Navigator.push(context, MaterialPageRoute());
-                          }
+                  _buildButtonsRow(),
+                  Expanded(
+                    child: WillPopScope(
+                      onWillPop: () {
+                        if (!showInput) {
+                          setState(() {
+                            showInput = true;
+                            showInputTabOptions = true;
+                          });
+                          return Future(() => false);
+                        } else {
+                          return Future(() => true);
                         }
                       },
+                      child: new Card(
+                        elevation: 4.0,
+                        margin: const EdgeInsets.all(8.0),
+                        child: DefaultTabController(
+                          child: new LayoutBuilder(
+                            builder: (BuildContext context,
+                                BoxConstraints viewportConstraints) {
+                              return Column(
+                                children: <Widget>[
+                                  //   _buildTabBar(),
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: new ConstrainedBox(
+                                        constraints: new BoxConstraints(
+                                          minHeight:
+                                          viewportConstraints.maxHeight -
+                                              48.0,
+                                        ),
+                                        child: new IntrinsicHeight(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Form(
+                                                key: _formKey,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      height: 20.0,
+                                                    ),
+                                                    Container(
+                                                      width: double.infinity,
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      child:              Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding(
+                                                                padding: EdgeInsets.symmetric(
+                                                                    vertical: 0.0, horizontal: 30.0),
+                                                                child: TextFormField(
+                                                                  controller:
+                                                                  TextEditingController(text: selectedDate),
+                                                                  validator: (value) {
+                                                                    return value.isEmpty ? 'Enter some text' : null;
+                                                                  },
+                                                                  decoration: InputDecoration(
+                                                                      labelText: 'Date of HIV Test',
+                                                                      border: OutlineInputBorder()),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          IconButton(
+                                                              icon: Icon(Icons.calendar_today),
+                                                              color: Colors.blue,
+                                                              onPressed: () {
+                                                                _selectDate(context);
+                                                              })
+                                                        ],
+                                                      ),
+                                                    ),
+
+                                                    Container(
+                                                      width: double.infinity,
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      child:     Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(30.0),
+                                                                child: Text('HTS Type'),
+                                                              ),
+                                                              width: 250,
+                                                            ),
+                                                          ),
+                                                          Text('Self'),
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: _htsType,
+                                                              onChanged: _handleHtsTypeChange),
+                                                          Text('Rapid'),
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: _htsType,
+                                                              onChanged: _handleHtsTypeChange)
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20.0,
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            hint: Text('Select Entry Point'),
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentEntryPoint,
+                                                            items: _dropDownMenuItemsEntryPoint,
+                                                            onChanged: changedDropDownItemEntryPoint,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10.0,
+                                                    ),
+                                                    !_showError
+                                                        ? SizedBox.shrink()
+                                                        : Text( _entryPointError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 30.0,
+                                                    ),
+                                                    Container(
+                                                      width: double.infinity,
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      child: RaisedButton(
+                                                        elevation: 4.0,
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.blue,
+                                                        padding: const EdgeInsets.all(20.0),
+                                                        child: Text(
+                                                          "Proceed",
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                        onPressed: () async {
+                                                          if (_formKey.currentState.validate()) {
+                                                            _formKey.currentState.save();
+                                                            if (_entryPointIsValid) {
+                                                              setState(() {
+                                                                _formIsValid = true;
+                                                              });
+                                                            } else {
+                                                              setState(() {
+                                                                _showError = true;
+                                                              });
+                                                            }
+                                                            if (_formIsValid) {
+                                                              HtsRegistration htsDetails = HtsRegistration(
+                                                                  visitId, htsType, date, _currentEntryPoint);
+                                                              print('*************************htsType ${htsDetails.toString()}');
+
+
+                                                              await registration(htsDetails);
+
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest()));
+
+                                                            }
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
+                          ),
+                          length: 3,
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              )),
-        ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(
+            text: "Registration",selected: true,
+          ),
+          new RoundedButton(
+            text: "Pre-Testing",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PatientPretest()),
+            ),
+          ),
+          new RoundedButton(text: "Testing",
+          ),
+        ],
       ),
     );
   }

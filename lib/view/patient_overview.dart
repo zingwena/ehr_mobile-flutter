@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ class OverviewState extends State<Overview> {
   Patient _patient;
   Visit _visit;
   Map<String, dynamic> details;
-  String _maritalStatus,_educationLevel,_occupation,_nationality;
+  String _maritalStatus,_educationLevel,_occupation,_nationality, _address, _phonenumber;
 
   bool showInput = true;
   bool showInputTabOptions = true;
@@ -49,7 +51,7 @@ class OverviewState extends State<Overview> {
     getVisit(_patient.id);
     print(_patient.toString());
 
-    getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId);
+    getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
 
     super.initState();
   }
@@ -239,7 +241,7 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _patient.educationLevelId)),
+                                                                        _educationLevel)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Education',
                                                                   icon: Icon(Icons.book, color: Colors.blue),
@@ -260,7 +262,7 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _patient.nationalityId)),
+                                                                        _nationality)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Nationality',
                                                                   icon: Icon(Icons.flag, color: Colors.blue),
@@ -275,7 +277,7 @@ class OverviewState extends State<Overview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: '0774536627'),
+                                                                    text: _phonenumber),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Phone Number',
                                                                   icon: Icon(Icons.smartphone, color: Colors.blue),
@@ -291,7 +293,7 @@ class OverviewState extends State<Overview> {
                                                         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 64.0, 8.0),
                                                         child: TextFormField(
                                                           controller: TextEditingController(
-                                                              text: "address"),
+                                                              text: _address),
                                                           decoration: InputDecoration(
                                                             labelText: 'Address',
                                                             icon: Icon(Icons.home, color: Colors.blue),
@@ -369,7 +371,7 @@ class OverviewState extends State<Overview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HomePage()),
+                    SearchPatient()),
           ),
           ),
         ],
@@ -378,14 +380,19 @@ class OverviewState extends State<Overview> {
   }
 
 
-  Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId) async{
-    String maritalStatus,educationLevel,occupation,nationality;
+  Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, int patientId) async{
+    String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;
     try{
 
       maritalStatus = await patientChannel.invokeMethod('getPatientMaritalStatus',maritalStatusId);
       educationLevel = await patientChannel.invokeMethod('getEducationLevel',educationLevelId);
       occupation = await patientChannel.invokeMethod('getOccupation',occupationId);
       nationality = await patientChannel.invokeMethod('getNationality',nationalityId);
+      address = await patientChannel.invokeMethod('getAddress', patientId);
+      patientphonenumber = await patientChannel.invokeMethod('getPhonenumber', patientId);
+
+
+      print('ADDRESS ADDRESS'+ address);
 
     }
     catch (e) {
@@ -398,8 +405,10 @@ class OverviewState extends State<Overview> {
       _educationLevel = educationLevel;
       _occupation = occupation;
       _nationality = nationality;
+      _address = address;
+      _phonenumber = patientphonenumber;
     });
-    print('9999999999999999999999999999999999999999999999999999 $_maritalStatus');
+    print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
 
   }
 
