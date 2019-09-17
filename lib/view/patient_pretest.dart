@@ -36,6 +36,8 @@ class _PatientPretest extends State<PatientPretest> {
   String _newTest="" ;
   String _htsApproach="" ;
   String _newTestInLife = "";
+  HtsModel htsModel;
+  PurposeOfTest purposeOfTest;
 
   int _patientPretest = 0;
   //int _optOutTest = 0;
@@ -71,6 +73,30 @@ class _PatientPretest extends State<PatientPretest> {
       print("channel failure: '$e'");
     }
   }
+
+  Future <void> getHtsModelByName(String htsmodelstring) async{
+    var model_response;
+    try{
+        model_response = await htsChannel.invokeMethod('getHtsModel', htsmodelstring);
+        htsModel = HtsModel.mapFromJson(model_response);
+
+    }catch (e){
+      print("channel failure: '$e'");
+
+    }
+  }
+  Future <void> getPurposeByName(String purposemodelstring) async{
+    var model_response;
+    try{
+      model_response = await htsChannel.invokeMethod('getPurposeofTest', purposemodelstring);
+      purposeOfTest = PurposeOfTest.mapFromJson(model_response);
+
+    }catch (e){
+      print("channel failure: '$e'");
+
+    }
+  }
+
 
   List<DropdownMenuItem<String>>
   getDropDownMenuItemsHtsModel() {
@@ -493,9 +519,11 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {
                                                           if (_formKey.currentState.validate()) {
                                                             _formKey.currentState.save();
-
-
-                                                            insertPreTest(preTest);
+                                                            getPurposeByName(_currentPurposeOfTest);
+                                                            getHtsModelByName(_currentHtsModel);
+                                                            PreTest patient_pretest = PreTest(_htsApproach, _newTest, coupleCounselling,
+                                                                preTestInfoGiven, optOutOfTest, _newTest, htsModel,purposeOfTest);
+                                                            insertPreTest(patient_pretest);
                                                             Navigator.push(context,MaterialPageRoute(
                                                               builder: (context)=> HtsScreeningTest()
                                                             ));

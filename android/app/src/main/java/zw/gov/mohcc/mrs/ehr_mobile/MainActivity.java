@@ -8,6 +8,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
@@ -547,14 +549,45 @@ public class MainActivity extends FlutterActivity {
 
                         if (methodCall.method.equals("savePreTest")) {
                             try {
+                                System.out.println("ARGUMENTS FROM FLUTTER "+ arguments);
                                 System.out.println("PRETEST METHOD HERE *********************************");
-                                PreTest preTest = gson.fromJson(arguments, PreTest.class);
-
-                              Long pretest_id =  ehrMobileDatabase.preTestDao().createPreTest(preTest);
-                                PreTest pretest = ehrMobileDatabase.preTestDao().findPreTestById(pretest_id.intValue());
-                                System.out.println("PRETEST PRETEST PRETEST "+ pretest.newTest);
+                                PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
+                                System.out.println(">>>>>>>>>>>>>>>> PRETEST DTO HERE "+ preTestDTO.toString());
+                                PreTest pretest = new PreTest();
+                                pretest.setHtsApproach(preTestDTO.getHtsApproach());
+                                pretest.setHtsModel_id(preTestDTO.getHtsModel_id());
+                                pretest.setNewTest(preTestDTO.getNewTest());
+                                pretest.setCoupleCounselling(preTestDTO.getCoupleCounselling());
+                                pretest.setPurpose_of_test_id(preTestDTO.getPurpose_of_test_id());
+                                pretest.setPreTestInfoGiven(preTestDTO.getPreTestInfoGiven());
+                                pretest.setNewTestPregLact(preTestDTO.getNewTestPregLact());
+                                pretest.setOptOutOfTest(preTestDTO.getOptOutOfTest());
+                                Long pretest_id =  ehrMobileDatabase.preTestDao().createPreTest(pretest);
+                                PreTest pretest_ffrom_db = ehrMobileDatabase.preTestDao().findPreTestById(pretest_id.intValue());
+                                System.out.println("PRETEST PRETEST PRETEST "+ pretest_ffrom_db.newTest);
                                 System.out.println("List of pretest" + ehrMobileDatabase.preTestDao().listPreTests());
                             } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getHtsModel")){
+                            try{
+                                System.out.println("ARGUMENTS FROM HTS MODEL "+ arguments);
+                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelByName(arguments);
+                                System.out.println("HERE IS THE HTS MODEL THAT WAS RETRIEVED"+htsModel.getName());
+                                 result.success(htsModel);
+                            } catch (Exception e){
+
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getPurposeofTest")){
+                            try{
+                                System.out.println("ARGUMENTS FROM PURPOSE TEST");
+                                Purpose_Of_Tests purpose_of_tests = ehrMobileDatabase.purpose_of_testsDao().findPurpose_Of_TestsByName(arguments);
+                                System.out.println("HERE IS THE PURPOSE OF TEST MODEL THAT WAS RETRIEVED"+purpose_of_tests.getName());
+                                result.success(purpose_of_tests);
+                            } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }

@@ -27,4 +27,7 @@ public interface Purpose_Of_TestsDao {
     @Query("SELECT * FROM Purpose_Of_Tests WHERE id=:id")
     Purpose_Of_Tests findPurpose_Of_TestsById(int id);
 
+    @Query("SELECT * FROM Purpose_Of_Tests WHERE name=:name")
+    Purpose_Of_Tests findPurpose_Of_TestsByName(String name);
+
 }
