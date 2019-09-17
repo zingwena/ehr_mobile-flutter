@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/result.dart';
+import 'package:ehr_mobile/view/patient_post_test.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,9 +34,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String labId;
   List<Result>results = List ();
   String testKit = "";
-  Result result ;
+  Result result = Result.screen();
   bool _entryPointIsValid = false;
-  bool _formIsValid = false;
+  bool _formIsValid = true;
   bool _showError = false;
   LaboratoryInvestigationTest labInvestTest;
   String _identifier;
@@ -201,32 +202,32 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
 
   void _handleResultChange(int value)  {
-    if(testCount==0)
-    {
+
       setState(() {
       _result = value;
 
       switch (_result) {
         case 1:
           result.code = "01";
-          testCount+=1;
-
+          print("01");
+          //testCount+=1;
           break;
         
         case 2:
          result.code = "02";
-          
-          htsChannel.invokeMapMethod('saveResult',result);
-
+         print("02");
+          //htsChannel.invokeMapMethod('saveResult',result);
           break;
         case 3:
           result.code = "03";
+          print("03");
           break;
+
       }
 
 
     });
-    }
+
   }
 
   List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
@@ -568,26 +569,24 @@ return  ListView(
                                                 onPressed: () async {
                                                   if (_formKey.currentState.validate()) {
                                                     _formKey.currentState.save();
-                                                    if (_entryPointIsValid) {
-                                                      setState(() {
-                                                        _formIsValid = true;
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        _showError = true;
-                                                      });
-                                                    }
                                                     if (_formIsValid) {
-
+                                                      print('FORM IS VALID FORM IS VALID '+ _formIsValid.toString());
 
                                                       LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(id, date, startTime, readingDate, readingTime, result, visit_id);
                                                       print('************************* SAVE LAB TEST ${labInvestTest.toString()}');
 
 
-                                                      await saveLabInvestigationTest(labInvestTest);
+                                                       saveLabInvestigationTest(labInvestTest);
 
-                                                      Navigator.push(context, MaterialPageRoute());
+                                                      Navigator.push(context, MaterialPageRoute(
+                                                          builder:(context)=> PatientPostTest()
+                                                      ));
+                                                    } else {
+                                                      setState(() {
+                                                        _showError = true;
+                                                      });
                                                     }
+
                                                   }
                                                 }
                                              /*   onPressed: () {

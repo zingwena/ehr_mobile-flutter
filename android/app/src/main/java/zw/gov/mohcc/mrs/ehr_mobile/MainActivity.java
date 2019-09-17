@@ -547,11 +547,12 @@ public class MainActivity extends FlutterActivity {
 
                         if (methodCall.method.equals("savePreTest")) {
                             try {
+                                System.out.println("PRETEST METHOD HERE *********************************");
                                 PreTest preTest = gson.fromJson(arguments, PreTest.class);
 
                               Long pretest_id =  ehrMobileDatabase.preTestDao().createPreTest(preTest);
                                 PreTest pretest = ehrMobileDatabase.preTestDao().findPreTestById(pretest_id.intValue());
-                                System.out.println("PRETEST PRETEST PRETEST ");
+                                System.out.println("PRETEST PRETEST PRETEST "+ pretest.newTest);
                                 System.out.println("List of pretest" + ehrMobileDatabase.preTestDao().listPreTests());
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

@@ -7,7 +7,7 @@ class Result{
     String name ;
 
    Result(this.code, this.name);
-
+   Result.screen();
    factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
 
    Map<String, dynamic> toJson() => _$ResultToJson(this);
