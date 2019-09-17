@@ -57,7 +57,7 @@ class Person {
     }
 
 
-    return patientList;
+    return personList;
   }
 
 }

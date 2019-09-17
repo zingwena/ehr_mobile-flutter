@@ -17,7 +17,6 @@ class PreTest {
   bool preTestInformationGiven;
   String optOutOfTest;
   String newTestPregLact;
-  HtsModel htsModel;
   PurposeOfTest purposeOfTest;
   ReasonForNotIssuingResult reasonForNotIssuingResult;
 

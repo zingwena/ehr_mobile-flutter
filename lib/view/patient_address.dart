@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/address.dart';
-import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/town.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PatientAddress extends StatefulWidget {
-  final Patient patient;
+  final Person patient;
 
   PatientAddress(this.patient);
 
@@ -32,7 +32,7 @@ class _PatientAddressState extends State<PatientAddress> {
   bool _formIsValid=false;
   String _townError="Select Town";
   String schoolHouse, suburbVillage, town;
-  Patient registeredPatient;
+  Person registeredPatient;
   List<DropdownMenuItem<String>>  _dropDownMenuItemsTown;
   String _currentTown,_towns;
   List _townList = List();
@@ -185,7 +185,7 @@ class _PatientAddressState extends State<PatientAddress> {
         });
       }
       if(_formIsValid){
-        Patient patient = widget.patient;
+        Person patient = widget.patient;
 
         patient.address = Address(schoolHouse, suburbVillage, _currentTown);
         await registerPatient(patient).then((value) {
@@ -209,7 +209,7 @@ class _PatientAddressState extends State<PatientAddress> {
       ),
     );
   }
-  Future<void> registerPatient(Patient patient)async{
+  Future<void> registerPatient(Person patient)async{
     int response;
     var patientResponse;
     try {
@@ -218,7 +218,7 @@ class _PatientAddressState extends State<PatientAddress> {
 
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
-        registeredPatient = Patient.fromJson(jsonDecode(patientResponse));
+        registeredPatient = Person.fromJson(jsonDecode(patientResponse));
       });
 
     }

@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -279,10 +279,10 @@ class _AddPatient extends State<AddPatient> {
   }
 
 
- Future<void> registerPatient(Patient patient)async{
+ Future<void> registerPatient(Person person) async{
     String response;
     try {
-      String jsonPatient = jsonEncode(patient);
+      String jsonPatient = jsonEncode(person);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
     }
     catch(e){

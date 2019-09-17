@@ -5,7 +5,6 @@ part 'visit.g.dart';
 class Visit {
 String visitId;
 String personId;
-String personId;
 
 Visit();
 
