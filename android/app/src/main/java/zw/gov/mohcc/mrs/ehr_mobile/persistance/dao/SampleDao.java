@@ -11,19 +11,19 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
 @Dao
 public interface SampleDao {
 
-   @Insert
+    @Insert
     void insertSamples(List<Sample> samples);
 
-   @Query("DELETE FROM Sample")
-   void deleteSamples();
+    @Query("DELETE FROM Sample")
+    void deleteSamples();
 
-   @Insert
+    @Insert
     void insertSample(Sample sample);
 
-   @Query("SELECT * FROM EducationLevel ")
+    @Query("SELECT * FROM EducationLevel ")
     List<Sample> getSamples();
 
-   @Query("SELECT * FROM Sample WHERE id=:id")
-   Sample findBySampleId(int id);
+    @Query("SELECT * FROM Sample WHERE code=:id")
+    Sample findBySampleId(String id);
 
 }

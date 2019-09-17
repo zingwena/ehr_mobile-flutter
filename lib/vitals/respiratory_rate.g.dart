@@ -8,8 +8,8 @@ part of 'respiratory_rate.dart';
 
 RespiratoryRate _$RespiratoryRateFromJson(Map<String, dynamic> json) {
   return RespiratoryRate()
-    ..id = json['id'] as int
-    ..visitId = json['visitId'] as int
+    ..id = json['id'] as String
+    ..visitId = json['visitId'] as String
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)

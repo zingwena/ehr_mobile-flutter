@@ -24,8 +24,8 @@ public interface HtsModelDao {
     @Query("SELECT * FROM HtsModel ORDER BY name ASC")
     List<HtsModel> getAllHtsModels();
 
-    @Query("SELECT * FROM HtsModel WHERE id=:id")
-    HtsModel findHtsModelById(int id);
+    @Query("SELECT * FROM HtsModel WHERE code=:code")
+    HtsModel findHtsModelById(String code);
 
     @Query("SELECT * FROM HtsModel where name=:name")
     HtsModel findHtsModelByName(String name);

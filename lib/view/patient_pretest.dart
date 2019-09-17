@@ -105,7 +105,7 @@ class _PatientPretest extends State<PatientPretest> {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: htsModel.id.toString(), child: Text(htsModel.name)));
+          DropdownMenuItem(value: htsModel.code, child: Text(htsModel.name)));
     }
     return items;
   }
@@ -117,7 +117,7 @@ class _PatientPretest extends State<PatientPretest> {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: purposeOfTest.id.toString(), child: Text(purposeOfTest.name)));
+          DropdownMenuItem(value: purposeOfTest.code, child: Text(purposeOfTest.name)));
     }
     return items;
   }

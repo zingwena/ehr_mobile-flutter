@@ -3,18 +3,18 @@ part 'patientphonenumber.g.dart';
 @JsonSerializable()
 class PatientPhoneNumber{
 
-  int id;
-  int patientId;
-  String phonenumber_1;
-  String phonenumber_2;
+  String id;
+  String personId;
+  String phoneNumber1;
+  String phoneNumber2;
 
 
 
-  PatientPhoneNumber( int patientId, String phonenumber_1, String phonenumber_2){
+  PatientPhoneNumber(String personId, String phoneNumber1, String phoneNumber2){
 
-   this.patientId =patientId;
-   this.phonenumber_1 = phonenumber_1;
-   this.phonenumber_2 = phonenumber_2;
+   this.personId = personId;
+   this.phoneNumber1 = phoneNumber1;
+   this.phoneNumber2 = phoneNumber2;
   }
 
 
@@ -28,7 +28,7 @@ class PatientPhoneNumber{
 
   @override
   String toString() {
-    return 'PatientPhoneNumber{id: $id, personId: $patientId, phonenumber_1: $phonenumber_1, phonenumber_2: $phonenumber_2}';
+    return 'PatientPhoneNumber{id: $id, personId: $personId, phonenumber_1: $phoneNumber1, phonenumber_2: $phoneNumber2}';
   }
 
   static List<PatientPhoneNumber> fromJsonDecodedMap(List dynamicList) {

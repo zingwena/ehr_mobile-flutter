@@ -8,8 +8,8 @@ part of 'weight.dart';
 
 Weight _$WeightFromJson(Map<String, dynamic> json) {
   return Weight()
-    ..id = json['id'] as int
-    ..visitId = json['visitId'] as int
+    ..id = json['id'] as String
+    ..visitId = json['visitId'] as String
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)

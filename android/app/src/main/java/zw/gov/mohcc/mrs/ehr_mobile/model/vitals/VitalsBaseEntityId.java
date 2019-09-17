@@ -5,29 +5,21 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
-public class VitalsBaseEntityId {
-    @PrimaryKey(autoGenerate = true)
-    private long id;
-    private long visitId;
+public class VitalsBaseEntityId extends BaseEntity {
+
+    private String visitId;
     @TypeConverters(DateConverter.class)
     private Date dateTime = new Date();
 
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getVisitId() {
+    public String getVisitId() {
         return visitId;
     }
 
-    public void setVisitId(long visitId) {
+    public void setVisitId(String visitId) {
         this.visitId = visitId;
     }
 
@@ -41,8 +33,7 @@ public class VitalsBaseEntityId {
 
     @Override
     public String toString() {
-        return "VitalsBaseEntityId{" +
-                "id=" + id +
+        return super.toString() + "VitalsBaseEntityId{" +
                 ", visitId=" + visitId +
                 ", dateTime=" + dateTime +
                 '}';

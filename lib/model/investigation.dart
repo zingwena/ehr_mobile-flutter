@@ -1,19 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'investigation.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Investigation {
-   String investigationId;
-    String sample;
-    String test;
-    
-   Investigation(this.investigationId,this.sample,this.test);
-  
+  String id;
+  String sample;
+  String test;
 
-  factory Investigation.fromJson(Map<String, dynamic> json) => _$InvestigationFromJson(json);
+  Investigation(this.id, this.sample, this.test);
+
+
+  factory Investigation.fromJson(Map<String, dynamic> json) =>
+      _$InvestigationFromJson(json);
 
   Map<String, dynamic> toJson() => _$InvestigationToJson(this);
-  
+
   static List<Investigation> fromJsonDecodedMap(List dynamicList) {
     List<Investigation> investigations = [];
 

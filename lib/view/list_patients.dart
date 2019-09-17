@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'patient_overview.dart';
 
 class ListPatients extends StatefulWidget {
-  final List<Patient> patientList;
+  final List<Person> patientList;
 
   ListPatients(this.patientList);
 
@@ -18,7 +18,7 @@ class ListPatients extends StatefulWidget {
 }
 
 class _ListPatients extends State<ListPatients> {
-  List<Patient> _patients = [];
+  List<Person> _patients = [];
 
   @override
   void initState() {

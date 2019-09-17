@@ -89,7 +89,7 @@ class _PatientPostTest extends State<PatientPostTest> {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: reasonForNotIssuingResult.id.toString(), child: Text(reasonForNotIssuingResult.name)));
+          DropdownMenuItem(value: reasonForNotIssuingResult.code, child: Text(reasonForNotIssuingResult.name)));
     }
     return items;
   }

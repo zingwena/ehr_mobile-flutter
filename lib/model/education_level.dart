@@ -6,8 +6,7 @@ part 'education_level.g.dart';
 
 @JsonSerializable()
 class EducationLevel extends BaseCode {
-  EducationLevel(int id, String name, String code) {
-    this.id = id;
+  EducationLevel(String name, String code) {
     this.name = name;
     this.code = code;
   }

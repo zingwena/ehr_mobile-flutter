@@ -4,8 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'entry_point.g.dart';
 @JsonSerializable()
 class EntryPoint extends BaseCode{
-  EntryPoint(int id,String name,String code){
-    this.id = id;
+  EntryPoint(String name,String code){
     this.name = name;
     this.code = code;
   }

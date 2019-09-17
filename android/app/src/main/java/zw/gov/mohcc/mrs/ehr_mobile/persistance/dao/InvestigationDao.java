@@ -23,7 +23,7 @@ public interface InvestigationDao {
     @Query("SELECT * FROM Investigation")
     List<Investigation> getInvestigations();
 
-    @Query("SELECT * FROM Investigation WHERE investigationId=:investigationId")
+    @Query("SELECT * FROM Investigation WHERE id=:investigationId")
     Investigation findByInvestigationId(String investigationId);
 
     @Query("SELECT * FROM Investigation WHERE laboratoryTestId=:laboratoryTestId and sampleId =:sampleId")

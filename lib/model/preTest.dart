@@ -1,31 +1,35 @@
-import 'package:ehr_mobile/model/reasonForNotIssuingResult.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'purposeOfTest.dart';
 import 'htsModel.dart';
-
+import 'purposeOfTest.dart';
 
 part 'preTest.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PreTest {
+  String htsId;
   String htsApproach;
+  String htsModelId;
   String newTest;
   String coupleCounselling;
-  String preTestInfoGiven;
+  bool preTestInformationGiven;
   String optOutOfTest;
   String newTestPregLact;
-  HtsModel htsModel;
-  PurposeOfTest purposeOfTest;
+  String purposeOfTestId;
 
+  PreTest(
+      this.htsId,
+      this.htsApproach,
+      this.htsModelId,
+      this.newTest,
+      this.coupleCounselling,
+      this.preTestInformationGiven,
+      this.optOutOfTest,
+      this.newTestPregLact,
+      this.purposeOfTestId);
 
-  PreTest(this.htsApproach,
-      this.newTest, this.coupleCounselling, this.preTestInfoGiven,
-      this.optOutOfTest, this.newTestPregLact, this.htsModel,
-      this.purposeOfTest);
-
-
-  factory PreTest.fromJson(Map<String, dynamic> json) => _$PreTestFromJson(json);
+  factory PreTest.fromJson(Map<String, dynamic> json) =>
+      _$PreTestFromJson(json);
 
   Map<String, dynamic> toJson() => _$PreTestToJson(this);
 
@@ -39,6 +43,4 @@ class PreTest {
     }
     return preTestList;
   }
-
-
 }

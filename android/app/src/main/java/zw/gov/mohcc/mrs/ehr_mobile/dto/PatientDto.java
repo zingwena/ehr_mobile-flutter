@@ -4,7 +4,6 @@ import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
-import zw.gov.mohcc.mrs.ehr_mobile.model.SelfIdentifiedGender;
 
 public class PatientDto {
 
@@ -16,7 +15,7 @@ public class PatientDto {
     private String identifier;
     private String nationalId;
     private Date birthDate;
-    private SelfIdentifiedGender selfIdentifiedGender;
+    private Gender selfIdentifiedGender;
     private String religionId;
     private String occupationId;
     private String maritalStatusId;
@@ -28,7 +27,7 @@ public class PatientDto {
     public PatientDto() {
     }
 
-    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, SelfIdentifiedGender selfIdentifiedGender, String religionId, String occupationId, String maritalStatusId, String educationLevelId, String nationalityId, String countryOfBirthId, Address address) {
+    public PatientDto(int id, String firstName, String lastName, Gender sex, String identifier, String nationalId, Gender selfIdentifiedGender, String religionId, String occupationId, String maritalStatusId, String educationLevelId, String nationalityId, String countryOfBirthId, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -110,11 +109,11 @@ public class PatientDto {
     }
 
 
-    public SelfIdentifiedGender getSelfIdentifiedGender() {
+    public Gender getSelfIdentifiedGender() {
         return selfIdentifiedGender;
     }
 
-    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
+    public void setSelfIdentifiedGender(Gender selfIdentifiedGender) {
         this.selfIdentifiedGender = selfIdentifiedGender;
     }
 

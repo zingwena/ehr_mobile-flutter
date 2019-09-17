@@ -6,8 +6,7 @@ part 'religion.g.dart';
 
 @JsonSerializable()
 class Religion extends BaseCode{
-  Religion(int id, String name,String code){
-    this.id = id;
+  Religion(String name,String code){
     this.name = name;
     this.code = code;
   }

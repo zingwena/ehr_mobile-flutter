@@ -1,76 +1,57 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 @Entity
-public class Visit {
+public class Visit extends BaseEntity {
 
-
-    @PrimaryKey(autoGenerate = true)
-    private long visitId;
-    private long patientId;
+    private String personId;
     @TypeConverters(DateConverter.class)
-    private Date startTime = new Date();
+    private Date visitStartDate = new Date();
     @TypeConverters(DateConverter.class)
-    private Date endDate = new Date(System.currentTimeMillis() + (24 * 3600 * 10^3));
-
-
+    private Date visitEndDate = DateUtil.getEndOfDay(new Date());
 
     public Visit() {
     }
 
     @Ignore
-    public Visit(long patientId) {
-        this.patientId = patientId;
+    public Visit(@NonNull String id, String personId, Date visitStartDate, Date visitEndDate) {
+        super(id);
+        this.personId = personId;
+        this.visitStartDate = visitStartDate;
+        this.visitEndDate = visitEndDate;
     }
 
-
-    public long getVisitId() {
-        return visitId;
+    public String getPersonId() {
+        return personId;
     }
 
-    public void setVisitId(long visitId) {
-        this.visitId = visitId;
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
-    public long getPatientId() {
-        return patientId;
+    public Date getVisitStartDate() {
+        return visitStartDate;
     }
 
-    public void setPatientId(long patientId) {
-        this.patientId = patientId;
+    public void setVisitStartDate(Date visitStartDate) {
+        this.visitStartDate = visitStartDate;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getVisitEndDate() {
+        return visitEndDate;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Visit{" +
-                "visitId=" + visitId +
-                ", patientId=" + patientId +
-                ", startTime=" + startTime +
-                ", endDate=" + endDate +
-                '}';
+    public void setVisitEndDate(Date visitEndDate) {
+        this.visitEndDate = visitEndDate;
     }
 }

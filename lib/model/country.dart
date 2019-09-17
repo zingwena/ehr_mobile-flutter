@@ -8,8 +8,7 @@ part 'country.g.dart';
 @JsonSerializable()
 class Country extends BaseCode{
 
-  Country(int id,String name,String code){
-    this.id = id;
+  Country(String name,String code){
     this.name = name;
     this.code = code;
   }

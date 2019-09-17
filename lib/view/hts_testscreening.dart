@@ -28,7 +28,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   int _result = 0;
   int _testKit = 0;
   int testCount=0;
-  int id =1;
+  String id ="1";
   String visit_id = "2";
   List<dynamic>_testKits=[];
   String labId;
@@ -572,7 +572,7 @@ return  ListView(
                                                     if (_formIsValid) {
                                                       print('FORM IS VALID FORM IS VALID '+ _formIsValid.toString());
 
-                                                      LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(id, date, startTime, readingDate, readingTime, result, visit_id);
+                                                      LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(id, "laboratoryInvestigationId", startTime, readingTime, result, visit_id);
                                                       print('************************* SAVE LAB TEST ${labInvestTest.toString()}');
 
 

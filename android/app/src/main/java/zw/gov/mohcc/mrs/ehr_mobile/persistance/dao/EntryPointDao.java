@@ -24,7 +24,7 @@ public interface EntryPointDao {
     @Query("SELECT * FROM EntryPoint ORDER BY name ASC")
     List<EntryPoint> getAllEntryPoints();
 
-    @Query("SELECT * FROM EntryPoint WHERE id=:id")
-    EntryPoint findEntryPointById(int id);
+    @Query("SELECT * FROM EntryPoint WHERE code=:code")
+    EntryPoint findEntryPointById(String code);
 
 }

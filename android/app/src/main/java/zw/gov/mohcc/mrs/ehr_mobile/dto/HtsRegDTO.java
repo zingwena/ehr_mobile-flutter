@@ -1,40 +1,35 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
-import androidx.annotation.NonNull;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsType;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 public class HtsRegDTO {
 
-    private int visitId;
+    private String visitId;
+    @TypeConverters(HtsTypeConverter.class)
+    private HtsType htsType;
+    @TypeConverters(DateConverter.class)
+    private Date dateOfHivTest;
+    private String entryPointId;
 
-    private String htsType;
-   private Date dateOfHivTest;
-
-    private Hts hts;
-   private String entryPointId;
-
-
-    public void setVisitId(int visitId) {
-        this.visitId = visitId;
-    }
-
-    public int getVisitId() {
+    public String getVisitId() {
         return visitId;
     }
 
-    public String getHtsType() {
+    public void setVisitId(String visitId) {
+        this.visitId = visitId;
+    }
+
+    public HtsType getHtsType() {
         return htsType;
     }
 
-    public void setHtsType(String htsType) {
+    public void setHtsType(HtsType htsType) {
         this.htsType = htsType;
     }
 
@@ -53,25 +48,4 @@ public class HtsRegDTO {
     public void setEntryPointId(String entryPointId) {
         this.entryPointId = entryPointId;
     }
-
-    public Hts getHts() {
-        return hts;
-    }
-
-    public void setHts(Hts hts) {
-        this.hts = hts;
-    }
-
-    @Override
-    public String toString() {
-        return "HtsRegDTO{" +
-                "id=" + visitId +
-                ", htsType=" + htsType +
-                ", dateOfHivTest=" + dateOfHivTest +
-                ", hts=" + hts +
-                ", entryPointId='" + entryPointId + '\'' +
-                '}';
-    }
-
-
 }

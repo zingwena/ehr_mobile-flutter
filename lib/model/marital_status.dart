@@ -6,8 +6,7 @@ part 'marital_status.g.dart';
 
 @JsonSerializable()
 class MaritalStatus extends BaseCode{
-  MaritalStatus(int id,String name,String code){
-    this.id = id;
+  MaritalStatus(String name,String code){
     this.name = name;
     this.code = code;
   }

@@ -9,7 +9,7 @@ part of 'laboratory_investigation.dart';
 LaboratoryInvestigation _$LaboratoryInvestigationFromJson(
     Map<String, dynamic> json) {
   return LaboratoryInvestigation(
-    json['facilityId'] as int,
+    json['facilityId'] as String,
     const CustomDateTimeConverter().fromJson(json['resultDate'] as String),
   );
 }

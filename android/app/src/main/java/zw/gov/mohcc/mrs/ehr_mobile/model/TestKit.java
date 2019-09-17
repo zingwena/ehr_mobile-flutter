@@ -8,42 +8,19 @@ import androidx.room.PrimaryKey;
  * @author kombo on 8/21/19
  */
 @Entity
-public class TestKit {
+public class TestKit extends BaseNameModel {
+
+    private String description;
+    private String level;
 
     public TestKit() {
     }
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String code;
-    private String name;
-    private String description;
-    private String level;
-
-
     @Ignore
     public TestKit(String code, String name, String description, String level) {
-        this.code = code;
-        this.name = name;
+        super(code, name);
         this.description = description;
         this.level = level;
-    }
-
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -62,19 +39,11 @@ public class TestKit {
         this.level = level;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "TestKit{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
+                "code='" + getCode() + '\'' +
+                ", name='" + getName() + '\'' +
                 ", description='" + description + '\'' +
                 ", level='" + level + '\'' +
                 '}';
