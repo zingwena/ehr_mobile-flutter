@@ -1,10 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'base_code.dart';
+
 part 'result.g.dart';
 
 @JsonSerializable()
 class Result extends BaseCode {
 
+  Result(String name,String code){
+    this.name = name;
+    this.code = code;
+  }
 
   factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
 
@@ -29,6 +35,4 @@ class Result extends BaseCode {
 
     return resultList;
   }
-
-  Result(String name, String code);
 }
