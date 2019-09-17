@@ -28,17 +28,17 @@ class LaboratoryInvestigationTest{
    }
 
    List<LaboratoryInvestigationTest> fromJsonDecodedMap(List dynamicList) {
-     List<LaboratoryInvestigationTest> LabInvestigationList = [];
+     List<LaboratoryInvestigationTest> labInvestigationList = [];
 
      if (dynamicList != null) {
        dynamicList.forEach((e) {
          LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest.fromJson(e);
-         LabInvestigationList.add(labInvestTest);
+         labInvestigationList.add(labInvestTest);
        });
      }
 
 
-     return LabInvestigationList;
+     return labInvestigationList;
    }
 
 

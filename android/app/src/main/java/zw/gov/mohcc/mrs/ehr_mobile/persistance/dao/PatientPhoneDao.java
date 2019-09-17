@@ -24,15 +24,15 @@ public interface PatientPhoneDao {
     Long insertpatientphonenumber(PatientPhoneNumber patientPhoneNumber);
 
 
-    @Query("SELECT * FROM PatientPhoneNumber ORDER BY  phonenumber_1 ASC")
+    @Query("SELECT * FROM PatientPhoneNumber ORDER BY  phoneNumber1 ASC")
     List<PatientPhoneNumber> getAllPhonenumbers();
 
-    @Query("SELECT * FROM PatientPhoneNumber WHERE patientId=:id")
-    PatientPhoneNumber findByPatientId(int id);
+    @Query("SELECT * FROM PatientPhoneNumber WHERE personId=:id")
+    PatientPhoneNumber findByPatientId(String id);
 
 
     @Query("SELECT * FROM PatientPhoneNumber WHERE id=:id")
-    PatientPhoneNumber findById(int id);
+    PatientPhoneNumber findById(String id);
 
     @Query("SELECT * FROM PatientPhoneNumber WHERE id=:id")
     PatientPhoneNumber findByPersonId(String id);

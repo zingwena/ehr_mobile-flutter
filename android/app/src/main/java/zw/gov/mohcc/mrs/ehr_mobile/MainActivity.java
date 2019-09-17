@@ -195,7 +195,7 @@ public class MainActivity extends FlutterActivity {
 */
                 }
                 if(methodCall.method.equals("getPhonenumber")){
-                    int args = methodCall.arguments();
+                    String args = methodCall.arguments();
                     System.out.println("PATIENT ID FROM FLUTTER "+ args);
                     PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPatientId(args);
                     System.out.println("HERE IS OUR PHONE NUMBER OBJECT "+ patientPhoneNumber);

@@ -33,7 +33,7 @@ class _PatientPretest extends State<PatientPretest> {
 
   int _hts = 0;
  // String _coupleCounselling="" ;
-  String _newTest="" ;
+  bool _newTest = false ;
   String _htsApproach="" ;
   String _newTestInLife = "";
   HtsModel htsModel;
@@ -187,10 +187,10 @@ class _PatientPretest extends State<PatientPretest> {
 
       switch (newTest) {
         case 1:
-          _newTest = "Yes";
+          _newTest = true;
           break;
         case 2:
-          _newTest = "No";
+          _newTest = false;
           break;
       }
     });
@@ -521,8 +521,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                             _formKey.currentState.save();
                                                             getPurposeByName(_currentPurposeOfTest);
                                                             getHtsModelByName(_currentHtsModel);
-                                                            PreTest patient_pretest = PreTest(_htsApproach, _newTest, coupleCounselling,
-                                                                preTestInfoGiven, optOutOfTest, _newTest, htsModel,purposeOfTest);
+                                                            PreTest patient_pretest = PreTest(_htsApproach, null, coupleCounselling,
+                                                                preTestInfoGiven, optOutOfTest, _newTest, null,null, null);
                                                             insertPreTest(patient_pretest);
                                                             Navigator.push(context,MaterialPageRoute(
                                                               builder: (context)=> HtsScreeningTest()

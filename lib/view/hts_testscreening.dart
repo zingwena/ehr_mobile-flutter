@@ -34,7 +34,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String labId;
   List<Result>results = List ();
   String testKit = "";
-  Result result = Result.screen();
+  //Result result = Result.screen();
+  Result result = null;
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
