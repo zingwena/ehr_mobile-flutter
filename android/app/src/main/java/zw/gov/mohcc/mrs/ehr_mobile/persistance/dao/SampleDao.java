@@ -24,6 +24,6 @@ public interface SampleDao {
     List<Sample> getSamples();
 
    @Query("SELECT * FROM Sample WHERE id=:id")
-   Sample findBySampleId(int id);
+   Sample findBySampleId(String id);
 
 }
