@@ -73,6 +73,7 @@ public class PatientsApolloClient {
 
 
                                     person = new Person(firstName, lastName, sex);
+                                    person.setId(patientData.personId());
                                     person.setSelfIdentifiedGender(selfIdentifiedGender);
                                     person.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
                                             ? patientData.religion().id() : null);

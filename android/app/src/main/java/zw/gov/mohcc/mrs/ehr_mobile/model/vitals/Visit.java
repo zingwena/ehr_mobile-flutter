@@ -17,11 +17,13 @@ public class Visit extends BaseEntity {
     private String personId;
     @TypeConverters(DateConverter.class)
     private Date visitStartDate = new Date();
+    @TypeConverters(DateConverter.class)
     private Date visitEndDate = DateUtil.getEndOfDay(new Date());
 
     public Visit() {
     }
 
+    @Ignore
     public Visit(@NonNull String id, String personId, Date visitStartDate, Date visitEndDate) {
         super(id);
         this.personId = personId;
