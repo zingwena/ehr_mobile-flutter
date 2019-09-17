@@ -7,8 +7,7 @@ part 'htsModel.g.dart';
 
 @JsonSerializable()
 class HtsModel extends BaseCode{
-HtsModel(int id,String name,String code){
-    this.id = id;
+HtsModel(String name,String code){
     this.name = name;
     this.code = code;
   }

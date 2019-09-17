@@ -4,22 +4,23 @@ import androidx.room.Entity;
 
 @Entity
 public class BloodPressure extends VitalsBaseEntityId {
-    private String systolic;
-    private String diastolic;
 
-    public String getSystolic() {
+    private double systolic;
+    private double diastolic;
+
+    public double getSystolic() {
         return systolic;
     }
 
-    public void setSystolic(String systolic) {
+    public void setSystolic(double systolic) {
         this.systolic = systolic;
     }
 
-    public String getDiastolic() {
+    public double getDiastolic() {
         return diastolic;
     }
 
-    public void setDiastolic(String diastolic) {
+    public void setDiastolic(double diastolic) {
         this.diastolic = diastolic;
     }
 

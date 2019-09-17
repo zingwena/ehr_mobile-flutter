@@ -2,7 +2,7 @@ import 'dart:convert';
 
 
 import 'package:ehr_mobile/model/country.dart';
-import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/model/education_level.dart';
 import 'package:ehr_mobile/model/nationality.dart';
@@ -39,7 +39,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   List<String> _list;
   DateTime birthDate;
-  Patient registeredPatient;
+  Person registeredPatient;
   String lastName,  firstName,nationalId, religion, country,occupation,educationLevel,nationality,maritalStatus;
   String _dropdownError="Select Country of birth";
   String _maritalStatusError="Select Marital status";
@@ -557,7 +557,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                         if (_formValid) {
                           _formKey.currentState.save();
 
-                          Patient patient = Patient.basic(
+                          Person patient = Person.basic(
                               firstName,
                               lastName,
                               _currentGender,
@@ -608,7 +608,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
                               if (_formValid) {
                               _formKey.currentState.save();
-                              Patient patient= Patient.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,_currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
+                              Person patient= Person.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,_currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
 
 //                              MaterialPageRoute(
 //                                  builder: (context) =>
@@ -809,17 +809,17 @@ class _EditDemographicsState extends State<EditDemographics> {
           }
   }
 
-  Future<void> registerPatient(Patient patient)async{
+  Future<void> registerPatient(Person person)async{
     int response;
     String patientResponse;
     try {
-      String jsonPatient = jsonEncode(patient.toJson());
+      String jsonPatient = jsonEncode(person.toJson());
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
 
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
 
       setState(() {
-        registeredPatient = Patient.fromJson(jsonDecode(patientResponse));
+        registeredPatient = Person.fromJson(jsonDecode(patientResponse));
       });
       print('========================= $response');
     }

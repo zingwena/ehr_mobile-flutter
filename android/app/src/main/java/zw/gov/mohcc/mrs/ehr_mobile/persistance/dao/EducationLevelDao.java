@@ -11,19 +11,19 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 @Dao
 public interface EducationLevelDao {
 
-   @Insert
+    @Insert
     void insertEducationLevels(List<EducationLevel> educationLevels);
 
-   @Query("DELETE FROM educationlevel")
-   void deleteEducationLevels();
+    @Query("DELETE FROM educationlevel")
+    void deleteEducationLevels();
 
-   @Insert
+    @Insert
     void insertEducation(EducationLevel EducationLevel);
 
-   @Query("SELECT * FROM EducationLevel ")
+    @Query("SELECT * FROM EducationLevel ")
     List<EducationLevel> getEducationLevels();
 
-   @Query("SELECT name FROM EducationLevel WHERE id=:id")
-   String findByEducationLevelId(String id);
+    @Query("SELECT name FROM EducationLevel WHERE code=:code")
+    String findByEducationLevelId(String code);
 
 }

@@ -8,14 +8,12 @@ part of 'town.dart';
 
 Town _$TownFromJson(Map<String, dynamic> json) {
   return Town(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
 }
 
 Map<String, dynamic> _$TownToJson(Town instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

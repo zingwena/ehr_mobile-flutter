@@ -8,16 +8,16 @@ part of 'patientphonenumber.dart';
 
 PatientPhoneNumber _$PatientPhoneNumberFromJson(Map<String, dynamic> json) {
   return PatientPhoneNumber(
-    json['patientId'] as int,
-    json['phonenumber_1'] as String,
-    json['phonenumber_2'] as String,
-  );
+    json['personId'] as String,
+    json['phoneNumber1'] as String,
+    json['phoneNumber2'] as String,
+  )..id = json['id'] as String;
 }
 
-Map<String, dynamic> _$PatientPhoneNumberToJson(PatientPhoneNumber instance) => <String, dynamic>{
-  'patientId': instance.patientId,
-  'phonenumber_1': instance.phonenumber_1,
-  'phonenumber_2': instance.phonenumber_2,
-};
-
-
+Map<String, dynamic> _$PatientPhoneNumberToJson(PatientPhoneNumber instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'personId': instance.personId,
+      'phoneNumber1': instance.phoneNumber1,
+      'phoneNumber2': instance.phoneNumber2,
+    };

@@ -8,7 +8,6 @@ part of 'occupation.dart';
 
 Occupation _$OccupationFromJson(Map<String, dynamic> json) {
   return Occupation(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
@@ -16,7 +15,6 @@ Occupation _$OccupationFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$OccupationToJson(Occupation instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

@@ -25,7 +25,7 @@ public interface ReasonForNotIssuingResultDao {
     @Query("SELECT * FROM ReasonForNotIssuingResult ORDER BY name ASC")
     List<ReasonForNotIssuingResult> getAllReasonForNotIssuingResults();
 
-    @Query("SELECT * FROM ReasonForNotIssuingResult WHERE id=:id")
-    EntryPoint findReasonForNotIssuingResultById(int id);
+    @Query("SELECT * FROM ReasonForNotIssuingResult WHERE code=:id")
+    EntryPoint findReasonForNotIssuingResultById(String id);
 
 }

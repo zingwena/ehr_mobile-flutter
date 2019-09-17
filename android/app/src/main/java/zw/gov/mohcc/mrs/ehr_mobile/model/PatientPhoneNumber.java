@@ -3,38 +3,22 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices ={ @Index("personId")}, foreignKeys = {@ForeignKey(entity = Patient.class, onDelete = CASCADE,
-parentColumns = "id", childColumns = "personId")})
+@Entity(indices = {@Index("personId")}, foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
+        parentColumns = "id", childColumns = "personId")})
+public class PatientPhoneNumber extends BaseEntity {
 
-public class PatientPhoneNumber {
-
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private int patientId;
     private String personId;
-    private String phonenumber_1;
-    private String phonenumber_2;
+    private String phoneNumber1;
+    private String phoneNumber2;
 
-    /*public PatientPhoneNumber(String personId, String phonenumber_1, String phonenumber_2) {
+    public PatientPhoneNumber(String id, String personId, String phoneNumber1, String phoneNumber2) {
+        super.setId(id);
         this.personId = personId;
-        this.phonenumber_1 = phonenumber_1;
-        this.phonenumber_2 = phonenumber_2;
-    }*/
-    public PatientPhoneNumber(int patientId, String phonenumber_1, String phonenumber_2) {
-        this.patientId = patientId;
-        this.phonenumber_1 = phonenumber_1;
-        this.phonenumber_2 = phonenumber_2;
-    }
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.phoneNumber1 = phoneNumber1;
+        this.phoneNumber2 = phoneNumber2;
     }
 
     public String getPersonId() {
@@ -45,27 +29,19 @@ public class PatientPhoneNumber {
         this.personId = personId;
     }
 
-    public String getPhonenumber_1() {
-        return phonenumber_1;
+    public String getPhoneNumber1() {
+        return phoneNumber1;
     }
 
-    public void setPhonenumber_1(String phonenumber_1) {
-        this.phonenumber_1 = phonenumber_1;
+    public void setPhoneNumber1(String phoneNumber1) {
+        this.phoneNumber1 = phoneNumber1;
     }
 
-    public String getPhonenumber_2() {
-        return phonenumber_2;
+    public String getPhoneNumber2() {
+        return phoneNumber2;
     }
 
-    public void setPhonenumber_2(String phonenumber_2) {
-        this.phonenumber_2 = phonenumber_2;
-    }
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public void setPhoneNumber2(String phoneNumber2) {
+        this.phoneNumber2 = phoneNumber2;
     }
 }

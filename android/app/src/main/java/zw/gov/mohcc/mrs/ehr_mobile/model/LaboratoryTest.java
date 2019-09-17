@@ -7,23 +7,12 @@ import androidx.room.PrimaryKey;
 @Entity(indices = {@Index(value = "code", unique = true)})
 public class LaboratoryTest extends BaseNameModel {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
     public LaboratoryTest() {
     }
 
     @Ignore
     public LaboratoryTest(String code, String name) {
         super(code, name);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
 

@@ -9,14 +9,14 @@ part 'personInvestigation.g.dart';
 
 @JsonSerializable()
 class PersonInvestigation {
-  int personInvestigationId;
-  String patientId;
+  String id;
+  String personId;
   String investigationId;
   DateTime date;
   String resultId;
 
 
-  PersonInvestigation(this.patientId,
+  PersonInvestigation(this.personId,
       this.investigationId, this.date, this.resultId);
 
   factory PersonInvestigation.fromJson(Map<String,dynamic> json) => _$PersonInvestigationFromJson(json);

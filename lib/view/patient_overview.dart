@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:ehr_mobile/model/patient.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
 class Overview extends StatefulWidget {
-  final Patient patient;
+  final Person patient;
 
   Overview(this.patient);
 
@@ -35,7 +35,7 @@ class OverviewState extends State<Overview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
-  Patient _patient;
+  Person _patient;
   Visit _visit;
   Map<String, dynamic> details;
   String _maritalStatus,_educationLevel,_occupation,_nationality, _address, _phonenumber;
@@ -43,7 +43,7 @@ class OverviewState extends State<Overview> {
   bool showInput = true;
   bool showInputTabOptions = true;
 
-  int visitId=1;
+  String visitId="1";
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class OverviewState extends State<Overview> {
     super.initState();
   }
 
-  Future<void> getVisit(int patientId) async {
+  Future<void> getVisit(String patientId) async {
     Visit visit;
 
     try {
@@ -380,7 +380,7 @@ class OverviewState extends State<Overview> {
   }
 
 
-  Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, int patientId) async{
+  Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
     String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;
     try{
 

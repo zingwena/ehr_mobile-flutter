@@ -8,7 +8,6 @@ part of 'education_level.dart';
 
 EducationLevel _$EducationLevelFromJson(Map<String, dynamic> json) {
   return EducationLevel(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
@@ -16,7 +15,6 @@ EducationLevel _$EducationLevelFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$EducationLevelToJson(EducationLevel instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

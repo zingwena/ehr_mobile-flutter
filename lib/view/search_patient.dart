@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 
-import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +20,7 @@ class _SearchPatientState extends State<SearchPatient> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
   String searchItem;
   final _searchFormKey = GlobalKey<FormState>();
-  List<Patient> _patientList;
+  List<Person> _patientList;
 
   Future<void> searchPatient(String searchItem) async {
     List<dynamic> list;
@@ -32,7 +32,7 @@ class _SearchPatientState extends State<SearchPatient> {
       print("channel failure: '$e'");
     }
     setState(() {
-      _patientList = Patient.fromJsonDecodedMap(list);
+      _patientList = Person.fromJsonDecodedMap(list);
     });
 
     print("=====================searched$_patientList");

@@ -1,10 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
-
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
 
 import java.util.Date;
 
@@ -12,40 +9,26 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 
 @Entity
-public class LaboratoryInvestigation {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+public class LaboratoryInvestigation extends BaseEntity {
 
-    private int facilityId;
-
-
-    private int personInvestigationId;
-   @TypeConverters(DateConverter.class)
+    private String facilityId;
+    private String personInvestigationId;
+    @TypeConverters(DateConverter.class)
     private Date resultDate;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getFacilityId() {
+    public String getFacilityId() {
         return facilityId;
     }
 
-
-    public void setFacilityId(int facilityId) {
+    public void setFacilityId(String facilityId) {
         this.facilityId = facilityId;
     }
 
-    public int getPersonInvestigationId() {
+    public String getPersonInvestigationId() {
         return personInvestigationId;
     }
 
-    public void setPersonInvestigationId(int personInvestigationId) {
+    public void setPersonInvestigationId(String personInvestigationId) {
         this.personInvestigationId = personInvestigationId;
     }
 

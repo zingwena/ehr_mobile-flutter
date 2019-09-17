@@ -6,17 +6,16 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.SelfIdentifiedGenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("personId"), @Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
+@Entity(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
         @Index("nationalityId"), @Index("occupationId")},
         foreignKeys = {
                 @ForeignKey(entity = Country.class, onDelete = CASCADE,
@@ -42,15 +41,16 @@ import static androidx.room.ForeignKey.CASCADE;
                         childColumns = "occupationId")
         }
 )
-public class Patient {
+public class Person extends BaseEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @TypeConverters(GenderConverter.class)
+    public Gender selfIdentifiedGender;
+    @TypeConverters(GenderConverter.class)
+    public Gender sex;
     @NonNull
     private String firstName;
     @NonNull
     private String lastName;
-    private String personId;
     private String nationalId;
     private String religionId;
     private String occupationId;
@@ -62,31 +62,18 @@ public class Patient {
     private String countryId;
     @Embedded
     private Address address;
-    @TypeConverters(SelfIdentifiedGenderConverter.class)
-    public SelfIdentifiedGender selfIdentifiedGender;
-    @TypeConverters(SelfIdentifiedGenderConverter.class)
-    public Gender sex;
 
-    public Patient() {
+    public Person() {
     }
 
 
-
     @Ignore
-    public Patient(@NonNull String firstName, @NonNull String lastName, Gender sex) {
+    public Person(@NonNull String firstName, @NonNull String lastName, Gender sex) {
 
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
 
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @NonNull
@@ -105,14 +92,6 @@ public class Patient {
 
     public void setLastName(@NonNull String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(String personId) {
-        this.personId = personId;
     }
 
     public String getNationalId() {
@@ -179,11 +158,11 @@ public class Patient {
         this.countryId = countryId;
     }
 
-    public SelfIdentifiedGender getSelfIdentifiedGender() {
+    public Gender getSelfIdentifiedGender() {
         return selfIdentifiedGender;
     }
 
-    public void setSelfIdentifiedGender(SelfIdentifiedGender selfIdentifiedGender) {
+    public void setSelfIdentifiedGender(Gender selfIdentifiedGender) {
         this.selfIdentifiedGender = selfIdentifiedGender;
     }
 
@@ -203,40 +182,12 @@ public class Patient {
         this.birthDate = birthDate;
     }
 
-//    public PatientDto toPatientDto(){
-//        PatientDto patientDto = new PatientDto();
-//        patientDto.setId(this.id);
-//        patientDto.setFirstName(this.firstName);
-//        patientDto.setLastName(this.lastName);
-//        patientDto.setPersonId(this.personId);
-//        patientDto.setNationalId(this.nationalId);
-//        patientDto.setReligion(this.religionId);
-//        patientDto.setOccupation(this.occupationId);
-//        patientDto.setMaritalStatus(this.maritalStatusId);
-//        patientDto.setEducationLevel(this.educationLevelId);
-//        patientDto.setBirthDate();
-//        @TypeConverters(DateConverter.class)
-//        private Date birthDate;
-//        private String nationalityId;
-//        private String countryId;
-//        @Embedded
-//        private Address address;
-//        @TypeConverters(SelfIdentifiedGenderConverter.class)
-//        public SelfIdentifiedGender selfIdentifiedGender;
-//        @TypeConverters(SelfIdentifiedGenderConverter.class)
-//        public Gender sex;
-//
-//    }
-
-
-
     @Override
     public String toString() {
-        return "Patient{" +
-                "id=" + id +
+        return "Person{" +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", personId='" + personId + '\'' +
                 ", nationalId='" + nationalId + '\'' +
                 ", religionId='" + religionId + '\'' +
                 ", occupationId='" + occupationId + '\'' +

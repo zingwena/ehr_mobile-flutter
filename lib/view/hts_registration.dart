@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
-import 'package:ehr_mobile/model/patient.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
@@ -14,8 +14,8 @@ import 'package:intl/intl.dart';
 import 'rounded_button.dart';
 
 class Registration extends StatefulWidget {
-  int visitId;
-  int patientId;
+  String visitId;
+  String patientId;
 
   Registration(this.visitId, this.patientId);
 
@@ -31,9 +31,9 @@ class _Registration extends State<Registration> {
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-  int visitId;
-  int patientId;
-  Patient patient;
+  String visitId;
+  String patientId;
+  Person patient;
   var selectedDate;
   bool _showError = false;
   bool _entryPointIsValid = false;

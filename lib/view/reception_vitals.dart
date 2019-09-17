@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ReceptionVitals extends StatefulWidget {
-  final int visitId;
+  final String visitId;
   ReceptionVitals(this.visitId);
 
 

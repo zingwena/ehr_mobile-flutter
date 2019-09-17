@@ -8,7 +8,6 @@ part of 'testKit.dart';
 
 TestKit _$TestKitFromJson(Map<String, dynamic> json) {
   return TestKit(
-    json['id'] as int,
     json['code'] as String,
     json['name'] as String,
     json['description'] as String,
@@ -17,9 +16,8 @@ TestKit _$TestKitFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TestKitToJson(TestKit instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
       'description': instance.description,
       'level': instance.level,
     };

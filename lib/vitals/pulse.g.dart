@@ -8,8 +8,8 @@ part of 'pulse.dart';
 
 Pulse _$PulseFromJson(Map<String, dynamic> json) {
   return Pulse()
-    ..id = json['id'] as int
-    ..visitId = json['visitId'] as int
+    ..id = json['id'] as String
+    ..visitId = json['visitId'] as String
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)

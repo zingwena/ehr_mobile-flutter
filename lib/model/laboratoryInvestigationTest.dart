@@ -5,17 +5,16 @@ part 'laboratoryInvestigationTest.g.dart';
 
 @JsonSerializable()
 class LaboratoryInvestigationTest{
-   int id;
+   String id;
    String laboratoryInvestigationId;
-   DateTime startdate;
-   DateTime starttime;
-   DateTime readingdate;
-   DateTime readingtime;
+   DateTime startTime;
+   DateTime endTime;
    Result result;
    String visitId;
 
-   LaboratoryInvestigationTest(this.id, this.startdate, this.starttime, this.readingdate, this.readingtime,
-       this.result, this.visitId);
+
+   LaboratoryInvestigationTest(this.id, this.laboratoryInvestigationId,
+       this.startTime, this.endTime, this.result, this.visitId);
 
    factory LaboratoryInvestigationTest.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestFromJson(json);
 
@@ -25,21 +24,21 @@ class LaboratoryInvestigationTest{
 
    @override
    String toString() {
-     return 'LaboratoryInvestigationTest{id: $id, laboratoryInvestigationId: $laboratoryInvestigationId, startdate: $startdate, starttime: $starttime, readingdate: $readingdate, readingtime: $readingtime, result: $result, visitId: $visitId}';
+     return 'LaboratoryInvestigationTest{id: $id, laboratoryInvestigationId: $laboratoryInvestigationId, startTime: $startTime, endTime: $endTime, result: $result, visitId: $visitId}';
    }
 
    List<LaboratoryInvestigationTest> fromJsonDecodedMap(List dynamicList) {
-     List<LaboratoryInvestigationTest> LabInvestigationList = [];
+     List<LaboratoryInvestigationTest> labInvestigationList = [];
 
      if (dynamicList != null) {
        dynamicList.forEach((e) {
          LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest.fromJson(e);
-         LabInvestigationList.add(labInvestTest);
+         labInvestigationList.add(labInvestTest);
        });
      }
 
 
-     return LabInvestigationList;
+     return labInvestigationList;
    }
 
 

@@ -9,7 +9,6 @@ part of 'reasonForNotIssuingResult.dart';
 ReasonForNotIssuingResult _$ReasonForNotIssuingResultFromJson(
     Map<String, dynamic> json) {
   return ReasonForNotIssuingResult(
-    json['id'] as int,
     json['name'] as String,
     json['code'] as String,
   );
@@ -18,7 +17,6 @@ ReasonForNotIssuingResult _$ReasonForNotIssuingResultFromJson(
 Map<String, dynamic> _$ReasonForNotIssuingResultToJson(
         ReasonForNotIssuingResult instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
       'code': instance.code,
+      'name': instance.name,
     };

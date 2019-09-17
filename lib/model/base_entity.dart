@@ -1,10 +1,10 @@
 class BaseEntity {
-  int id;
+  String code;
   String name;
 
   @override
   String toString() {
-    return 'BaseEntity{id: $id, name: $name}';
+    return 'BaseEntity{code: $code, name: $name}';
   }
 
 

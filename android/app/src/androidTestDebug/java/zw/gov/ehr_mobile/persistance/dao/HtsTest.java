@@ -3,36 +3,26 @@ package zw.gov.ehr_mobile.persistance.dao;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import androidx.room.Room;
-import androidx.test.core.app.ApplicationProvider;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsTestProcedure;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Patient;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
-import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
@@ -79,8 +69,8 @@ public class HtsTest {
 
     @Test
     public void getTestKits(){
-        List<Patient> patients= db.patientDao().listPatients();
-        Assert.assertEquals(0,patients.size());
+        List<Person> people = db.personDao().listPatients();
+        Assert.assertEquals(0, people.size());
 
     }
 

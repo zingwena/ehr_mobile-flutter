@@ -24,6 +24,6 @@ public interface PersonInvestigationDao {
     @Query("SELECT * FROM PersonInvestigation ")
     List<PersonInvestigation> getAllPersonInvestigations();
 
-    @Query("SELECT * FROM PersonInvestigation WHERE personInvestigationId=:id")
+    @Query("SELECT * FROM PersonInvestigation WHERE id=:id")
     PersonInvestigation findPersonInvestigationById(String id);
 }

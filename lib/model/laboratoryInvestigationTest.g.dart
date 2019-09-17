@@ -9,24 +9,17 @@ part of 'laboratoryInvestigationTest.dart';
 LaboratoryInvestigationTest _$LaboratoryInvestigationTestFromJson(
     Map<String, dynamic> json) {
   return LaboratoryInvestigationTest(
-    json['id'] as int,
-    json['startdate'] == null
+    json['id'] as String,
+    json['laboratoryInvestigationId'] as String,
+    json['startTime'] == null
         ? null
-        : DateTime.parse(json['startdate'] as String),
-    json['starttime'] == null
-        ? null
-        : DateTime.parse(json['starttime'] as String),
-    json['readingdate'] == null
-        ? null
-        : DateTime.parse(json['readingdate'] as String),
-    json['readingtime'] == null
-        ? null
-        : DateTime.parse(json['readingtime'] as String),
+        : DateTime.parse(json['startTime'] as String),
+    json['endTime'] == null ? null : DateTime.parse(json['endTime'] as String),
     json['result'] == null
         ? null
         : Result.fromJson(json['result'] as Map<String, dynamic>),
     json['visitId'] as String,
-  )..laboratoryInvestigationId = json['laboratoryInvestigationId'] as String;
+  );
 }
 
 Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
@@ -34,10 +27,8 @@ Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
     <String, dynamic>{
       'id': instance.id,
       'laboratoryInvestigationId': instance.laboratoryInvestigationId,
-      'startdate': instance.startdate?.toIso8601String(),
-      'starttime': instance.starttime?.toIso8601String(),
-      'readingdate': instance.readingdate?.toIso8601String(),
-      'readingtime': instance.readingtime?.toIso8601String(),
+      'startTime': instance.startTime?.toIso8601String(),
+      'endTime': instance.endTime?.toIso8601String(),
       'result': instance.result,
       'visitId': instance.visitId,
     };

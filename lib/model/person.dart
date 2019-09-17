@@ -1,0 +1,63 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:ehr_mobile/model/address.dart';
+import 'package:ehr_mobile/model/education_level.dart';
+import 'package:ehr_mobile/model/marital_status.dart';
+import 'package:ehr_mobile/model/occupation.dart';
+import 'package:ehr_mobile/model/religion.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
+
+import 'package:intl/intl.dart';
+part 'person.g.dart';
+
+@JsonSerializable()
+@CustomDateTimeConverter()
+class Person {
+  String id;
+  String firstName;
+  String lastName;
+  String sex;
+  String nationalId;
+  DateTime birthDate;
+  String selfIdentifiedGender;
+  String religionId;
+  String occupationId;
+  String maritalStatusId;
+  String educationLevelId;
+  String nationalityId;
+  String countryId;
+
+
+  Address address;
+
+
+  Person.basic(this.firstName, this.lastName,this.sex,this.nationalId,this.birthDate,this.religionId,this.maritalStatusId,this.educationLevelId, this.nationalityId, this.countryId, this.selfIdentifiedGender, this.occupationId);
+
+  Person(this.id, this.firstName, this.lastName, this.sex, this.nationalId,this.birthDate, this.selfIdentifiedGender, this.religionId,
+      this.occupationId, this.maritalStatusId, this.educationLevelId, this.address);
+
+  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+
+
+  Map<String, dynamic> toJson() => _$PersonToJson(this);
+
+
+  @override
+  String toString() {
+    return 'Person{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religionId: $religionId, occupationId: $occupationId, maritalStatusId: $maritalStatusId, educationLevelId: $educationLevelId, nationalityId: $nationalityId, countryId: $countryId, address: $address}';
+  }
+
+  static List<Person> fromJsonDecodedMap(List dynamicList) {
+    List<Person> personList = [];
+
+    if (dynamicList != null) {
+      dynamicList.forEach((e) {
+        Person person = Person.fromJson(e);
+        personList.add(person);
+      });
+    }
+
+
+    return personList;
+  }
+
+}
