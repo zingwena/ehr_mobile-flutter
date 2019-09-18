@@ -9,7 +9,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 public class PreTestDTO {
 
-    public String hts_id;
+    public String htsId;
     public String htsApproach;
     public boolean newTest;
     @TypeConverters(GenderConverter.class)
@@ -26,7 +26,7 @@ public class PreTestDTO {
                       boolean coupleCounselling, boolean optOutOfTest,
                       boolean preTestInfoGiven, String htsModel_id,
                       String purpose_of_test_id) {
-        this.hts_id = hts_id;
+        this.htsId = hts_id;
         this.htsApproach = htsApproach;
         this.newTest = newTest;
         this.newTestPregLact = newTestPregLact;
@@ -102,11 +102,11 @@ public class PreTestDTO {
     }
 
     public String getHts_id() {
-        return hts_id;
+        return htsId;
     }
 
     public void setHts_id(String hts_id) {
-        this.hts_id = hts_id;
+        this.htsId = hts_id;
     }
 
     public boolean isNewTest() {

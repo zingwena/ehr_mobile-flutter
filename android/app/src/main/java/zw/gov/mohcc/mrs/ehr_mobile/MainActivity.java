@@ -561,9 +561,8 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("savePreTest")) {
 
                             try{
-                                System.out.println("PRETEST  HERE HERE HERE" + arguments);
+
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
-                                System.out.println("Pretest DTO HERE "+ preTestDTO.toString());
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
                                 hts.setHtsApproach(preTestDTO.getHtsApproach());
                                 hts.setNewTestInClientLife(preTestDTO.getNewTest());
@@ -571,8 +570,7 @@ public class MainActivity extends FlutterActivity {
                                 hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
-
-
+                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
 
                             } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
@@ -581,9 +579,8 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("getHtsModel")){
                             try{
-                                System.out.println("ARGUMENTS FROM HTS MODEL "+ arguments);
                                 HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelByName(arguments);
-                                System.out.println("HERE IS THE HTS MODEL THAT WAS RETRIEVED"+htsModel.getName());
+
                                  result.success(htsModel);
                             } catch (Exception e){
 
@@ -592,9 +589,7 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("getPurposeofTest")){
                             try{
-                                System.out.println("ARGUMENTS FROM PURPOSE TEST");
                                 PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findPurposeOfTestByName(arguments);
-                                System.out.println("HERE IS THE PURPOSE OF TEST MODEL THAT WAS RETRIEVED"+purposeOfTest.getName());
                                 result.success(purposeOfTest);
                             } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
