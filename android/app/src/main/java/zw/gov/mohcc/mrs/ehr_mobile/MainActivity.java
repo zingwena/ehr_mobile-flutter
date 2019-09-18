@@ -388,9 +388,9 @@ public class MainActivity extends FlutterActivity {
 
                 if (methodCall.method.equals("visit")) {
                     final String personId = methodCall.arguments();
-                    visitService.getCurrentVisit(personId);
-                    //createVisit(patientId);
-                    System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
+                    String visitId = visitService.getCurrentVisit(personId);
+
+                    result.success(visitId);
 
                 } else {
                     final String arguments = methodCall.arguments();
@@ -398,9 +398,7 @@ public class MainActivity extends FlutterActivity {
                     Gson gson = new Gson();
                     if (methodCall.method.equals("bloodPressure")) {
                         BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                        if (StringUtils.isBlank(bloodPressure.getVisitId())) {
-                            //bloodPressure.setVisitId(visit.getVisitId());
-                        }
+
                         ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
                         System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
 
