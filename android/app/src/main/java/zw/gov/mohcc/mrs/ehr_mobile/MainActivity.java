@@ -8,7 +8,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.sql.SQLOutput;
 import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +28,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClie
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
@@ -47,7 +45,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
@@ -1114,7 +1111,7 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (purpose_of_testList != null && !purpose_of_testList.isEmpty()) {
 
-                    savePurpose_Of_TestsToDB(purpose_of_testList);
+                    savePurposeOfTestToDB(purpose_of_testList);
                 }
 
 
@@ -1343,14 +1340,13 @@ public class MainActivity extends FlutterActivity {
 
     }
 
-    void savePurpose_Of_TestsToDB
-            (List<PurposeOfTest> purpose_of_tests) {
+    void savePurposeOfTestToDB (List<PurposeOfTest> purposeOfTestList) {
 
 
         System.out.println("*****************   " + ehrMobileDatabase);
-        Log.d(TAG, "Purpose of tests from ehr "+ purpose_of_tests);
+        Log.d(TAG, "Purpose of tests from ehr "+ purposeOfTestList);
 
-        //ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purpose_of_tests);
+        //ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purposeOfTestList);
         System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest());
 
     }
