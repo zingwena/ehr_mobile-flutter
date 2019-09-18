@@ -29,6 +29,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
@@ -86,13 +87,6 @@ public class MainActivity extends FlutterActivity {
     private InvestigationEhr investigationEhr;
     private VisitService visitService;
 
-    public MainActivity() {
-    }
-
-    public MainActivity(VisitService visitService) {
-        this.visitService = visitService;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +94,8 @@ public class MainActivity extends FlutterActivity {
 
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
+
+         visitService = new VisitService(ehrMobileDatabase);
 
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -196,24 +192,24 @@ public class MainActivity extends FlutterActivity {
                 }
                 if(methodCall.method.equals("getPhonenumber")){
                     String args = methodCall.arguments();
-                    System.out.println("PATIENT ID FROM FLUTTER "+ args);
+                    Log.i(TAG,"PATIENT ID FROM FLUTTER "+ args);
                     PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPatientId(args);
-                    System.out.println("HERE IS OUR PHONE NUMBER OBJECT "+ patientPhoneNumber);
-/*
-                    PatientPhoneNumber patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(args);
-*/
-                    System.out.println("NUMBER 1" + patientPhoneNumber.getPhoneNumber1());
-                    String phonenumber_1 = patientPhoneNumber.getPhoneNumber1();
-                    String phonenumber_2 = patientPhoneNumber.getPhoneNumber1();
-                    if(phonenumber_1 == null){
-                        phonenumber_1 = " ";
 
+                    String phoneNumber = "";
+                    if (patientPhoneNumber != null) {
+                        if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber1())) {
+                            phoneNumber += patientPhoneNumber.getPhoneNumber1();
+                        }
+                        if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber2())) {
+                            if (StringUtils.isNoneBlank(phoneNumber)) {
+                                phoneNumber += "/ "+patientPhoneNumber.getPhoneNumber2();
+                            } else {
+                                phoneNumber += patientPhoneNumber.getPhoneNumber2();
+                            }
+                        }
                     }
-                    if(phonenumber_2 == null){
-                        phonenumber_2 = " ";
-                    }
-                    String phonenumber = phonenumber_1 + " / " + phonenumber_2;
-                    result.success(phonenumber);
+
+                    result.success(phoneNumber);
                 }
                 
             }
@@ -568,9 +564,6 @@ public class MainActivity extends FlutterActivity {
                                 hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
-
-
-
                             } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
 
