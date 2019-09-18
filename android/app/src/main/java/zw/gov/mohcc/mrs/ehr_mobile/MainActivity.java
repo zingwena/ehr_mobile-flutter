@@ -8,7 +8,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.sql.SQLOutput;
 import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +48,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
@@ -89,13 +87,6 @@ public class MainActivity extends FlutterActivity {
     private InvestigationEhr investigationEhr;
     private VisitService visitService;
 
-    public MainActivity() {
-    }
-
-    public MainActivity(VisitService visitService) {
-        this.visitService = visitService;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +94,8 @@ public class MainActivity extends FlutterActivity {
 
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
+
+         visitService = new VisitService(ehrMobileDatabase);
 
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -199,24 +192,24 @@ public class MainActivity extends FlutterActivity {
                 }
                 if(methodCall.method.equals("getPhonenumber")){
                     String args = methodCall.arguments();
-                    System.out.println("PATIENT ID FROM FLUTTER "+ args);
+                    Log.i(TAG,"PATIENT ID FROM FLUTTER "+ args);
                     PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPatientId(args);
-                    System.out.println("HERE IS OUR PHONE NUMBER OBJECT "+ patientPhoneNumber);
-/*
-                    PatientPhoneNumber patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(args);
-*/
-                    System.out.println("NUMBER 1" + patientPhoneNumber.getPhoneNumber1());
-                    String phonenumber_1 = patientPhoneNumber.getPhoneNumber1();
-                    String phonenumber_2 = patientPhoneNumber.getPhoneNumber1();
-                    if(phonenumber_1 == null){
-                        phonenumber_1 = " ";
 
+                    String phoneNumber = "";
+                    if (patientPhoneNumber != null) {
+                        if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber1())) {
+                            phoneNumber += patientPhoneNumber.getPhoneNumber1();
+                        }
+                        if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber2())) {
+                            if (StringUtils.isNoneBlank(phoneNumber)) {
+                                phoneNumber += "/ "+patientPhoneNumber.getPhoneNumber2();
+                            } else {
+                                phoneNumber += patientPhoneNumber.getPhoneNumber2();
+                            }
+                        }
                     }
-                    if(phonenumber_2 == null){
-                        phonenumber_2 = " ";
-                    }
-                    String phonenumber = phonenumber_1 + " / " + phonenumber_2;
-                    result.success(phonenumber);
+
+                    result.success(phoneNumber);
                 }
                 
             }
@@ -395,9 +388,9 @@ public class MainActivity extends FlutterActivity {
 
                 if (methodCall.method.equals("visit")) {
                     final String personId = methodCall.arguments();
-                    visitService.getCurrentVisit(personId);
-                    //createVisit(patientId);
-                    System.out.println("===================visit" + ehrMobileDatabase.visitDao().getAll().toString());
+                    String visitId = visitService.getCurrentVisit(personId);
+
+                    result.success(visitId);
 
                 } else {
                     final String arguments = methodCall.arguments();
@@ -405,9 +398,7 @@ public class MainActivity extends FlutterActivity {
                     Gson gson = new Gson();
                     if (methodCall.method.equals("bloodPressure")) {
                         BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                        if (StringUtils.isBlank(bloodPressure.getVisitId())) {
-                            //bloodPressure.setVisitId(visit.getVisitId());
-                        }
+
                         ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
                         System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
 
@@ -570,6 +561,7 @@ public class MainActivity extends FlutterActivity {
                                 hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
+
                                 Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
 
                             } catch (Exception e){
@@ -1122,7 +1114,7 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (purpose_of_testList != null && !purpose_of_testList.isEmpty()) {
 
-                    savePurpose_Of_TestsToDB(purpose_of_testList);
+                    savePurposeOfTestToDB(purpose_of_testList);
                 }
 
 
@@ -1351,14 +1343,13 @@ public class MainActivity extends FlutterActivity {
 
     }
 
-    void savePurpose_Of_TestsToDB
-            (List<PurposeOfTest> purpose_of_tests) {
+    void savePurposeOfTestToDB (List<PurposeOfTest> purposeOfTestList) {
 
 
         System.out.println("*****************   " + ehrMobileDatabase);
-        Log.d(TAG, "Purpose of tests from ehr "+ purpose_of_tests);
+        Log.d(TAG, "Purpose of tests from ehr "+ purposeOfTestList);
 
-        //ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purpose_of_tests);
+        //ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purposeOfTestList);
         System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest());
 
     }
