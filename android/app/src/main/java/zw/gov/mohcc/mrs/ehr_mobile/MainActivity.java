@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
@@ -1347,8 +1348,9 @@ public class MainActivity extends FlutterActivity {
 
 
         System.out.println("*****************   " + ehrMobileDatabase);
+        Log.d(TAG, "Purpose of tests from ehr "+ purpose_of_tests);
 
-        ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purpose_of_tests);
+        //ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purpose_of_tests);
         System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest());
 
     }
@@ -1356,8 +1358,6 @@ public class MainActivity extends FlutterActivity {
     void saveReasonForNotIssuingResultToDB
             (List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
 
-
-        System.out.println("*****************   " + ehrMobileDatabase);
 
         ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
         System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
