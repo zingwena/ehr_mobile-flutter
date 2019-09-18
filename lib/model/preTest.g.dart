@@ -11,11 +11,11 @@ PreTest _$PreTestFromJson(Map<String, dynamic> json) {
     json['htsId'] as String,
     json['htsApproach'] as String,
     json['htsModelId'] as String,
-    json['newTest'] as String,
+    json['newTest'] as bool,
     json['coupleCounselling'] as String,
     json['preTestInformationGiven'] as bool,
-    json['optOutOfTest'] as String,
-    json['newTestPregLact'] as String,
+    json['optOutOfTest'] as bool,
+    json['newTestPregLact'] as bool,
     json['purposeOfTestId'] as String,
   );
 }

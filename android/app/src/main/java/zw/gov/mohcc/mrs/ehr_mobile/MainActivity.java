@@ -25,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
@@ -35,6 +36,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
@@ -507,25 +509,27 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
                         if (methodCall.method.equals("htsRegistration")) {
-                            // TODO jusge to fill in this code
-                            /*try {
+                            try{
+                                System.out.println("HTS HERE HERE HERE" + arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
-                                System.out.println("htsRegDTO = " + htsRegDTO.toString());
-                                HtsRegistration htsRegistration = new HtsRegistration();
-                                htsRegistration.setDateOfHivTest(htsRegDTO.getDateOfHivTest());
-                                htsRegistration.setHtsType(htsRegDTO.getHtsType());
-                                htsRegistration.setEntryPointId(htsRegDTO.getEntryPointId());
-                                htsRegistration.setVisitId(htsRegDTO.getVisitId());
-                                Long id = ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
+                                System.out.println("HTS REG DTO HERE "+ htsRegDTO.toString());
+                                String hts_Id = UUID.randomUUID().toString();
+                                Hts hts = new Hts();
+                                hts.setId(hts_Id);
+                                hts.setDateOfHivTest(htsRegDTO.getDateOfHivTest());
+                                hts.setHtsType(htsRegDTO.getHtsType());
+                                hts.setEntryPointId(htsRegDTO.getEntryPointId());
+                                ehrMobileDatabase.htsDao().createHts(hts);
+                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(hts_Id);
+                                System.out.println("HTS FROM DB " + hts1.getId());
+                                System.out.println("HTS TYPE HERE" + hts1.getHtsType());
+                                result.success(hts_Id);
 
-                                System.out.println("listHtsRegistration() = " + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-                                PersonInvestigation personInvestigation = gson.fromJson(arguments, PersonInvestigation.class);
-                                ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
-                                System.out.println("personInvestigation.toString() = " + personInvestigation.toString());
-                                result.success(id.intValue());
-                            } catch (Exception e) {
+                            } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
-                            }*/
+
+                            }
+
                         }
 
 
@@ -552,16 +556,25 @@ public class MainActivity extends FlutterActivity {
                         }
 
                         if (methodCall.method.equals("savePreTest")) {
-                            // TODO judge to add pre test code here
-                            /*try {
-                                PreTest preTest = gson.fromJson(arguments, PreTest.class);
 
-                                ehrMobileDatabase.preTestDao().createPreTest(preTest);
-                                System.out.println("List of pretest" + ehrMobileDatabase.preTestDao().listPreTests());
-                            } catch (Exception e) {
+                            try{
+                                System.out.println("PRETEST  HERE HERE HERE" + arguments);
+                                PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
+                                System.out.println("Pretest DTO HERE "+ preTestDTO.toString());
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
+                                hts.setHtsApproach(preTestDTO.getHtsApproach());
+                                hts.setNewTestInClientLife(preTestDTO.getNewTest());
+                                hts.setNewTestPregLact(preTestDTO.getNewTestPregLact());
+                                hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
+                                hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
+                                ehrMobileDatabase.htsDao().updateHts(hts);
+
+
+
+                            } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
+
                             }
-                            }*/
                         }
                         if (methodCall.method.equals("getHtsModel")){
                             try{

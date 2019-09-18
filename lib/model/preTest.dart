@@ -10,12 +10,13 @@ class PreTest {
   String htsId;
   String htsApproach;
   String htsModelId;
-  String newTest;
+  bool newTest;
   String coupleCounselling;
   bool preTestInformationGiven;
-  String optOutOfTest;
-  String newTestPregLact;
+  bool optOutOfTest;
+  bool newTestPregLact;
   String purposeOfTestId;
+
 
   PreTest(
       this.htsId,

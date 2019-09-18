@@ -27,7 +27,7 @@ class _SearchPatientState extends State<SearchPatient> {
 
     try {
       list =
-          jsonDecode(await platform.invokeMethod('searchPatient', searchItem));
+          jsonDecode(await platform.invokeMethod('searchPerson', searchItem));
     } catch (e) {
       print("channel failure: '$e'");
     }

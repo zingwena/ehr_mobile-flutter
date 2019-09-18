@@ -11,8 +11,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 public class HtsRegDTO {
 
     private String visitId;
-    @TypeConverters(HtsTypeConverter.class)
-    private HtsType htsType;
+    private String htsType;
     @TypeConverters(DateConverter.class)
     private Date dateOfHivTest;
     private String entryPointId;
@@ -25,11 +24,11 @@ public class HtsRegDTO {
         this.visitId = visitId;
     }
 
-    public HtsType getHtsType() {
+    public String getHtsType() {
         return htsType;
     }
 
-    public void setHtsType(HtsType htsType) {
+    public void setHtsType(String htsType) {
         this.htsType = htsType;
     }
 

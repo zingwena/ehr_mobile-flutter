@@ -9,24 +9,24 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 
 public class PreTestDTO {
 
+    public String hts_id;
+    public String htsApproach;
+    public boolean newTest;
     @TypeConverters(GenderConverter.class)
-    public HtsApproach htsApproach;
-    @TypeConverters(GenderConverter.class)
-    public NewTest newTest;
-    @TypeConverters(GenderConverter.class)
-    public TestForPregnantLactatingMother newTestPregLact;
+    public boolean newTestPregLact;
 
-    String coupleCounselling;
-    String optOutOfTest;
-    String preTestInfoGiven;
+    boolean coupleCounselling;
+    boolean optOutOfTest;
+    boolean preTestInfoGiven;
     String HtsModel_id;
     String purpose_of_test_id;
 
-    public PreTestDTO(HtsApproach htsApproach,
-                      NewTest newTest, TestForPregnantLactatingMother newTestPregLact,
-                      String coupleCounselling, String optOutOfTest,
-                      String preTestInfoGiven, String htsModel_id,
+    public PreTestDTO(String hts_id, String htsApproach,
+                      boolean newTest, boolean newTestPregLact,
+                      boolean coupleCounselling, boolean optOutOfTest,
+                      boolean preTestInfoGiven, String htsModel_id,
                       String purpose_of_test_id) {
+        this.hts_id = hts_id;
         this.htsApproach = htsApproach;
         this.newTest = newTest;
         this.newTestPregLact = newTestPregLact;
@@ -37,51 +37,51 @@ public class PreTestDTO {
         this.purpose_of_test_id = purpose_of_test_id;
     }
 
-    public HtsApproach getHtsApproach() {
+    public String getHtsApproach() {
         return htsApproach;
     }
 
-    public void setHtsApproach(HtsApproach htsApproach) {
+    public void setHtsApproach(String htsApproach) {
         this.htsApproach = htsApproach;
     }
 
-    public NewTest getNewTest() {
+    public boolean getNewTest() {
         return newTest;
     }
 
-    public void setNewTest(NewTest newTest) {
+    public void setNewTest(boolean newTest) {
         this.newTest = newTest;
     }
 
-    public TestForPregnantLactatingMother getNewTestPregLact() {
+    public boolean getNewTestPregLact() {
         return newTestPregLact;
     }
 
-    public void setNewTestPregLact(TestForPregnantLactatingMother newTestPregLact) {
+    public void setNewTestPregLact(boolean newTestPregLact) {
         this.newTestPregLact = newTestPregLact;
     }
 
-    public String getCoupleCounselling() {
+    public boolean getCoupleCounselling() {
         return coupleCounselling;
     }
 
-    public void setCoupleCounselling(String coupleCounselling) {
+    public void setCoupleCounselling(boolean coupleCounselling) {
         this.coupleCounselling = coupleCounselling;
     }
 
-    public String getOptOutOfTest() {
+    public boolean getOptOutOfTest() {
         return optOutOfTest;
     }
 
-    public void setOptOutOfTest(String optOutOfTest) {
+    public void setOptOutOfTest(boolean optOutOfTest) {
         this.optOutOfTest = optOutOfTest;
     }
 
-    public String getPreTestInfoGiven() {
+    public boolean getPreTestInfoGiven() {
         return preTestInfoGiven;
     }
 
-    public void setPreTestInfoGiven(String preTestInfoGiven) {
+    public void setPreTestInfoGiven(boolean preTestInfoGiven) {
         this.preTestInfoGiven = preTestInfoGiven;
     }
 
@@ -99,5 +99,21 @@ public class PreTestDTO {
 
     public void setPurpose_of_test_id(String purpose_of_test_id) {
         this.purpose_of_test_id = purpose_of_test_id;
+    }
+
+    public String getHts_id() {
+        return hts_id;
+    }
+
+    public void setHts_id(String hts_id) {
+        this.hts_id = hts_id;
+    }
+
+    public boolean isNewTest() {
+        return newTest;
+    }
+
+    public boolean isNewTestPregLact() {
+        return newTestPregLact;
     }
 }

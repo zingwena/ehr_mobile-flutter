@@ -16,6 +16,10 @@ import 'hts_testscreening.dart';
 import 'rounded_button.dart';
 
 class PatientPretest extends StatefulWidget {
+
+  final String htsid ;
+  PatientPretest(this.htsid);
+
   @override
   State createState() {
     return _PatientPretest();
@@ -33,16 +37,20 @@ class _PatientPretest extends State<PatientPretest> {
 
   int _hts = 0;
  // String _coupleCounselling="" ;
-  bool _newTest = false ;
+  String _newTest = " " ;
   String _htsApproach="" ;
-  String _newTestInLife = "";
+
+
+  bool _newTestInPreg = false;
+
+  bool _newTestInLife = false;
+  String newTestInLife = "";
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
 
   int _patientPretest = 0;
   //int _optOutTest = 0;
-  int newTest = 0;
-  int newTestInLife = 0;
+
 
 
   bool _preTestInfoGiven=false ;
@@ -54,6 +62,8 @@ class _PatientPretest extends State<PatientPretest> {
   bool _coupleCounselling=false;
   String coupleCounselling="NO";
 
+
+  String purposeOfTestId;
   @override
   void initState() {
   getDropDrowns();
@@ -162,35 +172,6 @@ class _PatientPretest extends State<PatientPretest> {
           break;
         case 2:
           _htsApproach = "CITC";
-          break;
-      }
-    });
-  }
- void _handleNewTestInLife(int value){
-    setState(() {
-      newTestInLife = value;
-      switch(newTestInLife){
-        case 1:
-          _newTestInLife = "Yes";
-          break;
-        case 2:
-          _newTestInLife = "No";
-          break;
-
-      }
-
-    });
- }
-  void _handleNewTestChange(int value) {
-    setState(() {
-      newTest = value;
-
-      switch (newTest) {
-        case 1:
-          _newTest = true;
-          break;
-        case 2:
-          _newTest = false;
           break;
       }
     });
@@ -349,16 +330,20 @@ class _PatientPretest extends State<PatientPretest> {
                                                               width: 250,
                                                             ),
                                                           ),
-                                                          Text('Yes'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: newTestInLife,
-                                                              onChanged: _handleNewTestInLife),
-                                                          Text('No'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: newTestInLife,
-                                                              onChanged: _handleNewTestInLife)
+
+                                                          Checkbox(
+                                                            value:_newTestInLife,
+                                                            onChanged: (bool value) {
+                                                              setState(() {
+                                                                _newTestInLife=value;
+                                                              });
+                                                              if(value) {
+                                                                setState(() {
+                                                                  _newTestInLife=true;
+                                                                });
+                                                              }
+                                                            },
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -460,16 +445,19 @@ class _PatientPretest extends State<PatientPretest> {
                                                               width: 250,
                                                             ),
                                                           ),
-                                                          Text('Yes'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: newTest,
-                                                              onChanged: _handleNewTestChange),
-                                                          Text('No'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: newTest,
-                                                              onChanged: _handleNewTestChange)
+                                                          Checkbox(
+                                                            value:_newTestInPreg,
+                                                            onChanged: (bool value) {
+                                                              setState(() {
+                                                                _newTestInPreg=value;
+                                                              });
+                                                              if(value) {
+                                                                setState(() {
+                                                                  _newTestInPreg=true;
+                                                                });
+                                                              }
+                                                            },
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -521,17 +509,13 @@ class _PatientPretest extends State<PatientPretest> {
                                                             _formKey.currentState.save();
                                                             getPurposeByName(_currentPurposeOfTest);
                                                             getHtsModelByName(_currentHtsModel);
-                                                            PreTest patient_pretest = PreTest(_htsApproach, null, coupleCounselling,
-                                                                preTestInfoGiven, optOutOfTest, _newTest, null,null, null);
+                                                            PreTest patient_pretest = PreTest(widget.htsid,_htsApproach, _currentHtsModel, _newTestInLife,
+                                                                coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
                                                             insertPreTest(patient_pretest);
                                                             Navigator.push(context,MaterialPageRoute(
                                                               builder: (context)=> HtsScreeningTest()
                                                             ));
- /*   Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) => Overview(registeredPatient)));
-    });*/
+
                                                           }
                                                         },
                                                       ),

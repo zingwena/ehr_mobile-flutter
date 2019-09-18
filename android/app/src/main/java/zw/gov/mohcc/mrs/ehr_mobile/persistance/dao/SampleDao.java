@@ -23,7 +23,9 @@ public interface SampleDao {
     @Query("SELECT * FROM EducationLevel ")
     List<Sample> getSamples();
 
+
     @Query("SELECT * FROM Sample WHERE code=:id")
     Sample findBySampleId(String id);
+
 
 }

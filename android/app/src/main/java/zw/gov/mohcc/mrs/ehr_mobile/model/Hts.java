@@ -17,19 +17,16 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 public class Hts extends BaseEntity {
 
     private String visitId;
-    @TypeConverters(HtsTypeConverter.class)
-    private HtsType htsType;
+    private String htsType;
     @TypeConverters(DateConverter.class)
     private Date dateOfHivTest;
     private String entryPointId;
-    @TypeConverters(HtsApproachConverter.class)
-    private HtsApproach htsApproach;
+    private String htsApproach;
     private String reasonForHivTestingId;
     private String htsModelId;
     private boolean preTestInformationGiven;
     private boolean newTestInClientLife;
-    @TypeConverters(TestForPregnantLactatingMotherConverter.class)
-    private TestForPregnantLactatingMother newTestPregLact;
+    private boolean newTestPregLact;
     private boolean coupleCounselling;
     private boolean optOutOfTest;
     private boolean resultReceived;
@@ -55,11 +52,11 @@ public class Hts extends BaseEntity {
         this.visitId = visitId;
     }
 
-    public HtsType getHtsType() {
+    public String getHtsType() {
         return htsType;
     }
 
-    public void setHtsType(HtsType htsType) {
+    public void setHtsType(String htsType) {
         this.htsType = htsType;
     }
 
@@ -79,11 +76,11 @@ public class Hts extends BaseEntity {
         this.entryPointId = entryPointId;
     }
 
-    public HtsApproach getHtsApproach() {
+    public String getHtsApproach() {
         return htsApproach;
     }
 
-    public void setHtsApproach(HtsApproach htsApproach) {
+    public void setHtsApproach(String htsApproach) {
         this.htsApproach = htsApproach;
     }
 
@@ -119,11 +116,11 @@ public class Hts extends BaseEntity {
         this.newTestInClientLife = newTestInClientLife;
     }
 
-    public TestForPregnantLactatingMother getNewTestPregLact() {
+    public boolean getNewTestPregLact() {
         return newTestPregLact;
     }
 
-    public void setNewTestPregLact(TestForPregnantLactatingMother newTestPregLact) {
+    public void setNewTestPregLact(boolean newTestPregLact) {
         this.newTestPregLact = newTestPregLact;
     }
 
