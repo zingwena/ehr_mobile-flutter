@@ -818,11 +818,11 @@ public class MainActivity extends FlutterActivity {
     public void getUsers(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
         Call<List<User>> call = service.getAllUsers("Bearer " + token.getId_token());
-        // TODO judge ro resolve these errors
-        /*call.enqueue(new Callback<List<User>>() {
+
+        call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                userList = response.body();
+                List<User> userList = response.body();
                 System.out.println("User response   : \n   " + userList);
                 saveUsersToDB(userList);
             }
@@ -831,7 +831,7 @@ public class MainActivity extends FlutterActivity {
             public void onFailure(Call<List<User>> call, Throwable t) {
                 System.out.println("Failed to get Patients \n-------------------" + t.getMessage());
             }
-        });*/
+        });
     }
 
     //liberty
