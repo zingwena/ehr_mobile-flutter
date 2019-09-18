@@ -17,6 +17,7 @@ class Registration extends StatefulWidget {
   String visitId;
   String patientId;
 
+
   Registration(this.visitId, this.patientId);
 
   @override
@@ -45,6 +46,7 @@ class _Registration extends State<Registration> {
   String _entryPoint;
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
+  String hts_id;
 
   bool showInput = true;
   bool showInputTabOptions = true;
@@ -337,7 +339,7 @@ class _Registration extends State<Registration> {
 
                                                               await registration(htsDetails);
 
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest()));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest(hts_id)));
 
                                                             }
                                                           }
@@ -383,7 +385,7 @@ class _Registration extends State<Registration> {
             text: "Pre-Testing",
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PatientPretest()),
+              MaterialPageRoute(builder: (context) => PatientPretest(hts_id)),
             ),
           ),
           new RoundedButton(text: "Testing",
@@ -394,11 +396,12 @@ class _Registration extends State<Registration> {
   }
 
   Future<void> registration(HtsRegistration htsRegistration) async {
-    int id;
+    String id;
     print('*************************htsType ${htsRegistration.toString()}');
     try {
-      id = await htsChannel.invokeMethod(
-          'htsRegistration', jsonEncode(htsRegistration));
+      id = await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
+      hts_id = id;
+
       String patientid = patientId.toString();
       DateTime date = htsRegistration.dateOfHivTest;
       PersonInvestigation personInvestigation = new PersonInvestigation(
