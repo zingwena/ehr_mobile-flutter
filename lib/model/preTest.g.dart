@@ -8,6 +8,7 @@ part of 'preTest.dart';
 
 PreTest _$PreTestFromJson(Map<String, dynamic> json) {
   return PreTest(
+    json['personId'] as String,
     json['htsId'] as String,
     json['htsApproach'] as String,
     json['htsModelId'] as String,
@@ -21,6 +22,7 @@ PreTest _$PreTestFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PreTestToJson(PreTest instance) => <String, dynamic>{
+      'personId':instance.personId,
       'htsId': instance.htsId,
       'htsApproach': instance.htsApproach,
       'htsModelId': instance.htsModelId,

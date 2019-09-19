@@ -9,7 +9,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 public class HtsRegDTO {
-
+    private String personId;
     private String visitId;
     private String htsType;
     @TypeConverters(DateConverter.class)
@@ -46,5 +46,13 @@ public class HtsRegDTO {
 
     public void setEntryPointId(String entryPointId) {
         this.entryPointId = entryPointId;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 }

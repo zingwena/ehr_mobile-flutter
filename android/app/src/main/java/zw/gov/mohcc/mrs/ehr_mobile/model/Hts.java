@@ -15,7 +15,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 @Entity
 public class Hts extends BaseEntity {
-
+    private String personId;
     private String visitId;
     private String htsType;
     @TypeConverters(DateConverter.class)
@@ -50,6 +50,18 @@ public class Hts extends BaseEntity {
 
     public void setVisitId(String visitId) {
         this.visitId = visitId;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public boolean isNewTestPregLact() {
+        return newTestPregLact;
     }
 
     public String getHtsType() {
@@ -116,9 +128,6 @@ public class Hts extends BaseEntity {
         this.newTestInClientLife = newTestInClientLife;
     }
 
-    public boolean getNewTestPregLact() {
-        return newTestPregLact;
-    }
 
     public void setNewTestPregLact(boolean newTestPregLact) {
         this.newTestPregLact = newTestPregLact;

@@ -364,7 +364,7 @@ class OverviewState extends State<Overview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Registration(_patient.id,visitId)),
+                    Registration(visitId, _patient.id)),
           ),
           ),
           new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(

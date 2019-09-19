@@ -11,6 +11,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 public class VitalsBaseEntityId extends BaseEntity {
 
     private String visitId;
+    private  transient String personId;
     @TypeConverters(DateConverter.class)
     private Date dateTime = new Date();
 
@@ -29,6 +30,14 @@ public class VitalsBaseEntityId extends BaseEntity {
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
     @Override

@@ -332,14 +332,14 @@ class _Registration extends State<Registration> {
                                                               });
                                                             }
                                                             if (_formIsValid) {
-                                                              HtsRegistration htsDetails = HtsRegistration(
+                                                              HtsRegistration htsDetails = HtsRegistration(patientId,
                                                                   visitId, htsType, date, _currentEntryPoint);
                                                               print('*************************htsType ${htsDetails.toString()}');
 
 
                                                               await registration(htsDetails);
 
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest(hts_id)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest(hts_id, widget.patientId)));
 
                                                             }
                                                           }
@@ -385,7 +385,7 @@ class _Registration extends State<Registration> {
             text: "Pre-Testing",
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PatientPretest(hts_id)),
+              MaterialPageRoute(builder: (context) => PatientPretest(hts_id, widget.patientId)),
             ),
           ),
           new RoundedButton(text: "Testing",
