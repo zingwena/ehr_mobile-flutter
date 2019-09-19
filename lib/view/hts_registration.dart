@@ -401,14 +401,14 @@ class _Registration extends State<Registration> {
                                                               });
                                                             }
                                                             if (_formIsValid) {
-                                                              HtsRegistration htsDetails = HtsRegistration(visitId, htsType, date, _currentEntryPoint);
+                                                              HtsRegistration htsDetails = HtsRegistration(patientId, visitId, htsType, date, _currentEntryPoint);
                                                               print('*************************htsType ${htsDetails.toString()}');
                                                               await registration(
                                                                   htsDetails);
 
                                                               await registration(htsDetails);
 
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest(hts_id)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest(hts_id, patientId)));
                                                             }
                                                           }
                                                         },

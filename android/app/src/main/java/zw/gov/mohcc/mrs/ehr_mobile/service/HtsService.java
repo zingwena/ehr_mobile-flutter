@@ -31,8 +31,7 @@ public class HtsService {
         Log.i(TAG, "Created hts record : "+ ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
         Log.i(TAG, "Creating Person Investigation record");
         String personInvestigationId = UUID.randomUUID().toString();
-        Visit visit = ehrMobileDatabase.visitDao().findById(dto.getVisitId());
-        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, visit.getPersonId(),
+        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(),
                 "36069471-adee-11e7-b30f-3372a2d8551e", dto.getDateOfHivTest());
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : "+ ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
