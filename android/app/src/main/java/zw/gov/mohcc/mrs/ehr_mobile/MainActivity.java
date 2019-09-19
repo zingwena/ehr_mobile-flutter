@@ -1331,7 +1331,7 @@ public class MainActivity extends FlutterActivity {
         System.out.println("*****************   " + ehrMobileDatabase);
         Log.d(TAG, "Purpose of tests from ehr "+ purposeOfTestList);
 
-        //ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purposeOfTestList);
+        ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purposeOfTestList);
         System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest());
 
     }
@@ -1360,21 +1360,8 @@ public class MainActivity extends FlutterActivity {
 
     }
 
-    /*public void createVisit(String personId) {
-        Visit visit1 = ehrMobileDatabase.visitDao().findByPersonVisit(personId, new Date().getTime());
-        System.out.println("==========================-=-=-=-=-=" + visit1);
-        if (visit1 == null) {
-            visit = new Visit(pers);
-            visitIdPatient = ehrMobileDatabase.visitDao().insert(visit);
-            System.out.println("visitIdPatient = " + visitIdPatient);
-        }
-
-
-    }*/
-
     public void clearTables() {
 
-        ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
         ehrMobileDatabase.personInvestigationDao().deletePersonInvestigations();
         ehrMobileDatabase.htsDao().deleteAll();
         ehrMobileDatabase.bloodPressureDao().deleteAll();
@@ -1402,6 +1389,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.investigationDao().deleteInvestigations();
         ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.resultDao().deleteResults();
+        ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
     }
 
 

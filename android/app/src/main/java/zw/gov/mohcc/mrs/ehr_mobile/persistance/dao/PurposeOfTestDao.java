@@ -13,12 +13,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 public interface PurposeOfTestDao {
 
     @Insert
-    void insertPurposeOfTest(List<PurposeOfTest> purpose_of_tests);
+    void insertPurposeOfTest(List<PurposeOfTest> purposeOfTests);
 
     @Insert
-    void insertPurposeOfTests(PurposeOfTest purpose_of_test);
+    void insertPurposeOfTests(PurposeOfTest purposeOfTest);
 
-    @Query("DELETE FROM occupation")
+    @Query("DELETE FROM PurposeOfTest")
     void deletePurposeOfTests();
 
     @Query("SELECT * FROM PurposeOfTest")
