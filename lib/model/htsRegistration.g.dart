@@ -8,6 +8,7 @@ part of 'htsRegistration.dart';
 
 HtsRegistration _$HtsRegistrationFromJson(Map<String, dynamic> json) {
   return HtsRegistration(
+    json['personId'] as String,
     json['visitId'] as String,
     json['htsType'] as String,
     const CustomDateTimeConverter().fromJson(json['dateOfHivTest'] as String),
@@ -17,6 +18,7 @@ HtsRegistration _$HtsRegistrationFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$HtsRegistrationToJson(HtsRegistration instance) =>
     <String, dynamic>{
+      'personId':instance.personId,
       'visitId': instance.visitId,
       'dateOfHivTest':
           const CustomDateTimeConverter().toJson(instance.dateOfHivTest),

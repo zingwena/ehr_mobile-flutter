@@ -18,7 +18,8 @@ import 'rounded_button.dart';
 class PatientPretest extends StatefulWidget {
 
   final String htsid ;
-  PatientPretest(this.htsid);
+  final String personId;
+  PatientPretest(this.htsid, this.personId);
 
   @override
   State createState() {
@@ -509,7 +510,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                             _formKey.currentState.save();
                                                             getPurposeByName(_currentPurposeOfTest);
                                                             getHtsModelByName(_currentHtsModel);
-                                                            PreTest patient_pretest = PreTest(widget.htsid,_htsApproach, _currentHtsModel, _newTestInLife,
+                                                            PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, _newTestInLife,
                                                                 coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
                                                             insertPreTest(patient_pretest);
                                                             Navigator.push(context,MaterialPageRoute(

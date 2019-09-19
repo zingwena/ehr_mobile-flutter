@@ -6,17 +6,26 @@ import java.util.Date;
 import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsType;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 
 public class HtsRegDTO {
-
+    private String personId;
     private String visitId;
     private String htsType;
     @TypeConverters(DateConverter.class)
     private Date dateOfHivTest;
     private String entryPointId;
+
+    public static Hts getInstance(HtsRegDTO dto) {
+        String htsId = UUID.randomUUID().toString();
+        Hts hts = new Hts();
+        hts.setId(htsId);
+        hts.setPersonId(dto.getPersonId());
+        hts.setDateOfHivTest(dto.getDateOfHivTest());
+        hts.setHtsType(dto.getHtsType());
+        hts.setEntryPointId(dto.getEntryPointId());
+        return hts;
+    }
 
     public String getVisitId() {
         return visitId;
@@ -50,13 +59,12 @@ public class HtsRegDTO {
         this.entryPointId = entryPointId;
     }
 
-    public static Hts getInstance(HtsRegDTO dto) {
-        String htsId = UUID.randomUUID().toString();
-        Hts hts = new Hts();
-        hts.setId(htsId);
-        hts.setDateOfHivTest(dto.getDateOfHivTest());
-        hts.setHtsType(dto.getHtsType());
-        hts.setEntryPointId(dto.getEntryPointId());
-        return hts;
+    public String getPersonId() {
+        return personId;
     }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
 }

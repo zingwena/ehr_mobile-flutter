@@ -18,4 +18,7 @@ public interface BloodPressureDao {
 
     @Query("Delete From BloodPressure")
     void deleteAll();
+
+    @Query("SELECT * FROM BloodPressure WHERE visitId =:visitId")
+    BloodPressure findByVisitId(String visitId);
 }

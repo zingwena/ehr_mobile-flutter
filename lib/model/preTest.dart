@@ -7,6 +7,7 @@ part 'preTest.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PreTest {
+  String personId;
   String htsId;
   String htsApproach;
   String htsModelId;
@@ -19,6 +20,7 @@ class PreTest {
 
 
   PreTest(
+      this.personId,
       this.htsId,
       this.htsApproach,
       this.htsModelId,

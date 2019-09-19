@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ReceptionVitals extends StatefulWidget {
-  final String visitId;
-  ReceptionVitals(this.visitId);
+  final String personId;
+  ReceptionVitals(this.personId);
 
 
   @override
@@ -64,12 +64,12 @@ super.initState();
 
   setVisit() {
     setState(() {
-      _bloodPressure.visitId = widget.visitId;
-      _temperature.visitId = widget.visitId;
-      _pulse.visitId = widget.visitId;
-      _respiratoryRate.visitId = widget.visitId;
-      _height.visitId =  widget.visitId;
-      _weight.visitId = widget.visitId;
+      _bloodPressure.personId = widget.personId;
+      _temperature.personId = widget.personId;
+      _pulse.personId = widget.personId;
+      _respiratoryRate.personId = widget.personId;
+      _height.personId =  widget.personId;
+      _weight.personId = widget.personId;
     });
   }
 

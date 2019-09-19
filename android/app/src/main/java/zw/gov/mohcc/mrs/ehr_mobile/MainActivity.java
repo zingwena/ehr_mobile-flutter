@@ -388,30 +388,25 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-
-                if (methodCall.method.equals("visit")) {
-                    final String personId = methodCall.arguments();
-                    String visitId = visitService.getCurrentVisit(personId);
-
-                    result.success(visitId);
-
-                } else {
                     final String arguments = methodCall.arguments();
 
                     Gson gson = new Gson();
                     if (methodCall.method.equals("bloodPressure")) {
                         BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
+                        bloodPressure.setId(UUID.randomUUID().toString());
+                        String visitId = visitService.getCurrentVisit(bloodPressure.getPersonId());
+                        bloodPressure.setVisitId(visitId);
                         ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
-                        System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
+                        BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
+                        System.out.println("HERE IS YOUR BP >>>>>>"+ bp.getDiastolic() + "<<<<<<<<<<<"+ bp.getSystolic());
 
 
                     } else if (methodCall.method.equals("temperature")) {
 
                         Temperature temperature = gson.fromJson(arguments, Temperature.class);
-
-                        if (StringUtils.isBlank(temperature.getVisitId())) {
-                            //temperature.setVisitId(visit.getVisitId());
-                        }
+                        temperature.setId(UUID.randomUUID().toString());
+                        String visitId = visitService.getCurrentVisit(temperature.getPersonId());
+                        temperature.setVisitId(visitId);
                         ehrMobileDatabase.temperatureDao().insert(temperature);
                         System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
 
@@ -419,10 +414,9 @@ public class MainActivity extends FlutterActivity {
                     } else if (methodCall.method.equals("respiratoryRate")) {
 
                         RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
-
-                        if (StringUtils.isBlank(respiratoryRate.getVisitId())) {
-                            //respiratoryRate.setVisitId(visit.getVisitId());
-                        }
+                        respiratoryRate.setId(UUID.randomUUID().toString());
+                        String visitId = visitService.getCurrentVisit(respiratoryRate.getPersonId());
+                        respiratoryRate.setVisitId(visitId);
                         ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
                         System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
 
@@ -430,10 +424,9 @@ public class MainActivity extends FlutterActivity {
                     } else if (methodCall.method.equals("height")) {
 
                         Height height = gson.fromJson(arguments, Height.class);
-
-                        if (StringUtils.isBlank(height.getVisitId())) {
-                            //height.setVisitId(visit.getVisitId());
-                        }
+                        height.setId(UUID.randomUUID().toString());
+                        String visitId = visitService.getCurrentVisit(height.getPersonId());
+                        height.setVisitId(visitId);
                         ehrMobileDatabase.heightDao().insert(height);
                         System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
 
@@ -441,19 +434,18 @@ public class MainActivity extends FlutterActivity {
                     } else if (methodCall.method.equals("weight")) {
 
                         Weight weight = gson.fromJson(arguments, Weight.class);
-                        if (StringUtils.isBlank(weight.getVisitId())) {
-                            //weight.setVisitId(visit.getVisitId());
-                        }
+                        weight.setId(UUID.randomUUID().toString());
+                        String visitId = visitService.getCurrentVisit(weight.getPersonId());
+                        weight.setVisitId(visitId);
                         ehrMobileDatabase.weightDao().insert(weight);
 
 
                     } else if (methodCall.method.equals("pulse")) {
 
                         Pulse pulse = gson.fromJson(arguments, Pulse.class);
-                        if (StringUtils.isBlank(pulse.getVisitId())) {
-                            //pulse.setVisitId(visit.getVisitId());
-                            System.out.println("=-=-=-=pulse" + pulse.getVisitId());
-                        }
+                        pulse.setId(UUID.randomUUID().toString());
+                        String visitId = visitService.getCurrentVisit(pulse.getPersonId());
+                        pulse.setVisitId(visitId);
                         ehrMobileDatabase.pulseDao().insert(pulse);
                         System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
 
@@ -462,7 +454,7 @@ public class MainActivity extends FlutterActivity {
                         result.notImplemented();
                     }
                 }
-            }
+
         });
 
 
@@ -508,7 +500,6 @@ public class MainActivity extends FlutterActivity {
                             try{
                                 System.out.println("HTS HERE HERE HERE" + arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
-
                                 result.success(htsService.createHts(htsRegDTO));
 
                             } catch (Exception e){
@@ -544,9 +535,8 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("savePreTest")) {
 
                             try{
-                                System.out.println("PRETEST  HERE HERE HERE" + arguments);
+
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
-                                System.out.println("Pretest DTO HERE "+ preTestDTO.toString());
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
                                 hts.setHtsApproach(preTestDTO.getHtsApproach());
                                 hts.setNewTestInClientLife(preTestDTO.getNewTest());
@@ -554,6 +544,9 @@ public class MainActivity extends FlutterActivity {
                                 hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
+
+                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
+
                             } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
 
@@ -561,9 +554,8 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("getHtsModel")){
                             try{
-                                System.out.println("ARGUMENTS FROM HTS MODEL "+ arguments);
                                 HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelByName(arguments);
-                                System.out.println("HERE IS THE HTS MODEL THAT WAS RETRIEVED"+htsModel.getName());
+
                                  result.success(htsModel);
                             } catch (Exception e){
 
@@ -572,9 +564,7 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("getPurposeofTest")){
                             try{
-                                System.out.println("ARGUMENTS FROM PURPOSE TEST");
                                 PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findPurposeOfTestByName(arguments);
-                                System.out.println("HERE IS THE PURPOSE OF TEST MODEL THAT WAS RETRIEVED"+purposeOfTest.getName());
                                 result.success(purposeOfTest);
                             } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
@@ -626,8 +616,8 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getSample")) {
 
                             try {
-//                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
-//                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                               Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
+                               Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
                                 String investigationString = gson.toJson(investigationEhr);
                                 System.out.println(" investigation***************" + investigationString);
                                 result.success(investigationString);
