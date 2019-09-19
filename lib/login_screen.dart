@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
               child: TextFormField(
                 maxLines: 1,
                  validator: (value){
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
               child: TextFormField(
                 maxLines: 1,
                 obscureText: true,
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 30.0,
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
               width: double.infinity,
               child: RaisedButton(
                 elevation: 4.0,

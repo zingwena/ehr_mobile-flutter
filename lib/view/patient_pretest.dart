@@ -514,7 +514,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                                 coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
                                                             insertPreTest(patient_pretest);
                                                             Navigator.push(context,MaterialPageRoute(
-                                                              builder: (context)=> HtsScreeningTest()
+                                                              builder: (context)=> HtsScreeningTest(widget.personId)
                                                             ));
 
                                                           }

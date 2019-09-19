@@ -49,6 +49,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -375,7 +376,6 @@ public class MainActivity extends FlutterActivity {
                     PersonQuery personQuery = new PersonQuery();
                     SimpleSQLiteQuery sqLiteQuery = personQuery.searchPerson(searchItem);
                     _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery);
-                    System.out.println("==============-=-=-=-=-=-==list" + _list);
                     Gson gson = new Gson();
                     result1.success(gson.toJson(_list));
                 }
@@ -398,7 +398,6 @@ public class MainActivity extends FlutterActivity {
                         bloodPressure.setVisitId(visitId);
                         ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
                         BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
-                        System.out.println("HERE IS YOUR BP >>>>>>"+ bp.getDiastolic() + "<<<<<<<<<<<"+ bp.getSystolic());
 
 
                     } else if (methodCall.method.equals("temperature")) {
@@ -537,6 +536,7 @@ public class MainActivity extends FlutterActivity {
                             try{
 
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
+                                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>"+ arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
                                 hts.setHtsApproach(preTestDTO.getHtsApproach());
                                 hts.setNewTestInClientLife(preTestDTO.getNewTest());
@@ -545,7 +545,6 @@ public class MainActivity extends FlutterActivity {
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
 
-                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
 
                             } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
@@ -616,11 +615,17 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getSample")) {
 
                             try {
-                               Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
+                                System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER "+arguments);
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
+                                System.out.println("HERE IS THE HTS MODEL"+ hts.getPersonId());
+                                Date htsregdate = hts.getDateOfHivTest();
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                System.out.println("HERE IS THE PERSON INVESTIGATION should be similar to hts "+ personInvestigation.getPersonId());
+                                Log.i(TAG, "Investigations : "+ ehrMobileDatabase.investigationDao().getInvestigations());
+                               Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                                String investigationString = gson.toJson(investigationEhr);
-                                System.out.println(" investigation***************" + investigationString);
-                                result.success(investigationString);
+                               String sample_name = sample.getName();
+                                result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
