@@ -1450,23 +1450,26 @@ public class MainActivity extends FlutterActivity {
         System.out.println("in investigation");
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<InvestigationEhr> call = service.getInvestigations("Bearer " + token.getId_token(), "36069471-adee-11e7-b30f-3372a2d8551e");
-        call.enqueue(new Callback<InvestigationEhr>() {
+        Call<List<InvestigationEhr>> call = service.getInvestigations("Bearer " + token.getId_token(), "36069471-adee-11e7-b30f-3372a2d8551e");
+        call.enqueue(new Callback<List<InvestigationEhr>>() {
             @Override
-            public void onResponse(Call<InvestigationEhr> call, Response<InvestigationEhr> response) {
+            public void onResponse(Call<List<InvestigationEhr>> call, Response<List<InvestigationEhr>> response) {
 
-                if (response.isSuccessful()) {
-                    System.out.println("investigation ********" + response.body().toString());
-                    investigationEhr = response.body();
-
+                List<Investigation> investigations = new ArrayList<Investigation>();
+                for(InvestigationEhr item : response.body()) {
+                    investigations.add(new Investigation(item.getInvestigationId(), item.getTest(), item.getSample()));
+                }
+                if (investigations != null && !investigations.isEmpty()) {
+                    saveInvestigations(investigations);
                 }
             }
 
             @Override
-            public void onFailure(Call<InvestigationEhr> call, Throwable t) {
+            public void onFailure(Call<List<InvestigationEhr>> call, Throwable t) {
 
             }
         });
+
     }
 
     void saveSample(List<Sample> samples) {

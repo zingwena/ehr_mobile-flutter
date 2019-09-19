@@ -82,7 +82,7 @@ public interface DataSyncService {
     Call<TerminologyModel> getSamples(@Header("Authorization")String token);
 
     @GET("investigations/{ID}")
-    Call <InvestigationEhr> getInvestigations(@Header("Authorization")String token, @Path("ID")String id);
+    Call<List<InvestigationEhr>> getInvestigations(@Header("Authorization")String token, @Path("ID")String id);
 
 
 }
