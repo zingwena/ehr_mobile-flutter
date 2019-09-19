@@ -179,4 +179,27 @@ public class Hts extends BaseEntity {
     public void setConsentToIndexTesting(boolean consentToIndexTesting) {
         this.consentToIndexTesting = consentToIndexTesting;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("Hts{" +
+                "visitId='" + visitId + '\'' +
+                ", htsType='" + htsType + '\'' +
+                ", dateOfHivTest=" + dateOfHivTest +
+                ", entryPointId='" + entryPointId + '\'' +
+                ", htsApproach='" + htsApproach + '\'' +
+                ", reasonForHivTestingId='" + reasonForHivTestingId + '\'' +
+                ", htsModelId='" + htsModelId + '\'' +
+                ", preTestInformationGiven=" + preTestInformationGiven +
+                ", newTestInClientLife=" + newTestInClientLife +
+                ", newTestPregLact=" + newTestPregLact +
+                ", coupleCounselling=" + coupleCounselling +
+                ", optOutOfTest=" + optOutOfTest +
+                ", resultReceived=" + resultReceived +
+                ", reasonForNotIssuingResultId='" + reasonForNotIssuingResultId + '\'' +
+                ", postTestCounselled=" + postTestCounselled +
+                ", datePostTestCounselled=" + datePostTestCounselled +
+                ", consentToIndexTesting=" + consentToIndexTesting +
+                '}');
+    }
 }

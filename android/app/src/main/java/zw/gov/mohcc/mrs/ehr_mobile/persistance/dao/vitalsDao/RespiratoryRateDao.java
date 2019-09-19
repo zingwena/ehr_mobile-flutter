@@ -15,4 +15,7 @@ public interface RespiratoryRateDao {
 
     @Query("SELECT * From RespiratoryRate")
     List<RespiratoryRate> getAll();
+
+    @Query("Delete From RespiratoryRate")
+    void deleteAll();
 }

@@ -15,4 +15,7 @@ public interface PulseDao {
 
     @Query("SELECT * From Pulse")
     List<Pulse> getAll();
+
+    @Query("Delete From Pulse")
+    void deleteAll();
 }

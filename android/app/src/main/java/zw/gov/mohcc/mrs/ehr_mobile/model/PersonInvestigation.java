@@ -1,8 +1,15 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.TypeConverters;
+
+import java.util.Date;
+
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 @Entity
 public class PersonInvestigation extends BaseEntity {
@@ -12,9 +19,21 @@ public class PersonInvestigation extends BaseEntity {
     @ColumnInfo(name = "investigationId")
     private String investigationId;
     @ColumnInfo(name = "date")
-    private String date;
+    @TypeConverters(DateConverter.class)
+    private Date date;
     @ColumnInfo(name = "resultId")
     private String resultId;
+
+    public PersonInvestigation() {
+    }
+
+    @Ignore
+    public PersonInvestigation(@NonNull String id, String personId, String investigationId, Date date) {
+        super(id);
+        this.personId = personId;
+        this.investigationId = investigationId;
+        this.date = date;
+    }
 
     public String getPersonId() {
         return personId;
@@ -32,11 +51,11 @@ public class PersonInvestigation extends BaseEntity {
         this.investigationId = investigationId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -50,12 +69,12 @@ public class PersonInvestigation extends BaseEntity {
 
     @Override
     public String toString() {
-        return "PersonInvestigation{" +
+        return super.toString().concat("PersonInvestigation{" +
                 "personInvestigationId=" + getId() +
                 ", patientId='" + personId + '\'' +
                 ", investigationId='" + investigationId + '\'' +
                 ", date='" + date + '\'' +
                 ", resultId='" + resultId + '\'' +
-                '}';
+                '}');
     }
 }

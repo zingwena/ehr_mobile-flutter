@@ -1,12 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:ehr_mobile/model/address.dart';
-import 'package:ehr_mobile/model/education_level.dart';
-import 'package:ehr_mobile/model/marital_status.dart';
-import 'package:ehr_mobile/model/occupation.dart';
-import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:intl/intl.dart';
 part 'person.g.dart';
 
 @JsonSerializable()
@@ -25,21 +20,39 @@ class Person {
   String educationLevelId;
   String nationalityId;
   String countryId;
-
-
   Address address;
 
+  Person.basic(
+      this.firstName,
+      this.lastName,
+      this.sex,
+      this.nationalId,
+      this.birthDate,
+      this.religionId,
+      this.maritalStatusId,
+      this.educationLevelId,
+      this.nationalityId,
+      this.countryId,
+      this.selfIdentifiedGender,
+      this.occupationId);
 
-  Person.basic(this.firstName, this.lastName,this.sex,this.nationalId,this.birthDate,this.religionId,this.maritalStatusId,this.educationLevelId, this.nationalityId, this.countryId, this.selfIdentifiedGender, this.occupationId);
-
-  Person(this.id, this.firstName, this.lastName, this.sex, this.nationalId,this.birthDate, this.selfIdentifiedGender, this.religionId,
-      this.occupationId, this.maritalStatusId, this.educationLevelId, this.address);
+  Person(
+      this.id,
+      this.firstName,
+      this.lastName,
+      this.sex,
+      this.nationalId,
+      this.birthDate,
+      this.selfIdentifiedGender,
+      this.religionId,
+      this.occupationId,
+      this.maritalStatusId,
+      this.educationLevelId,
+      this.address);
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
-
   Map<String, dynamic> toJson() => _$PersonToJson(this);
-
 
   @override
   String toString() {
@@ -56,8 +69,6 @@ class Person {
       });
     }
 
-
     return personList;
   }
-
 }

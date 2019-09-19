@@ -15,4 +15,7 @@ public interface WeightDao {
 
     @Query("SELECT * From Weight")
     List<Weight> getAll();
+
+    @Query("Delete From Weight")
+    void deleteAll();
 }

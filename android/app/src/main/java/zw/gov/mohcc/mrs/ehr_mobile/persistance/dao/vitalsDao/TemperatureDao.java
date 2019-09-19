@@ -16,4 +16,7 @@ public interface TemperatureDao {
 
     @Query("SELECT * From Temperature")
     List<Temperature> getAll();
+
+    @Query("Delete From Temperature")
+    void deleteAll();
 }

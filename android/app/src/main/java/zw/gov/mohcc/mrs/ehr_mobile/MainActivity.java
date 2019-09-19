@@ -68,6 +68,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PersonQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
@@ -86,6 +87,7 @@ public class MainActivity extends FlutterActivity {
     private EhrMobileDatabase ehrMobileDatabase;
     private InvestigationEhr investigationEhr;
     private VisitService visitService;
+    private HtsService htsService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
          visitService = new VisitService(ehrMobileDatabase);
+         htsService = new HtsService(ehrMobileDatabase);
 
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -398,7 +401,6 @@ public class MainActivity extends FlutterActivity {
                     Gson gson = new Gson();
                     if (methodCall.method.equals("bloodPressure")) {
                         BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-
                         ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
                         System.out.println("bp == " + ehrMobileDatabase.bloodPressureDao().getAll());
 
@@ -506,18 +508,8 @@ public class MainActivity extends FlutterActivity {
                             try{
                                 System.out.println("HTS HERE HERE HERE" + arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
-                                System.out.println("HTS REG DTO HERE "+ htsRegDTO.toString());
-                                String hts_Id = UUID.randomUUID().toString();
-                                Hts hts = new Hts();
-                                hts.setId(hts_Id);
-                                hts.setDateOfHivTest(htsRegDTO.getDateOfHivTest());
-                                hts.setHtsType(htsRegDTO.getHtsType());
-                                hts.setEntryPointId(htsRegDTO.getEntryPointId());
-                                ehrMobileDatabase.htsDao().createHts(hts);
-                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(hts_Id);
-                                System.out.println("HTS FROM DB " + hts1.getId());
-                                System.out.println("HTS TYPE HERE" + hts1.getHtsType());
-                                result.success(hts_Id);
+
+                                result.success(htsService.createHts(htsRegDTO));
 
                             } catch (Exception e){
                                 System.out.println("something went wrong " + e.getMessage());
@@ -700,17 +692,6 @@ public class MainActivity extends FlutterActivity {
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
-                        }
-
-                        if (methodCall.method.equals("saveHtsRegistration")) {
-                            // TODO resolve too many hts registration sections
-                            /*try {
-                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
-
-                                htsRegistration(htsRegistration);
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }*/
                         }
 
                         if (methodCall.method.equals("getSample")) {
@@ -1393,12 +1374,21 @@ public class MainActivity extends FlutterActivity {
 
     public void clearTables() {
 
-        ehrMobileDatabase.countryDao().deleteCountries();
+        ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
+        ehrMobileDatabase.personInvestigationDao().deletePersonInvestigations();
+        ehrMobileDatabase.htsDao().deleteAll();
+        ehrMobileDatabase.bloodPressureDao().deleteAll();
+        ehrMobileDatabase.temperatureDao().deleteAll();
+        ehrMobileDatabase.pulseDao().deleteAll();
+        ehrMobileDatabase.respiratoryRateDao().deleteAll();
+        ehrMobileDatabase.weightDao().deleteAll();
+        ehrMobileDatabase.heightDao().deleteAll();
+        ehrMobileDatabase.visitDao().deleteAll();
         ehrMobileDatabase.personDao().deleteAll();
+        ehrMobileDatabase.countryDao().deleteCountries();
         ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
         ehrMobileDatabase.facilityDao().deleteAllFacilities();
         ehrMobileDatabase.townsDao().deleteAllTowns();
-        ehrMobileDatabase.personDao().deleteAll();
         ehrMobileDatabase.religionDao().deleteReligions();
         ehrMobileDatabase.occupationDao().deleteOccupations();
         ehrMobileDatabase.nationalityDao().deleteNationalities();
@@ -1411,8 +1401,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.testKitDao().deleteTestKits();
         ehrMobileDatabase.investigationDao().deleteInvestigations();
         ehrMobileDatabase.sampleDao().deleteSamples();
-        ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
-
+        ehrMobileDatabase.resultDao().deleteResults();
     }
 
 

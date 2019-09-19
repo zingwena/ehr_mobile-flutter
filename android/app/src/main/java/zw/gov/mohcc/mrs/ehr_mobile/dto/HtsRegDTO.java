@@ -3,7 +3,9 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
+import java.util.UUID;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsType;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
@@ -46,5 +48,15 @@ public class HtsRegDTO {
 
     public void setEntryPointId(String entryPointId) {
         this.entryPointId = entryPointId;
+    }
+
+    public static Hts getInstance(HtsRegDTO dto) {
+        String htsId = UUID.randomUUID().toString();
+        Hts hts = new Hts();
+        hts.setId(htsId);
+        hts.setDateOfHivTest(dto.getDateOfHivTest());
+        hts.setHtsType(dto.getHtsType());
+        hts.setEntryPointId(dto.getEntryPointId());
+        return hts;
     }
 }

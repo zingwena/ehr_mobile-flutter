@@ -1,6 +1,8 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -15,6 +17,16 @@ public class LaboratoryInvestigation extends BaseEntity {
     private String personInvestigationId;
     @TypeConverters(DateConverter.class)
     private Date resultDate;
+
+    public LaboratoryInvestigation() {
+    }
+
+    @Ignore
+    public LaboratoryInvestigation(@NonNull String id, String facilityId, String personInvestigationId) {
+        super(id);
+        this.facilityId = facilityId;
+        this.personInvestigationId = personInvestigationId;
+    }
 
     public String getFacilityId() {
         return facilityId;

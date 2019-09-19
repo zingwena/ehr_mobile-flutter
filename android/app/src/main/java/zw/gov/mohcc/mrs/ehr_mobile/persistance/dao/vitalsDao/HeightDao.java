@@ -15,4 +15,7 @@ public interface HeightDao {
 
     @Query("SELECT * From Height")
     List<Height> getAll();
+
+    @Query("Delete From Height")
+    void deleteAll();
 }

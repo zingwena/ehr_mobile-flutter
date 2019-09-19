@@ -15,4 +15,7 @@ public interface BloodPressureDao {
 
     @Query("SELECT * From BloodPressure")
     List<BloodPressure> getAll();
+
+    @Query("Delete From BloodPressure")
+    void deleteAll();
 }
