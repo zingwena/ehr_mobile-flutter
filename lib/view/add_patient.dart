@@ -4,6 +4,8 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'rounded_button.dart';
+import 'package:ehr_mobile/login_screen.dart';
 
 import 'edit_demographics.dart';
 
@@ -112,9 +114,8 @@ class _AddPatient extends State<AddPatient> {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  // _buildButtonsRow(),
+                   _buildButtonsRow(),
                   Expanded(
-                    child: WillPopScope(
                       child: new Card(
                         elevation: 4.0,
                         margin: const EdgeInsets.all(8.0),
@@ -226,9 +227,7 @@ class _AddPatient extends State<AddPatient> {
                                                                     (value) =>
                                                                         setState(
                                                                             () {
-                                                                  lastName =
-                                                                      value;
-                                                                }),
+                                                                  lastName = value;                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                         'Last Name',
@@ -385,30 +384,20 @@ class _AddPatient extends State<AddPatient> {
                                                     ),
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 0.0,
-                                                              horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5.0)),
+                                                            BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(20.0),
+                                                        padding: const EdgeInsets.all(20.0),
                                                         child: Text(
                                                           "Register Patient",
                                                           style: TextStyle(
                                                               fontSize: 15,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.w500),
                                                         ),
                                                         onPressed: () async {
                                                           if (_formKey
@@ -448,6 +437,9 @@ class _AddPatient extends State<AddPatient> {
                                                         },
                                                       ),
                                                     ),
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -464,10 +456,35 @@ class _AddPatient extends State<AddPatient> {
                           length: 3,
                         ),
                       ),
-                    ),
                   ),
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(
+            text: "Add Patient",
+            selected: true,
+          ),
+
+          new RoundedButton(
+            text: "Continue Registration",
+          ),
+
+          new RoundedButton(
+            text: "Close",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
             ),
           ),
         ],

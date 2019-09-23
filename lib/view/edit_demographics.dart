@@ -17,6 +17,8 @@ import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'patient_address.dart';
+import 'rounded_button.dart';
+import 'package:ehr_mobile/login_screen.dart';
 
 class EditDemographics extends StatefulWidget {
   final String lastName, firstName, sex, nationalId;
@@ -214,324 +216,351 @@ class _EditDemographicsState extends State<EditDemographics> {
     return cell == null ? "" : cell;
   }
 
-
-
- 
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text('Continue Patient Registration'),
-      ),
-      body:SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child:  Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                  width: double.infinity,
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                      child: DropdownButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        hint:Text("Self Identified Gender"),
-                        iconEnabledColor: Colors.black,
-                        value: _currentSiGender,
-                        items: _dropDownMenuItemsIdentified,
-                        onChanged: changedDropDownItemSi,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 2.0, //width of the border
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                !showError
-                    ? SizedBox.shrink()
-                    : Text(
-                  _selfIdentifiedGenderError ?? "",
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Divider(),
-                Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                  width: double.infinity,
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                      child: DropdownButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        hint: Text("Marital Status"),
-                        iconEnabledColor: Colors.black,
-                        value: _currentMaritalStatus,
-                        items: _dropDownMenuItemsMaritalStatus,
-                        onChanged: changedDropDownItemMaritalStatus,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 2.0, //width of the border
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                !showError
-                    ? SizedBox.shrink()
-                    : Text(
-                  _maritalStatusError ?? "",
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Divider(),
-                Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                  width: double.infinity,
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                      child: DropdownButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        hint: Text("Education Level"),
-                        iconEnabledColor: Colors.black,
-                        value: _currentEducationLevel,
-                        items: _dropDownMenuItemsEducationLevel,
-                        onChanged: changedDropDownItemEducationLevel,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 2.0, //width of the border
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                !showError
-                    ? SizedBox.shrink()
-                    : Text(
-                  _educationLevelError ?? "",
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Divider(),
-                Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                  width: double.infinity,
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                      child: DropdownButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        hint: Text("Occupation"),
-                        iconEnabledColor: Colors.black,
-                        value: _currentOccupation,
-                        items: _dropDownMenuItemsOccupation,
-                        onChanged: changedDropDownItemOccupation,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 2.0, //width of the border
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                !showError
-                    ? SizedBox.shrink()
-                    : Text(
-                  _occupationError ?? "",
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Divider(),
-                Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                  width: double.infinity,
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                      child: DropdownButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        hint: Text("Religion"),
-                        iconEnabledColor: Colors.black,
-                        value: _currentReligion,
-                        items: _dropDownMenuItemsReligion,
-                        onChanged: changedDropDownItemReligion,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 2.0, //width of the border
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                !showError
-                    ? SizedBox.shrink()
-                    : Text(
-                  _religionError ?? "",
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Divider(),
-                Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                  width: double.infinity,
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                      child: DropdownButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        hint: Text("Nationality"),
-                        iconEnabledColor: Colors.black,
-                        value: _currentNationality,
-                        items: _dropDownMenuItemsNationality,
-                        onChanged: changedDropDownItemNationality,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 2.0, //width of the border
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                !showError
-                    ? SizedBox.shrink()
-                    : Text(
-                  _nationalityError ?? "",
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Divider(),
-                Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                  width: double.infinity,
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                      child: DropdownButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        hint: Text("Country of Birth"),
-                        iconEnabledColor: Colors.black,
-                        value: _currentCountry,
-                        items: _dropDownMenuItemsCountry,
-                        onChanged: changedDropDownItemCountry,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.blue, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 2.0, //width of the border
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                !showError
-                    ? SizedBox.shrink()
-                    : Text(
-                  _dropdownError ?? "",
-                  style: TextStyle(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RaisedButton(
-                      elevation: 8.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.blue,
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        "Next",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _formValid = true;
-                        });
-                     /*   if (countryIsValid && maritalStatusIsValid && educationLevelIsValid
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.blue, Colors.blue],
+              ),
+            ),
+            height: 210.0,
+          ),
+          new AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            centerTitle: true,
+            title: new Text("Continue Patient Registration"),
+          ),
+          Positioned.fill(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + 40.0),
+              child: new Column(
+                children: <Widget>[
+                  _buildButtonsRow(),
+                  Expanded(
+                    child: new Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.all(8.0),
+                      child: DefaultTabController(
+                        child: new LayoutBuilder(
+                          builder: (BuildContext context,
+                              BoxConstraints viewportConstraints) {
+                            return Column(
+                              children: <Widget>[
+                                //   _buildTabBar(),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: new ConstrainedBox(
+                                      constraints: new BoxConstraints(
+                                        minHeight:
+                                        viewportConstraints.maxHeight -
+                                            48.0,
+                                      ),
+                                      child: new IntrinsicHeight(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Form(key: _formKey,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            hint:Text("Self Identified Gender"),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentSiGender,
+                                                            items: _dropDownMenuItemsIdentified,
+                                                            onChanged: changedDropDownItemSi,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+
+                                                    !showError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _selfIdentifiedGenderError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+
+
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            hint: Text("Marital Status"),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentMaritalStatus,
+                                                            items: _dropDownMenuItemsMaritalStatus,
+                                                            onChanged: changedDropDownItemMaritalStatus,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+
+                                                    !showError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _maritalStatusError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            hint: Text("Education Level"),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentEducationLevel,
+                                                            items: _dropDownMenuItemsEducationLevel,
+                                                            onChanged: changedDropDownItemEducationLevel,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+
+                                                    !showError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _educationLevelError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            hint: Text("Occupation"),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentOccupation,
+                                                            items: _dropDownMenuItemsOccupation,
+                                                            onChanged: changedDropDownItemOccupation,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+                                                    !showError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _occupationError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+
+
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            hint: Text("Religion"),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentReligion,
+                                                            items: _dropDownMenuItemsReligion,
+                                                            onChanged: changedDropDownItemReligion,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+
+
+                                                    !showError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _religionError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            hint: Text("Nationality"),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentNationality,
+                                                            items: _dropDownMenuItemsNationality,
+                                                            onChanged: changedDropDownItemNationality,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+
+
+                                                    !showError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _nationalityError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            hint: Text("Country of Birth"),
+                                                            iconEnabledColor: Colors.black,
+                                                            value: _currentCountry,
+                                                            items: _dropDownMenuItemsCountry,
+                                                            onChanged: changedDropDownItemCountry,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+
+                                                    !showError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _dropdownError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+
+                                                    SizedBox(
+                                                      height: 10.0,
+                                                    ),
+
+                                                    Container(
+                                                      width: double.infinity,
+                                                      padding:
+                                                      EdgeInsets.symmetric(
+                                                          vertical: 0.0,
+                                                          horizontal: 30.0),
+                                                      child: RaisedButton(
+                                                        elevation: 8.0,
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.blue,
+                                                        padding: const EdgeInsets.all(20.0),
+                                                        child: Text(
+                                                          "Next",
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            _formValid = true;
+                                                          });
+                                                          /*   if (countryIsValid && maritalStatusIsValid && educationLevelIsValid
                             && religionIsValid && selfIdentifiedGenderIsValid
                             && nationalityIsValid && occupationIsValid ) {
                           print('ALL FIELDS ARE VALID');
@@ -554,88 +583,91 @@ class _EditDemographicsState extends State<EditDemographics> {
                           });
                         }*/
 
-                        if (_formValid) {
-                          _formKey.currentState.save();
+                                                          if (_formValid) {
+                                                            _formKey.currentState.save();
 
-                          Person patient = Person.basic(
-                              firstName,
-                              lastName,
-                              _currentGender,
-                              nationalId,
-                              birthDate,
-                              _currentReligion,
-                              _currentMaritalStatus,
-                              _currentEducationLevel,
-                              _currentNationality,
-                              _currentCountry,
-                              _currentSiGender,
-                                _currentOccupation);
+                                                            Person patient = Person.basic(
+                                                                firstName,
+                                                                lastName,
+                                                                _currentGender,
+                                                                nationalId,
+                                                                birthDate,
+                                                                _currentReligion,
+                                                                _currentMaritalStatus,
+                                                                _currentEducationLevel,
+                                                                _currentNationality,
+                                                                _currentCountry,
+                                                                _currentSiGender,
+                                                                _currentOccupation);
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      PatientAddress(patient)));
-                        }
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        PatientAddress(patient)));
+                                                          }
 
-                      },
-                    ),
-                    Row(
-                      children: <Widget>[
-                        RaisedButton(
-                          elevation: 4.0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          color: Colors.blue,
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            "Skip",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () async{
-                            if (countryIsValid && maritalStatusIsValid && educationLevelIsValid
-                                && religionIsValid && selfIdentifiedGenderIsValid
-                                && nationalityIsValid && occupationIsValid ) {
-                              setState(() {
-                                _formValid = true;
-                              });
-                            }
-                            else{
-                              setState(() {
-                                showError= true;
-                              });
-                            }
+                                                        },
+                                                      ),
+                                                    ),
 
-                              if (_formValid) {
-                              _formKey.currentState.save();
-                              Person patient= Person.basic(firstName, lastName, _currentGender, nationalId,birthDate,_currentReligion,_currentMaritalStatus,_currentEducationLevel, _currentNationality,_currentCountry, _currentSiGender, _currentOccupation);
+                                                    SizedBox(
+                                                      height: 20.0,
+                                                    ),
 
-//                              MaterialPageRoute(
-//                                  builder: (context) =>
-//                                      (patient));
+                                                  ],
+                                                ),
+                                              ),
 
-                              await registerPatient(patient).then((value){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Overview(registeredPatient)));
-                                });
+                                            ],
+                                          )
 
-
-                            }
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
                           },
                         ),
-                      ],
+                        length: 3,
+                      ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
+
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(
+            text: "Edit Demographics",
+            selected: true,
+          ),
+
+          new RoundedButton(
+            text: "Patient Address",
+          ),
+          new RoundedButton(
+            text: "Close",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Future<void>  _retrieveMetaDataFromDB() async{
     String result, countries, occupations,educationLevels,nationalities,maritalStates;
@@ -829,3 +861,4 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
 }
+
