@@ -66,6 +66,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
          getPersonInvestigation(widget.personId);
          getTestKitsByCount(testCount);
+         getLabTest(widget.personId);
          getLabId();
          getResults();
     super.initState();
@@ -137,7 +138,23 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     }
     return sample;
   }
+  Future<dynamic> getLabTest(String personId) async {
 
+    var labtest_name;
+    try {
+      labtest_name = await htsChannel.invokeMethod('getLabTest', personId);
+      setState(() {
+        this.test=labtest_name;
+/*
+          this.test=investigation.test;
+*/
+
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    return test;
+  }
   Future<dynamic> getLabId() async {
     try {
       Map <String,dynamic> data= json.decode(await htsChannel.invokeMethod('getLabInvestigation')) ;
@@ -338,7 +355,7 @@ return  ListView(
                                             child: Padding(
                                               padding: const EdgeInsets.all(0.0),
                                               child: Text(
-                                                ('test'),
+                                                (test),
                                                 style: TextStyle(
                                                   color: Colors.grey.shade600,
                                                   fontSize: 18,

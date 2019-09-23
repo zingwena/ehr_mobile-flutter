@@ -626,11 +626,30 @@ public class MainActivity extends FlutterActivity {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
                                 String sample_name = sample.getName();
+                                Log.i(TAG, "YOUR SAMPLE NAME"+ sample_name);
                                 result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+
+                        if (methodCall.method.equals("getLabTest")) {
+
+                            try {
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
+                                Date htsregdate = hts.getDateOfHivTest();
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
+                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
+                                String labtest_name = laboratoryTest.getName();
+                                Log.i(TAG, "YOUR TEST NAME"+ labtest_name);
+                                result.success(labtest_name);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+
                         if (methodCall.method.equals("getLabInvestigation")) {
 
                             try {
