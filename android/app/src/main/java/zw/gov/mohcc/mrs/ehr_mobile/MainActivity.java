@@ -51,6 +51,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -617,7 +618,7 @@ public class MainActivity extends FlutterActivity {
 
                         /* */
 
-                        /*if (methodCall.method.equals("getSample")) {
+                        if (methodCall.method.equals("getSample")) {
 
                             try {
                                 System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
@@ -652,8 +653,8 @@ public class MainActivity extends FlutterActivity {
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
-<<<<<<< HEAD
-                        }*/
+
+                        }
                         if (methodCall.method.equals("getLabInvestigation")) {
 
                             try {

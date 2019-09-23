@@ -319,7 +319,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              sample,
+                                              (sample),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -417,7 +417,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 ),
                                 Row(
                                   children: <Widget>[
-                                    Expanded(
+                                /*    Expanded(
                                       child: SizedBox(
                                         child: Padding(
                                           padding: const EdgeInsets.all(0.0),
@@ -442,7 +442,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         color: Colors.blue,
                                         onPressed: () {
                                           _selectDate(context);
-                                        }),
+                                        }),*/
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -453,7 +453,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                 "EEEE, MMMM d, yyyy 'at' h:mma"),
                                             editable: false,
                                             decoration: InputDecoration(
-                                                labelText: 'DateTime',
+                                                labelText: 'Start Date and Time',
                                                 hasFloatingPlaceholder: false
                                             ),
                                             onChanged: (dt) {
@@ -465,12 +465,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 100,
                                       ),
                                     ),
-                                    IconButton(
-                                        icon: Icon(Icons.calendar_today),
-                                        color: Colors.blue,
-                                        onPressed: () {
-                                          _selectedStarttime(context);
-                                        })
                                   ],
                                 ),
                                 SizedBox(
@@ -478,32 +472,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 ),
                                 Row(
                                   children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: TextFormField(
-                                            controller: TextEditingController(
-                                                text: selectedReadingDate),
-                                            validator: (value) {
-                                              return value.isEmpty
-                                                  ? 'Enter some text'
-                                                  : null;
-                                            },
-                                            decoration: InputDecoration(
-                                                labelText: 'Reading Date',
-                                                border: OutlineInputBorder()),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    IconButton(
-                                        icon: Icon(Icons.calendar_today),
-                                        color: Colors.blue,
-                                        onPressed: () {
-                                          _selectedReadingDate(context);
-                                        }),
+
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -514,12 +483,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                 "EEEE, MMMM d, yyyy 'at' h:mma"),
                                             editable: false,
                                             decoration: InputDecoration(
-                                                labelText: 'DateTime',
+                                                labelText: 'End Date and Time',
                                                 hasFloatingPlaceholder: false
                                             ),
                                             onChanged: (dt) {
-                                              setState(() => date1 = dt);
-                                              print('Selected date: $date1');
+                                              setState(() => date2 = dt);
+                                              print('Selected date: $date2');
                                             },
                                           ),
                                         ),
@@ -603,11 +572,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         'FORM IS VALID FORM IS VALID ' +
                                                             _formIsValid
                                                                 .toString());
+                                                    print('DATE 1>>>>>>>>>>>>>' + date1.toString());
 
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
                                                         id,
                                                         "laboratoryInvestigationId",
-                                                        startTime, readingTime,
+                                                        date1, date2,
                                                         result, visit_id);
                                                     print(
                                                         '************************* SAVE LAB TEST ${labInvestTest
