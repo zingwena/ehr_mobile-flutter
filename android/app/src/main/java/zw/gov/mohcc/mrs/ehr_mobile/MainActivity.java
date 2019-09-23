@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,6 +44,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
@@ -51,6 +54,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -71,6 +75,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PersonQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
@@ -88,9 +93,9 @@ public class MainActivity extends FlutterActivity {
     public Token token;
     public String url, username, password;
     private EhrMobileDatabase ehrMobileDatabase;
-    private InvestigationEhr investigationEhr;
     private VisitService visitService;
     private HtsService htsService;
+    private TerminologyService terminologyService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +105,9 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-         visitService = new VisitService(ehrMobileDatabase);
-         htsService = new HtsService(ehrMobileDatabase);
+        visitService = new VisitService(ehrMobileDatabase);
+        htsService = new HtsService(ehrMobileDatabase);
+        terminologyService = new TerminologyService(ehrMobileDatabase);
 
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -169,22 +175,22 @@ public class MainActivity extends FlutterActivity {
                     String name = ehrMobileDatabase.nationalityDao().selectNationality(code);
                     result.success(name);
                 }
-                if (methodCall.method.equals("getAddress")){
+                if (methodCall.method.equals("getAddress")) {
                     String code = methodCall.arguments();
                     Person patient = ehrMobileDatabase.personDao().findPatientById(code);
                     Address address = patient.getAddress();
-                    String patient_address = address.getStreet()+ " "+ address.getTown() + "  ,"+  address.getCity();
-                    System.out.println("ADDRESSS "+ "street"+ address.getStreet()+"town"+ address.getTown()+"city"+address.getCity());
+                    String patient_address = address.getStreet() + " " + address.getTown() + "  ," + address.getCity();
+                    System.out.println("ADDRESSS " + "street" + address.getStreet() + "town" + address.getTown() + "city" + address.getCity());
                     result.success(patient_address);
                 }
-                if(methodCall.method.equals("savephonenumber")){
+                if (methodCall.method.equals("savephonenumber")) {
 
                     String args = methodCall.arguments();
-                    System.out.println("PATIENT FROM FLUTTER"+ args);
+                    System.out.println("PATIENT FROM FLUTTER" + args);
                     PatientPhoneDto patientPhoneDto = gson.fromJson(args, PatientPhoneDto.class);
                     System.out.println("PATIENT DTO" + patientPhoneDto);
                     String phoneNumberId = UUID.randomUUID().toString();
-                    PatientPhoneNumber patientPhoneNumber = new PatientPhoneNumber(phoneNumberId, patientPhoneDto.getPersonId(), patientPhoneDto.getPhoneNumber1(), patientPhoneDto.getPhoneNumber2()) ;
+                    PatientPhoneNumber patientPhoneNumber = new PatientPhoneNumber(phoneNumberId, patientPhoneDto.getPersonId(), patientPhoneDto.getPhoneNumber1(), patientPhoneDto.getPhoneNumber2());
                     ehrMobileDatabase.patientPhoneDao().insertpatientphonenumber(patientPhoneNumber).intValue();
                     System.out.println("PATIENT NUMBER SAVED HERE ");
                   /*  PatientPhoneNumber patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(phonenumber_id);
@@ -196,9 +202,9 @@ public class MainActivity extends FlutterActivity {
                     System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.patientDao().findPatientById(id));
 */
                 }
-                if(methodCall.method.equals("getPhonenumber")){
+                if (methodCall.method.equals("getPhonenumber")) {
                     String args = methodCall.arguments();
-                    Log.i(TAG,"PATIENT ID FROM FLUTTER "+ args);
+                    Log.i(TAG, "PATIENT ID FROM FLUTTER " + args);
                     PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPatientId(args);
 
                     String phoneNumber = "";
@@ -208,7 +214,7 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber2())) {
                             if (StringUtils.isNoneBlank(phoneNumber)) {
-                                phoneNumber += "/ "+patientPhoneNumber.getPhoneNumber2();
+                                phoneNumber += "/ " + patientPhoneNumber.getPhoneNumber2();
                             } else {
                                 phoneNumber += patientPhoneNumber.getPhoneNumber2();
                             }
@@ -217,7 +223,7 @@ public class MainActivity extends FlutterActivity {
 
                     result.success(phoneNumber);
                 }
-                
+
             }
         });
 
@@ -235,7 +241,6 @@ public class MainActivity extends FlutterActivity {
 
                     clearTables();
                     pullData(token, url);
-                    saveResultstoDB();
 
                 }
 
@@ -378,7 +383,10 @@ public class MainActivity extends FlutterActivity {
                     PersonQuery personQuery = new PersonQuery();
                     SimpleSQLiteQuery sqLiteQuery = personQuery.searchPerson(searchItem);
                     _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery);
-                    System.out.println("==============-=-=-=-=-=-==list" + _list);
+                    if (_list.isEmpty()){
+                        SimpleSQLiteQuery sqLiteQuery1= personQuery.searchPersonBySurnameAndName(searchItem);
+                        _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery1);
+                    }
                     Gson gson = new Gson();
                     result1.success(gson.toJson(_list));
                 }
@@ -391,72 +399,70 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 
-                    final String arguments = methodCall.arguments();
+                final String arguments = methodCall.arguments();
 
-                    Gson gson = new Gson();
-                    if (methodCall.method.equals("bloodPressure")) {
-                        BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                        bloodPressure.setId(UUID.randomUUID().toString());
-                        String visitId = visitService.getCurrentVisit(bloodPressure.getPersonId());
-                        bloodPressure.setVisitId(visitId);
-                        ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
-                        BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
-                        System.out.println("HERE IS YOUR BP >>>>>>"+ bp.getDiastolic() + "<<<<<<<<<<<"+ bp.getSystolic());
+                Gson gson = new Gson();
+                if (methodCall.method.equals("bloodPressure")) {
+                    BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
+                    bloodPressure.setId(UUID.randomUUID().toString());
+                    String visitId = visitService.getCurrentVisit(bloodPressure.getPersonId());
+                    bloodPressure.setVisitId(visitId);
+                    ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
+                    BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
 
+                } else if (methodCall.method.equals("temperature")) {
 
-                    } else if (methodCall.method.equals("temperature")) {
-
-                        Temperature temperature = gson.fromJson(arguments, Temperature.class);
-                        temperature.setId(UUID.randomUUID().toString());
-                        String visitId = visitService.getCurrentVisit(temperature.getPersonId());
-                        temperature.setVisitId(visitId);
-                        ehrMobileDatabase.temperatureDao().insert(temperature);
-                        System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
+                    Temperature temperature = gson.fromJson(arguments, Temperature.class);
+                    temperature.setId(UUID.randomUUID().toString());
+                    String visitId = visitService.getCurrentVisit(temperature.getPersonId());
+                    temperature.setVisitId(visitId);
+                    ehrMobileDatabase.temperatureDao().insert(temperature);
+                    System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
 
 
-                    } else if (methodCall.method.equals("respiratoryRate")) {
+                } else if (methodCall.method.equals("respiratoryRate")) {
 
-                        RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
-                        respiratoryRate.setId(UUID.randomUUID().toString());
-                        String visitId = visitService.getCurrentVisit(respiratoryRate.getPersonId());
-                        respiratoryRate.setVisitId(visitId);
-                        ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
-                        System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
-
-
-                    } else if (methodCall.method.equals("height")) {
-
-                        Height height = gson.fromJson(arguments, Height.class);
-                        height.setId(UUID.randomUUID().toString());
-                        String visitId = visitService.getCurrentVisit(height.getPersonId());
-                        height.setVisitId(visitId);
-                        ehrMobileDatabase.heightDao().insert(height);
-                        System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
+                    RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
+                    respiratoryRate.setId(UUID.randomUUID().toString());
+                    String visitId = visitService.getCurrentVisit(respiratoryRate.getPersonId());
+                    respiratoryRate.setVisitId(visitId);
+                    ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
+                    System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
 
 
-                    } else if (methodCall.method.equals("weight")) {
+                } else if (methodCall.method.equals("height")) {
 
-                        Weight weight = gson.fromJson(arguments, Weight.class);
-                        weight.setId(UUID.randomUUID().toString());
-                        String visitId = visitService.getCurrentVisit(weight.getPersonId());
-                        weight.setVisitId(visitId);
-                        ehrMobileDatabase.weightDao().insert(weight);
-
-
-                    } else if (methodCall.method.equals("pulse")) {
-
-                        Pulse pulse = gson.fromJson(arguments, Pulse.class);
-                        pulse.setId(UUID.randomUUID().toString());
-                        String visitId = visitService.getCurrentVisit(pulse.getPersonId());
-                        pulse.setVisitId(visitId);
-                        ehrMobileDatabase.pulseDao().insert(pulse);
-                        System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
+                    Height height = gson.fromJson(arguments, Height.class);
+                    height.setId(UUID.randomUUID().toString());
+                    String visitId = visitService.getCurrentVisit(height.getPersonId());
+                    height.setVisitId(visitId);
+                    ehrMobileDatabase.heightDao().insert(height);
+                    System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
 
 
-                    } else {
-                        result.notImplemented();
-                    }
+                } else if (methodCall.method.equals("weight")) {
+
+                    Weight weight = gson.fromJson(arguments, Weight.class);
+                    weight.setId(UUID.randomUUID().toString());
+                    String visitId = visitService.getCurrentVisit(weight.getPersonId());
+                    weight.setVisitId(visitId);
+                    ehrMobileDatabase.weightDao().insert(weight);
+
+
+                } else if (methodCall.method.equals("pulse")) {
+
+                    Pulse pulse = gson.fromJson(arguments, Pulse.class);
+                    pulse.setId(UUID.randomUUID().toString());
+                    String visitId = visitService.getCurrentVisit(pulse.getPersonId());
+                    pulse.setVisitId(visitId);
+                    ehrMobileDatabase.pulseDao().insert(pulse);
+                    System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
+
+
+                } else {
+                    result.notImplemented();
                 }
+            }
 
         });
 
@@ -500,12 +506,12 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
                         if (methodCall.method.equals("htsRegistration")) {
-                            try{
+                            try {
                                 System.out.println("HTS HERE HERE HERE" + arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
                                 result.success(htsService.createHts(htsRegDTO));
 
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
                             }
@@ -537,9 +543,10 @@ public class MainActivity extends FlutterActivity {
 
                         if (methodCall.method.equals("savePreTest")) {
 
-                            try{
+                            try {
 
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
+                                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
                                 hts.setHtsApproach(preTestDTO.getHtsApproach());
                                 hts.setNewTestInClientLife(preTestDTO.getNewTest());
@@ -548,28 +555,27 @@ public class MainActivity extends FlutterActivity {
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
 
-                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
 
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
                             }
                         }
-                        if (methodCall.method.equals("getHtsModel")){
-                            try{
+                        if (methodCall.method.equals("getHtsModel")) {
+                            try {
                                 HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelByName(arguments);
 
-                                 result.success(htsModel);
-                            } catch (Exception e){
+                                result.success(htsModel);
+                            } catch (Exception e) {
 
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                        if (methodCall.method.equals("getPurposeofTest")){
-                            try{
+                        if (methodCall.method.equals("getPurposeofTest")) {
+                            try {
                                 PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findPurposeOfTestByName(arguments);
                                 result.success(purposeOfTest);
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
@@ -580,7 +586,7 @@ public class MainActivity extends FlutterActivity {
                                 String labInvestigationId = UUID.randomUUID().toString();
                                 labInvestTest.setId(labInvestigationId);
                                 ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
-                               LaboratoryInvestigationTest laboratoryInvestigationTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(labInvestigationId);
+                                LaboratoryInvestigationTest laboratoryInvestigationTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(labInvestigationId);
                                 System.out.println("LABORATORY TEST LABORATORY TEST" + laboratoryInvestigationTest.getResultId());
                                 System.out.println("List of LabInvestigations" + ehrMobileDatabase.labInvestTestdao().findAll());
                             } catch (Exception e) {
@@ -619,14 +625,39 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getSample")) {
 
                             try {
-                               Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
-                               Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                                String investigationString = gson.toJson(investigationEhr);
-                                System.out.println(" investigation***************" + investigationString);
-                                result.success(investigationString);
+                                System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
+                                System.out.println("HERE IS THE HTS MODEL" + hts.getPersonId());
+                                Date htsregdate = hts.getDateOfHivTest();
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                System.out.println("HERE IS THE PERSON INVESTIGATION should be similar to hts " + personInvestigation.getPersonId());
+                                Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
+                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                String sample_name = sample.getName();
+                                Log.i(TAG, "YOUR SAMPLE NAME"+ sample_name);
+                                result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
+                        }
+
+                        if (methodCall.method.equals("getLabTest")) {
+
+                            try {
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
+                                Date htsregdate = hts.getDateOfHivTest();
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
+                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
+                                String labtest_name = laboratoryTest.getName();
+                                Log.i(TAG, "YOUR TEST NAME"+ labtest_name);
+                                result.success(labtest_name);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+
                         }
                         if (methodCall.method.equals("getLabInvestigation")) {
 
@@ -786,8 +817,10 @@ public class MainActivity extends FlutterActivity {
         getSample(token, url + "/api/");
         getLaboratoryTest(token, url + "/api/");
         getInvestigations(token, url + "/api/");
-        getPatients(url);
         getTowns(token, url + "/api/");
+        getInvestigationResults(token, url + "/api/");
+        getLaboratoryResults(token, url + "/api/");
+        getPatients(url);
 
     }
 
@@ -834,7 +867,7 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (!occupationList.isEmpty()) {
 
-                    saveOccupationsToDB(occupationList);
+                    terminologyService.saveOccupationsToDB(occupationList);
                 }
 
 
@@ -1010,13 +1043,57 @@ public class MainActivity extends FlutterActivity {
                     }
 
                     if (!nationalities.isEmpty()) {
-                        saveNationalityToDB(nationalities);
+                        terminologyService.saveNationalityToDB(nationalities);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getLaboratoryResults(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getLaboratoryResults("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Result> results = new ArrayList<Result>();
+                Log.d(TAG, "999999999999999999999 " + response.body().getContent());
+                for (BaseNameModel item : response.body().getContent()) {
+                    results.add(new Result(item.getCode(), item.getName()));
+                }
+
+                if (!results.isEmpty()) {
+                    terminologyService.saveLaboratoryResults(results);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getInvestigationResults(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<InvestigationResultModel> call = service.getInvestigationResults("Bearer " + token.getId_token());
+        call.enqueue(new Callback<InvestigationResultModel>() {
+            @Override
+            public void onResponse(Call<InvestigationResultModel> call, Response<InvestigationResultModel> response) {
+                List<Nationality> nationalities = new ArrayList<Nationality>();
+
+                terminologyService.saveInvestiogationResultsToDB(response.body().getContent());
+            }
+
+            @Override
+            public void onFailure(Call<InvestigationResultModel> call, Throwable t) {
 
             }
         });
@@ -1066,7 +1143,7 @@ public class MainActivity extends FlutterActivity {
                     }
 
                     if (educationLevels != null && !educationLevels.isEmpty()) {
-                        saveEducationLevelToDB(educationLevels);
+                        terminologyService.saveEducationLevelToDB(educationLevels);
                     }
                 }
             }
@@ -1092,10 +1169,8 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (entryPointList != null && !entryPointList.isEmpty()) {
 
-                    saveEntryPointsToDB(entryPointList);
+                    terminologyService.saveEntryPointsToDB(entryPointList);
                 }
-
-
             }
 
             @Override
@@ -1119,10 +1194,8 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (htsModelList != null && !htsModelList.isEmpty()) {
 
-                    saveHtsModelToDB(htsModelList);
+                    terminologyService.saveHtsModelToDB(htsModelList);
                 }
-
-
             }
 
             @Override
@@ -1148,7 +1221,7 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (purpose_of_testList != null && !purpose_of_testList.isEmpty()) {
 
-                    savePurposeOfTestToDB(purpose_of_testList);
+                    terminologyService.savePurposeOfTestToDB(purpose_of_testList);
                 }
 
 
@@ -1176,10 +1249,8 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (reasonForNotIssuingResultList != null && !reasonForNotIssuingResultList.isEmpty()) {
 
-                    saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
+                    terminologyService.saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
                 }
-
-
             }
 
             @Override
@@ -1269,7 +1340,7 @@ public class MainActivity extends FlutterActivity {
                     religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (religionList != null && !religionList.isEmpty()) {
-                    saveReligionToDB(religionList);
+                    terminologyService.saveReligionToDB(religionList);
                 }
             }
 
@@ -1292,7 +1363,7 @@ public class MainActivity extends FlutterActivity {
                     townList.add(new Town(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (townList != null && !townList.isEmpty()) {
-                    saveTownToDB(townList);
+                    terminologyService.saveTownToDB(townList);
                 }
             }
 
@@ -1301,115 +1372,6 @@ public class MainActivity extends FlutterActivity {
 
             }
         });
-    }
-
-    void saveTownToDB(List<Town> towns) {
-        ehrMobileDatabase.townsDao().createTowns(towns);
-
-        System.out.println("towns from DB ################################" + ehrMobileDatabase.townsDao().getAllTowns());
-    }
-
-    void saveReligionToDB(List<Religion> religions) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.religionDao().insertReligions(religions);
-
-        System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
-    }
-
-
-    void saveOccupationsToDB(List<Occupation> occupations) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.occupationDao().insertOccupations(occupations);
-        System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
-
-    }
-
-    void saveNationalityToDB
-            (List<Nationality> nationalityList) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
-
-        System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
-
-
-    }
-
-
-    void saveEducationLevelToDB
-            (List<EducationLevel> educationLevels) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
-
-        System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
-
-
-    }
-
-    void saveEntryPointsToDB(List<EntryPoint> entryPoints) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
-        System.out.println("EntryPoint from DB *****" + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
-
-    }
-
-    void saveHtsModelToDB(List<HtsModel> htsModels) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
-        System.out.println("HtsModels from DB *****" + ehrMobileDatabase.htsModelDao().getAllHtsModels());
-
-    }
-
-    void savePurposeOfTestToDB (List<PurposeOfTest> purposeOfTestList) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-        Log.d(TAG, "Purpose of tests from ehr "+ purposeOfTestList);
-
-        ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purposeOfTestList);
-        System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest());
-
-    }
-
-    void saveReasonForNotIssuingResultToDB
-            (List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
-
-
-        ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
-        System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
-
-    }
-
-    void saveResultstoDB() {
-        int count = ehrMobileDatabase.resultDao().getAllResults().size();
-        if (count == 0) {
-            List<Result> resultList = new ArrayList<Result>();
-            resultList.add(new Result("01", "NEGATIVE"));
-            resultList.add(new Result("02", "POSITIVE"));
-            resultList.add(new Result("03", "INCONCLUSIVE"));
-            ehrMobileDatabase.resultDao().insertResult(resultList);
-            System.out.println(">>>>>>>>>>>>>>>>>>>>> RESULT LIST" + ehrMobileDatabase.resultDao().getAllResults());
-        } else {
-            System.out.println("RESULT TABLE ALREADY POPULATED");
-        }
-
     }
 
     public void clearTables() {
@@ -1444,6 +1406,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
         ehrMobileDatabase.artRegistrationDao().deleteAll();
         ehrMobileDatabase.artInitiationDao().deleteAll();
+        ehrMobileDatabase.investigationResultDao().delete();
     }
 
 
@@ -1467,7 +1430,7 @@ public class MainActivity extends FlutterActivity {
                     sampleList.add(new Sample(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (sampleList != null && !sampleList.isEmpty()) {
-                    saveSample(sampleList);
+                    terminologyService.saveSample(sampleList);
                 }
             }
 
@@ -1492,7 +1455,7 @@ public class MainActivity extends FlutterActivity {
                     laboratoryTestList.add(new LaboratoryTest(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (laboratoryTestList != null && !laboratoryTestList.isEmpty()) {
-                    saveLaboratoryTests(laboratoryTestList);
+                    terminologyService.saveLaboratoryTests(laboratoryTestList);
                 }
             }
 
@@ -1506,39 +1469,29 @@ public class MainActivity extends FlutterActivity {
 
     public void getInvestigations(Token token, String
             baseUrl) {
-        System.out.println("in investigation");
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<List<InvestigationEhr>> call = service.getInvestigations("Bearer " + token.getId_token(), "36069471-adee-11e7-b30f-3372a2d8551e");
-        call.enqueue(new Callback<List<InvestigationEhr>>() {
+        Call<InvestigationModel> call = service.getInvestigations("Bearer " + token.getId_token());
+        call.enqueue(new Callback<InvestigationModel>() {
             @Override
-            public void onResponse(Call<List<InvestigationEhr>> call, Response<List<InvestigationEhr>> response) {
-
+            public void onResponse(Call<InvestigationModel> call, Response<InvestigationModel> response) {
                 List<Investigation> investigations = new ArrayList<Investigation>();
-                for(InvestigationEhr item : response.body()) {
-                    investigations.add(new Investigation(item.getInvestigationId(), item.getTest(), item.getSample()));
+                for (InvestigationEhr item : response.body().getContent()) {
+                    investigations.add(new Investigation(item.getInvestigationId(), item.getLaboratoryTestId(), item.getSampleId()));
                 }
+                Log.i(TAG, ";;;;;;;;;;;;;; investigations from ehr : " + investigations);
+                System.out.println(TAG + ";;;;;;;;;;;;;; investigations from ehr : " + investigations);
                 if (investigations != null && !investigations.isEmpty()) {
-                    saveInvestigations(investigations);
+                    terminologyService.saveInvestigations(investigations);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<InvestigationEhr>> call, Throwable t) {
+            public void onFailure(Call<InvestigationModel> call, Throwable t) {
 
+                System.out.println("tttttttttttttttttttttttt" + t);
             }
         });
-
-    }
-
-    void saveSample(List<Sample> samples) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.sampleDao().insertSamples(samples);
-
-        System.out.println("samples from db #################" + ehrMobileDatabase.sampleDao().getSamples());
     }
 
     void saveLaboratoryTests(List<LaboratoryTest> tests) {

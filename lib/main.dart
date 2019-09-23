@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+  import 'package:flutter/material.dart';
 
 import 'landing_screen.dart';
 
@@ -8,7 +8,7 @@ class EhrMobileApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'EHR Mobile App',
+      title: 'Impilo Mobile App',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,

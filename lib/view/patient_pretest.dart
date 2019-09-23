@@ -19,7 +19,7 @@ class PatientPretest extends StatefulWidget {
 
   final String htsid ;
   final String personId;
-  PatientPretest(this.htsid, this.personId);
+  PatientPretest(this.personId, this.htsid);
 
   @override
   State createState() {
@@ -218,18 +218,6 @@ class _PatientPretest extends State<PatientPretest> {
                 children: <Widget>[
                   _buildButtonsRow(),
                   Expanded(
-                    child: WillPopScope(
-                      onWillPop: () {
-                        if (!showInput) {
-                          setState(() {
-                            showInput = true;
-                            showInputTabOptions = true;
-                          });
-                          return Future(() => false);
-                        } else {
-                          return Future(() => true);
-                        }
-                      },
                       child: new Card(
                         elevation: 4.0,
                         margin: const EdgeInsets.all(8.0),
@@ -349,14 +337,21 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
 
-
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                      child:        Row(
                                                         children: <Widget>[
-                                                          Text("Couple Counselling"),
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child:  Text("Couple Counselling"),
+                                                              ),
+                                                              width: 250,
+                                                            ),
+                                                          ),
+
                                                           Checkbox(
                                                             value:_coupleCounselling,
                                                             onChanged: (bool value) {
@@ -374,8 +369,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
 
-
-                                                    Container(
+                                                   /*  Container(
                                                       padding:
                                                       EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                       width: double.infinity,
@@ -403,16 +397,23 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ),
                                                         onPressed: () {},
                                                       ),
-                                                    ),
-
+                                                    ), */
 
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                      child:        Row(
                                                         children: <Widget>[
-                                                          Text("Pre-test Information given"),
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child:  Text("Pre-test Information given"),
+                                                              ),
+                                                              width: 250,
+                                                            ),
+                                                          ),
+
                                                           Checkbox(
                                                             value:_preTestInfoGiven,
                                                             onChanged: (bool value) {
@@ -463,14 +464,20 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
 
-
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child:  Row(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                      child:            Row(
                                                         children: <Widget>[
-                                                          Text("Opt Out Of Test"),
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: Text("Opt Out Of Test"),
+                                                              ),
+                                                              width: 250,
+                                                            ),
+                                                          ),
                                                           Checkbox(
                                                             value:_optOutOfTest,
                                                             onChanged: (bool value) {
@@ -514,12 +521,15 @@ class _PatientPretest extends State<PatientPretest> {
                                                                 coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
                                                             insertPreTest(patient_pretest);
                                                             Navigator.push(context,MaterialPageRoute(
-                                                              builder: (context)=> HtsScreeningTest()
+                                                              builder: (context)=> HtsScreeningTest(widget.personId)
                                                             ));
 
                                                           }
                                                         },
                                                       ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 30.0,
                                                     ),
                                                   ],
                                                 ),
@@ -537,7 +547,7 @@ class _PatientPretest extends State<PatientPretest> {
                           length: 3,
                         ),
                       ),
-                    ),
+
                   ),
                 ],
               ),
@@ -554,12 +564,13 @@ class _PatientPretest extends State<PatientPretest> {
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "Pre-test",selected: true,
+            text: "HTS Registration",
           ),
           new RoundedButton(
-            text: "Testing",
+            text: "HTS Pre-Testing", selected: true,
+
           ),
-          new RoundedButton(text: "Post-Testing",
+          new RoundedButton(text: "Testing",
           ),
         ],
       ),

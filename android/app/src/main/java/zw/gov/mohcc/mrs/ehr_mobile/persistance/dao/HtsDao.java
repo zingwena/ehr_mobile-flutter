@@ -34,6 +34,9 @@ public interface HtsDao {
     @Query("SELECT * FROM Hts WHERE id =:htsId")
     Hts findHtsById(String htsId);
 
+    @Query("SELECT * FROM Hts WHERE personId =:personId")
+    Hts findHtsByPersonId(String personId);
+
     @Query("DELETE FROM Hts where id = :id")
     void deleteById(String id);
 

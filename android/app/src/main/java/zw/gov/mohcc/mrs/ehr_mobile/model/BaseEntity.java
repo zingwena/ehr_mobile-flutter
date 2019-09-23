@@ -43,4 +43,11 @@ public class BaseEntity implements Serializable {
         hash = 19 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }
