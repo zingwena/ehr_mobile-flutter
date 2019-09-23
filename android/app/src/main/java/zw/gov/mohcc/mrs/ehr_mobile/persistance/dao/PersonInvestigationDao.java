@@ -12,7 +12,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 @Dao
 public interface PersonInvestigationDao {
     @Insert
-    void insertPersonInvestigation(List<PersonInvestigation> PersonInvestigations);
+    void insertPersonInvestigation(List<PersonInvestigation> personInvestigations);
 
     @Query("DELETE FROM PersonInvestigation")
     void deletePersonInvestigations();
@@ -26,4 +26,7 @@ public interface PersonInvestigationDao {
 
     @Query("SELECT * FROM PersonInvestigation WHERE id=:id")
     PersonInvestigation findPersonInvestigationById(String id);
+
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and date =:dateOfHivTest")
+    PersonInvestigation findByPersonIdAndDate(String personId, long dateOfHivTest);
 }
