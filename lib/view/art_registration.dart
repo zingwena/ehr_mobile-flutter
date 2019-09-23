@@ -1,39 +1,41 @@
 import 'dart:convert';
 import 'dart:core';
-import 'dart:core';
 
+
+
+import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
-import 'package:ehr_mobile/model/htsRegistration.dart';
 
-import 'package:ehr_mobile/model/personInvestigation.dart';
-import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'art_initiation.dart';
 import 'rounded_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class ArtRegistration extends StatefulWidget {
+class Art_Registration extends StatefulWidget {
 
-  @override
+String patientId ;
+Art_Registration(this.patientId);
+
+@override
   State createState() {
-    return _ArtRegistration();
+    return _Art_Registration();
   }
 }
 
-class _ArtRegistration extends State<ArtRegistration> {
+class _Art_Registration extends State<Art_Registration> {
   final _formKey = GlobalKey<FormState>();
-  static const artChannel = MethodChannel('ehr_mobile.channel/art');
-
-  String patientId;
-
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+ //String oiArtNumber;
+  String personId;
+  DateTime dateOfEnrolmentIntoCare;
+  DateTime dateOfHivTest;
   String oiArtNumber;
-
-  var selectedDate;
-
-  DateTime date;
-  int _selecType = 0;
+  var selectedDate, selectedDateOfEnrollment;
+  bool _formIsValid = true;
+ /* int _selecType = 0;
   String clientType = "";
   String _entryPoint;
   List entryPoints = List();
@@ -45,7 +47,7 @@ class _ArtRegistration extends State<ArtRegistration> {
   bool maritalStatusIsValid=false;
 
   List<DropdownMenuItem<String>>
-  _dropDownMenuItemsMaritalStatus;
+  _dropDownMenuItemsMaritalStatus;*/
 
 
   @override
@@ -54,7 +56,9 @@ class _ArtRegistration extends State<ArtRegistration> {
 
     /*getFacilities();*/
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
+    dateOfHivTest = DateTime.now();
+    dateOfEnrolmentIntoCare = DateTime.now();
+    oiArtNumber = oiArtNumber;
     super.initState();
   }
 
@@ -87,11 +91,25 @@ class _ArtRegistration extends State<ArtRegistration> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
+        dateOfHivTest = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
 
-  void _handleHtsTypeChange(int value) {
+  Future<Null> _selectedDateOfEnrollment(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDateOfEnrollment)
+      setState(() {
+        selectedDateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
+        print(">>>>>>>>>>>>>>>>>>>>> selected starttime date" + selectedDateOfEnrollment);
+        dateOfEnrolmentIntoCare = DateFormat("yyyy/MM/dd").parse(selectedDateOfEnrollment);
+      });
+  }
+
+  /*void _handleHtsTypeChange(int value) {
     print("hts value : $value");
     setState(() {
       _selecType = value;
@@ -109,9 +127,9 @@ class _ArtRegistration extends State<ArtRegistration> {
           break;
       }
     });
-  }
+  }*/
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
+  /*List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
     List<DropdownMenuItem<String>> items = new List();
     for (EntryPoint entryPoint in _entryPointList) {
       // here we are creating the drop down menu items, you can customize the item right here
@@ -120,7 +138,7 @@ class _ArtRegistration extends State<ArtRegistration> {
           value: entryPoint.code, child: Text(entryPoint.name)));
     }
     return items;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +229,7 @@ class _ArtRegistration extends State<ArtRegistration> {
                                                             icon: Icon(Icons.calendar_today),
                                                             color: Colors.blue,
                                                             onPressed: () {
-                                                              _selectDate(context);
+                                                              _selectedDateOfEnrollment(context);
                                                             },
                                                           ),
 
@@ -259,11 +277,15 @@ class _ArtRegistration extends State<ArtRegistration> {
                                                                 padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                                 child:
                                                                 TextFormField(
+                                                                  validator: (value) {
+                                                                    return value.isEmpty ? 'Enter some text' : null;
+                                                                  },
+                                                                  onSaved: (value) => setState(() {
+                                                                    oiArtNumber = value;
+                                                                  }),
                                                                   decoration: InputDecoration(
-                                                                      labelText:
-                                                                      'OI Art Number',
-                                                                      border:
-                                                                      OutlineInputBorder()),
+                                                                      labelText: 'Oi Art Number.',
+                                                                      border: OutlineInputBorder()),
                                                                 ),
                                                               ),
                                                               width: 100,
@@ -271,6 +293,8 @@ class _ArtRegistration extends State<ArtRegistration> {
                                                           ),
                                                         ],
                                                       ),
+
+
 
                                                       SizedBox(
                                                         height: 35.0,
@@ -291,6 +315,32 @@ class _ArtRegistration extends State<ArtRegistration> {
                                                                 color: Colors.white,
                                                                 fontWeight: FontWeight.w500),
                                                           ),
+                                                          onPressed: () async {
+                                                                ArtRegistration artRegistrationDetails = ArtRegistration(widget.patientId, dateOfEnrolmentIntoCare, dateOfHivTest, oiArtNumber);
+                                                                print('*************************artReg number ${artRegistrationDetails.oiArtNumber}');
+                                                                await artRegistration(
+                                                                    artRegistrationDetails);
+
+                                                                await artRegistration(artRegistrationDetails);
+
+                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Art_Initiation()));
+
+
+                                                          },
+ /*   onPressed: () async {
+    if (_formKey.currentState.validate()) {
+    _formKey.currentState.save();
+    if (_formIsValid) {
+    print('FORM IS VALID FORM IS VALID '+ _formIsValid.toString());
+
+    LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(id, "laboratoryInvestigationId", startTime, readingTime, result, visit_id);
+    print('************************* SAVE LAB TEST ${labInvestTest.toString()}');
+
+
+
+    Navigator.push(context, MaterialPageRoute(
+    builder:(context)=> PatientPostTest()
+    ));*/
                                                         ),
                                                       ),
                                                       SizedBox(
@@ -331,8 +381,20 @@ class _ArtRegistration extends State<ArtRegistration> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
-          new RoundedButton(text: "ART Initiation",
+         /* new RoundedButton(text: "ART Initiation",
           ),
+*/
+
+
+          new RoundedButton(text: "ART Initiation", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Art_Initiation()),
+          ),),
+
+
+
           new RoundedButton(text: "Art Registration",selected: true,
           ),
           new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
@@ -347,22 +409,19 @@ class _ArtRegistration extends State<ArtRegistration> {
     );
   }
 
-  Future<void> registration(HtsRegistration htsRegistration) async {
+  Future<void> artRegistration(ArtRegistration artRegistration) async {
     int id;
-    print('*************************htsType ${htsRegistration.toString()}');
+    print('*************************artRegistration ${artRegistration.toString()}');
     try {
       id = await artChannel.invokeMethod(
-          'htsRegistration', jsonEncode(htsRegistration));
-      String patientid = patientId.toString();
-      DateTime date = htsRegistration.dateOfHivTest;
-      PersonInvestigation personInvestigation = new PersonInvestigation(
-          patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-      await artChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
+          'saveArtRegistration', jsonEncode(artRegistration));
+      String patientid = personId;
 
-      print('---------------------saved file id  $id');
-    } catch (e) {
-      print('--------------something went wrong  $e');
-    }
+
+    print('---------------------saved file id  $id');
+  } catch (e) {
+  print('--------------something went wrong  $e');
+  }
 
   }
 }

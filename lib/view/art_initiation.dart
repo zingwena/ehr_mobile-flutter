@@ -11,20 +11,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class ArtInitiation extends StatefulWidget {
+class Art_Initiation extends StatefulWidget {
 
   @override
   State createState() {
-    return _ArtInitiation();
+    return _Art_Initiation();
   }
 }
 
-class _ArtInitiation extends State<ArtInitiation> {
+class _Art_Initiation extends State<Art_Initiation> {
   final _formKey = GlobalKey<FormState>();
   static const dataChannel =
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
-  static const htsChannel =
-  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   int visitId;
   int patientId;
 
@@ -486,13 +486,13 @@ class _ArtInitiation extends State<ArtInitiation> {
     int id;
     print('*************************htsType ${htsRegistration.toString()}');
     try {
-      id = await htsChannel.invokeMethod(
+      id = await artChannel.invokeMethod(
           'htsRegistration', jsonEncode(htsRegistration));
       String patientid = patientId.toString();
       DateTime date = htsRegistration.dateOfHivTest;
       PersonInvestigation personInvestigation = new PersonInvestigation(
           patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-      await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
+      await artChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
 
       print('---------------------saved file id  $id');
     } catch (e) {

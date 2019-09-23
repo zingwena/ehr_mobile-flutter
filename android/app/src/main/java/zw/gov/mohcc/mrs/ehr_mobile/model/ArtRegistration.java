@@ -23,6 +23,9 @@ public class ArtRegistration extends BaseEntity{
 
     private String oiArtNumber;
 
+
+
+
     public ArtRegistration(){
 
     }

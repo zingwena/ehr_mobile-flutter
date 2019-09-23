@@ -18,7 +18,7 @@ class ArtRegistration {
 
 
 
-  ArtRegistration(this.id,this.personId, this.dateOfEnrolmentIntoCare, this.dateOfHivTest,this.oiArtNumber);
+  ArtRegistration(this.personId, this.dateOfEnrolmentIntoCare, this.dateOfHivTest,this.oiArtNumber);
 
 
   factory ArtRegistration.fromJson(Map<String, dynamic> json) =>

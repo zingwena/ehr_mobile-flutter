@@ -83,7 +83,7 @@ public class MainActivity extends FlutterActivity {
     final static String PATIENTCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
     private final static String VITALS_CHANNEL = "ehr_mobile.channel/vitals";
-    private final static String ART_CHANNEL = "ehr_mobile.channel/art";
+    private final static String ART_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile.channel/art";
     private final static String TAG = "Main Activity";
     public Token token;
     public String url, username, password;
@@ -728,6 +728,7 @@ public class MainActivity extends FlutterActivity {
             ehrMobileDatabase.artRegistrationDao().createArtRegistration(artRegistration);
 
             String artRegistrationFromDB= ehrMobileDatabase.artRegistrationDao().listArtRegistration().toString();
+
             System.out.println("Art from db :"+  artRegistrationFromDB);
 
 

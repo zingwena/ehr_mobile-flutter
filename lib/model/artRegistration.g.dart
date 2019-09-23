@@ -8,13 +8,12 @@ part of 'artRegistration.dart';
 
 ArtRegistration _$ArtRegistrationFromJson(Map<String, dynamic> json) {
   return ArtRegistration(
-    json['id'] as String,
     json['personId'] as String,
     const CustomDateTimeConverter()
         .fromJson(json['dateOfEnrolmentIntoCare'] as String),
     const CustomDateTimeConverter().fromJson(json['dateOfHivTest'] as String),
     json['oiArtNumber'] as String,
-  );
+  )..id = json['id'] as String;
 }
 
 Map<String, dynamic> _$ArtRegistrationToJson(ArtRegistration instance) =>
