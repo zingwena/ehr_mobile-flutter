@@ -392,16 +392,6 @@ public class MainActivity extends FlutterActivity {
 
                 final String arguments = methodCall.arguments();
 
-<<<<<<< HEAD
-                    Gson gson = new Gson();
-                    if (methodCall.method.equals("bloodPressure")) {
-                        BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
-                        bloodPressure.setId(UUID.randomUUID().toString());
-                        String visitId = visitService.getCurrentVisit(bloodPressure.getPersonId());
-                        bloodPressure.setVisitId(visitId);
-                        ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
-                        BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
-=======
                 Gson gson = new Gson();
                 if (methodCall.method.equals("bloodPressure")) {
                     BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
@@ -410,9 +400,6 @@ public class MainActivity extends FlutterActivity {
                     bloodPressure.setVisitId(visitId);
                     ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
                     BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
-                    System.out.println("HERE IS YOUR BP >>>>>>" + bp.getDiastolic() + "<<<<<<<<<<<" + bp.getSystolic());
->>>>>>> dda94b33d3a949da1db920cf91272841ec2e0480
-
 
                 } else if (methodCall.method.equals("temperature")) {
 
@@ -550,7 +537,7 @@ public class MainActivity extends FlutterActivity {
                             try {
 
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
-                                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>"+ arguments);
+                                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
                                 hts.setHtsApproach(preTestDTO.getHtsApproach());
                                 hts.setNewTestInClientLife(preTestDTO.getNewTest());
@@ -629,25 +616,17 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getSample")) {
 
                             try {
-<<<<<<< HEAD
-                                System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER "+arguments);
+                                System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
-                                System.out.println("HERE IS THE HTS MODEL"+ hts.getPersonId());
+                                System.out.println("HERE IS THE HTS MODEL" + hts.getPersonId());
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
-                                System.out.println("HERE IS THE PERSON INVESTIGATION should be similar to hts "+ personInvestigation.getPersonId());
-                                Log.i(TAG, "Investigations : "+ ehrMobileDatabase.investigationDao().getInvestigations());
-                               Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
-                               Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                               String sample_name = sample.getName();
-                                result.success(sample_name);
-=======
-                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
+                                System.out.println("HERE IS THE PERSON INVESTIGATION should be similar to hts " + personInvestigation.getPersonId());
+                                Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
-                                String investigationString = gson.toJson(investigationEhr);
-                                System.out.println(" investigation***************" + investigationString);
-                                result.success(investigationString);
->>>>>>> dda94b33d3a949da1db920cf91272841ec2e0480
+                                String sample_name = sample.getName();
+                                result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
@@ -1514,7 +1493,7 @@ public class MainActivity extends FlutterActivity {
         System.out.println("samples from db #################" + ehrMobileDatabase.laboratoryTestDao().getLaboratoryTests());
     }
 
-    void saveInvestigations (List<Investigation> investigations) {
+    void saveInvestigations(List<Investigation> investigations) {
 
 
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
