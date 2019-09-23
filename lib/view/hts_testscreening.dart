@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 
@@ -15,6 +16,9 @@ import 'edit_demographics.dart';
 
 
 class HtsScreeningTest extends StatefulWidget {
+  final String personId;
+  HtsScreeningTest(this.personId);
+
   @override
   State createState() {
     return _HtsScreeningTest();
@@ -60,8 +64,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
 
-         getPersonInvestigation();
+         getPersonInvestigation(widget.personId);
          getTestKitsByCount(testCount);
+         getLabTest(widget.personId);
          getLabId();
          getResults();
     super.initState();
@@ -116,24 +121,40 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         readingDate = DateFormat("yyyy/MM/dd").parse(selectedReadingDate);
       });
   }
-  Future<dynamic> getPersonInvestigation() async {
-    try {
-      Map<String,dynamic> map = json.decode(await htsChannel.invokeMethod('getSample')) ;
-      Investigation investigation = Investigation.fromJson(map)  ;
-            print("********Investigation sample from android "+investigation.sample);
+  Future<dynamic> getPersonInvestigation(String personId) async {
 
+    var sample_name;
+    try {
+      sample_name = await htsChannel.invokeMethod('getSample', personId);
           setState(() {
-          this.sample=investigation.sample;
+          this.sample=sample_name;
+/*
           this.test=investigation.test;
+*/
 
           });
-      print("*********sample from android"+map.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
     return sample;
   }
+  Future<dynamic> getLabTest(String personId) async {
 
+    var labtest_name;
+    try {
+      labtest_name = await htsChannel.invokeMethod('getLabTest', personId);
+      setState(() {
+        this.test=labtest_name;
+/*
+          this.test=investigation.test;
+*/
+
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    return test;
+  }
   Future<dynamic> getLabId() async {
     try {
       Map <String,dynamic> data= json.decode(await htsChannel.invokeMethod('getLabInvestigation')) ;
@@ -293,7 +314,7 @@ return  ListView(
                                             child: Padding(
                                               padding: const EdgeInsets.all(0.0),
                                               child: Text(
-                                               'sample',
+                                               sample,
                                                 style: TextStyle(
                                                   color: Colors.grey.shade600,
                                                   fontSize: 18,
@@ -334,7 +355,7 @@ return  ListView(
                                             child: Padding(
                                               padding: const EdgeInsets.all(0.0),
                                               child: Text(
-                                                ('test'),
+                                                (test),
                                                 style: TextStyle(
                                                   color: Colors.grey.shade600,
                                                   fontSize: 18,

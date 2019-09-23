@@ -372,7 +372,7 @@ super.initState();
                                 children: <Widget>[
                                   new Container(
                                     child: new Text(
-                                      "Respiratory Rate",
+                                      "lungalunga Rate",
                                       style: TextStyle(
                                         color: Colors.grey.shade600,
                                         fontSize: 20,
