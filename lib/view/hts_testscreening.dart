@@ -39,7 +39,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   List<Result>results = List ();
   String testKit = "";
   //Result result = Result.screen();
-  Result result = null;
+  Result result = Result('', "");
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
@@ -546,6 +546,7 @@ return  ListView(
                                           width: 250,
                                         ),
                                       ),
+
                                       Text('Negative'),
                                       Radio(
                                           value: 1,
