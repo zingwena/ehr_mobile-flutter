@@ -27,7 +27,6 @@ import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
@@ -43,6 +42,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
@@ -71,6 +71,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PersonQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
@@ -87,9 +88,9 @@ public class MainActivity extends FlutterActivity {
     public Token token;
     public String url, username, password;
     private EhrMobileDatabase ehrMobileDatabase;
-    private InvestigationEhr investigationEhr;
     private VisitService visitService;
     private HtsService htsService;
+    private TerminologyService terminologyService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class MainActivity extends FlutterActivity {
 
         visitService = new VisitService(ehrMobileDatabase);
         htsService = new HtsService(ehrMobileDatabase);
+        terminologyService = new TerminologyService(ehrMobileDatabase);
 
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -234,7 +236,7 @@ public class MainActivity extends FlutterActivity {
 
                     clearTables();
                     pullData(token, url);
-                    saveResultstoDB();
+                    terminologyService.saveResultstoDB();
 
                 }
 
@@ -615,7 +617,7 @@ public class MainActivity extends FlutterActivity {
 
                         /* */
 
-                        if (methodCall.method.equals("getSample")) {
+                        /*if (methodCall.method.equals("getSample")) {
 
                             try {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
@@ -626,7 +628,7 @@ public class MainActivity extends FlutterActivity {
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
-                        }
+                        }*/
                         if (methodCall.method.equals("getLabInvestigation")) {
 
                             try {
@@ -727,6 +729,7 @@ public class MainActivity extends FlutterActivity {
         getLaboratoryTest(token, url + "/api/");
         getInvestigations(token, url + "/api/");
         getTowns(token, url + "/api/");
+        getInvestigationResults(token, url + "/api/");
         getPatients(url);
 
     }
@@ -774,7 +777,7 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (!occupationList.isEmpty()) {
 
-                    saveOccupationsToDB(occupationList);
+                    terminologyService.saveOccupationsToDB(occupationList);
                 }
 
 
@@ -950,13 +953,32 @@ public class MainActivity extends FlutterActivity {
                     }
 
                     if (!nationalities.isEmpty()) {
-                        saveNationalityToDB(nationalities);
+                        terminologyService.saveNationalityToDB(nationalities);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getInvestigationResults(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<InvestigationResultModel> call = service.getInvestigationResults("Bearer " + token.getId_token());
+        call.enqueue(new Callback<InvestigationResultModel>() {
+            @Override
+            public void onResponse(Call<InvestigationResultModel> call, Response<InvestigationResultModel> response) {
+                List<Nationality> nationalities = new ArrayList<Nationality>();
+
+                terminologyService.saveInvestiogationResultsToDB(response.body().getContent());
+            }
+
+            @Override
+            public void onFailure(Call<InvestigationResultModel> call, Throwable t) {
 
             }
         });
@@ -1006,7 +1028,7 @@ public class MainActivity extends FlutterActivity {
                     }
 
                     if (educationLevels != null && !educationLevels.isEmpty()) {
-                        saveEducationLevelToDB(educationLevels);
+                        terminologyService.saveEducationLevelToDB(educationLevels);
                     }
                 }
             }
@@ -1032,10 +1054,8 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (entryPointList != null && !entryPointList.isEmpty()) {
 
-                    saveEntryPointsToDB(entryPointList);
+                    terminologyService.saveEntryPointsToDB(entryPointList);
                 }
-
-
             }
 
             @Override
@@ -1059,10 +1079,8 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (htsModelList != null && !htsModelList.isEmpty()) {
 
-                    saveHtsModelToDB(htsModelList);
+                    terminologyService.saveHtsModelToDB(htsModelList);
                 }
-
-
             }
 
             @Override
@@ -1088,7 +1106,7 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (purpose_of_testList != null && !purpose_of_testList.isEmpty()) {
 
-                    savePurposeOfTestToDB(purpose_of_testList);
+                    terminologyService.savePurposeOfTestToDB(purpose_of_testList);
                 }
 
 
@@ -1116,10 +1134,8 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (reasonForNotIssuingResultList != null && !reasonForNotIssuingResultList.isEmpty()) {
 
-                    saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
+                    terminologyService.saveReasonForNotIssuingResultToDB(reasonForNotIssuingResultList);
                 }
-
-
             }
 
             @Override
@@ -1209,7 +1225,7 @@ public class MainActivity extends FlutterActivity {
                     religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (religionList != null && !religionList.isEmpty()) {
-                    saveReligionToDB(religionList);
+                    terminologyService.saveReligionToDB(religionList);
                 }
             }
 
@@ -1232,7 +1248,7 @@ public class MainActivity extends FlutterActivity {
                     townList.add(new Town(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (townList != null && !townList.isEmpty()) {
-                    saveTownToDB(townList);
+                    terminologyService.saveTownToDB(townList);
                 }
             }
 
@@ -1241,115 +1257,6 @@ public class MainActivity extends FlutterActivity {
 
             }
         });
-    }
-
-    void saveTownToDB(List<Town> towns) {
-        ehrMobileDatabase.townsDao().createTowns(towns);
-
-        System.out.println("towns from DB ################################" + ehrMobileDatabase.townsDao().getAllTowns());
-    }
-
-    void saveReligionToDB(List<Religion> religions) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.religionDao().insertReligions(religions);
-
-        System.out.println("marital states from DB #################" + ehrMobileDatabase.religionDao().getAllReligions());
-    }
-
-
-    void saveOccupationsToDB(List<Occupation> occupations) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.occupationDao().insertOccupations(occupations);
-        System.out.println("occupations from DB *****" + ehrMobileDatabase.occupationDao().getAllOccupations());
-
-    }
-
-    void saveNationalityToDB
-            (List<Nationality> nationalityList) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
-
-        System.out.println("nationality from DB #################" + ehrMobileDatabase.nationalityDao().selectAllNationalities());
-
-
-    }
-
-
-    void saveEducationLevelToDB
-            (List<EducationLevel> educationLevels) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
-
-        System.out.println("education Level from DB #################" + ehrMobileDatabase.educationLevelDao().getEducationLevels());
-
-
-    }
-
-    void saveEntryPointsToDB(List<EntryPoint> entryPoints) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
-        System.out.println("EntryPoint from DB *****" + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
-
-    }
-
-    void saveHtsModelToDB(List<HtsModel> htsModels) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-
-        ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
-        System.out.println("HtsModels from DB *****" + ehrMobileDatabase.htsModelDao().getAllHtsModels());
-
-    }
-
-    void savePurposeOfTestToDB(List<PurposeOfTest> purposeOfTestList) {
-
-
-        System.out.println("*****************   " + ehrMobileDatabase);
-        Log.d(TAG, "Purpose of tests from ehr " + purposeOfTestList);
-
-        ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purposeOfTestList);
-        System.out.println("Purpose of tests from DB *****" + ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest());
-
-    }
-
-    void saveReasonForNotIssuingResultToDB
-            (List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
-
-
-        ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
-        System.out.println("ReasonForNotIssuingResults from DB *****" + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
-
-    }
-
-    void saveResultstoDB() {
-        int count = ehrMobileDatabase.resultDao().getAllResults().size();
-        if (count == 0) {
-            List<Result> resultList = new ArrayList<Result>();
-            resultList.add(new Result("01", "NEGATIVE"));
-            resultList.add(new Result("02", "POSITIVE"));
-            resultList.add(new Result("03", "INCONCLUSIVE"));
-            ehrMobileDatabase.resultDao().insertResult(resultList);
-            System.out.println(">>>>>>>>>>>>>>>>>>>>> RESULT LIST" + ehrMobileDatabase.resultDao().getAllResults());
-        } else {
-            System.out.println("RESULT TABLE ALREADY POPULATED");
-        }
-
     }
 
     public void clearTables() {
@@ -1405,7 +1312,7 @@ public class MainActivity extends FlutterActivity {
                     sampleList.add(new Sample(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (sampleList != null && !sampleList.isEmpty()) {
-                    saveSample(sampleList);
+                    terminologyService.saveSample(sampleList);
                 }
             }
 
@@ -1430,7 +1337,7 @@ public class MainActivity extends FlutterActivity {
                     laboratoryTestList.add(new LaboratoryTest(String.valueOf(item.getCode()), item.getName()));
                 }
                 if (laboratoryTestList != null && !laboratoryTestList.isEmpty()) {
-                    saveLaboratoryTests(laboratoryTestList);
+                    terminologyService.saveLaboratoryTests(laboratoryTestList);
                 }
             }
 
@@ -1457,7 +1364,7 @@ public class MainActivity extends FlutterActivity {
                 Log.i(TAG, ";;;;;;;;;;;;;; investigations from ehr : " + investigations);
                 System.out.println(TAG + ";;;;;;;;;;;;;; investigations from ehr : " + investigations);
                 if (investigations != null && !investigations.isEmpty()) {
-                    saveInvestigations(investigations);
+                    terminologyService.saveInvestigations(investigations);
                 }
             }
 
@@ -1469,57 +1376,4 @@ public class MainActivity extends FlutterActivity {
         });
     }
 
-    void saveSample(List<Sample> samples) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.sampleDao().insertSamples(samples);
-
-        System.out.println("samples from db #################" + ehrMobileDatabase.sampleDao().getSamples());
-    }
-
-    void saveLaboratoryTests(List<LaboratoryTest> tests) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.laboratoryTestDao().insertLaboratoryTests(tests);
-
-        System.out.println("samples from db #################" + ehrMobileDatabase.laboratoryTestDao().getLaboratoryTests());
-    }
-
-    void saveInvestigations (List<Investigation> investigations) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.investigationDao().insertInvestigations(investigations);
-
-        System.out.println("::::::::::::::::::::::::::::::::::::" + ehrMobileDatabase.investigationDao().getInvestigations());
-    }
-
-    /*@Transaction
-    void htsRegistration(HtsRegistration htsRegistration) {
-        saveHtsRegistration(htsRegistration);
-
-    }
-
-    void saveHtsRegistration(HtsRegistration htsRegistration) {
-        try {
-            ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-            System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-
-        } catch (Exception e) {
-
-        }
-    }*/
-
-    void saveLaboratoryInvestigation(int personInvestigationId, LaboratoryInvestigationDTO laboratoryInvestigationDTO) {
-        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation();
-        //laboratoryInvestigation.setFacilityId(laboratoryInvestigationDTO.getFacilityId());
-        laboratoryInvestigation.setResultDate(laboratoryInvestigationDTO.getResultDate());
-        //laboratoryInvestigation.setPersonInvestigationId(personInvestigationId);
-        ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
-    }
 }
