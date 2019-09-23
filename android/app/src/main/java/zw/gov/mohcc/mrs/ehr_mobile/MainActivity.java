@@ -51,7 +51,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -237,7 +236,6 @@ public class MainActivity extends FlutterActivity {
 
                     clearTables();
                     pullData(token, url);
-                    terminologyService.saveResultstoDB();
 
                 }
 
@@ -753,6 +751,7 @@ public class MainActivity extends FlutterActivity {
         getInvestigations(token, url + "/api/");
         getTowns(token, url + "/api/");
         getInvestigationResults(token, url + "/api/");
+        getLaboratoryResults(token, url + "/api/");
         getPatients(url);
 
     }
@@ -978,6 +977,31 @@ public class MainActivity extends FlutterActivity {
                     if (!nationalities.isEmpty()) {
                         terminologyService.saveNationalityToDB(nationalities);
                     }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getLaboratoryResults(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getLaboratoryResults("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Result> results = new ArrayList<Result>();
+                Log.d(TAG, "999999999999999999999 " + response.body().getContent());
+                for (BaseNameModel item : response.body().getContent()) {
+                    results.add(new Result(item.getCode(), item.getName()));
+                }
+
+                if (!results.isEmpty()) {
+                    terminologyService.saveLaboratoryResults(results);
                 }
             }
 
@@ -1312,6 +1336,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.resultDao().deleteResults();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
+        ehrMobileDatabase.investigationResultDao().delete();
     }
 
 

@@ -63,8 +63,9 @@ public class PatientsApolloClient {
 
 
                                     System.out.println("=============-=-=-=-=============1=1=1=1=1=1=1=1=patientData"+patientData.birthdate());
-                                    Gender sex = Gender.valueOf(patientData.sex().rawValue());
-                                    Gender selfIdentifiedGender = Gender.valueOf(patientData.selfIdentifiedGender().rawValue());
+                                    Gender sex = patientData.sex() != null ? Gender.valueOf(patientData.sex().rawValue()) : null;
+                                    Gender selfIdentifiedGender = patientData.selfIdentifiedGender() != null ?
+                                            Gender.valueOf(patientData.selfIdentifiedGender().rawValue()) : null;
                                     Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
 
                                     int numberOfIdentifications = patientData.identifications().size();

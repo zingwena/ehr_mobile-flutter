@@ -14,7 +14,7 @@ public interface ResultDao {
     @Insert
     void insertResult(List<Result> results);
 
-    @Query("DELETE FROM result")
+    @Query("DELETE FROM Result")
     void deleteResults();
 
 

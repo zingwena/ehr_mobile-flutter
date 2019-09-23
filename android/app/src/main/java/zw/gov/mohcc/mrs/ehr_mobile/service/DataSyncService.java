@@ -86,7 +86,10 @@ public interface DataSyncService {
     @GET("investigations")
     Call<InvestigationModel> getInvestigations(@Header("Authorization")String token);
 
-    @GET("/investigations/result")
+    @GET("investigations/result")
     Call<InvestigationResultModel> getInvestigationResults(@Header("Authorization")String token);
+
+    @GET("lab-results")
+    Call<TerminologyModel> getLaboratoryResults(@Header("Authorization")String token);
 
 }

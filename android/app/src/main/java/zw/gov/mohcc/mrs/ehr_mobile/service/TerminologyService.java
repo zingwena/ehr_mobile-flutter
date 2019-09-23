@@ -110,18 +110,9 @@ public class TerminologyService {
         Log.d(TAG, "Saved investigation results : " + ehrMobileDatabase.investigationResultDao().getInvestigationResults());
     }
 
-    public void saveResultstoDB() {
-        int count = ehrMobileDatabase.resultDao().getAllResults().size();
-        if (count == 0) {
-            List<Result> resultList = new ArrayList<Result>();
-            resultList.add(new Result("01", "NEGATIVE"));
-            resultList.add(new Result("02", "POSITIVE"));
-            resultList.add(new Result("03", "INCONCLUSIVE"));
-            ehrMobileDatabase.resultDao().insertResult(resultList);
-            System.out.println(">>>>>>>>>>>>>>>>>>>>> RESULT LIST" + ehrMobileDatabase.resultDao().getAllResults());
-        } else {
-            System.out.println("RESULT TABLE ALREADY POPULATED");
-        }
+    public void saveLaboratoryResults(List<Result> results) {
 
+        ehrMobileDatabase.resultDao().insertResult(results);
+        Log.d(TAG, "Saved laboratory results : " + ehrMobileDatabase.resultDao().getAllResults());
     }
 }
