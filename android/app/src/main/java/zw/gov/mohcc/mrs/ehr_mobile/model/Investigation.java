@@ -45,4 +45,12 @@ public class Investigation extends BaseEntity {
     public void setSampleId(String sampleId) {
         this.sampleId = sampleId;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("Investigation{" +
+                "laboratoryTestId='" + laboratoryTestId + '\'' +
+                ", sampleId='" + sampleId + '\'' +
+                '}');
+    }
 }
