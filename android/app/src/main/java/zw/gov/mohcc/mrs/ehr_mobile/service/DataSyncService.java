@@ -10,6 +10,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
@@ -81,8 +82,8 @@ public interface DataSyncService {
     @GET("samples")
     Call<TerminologyModel> getSamples(@Header("Authorization")String token);
 
-    @GET("investigations/{ID}")
-    Call<List<InvestigationEhr>> getInvestigations(@Header("Authorization")String token, @Path("ID")String id);
+    @GET("investigations")
+    Call<InvestigationModel> getInvestigations(@Header("Authorization")String token);
 
 
 }

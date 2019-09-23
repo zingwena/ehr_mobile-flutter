@@ -3,14 +3,14 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 public class InvestigationEhr {
 
-    String investigationId;
-    String sample;
-    String test;
+    private String investigationId;
+    private String sampleId;
+    private String laboratoryTestId;
 
-    public InvestigationEhr(String investigationId, String sample, String test) {
+    public InvestigationEhr(String investigationId, String sampleId, String laboratoryTestId) {
         this.investigationId = investigationId;
-        this.sample = sample;
-        this.test = test;
+        this.sampleId = sampleId;
+        this.laboratoryTestId = laboratoryTestId;
     }
 
     public String getInvestigationId() {
@@ -21,20 +21,19 @@ public class InvestigationEhr {
         this.investigationId = investigationId;
     }
 
-    public String getSample() {
-        return sample;
+    public String getSampleId() {
+        return sampleId;
     }
 
-    public void setSample(String sample) {
-        this.sample = sample;
+    public void setSampleId(String sampleId) {
+        this.sampleId = sampleId;
     }
 
-
-    public String getTest() {
-        return test;
+    public String getLaboratoryTestId() {
+        return laboratoryTestId;
     }
 
-    public void setTest(String test) {
-        this.test = test;
+    public void setLaboratoryTestId(String laboratoryTestId) {
+        this.laboratoryTestId = laboratoryTestId;
     }
 }
