@@ -31,6 +31,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -81,6 +83,7 @@ public class MainActivity extends FlutterActivity {
     final static String PATIENTCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
     private final static String VITALS_CHANNEL = "ehr_mobile.channel/vitals";
+    private final static String ART_CHANNEL = "ehr_mobile.channel/art";
     private final static String TAG = "Main Activity";
     public Token token;
     public String url, username, password;
@@ -703,6 +706,64 @@ public class MainActivity extends FlutterActivity {
 
                     }
                 });
+
+
+
+        /*   ===============================================ART REGISTRATION AND INITIATION  =============================================================== */
+        new MethodChannel(getFlutterView(), ART_CHANNEL).setMethodCallHandler(
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                        String arguments = methodCall.arguments();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+
+        if (methodCall.method.equals("saveArtRegistration")) {
+
+            ArtRegistration artRegistration = gson.fromJson(arguments, ArtRegistration.class);
+            artRegistration.setId(UUID.randomUUID().toString());
+            artRegistration.setPersonId(artRegistration.getPersonId());
+            artRegistration.setDateOfEnrolmentIntoCare(artRegistration.getDateOfEnrolmentIntoCare());
+            artRegistration.setDateOfHivTest(artRegistration.getDateOfHivTest());
+            artRegistration.setOiArtNumber(artRegistration.getOiArtNumber());
+            ehrMobileDatabase.artRegistrationDao().createArtRegistration(artRegistration);
+
+            String artRegistrationFromDB= ehrMobileDatabase.artRegistrationDao().listArtRegistration().toString();
+            System.out.println("Art from db :"+  artRegistrationFromDB);
+
+
+
+        }
+
+        else {
+            result.notImplemented();
+        }
+
+
+        if (methodCall.method.equals("saveArtInitiation")) {
+
+            ArtInitiation artInitiation = gson.fromJson(arguments, ArtInitiation.class);
+            artInitiation.setId(UUID.randomUUID().toString());
+            artInitiation.setPersonId(artInitiation.getPersonId());
+            artInitiation.setArtRegimen(artInitiation.getArtRegimen());
+            artInitiation.setClientEligibility(artInitiation.getClientEligibility());
+            artInitiation.setDateInitiatedOnArt(artInitiation.getDateInitiatedOnArt());
+            artInitiation.setDateOfEnrolmentIntoCare(artInitiation.getDateOfEnrolmentIntoCare());
+            artInitiation.setClientType(artInitiation.getClientType());
+            artInitiation.setLine(artInitiation.getLine());
+            artInitiation.setReason(artInitiation.getReason());
+            ehrMobileDatabase.artInitiationDao().createArtInitiation(artInitiation);
+
+            String artInitiationFromDB= ehrMobileDatabase.artInitiationDao().listArtInitiation().toString();
+            System.out.println("Art from db :"+  artInitiationFromDB);
+
+
+        }
+
+        else {
+            result.notImplemented();
+        }}});
+
+
 
     }
 
@@ -1380,6 +1441,8 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.resultDao().deleteResults();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
+        ehrMobileDatabase.artRegistrationDao().deleteAll();
+        ehrMobileDatabase.artInitiationDao().deleteAll();
     }
 
 

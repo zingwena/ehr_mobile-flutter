@@ -7,6 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
@@ -39,6 +41,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtInitiationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
@@ -93,7 +97,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         HtsModel.class, EntryPoint.class, PurposeOfTest.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
-        LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class}, version = 30, exportSchema = false)
+        LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
+        ArtRegistration.class, ArtInitiation.class}, version = 30, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -180,4 +185,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract LaboratoryInvestigationDao laboratoryInvestigationDao();
     public abstract PatientPhoneDao patientPhoneDao();
+
+    public abstract ArtRegistrationDao artRegistrationDao();
+
+    public abstract ArtInitiationDao artInitiationDao();
 }
