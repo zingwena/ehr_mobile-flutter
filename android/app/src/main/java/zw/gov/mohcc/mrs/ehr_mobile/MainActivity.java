@@ -378,6 +378,10 @@ public class MainActivity extends FlutterActivity {
                     PersonQuery personQuery = new PersonQuery();
                     SimpleSQLiteQuery sqLiteQuery = personQuery.searchPerson(searchItem);
                     _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery);
+                    if (_list.isEmpty()){
+                        SimpleSQLiteQuery sqLiteQuery1= personQuery.searchPersonBySurnameAndName(searchItem);
+                        _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery1);
+                    }
                     Gson gson = new Gson();
                     result1.success(gson.toJson(_list));
                 }
