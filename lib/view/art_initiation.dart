@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/model/art_reason.dart';
+import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 
@@ -34,13 +35,23 @@ class _Art_Initiation extends State<Art_Initiation> {
 
   var selectedDate;
   bool _showError = false;
+  bool _arvCombinationRegimenIsValid = false;
   bool _artReasonIsValid = false;
   bool _formIsValid = false;
-  String _entryPointError = "Select Entry Point";
+  String _arvCombinationRegimenError = "Select Arv Regimen";
   String _artReasonError = "Select Art Reason";
   DateTime date;
   int _selecType = 0;
   String clientType = "";
+
+
+
+  String _arvCombinationRegimen;
+  List arvCombinationRegimens = List();
+  List _dropDownListArvCombinationRegimens = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsArvCombinationRegimen;
+  List<ArvCombinationRegimen> _arvCombinationRegimenList = List();
+  String _currentArvCombinationRegimen;
 
 
 
@@ -55,18 +66,20 @@ class _Art_Initiation extends State<Art_Initiation> {
 
 
 
+
   @override
   void initState() {
 
 
-    getFacilities();
+    getArtReasons();
+    getArvCombinationregimens();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     super.initState();
   }
 
 
-  Future<void> getFacilities() async {
+  Future<void> getArtReasons() async {
     String response;
     try {
       response = await dataChannel.invokeMethod('getArtReasonOptions');
@@ -80,6 +93,35 @@ class _Art_Initiation extends State<Art_Initiation> {
         });
 
         _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
+
+
+        /*_dropDownMenuItemsEntryPoint =
+            getDropDownMenuItemsIdentifiedEntryPoint();*/
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+
+  Future<void> getArvCombinationregimens() async {
+    String response;
+    try {
+      response = await dataChannel.invokeMethod('getArvCombinationRegimenOptions');
+      setState(() {
+
+        _arvCombinationRegimen=response;
+        arvCombinationRegimens = jsonDecode(_arvCombinationRegimen);
+        _dropDownListArvCombinationRegimens = ArvCombinationRegimen.mapFromJson(arvCombinationRegimens);
+
+        _dropDownListArvCombinationRegimens.forEach((e) {
+          _arvCombinationRegimenList.add(e);
+
+        });
+
+        _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
+
+        _dropDownMenuItemsArvCombinationRegimen = getDropDownMenuItemsIdentifiedArvCombinationRegimen();
 
 
         /*_dropDownMenuItemsEntryPoint =
@@ -124,16 +166,6 @@ class _Art_Initiation extends State<Art_Initiation> {
     });
   }
 
-  /*List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (EntryPoint entryPoint in _entryPointList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(
-          value: entryPoint.code, child: Text(entryPoint.name)));
-    }
-    return items;
-  }*/
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArtReason() {
     List<DropdownMenuItem<String>> items = new List();
@@ -145,6 +177,19 @@ class _Art_Initiation extends State<Art_Initiation> {
     }
     return items;
   }
+
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArvCombinationRegimen() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (ArvCombinationRegimen arvCombinationRegimen in _arvCombinationRegimenList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: arvCombinationRegimen.code, child: Text(arvCombinationRegimen.name)));
+    }
+    return items;
+  }
+
 
 
   @override
@@ -267,7 +312,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                         ],
                                                       ),
-                                                      Row(
+                                                     /* Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
@@ -289,7 +334,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                               groupValue: _selecType,
                                                               onChanged: _handleHtsTypeChange)
                                                         ],
-                                                      ),
+                                                      ),*/
 
                                                       Row(
                                                         children: <Widget>[
@@ -320,7 +365,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ],
                                                       ),
 
-                                                     /* Container(
+                                                      Container(
                                                         padding:
                                                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         width: double.infinity,
@@ -334,12 +379,12 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                             padding: EdgeInsets.symmetric(
                                                                 vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
-                                                              hint: Text('Select Art Regimen'),
+                                                              hint: Text('Select Art Combination Regimen'),
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
-                                                              value: _currentEntryPoint,
-                                                              items: _dropDownMenuItemsEntryPoint,
-                                                              onChanged: changedDropDownItemEntryPoint,
+                                                              value: _currentArvCombinationRegimen,
+                                                              items: _dropDownMenuItemsArvCombinationRegimen,
+                                                              onChanged: changedDropDownItemArvCombinationRegimen,
                                                             ),
                                                           ),
                                                           borderSide: BorderSide(
@@ -355,9 +400,9 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                       ),
                                                       !_showError
                                                           ? SizedBox.shrink()
-                                                          : Text( _entryPointError ?? "",
+                                                          : Text( _arvCombinationRegimenError ?? "",
                                                         style: TextStyle(color: Colors.red),
-                                                      ),*/
+                                                      ),
 
                                                       SizedBox(
                                                         height: 20.0,
@@ -380,9 +425,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                               hint: Text('Reason'),
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
-                                                              //value: _currentEntryPoint,
                                                               value: _currentArtReason,
-                                                             // items: _dropDownMenuItemsEntryPoint,
                                                               items: _dropDownMenuItemsArtReason,
                                                               onChanged: changedDropDownItemArtReason,
 
@@ -402,7 +445,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                       ),
                                                       !_showError
                                                           ? SizedBox.shrink()
-                                                          : Text( _entryPointError ?? "",
+                                                          : Text( _artReasonError ?? "",
                                                         style: TextStyle(color: Colors.red),
                                                       ),
 
@@ -518,6 +561,17 @@ class _Art_Initiation extends State<Art_Initiation> {
       _currentArtReason = selectedArtReason;
      _artReasonError = null;
       _artReasonIsValid=! _artReasonIsValid;
+
+    });
+  }
+
+  void changedDropDownItemArvCombinationRegimen(String selectedArvCombinationRegimen) {
+    setState(() {
+
+      _currentArvCombinationRegimen = selectedArvCombinationRegimen;
+      _arvCombinationRegimenError = null;
+
+      _arvCombinationRegimenIsValid=! _arvCombinationRegimenIsValid;
 
     });
   }

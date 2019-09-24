@@ -385,6 +385,17 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
 
+                        if (methodCall1.method.equals("getArvCombinationRegimenOptions")) {
+                            try {
+                                List<ArvCombinationRegimen> arvCombinationRegimens = ehrMobileDatabase.arvCombinationRegimenDao().findAll();
+                                String list = gson.toJson(arvCombinationRegimens);
+                                result1.success(list);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
 
                         if (methodCall1.method.equals("saveHtsRegistration")) {
                             // TODO judge to add code here useless comment
