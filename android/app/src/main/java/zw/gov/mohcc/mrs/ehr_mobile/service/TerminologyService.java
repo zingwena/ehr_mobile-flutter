@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
@@ -114,5 +116,17 @@ public class TerminologyService {
 
         ehrMobileDatabase.resultDao().insertResult(results);
         Log.d(TAG, "Saved laboratory results : " + ehrMobileDatabase.resultDao().getAllResults());
+    }
+
+    public void saveArtStatus(List<ArtStatus> artStatuses) {
+
+        ehrMobileDatabase.artStatusDao().insertAll(artStatuses);
+        Log.d(TAG, "Saved art status : " + ehrMobileDatabase.artStatusDao().findAll());
+    }
+
+    public void saveArtReason(List<ArtReason> artReasons) {
+
+        ehrMobileDatabase.artReasonDao().insertAll(artReasons);
+        Log.d(TAG, "Saved art reasons : " + ehrMobileDatabase.artReasonDao().findAll());
     }
 }
