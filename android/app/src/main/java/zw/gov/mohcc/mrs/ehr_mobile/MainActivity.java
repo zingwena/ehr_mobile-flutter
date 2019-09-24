@@ -362,7 +362,7 @@ public class MainActivity extends FlutterActivity {
                         }
 
                         if (methodCall1.method.equals("saveHtsRegistration")) {
-                            // TODO judge to add code here
+                            // TODO judge to add code here useless comment
                             /*try {
                                 HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
 //                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration()
