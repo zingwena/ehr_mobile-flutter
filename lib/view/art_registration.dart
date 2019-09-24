@@ -1,15 +1,10 @@
 import 'dart:convert';
 import 'dart:core';
-
-
-
 import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
-
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'art_initiation.dart';
 import 'rounded_button.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -58,7 +53,7 @@ class _Art_Registration extends State<Art_Registration> {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     dateOfHivTest = DateTime.now();
     dateOfEnrolmentIntoCare = DateTime.now();
-    oiArtNumber = oiArtNumber;
+    oiArtNumber = " ";
     super.initState();
   }
 
@@ -284,7 +279,7 @@ class _Art_Registration extends State<Art_Registration> {
                                                                     oiArtNumber = value;
                                                                   }),
                                                                   decoration: InputDecoration(
-                                                                      labelText: 'Oi Art Number.',
+                                                                      labelText: 'Oi Art Number',
                                                                       border: OutlineInputBorder()),
                                                                 ),
                                                               ),
