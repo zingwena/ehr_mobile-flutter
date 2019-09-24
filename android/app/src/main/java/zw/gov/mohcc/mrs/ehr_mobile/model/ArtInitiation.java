@@ -24,21 +24,23 @@ public class ArtInitiation extends BaseEntity{
     private String clientType;
     private String clientEligibility;
     private String line;
-    private String artRegimen;
-    private String reason;
+    private String artRegimenId;
+    private String artReasonId;
+    private String artStatusId;
 
     public ArtInitiation() {
     }
 
-    public ArtInitiation(@NonNull String id, String personId, Date dateOfEnrolmentIntoCare, Date dateInitiatedOnArt, String clientType, String clientEligibility, String line, String artRegimen, String reason) {
+    public ArtInitiation(String personId, Date dateOfEnrolmentIntoCare, Date dateInitiatedOnArt, String clientType, String clientEligibility, String line, String artRegimenId, String artReasonId, String artStatusId) {
         this.personId = personId;
         this.dateOfEnrolmentIntoCare = dateOfEnrolmentIntoCare;
         this.dateInitiatedOnArt = dateInitiatedOnArt;
         this.clientType = clientType;
         this.clientEligibility = clientEligibility;
         this.line = line;
-        this.artRegimen = artRegimen;
-        this.reason = reason;
+        this.artRegimenId = artRegimenId;
+        this.artReasonId = artReasonId;
+        this.artStatusId = artStatusId;
     }
 
     public String getPersonId() {
@@ -89,20 +91,28 @@ public class ArtInitiation extends BaseEntity{
         this.line = line;
     }
 
-    public String getArtRegimen() {
-        return artRegimen;
+    public String getArtRegimenId() {
+        return artRegimenId;
     }
 
-    public void setArtRegimen(String artRegimen) {
-        this.artRegimen = artRegimen;
+    public void setArtRegimenId(String artRegimenId) {
+        this.artRegimenId = artRegimenId;
     }
 
-    public String getReason() {
-        return reason;
+    public String getArtReasonId() {
+        return artReasonId;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setArtReasonId(String artReasonId) {
+        this.artReasonId = artReasonId;
+    }
+
+    public String getArtStatusId() {
+        return artStatusId;
+    }
+
+    public void setArtStatusId(String artStatusId) {
+        this.artStatusId = artStatusId;
     }
 
     @Override
@@ -114,8 +124,9 @@ public class ArtInitiation extends BaseEntity{
                 ", clientType='" + clientType + '\'' +
                 ", clientEligibility='" + clientEligibility + '\'' +
                 ", line='" + line + '\'' +
-                ", artRegimen='" + artRegimen + '\'' +
-                ", reason='" + reason + '\'' +
+                ", artRegimenId='" + artRegimenId + '\'' +
+                ", artReasonId='" + artReasonId + '\'' +
+                ", artStatusId='" + artStatusId + '\'' +
                 '}';
     }
 }

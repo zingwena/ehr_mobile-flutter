@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/artInitiation.dart';
+import 'package:ehr_mobile/model/art_reason.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 
 import 'package:ehr_mobile/model/personInvestigation.dart';
+import 'package:ehr_mobile/view/art_registration.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'rounded_button.dart';
 
@@ -25,41 +28,32 @@ class _Art_Initiation extends State<Art_Initiation> {
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
 
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+
   int visitId;
   int patientId;
 
   var selectedDate;
   bool _showError = false;
-  bool _entryPointIsValid = false;
+  bool _artReasonIsValid = false;
   bool _formIsValid = false;
   String _entryPointError = "Select Entry Point";
+  String _artReasonError = "Select Art Reason";
   DateTime date;
   int _selecType = 0;
   String clientType = "";
-  String _entryPoint;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
-
-  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
-  List<EntryPoint> _entryPointList = List();
-
-  bool maritalStatusIsValid=false;
-
-  List<DropdownMenuItem<String>>
-  _dropDownMenuItemsMaritalStatus,
-      _dropDownMenuItemsCountry;
-
-  String  _currentMaritalStatus;
 
 
-  List _maritalStatusList = [
-    "ARV Regimen Option 1",
-    "ARV Regimen Option 2",
-    "ARV Regimen Option 3",
 
-  ];
+  String _artReason;
+  List artReasons = List();
+  List _dropDownListArtReasons = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsArtReason;
+  List<ArtReason> _artReasonList = List();
+  String _currentArtReason;
 
-  String _maritalStatusError="Select Marital status";
+
+
+
 
   @override
   void initState() {
@@ -68,42 +62,34 @@ class _Art_Initiation extends State<Art_Initiation> {
     getFacilities();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
-    _dropDownMenuItemsMaritalStatus = getDropDownMenuItemsIdentifiedMaritalStatus();
-
-    _currentMaritalStatus = _dropDownMenuItemsMaritalStatus[0].value;
-
     super.initState();
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedMaritalStatus() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String maritalStatus in _maritalStatusList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(
-          DropdownMenuItem(value: maritalStatus, child: Text(maritalStatus)));
-    }
-    return items;
-  }
 
   Future<void> getFacilities() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getEntryPointsOptions');
+      response = await dataChannel.invokeMethod('getArtReasonOptions');
       setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = EntryPoint.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
+        _artReason = response;
+        artReasons = jsonDecode(_artReason);
+        _dropDownListArtReasons = ArtReason.mapFromJson(artReasons);
+        _dropDownListArtReasons.forEach((e) {
+          _artReasonList.add(e);
+
         });
-        _dropDownMenuItemsEntryPoint =
-            getDropDownMenuItemsIdentifiedEntryPoint();
+
+        _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
+
+
+        /*_dropDownMenuItemsEntryPoint =
+            getDropDownMenuItemsIdentifiedEntryPoint();*/
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
   }
+
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -138,7 +124,7 @@ class _Art_Initiation extends State<Art_Initiation> {
     });
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
+  /*List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
     List<DropdownMenuItem<String>> items = new List();
     for (EntryPoint entryPoint in _entryPointList) {
       // here we are creating the drop down menu items, you can customize the item right here
@@ -147,7 +133,19 @@ class _Art_Initiation extends State<Art_Initiation> {
           value: entryPoint.code, child: Text(entryPoint.name)));
     }
     return items;
+  }*/
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArtReason() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (ArtReason artReason in _artReasonList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: artReason.code, child: Text(artReason.name)));
+    }
+    return items;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -322,7 +320,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ],
                                                       ),
 
-                                                      Container(
+                                                     /* Container(
                                                         padding:
                                                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         width: double.infinity,
@@ -333,15 +331,15 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           padding: const EdgeInsets.all(0.0),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding:
-                                                            EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            padding: EdgeInsets.symmetric(
+                                                                vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
+                                                              hint: Text('Select Art Regimen'),
                                                               icon: Icon(Icons.keyboard_arrow_down),
-                                                              hint: Text("ARV Regimen"),
                                                               iconEnabledColor: Colors.black,
-                                                              value: _currentMaritalStatus,
-                                                              items: _dropDownMenuItemsMaritalStatus,
-                                                              onChanged: changedDropDownItemMaritalStatus,
+                                                              value: _currentEntryPoint,
+                                                              items: _dropDownMenuItemsEntryPoint,
+                                                              onChanged: changedDropDownItemEntryPoint,
                                                             ),
                                                           ),
                                                           borderSide: BorderSide(
@@ -352,6 +350,14 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           onPressed: () {},
                                                         ),
                                                       ),
+                                                      SizedBox(
+                                                        height: 10.0,
+                                                      ),
+                                                      !_showError
+                                                          ? SizedBox.shrink()
+                                                          : Text( _entryPointError ?? "",
+                                                        style: TextStyle(color: Colors.red),
+                                                      ),*/
 
                                                       SizedBox(
                                                         height: 20.0,
@@ -368,15 +374,19 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           padding: const EdgeInsets.all(0.0),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding:
-                                                            EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            padding: EdgeInsets.symmetric(
+                                                                vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
-                                                                icon: Icon(Icons.keyboard_arrow_down),
-                                                                hint: Text("Reason"),
-                                                                iconEnabledColor: Colors.black,
-                                                                value: _currentMaritalStatus,
-                                                                items: _dropDownMenuItemsMaritalStatus,
-                                                                onChanged: changedDropDownItemMaritalStatus
+                                                              hint: Text('Reason'),
+                                                              icon: Icon(Icons.keyboard_arrow_down),
+                                                              iconEnabledColor: Colors.black,
+                                                              //value: _currentEntryPoint,
+                                                              value: _currentArtReason,
+                                                             // items: _dropDownMenuItemsEntryPoint,
+                                                              items: _dropDownMenuItemsArtReason,
+                                                              onChanged: changedDropDownItemArtReason,
+
+
                                                             ),
                                                           ),
                                                           borderSide: BorderSide(
@@ -386,6 +396,14 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                           onPressed: () {},
                                                         ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10.0,
+                                                      ),
+                                                      !_showError
+                                                          ? SizedBox.shrink()
+                                                          : Text( _entryPointError ?? "",
+                                                        style: TextStyle(color: Colors.red),
                                                       ),
 
                                                       SizedBox(
@@ -451,7 +469,7 @@ class _Art_Initiation extends State<Art_Initiation> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HomePage()),
+                    Art_Initiation()),
           ),
           ),
           new RoundedButton(text: "Art Registration", onTap: () =>     Navigator.push(
@@ -473,32 +491,35 @@ class _Art_Initiation extends State<Art_Initiation> {
     );
   }
 
-  void changedDropDownItemMaritalStatus(String selectedMaritalStatus) {
-    setState(() {
-      _currentMaritalStatus = selectedMaritalStatus;
-      maritalStatusIsValid=!maritalStatusIsValid;
-      _maritalStatusError=null;
-    });
-  }
 
 
-  Future<void> registration(HtsRegistration htsRegistration) async {
+  Future<void> registration(ArtInitiation artInitiation) async {
     int id;
-    print('*************************htsType ${htsRegistration.toString()}');
+    print('*************************art initiation ${artInitiation.toString()}');
     try {
       id = await artChannel.invokeMethod(
-          'htsRegistration', jsonEncode(htsRegistration));
+          'saveArtInitiation', jsonEncode(artInitiation));
       String patientid = patientId.toString();
-      DateTime date = htsRegistration.dateOfHivTest;
-      PersonInvestigation personInvestigation = new PersonInvestigation(
-          patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-      await artChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
+
+     /* PersonInvestigation personInvestigation = new PersonInvestigation(
+          patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);*/
+      await artChannel.invokeMethod('saveArtInitiation',jsonEncode(artInitiation));
 
       print('---------------------saved file id  $id');
     } catch (e) {
       print('--------------something went wrong  $e');
     }
 
+  }
+
+  void changedDropDownItemArtReason(String selectedArtReason) {
+    setState(() {
+
+      _currentArtReason = selectedArtReason;
+     _artReasonError = null;
+      _artReasonIsValid=! _artReasonIsValid;
+
+    });
   }
 }
 

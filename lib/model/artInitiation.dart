@@ -15,13 +15,14 @@ class ArtInitiation{
   String clientType;
   String clientEligibility;
   String line;
-  String artRegimen;
-  String reason;
+  String artRegimenId;
+  String artReasonId;
+  String artStatusId;
 
 
 
 
-  ArtInitiation(this.id,this.personId, this.dateOfEnrolmentIntoCare, this.dateInitiatedOnArt,this.clientType,this.clientEligibility,this.line,this.artRegimen,this.reason);
+  ArtInitiation(this.id,this.personId, this.dateOfEnrolmentIntoCare, this.dateInitiatedOnArt,this.clientType,this.clientEligibility,this.line,this.artRegimenId,this.artReasonId,this.artStatusId);
 
 
   factory ArtInitiation.fromJson(Map<String, dynamic> json) =>
@@ -42,5 +43,11 @@ class ArtInitiation{
 
     return artInitiations;
   }
+
+  @override
+  String toString() {
+    return 'ArtInitiation{id: $id, personId: $personId, dateOfEnrolmentIntoCare: $dateOfEnrolmentIntoCare, dateInitiatedOnArt: $dateInitiatedOnArt, clientType: $clientType, clientEligibility: $clientEligibility, line: $line, artRegimenId: $artRegimenId, artReasonId: $artReasonId, artStatusId: $artStatusId}';
+  }
+
 
 }

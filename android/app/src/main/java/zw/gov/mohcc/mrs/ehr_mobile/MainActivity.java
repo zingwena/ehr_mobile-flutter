@@ -32,6 +32,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
@@ -360,6 +361,29 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+
+                        if (methodCall1.method.equals("getArtReasonOptions")) {
+                            try {
+                                List<ArtReason> artReasons = ehrMobileDatabase.artReasonDao().findAll();
+                                String list = gson.toJson(artReasons);
+                                result1.success(list);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
+                        if (methodCall1.method.equals("getArtStatusOptions")) {
+                            try {
+                                List<ArtStatus> artStatuses = ehrMobileDatabase.artStatusDao().findAll();
+                                String list = gson.toJson(artStatuses);
+                                result1.success(list);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+
 
                         if (methodCall1.method.equals("saveHtsRegistration")) {
                             // TODO judge to add code here
@@ -778,13 +802,14 @@ public class MainActivity extends FlutterActivity {
             ArtInitiation artInitiation = gson.fromJson(arguments, ArtInitiation.class);
             artInitiation.setId(UUID.randomUUID().toString());
             artInitiation.setPersonId(artInitiation.getPersonId());
-            artInitiation.setArtRegimen(artInitiation.getArtRegimen());
+            artInitiation.setArtRegimenId(artInitiation.getArtRegimenId());
             artInitiation.setClientEligibility(artInitiation.getClientEligibility());
             artInitiation.setDateInitiatedOnArt(artInitiation.getDateInitiatedOnArt());
             artInitiation.setDateOfEnrolmentIntoCare(artInitiation.getDateOfEnrolmentIntoCare());
             artInitiation.setClientType(artInitiation.getClientType());
             artInitiation.setLine(artInitiation.getLine());
-            artInitiation.setReason(artInitiation.getReason());
+            artInitiation.setArtReasonId(artInitiation.getArtReasonId());
+            artInitiation.setArtStatusId(artInitiation.getArtStatusId());
             ehrMobileDatabase.artInitiationDao().createArtInitiation(artInitiation);
 
             String artInitiationFromDB= ehrMobileDatabase.artInitiationDao().listArtInitiation().toString();
