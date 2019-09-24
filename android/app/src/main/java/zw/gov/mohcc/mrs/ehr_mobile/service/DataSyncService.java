@@ -10,6 +10,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResultModel;
@@ -99,4 +100,6 @@ public interface DataSyncService {
     @GET("art-reasons")
     Call<ArtReasonModel> getArtReasons(@Header("Authorization")String token);
 
+    @GET("arv-combination-regimens")
+    Call<TerminologyModel> getArvCombinationRegimen(@Header("Authorization")String token);
 }

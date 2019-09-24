@@ -7,6 +7,7 @@ import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
@@ -128,5 +129,11 @@ public class TerminologyService {
 
         ehrMobileDatabase.artReasonDao().insertAll(artReasons);
         Log.d(TAG, "Saved art reasons : " + ehrMobileDatabase.artReasonDao().findAll());
+    }
+
+    public void saveArvCombinationRegimen(List<ArvCombinationRegimen> arvCombinationRegimens) {
+
+        ehrMobileDatabase.arvCombinationRegimenDao().insertAll(arvCombinationRegimens);
+        Log.d(TAG, "Saved arv combination regimen : " + ehrMobileDatabase.arvCombinationRegimenDao().findAll());
     }
 }
