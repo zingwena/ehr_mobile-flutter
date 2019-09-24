@@ -36,6 +36,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtRegistration;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -824,6 +825,7 @@ public class MainActivity extends FlutterActivity {
         getLaboratoryResults(token, url + "/api/");
         getArtStatus(token, url + "/api/");
         getArtReasons(token, url + "/api/");
+        getArvCombinationregimens(token, url + "/api/");
         getPatients(url);
 
     }
@@ -1449,6 +1451,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.artRegistrationDao().deleteAll();
         ehrMobileDatabase.artInitiationDao().deleteAll();
         ehrMobileDatabase.investigationResultDao().delete();
+        ehrMobileDatabase.arvCombinationRegimenDao().deleteAll();
     }
 
 
@@ -1536,48 +1539,27 @@ public class MainActivity extends FlutterActivity {
         });
     }
 
-    void saveLaboratoryTests(List<LaboratoryTest> tests) {
+    public void getArvCombinationregimens(Token token, String baseUrl) {
 
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getArvCombinationRegimen("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<ArvCombinationRegimen> arvCombinationRegimenList = new ArrayList<ArvCombinationRegimen>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    arvCombinationRegimenList.add(new ArvCombinationRegimen(String.valueOf(item.getCode()), item.getName()));
+                }
+                if (arvCombinationRegimenList != null && !arvCombinationRegimenList.isEmpty()) {
+                    terminologyService.saveArvCombinationRegimen(arvCombinationRegimenList);
+                }
+            }
 
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-        ehrMobileDatabase.laboratoryTestDao().insertLaboratoryTests(tests);
-
-        System.out.println("samples from db #################" + ehrMobileDatabase.laboratoryTestDao().getLaboratoryTests());
-    }
-
-    void saveInvestigations
-            (List<Investigation> investigations) {
-
-
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    " + ehrMobileDatabase);
-
-        ehrMobileDatabase.investigationDao().insertInvestigations(investigations);
-
-        System.out.println("samples from db #################" + ehrMobileDatabase.investigationDao().getInvestigations());
-    }
-
-    /*@Transaction
-    void htsRegistration(HtsRegistration htsRegistration) {
-        saveHtsRegistration(htsRegistration);
-
-    }
-
-    void saveHtsRegistration(HtsRegistration htsRegistration) {
-        try {
-            ehrMobileDatabase.htsRegistrationDao().createHtsRegistration(htsRegistration);
-            System.out.println("List of htsregistration" + ehrMobileDatabase.htsRegistrationDao().listHtsRegistration());
-
-        } catch (Exception e) {
-
-        }
-    }*/
-
-    void saveLaboratoryInvestigation(int personInvestigationId, LaboratoryInvestigationDTO laboratoryInvestigationDTO) {
-        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation();
-        //laboratoryInvestigation.setFacilityId(laboratoryInvestigationDTO.getFacilityId());
-        laboratoryInvestigation.setResultDate(laboratoryInvestigationDTO.getResultDate());
-        //laboratoryInvestigation.setPersonInvestigationId(personInvestigationId);
-        ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
+                System.out.println("tttttttttttttttttttttttt" + t);
+            }
+        });
     }
 }
