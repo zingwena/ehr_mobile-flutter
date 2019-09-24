@@ -7,6 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
@@ -40,6 +42,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
@@ -96,7 +100,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
-        InvestigationResult.class}, version = 31, exportSchema = false)
+        InvestigationResult.class, ArtStatus.class, ArtReason.class}, version = 32, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -186,4 +190,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract PatientPhoneDao patientPhoneDao();
 
     public abstract InvestigationResultDao investigationResultDao();
+
+    public abstract ArtStatusDao artStatusDao();
+
+    public abstract ArtReasonDao artReasonDao();
 }

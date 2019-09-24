@@ -31,6 +31,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -756,6 +758,8 @@ public class MainActivity extends FlutterActivity {
         getTowns(token, url + "/api/");
         getInvestigationResults(token, url + "/api/");
         getLaboratoryResults(token, url + "/api/");
+        getArtStatus(token, url + "/api/");
+        getArtReasons(token, url + "/api/");
         getPatients(url);
 
     }
@@ -999,13 +1003,36 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 List<Result> results = new ArrayList<Result>();
-                Log.d(TAG, "999999999999999999999 " + response.body().getContent());
                 for (BaseNameModel item : response.body().getContent()) {
                     results.add(new Result(item.getCode(), item.getName()));
                 }
 
                 if (!results.isEmpty()) {
                     terminologyService.saveLaboratoryResults(results);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getArtStatus(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getArtStatuses("Bearer " + token.getId_token());
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<ArtStatus> artStatuses = new ArrayList<ArtStatus>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    artStatuses.add(new ArtStatus(item.getCode(), item.getName()));
+                }
+
+                if (!artStatuses.isEmpty()) {
+                    terminologyService.saveArtStatus(artStatuses);
                 }
             }
 
@@ -1023,13 +1050,28 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<InvestigationResultModel>() {
             @Override
             public void onResponse(Call<InvestigationResultModel> call, Response<InvestigationResultModel> response) {
-                List<Nationality> nationalities = new ArrayList<Nationality>();
-
                 terminologyService.saveInvestiogationResultsToDB(response.body().getContent());
             }
 
             @Override
             public void onFailure(Call<InvestigationResultModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getArtReasons(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<ArtReasonModel> call = service.getArtReasons("Bearer " + token.getId_token());
+        call.enqueue(new Callback<ArtReasonModel>() {
+            @Override
+            public void onResponse(Call<ArtReasonModel> call, Response<ArtReasonModel> response) {
+                terminologyService.saveArtReason(response.body().getContent());
+            }
+
+            @Override
+            public void onFailure(Call<ArtReasonModel> call, Throwable t) {
 
             }
         });
