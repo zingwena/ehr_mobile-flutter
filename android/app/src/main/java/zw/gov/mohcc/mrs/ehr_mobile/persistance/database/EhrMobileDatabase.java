@@ -9,6 +9,8 @@ import androidx.room.TypeConverters;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
@@ -44,6 +46,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtInitiationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
@@ -95,12 +99,17 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
  */
 
 @Database(entities = {User.class, Authorities.class, Country.class, MaritalStatus.class, Person.class,
+
         Facility.class, Religion.class, Nationality.class, TestKit.class, Occupation.class, EducationLevel.class,
+
         HtsModel.class, EntryPoint.class, PurposeOfTest.class, ReasonForNotIssuingResult.class, BloodPressure.class,
+
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
+
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
+
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
-        InvestigationResult.class, ArtStatus.class, ArtReason.class}, version = 32, exportSchema = false)
+        InvestigationResult.class, ArtStatus.class, ArtReason.class, ArtRegistration.class, ArtInitiation.class}, version = 33, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -194,4 +203,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract ArtStatusDao artStatusDao();
 
     public abstract ArtReasonDao artReasonDao();
+
+    public abstract ArtRegistrationDao artRegistrationDao();
+
+    public abstract ArtInitiationDao artInitiationDao();
 }

@@ -22,7 +22,7 @@ PreTest _$PreTestFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PreTestToJson(PreTest instance) => <String, dynamic>{
-      'personId':instance.personId,
+      'personId': instance.personId,
       'htsId': instance.htsId,
       'htsApproach': instance.htsApproach,
       'htsModelId': instance.htsModelId,

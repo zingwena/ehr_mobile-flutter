@@ -10,6 +10,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:intl/intl.dart';
 
 
+import 'art_registration.dart';
+import 'art_registration.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -367,6 +369,16 @@ class OverviewState extends State<Overview> {
                     Registration(visitId, _patient.id)),
           ),
           ),
+
+
+    new RoundedButton(text: "ART REG", onTap: () =>     Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) =>
+        Art_Registration(_patient.id)),
+    ),),
+
+
           new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(

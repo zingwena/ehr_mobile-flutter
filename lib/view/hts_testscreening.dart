@@ -11,6 +11,10 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/services.dart';
 
+import 'dart:async';
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+
 
 import 'edit_demographics.dart';
 
@@ -39,6 +43,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   List<Result>results = List ();
   String testKit = "";
   //Result result = Result.screen();
+  DateTime date1;
+  DateTime date2;
+  DateTime date3;
   Result result = Result('', "");
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
@@ -263,126 +270,40 @@ Future<dynamic> getTestKitsByCount(int count) async {
   }
 
 
-Widget _body(List <dynamic> list){
-
-  
-return  ListView(
-        children: <Widget>[
-          Form(
-            key: _formKey,
-            child: Stack(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          height: 900,
-                          child: Card(
-                            margin: new EdgeInsets.only(
-                                left: 30.0, right: 30.0, top: 50.0, bottom: 5.0),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            elevation: 0.0,
-                            child: new Padding(
-                              padding: new EdgeInsets.all(25.0),
-                              child: new Column(
-                                children: <Widget>[
-                                  new Container(
-                                    child: new Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "Sample :",
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade600,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            width: 100,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(0.0),
-                                              child: Text(
-                                               sample,
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade600,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            width: 100,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  new Container(
-                                    child: new Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "Investigation :",
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade600,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            width: 100,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(0.0),
-                                              child: Text(
-                                                (test),
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade600,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            width: 100,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-
-
-                                   Row(
+  Widget _body(List <dynamic> list) {
+    return ListView(
+      children: <Widget>[
+        Form(
+          key: _formKey,
+          child: Stack(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 900,
+                        child: Card(
+                          margin: new EdgeInsets.only(
+                              left: 30.0, right: 30.0, top: 50.0, bottom: 5.0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          elevation: 0.0,
+                          child: new Padding(
+                            padding: new EdgeInsets.all(25.0),
+                            child: new Column(
+                              children: <Widget>[
+                                new Container(
+                                  child: new Row(
                                     children: <Widget>[
-
                                       Expanded(
                                         child: SizedBox(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
-                                              'Test Kit',
+                                              "Sample :",
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -390,152 +311,15 @@ return  ListView(
                                               ),
                                             ),
                                           ),
-                                          width: 250,
+                                          width: 100,
                                         ),
                                       ),
-                                      Text('Standard Q HIV 1/2 Ab'),
-                                      Radio(
-                                          value: 1,
-                                          groupValue: _testKit,
-                                          activeColor: Colors.blue,
-                                          onChanged: _handleTestKitChange),
-                                      Text('Determine'),
-                                      Radio(
-                                          value: 2,
-                                          groupValue: _testKit,
-                                          activeColor: Colors.blue,
-                                          onChanged: _handleTestKitChange)
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
                                       Expanded(
                                         child: SizedBox(
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
-                                            child: TextFormField(
-                                              controller: TextEditingController(
-                                                  text: selectedDate),
-                                              validator: (value) {
-                                                return value.isEmpty
-                                                    ? 'Enter some text'
-                                                    : null;
-                                              },
-                                              decoration: InputDecoration(
-                                                  labelText: 'Start Date',
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          icon: Icon(Icons.calendar_today),
-                                          color: Colors.blue,
-                                          onPressed: () {
-                                            _selectDate(context);
-                                          }),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: TextFormField(
-                                              controller: TextEditingController(
-                                                  text: selectedStarttime),
-                                              validator: (value) {
-                                                return value.isEmpty
-                                                    ? 'Enter some text'
-                                                    : null;
-                                              },
-                                              decoration: InputDecoration(
-                                                  labelText: 'Start Time',
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          icon: Icon(Icons.calendar_today),
-                                          color: Colors.blue,
-                                          onPressed: () {
-                                            _selectedStarttime(context);
-                                          })
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 28,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: TextFormField(
-                                              controller: TextEditingController(
-                                                  text: selectedReadingDate),
-                                              validator: (value) {
-                                                return value.isEmpty
-                                                    ? 'Enter some text'
-                                                    : null;
-                                              },
-                                              decoration: InputDecoration(
-                                                  labelText: 'Reading Date',
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          icon: Icon(Icons.calendar_today),
-                                          color: Colors.blue,
-                                          onPressed: () {
-                                            _selectedReadingDate(context);
-                                          }),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: TextFormField(
-                                              controller: TextEditingController(
-                                                  text: selectedReadingtime),
-                                              validator: (value) {
-                                                return value.isEmpty
-                                                    ? 'Enter some text'
-                                                    : null;
-                                              },
-                                              decoration: InputDecoration(
-                                                  labelText: 'Reading Time',
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          icon: Icon(Icons.calendar_today),
-                                          color: Colors.blue,
-                                          onPressed: () {
-                                            _selectedReadingtime(context);
-                                          })
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 24,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
                                             child: Text(
-                                              'Result',
+                                              (sample),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -543,78 +327,282 @@ return  ListView(
                                               ),
                                             ),
                                           ),
-                                          width: 250,
+                                          width: 100,
                                         ),
                                       ),
-
-                                      Text('Negative'),
-                                      Radio(
-                                          value: 1,
-                                          groupValue: _result,
-                                          activeColor: Colors.blue,
-                                          onChanged: _handleResultChange),
-                                      Text('Positive'),
-                                      Radio(
-                                          value: 2,
-                                          groupValue: _result,
-                                          activeColor: Colors.blue,
-                                          onChanged: _handleResultChange),
-                                      Text('Inconclusive'),
-                                      Radio(
-                                          value: 3,
-                                          groupValue: _result,
-                                          activeColor: Colors.blue,
-                                          onChanged: _handleResultChange),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 24,
-                                  ),
-                                  Row(
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                new Container(
+                                  child: new Row(
                                     children: <Widget>[
                                       Expanded(
                                         child: SizedBox(
                                           child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: RaisedButton(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Investigation :",
+                                              style: TextStyle(
+                                                color: Colors.grey.shade600,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          width: 100,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: SizedBox(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(0.0),
+                                            child: Text(
+                                              (test),
+                                              style: TextStyle(
+                                                color: Colors.grey.shade600,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          width: 100,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 16,
+                                ),
+
+
+                                Row(
+                                  children: <Widget>[
+
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Test Kit',
+                                            style: TextStyle(
+                                              color: Colors.grey.shade600,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        width: 250,
+                                      ),
+                                    ),
+                                    Text('Standard Q HIV 1/2 Ab'),
+                                    Radio(
+                                        value: 1,
+                                        groupValue: _testKit,
+                                        activeColor: Colors.blue,
+                                        onChanged: _handleTestKitChange),
+                                    Text('Determine'),
+                                    Radio(
+                                        value: 2,
+                                        groupValue: _testKit,
+                                        activeColor: Colors.blue,
+                                        onChanged: _handleTestKitChange)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                /*    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(0.0),
+                                          child: TextFormField(
+                                            controller: TextEditingController(
+                                                text: selectedDate),
+                                            validator: (value) {
+                                              return value.isEmpty
+                                                  ? 'Enter some text'
+                                                  : null;
+                                            },
+                                            decoration: InputDecoration(
+                                                labelText: 'Start Date',
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+                                    IconButton(
+                                        icon: Icon(Icons.calendar_today),
+                                        color: Colors.blue,
+                                        onPressed: () {
+                                          _selectDate(context);
+                                        }),*/
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(0.0),
+                                          child: DateTimePickerFormField(
+                                            inputType: InputType.both,
+                                            format: DateFormat(
+                                                "EEEE, MMMM d, yyyy 'at' h:mma"),
+                                            editable: false,
+                                            decoration: InputDecoration(
+                                                labelText: 'Start Date and Time',
+                                                hasFloatingPlaceholder: false
+                                            ),
+                                            onChanged: (dt) {
+                                              setState(() => date1 = dt);
+                                              print('Selected date: $date1');
+                                            },
+                                          ),
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 28,
+                                ),
+                                Row(
+                                  children: <Widget>[
+
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(0.0),
+                                          child: DateTimePickerFormField(
+                                            inputType: InputType.both,
+                                            format: DateFormat(
+                                                "EEEE, MMMM d, yyyy 'at' h:mma"),
+                                            editable: false,
+                                            decoration: InputDecoration(
+                                                labelText: 'End Date and Time',
+                                                hasFloatingPlaceholder: false
+                                            ),
+                                            onChanged: (dt) {
+                                              setState(() => date2 = dt);
+                                              print('Selected date: $date2');
+                                            },
+                                          ),
+                                        ),
+                                        width: 100,
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Result',
+                                            style: TextStyle(
+                                              color: Colors.grey.shade600,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        width: 250,
+                                      ),
+                                    ),
+                                    Text('Negative'),
+                                    Radio(
+                                        value: 1,
+                                        groupValue: _result,
+                                        activeColor: Colors.blue,
+                                        onChanged: _handleResultChange),
+                                    Text('Positive'),
+                                    Radio(
+                                        value: 2,
+                                        groupValue: _result,
+                                        activeColor: Colors.blue,
+                                        onChanged: _handleResultChange),
+                                    Text('Inconclusive'),
+                                    Radio(
+                                        value: 3,
+                                        groupValue: _result,
+                                        activeColor: Colors.blue,
+                                        onChanged: _handleResultChange),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: RaisedButton(
                                               elevation: 4.0,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                   BorderRadius.circular(5.0)),
                                               color: Colors.blue,
-                                              padding: const EdgeInsets.all(20.0),
+                                              padding: const EdgeInsets.all(
+                                                  20.0),
                                               child: Text(
                                                 "Save",
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.w500),
+                                                    fontWeight: FontWeight
+                                                        .w500),
                                               ),
-                                                onPressed: () async {
-                                                  if (_formKey.currentState.validate()) {
-                                                    _formKey.currentState.save();
-                                                    if (_formIsValid) {
-                                                      print('FORM IS VALID FORM IS VALID '+ _formIsValid.toString());
+                                              onPressed: () async {
+                                                if (_formKey.currentState
+                                                    .validate()) {
+                                                  _formKey.currentState.save();
+                                                  if (_formIsValid) {
+                                                    print(
+                                                        'FORM IS VALID FORM IS VALID ' +
+                                                            _formIsValid
+                                                                .toString());
+                                                    print('DATE 1>>>>>>>>>>>>>' + date1.toString());
 
-                                                      LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(id, "laboratoryInvestigationId", startTime, readingTime, result, visit_id);
-                                                      print('************************* SAVE LAB TEST ${labInvestTest.toString()}');
+                                                    LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
+                                                        id,
+                                                        "laboratoryInvestigationId",
+                                                        date1, date2,
+                                                        result, visit_id);
+                                                    print(
+                                                        '************************* SAVE LAB TEST ${labInvestTest
+                                                            .toString()}');
 
 
-                                                       saveLabInvestigationTest(labInvestTest);
+                                                    saveLabInvestigationTest(
+                                                        labInvestTest);
 
-                                                      Navigator.push(context, MaterialPageRoute(
-                                                          builder:(context)=> PatientPostTest()
-                                                      ));
-                                                    } else {
-                                                      setState(() {
-                                                        _showError = true;
-                                                      });
-                                                    }
-
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (
+                                                                context) =>
+                                                                PatientPostTest()
+                                                        ));
+                                                  } else {
+                                                    setState(() {
+                                                      _showError = true;
+                                                    });
                                                   }
                                                 }
-                                             /*   onPressed: () {
+                                              }
+                                            /*   onPressed: () {
                                                 print(">>>>>>>>>>>>>>> save button pressed");
-                                                  *//*labInvestTest.result  = result;*//*
+                                                  */ /*labInvestTest.result  = result;*/ /*
                                                   labInvestTest.startdate = date;
                                                   labInvestTest.starttime = startTime;
                                                   labInvestTest.readingdate = readingDate;
@@ -628,57 +616,56 @@ return  ListView(
 //                                                  builder: (context) =>
 //                                                      LoginScreen()),
 //                                            ),
-                                            ),
                                           ),
-                                          width: 100,
                                         ),
+                                        width: 100,
                                       ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: RaisedButton(
-                                              elevation: 4.0,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius.circular(5.0)),
-                                              color: Colors.red,
-                                              padding: const EdgeInsets.all(20.0),
-                                              child: Text(
-                                                "Cancel",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w500),
-                                              ),
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: RaisedButton(
+                                            elevation: 4.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(5.0)),
+                                            color: Colors.red,
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
 
-                                            ),
                                           ),
-                                          width: 100,
                                         ),
+                                        width: 100,
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      ),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      );
-  
-  
-}
-  @override
+        ),
+      ],
+    );
+  }
+
+    @override
   Widget build(BuildContext context) {
     var list=this._testKits ;
     print("+++++++++++  $list");

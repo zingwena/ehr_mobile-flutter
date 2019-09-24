@@ -18,7 +18,7 @@ HtsRegistration _$HtsRegistrationFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$HtsRegistrationToJson(HtsRegistration instance) =>
     <String, dynamic>{
-      'personId':instance.personId,
+      'personId': instance.personId,
       'visitId': instance.visitId,
       'dateOfHivTest':
           const CustomDateTimeConverter().toJson(instance.dateOfHivTest),
