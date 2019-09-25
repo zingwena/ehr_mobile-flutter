@@ -23,26 +23,13 @@ Art_Registration(this.patientId);
 class _Art_Registration extends State<Art_Registration> {
   final _formKey = GlobalKey<FormState>();
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
- //String oiArtNumber;
   String personId;
   DateTime dateOfEnrolmentIntoCare;
   DateTime dateOfHivTest;
   String oiArtNumber;
   var selectedDate, selectedDateOfEnrollment;
   bool _formIsValid = true;
- /* int _selecType = 0;
-  String clientType = "";
-  String _entryPoint;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
 
-
-  List<EntryPoint> _entryPointList = List();
-
-  bool maritalStatusIsValid=false;
-
-  List<DropdownMenuItem<String>>
-  _dropDownMenuItemsMaritalStatus;*/
 
 
   @override
@@ -53,7 +40,6 @@ class _Art_Registration extends State<Art_Registration> {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     dateOfHivTest = DateTime.now();
     dateOfEnrolmentIntoCare = DateTime.now();
-    oiArtNumber = " ";
     super.initState();
   }
 
@@ -311,6 +297,12 @@ class _Art_Registration extends State<Art_Registration> {
                                                                 fontWeight: FontWeight.w500),
                                                           ),
                                                           onPressed: () async {
+                                                          if (_formKey.currentState.validate()) {
+                                                            _formKey
+                                                                .currentState
+                                                                .save();
+                                                          }
+
                                                                 ArtRegistration artRegistrationDetails = ArtRegistration(widget.patientId, dateOfEnrolmentIntoCare, dateOfHivTest, oiArtNumber);
                                                                 print('*************************artReg number ${artRegistrationDetails.oiArtNumber}');
                                                                 await artRegistration(

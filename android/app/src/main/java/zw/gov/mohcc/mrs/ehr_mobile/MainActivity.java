@@ -119,12 +119,13 @@ public class MainActivity extends FlutterActivity {
                 Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
+                    System.out.println("ARGUMENTS FROM FLUTTER PATIENT"+ args);
 
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
 
                     Person person = new Person(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
-
-                    person.setId(patientDto.getPersonId());
+                    String personId = UUID.randomUUID().toString();
+                    person.setId(personId);
                     person.setNationalId(patientDto.getNationalId());
                     person.setReligionId(patientDto.getReligion());
                     person.setMaritalStatusId(patientDto.getMaritalStatus());
@@ -143,9 +144,10 @@ public class MainActivity extends FlutterActivity {
                     person.setAddress(patientDto.getAddress());
                     person.setOccupationId(patientDto.getOccupation());
                     person.setBirthDate(patientDto.getBirthDate());
-
                     ehrMobileDatabase.personDao().createPatient(person);
-                    result.success(person.getId());
+                    Person person1 = ehrMobileDatabase.personDao().findPatientById(personId);
+                    System.out.println("PERSON PERSON PERSON"+ person1.toString());
+                    result.success(person1.getId());
 
                     System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.personDao().findPatientById(person.getId()));
                 }
@@ -583,14 +585,36 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("saveLabInvestTest")) {
                             try {
+                                System.out.println(">>>>>>>>>>>>>>>>>>>>" + arguments);
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
-
                                 String labInvestigationId = UUID.randomUUID().toString();
                                 labInvestTest.setId(labInvestigationId);
                                 ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
                                 LaboratoryInvestigationTest laboratoryInvestigationTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(labInvestigationId);
-                                System.out.println("LABORATORY TEST LABORATORY TEST" + laboratoryInvestigationTest.getResultId());
+                                System.out.println("LABORATORY TEST LABORATORY TEST" + laboratoryInvestigationTest.toString());
                                 System.out.println("List of LabInvestigations" + ehrMobileDatabase.labInvestTestdao().findAll());
+                                String labInvetTestId = laboratoryInvestigationTest.getId();
+                                result.success(labInvetTestId);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getTestKit")) {
+                            try {
+                                LaboratoryInvestigationTest labInvestTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(arguments);
+                                String testkit = labInvestTest.getTestkitId();
+                                result.success(testkit);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getStartTime")) {
+                            try {
+                                System.out.println("ARGUMENTS TO GET start time HERE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ arguments);
+                                LaboratoryInvestigationTest labInvestTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(arguments);
+                                String starttime = labInvestTest.getStartTime().toString();
+                                System.out.println("START TIME HERE HERE "+ starttime);
+                                result.success(starttime);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }

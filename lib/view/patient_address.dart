@@ -376,7 +376,7 @@ class _PatientAddressState extends State<PatientAddress> {
 
 
   Future<void> registerPatient(Person patient)async{
-    int response;
+    String response;
     var patientResponse;
     try {
       String jsonPatient = jsonEncode(patient.toJson());

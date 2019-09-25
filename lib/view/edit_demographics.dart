@@ -842,7 +842,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   Future<void> registerPatient(Person person)async{
-    int response;
+    String response;
     String patientResponse;
     try {
       String jsonPatient = jsonEncode(person.toJson());
