@@ -5,10 +5,12 @@ import 'package:ehr_mobile/model/art_reason.dart';
 import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/person.dart';
 
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/view/art_registration.dart';
 import 'package:ehr_mobile/view/home_page.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'rounded_button.dart';
 
 import 'package:flutter/material.dart';
@@ -16,6 +18,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class Art_Initiation extends StatefulWidget {
+
+  String patientId ;
+  Art_Initiation(this.patientId);
 
   @override
   State createState() {
@@ -30,19 +35,24 @@ class _Art_Initiation extends State<Art_Initiation> {
 
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
 
-  int visitId;
-  int patientId;
+  //int visitId;
+  String patientId;
+  Person patient;
 
-  var selectedDate;
+ // var selectedDate;
   bool _showError = false;
   bool _arvCombinationRegimenIsValid = false;
   bool _artReasonIsValid = false;
   bool _formIsValid = false;
   String _arvCombinationRegimenError = "Select Arv Regimen";
   String _artReasonError = "Select Art Reason";
-  DateTime date;
-  int _selecType = 0;
-  String clientType = "";
+  String artRegimenId;
+
+  int _line = 0;
+  String line="";
+ // DateTime date;
+ // int _selecType = 0;
+ // String clientType = "";
 
 
 
@@ -62,19 +72,16 @@ class _Art_Initiation extends State<Art_Initiation> {
   List<ArtReason> _artReasonList = List();
   String _currentArtReason;
 
-
-
-
-
-
   @override
   void initState() {
 
 
     getArtReasons();
     getArvCombinationregimens();
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
+
+  //  patientId = patient.id;
+    /*selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    date = DateTime.now();*/
     super.initState();
   }
 
@@ -94,9 +101,6 @@ class _Art_Initiation extends State<Art_Initiation> {
 
         _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
 
-
-        /*_dropDownMenuItemsEntryPoint =
-            getDropDownMenuItemsIdentifiedEntryPoint();*/
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -123,9 +127,6 @@ class _Art_Initiation extends State<Art_Initiation> {
 
         _dropDownMenuItemsArvCombinationRegimen = getDropDownMenuItemsIdentifiedArvCombinationRegimen();
 
-
-        /*_dropDownMenuItemsEntryPoint =
-            getDropDownMenuItemsIdentifiedEntryPoint();*/
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -133,7 +134,35 @@ class _Art_Initiation extends State<Art_Initiation> {
   }
 
 
-  Future<Null> _selectDate(BuildContext context) async {
+
+  void _handleLineChange(int value) {
+    print("Line : $value");
+    setState(() {
+      _line = value;
+
+      switch (_line) {
+        case 1:
+          line = "FIRST LINE";
+          print("line value : $line");
+
+          break;
+        case 2:
+          line = "SECOND LINE";
+          print("line value : $line");
+
+          break;
+
+        case 3:
+          line = "THIRD LINE";
+          print("line value : $line");
+
+          break;
+      }
+    });
+  }
+
+
+ /* Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -164,7 +193,7 @@ class _Art_Initiation extends State<Art_Initiation> {
           break;
       }
     });
-  }
+  }*/
 
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArtReason() {
@@ -257,7 +286,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         height: 20.0,
                                                       ),
 
-                                                      Row(
+                                                     /* Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
@@ -311,7 +340,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                             },
                                                           ),
                                                         ],
-                                                      ),
+                                                      ),*/
                                                      /* Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -334,7 +363,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                               groupValue: _selecType,
                                                               onChanged: _handleHtsTypeChange)
                                                         ],
-                                                      ),*/
+                                                      ),
 
                                                       Row(
                                                         children: <Widget>[
@@ -362,6 +391,36 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                               value: 2,
                                                               groupValue: _selecType,
                                                               onChanged: _handleHtsTypeChange)
+                                                        ],
+                                                      ),*/
+
+
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(30.0),
+                                                                child: Text('Please Select'),
+                                                              ),
+                                                              width: 250,
+                                                            ),
+                                                          ),
+                                                          Text('First Line'),
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: _line,
+                                                              onChanged: _handleLineChange),
+                                                          Text('2nd Line'),
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: _line,
+                                                              onChanged: _handleLineChange),
+                                                          Text('3rd Line'),
+                                                          Radio(
+                                                              value: 3,
+                                                              groupValue: _line,
+                                                              onChanged: _handleLineChange)
                                                         ],
                                                       ),
 
@@ -470,6 +529,19 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
 
 
+                                                          onPressed: () async {
+                                                            ArtInitiation artInitiationDetails = ArtInitiation(patientId, line, _currentArvCombinationRegimen, _currentArtReason);
+                                                            print('*************************artReg number ${artInitiationDetails.line}');
+                                                            await artInitiation(
+                                                                artInitiationDetails);
+
+                                                            await artInitiation(artInitiationDetails);
+
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+
+
+                                                          },
+
                                                         ),
                                                       ),
 
@@ -512,7 +584,7 @@ class _Art_Initiation extends State<Art_Initiation> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Art_Initiation()),
+                    Art_Initiation(widget.patientId)),
           ),
           ),
           new RoundedButton(text: "Art Registration", onTap: () =>     Navigator.push(
@@ -536,7 +608,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
 
 
-  Future<void> registration(ArtInitiation artInitiation) async {
+  Future<void> artInitiation(ArtInitiation artInitiation) async {
     int id;
     print('*************************art initiation ${artInitiation.toString()}');
     try {
@@ -546,6 +618,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
      /* PersonInvestigation personInvestigation = new PersonInvestigation(
           patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);*/
+      print(''+ patientid);
       await artChannel.invokeMethod('saveArtInitiation',jsonEncode(artInitiation));
 
       print('---------------------saved file id  $id');

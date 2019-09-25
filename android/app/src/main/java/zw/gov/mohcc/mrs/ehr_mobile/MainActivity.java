@@ -815,13 +815,13 @@ public class MainActivity extends FlutterActivity {
             artInitiation.setId(UUID.randomUUID().toString());
             artInitiation.setPersonId(artInitiation.getPersonId());
             artInitiation.setArtRegimenId(artInitiation.getArtRegimenId());
-            artInitiation.setClientEligibility(artInitiation.getClientEligibility());
-            artInitiation.setDateInitiatedOnArt(artInitiation.getDateInitiatedOnArt());
-            artInitiation.setDateOfEnrolmentIntoCare(artInitiation.getDateOfEnrolmentIntoCare());
-            artInitiation.setClientType(artInitiation.getClientType());
+           // artInitiation.setClientEligibility(artInitiation.getClientEligibility());
+           // artInitiation.setDateInitiatedOnArt(artInitiation.getDateInitiatedOnArt());
+           // artInitiation.setDateOfEnrolmentIntoCare(artInitiation.getDateOfEnrolmentIntoCare());
+           // artInitiation.setClientType(artInitiation.getClientType());
             artInitiation.setLine(artInitiation.getLine());
             artInitiation.setArtReasonId(artInitiation.getArtReasonId());
-            artInitiation.setArtStatusId(artInitiation.getArtStatusId());
+           // artInitiation.setArtStatusId(artInitiation.getArtStatusId());
             ehrMobileDatabase.artInitiationDao().createArtInitiation(artInitiation);
 
             String artInitiationFromDB= ehrMobileDatabase.artInitiationDao().listArtInitiation().toString();

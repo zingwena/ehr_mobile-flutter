@@ -8,21 +8,21 @@ part 'artInitiation.g.dart';
 @CustomDateTimeConverter()
 @JsonSerializable(explicitToJson: true)
 class ArtInitiation{
-  String id;
+
   String personId;
-  DateTime dateOfEnrolmentIntoCare;
-  DateTime dateInitiatedOnArt;
-  String clientType;
-  String clientEligibility;
+ // DateTime dateOfEnrolmentIntoCare;
+ // DateTime dateInitiatedOnArt;
+ // String clientType;
+ // String clientEligibility;
   String line;
   String artRegimenId;
   String artReasonId;
-  String artStatusId;
+  //String artStatusId;
 
 
 
 
-  ArtInitiation(this.id,this.personId, this.dateOfEnrolmentIntoCare, this.dateInitiatedOnArt,this.clientType,this.clientEligibility,this.line,this.artRegimenId,this.artReasonId,this.artStatusId);
+  ArtInitiation(this.personId, this.line,this.artRegimenId,this.artReasonId);
 
 
   factory ArtInitiation.fromJson(Map<String, dynamic> json) =>
@@ -46,7 +46,7 @@ class ArtInitiation{
 
   @override
   String toString() {
-    return 'ArtInitiation{id: $id, personId: $personId, dateOfEnrolmentIntoCare: $dateOfEnrolmentIntoCare, dateInitiatedOnArt: $dateInitiatedOnArt, clientType: $clientType, clientEligibility: $clientEligibility, line: $line, artRegimenId: $artRegimenId, artReasonId: $artReasonId, artStatusId: $artStatusId}';
+    return 'ArtInitiation{personId: $personId, line: $line, artRegimenId: $artRegimenId, artReasonId: $artReasonId}';
   }
 
 
