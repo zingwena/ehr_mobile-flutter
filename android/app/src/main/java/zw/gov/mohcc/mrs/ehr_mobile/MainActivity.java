@@ -635,6 +635,16 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("getLabInvestigations")) {
+                            try {
+                                List<LaboratoryInvestigationTest> laboratoryInvestigationTests = ehrMobileDatabase.labInvestTestdao().getLaboratoryInvestTests();
+                                String list = gson.toJson(laboratoryInvestigationTests);
+                                result.success(list);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
                         if (methodCall.method.equals("getTestKit")) {
                             try {
                                 LaboratoryInvestigationTest labInvestTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(arguments);

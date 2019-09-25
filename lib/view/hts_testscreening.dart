@@ -561,7 +561,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(labInvestId)
+                                                                Hts_Result()
                                                         ));
                                                   } else {
                                                     setState(() {
