@@ -310,7 +310,7 @@ class _Art_Registration extends State<Art_Registration> {
 
                                                                 await artRegistration(artRegistrationDetails);
 
-                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Art_Initiation()));
+                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Art_Initiation(widget.patientId)));
 
 
                                                           },
@@ -377,7 +377,7 @@ class _Art_Registration extends State<Art_Registration> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Art_Initiation()),
+                    Art_Initiation(widget.patientId)),
           ),),
 
 

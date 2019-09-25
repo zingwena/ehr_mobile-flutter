@@ -371,7 +371,7 @@ class OverviewState extends State<Overview> {
           ),
 
 
-    new RoundedButton(text: "ART REG", onTap: () =>     Navigator.push(
+    new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
     context,
     MaterialPageRoute(
     builder: (context) =>

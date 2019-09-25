@@ -1,10 +1,16 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/artInitiation.dart';
+import 'package:ehr_mobile/model/art_reason.dart';
+import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/person.dart';
 
 import 'package:ehr_mobile/model/personInvestigation.dart';
+import 'package:ehr_mobile/view/art_registration.dart';
 import 'package:ehr_mobile/view/home_page.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'rounded_button.dart';
 
 import 'package:flutter/material.dart';
@@ -12,6 +18,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class Art_Initiation extends StatefulWidget {
+
+  String patientId ;
+  Art_Initiation(this.patientId);
 
   @override
   State createState() {
@@ -25,87 +34,135 @@ class _Art_Initiation extends State<Art_Initiation> {
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
 
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
-  int visitId;
-  int patientId;
 
-  var selectedDate;
+  //int visitId;
+  String patientId;
+  Person patient;
+
+ // var selectedDate;
   bool _showError = false;
-  bool _entryPointIsValid = false;
+  bool _arvCombinationRegimenIsValid = false;
+  bool _artReasonIsValid = false;
   bool _formIsValid = false;
-  String _entryPointError = "Select Entry Point";
-  DateTime date;
-  int _selecType = 0;
-  String clientType = "";
-  String _entryPoint;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
+  String _arvCombinationRegimenError = "Select Arv Regimen";
+  String _artReasonError = "Select Art Reason";
+  String artRegimenId;
 
-  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
-  List<EntryPoint> _entryPointList = List();
-
-  bool maritalStatusIsValid=false;
-
-  List<DropdownMenuItem<String>>
-  _dropDownMenuItemsMaritalStatus,
-      _dropDownMenuItemsCountry;
-
-  String  _currentMaritalStatus;
+  int _line = 0;
+  String line="";
+ // DateTime date;
+ // int _selecType = 0;
+ // String clientType = "";
 
 
-  List _maritalStatusList = [
-    "ARV Regimen Option 1",
-    "ARV Regimen Option 2",
-    "ARV Regimen Option 3",
 
-  ];
+  String _arvCombinationRegimen;
+  List arvCombinationRegimens = List();
+  List _dropDownListArvCombinationRegimens = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsArvCombinationRegimen;
+  List<ArvCombinationRegimen> _arvCombinationRegimenList = List();
+  String _currentArvCombinationRegimen;
 
-  String _maritalStatusError="Select Marital status";
+
+
+  String _artReason;
+  List artReasons = List();
+  List _dropDownListArtReasons = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsArtReason;
+  List<ArtReason> _artReasonList = List();
+  String _currentArtReason;
 
   @override
   void initState() {
 
 
-    getFacilities();
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
-    _dropDownMenuItemsMaritalStatus = getDropDownMenuItemsIdentifiedMaritalStatus();
+    getArtReasons();
+    getArvCombinationregimens();
 
-    _currentMaritalStatus = _dropDownMenuItemsMaritalStatus[0].value;
-
+  //  patientId = patient.id;
+    /*selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    date = DateTime.now();*/
     super.initState();
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedMaritalStatus() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String maritalStatus in _maritalStatusList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(
-          DropdownMenuItem(value: maritalStatus, child: Text(maritalStatus)));
-    }
-    return items;
-  }
 
-  Future<void> getFacilities() async {
+  Future<void> getArtReasons() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getEntryPointsOptions');
+      response = await dataChannel.invokeMethod('getArtReasonOptions');
       setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = EntryPoint.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
+        _artReason = response;
+        artReasons = jsonDecode(_artReason);
+        _dropDownListArtReasons = ArtReason.mapFromJson(artReasons);
+        _dropDownListArtReasons.forEach((e) {
+          _artReasonList.add(e);
+
         });
-        _dropDownMenuItemsEntryPoint =
-            getDropDownMenuItemsIdentifiedEntryPoint();
+
+        _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
+
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+
+  Future<void> getArvCombinationregimens() async {
+    String response;
+    try {
+      response = await dataChannel.invokeMethod('getArvCombinationRegimenOptions');
+      setState(() {
+
+        _arvCombinationRegimen=response;
+        arvCombinationRegimens = jsonDecode(_arvCombinationRegimen);
+        _dropDownListArvCombinationRegimens = ArvCombinationRegimen.mapFromJson(arvCombinationRegimens);
+
+        _dropDownListArvCombinationRegimens.forEach((e) {
+          _arvCombinationRegimenList.add(e);
+
+        });
+
+        _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
+
+        _dropDownMenuItemsArvCombinationRegimen = getDropDownMenuItemsIdentifiedArvCombinationRegimen();
+
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+
+
+  void _handleLineChange(int value) {
+    print("Line : $value");
+    setState(() {
+      _line = value;
+
+      switch (_line) {
+        case 1:
+          line = "FIRST LINE";
+          print("line value : $line");
+
+          break;
+        case 2:
+          line = "SECOND LINE";
+          print("line value : $line");
+
+          break;
+
+        case 3:
+          line = "THIRD LINE";
+          print("line value : $line");
+
+          break;
+      }
+    });
+  }
+
+
+ /* Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -136,18 +193,33 @@ class _Art_Initiation extends State<Art_Initiation> {
           break;
       }
     });
-  }
+  }*/
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArtReason() {
     List<DropdownMenuItem<String>> items = new List();
-    for (EntryPoint entryPoint in _entryPointList) {
+    for (ArtReason artReason in _artReasonList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: entryPoint.code, child: Text(entryPoint.name)));
+          value: artReason.code, child: Text(artReason.name)));
     }
     return items;
   }
+
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArvCombinationRegimen() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (ArvCombinationRegimen arvCombinationRegimen in _arvCombinationRegimenList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: arvCombinationRegimen.code, child: Text(arvCombinationRegimen.name)));
+    }
+    return items;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +286,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         height: 20.0,
                                                       ),
 
-                                                      Row(
+                                                     /* Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
@@ -268,8 +340,8 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                             },
                                                           ),
                                                         ],
-                                                      ),
-                                                      Row(
+                                                      ),*/
+                                                     /* Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
@@ -320,6 +392,36 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                               groupValue: _selecType,
                                                               onChanged: _handleHtsTypeChange)
                                                         ],
+                                                      ),*/
+
+
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(30.0),
+                                                                child: Text('Please Select'),
+                                                              ),
+                                                              width: 250,
+                                                            ),
+                                                          ),
+                                                          Text('First Line'),
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: _line,
+                                                              onChanged: _handleLineChange),
+                                                          Text('2nd Line'),
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: _line,
+                                                              onChanged: _handleLineChange),
+                                                          Text('3rd Line'),
+                                                          Radio(
+                                                              value: 3,
+                                                              groupValue: _line,
+                                                              onChanged: _handleLineChange)
+                                                        ],
                                                       ),
 
                                                       Container(
@@ -333,15 +435,15 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           padding: const EdgeInsets.all(0.0),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding:
-                                                            EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            padding: EdgeInsets.symmetric(
+                                                                vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
+                                                              hint: Text('Select Art Combination Regimen'),
                                                               icon: Icon(Icons.keyboard_arrow_down),
-                                                              hint: Text("ARV Regimen"),
                                                               iconEnabledColor: Colors.black,
-                                                              value: _currentMaritalStatus,
-                                                              items: _dropDownMenuItemsMaritalStatus,
-                                                              onChanged: changedDropDownItemMaritalStatus,
+                                                              value: _currentArvCombinationRegimen,
+                                                              items: _dropDownMenuItemsArvCombinationRegimen,
+                                                              onChanged: changedDropDownItemArvCombinationRegimen,
                                                             ),
                                                           ),
                                                           borderSide: BorderSide(
@@ -351,6 +453,14 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                           onPressed: () {},
                                                         ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10.0,
+                                                      ),
+                                                      !_showError
+                                                          ? SizedBox.shrink()
+                                                          : Text( _arvCombinationRegimenError ?? "",
+                                                        style: TextStyle(color: Colors.red),
                                                       ),
 
                                                       SizedBox(
@@ -368,15 +478,17 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           padding: const EdgeInsets.all(0.0),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding:
-                                                            EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            padding: EdgeInsets.symmetric(
+                                                                vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
-                                                                icon: Icon(Icons.keyboard_arrow_down),
-                                                                hint: Text("Reason"),
-                                                                iconEnabledColor: Colors.black,
-                                                                value: _currentMaritalStatus,
-                                                                items: _dropDownMenuItemsMaritalStatus,
-                                                                onChanged: changedDropDownItemMaritalStatus
+                                                              hint: Text('Reason'),
+                                                              icon: Icon(Icons.keyboard_arrow_down),
+                                                              iconEnabledColor: Colors.black,
+                                                              value: _currentArtReason,
+                                                              items: _dropDownMenuItemsArtReason,
+                                                              onChanged: changedDropDownItemArtReason,
+
+
                                                             ),
                                                           ),
                                                           borderSide: BorderSide(
@@ -386,6 +498,14 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                           onPressed: () {},
                                                         ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10.0,
+                                                      ),
+                                                      !_showError
+                                                          ? SizedBox.shrink()
+                                                          : Text( _artReasonError ?? "",
+                                                        style: TextStyle(color: Colors.red),
                                                       ),
 
                                                       SizedBox(
@@ -408,6 +528,19 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                                 fontWeight: FontWeight.w500),
                                                           ),
 
+
+                                                          onPressed: () async {
+                                                            ArtInitiation artInitiationDetails = ArtInitiation(patientId, line, _currentArvCombinationRegimen, _currentArtReason);
+                                                            print('*************************artReg number ${artInitiationDetails.line}');
+                                                            await artInitiation(
+                                                                artInitiationDetails);
+
+                                                            await artInitiation(artInitiationDetails);
+
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+
+
+                                                          },
 
                                                         ),
                                                       ),
@@ -451,7 +584,7 @@ class _Art_Initiation extends State<Art_Initiation> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HomePage()),
+                    Art_Initiation(widget.patientId)),
           ),
           ),
           new RoundedButton(text: "Art Registration", onTap: () =>     Navigator.push(
@@ -473,32 +606,47 @@ class _Art_Initiation extends State<Art_Initiation> {
     );
   }
 
-  void changedDropDownItemMaritalStatus(String selectedMaritalStatus) {
-    setState(() {
-      _currentMaritalStatus = selectedMaritalStatus;
-      maritalStatusIsValid=!maritalStatusIsValid;
-      _maritalStatusError=null;
-    });
-  }
 
 
-  Future<void> registration(HtsRegistration htsRegistration) async {
+  Future<void> artInitiation(ArtInitiation artInitiation) async {
     int id;
-    print('*************************htsType ${htsRegistration.toString()}');
+    print('*************************art initiation ${artInitiation.toString()}');
     try {
       id = await artChannel.invokeMethod(
-          'htsRegistration', jsonEncode(htsRegistration));
+          'saveArtInitiation', jsonEncode(artInitiation));
       String patientid = patientId.toString();
-      DateTime date = htsRegistration.dateOfHivTest;
-      PersonInvestigation personInvestigation = new PersonInvestigation(
-          patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-      await artChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
+
+     /* PersonInvestigation personInvestigation = new PersonInvestigation(
+          patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);*/
+      print(''+ patientid);
+      await artChannel.invokeMethod('saveArtInitiation',jsonEncode(artInitiation));
 
       print('---------------------saved file id  $id');
     } catch (e) {
       print('--------------something went wrong  $e');
     }
 
+  }
+
+  void changedDropDownItemArtReason(String selectedArtReason) {
+    setState(() {
+
+      _currentArtReason = selectedArtReason;
+     _artReasonError = null;
+      _artReasonIsValid=! _artReasonIsValid;
+
+    });
+  }
+
+  void changedDropDownItemArvCombinationRegimen(String selectedArvCombinationRegimen) {
+    setState(() {
+
+      _currentArvCombinationRegimen = selectedArvCombinationRegimen;
+      _arvCombinationRegimenError = null;
+
+      _arvCombinationRegimenIsValid=! _arvCombinationRegimenIsValid;
+
+    });
   }
 }
 

@@ -15,30 +15,27 @@ public class ArtInitiation extends BaseEntity{
     @ColumnInfo(name = "personId")
     private String personId;
 
-    @TypeConverters(DateConverter.class)
+   /* @TypeConverters(DateConverter.class)
     private Date dateOfEnrolmentIntoCare;
 
     @TypeConverters(DateConverter.class)
     private Date dateInitiatedOnArt;
 
     private String clientType;
-    private String clientEligibility;
+    private String clientEligibility;*/
     private String line;
-    private String artRegimen;
-    private String reason;
+    private String artRegimenId;
+    private String artReasonId;
+   // private String artStatusId;
 
     public ArtInitiation() {
     }
 
-    public ArtInitiation(@NonNull String id, String personId, Date dateOfEnrolmentIntoCare, Date dateInitiatedOnArt, String clientType, String clientEligibility, String line, String artRegimen, String reason) {
+    public ArtInitiation(String personId, String line, String artRegimenId, String artReasonId) {
         this.personId = personId;
-        this.dateOfEnrolmentIntoCare = dateOfEnrolmentIntoCare;
-        this.dateInitiatedOnArt = dateInitiatedOnArt;
-        this.clientType = clientType;
-        this.clientEligibility = clientEligibility;
         this.line = line;
-        this.artRegimen = artRegimen;
-        this.reason = reason;
+        this.artRegimenId = artRegimenId;
+        this.artReasonId = artReasonId;
     }
 
     public String getPersonId() {
@@ -49,38 +46,6 @@ public class ArtInitiation extends BaseEntity{
         this.personId = personId;
     }
 
-    public Date getDateOfEnrolmentIntoCare() {
-        return dateOfEnrolmentIntoCare;
-    }
-
-    public void setDateOfEnrolmentIntoCare(Date dateOfEnrolmentIntoCare) {
-        this.dateOfEnrolmentIntoCare = dateOfEnrolmentIntoCare;
-    }
-
-    public Date getDateInitiatedOnArt() {
-        return dateInitiatedOnArt;
-    }
-
-    public void setDateInitiatedOnArt(Date dateInitiatedOnArt) {
-        this.dateInitiatedOnArt = dateInitiatedOnArt;
-    }
-
-    public String getClientType() {
-        return clientType;
-    }
-
-    public void setClientType(String clientType) {
-        this.clientType = clientType;
-    }
-
-    public String getClientEligibility() {
-        return clientEligibility;
-    }
-
-    public void setClientEligibility(String clientEligibility) {
-        this.clientEligibility = clientEligibility;
-    }
-
     public String getLine() {
         return line;
     }
@@ -89,33 +54,29 @@ public class ArtInitiation extends BaseEntity{
         this.line = line;
     }
 
-    public String getArtRegimen() {
-        return artRegimen;
+    public String getArtRegimenId() {
+        return artRegimenId;
     }
 
-    public void setArtRegimen(String artRegimen) {
-        this.artRegimen = artRegimen;
+    public void setArtRegimenId(String artRegimenId) {
+        this.artRegimenId = artRegimenId;
     }
 
-    public String getReason() {
-        return reason;
+    public String getArtReasonId() {
+        return artReasonId;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setArtReasonId(String artReasonId) {
+        this.artReasonId = artReasonId;
     }
 
     @Override
     public String toString() {
         return "ArtInitiation{" +
                 "personId='" + personId + '\'' +
-                ", dateOfEnrolmentIntoCare=" + dateOfEnrolmentIntoCare +
-                ", dateInitiatedOnArt=" + dateInitiatedOnArt +
-                ", clientType='" + clientType + '\'' +
-                ", clientEligibility='" + clientEligibility + '\'' +
                 ", line='" + line + '\'' +
-                ", artRegimen='" + artRegimen + '\'' +
-                ", reason='" + reason + '\'' +
+                ", artRegimenId='" + artRegimenId + '\'' +
+                ", artReasonId='" + artReasonId + '\'' +
                 '}';
     }
 }
