@@ -17,6 +17,7 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     private Date endTime;
     private String visitId;
     private String resultId;
+    private String testkitId;
 
     public String getVisitId() {
         return visitId;
@@ -56,5 +57,25 @@ public class LaboratoryInvestigationTest extends BaseEntity {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getTestkitId() {
+        return testkitId;
+    }
+
+    public void setTestkitId(String testkitId) {
+        this.testkitId = testkitId;
+    }
+
+    @Override
+    public String toString() {
+        return "LaboratoryInvestigationTest{" +
+                "laboratoryInvestigationId='" + laboratoryInvestigationId + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", visitId='" + visitId + '\'' +
+                ", resultId='" + resultId + '\'' +
+                ", testkitId='" + testkitId + '\'' +
+                '}';
     }
 }

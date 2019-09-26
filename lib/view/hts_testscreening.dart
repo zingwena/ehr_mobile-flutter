@@ -5,6 +5,8 @@ import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
+import 'package:ehr_mobile/view/hts_result.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -50,7 +52,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
-  LaboratoryInvestigationTest labInvestTest;
+  String labInvestId;
   String _identifier;
   String test;
   String sample;
@@ -219,10 +221,10 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       switch (_testKit) {
         case 1:
-          testKit = "Positive";
+          testKit = "Standard Q HIV 1/2 Ab";
           break;
         case 2:
-          testKit = "Negative";
+          testKit = "Determine";
           break;
       }
     });
@@ -417,32 +419,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 ),
                                 Row(
                                   children: <Widget>[
-                                /*    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: TextFormField(
-                                            controller: TextEditingController(
-                                                text: selectedDate),
-                                            validator: (value) {
-                                              return value.isEmpty
-                                                  ? 'Enter some text'
-                                                  : null;
-                                            },
-                                            decoration: InputDecoration(
-                                                labelText: 'Start Date',
-                                                border: OutlineInputBorder()),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                    IconButton(
-                                        icon: Icon(Icons.calendar_today),
-                                        color: Colors.blue,
-                                        onPressed: () {
-                                          _selectDate(context);
-                                        }),*/
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -568,17 +544,11 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                     .validate()) {
                                                   _formKey.currentState.save();
                                                   if (_formIsValid) {
-                                                    print(
-                                                        'FORM IS VALID FORM IS VALID ' +
-                                                            _formIsValid
-                                                                .toString());
-                                                    print('DATE 1>>>>>>>>>>>>>' + date1.toString());
-
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
                                                         id,
                                                         "laboratoryInvestigationId",
                                                         date1, date2,
-                                                        result, visit_id);
+                                                        result, visit_id, testKit);
                                                     print(
                                                         '************************* SAVE LAB TEST ${labInvestTest
                                                             .toString()}');
@@ -591,7 +561,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                PatientPostTest()
+                                                                Hts_Result(labInvestId)
                                                         ));
                                                   } else {
                                                     setState(() {
@@ -679,16 +649,18 @@ Future<dynamic> getTestKitsByCount(int count) async {
     );
   }
 
-  Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestigationTest)async{
+  Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;
-    print(">>>>>>>>>>>>>>>>>> SAVE LAB INVESTIGATION TEST");
+    print(">>>>>>>>>>>>>>>>>> SAVE LAB INVESTIGATION TEST"+ laboratoryInvestTest.toString());
     var labInvestTestResponse;
     try {
 
-      String jsonPatient = jsonEncode(laboratoryInvestigationTest);
-      response= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
+      String jsonPatient = jsonEncode(laboratoryInvestTest);
+      labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
       setState(() {
-        labInvestTest = jsonDecode(labInvestTestResponse);
+        print('###################'+ labInvestTestResponse);
+        labInvestId = labInvestTestResponse;
+
       });
 
     }
@@ -696,7 +668,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       print('Something went wrong...... cause $e');
     }
   }
-  
+
 }
 
 
