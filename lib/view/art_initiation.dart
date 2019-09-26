@@ -35,9 +35,8 @@ class _Art_Initiation extends State<Art_Initiation> {
 
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
 
-  //int visitId;
-  String patientId;
-  Person patient;
+
+  String personId;
 
  // var selectedDate;
   bool _showError = false;
@@ -530,7 +529,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
 
                                                           onPressed: () async {
-                                                            ArtInitiation artInitiationDetails = ArtInitiation(patientId, line, _currentArvCombinationRegimen, _currentArtReason);
+                                                            ArtInitiation artInitiationDetails = ArtInitiation(widget.patientId, line, _currentArvCombinationRegimen, _currentArtReason);
                                                             print('*************************artReg number ${artInitiationDetails.line}');
                                                             await artInitiation(
                                                                 artInitiationDetails);
@@ -614,11 +613,10 @@ class _Art_Initiation extends State<Art_Initiation> {
     try {
       id = await artChannel.invokeMethod(
           'saveArtInitiation', jsonEncode(artInitiation));
-      String patientid = patientId.toString();
+      String patientid = personId;
 
-     /* PersonInvestigation personInvestigation = new PersonInvestigation(
-          patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);*/
-      print(''+ patientid);
+
+      print('print patient id : '+ patientid);
       await artChannel.invokeMethod('saveArtInitiation',jsonEncode(artInitiation));
 
       print('---------------------saved file id  $id');
@@ -627,6 +625,7 @@ class _Art_Initiation extends State<Art_Initiation> {
     }
 
   }
+
 
   void changedDropDownItemArtReason(String selectedArtReason) {
     setState(() {
