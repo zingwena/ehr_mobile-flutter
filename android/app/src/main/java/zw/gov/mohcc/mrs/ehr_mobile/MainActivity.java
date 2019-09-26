@@ -547,9 +547,36 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("htsRegistration")) {
                             try {
-                                System.out.println("HTS HERE HERE HERE" + arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
                                 result.success(htsService.createHts(htsRegDTO));
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+
+                        }
+                        if (methodCall.method.equals("getHtsRegDetails")) {
+                            try {
+                                System.out.println("HTS HERE HERE HERE" + arguments);
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsById(arguments);
+                                String htsjson = gson.toJson(hts);
+                                System.out.println("HTS REGISTRATION TO JSON >>>>>>>>"+ htsjson);
+                                result.success(htsjson);
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+
+                        }
+                        if (methodCall.method.equals("getEntrypoint")) {
+                            try {
+                                System.out.println("HTS HERE HERE HERE" + arguments);
+                                EntryPoint entryPoint = ehrMobileDatabase.entryPointDao().findEntryPointById(arguments);
+                                String entrypoint_name = entryPoint.getName();
+                                System.out.print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+ entrypoint_name);
+                                result.success(entrypoint_name);
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -573,7 +600,6 @@ public class MainActivity extends FlutterActivity {
 
                             try {
                                 List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
-                                System.out.println("&&&&&&&&&&&&&&&&&&&&&&& reason for not issuing results :" + reasonForNotIssuingResults);
                                 String reasonForNotIssuingResultList = gson.toJson(reasonForNotIssuingResults);
                                 result.success(reasonForNotIssuingResultList);
                             } catch (Exception e) {
@@ -594,6 +620,9 @@ public class MainActivity extends FlutterActivity {
                                 hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
+                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(hts.getId());
+                                String htsjson = gson.toJson(hts1);
+                                result.success(htsjson);
 
 
                             } catch (Exception e) {
@@ -699,15 +728,13 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
-                                System.out.println("HERE IS THE HTS MODEL" + hts.getPersonId());
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
-                                System.out.println("HERE IS THE PERSON INVESTIGATION should be similar to hts " + personInvestigation.getPersonId());
                                 Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
                                 String sample_name = sample.getName();
-                                Log.i(TAG, "YOUR SAMPLE NAME"+ sample_name);
+
                                 result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
+import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 
 import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
+import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
@@ -19,7 +23,8 @@ class PatientPretest extends StatefulWidget {
 
   final String htsid ;
   final String personId;
-  PatientPretest(this.personId, this.htsid);
+  final HtsRegistration htsRegistration;
+  PatientPretest(this.personId, this.htsid, this.htsRegistration);
 
   @override
   State createState() {
@@ -51,7 +56,7 @@ class _PatientPretest extends State<PatientPretest> {
 
   int _patientPretest = 0;
   //int _optOutTest = 0;
-
+  PreTest patient_preTest;
 
 
   bool _preTestInfoGiven=false ;
@@ -69,17 +74,18 @@ class _PatientPretest extends State<PatientPretest> {
   void initState() {
   getDropDrowns();
 
-  print('=================================== htsModelList ${_htsModelList.length}');
-  print('=================================== purposeOfTestList ${_purposeOfTestList.length}');
-
     super.initState();
   }
 
   Future<void> insertPreTest(PreTest preTest) async {
-
+    String pretestjson;
     try {
-
-          await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
+        pretestjson =  await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
+        print('LLLLLLLLLLLLLLLL'+ pretestjson);
+        setState(() {
+          patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
+          print('LLLLLLLLLLLLLLLLLLLLL'+ patient_preTest.toString());
+        });
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -509,7 +515,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
                                                         child: Text(
-                                                          "Proceed",
+                                                          "Save",
                                                           style: TextStyle(color: Colors.white),
                                                         ),
                                                         onPressed: () {
@@ -520,15 +526,23 @@ class _PatientPretest extends State<PatientPretest> {
                                                             PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, _newTestInLife,
                                                                 coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
                                                             insertPreTest(patient_pretest);
-                                                            Navigator.push(context,MaterialPageRoute(
-                                                              builder: (context)=> HtsScreeningTest(widget.personId)
-                                                            ));
+                                                            if(patient_pretest.optOutOfTest ){
+                                                              Navigator.push(context,MaterialPageRoute(
+                                                                  builder: (context)=> SearchPatient()
+                                                              ));
+                                                            } else {
+                                                              Navigator.push(context,MaterialPageRoute(
+                                                                  builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid)
+                                                              ));
+                                                            }
+
 
                                                           }
                                                         },
                                                       ),
                                                     ),
-                                                    SizedBox(
+
+                              SizedBox(
                                                       height: 30.0,
                                                     ),
                                                   ],
@@ -564,9 +578,17 @@ class _PatientPretest extends State<PatientPretest> {
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "HTS Registration",
+            text: "HTS Registration", onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    HtsRegOverview(widget.htsRegistration, widget.personId, widget.htsid
+                        )),
           ),
-          new RoundedButton(
+          ),
+      //HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
+
+      new RoundedButton(
             text: "HTS Pre-Testing", selected: true,
 
           ),

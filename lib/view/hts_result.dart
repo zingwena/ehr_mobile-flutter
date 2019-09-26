@@ -83,7 +83,7 @@ class _Hts_Result  extends State<Hts_Result > {
   Future<void> getFacilities() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getEntryPointsOptions');
+      response = await dataChannel.invokeMethod('getLabInvestigations');
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
@@ -292,9 +292,9 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           DataColumn(label: Text("Result"))],
                                                         rows: [
                                                           DataRow(cells: [
-                                                            DataCell(Text(testkit)),
-                                                            DataCell(Text(startTime)),
-                                                            DataCell(Text(endTime)),]),
+                                                            DataCell(Text('testkit')),
+                                                            DataCell(Text('startTime')),
+                                                            DataCell(Text('endTime')),]),
                                                           DataRow(cells: [DataCell(Text("TestKitEG2")),
                                                             DataCell(Text("DateTime2")),
                                                             DataCell(Text("ResultSet2")),
@@ -408,10 +408,10 @@ class _Hts_Result  extends State<Hts_Result > {
           ),
           new RoundedButton(
             text: "HTS Pre-Testing",
-            onTap: () => Navigator.push(
+        /*    onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
-            ),
+            ),*/
           ),
           new RoundedButton(text: "Hts Result", selected: true,
           ),
