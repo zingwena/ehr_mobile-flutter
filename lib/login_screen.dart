@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
 
       Text(
-        "EHR Mobile App",
+        "Impilo Mobile App",
         style: TextStyle(
             fontWeight: FontWeight.w300,
             color: Colors.grey.shade600,

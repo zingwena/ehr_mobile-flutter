@@ -63,10 +63,6 @@ class _DataSyncronizationState extends State<DataSyncronization> {
           SizedBox(
             height: 10.0,
           ),
-          Text(
-            "Data Synchronization Page",
-            style: TextStyle(color: Colors.teal, fontSize: 16),
-          ),
           SizedBox(
             height: 20.0,
           ),
@@ -163,7 +159,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                     color: Colors.teal,
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
-                      "PULL METADATA",
+                      "LOGIN",
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
