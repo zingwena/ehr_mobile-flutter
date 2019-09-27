@@ -63,7 +63,7 @@ class _Registration extends State<Registration> {
     visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
-    print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB HERE IS PATIENT ID IN HTS REGISTRATION'+ patientId);
+    print('SSSSSSSSSSSSSSSSSSSSSSSSS' + visitId);
     getFacilities();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
@@ -330,7 +330,7 @@ class _Registration extends State<Registration> {
 
                                                               await registration(htsDetails);
 
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id, visitId)));
 
                                                             }
                                                           }
@@ -396,7 +396,6 @@ class _Registration extends State<Registration> {
 
       setState(() {
         _htsRegistration = HtsRegistration.fromJson(jsonDecode(htsresponse));
-        print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'+ _htsRegistration.toString());
       });
 
       String patientid = patientId.toString();

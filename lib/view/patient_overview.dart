@@ -45,7 +45,7 @@ class OverviewState extends State<Overview> {
   bool showInput = true;
   bool showInputTabOptions = true;
 
-  String visitId="1";
+  String visitId;
 
   @override
   void initState() {
@@ -60,17 +60,18 @@ class OverviewState extends State<Overview> {
   }
 
   Future<void> getVisit(String patientId) async {
-    Visit visit;
+    String visit;
 
     try {
-      visit = jsonDecode(
-          await platform.invokeMethod('visit', patientId)
-      );
+      visit =
+          await platform.invokeMethod('visit', patientId);
+
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
-      _visit = visit;
+      visitId = visit;
+      print('JJJJJJJJJJJJJJJJJJJJJ'+ visitId);
     });
 
 

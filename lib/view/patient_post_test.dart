@@ -8,9 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/services.dart';
+import 'package:ehr_mobile/view/art_registration.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
+
 
 
 class PatientPostTest extends StatefulWidget {
+  String result;
+  String patientId;
+  PatientPostTest(this.result, this.patientId);
   @override
   State createState() {
     return _PatientPostTest();
@@ -303,9 +309,18 @@ class _PatientPostTest extends State<PatientPostTest> {
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
-
-
                           insertPostTest(postTest);
+
+
+                          if(widget.result == "Positive"){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> Art_Registration(widget.patientId)));
+
+
+                          }else{
+                            Navigator.push(context,MaterialPageRoute(
+                                builder: (context)=> SearchPatient()
+                            ));
+                          }
                         }
                       },
                     ),
