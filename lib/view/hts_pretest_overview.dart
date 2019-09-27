@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/model/preTest.dart';
+import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
@@ -21,19 +24,21 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
-class Overview extends StatefulWidget {
-  final Person patient;
-
-  Overview(this.patient);
+class PretestOverview extends StatefulWidget {
+  final PreTest preTest;
+ final HtsRegistration htsRegistration;
+ final String htsId ;
+ final String personId;
+  PretestOverview(this.preTest, this.htsRegistration, this.personId, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return OverviewState();
+    return PretestOverviewState();
   }
 }
 
-class OverviewState extends State<Overview> {
+class PretestOverviewState extends State<PretestOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
@@ -44,18 +49,22 @@ class OverviewState extends State<Overview> {
 
   bool showInput = true;
   bool showInputTabOptions = true;
-
   String visitId="1";
+  String htsApproach;
+  String htsModelId;
+  bool newTest;
+  String coupleCounselling;
+  bool preTestInformationGiven;
+  bool optOutOfTest;
+  String _optOutOfTest;
+
+  bool newTestPregLact;
+  String _newTestPregLact;
+
+  String purposeOfTestId;
 
   @override
   void initState() {
-    _patient = widget.patient;
-    getVisit(_patient.id);
-    print(_patient.toString());
-    print('BBBBBBBBBBBBBBBBBBBBBBB HERE IS PATIENT ID IN OVERVIEW'+ _patient.id);
-
-    getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
-
     super.initState();
   }
 
@@ -100,7 +109,7 @@ class OverviewState extends State<Overview> {
             elevation: 0.0,
             centerTitle: true,
             title: new Text(
-                "Patient OverView"
+                "Pre-Test Overview"
             ),
           ),
           Positioned.fill(
@@ -159,12 +168,11 @@ class OverviewState extends State<Overview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: _patient.firstName +" "+
-                                                                        _patient.lastName),
+                                                                    text: widget.preTest.htsApproach),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.person, color: Colors.blue),
-                                                                    labelText: "Full Name",
-                                                                    hintText: "Full Name"
+                                                                    labelText: "Hts Approach",
+                                                                    hintText: "Hts Approach"
                                                                 ),
                                                               ),
                                                             ),
@@ -175,11 +183,11 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _patient.sex)),
+                                                                        widget.preTest.htsModelId)),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
-                                                                    labelText: "Sex",
-                                                                    hintText: "Sex"
+                                                                    labelText: "Hts Model",
+                                                                    hintText: "Hts Model"
                                                                 ),
                                                               ),
                                                             ),
@@ -194,9 +202,9 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _patient.nationalId)),
+                                                                        widget.preTest.newTest.toString())),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'National ID',
+                                                                  labelText: 'New Test ?',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -208,10 +216,11 @@ class OverviewState extends State<Overview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: DateFormat("dd/MM/yyyy").format(_patient.birthDate)),
+                                                                    text: nullHandler(
+                                                                        widget.preTest.coupleCounselling.toString())),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Date Of Birth',
-                                                                  icon: Icon(Icons.date_range, color: Colors.blue),
+                                                                  labelText: 'Couple counselling ?',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -229,9 +238,9 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _maritalStatus)),
+                                                                        widget.preTest.preTestInformationGiven.toString())),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Marital Status',
+                                                                  labelText: 'Pretest Info given ?',
                                                                   icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
                                                                 ),
 
@@ -244,9 +253,9 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _educationLevel)),
+                                                                        widget.preTest.newTestPregLact.toString())),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Education',
+                                                                  labelText: 'New Test for pregnant and lactating women ?',
                                                                   icon: Icon(Icons.book, color: Colors.blue),
                                                                 ),
 
@@ -265,9 +274,9 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _nationality)),
+                                                                        widget.preTest.optOutOfTest.toString())),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Nationality',
+                                                                  labelText: 'Opt out of test ?',
                                                                   icon: Icon(Icons.flag, color: Colors.blue),
                                                                 ),
 
@@ -275,35 +284,9 @@ class OverviewState extends State<Overview> {
                                                             ),
                                                           ),
 
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: _phonenumber),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Phone Number',
-                                                                  icon: Icon(Icons.smartphone, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
                                                         ],
                                                       ),
 
-                                                      Padding(
-                                                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 64.0, 8.0),
-                                                        child: TextFormField(
-                                                          controller: TextEditingController(
-                                                              text: _address),
-                                                          decoration: InputDecoration(
-                                                            labelText: 'Address',
-                                                            icon: Icon(Icons.home, color: Colors.blue),
-                                                          ),
-
-                                                        ),
-                                                      ),
                                                     ],
                                                   ),
                                                 ),
@@ -355,38 +338,29 @@ class OverviewState extends State<Overview> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
-          new RoundedButton(text: "VITALS", onTap: () => Navigator.push(
+          new RoundedButton(text: "HTS Registration", onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ReceptionVitals(
-                        _patient.id)),
+                    HtsRegOverview(widget.htsRegistration,widget.personId, widget.htsId
+                        )),
           ),
           ),
-          new RoundedButton(text: "HTS", onTap: () =>     Navigator.push(
+      //HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
+
+      // HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
+
+      new RoundedButton(text: "HTS Pre-Testing", selected: true,
+          ),
+
+
+          new RoundedButton(text: "Testing", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Registration(visitId, _patient.id)),
-          ),
-          ),
+                    HtsScreeningTest(widget.personId)),
+          ),),
 
-
-    new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) =>
-        Art_Registration(_patient.id)),
-    ),),
-
-
-          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
-          ),
         ],
       ),
     );

@@ -45,9 +45,9 @@ class _SearchPatientState extends State<SearchPatient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //  title: Text('Search Patient'),
-      // ),
+       appBar: AppBar(
+        title: Text('Search Patient'),
+       ),
       backgroundColor: Colors.white,
 
       body: Column(

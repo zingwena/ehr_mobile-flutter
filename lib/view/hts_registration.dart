@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
+import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class _Registration extends State<Registration> {
 
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<EntryPoint> _entryPointList = List();
+  HtsRegistration _htsRegistration;
 
   String _currentEntryPoint;
 
@@ -61,6 +63,7 @@ class _Registration extends State<Registration> {
     visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
+    print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB HERE IS PATIENT ID IN HTS REGISTRATION'+ patientId);
     getFacilities();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
@@ -304,7 +307,7 @@ class _Registration extends State<Registration> {
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
                                                         child: Text(
-                                                          "Proceed",
+                                                          "Save",
                                                           style: TextStyle(color: Colors.white),
                                                         ),
                                                         onPressed: () async {
@@ -327,7 +330,7 @@ class _Registration extends State<Registration> {
 
                                                               await registration(htsDetails);
 
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPretest(widget.patientId, hts_id)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id)));
 
                                                             }
                                                           }
@@ -371,12 +374,12 @@ class _Registration extends State<Registration> {
           ),
           new RoundedButton(
             text: "HTS Pre-Testing",
-            onTap: () => Navigator.push(
+           /* onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
-            ),
+            ),*/
           ),
-          new RoundedButton(text: "Testing",
+          new RoundedButton(text: "HTS Testing",
           ),
         ],
       ),
@@ -385,10 +388,16 @@ class _Registration extends State<Registration> {
 
   Future<void> registration(HtsRegistration htsRegistration) async {
     String id;
-    print('*************************htsType ${htsRegistration.toString()}');
+    String htsresponse ;
     try {
       id = await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
       hts_id = id;
+      htsresponse = await htsChannel.invokeMethod('getHtsRegDetails', hts_id);
+
+      setState(() {
+        _htsRegistration = HtsRegistration.fromJson(jsonDecode(htsresponse));
+        print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'+ _htsRegistration.toString());
+      });
 
       String patientid = patientId.toString();
       DateTime date = htsRegistration.dateOfHivTest;

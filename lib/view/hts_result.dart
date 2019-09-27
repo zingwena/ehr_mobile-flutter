@@ -22,7 +22,7 @@ class Hts_Result extends StatefulWidget {
   String visitId;
   String patientId;
   String labInvetsTestId;
-  Hts_Result(this.labInvetsTestId);
+  Hts_Result();
 
   //Hts_Result (this.visitId, this.patientId);
 
@@ -56,12 +56,11 @@ class _Hts_Result  extends State<Hts_Result > {
   String testkit;
   String startTime;
   String endTime;
-
   bool showInput = true;
   bool showInputTabOptions = true;
 
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
-  List<EntryPoint> _entryPointList = List();
+  List<LaboratoryInvestigationTest> _entryPointList = List();
 
   String _currentEntryPoint;
 
@@ -71,9 +70,10 @@ class _Hts_Result  extends State<Hts_Result > {
 //    patient id
     patientId = widget.patientId;
     getFacilities();
-    getTestKIt(widget.labInvetsTestId);
-    getStartTime(widget.labInvetsTestId);
-    getEndTime(widget.labInvetsTestId);
+    getLabInvestigationTests();
+    //getTestKIt(widget.labInvetsTestId);
+    //getStartTime(widget.labInvetsTestId);
+    //getEndTime(widget.labInvetsTestId);
 
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
@@ -83,7 +83,7 @@ class _Hts_Result  extends State<Hts_Result > {
   Future<void> getFacilities() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getEntryPointsOptions');
+      response = await dataChannel.invokeMethod('getLabInvestigations');
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
@@ -91,8 +91,7 @@ class _Hts_Result  extends State<Hts_Result > {
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        _dropDownMenuItemsEntryPoint =
-            getDropDownMenuItemsIdentifiedEntryPoint();
+        print('################################### LIST OF INVESTIGATIONS'+ _entryPointList.toString());
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -132,16 +131,6 @@ class _Hts_Result  extends State<Hts_Result > {
     });
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (EntryPoint entryPoint in _entryPointList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(
-          value: entryPoint.code, child: Text(entryPoint.name)));
-    }
-    return items;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -303,9 +292,9 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           DataColumn(label: Text("Result"))],
                                                         rows: [
                                                           DataRow(cells: [
-                                                            DataCell(Text(testkit)),
-                                                            DataCell(Text(startTime)),
-                                                            DataCell(Text(endTime)),]),
+                                                            DataCell(Text('testkit')),
+                                                            DataCell(Text('startTime')),
+                                                            DataCell(Text('endTime')),]),
                                                           DataRow(cells: [DataCell(Text("TestKitEG2")),
                                                             DataCell(Text("DateTime2")),
                                                             DataCell(Text("ResultSet2")),
@@ -378,7 +367,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                         onPressed: () => Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) => Hts_Result(widget.labInvetsTestId)),),
+                                                              builder: (context) => Hts_Result()),),
 
                                                       ),
                                                     ),
@@ -419,10 +408,10 @@ class _Hts_Result  extends State<Hts_Result > {
           ),
           new RoundedButton(
             text: "HTS Pre-Testing",
-            onTap: () => Navigator.push(
+        /*    onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
-            ),
+            ),*/
           ),
           new RoundedButton(text: "Hts Result", selected: true,
           ),
@@ -449,42 +438,25 @@ class _Hts_Result  extends State<Hts_Result > {
       print('--------------something went wrong  $e');
     }
   }
-  Future<void> getTestKIt(labInvestId) async {
-    String testkitId;
+
+  Future<void> getLabInvestigationTests() async {
+    String response;
     try {
-      testkitId = await htsChannel.invokeMethod('getTestKit',labInvestId);
-     print('TEST KIT HERE '+ testkit);
+      response = await htsChannel.invokeMethod('getLabInvestigations');
+      setState(() {
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+        print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'+ _entryPointList.toString());
+      });
     } catch (e) {
-      print('--------------something went wrong  $e');
+      print('--------------------Something went wrong  $e');
     }
-    setState(() {
-      testkit = testkitId;
-    });
   }
-  Future<void> getStartTime(labInvestId) async {
-    String starttime;
-    try {
-      starttime = await htsChannel.invokeMethod('getStartTime',labInvestId);
-      print('start time HERE '+ starttime);
-    } catch (e) {
-      print('--------------something went wrong  $e');
-    }
-    setState(() {
-      startTime = starttime;
-    });
-  }
-  Future<void> getEndTime(labInvestId) async {
-    String endtime;
-    try {
-      endtime = await htsChannel.invokeMethod('getStartTime',labInvestId);
-      print('start time HERE '+ endtime);
-    } catch (e) {
-      print('--------------something went wrong  $e');
-    }
-    setState(() {
-      endTime = endtime;
-    });
-  }
+
   void changedDropDownItemEntryPoint(String selectedEntryPoint) {
     setState(() {
       _currentEntryPoint = selectedEntryPoint;

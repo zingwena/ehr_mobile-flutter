@@ -321,7 +321,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              (sample),
+                                              ('Blood'),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -362,7 +362,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              (test),
+                                              ('HIV'),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -547,7 +547,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
                                                         id,
                                                         "laboratoryInvestigationId",
-                                                        date1, date2,
+                                                        null, null,
                                                         result, visit_id, testKit);
                                                     print(
                                                         '************************* SAVE LAB TEST ${labInvestTest
@@ -561,7 +561,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(labInvestId)
+                                                                Hts_Result()
                                                         ));
                                                   } else {
                                                     setState(() {
@@ -591,7 +591,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 100,
                                       ),
                                     ),
-                                    Expanded(
+                                   /* Expanded(
                                       child: SizedBox(
                                         child: Padding(
                                           padding: const EdgeInsets.all(10.0),
@@ -613,7 +613,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         ),
                                         width: 100,
                                       ),
-                                    ),
+                                    ),*/
                                   ],
                                 ),
                               ],
@@ -640,14 +640,19 @@ Future<dynamic> getTestKitsByCount(int count) async {
     var list=this._testKits ;
     print("+++++++++++  $list");
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text('HTS Testing'),
+      ),
       // appBar: AppBar(
       //  backgroundColor: Colors.blue,
       //  title: Text('Add Patient'),
-      //  ),
+
     
       body:_body(list)
     );
   }
+
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;
@@ -668,6 +673,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       print('Something went wrong...... cause $e');
     }
   }
+
 
 }
 

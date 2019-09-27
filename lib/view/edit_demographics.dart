@@ -847,7 +847,6 @@ class _EditDemographicsState extends State<EditDemographics> {
     try {
       String jsonPatient = jsonEncode(person.toJson());
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
-
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
 
       setState(() {
