@@ -27,8 +27,8 @@ class HtsRegOverview extends StatefulWidget {
   final HtsRegistration htsRegistration;
   final String htsid ;
   final String personId;
-
-  HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
+  final String visitId;
+  HtsRegOverview(this.htsRegistration, this.personId, this.htsid, this.visitId);
 
   @override
   State<StatefulWidget> createState() {
@@ -49,42 +49,25 @@ class HtsOverviewState extends State<HtsRegOverview> {
   bool showInput = true;
   bool showInputTabOptions = true;
 
-  String visitId="1";
-
   @override
   void initState() {
 
     print(_patient.toString());
-    print('BBBBBBBBBBBBBBBBBBBBBBBBBBB HERE IS PERSON ID IN REG OVERVIEW'+ widget.personId);
     getEntryPoint(widget.htsRegistration.entryPointId);
+    print('HHHHHHHHHHHHHHHHHHHH'+ widget.visitId);
 
     super.initState();
   }
 
-  Future<void> getVisit(String patientId) async {
-    Visit visit;
 
-    try {
-      visit = jsonDecode(
-          await platform.invokeMethod('visit', patientId)
-      );
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      _visit = visit;
-    });
-
-
-  }
   Future<void> getEntryPoint(String entrypointId) async {
    String entrypoint;
 
     try {
-      entrypoint = jsonDecode(
-          await htsChannel.invokeMethod('getEntrypoint', entrypointId)
-      );
-      print('%%%%%%%%%%%%%%%%%%%%%%%%'+ entrypoint);
+      entrypoint =
+          await htsChannel.invokeMethod('getEntrypoint', entrypointId);
+
+
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -194,7 +177,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
                                                                     text: nullHandler(
                                                                         widget.htsRegistration.htsType)),
                                                                 decoration: InputDecoration(
-                                                                    icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
+                                                                    icon: new Icon(Icons.credit_card, color: Colors.blue),
                                                                     labelText: "Hts Type",
                                                                     hintText: "Hts Type"
                                                                 ),
@@ -224,19 +207,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
                                                         ],
                                                       ),
 
-
-                                                      Padding(
-                                                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 64.0, 8.0),
-                                                        child: TextFormField(
-                                                          controller: TextEditingController(
-                                                              text: ''),
-                                                          decoration: InputDecoration(
-                                                            labelText: '',
-                                                            icon: Icon(Icons.home, color: Colors.blue),
-                                                          ),
-
-                                                        ),
-                                                      ),
                                                     ],
                                                   ),
                                                 ),
@@ -299,7 +269,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    PatientPretest(widget.personId, widget.htsid, widget.htsRegistration
+                    PatientPretest(widget.personId, widget.htsid, widget.htsRegistration,widget.visitId
                         )),
           ),
           ),

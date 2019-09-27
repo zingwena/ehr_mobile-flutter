@@ -5,10 +5,12 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
+import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
+import 'package:ehr_mobile/view/secondTestScreening.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +24,9 @@ class Hts_Result extends StatefulWidget {
   String visitId;
   String patientId;
   String labInvetsTestId;
-  Hts_Result();
+  String result_string;
+
+  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.result_string);
 
   //Hts_Result (this.visitId, this.patientId);
 
@@ -38,7 +42,7 @@ class _Hts_Result  extends State<Hts_Result > {
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-  String visitId;
+  String _visitId;
   String patientId;
   Person patient;
   var selectedDate;
@@ -58,7 +62,7 @@ class _Hts_Result  extends State<Hts_Result > {
   String endTime;
   bool showInput = true;
   bool showInputTabOptions = true;
-
+  String final_result;
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<LaboratoryInvestigationTest> _entryPointList = List();
 
@@ -66,14 +70,19 @@ class _Hts_Result  extends State<Hts_Result > {
 
   @override
   void initState() {
-    visitId = widget.visitId;
+    _visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
     getFacilities();
-    getLabInvestigationTests();
-    //getTestKIt(widget.labInvetsTestId);
-    //getStartTime(widget.labInvetsTestId);
+   // getLabInvestigationTests();
+    getTestKIt(widget.labInvetsTestId);
+    getStartTime(widget.labInvetsTestId);
     //getEndTime(widget.labInvetsTestId);
+    if(widget.result_string == "Negative"){
+      final_result = "Negative";
+    } else{
+      final_result = "";
+    }
 
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
@@ -83,11 +92,11 @@ class _Hts_Result  extends State<Hts_Result > {
   Future<void> getFacilities() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getLabInvestigations');
+      response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = EntryPoint.mapFromJson(entryPoints);
+        _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
@@ -218,7 +227,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(0.0),
                                                                 child: Text(
-                                                                  ("Test"),
+                                                                  ("Blood"),
                                                                   style: TextStyle(
                                                                     color: Colors.grey.shade600,
                                                                     fontSize: 18,
@@ -288,17 +297,15 @@ class _Hts_Result  extends State<Hts_Result > {
                                                       child: DataTable(
                                                         columns: [
                                                           DataColumn(label: Text("TestKit")),
-                                                          DataColumn(label: Text("Time")),
                                                           DataColumn(label: Text("Result"))],
-                                                        rows: [
-                                                          DataRow(cells: [
-                                                            DataCell(Text('testkit')),
-                                                            DataCell(Text('startTime')),
-                                                            DataCell(Text('endTime')),]),
-                                                          DataRow(cells: [DataCell(Text("TestKitEG2")),
-                                                            DataCell(Text("DateTime2")),
-                                                            DataCell(Text("ResultSet2")),
-                                                          ]),],
+                                                      rows: _entryPointList.map((labinvesttest)=>
+                                                       DataRow(
+                                                           cells: [
+                                                       DataCell(Text(labinvesttest.testkitId)),
+                                                       DataCell(Text(labinvesttest.laboratoryInvestigationId)),])
+
+                                                      ).toList()
+
 
                                                       ),
                                                     ),
@@ -329,7 +336,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(0.0),
                                                                 child: Text(
-                                                                  ("--"),
+                                                                  (final_result),
                                                                   style: TextStyle(
                                                                     color: Colors.grey.shade600,
                                                                     fontSize: 18,
@@ -363,11 +370,24 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           "Proceed",
                                                           style: TextStyle(color: Colors.white),
                                                         ),
+                                                          onPressed: () async {
+                                                            if (widget.result_string == "Negative") {
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(final_result, widget.patientId)));
 
-                                                        onPressed: () => Navigator.push(
+                                                            }else{
+                                                            //  SecondHtsScreeningTest(this.personId, this.visitId);
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> SecondHtsScreeningTest(widget.patientId, widget.visitId)));
+
+
+                                                            }
+                                                          }
+/*
+                                                        onPressed: () =>
+                                                            Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) => Hts_Result()),),
+                                                              builder: (context) =>
+                                                                  Hts_Result()),),*/
 
                                                       ),
                                                     ),
@@ -420,6 +440,23 @@ class _Hts_Result  extends State<Hts_Result > {
     );
   }
 
+  Widget _buildProductItem(BuildContext context, int index) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+         // Image.asset('assets/macbook.jpg'),
+          Text('Hie', style: TextStyle(color: Colors.deepPurple))
+        ],
+      ),
+    );
+  }
+  @override
+  Widget buildlistview(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: _buildProductItem,
+      itemCount: _entryPointList.length,
+    );
+  }
   Future<void> registration(HtsRegistration htsRegistration) async {
     String id;
     print('*************************htsType ${htsRegistration.toString()}');
@@ -438,20 +475,35 @@ class _Hts_Result  extends State<Hts_Result > {
       print('--------------something went wrong  $e');
     }
   }
-
-  Future<void> getLabInvestigationTests() async {
-    String response;
+  Future<void> getTestKIt(labInvestId) async {
+    String testkitId;
     try {
-      response = await htsChannel.invokeMethod('getLabInvestigations');
-      setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
-        });
-        print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'+ _entryPointList.toString());
-      });
+      testkitId = await htsChannel.invokeMethod('getTestKit',labInvestId);
+     print('TEST KIT HERE '+ testkit);
+    } catch (e) {
+      print('--------------something went wrong  $e');
+    }
+    setState(() {
+      testkit = testkitId;
+    });
+  }
+  Future<void> getStartTime(labInvestId) async {
+    String starttime;
+    try {
+      starttime = await htsChannel.invokeMethod('getStartTime',labInvestId);
+      print('start time HERE '+ starttime);
+    } catch (e) {
+      print('--------------something went wrong  $e');
+    }
+    setState(() {
+      startTime = starttime;
+    });
+  }
+  Future<void> getEndTime(labInvestId) async {
+    String endtime;
+    try {
+      endtime = await htsChannel.invokeMethod('getStartTime',labInvestId);
+      print('start time HERE '+ endtime);
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }

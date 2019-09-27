@@ -6,6 +6,12 @@ import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/hts_result.dart';
+import 'package:ehr_mobile/view/SecondResultPage.dart';
+import 'package:ehr_mobile/view/ThirdResult.dart';
+import 'package:ehr_mobile/view/fourthresultpage.dart';
+
+
+
 
 
 import 'package:flutter/material.dart';
@@ -21,10 +27,11 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'edit_demographics.dart';
 
 
-class HtsScreeningTest extends StatefulWidget {
+class FourthHtsScreeningTest extends StatefulWidget {
   final String personId;
   final String visitId;
-  HtsScreeningTest(this.personId, this.visitId);
+  final String third_result_string ;
+  FourthHtsScreeningTest(this.personId, this.visitId, this.third_result_string);
 
   @override
   State createState() {
@@ -32,7 +39,7 @@ class HtsScreeningTest extends StatefulWidget {
   }
 }
 
-class _HtsScreeningTest extends State<HtsScreeningTest> {
+class _HtsScreeningTest extends State<FourthHtsScreeningTest> {
   final _formKey = GlobalKey<FormState>();
   var selectedDate, selectedStarttime, selectedReadingtime, selectedReadingDate;
   DateTime date, startTime, readingTime,  readingDate;
@@ -74,11 +81,11 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
 
-         getPersonInvestigation(widget.personId);
-         getTestKitsByCount(testCount);
-         getLabTest(widget.personId);
-         getLabId();
-         getResults();
+    getPersonInvestigation(widget.personId);
+    getTestKitsByCount(testCount);
+    getLabTest(widget.personId);
+    getLabId();
+    getResults();
     super.initState();
   }
   Future<Null> _selectDate(BuildContext context) async {
@@ -136,13 +143,13 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     var sample_name;
     try {
       sample_name = await htsChannel.invokeMethod('getSample', personId);
-          setState(() {
-          this.sample=sample_name;
+      setState(() {
+        this.sample=sample_name;
 /*
           this.test=investigation.test;
 */
 
-          });
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -170,30 +177,30 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       Map <String,dynamic> data= json.decode(await htsChannel.invokeMethod('getLabInvestigation')) ;
       var labId= data["labId"];
       var visitPatientId= data["visitPatientId"];
-            print("Visit Patient Id : $visitPatientId || Lab Id : $labId"  );
+      print("Visit Patient Id : $visitPatientId || Lab Id : $labId"  );
 
-          // setState(() {
-          // this.labId = labIdFromChannel;
+      // setState(() {
+      // this.labId = labIdFromChannel;
 
-          // });
-     
+      // });
+
     } catch (e) {
       print("channel failure: '$e'");
     }
-  
+
   }
 
 // void getTestKits(){
 //   _testKits.forEach((f)=>{})
 // }
-Future<dynamic> getTestKitsByCount(int count) async {
+  Future<dynamic> getTestKitsByCount(int count) async {
     try {
 
       List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('getTestKitsByLevel',count.toString()) );
- 
-       setState(() {
-         _testKits=testKits;
-       });
+
+      setState(() {
+        _testKits=testKits;
+      });
       print("*********sample from android"+testKits.toString());
     } catch (e) {
       print("channel failure: '$e'");
@@ -222,7 +229,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       switch (_testKit) {
         case 1:
-          testKit = "Standard Q HIV 1/2 Ab";
+          testKit = "Standard Q HIV 1/2 Ab ";
           break;
         case 2:
           testKit = "Determine";
@@ -235,7 +242,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   void _handleResultChange(int value)  {
 
-      setState(() {
+    setState(() {
       _result = value;
 
       switch (_result) {
@@ -245,11 +252,11 @@ Future<dynamic> getTestKitsByCount(int count) async {
           result_string = "Negative";
           //testCount+=1;
           break;
-        
+
         case 2:
-         result.code = "02";
-         result.name="Positive";
-         result_string = "Positive";
+          result.code = "02";
+          result.name="Positive";
+          result_string = "Positive";
           //htsChannel.invokeMapMethod('saveResult',result);
           break;
         case 3:
@@ -560,14 +567,19 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
                                                     saveLabInvestigationTest(
                                                         labInvestTest);
-
-
+                                                  if(widget.third_result_string == result_string){
+                                                    result_string = widget.third_result_string;
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(widget.personId, labInvestId, widget.visitId, result_string)
+                                                                FourthHts_Result(widget.personId, labInvestId, widget.visitId, result_string)
                                                         ));
+                                                  }else{
+                                                    result_string = "Inconclusive";
+                                                  }
+
+
                                                   } else {
                                                     setState(() {
                                                       _showError = true;
@@ -596,7 +608,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 100,
                                       ),
                                     ),
-                                   /* Expanded(
+                                    /* Expanded(
                                       child: SizedBox(
                                         child: Padding(
                                           padding: const EdgeInsets.all(10.0),
@@ -640,21 +652,21 @@ Future<dynamic> getTestKitsByCount(int count) async {
     );
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     var list=this._testKits ;
     print("+++++++++++  $list");
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text('HTS Testing'),
-      ),
-      // appBar: AppBar(
-      //  backgroundColor: Colors.blue,
-      //  title: Text('Add Patient'),
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          title: Text('Third Confirmatory Testing'),
+        ),
+        // appBar: AppBar(
+        //  backgroundColor: Colors.blue,
+        //  title: Text('Add Patient'),
 
-    
-      body:_body(list)
+
+        body:_body(list)
     );
   }
 
@@ -668,7 +680,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
       String jsonPatient = jsonEncode(laboratoryInvestTest);
       labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
       setState(() {
-        print('###################'+ labInvestTestResponse);
         labInvestId = labInvestTestResponse;
 
       });

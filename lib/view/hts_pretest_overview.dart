@@ -29,7 +29,8 @@ class PretestOverview extends StatefulWidget {
  final HtsRegistration htsRegistration;
  final String htsId ;
  final String personId;
-  PretestOverview(this.preTest, this.htsRegistration, this.personId, this.htsId);
+ final String visitId;
+  PretestOverview(this.preTest, this.htsRegistration, this.personId, this.htsId, this.visitId);
 
   @override
   State<StatefulWidget> createState() {
@@ -42,6 +43,8 @@ class PretestOverviewState extends State<PretestOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+
   Person _patient;
   Visit _visit;
   Map<String, dynamic> details;
@@ -51,10 +54,14 @@ class PretestOverviewState extends State<PretestOverview> {
   bool showInputTabOptions = true;
   String visitId="1";
   String htsApproach;
-  String htsModelId;
+  String _htsModelId;
   bool newTest;
+  String _newTest;
   String coupleCounselling;
+
   bool preTestInformationGiven;
+  String _pretestInfoGiven;
+
   bool optOutOfTest;
   String _optOutOfTest;
 
@@ -65,6 +72,32 @@ class PretestOverviewState extends State<PretestOverview> {
 
   @override
   void initState() {
+     getHtsModel(widget.preTest.htsModelId);
+     if(widget.preTest.newTest == false){
+       _newTest = "NO";
+     }else{
+       _newTest = "YES";
+
+     }
+     if(widget.preTest.preTestInformationGiven){
+       _pretestInfoGiven = "YES";
+
+     }else{
+       _pretestInfoGiven = "NO";
+
+     }
+     if(widget.preTest.newTestPregLact){
+       _newTestPregLact = "YES";
+
+     }else{
+       _newTestPregLact = "NO";
+
+     }
+     if(widget.preTest.optOutOfTest){
+       _optOutOfTest = "YES";
+     }else{
+      _optOutOfTest = "NO";
+     }
     super.initState();
   }
 
@@ -80,6 +113,23 @@ class PretestOverviewState extends State<PretestOverview> {
     }
     setState(() {
       _visit = visit;
+    });
+
+
+  }
+
+  Future<void> getHtsModel(String htsModelId) async {
+   String htsModel;
+
+    try {
+      htsModel = await htsChannel.invokeMethod('getHtsModel', htsModelId);
+      print('KKKKKKKKKKKKKKKK' + htsModel);
+
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+      _htsModelId = htsModel;
     });
 
 
@@ -170,7 +220,7 @@ class PretestOverviewState extends State<PretestOverview> {
                                                                 controller: TextEditingController(
                                                                     text: widget.preTest.htsApproach),
                                                                 decoration: InputDecoration(
-                                                                    icon: Icon(Icons.person, color: Colors.blue),
+                                                                    icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                     labelText: "Hts Approach",
                                                                     hintText: "Hts Approach"
                                                                 ),
@@ -183,9 +233,9 @@ class PretestOverviewState extends State<PretestOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.preTest.htsModelId)),
+                                                                        _htsModelId)),
                                                                 decoration: InputDecoration(
-                                                                    icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
+                                                                    icon: new Icon(Icons.credit_card, color: Colors.blue),
                                                                     labelText: "Hts Model",
                                                                     hintText: "Hts Model"
                                                                 ),
@@ -202,7 +252,7 @@ class PretestOverviewState extends State<PretestOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.preTest.newTest.toString())),
+                                                                        _newTest)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'New Test ?',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
@@ -238,10 +288,10 @@ class PretestOverviewState extends State<PretestOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.preTest.preTestInformationGiven.toString())),
+                                                                        _pretestInfoGiven)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Pretest Info given ?',
-                                                                  icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
+                                                                  icon: new Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -253,10 +303,10 @@ class PretestOverviewState extends State<PretestOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.preTest.newTestPregLact.toString())),
+                                                                        _newTestPregLact)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'New Test for pregnant and lactating women ?',
-                                                                  icon: Icon(Icons.book, color: Colors.blue),
+                                                                  labelText: 'New Test for pregnant women ?',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -274,10 +324,10 @@ class PretestOverviewState extends State<PretestOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.preTest.optOutOfTest.toString())),
+                                                                        _optOutOfTest)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Opt out of test ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -342,7 +392,7 @@ class PretestOverviewState extends State<PretestOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HtsRegOverview(widget.htsRegistration,widget.personId, widget.htsId
+                    HtsRegOverview(widget.htsRegistration,widget.personId, widget.htsId, widget.visitId
                         )),
           ),
           ),
@@ -358,7 +408,7 @@ class PretestOverviewState extends State<PretestOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HtsScreeningTest(widget.personId)),
+                    HtsScreeningTest(widget.personId, widget.visitId)),
           ),),
 
         ],

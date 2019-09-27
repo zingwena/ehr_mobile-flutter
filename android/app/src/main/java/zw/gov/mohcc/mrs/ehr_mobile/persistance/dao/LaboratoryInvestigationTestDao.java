@@ -28,4 +28,7 @@ public interface LaboratoryInvestigationTestDao {
 
     @Query("SELECT * FROM LaboratoryInvestigationTest ")
     List<LaboratoryInvestigationTest>  findAll();
+
+    @Query("SELECT * FROM LaboratoryInvestigationTest WHERE visitId=:visitId")
+    List<LaboratoryInvestigationTest> findAllByVisitId(String visitId);
 }

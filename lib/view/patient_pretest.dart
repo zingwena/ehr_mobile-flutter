@@ -24,7 +24,8 @@ class PatientPretest extends StatefulWidget {
   final String htsid ;
   final String personId;
   final HtsRegistration htsRegistration;
-  PatientPretest(this.personId, this.htsid, this.htsRegistration);
+  final String visitId;
+  PatientPretest(this.personId, this.htsid, this.htsRegistration, this.visitId);
 
   @override
   State createState() {
@@ -532,7 +533,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                               ));
                                                             } else {
                                                               Navigator.push(context,MaterialPageRoute(
-                                                                  builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid)
+                                                                  builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId)
                                                               ));
                                                             }
 
@@ -582,7 +583,7 @@ class _PatientPretest extends State<PatientPretest> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HtsRegOverview(widget.htsRegistration, widget.personId, widget.htsid
+                    HtsRegOverview(widget.htsRegistration, widget.personId, widget.htsid, widget.visitId
                         )),
           ),
           ),
