@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -45,11 +46,10 @@ public class HtsService {
     }
 
     /**
-     *
      * @param investigationId
      * @return list of results
      */
-    public Set<Result> getInvestigationResults (String investigationId) {
+    public List<Result> getInvestigationResults(String investigationId) {
         return ehrMobileDatabase.resultDao().findByResultId(
                 ehrMobileDatabase.investigationResultDao().findByInvestigationId(investigationId)
         );

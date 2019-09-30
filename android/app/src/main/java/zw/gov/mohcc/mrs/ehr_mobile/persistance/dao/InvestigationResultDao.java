@@ -29,6 +29,6 @@ public interface InvestigationResultDao {
     InvestigationResult findById(String investigationResultId);
 
     @Query("SELECT i.resultId FROM InvestigationResult i WHERE investigationId=:investigationId")
-    Set<String> findByInvestigationId(String investigationId);
+    List<String> findByInvestigationId(String investigationId);
 
 }

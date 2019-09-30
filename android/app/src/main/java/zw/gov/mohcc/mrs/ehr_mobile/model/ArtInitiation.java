@@ -3,6 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -31,6 +32,7 @@ public class ArtInitiation extends BaseEntity{
     public ArtInitiation() {
     }
 
+    @Ignore
     public ArtInitiation(String personId, String line, String artRegimenId, String artReasonId) {
         this.personId = personId;
         this.line = line;
