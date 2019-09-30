@@ -673,7 +673,6 @@ public class MainActivity extends FlutterActivity {
                                 labInvestTest.setId(labInvestigationId);
                                 ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
                                 LaboratoryInvestigationTest laboratoryInvestigationTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(labInvestigationId);
-                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKK LAB INVEST TEST "+ laboratoryInvestigationTest.toString());
                                 String labInvetTestId = laboratoryInvestigationTest.getId();
                                 result.success(labInvetTestId);
                             } catch (Exception e) {
@@ -684,7 +683,6 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 System.out.println("GGGGGGGGGGGGG" +arguments);
                                 List<LaboratoryInvestigationTest> laboratoryInvestigationTests = ehrMobileDatabase.labInvestTestdao().findAllByVisitId(arguments);
-                                System.out.println("HHHHHHHHHHHHHHHHHHHHH LIST OF INVESTIGATIONS BY VISIT ID"+ laboratoryInvestigationTests);
                                 String list = gson.toJson(laboratoryInvestigationTests);
                                 result.success(list);
                             } catch (Exception e) {
