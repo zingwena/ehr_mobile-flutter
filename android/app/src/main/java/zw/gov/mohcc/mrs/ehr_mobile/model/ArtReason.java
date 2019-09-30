@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 
 @Entity
 public class ArtReason extends BaseNameModel {
@@ -10,6 +11,7 @@ public class ArtReason extends BaseNameModel {
     public ArtReason() {
     }
 
+    @Ignore
     public ArtReason(String code, String name, String artStatusId) {
         super(code, name);
         this.artStatusId = artStatusId;

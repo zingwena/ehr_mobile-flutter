@@ -29,6 +29,6 @@ public interface ResultDao {
     Result findByResultId(String id);
 
     @Query("SELECT * FROM Result WHERE code in (:resultIds)")
-    Set<Result> findByResultId(Set<String> resultIds);
+    List<Result> findByResultId(List<String> resultIds);
 }
 

@@ -2,6 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 
 @Entity
 public class InvestigationResult extends BaseEntity {
@@ -12,6 +13,7 @@ public class InvestigationResult extends BaseEntity {
     public InvestigationResult() {
     }
 
+    @Ignore
     public InvestigationResult(@NonNull String id, String resultId, String investigationId) {
         super(id);
         this.resultId = resultId;

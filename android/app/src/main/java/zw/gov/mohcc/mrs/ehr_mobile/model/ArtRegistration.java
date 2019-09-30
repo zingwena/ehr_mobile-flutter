@@ -3,6 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -23,13 +24,11 @@ public class ArtRegistration extends BaseEntity{
 
     private String oiArtNumber;
 
-
-
-
     public ArtRegistration(){
 
     }
 
+    @Ignore
     public ArtRegistration(@NonNull String id, String personId, Date dateOfEnrolmentIntoCare, Date dateOfHivTest, String oiArtNumber) {
         super(id);
         this.personId = personId;
