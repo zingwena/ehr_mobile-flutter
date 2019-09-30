@@ -2,7 +2,6 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
@@ -45,7 +44,7 @@ public class TerminologyService {
         Log.d(TAG, "Saved laboratory tests : " + ehrMobileDatabase.laboratoryTestDao().getLaboratoryTests());
     }
 
-    public void saveInvestigations (List<Investigation> investigations) {
+    public void saveInvestigations(List<Investigation> investigations) {
 
         ehrMobileDatabase.investigationDao().insertInvestigations(investigations);
         Log.d(TAG, "Saved investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
@@ -70,14 +69,14 @@ public class TerminologyService {
         Log.d(TAG, "Saved occupations : " + ehrMobileDatabase.occupationDao().getAllOccupations());
     }
 
-    public void saveNationalityToDB (List<Nationality> nationalityList) {
+    public void saveNationalityToDB(List<Nationality> nationalityList) {
 
         ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
         Log.d(TAG, "Saved nationalities : " + ehrMobileDatabase.nationalityDao().selectAllNationalities());
     }
 
 
-    public void saveEducationLevelToDB (List<EducationLevel> educationLevels) {
+    public void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
 
         ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
         Log.d(TAG, "Saved education levels : " + ehrMobileDatabase.educationLevelDao().getEducationLevels());

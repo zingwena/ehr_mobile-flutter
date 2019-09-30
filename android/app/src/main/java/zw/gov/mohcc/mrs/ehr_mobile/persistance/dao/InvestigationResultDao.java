@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
+import java.util.Set;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResult;
@@ -27,7 +28,7 @@ public interface InvestigationResultDao {
     @Query("SELECT * FROM InvestigationResult WHERE id=:investigationResultId")
     InvestigationResult findById(String investigationResultId);
 
-    @Query("SELECT * FROM InvestigationResult WHERE investigationId=:investigationId")
-    Investigation findByInvestigationId(String investigationId);
+    @Query("SELECT i.resultId FROM InvestigationResult i WHERE investigationId=:investigationId")
+    Set<String> findByInvestigationId(String investigationId);
 
 }
