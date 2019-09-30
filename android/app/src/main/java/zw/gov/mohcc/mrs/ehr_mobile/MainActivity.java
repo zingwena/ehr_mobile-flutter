@@ -1515,6 +1515,8 @@ public class MainActivity extends FlutterActivity {
 
     public void clearTables() {
 
+        ehrMobileDatabase.artRegistrationDao().deleteAll();
+        ehrMobileDatabase.artInitiationDao().deleteAll();
         ehrMobileDatabase.personInvestigationDao().deletePersonInvestigations();
         ehrMobileDatabase.htsDao().deleteAll();
         ehrMobileDatabase.bloodPressureDao().deleteAll();
@@ -1543,8 +1545,6 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.resultDao().deleteResults();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
-        ehrMobileDatabase.artRegistrationDao().deleteAll();
-        ehrMobileDatabase.artInitiationDao().deleteAll();
         ehrMobileDatabase.investigationResultDao().delete();
         ehrMobileDatabase.arvCombinationRegimenDao().deleteAll();
     }

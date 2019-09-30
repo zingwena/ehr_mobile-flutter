@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
+import java.util.Set;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 
@@ -26,5 +27,8 @@ public interface ResultDao {
 
     @Query("SELECT * FROM Result WHERE code=:id")
     Result findByResultId(String id);
+
+    @Query("SELECT * FROM Result WHERE code in (:resultIds)")
+    Set<Result> findByResultId(Set<String> resultIds);
 }
 
