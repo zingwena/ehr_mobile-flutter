@@ -741,11 +741,12 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getTestResults")) {
 
                             try {
+                                System.out.println(">>>>>>>>>>>>>>>>>> RESULTS HERE HERE ");
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
                                 List<Result>results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
-
+                                System.out.println("MMMMMMMMMMMMMMMMMMMMMM"+ results.toString());
                                 result.success(results);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -758,11 +759,9 @@ public class MainActivity extends FlutterActivity {
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
-                                Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
                                 String labtest_name = laboratoryTest.getName();
-                                Log.i(TAG, "YOUR TEST NAME"+ labtest_name);
                                 result.success(labtest_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

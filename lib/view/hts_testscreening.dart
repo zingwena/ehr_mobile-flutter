@@ -68,6 +68,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String __result;
   List __results = List();
   List _radiobuttonResults = List();
+  List<Result> _resultList = List();
+
 
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
@@ -82,6 +84,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
          getPersonInvestigation(widget.personId);
          getTestKitsByCount(testCount);
          getLabTest(widget.personId);
+         getTestResults(widget.personId);
          getLabId();
          getResults();
     super.initState();
@@ -158,14 +161,14 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     var results;
     try {
       __result = await htsChannel.invokeMethod('getTestResults', personId);
-      __results = jsonDecode(__result);
-      _radiobuttonResults = Result.mapFromJson(entryPoints);
 
       setState(() {
-        this.sample_name=sample_name;
-/*
-          this.test=investigation.test;
-*/
+        __results = jsonDecode(__result);
+        _radiobuttonResults = Result.mapFromJson(__results);
+        _radiobuttonResults.forEach((e) {
+          _resultList.add(e);
+        });
+       print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'+ _resultList.toString());
 
       });
     } catch (e) {
