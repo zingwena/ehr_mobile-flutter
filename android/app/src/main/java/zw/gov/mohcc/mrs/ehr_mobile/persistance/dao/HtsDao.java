@@ -43,7 +43,6 @@ public interface HtsDao {
     @RawQuery
     List<Hts> searchHts(SimpleSQLiteQuery query);
 
-
-
-
+    @Query("SELECT * FROM Hts WHERE visitId =:visitId")
+    Hts findCurrentHts(String visitId);
 }
