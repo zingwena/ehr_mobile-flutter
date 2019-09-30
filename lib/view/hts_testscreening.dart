@@ -56,7 +56,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String labInvestId;
   String _identifier;
   String test;
-  String sample;
+  String sample_name;
   List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
   List _identifierList = [
     "Select Identifier",
@@ -65,6 +65,11 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     "National Id",
     "Driver's Licence"
   ];
+  String __result;
+  List __results = List();
+  List _radiobuttonResults = List();
+
+
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
@@ -137,7 +142,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     try {
       sample_name = await htsChannel.invokeMethod('getSample', personId);
           setState(() {
-          this.sample=sample_name;
+          this.sample_name=sample_name;
 /*
           this.test=investigation.test;
 */
@@ -146,7 +151,27 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     } catch (e) {
       print("channel failure: '$e'");
     }
-    return sample;
+
+  }
+  Future<dynamic> getTestResults(String personId) async {
+
+    var results;
+    try {
+      __result = await htsChannel.invokeMethod('getTestResults', personId);
+      __results = jsonDecode(__result);
+      _radiobuttonResults = Result.mapFromJson(entryPoints);
+
+      setState(() {
+        this.sample_name=sample_name;
+/*
+          this.test=investigation.test;
+*/
+
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
   }
   Future<dynamic> getLabTest(String personId) async {
 
@@ -198,7 +223,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
     } catch (e) {
       print("channel failure: '$e'");
     }
-    return sample;
+ /*   return sample;*/
   }
   Future<dynamic> getResults() async {
     try {
@@ -209,7 +234,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
     } catch (e) {
       print("channel failure: '$e'");
     }
-    return sample;
+  /*  return sample;*/
   }
 
 
@@ -325,7 +350,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('Blood'),
+                                              (sample_name),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -366,7 +391,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('HIV'),
+                                              (test),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -552,7 +577,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         id,
                                                         result_string,
                                                         null, null,
-                                                        result, widget.visitId, testKit);
+                                                        'result', widget.visitId, testKit);
                                                     print(
                                                         '************************* SAVE LAB TEST ${labInvestTest
                                                             .toString()}');

@@ -15,9 +15,7 @@ LaboratoryInvestigationTest _$LaboratoryInvestigationTestFromJson(
         ? null
         : DateTime.parse(json['startTime'] as String),
     json['endTime'] == null ? null : DateTime.parse(json['endTime'] as String),
-    json['result'] == null
-        ? null
-        : Result.fromJson(json['result'] as Map<String, dynamic>),
+    json['id'] as String,
     json['visitId'] as String,
     json['testkitId'] as String,
 
@@ -31,7 +29,7 @@ Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
       'laboratoryInvestigationId': instance.laboratoryInvestigationId,
       'startTime': instance.startTime?.toIso8601String(),
       'endTime': instance.endTime?.toIso8601String(),
-      'result': instance.result,
+      'result': instance.resultId,
       'visitId': instance.visitId,
       'testkitId': instance.testkitId
     };

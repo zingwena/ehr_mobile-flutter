@@ -34,4 +34,15 @@ Result(String name,String code){
 
     return resultList;
   }
+static mapFromJson(List dynamicList){
+  List<Result> resultList=[];
+  if(dynamicList!=null){
+    dynamicList.forEach((e){
+      Result result= Result.fromJson(e);
+      resultList.add(result);
+    });
+  }
+  return resultList;
+}
+
 }

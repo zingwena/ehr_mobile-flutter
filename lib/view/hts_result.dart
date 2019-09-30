@@ -10,7 +10,7 @@ import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
-import 'package:ehr_mobile/view/secondTestScreening.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -376,7 +376,7 @@ class _Hts_Result  extends State<Hts_Result > {
 
                                                             }else{
                                                             //  SecondHtsScreeningTest(this.personId, this.visitId);
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> SecondHtsScreeningTest(widget.patientId, widget.visitId)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchPatient()));
 
 
                                                             }

@@ -101,6 +101,7 @@ public class MainActivity extends FlutterActivity {
     private HtsService htsService;
     private TerminologyService terminologyService;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -732,6 +733,20 @@ public class MainActivity extends FlutterActivity {
                                 String sample_name = sample.getName();
 
                                 result.success(sample_name);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+
+                        if (methodCall.method.equals("getTestResults")) {
+
+                            try {
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
+                                Date htsregdate = hts.getDateOfHivTest();
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                List<Result>results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
+
+                                result.success(results);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
