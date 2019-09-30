@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -13,15 +15,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class HtsService {
 
     private final String TAG = "Hts Service";
     private EhrMobileDatabase ehrMobileDatabase;
+    private VisitService visitService;
 
-    public HtsService(EhrMobileDatabase ehrMobileDatabase) {
+    public HtsService(EhrMobileDatabase ehrMobileDatabase, VisitService visitService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+        this.visitService = visitService;
     }
 
     @Transaction
@@ -53,5 +58,17 @@ public class HtsService {
         return ehrMobileDatabase.resultDao().findByResultId(
                 ehrMobileDatabase.investigationResultDao().findByInvestigationId(investigationId)
         );
+    }
+
+    public Hts getCurrentHts(String personId) {
+        String visitId = visitService.getCurrentVisit(personId);
+        if (StringUtils.isNoneBlank(visitId) || ehrMobileDatabase.htsDao().findHtsByPersonId(personId) == null) {
+            return null;
+        }
+        // check if patient has current hts record
+        if (visitId != null) {
+            return ehrMobileDatabase.htsDao().findCurrentHts(visitId);
+        }
+        return null;
     }
 }

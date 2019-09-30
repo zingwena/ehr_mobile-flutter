@@ -143,6 +143,9 @@ super.initState();
                                                    return value.isEmpty ? "Please fill this field" : null;
                                                   },
                                                   keyboardType: TextInputType.number,
+                                                  inputFormatters: <TextInputFormatter>[
+                                                    WhitelistingTextInputFormatter.digitsOnly
+                                                  ],
                                                   decoration: InputDecoration(
                                                     labelText: 'systolic',
                                                     border: OutlineInputBorder(),
@@ -168,6 +171,9 @@ super.initState();
                                                     });
                                                   },
                                                   keyboardType: TextInputType.number,
+                                                  inputFormatters: <TextInputFormatter>[
+                                                    WhitelistingTextInputFormatter.digitsOnly
+                                                  ],
                                                   validator: (value){
                                                     return value.isEmpty ? "Please fill this field" : null;
                                                   },
@@ -247,6 +253,9 @@ super.initState();
                                                     return value.isEmpty ? "Please fill this field" : null;
                                                   },
                                                   keyboardType: TextInputType.number,
+                                                  inputFormatters: <TextInputFormatter>[
+                                                    WhitelistingTextInputFormatter.digitsOnly
+                                                  ],
                                                   decoration: InputDecoration(
                                                     labelText: 'temperature',
                                                     border: OutlineInputBorder(),
@@ -320,6 +329,10 @@ super.initState();
                                                   onSaved: (value) {
                                                     _pulse.value = value;
                                                   },
+                                                  keyboardType:  TextInputType.number,
+                                                  inputFormatters: <TextInputFormatter>[
+                                                    WhitelistingTextInputFormatter.digitsOnly
+                                                  ],
                                                   validator: (value){
                                                     return value.isEmpty ? "Please fill this field" : null;
                                                   },
@@ -395,6 +408,10 @@ super.initState();
                                                 onSaved: (value) {
                                                   _respiratoryRate.value = value;
                                                 },
+                                                keyboardType:  TextInputType.number,
+                                                inputFormatters: <TextInputFormatter>[
+                                                  WhitelistingTextInputFormatter.digitsOnly
+                                                ],
                                                 validator: (value){
                                                   return value.isEmpty ? "Please fill this field" : null;
                                                 },
@@ -473,6 +490,9 @@ super.initState();
                                                   });
                                                 },
                                                 keyboardType:  TextInputType.number,
+                                                inputFormatters: <TextInputFormatter>[
+                                                  WhitelistingTextInputFormatter.digitsOnly
+                                                ],
                                                 validator: (value){
                                                   return value.isEmpty ? "Please fill this field" : null;
                                                 },
@@ -553,7 +573,10 @@ super.initState();
                                                 validator: (value){
                                                   return value.isEmpty ? "Please fill this field" : null;
                                                 },
-                                                keyboardType: TextInputType.number,
+                                                keyboardType:  TextInputType.number,
+                                                inputFormatters: <TextInputFormatter>[
+                                                  WhitelistingTextInputFormatter.digitsOnly
+                                                ],
                                                 decoration: InputDecoration(
                                                   labelText: 'Weight',
                                                   border: OutlineInputBorder(),
