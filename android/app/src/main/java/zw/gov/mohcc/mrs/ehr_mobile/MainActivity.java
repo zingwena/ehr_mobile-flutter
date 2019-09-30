@@ -899,6 +899,8 @@ public class MainActivity extends FlutterActivity {
 
 
     private void pullData(Token token, String url) {
+        getSample(token, url + "/api/");
+        getLaboratoryTest(token, url + "/api/");
         getNationalities(token, url + "/api/");
         getFacilities(token, url + "/api/");
         getCountries(token, url + "/api/");
@@ -912,12 +914,10 @@ public class MainActivity extends FlutterActivity {
         getReasonForNotIssuingResults(token, url + "/api/");
         getUsers(token, url + "/api/");
         getTestKits(token, url + "/api/");
-        getSample(token, url + "/api/");
-        getLaboratoryTest(token, url + "/api/");
         getInvestigations(token, url + "/api/");
         getTowns(token, url + "/api/");
-        getInvestigationResults(token, url + "/api/");
         getLaboratoryResults(token, url + "/api/");
+        getInvestigationResults(token, url + "/api/");
         getArtStatus(token, url + "/api/");
         getArtReasons(token, url + "/api/");
         getArvCombinationregimens(token, url + "/api/");
@@ -1547,6 +1547,8 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
         ehrMobileDatabase.investigationResultDao().delete();
         ehrMobileDatabase.arvCombinationRegimenDao().deleteAll();
+        ehrMobileDatabase.artStatusDao().deleteAll();
+        ehrMobileDatabase.artReasonDao().deleteAll();
     }
 
 
