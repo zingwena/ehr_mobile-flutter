@@ -4,12 +4,14 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
+import java.util.Set;
 import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class HtsService {
@@ -40,5 +42,16 @@ public class HtsService {
         ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
         Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
         return hts.getId();
+    }
+
+    /**
+     *
+     * @param investigationId
+     * @return list of results
+     */
+    public Set<Result> getInvestigationResults (String investigationId) {
+        return ehrMobileDatabase.resultDao().findByResultId(
+                ehrMobileDatabase.investigationResultDao().findByInvestigationId(investigationId)
+        );
     }
 }
