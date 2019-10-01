@@ -21,8 +21,7 @@ public class VisitService {
 
     public String getCurrentVisit(String personId) {
 
-        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, DateUtil.getStartOfDay(new Date()).getTime());
-        Log.d(TAG, "Visit retrieved " + visit);
+        Visit visit = getVisit(personId);
         if (visit != null) {
             return visit.getId();
         }
@@ -30,5 +29,11 @@ public class VisitService {
         visit = new Visit(visitId, personId, new Date(), DateUtil.getEndOfDay(new Date()));
         ehrMobileDatabase.visitDao().insert(visit);
         return visitId;
+    }
+
+    public Visit getVisit(String personId) {
+        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, DateUtil.getStartOfDay(new Date()).getTime());
+        Log.d(TAG, "Visit retrieved " + visit);
+        return visit;
     }
 }

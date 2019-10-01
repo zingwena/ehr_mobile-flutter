@@ -419,7 +419,6 @@ public class MainActivity extends FlutterActivity {
                 final String arguments = call.arguments();
                 if (call.method.equals("searchPerson")) {
                     List<Person> _list;
-
                     String searchItem = arguments;
                     PersonQuery personQuery = new PersonQuery();
                     SimpleSQLiteQuery sqLiteQuery = personQuery.searchPerson(searchItem);
@@ -950,7 +949,6 @@ public class MainActivity extends FlutterActivity {
         getArtReasons(token, url + "/api/");
         getArvCombinationregimens(token, url + "/api/");
         getPatients(url);
-
     }
 
     private void getPatients(String baseUrl) {
