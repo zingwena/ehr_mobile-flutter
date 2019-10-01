@@ -61,13 +61,13 @@ public class HtsService {
     }
 
     public Hts getCurrentHts(String personId) {
-        String visitId = visitService.getCurrentVisit(personId);
-        if (StringUtils.isNoneBlank(visitId) || ehrMobileDatabase.htsDao().findHtsByPersonId(personId) == null) {
+        Visit visit = visitService.getVisit(personId);
+        if (visit == null || ehrMobileDatabase.htsDao().findHtsByPersonId(personId) == null) {
             return null;
         }
         // check if patient has current hts record
-        if (visitId != null) {
-            return ehrMobileDatabase.htsDao().findCurrentHts(visitId);
+        if (visit != null) {
+            return ehrMobileDatabase.htsDao().findCurrentHts(visit.getId());
         }
         return null;
     }
