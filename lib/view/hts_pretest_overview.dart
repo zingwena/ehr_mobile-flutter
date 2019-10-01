@@ -47,6 +47,7 @@ class PretestOverviewState extends State<PretestOverview> {
 
   Person _patient;
   Visit _visit;
+  HtsRegistration _htsRegistration;
   Map<String, dynamic> details;
   String _maritalStatus,_educationLevel,_occupation,_nationality, _address, _phonenumber;
 
@@ -117,6 +118,7 @@ class PretestOverviewState extends State<PretestOverview> {
 
 
   }
+
 
   Future<void> getHtsModel(String htsModelId) async {
    String htsModel;

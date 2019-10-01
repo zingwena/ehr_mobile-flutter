@@ -58,6 +58,10 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String test;
   String sample_name;
   List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
+  String _entryPoint;
+  List entryPoints = List();
+  List _dropDownListEntryPoints = List();
+  List<LaboratoryInvestigationTest> _entryPointList = List();
   List _identifierList = [
     "Select Identifier",
     "Passport",
@@ -84,7 +88,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
          getPersonInvestigation(widget.personId);
          getTestKitsByCount(testCount);
          getLabTest(widget.personId);
-         getTestResults(widget.personId);
+         //getTestResults(widget.personId);
+         getFacilities(widget.personId);
          getLabId();
          getResults();
     super.initState();
@@ -111,7 +116,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     if (picked != null && picked != selectedStarttime)
       setState(() {
         selectedStarttime = DateFormat("yyyy/MM/dd").format(picked);
-        print(">>>>>>>>>>>>>>>>>>>>> selected starttime date" + selectedStarttime);
         startTime = DateFormat("yyyy/MM/dd").parse(selectedStarttime);
       });
   }
@@ -146,35 +150,31 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       sample_name = await htsChannel.invokeMethod('getSample', personId);
           setState(() {
           this.sample_name=sample_name;
-/*
-          this.test=investigation.test;
-*/
-
           });
     } catch (e) {
       print("channel failure: '$e'");
     }
 
   }
-  Future<dynamic> getTestResults(String personId) async {
 
-    var results;
+
+  Future<void> getFacilities(String personId) async {
+    String response;
     try {
-      __result = await htsChannel.invokeMethod('getTestResults', personId);
-
+      response = await htsChannel.invokeMethod('getTestResults', personId);
+      print('GGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE RESPONSE' + response);
       setState(() {
-        __results = jsonDecode(__result);
-        _radiobuttonResults = Result.mapFromJson(__results);
-        _radiobuttonResults.forEach((e) {
-          _resultList.add(e);
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
         });
-       print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'+ _resultList.toString());
-
+        print('################################### LIST OF RESULTS HERE '+ _entryPointList.toString());
       });
     } catch (e) {
-      print("channel failure: '$e'");
+      print('--------------------Something went wrong  $e');
     }
-
   }
   Future<dynamic> getLabTest(String personId) async {
 

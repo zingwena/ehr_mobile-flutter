@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
@@ -37,11 +39,14 @@ class OverviewState extends State<Overview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+
   Person _patient;
   Visit _visit;
   Map<String, dynamic> details;
   String _maritalStatus,_educationLevel,_occupation,_nationality, _address, _phonenumber;
-
+  HtsRegistration htsRegistration;
+  String htsId;
   bool showInput = true;
   bool showInputTabOptions = true;
 
@@ -51,6 +56,7 @@ class OverviewState extends State<Overview> {
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
+    getHtsRecord(_patient.id);
     print(_patient.toString());
     print('BBBBBBBBBBBBBBBBBBBBBBB HERE IS PATIENT ID IN OVERVIEW'+ _patient.id);
 
@@ -72,6 +78,34 @@ class OverviewState extends State<Overview> {
     setState(() {
       visitId = visit;
       print('JJJJJJJJJJJJJJJJJJJJJ'+ visitId);
+    });
+
+
+  }
+  Future<void> getHtsRecord(String patientId) async {
+    var hts;
+
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+      htsRegistration = hts;
+    });
+
+
+  }
+  Future<void> getHtsId(String patientId) async {
+    var hts;
+
+    try {
+      hts = await htsChannel.invokeMethod('getHtsId', patientId);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+      htsId = hts;
     });
 
 
@@ -364,12 +398,22 @@ class OverviewState extends State<Overview> {
                         _patient.id)),
           ),
           ),
-          new RoundedButton(text: "HTS", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Registration(visitId, _patient.id)),
-          ),
+          new RoundedButton(text: "HTS",  onTap: () {
+            
+              if(htsRegistration == null ){
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(visitId, _patient.id)
+                ));
+              } else {
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId)
+                ));
+              }
+
+
+
+
+          }
           ),
 
 

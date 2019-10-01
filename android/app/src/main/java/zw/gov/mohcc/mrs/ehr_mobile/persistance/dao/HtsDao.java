@@ -45,4 +45,5 @@ public interface HtsDao {
 
     @Query("SELECT * FROM Hts WHERE visitId =:visitId")
     Hts findCurrentHts(String visitId);
+
 }

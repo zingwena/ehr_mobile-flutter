@@ -528,6 +528,23 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+                        if (methodCall.method.equals("getcurrenthts")) {
+                            try {
+                               Hts hts = htsService.getCurrentHts(arguments);
+                                result.success(hts);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getHtsId")) {
+                            try {
+                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
+                                String hts_id = hts.getId();
+                                result.success(hts_id);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
                         if (methodCall.method.equals("htsModelOptions")) {
                             try {
                                 List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
@@ -741,13 +758,12 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getTestResults")) {
 
                             try {
-                                System.out.println(">>>>>>>>>>>>>>>>>> RESULTS HERE HERE ");
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
                                 List<Result>results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
-                                System.out.println("MMMMMMMMMMMMMMMMMMMMMM"+ results.toString());
-                                result.success(results);
+                                String results_list = gson.toJson(results);
+                                result.success(results_list);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
