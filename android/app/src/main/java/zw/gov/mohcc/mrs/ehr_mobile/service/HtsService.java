@@ -42,7 +42,7 @@ public class HtsService {
                 "36069471-adee-11e7-b30f-3372a2d8551e", dto.getDateOfHivTest());
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
-        Log.i(TAG, "Creating loboratory investigation record");
+        Log.i(TAG, "Creating laboratory investigation record");
         String laboratoryInvestigationId = UUID.randomUUID().toString();
         LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, "ZW000A01", personInvestigationId);
         ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
@@ -62,9 +62,6 @@ public class HtsService {
 
     public Hts getCurrentHts(String personId) {
         Visit visit = visitService.getVisit(personId);
-        if (visit == null || ehrMobileDatabase.htsDao().findHtsByPersonId(personId) == null) {
-            return null;
-        }
         // check if patient has current hts record
         if (visit != null) {
             return ehrMobileDatabase.htsDao().findCurrentHts(visit.getId());
