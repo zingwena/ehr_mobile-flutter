@@ -61,7 +61,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String _entryPoint;
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
-  List<LaboratoryInvestigationTest> _entryPointList = List();
+  List<Result> _entryPointList = List();
   List _identifierList = [
     "Select Identifier",
     "Passport",
@@ -162,7 +162,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     String response;
     try {
       response = await htsChannel.invokeMethod('getTestResults', personId);
-      print('GGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE RESPONSE' + response);
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
@@ -170,7 +169,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        print('################################### LIST OF RESULTS HERE '+ _entryPointList.toString());
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -233,16 +231,11 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       String response = await htsChannel.invokeMethod('getResults');
       List<Result> resultsList = Result.fromJsonDecodedMap(jsonDecode(response));
-      print("********* HTS RESPOOONSE Response"+response);
     } catch (e) {
       print("channel failure: '$e'");
     }
   /*  return sample;*/
   }
-
-
-
-
 
   void _handleTestKitChange(int value) {
     setState(() {
@@ -259,7 +252,15 @@ Future<dynamic> getTestKitsByCount(int count) async {
     });
   }
 
-
+  Widget getResultsRadioButtons(List<Result> results)
+  {
+    return new Row(children: results.map((item) =>
+      Radio(
+          value: 1,
+          groupValue: _testKit,
+          activeColor: Colors.blue,
+          onChanged: _handleTestKitChange),).toList());
+  }
 
   void _handleResultChange(int value)  {
 
@@ -411,8 +412,9 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 SizedBox(
                                   height: 16,
                                 ),
+                             getResultsRadioButtons(_entryPointList),
 
-
+/*
                                 Row(
                                   children: <Widget>[
 
@@ -474,7 +476,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                       ),
                                     ),
                                   ],
-                                ),
+                                ),*/
                                 SizedBox(
                                   height: 28,
                                 ),

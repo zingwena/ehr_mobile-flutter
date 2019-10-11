@@ -26,8 +26,8 @@ Result(String name,String code){
 
     if (dynamicList != null) {
       dynamicList.forEach((e) {
-        Result labInvestTest = Result.fromJson(e);
-        resultList.add(labInvestTest);
+        Result result = Result.fromJson(e);
+        resultList.add(result);
       });
     }
 
