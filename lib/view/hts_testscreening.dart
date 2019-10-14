@@ -269,22 +269,31 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       switch (_result) {
         case 1:
-          result.code = "01";
-          result.name ="Negative";
-          result_string = "Negative";
-          //testCount+=1;
+          _entryPointList.forEach((e) {
+            if (e.name == "negative " || e.name == "Negative" || e.name == "NEGATIVE"){
+              result.code = e.code;
+              result.name = e.name;
+
+            }
+          });
           break;
         
         case 2:
-         result.code = "02";
-         result.name="Positive";
-         result_string = "Positive";
-          //htsChannel.invokeMapMethod('saveResult',result);
-          break;
+      _entryPointList.forEach((e){
+        if(e.name == "positive " || e.name == "Positive" || e.name == "POSITIVE"){
+          result.code = e.code;
+          result.name = e.name;
+        }
+      });
+      break;
         case 3:
-          result.code = "03";
-          result.name ="Inconclusive";
-          result_string = "Inconclusive";
+          _entryPointList.forEach((e){
+            if(e.name == "Inconclusive " || e.name == "Indeterminate" || e.name == "INDERTERMINATE"){
+              result.code = e.code;
+              result.name = e.name;
+            }
+          });
+
           break;
 
       }
@@ -412,9 +421,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 SizedBox(
                                   height: 16,
                                 ),
-                             getResultsRadioButtons(_entryPointList),
 
-/*
+
                                 Row(
                                   children: <Widget>[
 
@@ -476,7 +484,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                       ),
                                     ),
                                   ],
-                                ),*/
+                                ),
                                 SizedBox(
                                   height: 28,
                                 ),
@@ -582,10 +590,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         id,
                                                         result_string,
                                                         null, null,
-                                                        'result', widget.visitId, testKit);
-                                                    print(
-                                                        '************************* SAVE LAB TEST ${labInvestTest
-                                                            .toString()}');
+                                                        result, widget.visitId, testKit);
 
 
                                                     saveLabInvestigationTest(
@@ -605,50 +610,13 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                   }
                                                 }
                                               }
-                                            /*   onPressed: () {
-                                                print(">>>>>>>>>>>>>>> save button pressed");
-                                                  */ /*labInvestTest.result  = result;*/ /*
-                                                  labInvestTest.startdate = date;
-                                                  labInvestTest.starttime = startTime;
-                                                  labInvestTest.readingdate = readingDate;
-                                                  labInvestTest.readingtime = readingTime;
-                                                  saveLabInvestigationTest(labInvestTest);
-                                              }
-*/
-//                                            onPressed: () => Navigator.push(
-//                                              context,
-//                                              MaterialPageRoute(
-//                                                  builder: (context) =>
-//                                                      LoginScreen()),
-//                                            ),
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                   /* Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: RaisedButton(
-                                            elevation: 4.0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(5.0)),
-                                            color: Colors.red,
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
 
                                           ),
                                         ),
                                         width: 100,
                                       ),
-                                    ),*/
+                                    ),
+
                                   ],
                                 ),
                               ],

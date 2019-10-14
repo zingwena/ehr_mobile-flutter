@@ -58,7 +58,6 @@ class OverviewState extends State<Overview> {
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     print(_patient.toString());
-    print('BBBBBBBBBBBBBBBBBBBBBBB HERE IS PATIENT ID IN OVERVIEW'+ _patient.id);
 
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
 
@@ -77,21 +76,23 @@ class OverviewState extends State<Overview> {
     }
     setState(() {
       visitId = visit;
-      print('JJJJJJJJJJJJJJJJJJJJJ'+ visitId);
     });
 
 
   }
   Future<void> getHtsRecord(String patientId) async {
     var hts;
+    print('bbbbbbbbbbbbbbb hts get record here');
 
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
-      htsRegistration = hts;
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+
     });
 
 
@@ -401,10 +402,13 @@ class OverviewState extends State<Overview> {
           new RoundedButton(text: "HTS",  onTap: () {
             
               if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(visitId, _patient.id)
                 ));
               } else {
+                print('bbbbbbbbbbbbbb htsreg  not null ');
+
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId)
                 ));

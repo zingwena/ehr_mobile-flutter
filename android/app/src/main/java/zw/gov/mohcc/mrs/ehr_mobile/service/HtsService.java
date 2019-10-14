@@ -49,7 +49,6 @@ public class HtsService {
         Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
         return hts.getId();
     }
-
     /**
      * @param investigationId
      * @return list of results

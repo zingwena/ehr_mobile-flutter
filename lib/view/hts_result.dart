@@ -94,13 +94,32 @@ class _Hts_Result  extends State<Hts_Result > {
     try {
       response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
       setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
-        });
-        print('################################### LIST OF INVESTIGATIONS'+ _entryPointList.toString());
+        {
+          _entryPoint = response;
+          entryPoints = jsonDecode(_entryPoint);
+          _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
+          _dropDownListEntryPoints.forEach((e) {
+            _entryPointList.add(e);
+          });
+        }
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+  Future<void> getResultName() async {
+    String response;
+    try {
+      response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
+      setState(() {
+        {
+          _entryPoint = response;
+          entryPoints = jsonDecode(_entryPoint);
+          _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
+          _dropDownListEntryPoints.forEach((e) {
+            _entryPointList.add(e);
+          });
+        }
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -304,7 +323,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                        DataRow(
                                                            cells: [
                                                        DataCell(Text(labinvesttest.testkitId)),
-                                                       DataCell(Text(labinvesttest.laboratoryInvestigationId)),])
+                                                       DataCell(Text(labinvesttest.result.name)),])
 
                                                       ).toList()
 
@@ -338,7 +357,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(0.0),
                                                                 child: Text(
-                                                                  (final_result),
+                                                                  ('final_result'),
                                                                   style: TextStyle(
                                                                     color: Colors.grey.shade600,
                                                                     fontSize: 18,

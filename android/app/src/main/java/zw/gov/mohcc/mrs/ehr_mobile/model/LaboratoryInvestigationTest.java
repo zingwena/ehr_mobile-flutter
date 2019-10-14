@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
 
@@ -16,7 +17,8 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     @TypeConverters(DateConverter.class)
     private Date endTime;
     private String visitId;
-    private String resultId;
+    @Embedded
+    private Result result;
     private String testkitId;
 
     public String getVisitId() {
@@ -35,12 +37,12 @@ public class LaboratoryInvestigationTest extends BaseEntity {
         this.laboratoryInvestigationId = laboratoryInvestigationId;
     }
 
-    public String getResultId() {
-        return resultId;
+    public Result getResult() {
+        return result;
     }
 
-    public void setResultId(String resultId) {
-        this.resultId = resultId;
+    public void setResult(Result result) {
+        this.result = result;
     }
 
     public Date getStartTime() {
@@ -74,7 +76,7 @@ public class LaboratoryInvestigationTest extends BaseEntity {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", visitId='" + visitId + '\'' +
-                ", resultId='" + resultId + '\'' +
+                ", result='" + result.toString() + '\'' +
                 ", testkitId='" + testkitId + '\'' +
                 '}';
     }

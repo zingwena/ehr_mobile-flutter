@@ -45,146 +45,289 @@ class _SearchPatientState extends State<SearchPatient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+    /*  appBar: AppBar(
         title: Text('Search Patient'),
-       ),
+      ),*/
       backgroundColor: Colors.white,
 
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SizedBox(
-            height: 25.0,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-            child: Form(
-              key: _searchFormKey,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Search",
-                  hintText: "Search",
-                  suffix: IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () async {
-                        if (_searchFormKey.currentState.validate()) {
-                          _searchFormKey.currentState.save();
 
-                          await searchPatient(searchItem);
-                        }
-                      }),
-                  border: OutlineInputBorder(),
-                ),
-                onSaved: (value) {
-                  setState(() {
-                    searchItem = value;
-                  });
-                },
+        children: <Widget>[
+
+          Stack(
+            children: <Widget>[
+              Container(
+                height: 200.0,
+                width: double.infinity,
+                color: Colors.blue,
               ),
-            ),
+              Positioned(
+                  bottom: 150,
+                  left: -40,
+                  child: Container(
+                    height: 140,
+                    width: 140,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(70),
+                        color: Colors.blueAccent[100].withOpacity(0.1)),
+                  )),
+              Positioned(
+                  top: -120,
+                  left: 100,
+                  child: Container(
+                    height: 300,
+                    width: 300,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(150),
+                        color: Colors.blue[100].withOpacity(0.1)),
+                  )),
+              Positioned(
+                  top: -50,
+                  left: 0,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blue[100].withOpacity(0.1)),
+                  )),
+              Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(75),
+                        color: Colors.blue[100].withOpacity(0.1)),
+                  )),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 70.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Welcome To Impilo Mobile",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white,
+                              fontSize: 30),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(),
+                        ),
+
+                      /*  RaisedButton(
+                          child: Text(
+                            "",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16),
+                          ),
+                          onPressed: () {},
+                          elevation: 1.0,
+                          color: Colors.white,
+                        ), */
+
+
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                    child: Text(
+                      "Search For Patient",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white.withOpacity(0.80),
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Container(
+
+                      width: MediaQuery.of(context).size.width,
+
+                      child: Form(
+                        key: _searchFormKey,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                          child: Material(
+                            elevation: 5.0,
+                            borderRadius: BorderRadius.circular(5.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+
+                                  suffixIcon: IconButton(
+                                      icon: Icon(Icons.search,
+                                          color: Colors.blue),
+                                      onPressed: () async {
+                                        if (_searchFormKey.currentState.validate()) {
+                                          _searchFormKey.currentState.save();
+                                          await searchPatient(searchItem);
+                                        }
+                                      }),
+
+                                  contentPadding: EdgeInsets.all(15.0),
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                              ),
+                              onSaved: (value) {
+                                setState(() {
+                                  searchItem = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15.0),
+                ],
+              ),
+            ],
           ),
+       /*   SizedBox(
+            height: 15.0,
+          ), */
+
+
+
           _patientList == null
               ? SizedBox()
               : _patientList != null && _patientList.isNotEmpty
-                  ? Expanded(
-                      child: ListView(
-                        padding: EdgeInsets.all(10.0),
-                        children: _patientList.map((patient) {
-                          return ListTile(
-                            isThreeLine: true,
-                            leading: Container(
-                              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                              child: IconButton(
-                                // For this situation your icon name should be humanFemale
-                                icon: new Icon(patient.sex == "MALE" ? MdiIcons.humanMale : MdiIcons.humanFemale,
-                                    color: Colors.blue, size: 35),
-                                onPressed: () {},
-                              ),
-                            ),
-                            title: Text(
-                              patient.firstName + " " + patient.lastName,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            subtitle: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Text(
-                                    'ID Number : ' + nullHandler(patient.nationalId),
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    'DOB : ' + nullHandler(DateFormat("yyyy/MM/dd").format(patient.birthDate)),
-                                    style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            trailing: Container(
-                              padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                              child: Icon(
-                                Icons.chevron_right,
-                                size: 36,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            onTap: (){
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Overview(patient)));
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    )
-                  : Center(
-                      child: Text("No Patients Found"),
+              ? Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(10.0),
+              children: _patientList.map((patient) {
+                return ListTile(
+                  leading: Container(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: IconButton(
+                      // For this situation your icon name should be humanFemale
+                      icon: new Icon(patient.sex == "MALE" ? MdiIcons.humanMale : MdiIcons.humanFemale,
+                          color: Colors.blue, size: 35),
+                      onPressed: () {},
                     ),
+                  ),
+                  title: Text(
+                    patient.firstName + " " + patient.lastName,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          'ID Number : ' + nullHandler(patient.nationalId),
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'DOB : ' + nullHandler(DateFormat("yyyy/MM/dd").format(patient.birthDate)),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  trailing: Container(
+                    padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                    child: Icon(
+                      Icons.chevron_right,
+                      size: 36,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Overview(patient)));
+                  },
+                );
+              }).toList(),
+            ),
+          )
+
+              : Center (
+            child: Text("No Patients Found"),
+          ),
+
+          SizedBox(
+            height: 15,
+          ),
+
           _patientList != null
               ? OutlineButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    "Add Patient",
-                    style: TextStyle(
-                        fontSize: 23,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.blue, //Color of the border
-                    style: BorderStyle.solid, //Style of the border
-                    width: 3.0, //width of the border
-                  ),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddPatient()),
-                  ),
-                )
-              : SizedBox(),
+
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+            color: Colors.white,
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "Add Patient",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500),
+            ),
+            borderSide: BorderSide(
+              color: Colors.blue, //Color of the border
+              style: BorderStyle.solid, //Style of the border
+              width: 3.0, //width of the border
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddPatient()),
+            ),
+          )
+              :   SizedBox( ),
+
+          SizedBox(
+            height: 125,
+          ),
 
         ],
+
+
       ),
+
     );
   }
+
 }

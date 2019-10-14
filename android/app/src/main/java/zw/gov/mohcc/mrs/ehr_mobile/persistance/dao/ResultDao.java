@@ -18,6 +18,7 @@ public interface ResultDao {
     @Query("DELETE FROM Result")
     void deleteResults();
 
+
     @Insert
     void insertResults(Result result);
 
@@ -30,3 +31,4 @@ public interface ResultDao {
     @Query("SELECT * FROM Result WHERE code in (:resultIds)")
     List<Result> findByResultId(List<String> resultIds);
 }
+

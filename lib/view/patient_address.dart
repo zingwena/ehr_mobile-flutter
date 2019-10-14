@@ -385,7 +385,6 @@ class _PatientAddressState extends State<PatientAddress> {
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
         registeredPatient = Person.fromJson(jsonDecode(patientResponse));
-        print('BBBBBBBBBBBBBBBBBBBBBB PATIENT ID HERE'+ registeredPatient.id);
         savephonenumber();
       });
 
