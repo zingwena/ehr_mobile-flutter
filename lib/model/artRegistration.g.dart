@@ -13,12 +13,12 @@ ArtRegistration _$ArtRegistrationFromJson(Map<String, dynamic> json) {
         .fromJson(json['dateOfEnrolmentIntoCare'] as String),
     const CustomDateTimeConverter().fromJson(json['dateOfHivTest'] as String),
     json['oiArtNumber'] as String,
-  )..id = json['id'] as String;
+  );
 }
 
 Map<String, dynamic> _$ArtRegistrationToJson(ArtRegistration instance) =>
     <String, dynamic>{
-      'id': instance.id,
+
       'personId': instance.personId,
       'dateOfEnrolmentIntoCare': const CustomDateTimeConverter()
           .toJson(instance.dateOfEnrolmentIntoCare),

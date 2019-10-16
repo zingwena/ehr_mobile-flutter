@@ -2,6 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
@@ -24,7 +25,7 @@ public class ArtInitiation extends BaseEntity{
 
     private String clientType;
     private String clientEligibility;*/
-    private String line;
+   private String line;
     private String artRegimenId;
     private String artReasonId;
    // private String artStatusId;
@@ -33,11 +34,18 @@ public class ArtInitiation extends BaseEntity{
     }
 
     @Ignore
-    public ArtInitiation(String personId, String line, String artRegimenId, String artReasonId) {
+    public ArtInitiation(String personId, String artRegimenId, String artReasonId) {
         this.personId = personId;
-        this.line = line;
         this.artRegimenId = artRegimenId;
         this.artReasonId = artReasonId;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
     }
 
     public String getPersonId() {
@@ -48,13 +56,6 @@ public class ArtInitiation extends BaseEntity{
         this.personId = personId;
     }
 
-    public String getLine() {
-        return line;
-    }
-
-    public void setLine(String line) {
-        this.line = line;
-    }
 
     public String getArtRegimenId() {
         return artRegimenId;
@@ -76,7 +77,6 @@ public class ArtInitiation extends BaseEntity{
     public String toString() {
         return "ArtInitiation{" +
                 "personId='" + personId + '\'' +
-                ", line='" + line + '\'' +
                 ", artRegimenId='" + artRegimenId + '\'' +
                 ", artReasonId='" + artReasonId + '\'' +
                 '}';
