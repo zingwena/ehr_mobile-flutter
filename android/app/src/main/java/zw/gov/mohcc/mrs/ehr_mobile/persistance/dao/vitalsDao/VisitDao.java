@@ -17,7 +17,7 @@ public interface VisitDao {
     @Query("DELETE from Visit")
     void deleteAll();
 
-    @Query("SELECT * FROM Visit WHERE personId = :personId AND :currentDate Between visitStartDate and visitEndDate")
+    @Query("SELECT * FROM Visit WHERE personId = :personId AND (:currentDate >= visitStartDate and :currentDate <= visitEndDate)")
     Visit findByPersonVisit(String personId, long currentDate);
 
     @Query("SELECT * FROM Visit")

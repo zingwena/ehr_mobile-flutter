@@ -530,8 +530,9 @@ public class MainActivity extends FlutterActivity {
                             Log.i(TAG, " CURRENT HTS MODEL : " );
 
                             try {
+                                Log.d(TAG, "arguments from flutter side : "+ arguments);
                                Hts hts = htsService.getCurrentHts(arguments);
-                                System.out.println(">>>>>>>>>>>>>>>>>>>> HTS FROM ANDROID"+ hts);
+                                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>> HTS FROM ANDROID "+ hts);
                                 result.success(hts);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
