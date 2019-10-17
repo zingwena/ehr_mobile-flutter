@@ -8,7 +8,6 @@ part 'artRegistration.g.dart';
 @CustomDateTimeConverter()
 @JsonSerializable(explicitToJson: true)
 class ArtRegistration {
-  String id;
    String personId;
    DateTime dateOfEnrolmentIntoCare;
    DateTime dateOfHivTest;

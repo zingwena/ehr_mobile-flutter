@@ -11,7 +11,7 @@ import java.util.Date;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 @Entity
-public class ArtRegistration extends BaseEntity{
+public class Art extends BaseEntity{
 
     @ColumnInfo(name = "personId")
     private String personId;
@@ -24,12 +24,12 @@ public class ArtRegistration extends BaseEntity{
 
     private String oiArtNumber;
 
-    public ArtRegistration(){
+    public Art(){
 
     }
 
     @Ignore
-    public ArtRegistration(@NonNull String id, String personId, Date dateOfEnrolmentIntoCare, Date dateOfHivTest, String oiArtNumber) {
+    public Art(@NonNull String id, String personId, Date dateOfEnrolmentIntoCare, Date dateOfHivTest, String oiArtNumber) {
         super(id);
         this.personId = personId;
         this.dateOfEnrolmentIntoCare = dateOfEnrolmentIntoCare;
@@ -71,7 +71,7 @@ public class ArtRegistration extends BaseEntity{
 
     @Override
     public String toString() {
-        return "ArtRegistration{" +
+        return "Art{" +
                 "personId='" + personId + '\'' +
                 ", dateOfEnrolmentIntoCare=" + dateOfEnrolmentIntoCare +
                 ", dateOfHivTest=" + dateOfHivTest +

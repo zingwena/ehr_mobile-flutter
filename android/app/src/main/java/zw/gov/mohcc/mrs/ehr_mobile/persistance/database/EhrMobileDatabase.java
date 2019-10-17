@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtRegistration;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -106,7 +106,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
-        InvestigationResult.class, ArtStatus.class, ArtReason.class, ArtRegistration.class, ArtInitiation.class, ArvCombinationRegimen.class}, version = 35, exportSchema = false)
+        InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class, ArvCombinationRegimen.class}, version = 38, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,

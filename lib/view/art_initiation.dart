@@ -11,6 +11,8 @@ import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/view/art_registration.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/art_initiationoverview.dart';
+
 import 'rounded_button.dart';
 
 import 'package:flutter/material.dart';
@@ -46,6 +48,8 @@ class _Art_Initiation extends State<Art_Initiation> {
   String _arvCombinationRegimenError = "Select Arv Regimen";
   String _artReasonError = "Select Art Reason";
   String artRegimenId;
+  ArtInitiation initiation;
+
 
   int _line = 0;
   String line="";
@@ -159,41 +163,6 @@ class _Art_Initiation extends State<Art_Initiation> {
       }
     });
   }
-
-
- /* Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
-      });
-  }
-
-  void _handleHtsTypeChange(int value) {
-    print("hts value : $value");
-    setState(() {
-      _selecType = value;
-
-      switch (_selecType) {
-        case 1:
-          clientType = "New Client";
-          print("client value : $clientType");
-
-          break;
-        case 2:
-          clientType = "Old Client";
-          print("client value : $clientType");
-
-          break;
-      }
-    });
-  }*/
-
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArtReason() {
     List<DropdownMenuItem<String>> items = new List();
@@ -531,12 +500,10 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           onPressed: () async {
                                                             ArtInitiation artInitiationDetails = ArtInitiation(widget.patientId, line, _currentArvCombinationRegimen, _currentArtReason);
                                                             print('*************************artReg number ${artInitiationDetails.line}');
-                                                            await artInitiation(
-                                                                artInitiationDetails);
 
                                                             await artInitiation(artInitiationDetails);
 
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(initiation)));
 
 
                                                           },
@@ -608,18 +575,14 @@ class _Art_Initiation extends State<Art_Initiation> {
 
 
   Future<void> artInitiation(ArtInitiation artInitiation) async {
-    int id;
+    String response;
     print('*************************art initiation ${artInitiation.toString()}');
     try {
-      id = await artChannel.invokeMethod(
+      response = await artChannel.invokeMethod(
           'saveArtInitiation', jsonEncode(artInitiation));
-      String patientid = personId;
-
-
-      print('print patient id : '+ patientid);
-      await artChannel.invokeMethod('saveArtInitiation',jsonEncode(artInitiation));
-
-      print('---------------------saved file id  $id');
+      setState(() {
+        initiation = ArtInitiation.fromJson(jsonDecode(response));
+      });
     } catch (e) {
       print('--------------something went wrong  $e');
     }

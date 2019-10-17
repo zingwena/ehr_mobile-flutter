@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
-import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'art_initiation.dart';
 import 'rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +29,7 @@ class _Art_Registration extends State<Art_Registration> {
   String oiArtNumber;
   var selectedDate, selectedDateOfEnrollment;
   bool _formIsValid = true;
+  ArtRegistration _artRegistration;
 
 
 
@@ -90,36 +91,6 @@ class _Art_Registration extends State<Art_Registration> {
       });
   }
 
-  /*void _handleHtsTypeChange(int value) {
-    print("hts value : $value");
-    setState(() {
-      _selecType = value;
-
-      switch (_selecType) {
-        case 1:
-          clientType = "New Client";
-          print("client value : $clientType");
-
-          break;
-        case 2:
-          clientType = "Old Client";
-          print("client value : $clientType");
-
-          break;
-      }
-    });
-  }*/
-
-  /*List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedEntryPoint() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (EntryPoint entryPoint in _entryPointList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(
-          value: entryPoint.code, child: Text(entryPoint.name)));
-    }
-    return items;
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -250,14 +221,15 @@ class _Art_Registration extends State<Art_Registration> {
                                                       SizedBox(
                                                         height: 10.0,
                                                       ),
+
                                                       Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                                child:
-                                                                TextFormField(
+                                                                padding: EdgeInsets.symmetric(
+                                                                    vertical: 16.0, horizontal: 60.0),
+                                                                child: TextFormField(
                                                                   validator: (value) {
                                                                     return value.isEmpty ? 'Enter some text' : null;
                                                                   },
@@ -274,6 +246,8 @@ class _Art_Registration extends State<Art_Registration> {
                                                           ),
                                                         ],
                                                       ),
+
+
 
 
 
@@ -296,38 +270,19 @@ class _Art_Registration extends State<Art_Registration> {
                                                                 color: Colors.white,
                                                                 fontWeight: FontWeight.w500),
                                                           ),
-                                                          onPressed: () async {
-                                                          if (_formKey.currentState.validate()) {
-                                                            _formKey
-                                                                .currentState
-                                                                .save();
-                                                          }
-
-                                                                ArtRegistration artRegistrationDetails = ArtRegistration(widget.patientId, dateOfEnrolmentIntoCare, dateOfHivTest, oiArtNumber);
-                                                                print('*************************artReg number ${artRegistrationDetails.oiArtNumber}');
-                                                                await artRegistration(
-                                                                    artRegistrationDetails);
+                                                            onPressed: () async {
+                                                              if (_formIsValid) {
+                                                                ArtRegistration artRegistrationDetails = ArtRegistration(widget.patientId, dateOfEnrolmentIntoCare, dateOfHivTest, '1234');
 
                                                                 await artRegistration(artRegistrationDetails);
 
-                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Art_Initiation(widget.patientId)));
+                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(_artRegistration)));
+
+                                                              }
+
+                                                            }
 
 
-                                                          },
- /*   onPressed: () async {
-    if (_formKey.currentState.validate()) {
-    _formKey.currentState.save();
-    if (_formIsValid) {
-    print('FORM IS VALID FORM IS VALID '+ _formIsValid.toString());
-
-    LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(id, "laboratoryInvestigationId", startTime, readingTime, result, visit_id);
-    print('************************* SAVE LAB TEST ${labInvestTest.toString()}');
-
-
-
-    Navigator.push(context, MaterialPageRoute(
-    builder:(context)=> PatientPostTest()
-    ));*/
                                                         ),
                                                       ),
                                                       SizedBox(
@@ -373,23 +328,23 @@ class _Art_Registration extends State<Art_Registration> {
 */
 
 
-          new RoundedButton(text: "ART Initiation", onTap: () =>     Navigator.push(
+          new RoundedButton(text: "ART Registration", selected: true,/* onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     Art_Initiation(widget.patientId)),
-          ),),
+          )*/),
 
 
 
-          new RoundedButton(text: "Art Registration",selected: true,
+          new RoundedButton(text: "Art Initiation",
           ),
-          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
+          new RoundedButton(text: "CLOSE",/* onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     SearchPatient()),
-          ),
+          ),*/
           ),
         ],
       ),
@@ -397,15 +352,18 @@ class _Art_Registration extends State<Art_Registration> {
   }
 
   Future<void> artRegistration(ArtRegistration artRegistration) async {
-    int id;
-    print('*************************artRegistration ${artRegistration.toString()}');
+    String art_registration_response;
     try {
-      id = await artChannel.invokeMethod(
-          'saveArtRegistration', jsonEncode(artRegistration));
-      String patientid = personId;
+      print('pppppppppppppppppppppppppppppppppppp art regmethod');
 
+      art_registration_response = await artChannel.invokeMethod(
+          'saveArtRegistration', jsonEncode(artRegistration.toJson()));
+      print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
+  setState(() {
+    _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));
+    print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
+  });
 
-    print('---------------------saved file id  $id');
   } catch (e) {
   print('--------------something went wrong  $e');
   }

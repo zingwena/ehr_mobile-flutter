@@ -26,15 +26,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtRegistration;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
@@ -79,6 +80,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
@@ -98,6 +100,7 @@ public class MainActivity extends FlutterActivity {
     private EhrMobileDatabase ehrMobileDatabase;
     private VisitService visitService;
     private HtsService htsService;
+    private ArtService artService;
     private TerminologyService terminologyService;
 
 
@@ -121,10 +124,7 @@ public class MainActivity extends FlutterActivity {
                 Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
-                    System.out.println("ARGUMENTS FROM FLUTTER PATIENT"+ args);
-
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
-
                     Person person = new Person(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
                     String personId = UUID.randomUUID().toString();
                     person.setId(personId);
@@ -848,12 +848,9 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
                                 System.out.println("arguments = " + arguments);
-
-
                                 InvestigationEhr investigationEhr = new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e", "Blood", "HIV");
                                 Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
                                 String investigationString = gson.toJson(investigationEhr);
-                                System.out.println(" investigation***************" + sample);
                                 result.success(investigationString);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -874,52 +871,73 @@ public class MainActivity extends FlutterActivity {
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
 
         if (methodCall.method.equals("saveArtRegistration")) {
+            try{
+                ArtDto artdto = gson.fromJson(arguments, ArtDto.class);
+                Art art = new Art();
+                String artId = UUID.randomUUID().toString();
+                art.setId(artId);
+                art.setOiArtNumber(artdto.getOiArtNumber());
+                art.setDateOfHivTest(artdto.getDateOfHivTest());
+                art.setPersonId(artdto.getPersonId());
+                art.setDateOfEnrolmentIntoCare(artdto.getDateOfEnrolmentIntoCare());
+                ehrMobileDatabase.artRegistrationDao().createArtRegistration(art);
+                Art _art = ehrMobileDatabase.artRegistrationDao().findArtRegistrationById(artId);
+                String response = gson.toJson(_art);
+                result.success(response);
 
-            ArtRegistration artRegistration = gson.fromJson(arguments, ArtRegistration.class);
-            artRegistration.setId(UUID.randomUUID().toString());
-            artRegistration.setPersonId(artRegistration.getPersonId());
-            artRegistration.setDateOfEnrolmentIntoCare(artRegistration.getDateOfEnrolmentIntoCare());
-            artRegistration.setDateOfHivTest(artRegistration.getDateOfHivTest());
-            artRegistration.setOiArtNumber(artRegistration.getOiArtNumber());
-            ehrMobileDatabase.artRegistrationDao().createArtRegistration(artRegistration);
+            }catch (Exception e){
+                System.out.println("something went wrong " + e.getMessage());
 
-            String artRegistrationFromDB= ehrMobileDatabase.artRegistrationDao().listArtRegistration().toString();
-
-            System.out.println("Art from db :"+  artRegistrationFromDB);
-
-
+            }
 
         }
-
-        else {
-            result.notImplemented();
-        }
-
 
         if (methodCall.method.equals("saveArtInitiation")) {
+            try{
 
-            ArtInitiation artInitiation = gson.fromJson(arguments, ArtInitiation.class);
-            artInitiation.setId(UUID.randomUUID().toString());
-            artInitiation.setPersonId(artInitiation.getPersonId());
-            artInitiation.setArtRegimenId(artInitiation.getArtRegimenId());
-           // artInitiation.setClientEligibility(artInitiation.getClientEligibility());
-           // artInitiation.setDateInitiatedOnArt(artInitiation.getDateInitiatedOnArt());
-           // artInitiation.setDateOfEnrolmentIntoCare(artInitiation.getDateOfEnrolmentIntoCare());
-           // artInitiation.setClientType(artInitiation.getClientType());
-            artInitiation.setLine(artInitiation.getLine());
-            artInitiation.setArtReasonId(artInitiation.getArtReasonId());
-           // artInitiation.setArtStatusId(artInitiation.getArtStatusId());
-            ehrMobileDatabase.artInitiationDao().createArtInitiation(artInitiation);
+                ArtInitiation artInitiation = gson.fromJson(arguments, ArtInitiation.class);
+                System.out.println("ART ININTIATION HERE ART INITIATION HERE HERE "+ artInitiation);
+                artInitiation.setId(UUID.randomUUID().toString());
+                artInitiation.setPersonId(artInitiation.getPersonId());
+                artInitiation.setArtRegimenId(artInitiation.getArtRegimenId());
+                artInitiation.setArtReasonId(artInitiation.getArtReasonId());
+                artInitiation.setLine(artInitiation.getLine());
+                ehrMobileDatabase.artInitiationDao().createArtInitiation(artInitiation);
+                ArtInitiation initiation = ehrMobileDatabase.artInitiationDao().findArtInitiationById(artInitiation.getId());
+                String response = gson.toJson(initiation);
+                result.success(response);
 
-            String artInitiationFromDB= ehrMobileDatabase.artInitiationDao().listArtInitiation().toString();
-            System.out.println("Art from db :"+  artInitiationFromDB);
+            }catch (Exception e ){
+                System.out.println("something went wrong " + e.getMessage());
+
+            }
 
 
         }
+        if (methodCall.method.equals("getRegimenName")){
+            try{
+                ArvCombinationRegimen arvCombinationRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(arguments);
+                String regimenname = arvCombinationRegimen.getName();
+                result.success(regimenname);
 
-        else {
-            result.notImplemented();
-        }}});
+            }catch (Exception e){
+
+                System.out.println("something went wrong " + e.getMessage());
+            }
+        }
+        if(methodCall.method.equals("getReason")){
+            try{
+                ArtReason artReason = ehrMobileDatabase.artReasonDao().findById(arguments);
+                String reason = artReason.getName();
+                result.success(reason);
+
+            } catch (Exception e){
+                System.out.println("something went wrong " + e.getMessage());
+            }
+        }
+
+
+        }});
 
 
 

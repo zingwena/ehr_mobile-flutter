@@ -10,7 +10,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtRegistration;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 
 
 @Dao
@@ -18,28 +18,28 @@ public interface ArtRegistrationDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void createArtRegistration(ArtRegistration artRegistration);
+    void createArtRegistration(Art artRegistration);
 
-    @Query("DELETE from ArtRegistration")
+    @Query("DELETE from Art")
     void deleteAll();
 
-    @Query("SELECT COUNT(id) FROM ArtRegistration WHERE id =:id")
+    @Query("SELECT COUNT(id) FROM Art WHERE id =:id")
     int getNumberOfRows(String id);
 
     @Update
-    void updateArtRegistration(ArtRegistration artRegistration);
+    void updateArtRegistration(Art artRegistration);
 
-    @Query("SELECT * FROM ArtRegistration")
-    List<ArtRegistration> listArtRegistration();
+    @Query("SELECT * FROM Art")
+    List<Art> listArtRegistration();
 
-    @Query("SELECT * FROM ArtRegistration WHERE id =:id")
-    ArtRegistration findArtRegistrationById(String id);
+    @Query("SELECT * FROM Art WHERE id =:id")
+    Art findArtRegistrationById(String id);
 
-    @Query("DELETE FROM ArtRegistration where id = :id")
+    @Query("DELETE FROM Art where id = :id")
     void deleteById(String id);
 
     @RawQuery
-    List<ArtRegistration> searchArtRegistration(SimpleSQLiteQuery query);
+    List<Art> searchArtRegistration(SimpleSQLiteQuery query);
 
 
 
