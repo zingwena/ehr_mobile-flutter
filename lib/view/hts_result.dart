@@ -7,6 +7,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/view/home_page.dart';
+import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
@@ -44,6 +45,8 @@ class _Hts_Result  extends State<Hts_Result > {
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   String _visitId;
   String patientId;
+  String labInvetsTestId;
+  String result_string;
   Person patient;
   var selectedDate;
   bool _showError = false;
@@ -73,6 +76,8 @@ class _Hts_Result  extends State<Hts_Result > {
     _visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
+    labInvetsTestId = widget.labInvetsTestId;
+    result_string = widget.result_string;
     getFacilities();
    // getLabInvestigationTests();
     getTestKIt(widget.labInvetsTestId);
@@ -396,8 +401,11 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(final_result, widget.patientId)));
 
                                                             }else{
-                                                            //  SecondHtsScreeningTest(this.personId, this.visitId);
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchPatient()));
+                                                              /**
+                                                               * redirecting back to home screen
+                                                               */
+                                                              //Hts_Result(this._visitId, this.patientId, this.labInvetsTestId, this.result_string); HtsScreeningTest
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(this.patientId, this._visitId)));
 
 
                                                             }

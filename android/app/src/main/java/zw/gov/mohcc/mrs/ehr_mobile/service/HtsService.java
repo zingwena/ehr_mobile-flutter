@@ -6,6 +6,8 @@ import androidx.room.Transaction;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -13,8 +15,10 @@ import java.util.UUID;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -64,6 +68,53 @@ public class HtsService {
         // check if patient has current hts record
         if (visit != null) {
             return ehrMobileDatabase.htsDao().findCurrentHts(visit.getId());
+        }
+        return null;
+    }
+
+    private int getTestCount(String laboratoryInvestigationId) {
+        return ehrMobileDatabase.labInvestTestdao().countByLaboratoryInvestigation(laboratoryInvestigationId);
+    }
+
+    private String getTestLevel(int count) {
+        switch (count) {
+            case 0:
+                return "FIRST";
+            case 1:
+                return "SECOND";
+            case 2:
+                return "PARALLEL_ONE";
+            case 3:
+                return "PARALLEL_TWO";
+            case 4:
+                return "THIRD";
+            default:
+                throw new IllegalStateException("Illegal parameter passed to method : "+ count);
+        }
+    }
+
+    private List<String> getFirstTwoTestKits(String laboratoryInvestigationId, int maxCount) {
+        List<String> testKitIds = new ArrayList<>();
+        for (LaboratoryInvestigationTest item : ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId)) {
+            if (maxCount <= 0) {
+                testKitIds.add(item.getTestkitId());
+            } else {
+                break;
+            }
+            maxCount--;
+        }
+        return testKitIds;
+    }
+
+    public Set<TestKit> getTestKitByTestLevel(String laboratoryInvestigationId) {
+        int count = getTestCount(laboratoryInvestigationId);
+        String level = getTestLevel(count);
+        if (count == 0 || count == 1 || count == 4) {
+            return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitsByLevel(level));
+        } else if (count == 2) {
+            return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 2)));
+        } else if (count == 3) {
+            throw new IllegalStateException("Method not yet implemented");
         }
         return null;
     }

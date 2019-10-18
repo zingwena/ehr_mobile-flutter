@@ -13,8 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import io.flutter.app.FlutterActivity;
@@ -421,13 +423,19 @@ public class MainActivity extends FlutterActivity {
                     String searchItem = arguments;
                     PersonQuery personQuery = new PersonQuery();
                     SimpleSQLiteQuery sqLiteQuery = personQuery.searchPerson(searchItem);
+                    Log.d(TAG, "++++++++++++++++++++++++++++++++++++++++++++++ " + sqLiteQuery.getSql());
                     _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery);
-                    if (_list.isEmpty()){
+                    Log.d(TAG, "::::::::::::::::::::::::: "+ _list.toString());
+                    // remove duplicates in list
+                    Set<Person> persons = new HashSet<>(_list);
+
+
+                    /*if (_list.isEmpty()){
                         SimpleSQLiteQuery sqLiteQuery1= personQuery.searchPersonBySurnameAndName(searchItem);
                         _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery1);
-                    }
+                    }*/
                     Gson gson = new Gson();
-                    result1.success(gson.toJson(_list));
+                    result1.success(gson.toJson(persons));
                 }
             }
 
@@ -806,8 +814,15 @@ public class MainActivity extends FlutterActivity {
                         }
 
                         if (methodCall.method.equals("getTestKitsByLevel")) {
+                            Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  : " + arguments);
 
-                            try {
+                            try{
+                                result.success(htsService.getTestKitByTestLevel(arguments));
+                                Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ");
+                            }catch(Exception e) {
+                                Log.d(TAG, "================================= : " +e.getMessage());
+                            }
+                            /*try {
                                 String testKits;
                                 int count = Integer.valueOf(arguments);
                                 switch (count) {
@@ -840,7 +855,7 @@ public class MainActivity extends FlutterActivity {
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
-                            }
+                            }*/
                         }
 
                         if (methodCall.method.equals("getSample")) {
