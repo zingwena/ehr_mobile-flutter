@@ -215,8 +215,10 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 Future<dynamic> getTestKitsByCount(int count) async {
     try {
 
-      List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('getTestKitsByLevel',count.toString()) );
- 
+      List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('getTestKitsByLevel',labInvestId) );
+
+      print("************************************************************* tttttttttt : " + testKits.toString());
+
        setState(() {
          _testKits=testKits;
        });

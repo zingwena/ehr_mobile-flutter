@@ -32,4 +32,6 @@ public interface TestKitDao {
     @Query("SELECT * FROM TestKit WHERE level=:level")
     List<TestKit> findTestKitsByLevel(String level);
 
+    @Query("SELECT * FROM TestKit WHERE code in (:ids)")
+    List<TestKit> findTestKitIdsIn(List<String> ids);
 }
