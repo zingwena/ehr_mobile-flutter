@@ -357,7 +357,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(0.0),
                                                                 child: Text(
-                                                                  ('final_result'),
+                                                                  (" "),
                                                                   style: TextStyle(
                                                                     color: Colors.grey.shade600,
                                                                     fontSize: 18,
