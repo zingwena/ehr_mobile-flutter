@@ -24,4 +24,7 @@ public interface LaboratoryInvestigationDao {
 
     @Query("SELECT * from laboratoryinvestigation WHERE personInvestigationId=:personInvestigationId")
     LaboratoryInvestigation findByPersonInvestigationId(String personInvestigationId);
+
+    @Query("DELETE FROM LaboratoryInvestigation")
+    void deleteAll();
 }
