@@ -536,13 +536,11 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
                         if (methodCall.method.equals("getcurrenthts")) {
-                            Log.i(TAG, " CURRENT HTS MODEL : " );
 
                             try {
-                                Log.d(TAG, "arguments from flutter side : "+ arguments);
                                Hts hts = htsService.getCurrentHts(arguments);
-                                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>> HTS FROM ANDROID "+ hts);
-                                result.success(hts);
+                                String htsjson = gson.toJson(hts);
+                                result.success(htsjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }

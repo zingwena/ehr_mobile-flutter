@@ -56,6 +56,7 @@ class OverviewState extends State<Overview> {
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
+    getHtsRecord(_patient.id);
     print(_patient.toString());
 
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
@@ -80,17 +81,17 @@ class OverviewState extends State<Overview> {
 
   }
   Future<void> getHtsRecord(String patientId) async {
-    var hts;
-    print('bbbbbbbbbbbbbbb hts get record here');
-
+    var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER '+ hts);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
+
       htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
     });
 
@@ -399,7 +400,6 @@ class OverviewState extends State<Overview> {
           ),
           ),
           new RoundedButton(text: "HTS",  onTap: () {
-            getHtsRecord(_patient.id);
             if(htsRegistration == null ){
                 print('bbbbbbbbbbbbbb htsreg null ');
                 Navigator.push(context,MaterialPageRoute(

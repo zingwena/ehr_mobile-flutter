@@ -309,10 +309,6 @@ class _Hts_Result  extends State<Hts_Result > {
                                                       ),
                                                     ),
 
-
-
-
-
                                                     SizedBox(
                                                       height: 20.0,
                                                     ),
