@@ -32,6 +32,7 @@ public class PersonQuery {
             parameters.add(searchItemNoSpace);
 
 
+
         } else if (searchArray.length == 2) {
             SearchPatientDTO normalFirstNameLastName = SearchPatientDTO.getFirstNameLastNameInstance(searchArray[0], searchArray[1]);
 
@@ -43,11 +44,11 @@ public class PersonQuery {
 
             stringQuery.append(" WHERE (((firstName Like ? AND lastName Like ?) OR (firstName Like ? AND lastName Like ?)) OR ((lastName Like ? AND firstName Like ?) OR (lastName Like ? AND firstName Like ?)))");
 
+
             parameters.add(normalFirstNameLastName.getFirstName());
             parameters.add(normalFirstNameLastName.getLastName());
             parameters.add(inverseFirstNameLastName.getFirstName());
             parameters.add(inverseFirstNameLastName.getLastName());
-
             parameters.add(normalLastNameFirstName.getFirstName());
             parameters.add(normalLastNameFirstName.getLastName());
             parameters.add(inverseLastNameFirstName.getFirstName());

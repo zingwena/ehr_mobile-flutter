@@ -678,7 +678,6 @@ class _EditDemographicsState extends State<EditDemographics> {
       educationLevels= await dataChannel.invokeMethod('educationLevelOptions');
       nationalities= await dataChannel.invokeMethod('nationalityOptions');
       maritalStates=await dataChannel.invokeMethod('maritalStatusOptions');
-      print('------------------------$countries');
       setState(() {
         religion=result;
         _religions=jsonDecode(religion);
