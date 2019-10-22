@@ -510,7 +510,7 @@ public class MainActivity extends FlutterActivity {
                 } else  if(methodCall.method.equals("visit")){
                     String visitId = visitService.getCurrentVisit(arguments);
                     result.success(visitId);
-                }else {
+                } else {
                     result.notImplemented();
                 }
             }

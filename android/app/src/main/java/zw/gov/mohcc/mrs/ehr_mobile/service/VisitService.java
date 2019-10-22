@@ -4,7 +4,6 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 import android.util.Log;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
@@ -34,7 +33,7 @@ public class VisitService {
 
     public Visit getVisit(String personId) {
 
-        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId);
+        Visit visit = ehrMobileDatabase.visitDao().findByPerson(personId);
 
         Log.d(TAG, "All visits in database : "+ ehrMobileDatabase.visitDao().getAll().toString());
 

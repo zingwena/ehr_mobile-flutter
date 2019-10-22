@@ -57,10 +57,10 @@ public class Visit extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Visit{" +
+        return super.toString().concat("Visit{" +
                 "personId='" + personId + '\'' +
                 ", visitStartDate=" + visitStartDate +
                 ", visitEndDate=" + visitEndDate +
-                '}';
+                '}');
     }
 }
