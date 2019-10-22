@@ -71,6 +71,9 @@ public class TerminologyService {
 
     public void saveNationalityToDB(List<Nationality> nationalityList) {
 
+        Log.d(TAG, "########################################################");
+        Log.d(TAG, nationalityList.toString());
+
         ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
         Log.d(TAG, "Saved nationalities : " + ehrMobileDatabase.nationalityDao().selectAllNationalities());
     }
