@@ -36,8 +36,11 @@ public class HtsService {
     @Transaction
     public String createHts(HtsRegDTO dto) {
 
+        String visitId = visitService.getCurrentVisit(dto.getPersonId());
+        Log.i(TAG, "Retrieving or creating current visit : "+ visitId);
+
         Log.i(TAG, "Creating HTS record");
-        Hts hts = HtsRegDTO.getInstance(dto);
+        Hts hts = HtsRegDTO.getInstance(dto, visitId);
         ehrMobileDatabase.htsDao().createHts(hts);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
         Log.i(TAG, "Creating Person Investigation record");

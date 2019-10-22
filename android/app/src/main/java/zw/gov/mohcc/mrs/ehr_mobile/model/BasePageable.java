@@ -8,13 +8,16 @@ import java.util.List;
 //@Data
 abstract public class BasePageable <T> implements Serializable {
 
+    /**
+     * initialize some fields with too high figures so all data is retrieved
+     */
     private int totalElements;
     private  boolean last;
     private int totalPages;
-    private boolean sort;
+    private String sort = "name,asc";
     private boolean first;
     private int numberOfElements;
-    private  int size;
+    private  int size = 10000;
     private int number;
     private List<T> content;
 
@@ -42,11 +45,11 @@ abstract public class BasePageable <T> implements Serializable {
         this.totalPages = totalPages;
     }
 
-    public boolean isSort() {
+    public String getSort() {
         return sort;
     }
 
-    public void setSort(boolean sort) {
+    public void setSort(String sort) {
         this.sort = sort;
     }
 

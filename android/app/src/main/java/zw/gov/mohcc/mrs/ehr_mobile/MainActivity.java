@@ -58,6 +58,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Pageable;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
@@ -509,7 +510,7 @@ public class MainActivity extends FlutterActivity {
                 } else  if(methodCall.method.equals("visit")){
                     String visitId = visitService.getCurrentVisit(arguments);
                     result.success(visitId);
-                }else {
+                } else {
                     result.notImplemented();
                 }
             }
