@@ -34,7 +34,10 @@ public class VisitService {
 
     public Visit getVisit(String personId) {
 
-        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, DateUtil.getStartOfDay(new Date()).getTime());
+        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId);
+
+        Log.d(TAG, "All visits in database : "+ ehrMobileDatabase.visitDao().getAll().toString());
+
         Log.d(TAG, "Visit retrieved " + visit);
         return visit;
     }
