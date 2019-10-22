@@ -147,9 +147,16 @@ public class HtsService {
             }
         } // coming to this point means we are now in a parallel test ignore first parallel test and jump to second parallel test
         else if(count == 2) {
+            // retrieve last test before this one
+            LaboratoryInvestigationTest lastTest =
+                    ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(2);
+            if (lastTest.getResult().getName().equalsIgnoreCase(lastTest.getResult().getName())) {
+                setFinalResult(test);
+            }
 
+        } else if (count == 4) {
+            setFinalResult(test);
         }
-
         ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
         return labInvestigationTestId;
     }
