@@ -4,6 +4,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.persistance.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ public interface LaboratoryInvestigationDao {
 
     @Insert
     void createLaboratoryInvestigation(LaboratoryInvestigation laboratoryInvestigation);
+
+    @Update
+    void update(LaboratoryInvestigation laboratoryInvestigation);
 
     @Query("SELECT * FROM laboratoryinvestigation")
     List<LaboratoryInvestigation> getAllLaboratoryInvestigations();

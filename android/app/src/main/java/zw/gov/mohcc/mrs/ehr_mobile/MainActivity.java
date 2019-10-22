@@ -696,12 +696,8 @@ public class MainActivity extends FlutterActivity {
 
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
 
-                                String labInvestigationId = UUID.randomUUID().toString();
-                                labInvestTest.setId(labInvestigationId);
-                                ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(labInvestTest);
-                                LaboratoryInvestigationTest laboratoryInvestigationTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestTestId(labInvestigationId);
-                                String labInvetTestId = laboratoryInvestigationTest.getId();
-                                result.success(labInvetTestId);
+                                htsService.processTestResults(labInvestTest);
+                                result.success(null);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }

@@ -3,6 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.persistance.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public interface PersonInvestigationDao {
 
     @Insert
     void insertPersonInvestigation(PersonInvestigation PersonInvestigation);
+
+    @Update
+    void update(PersonInvestigation PersonInvestigation);
 
     @Query("SELECT * FROM PersonInvestigation ")
     List<PersonInvestigation> getAllPersonInvestigations();

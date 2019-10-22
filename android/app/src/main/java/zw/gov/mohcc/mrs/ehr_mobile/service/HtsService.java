@@ -117,8 +117,56 @@ public class HtsService {
         } else if (count == 2) {
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 2)));
         } else if (count == 3) {
-            throw new IllegalStateException("Method not yet implemented");
+            return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 2)));
         }
         return null;
     }
+
+    @Transaction
+    public String processTestResults(LaboratoryInvestigationTest test) {
+
+        int count = getTestCount(test.getLaboratoryInvestigationId());
+        String labInvestigationTestId = UUID.randomUUID().toString();
+        test.setId(labInvestigationTestId);
+        // check current count
+        if (count == 0) {
+            // if result is negative set final result
+            if (test.getResult().getName().equalsIgnoreCase("Negative")) {
+                setFinalResult(test);
+            }
+        } else if (count == 1) {
+            // if result is positive set final result
+            if (test.getResult().getName().equalsIgnoreCase("Positive")) {
+                setFinalResult(test);
+            }
+        } // coming to this point means we are now in a parallel test ignore first parallel test and jump to second parallel test
+        else if(count == 2) {
+
+        }
+
+        ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
+        return labInvestigationTestId;
+    }
+
+    @Transaction
+    private void setFinalResult(LaboratoryInvestigationTest test) {
+        // retrieve investigation and update
+        Log.d(TAG, "Retrieving laboratory investigation record");
+        LaboratoryInvestigation laboratoryInvestigation =
+                ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(test.getLaboratoryInvestigationId());
+        Log.d(TAG, "Retrieved laboratory investigation record : "+ laboratoryInvestigation);
+
+        laboratoryInvestigation.setResultDate(test.getEndTime());
+        ehrMobileDatabase.laboratoryInvestigationDao().update(laboratoryInvestigation);
+        Log.d(TAG, "Updated laboratory investigation record : "+ laboratoryInvestigation);
+        // retrieve person investigation and update
+        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(
+                laboratoryInvestigation.getPersonInvestigationId());
+        personInvestigation.setResultId(test.getResult().getCode());
+
+        Log.d(TAG, "Retrieved person investigation record : "+ personInvestigation);
+
+        ehrMobileDatabase.personInvestigationDao().update(personInvestigation);
+    }
+
 }
