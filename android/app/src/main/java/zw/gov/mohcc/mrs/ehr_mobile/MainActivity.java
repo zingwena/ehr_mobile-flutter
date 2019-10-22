@@ -817,45 +817,12 @@ public class MainActivity extends FlutterActivity {
                             Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  : " + arguments);
 
                             try{
+                                Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  : HERE ARE THE TESTKITS FROM ANDROID" + htsService.getTestKitByTestLevel(arguments));
                                 result.success(htsService.getTestKitByTestLevel(arguments));
-                                Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ");
                             }catch(Exception e) {
                                 Log.d(TAG, "================================= : " +e.getMessage());
                             }
-                            /*try {
-                                String testKits;
-                                int count = Integer.valueOf(arguments);
-                                switch (count) {
-                                    case 0: {
-                                        List<TestKit> firstLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("FIRST");
-                                        testKits = gson.toJson(firstLevelTestKits);
-                                        System.out.println("firstLevelTestKits = " + firstLevelTestKits);
-                                        result.success(testKits);
 
-                                    }
-                                    break;
-
-                                    case 1: {
-                                        List<TestKit> secondLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("SECOND");
-                                        testKits = gson.toJson(secondLevelTestKits);
-                                        result.success(testKits);
-
-                                    }
-                                    break;
-                                    case 2: {
-                                        List<TestKit> thirdLevelTestKits = ehrMobileDatabase.testKitDao().findTestKitsByLevel("THIRD");
-                                        testKits = gson.toJson(thirdLevelTestKits);
-                                        result.success(testKits);
-
-                                    }
-                                    break;
-                                    default:
-                                        throw new IllegalStateException("Cannot read" + arguments);
-                                }
-
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }*/
                         }
 
                         if (methodCall.method.equals("getSample")) {
