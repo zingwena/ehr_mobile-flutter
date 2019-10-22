@@ -109,6 +109,12 @@ public class HtsService {
         return testKitIds;
     }
 
+    public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {
+
+        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonId(personId);
+        return ehrMobileDatabase.laboratoryInvestigationDao().findByPersonInvestigationId(personInvestigation.getId());
+    }
+
     public Set<TestKit> getTestKitByTestLevel(String laboratoryInvestigationId) {
         int count = getTestCount(laboratoryInvestigationId);
         String level = getTestLevel(count);

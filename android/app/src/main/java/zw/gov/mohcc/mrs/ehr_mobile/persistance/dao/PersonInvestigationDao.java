@@ -33,4 +33,7 @@ public interface PersonInvestigationDao {
 
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and date =:dateOfHivTest")
     PersonInvestigation findByPersonIdAndDate(String personId, long dateOfHivTest);
+
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId")
+    PersonInvestigation findByPersonId(String personId);
 }
