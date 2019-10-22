@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
+import 'package:ehr_mobile/model/testKit.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/hts_result.dart';
 
@@ -213,9 +214,14 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 //   _testKits.forEach((f)=>{})
 // }
 Future<dynamic> getTestKitsByCount(int count) async {
+    print('>>>>>>>>>>>>>>> LAB INVEST ' + labInvestId);
     try {
+      String response = await htsChannel.invokeMethod('getTestKitsByLevel', labInvestId);
+      List<TestKit> testKits = TestKit.fromJsonDecodedMap(jsonDecode(response));
 
-      List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('getTestKitsByLevel',labInvestId) );
+/*
+      List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('',labInvestId) );
+*/
 
       print("************************************************************* tttttttttt : " + testKits.toString());
 
@@ -226,7 +232,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
     } catch (e) {
       print("channel failure: '$e'");
     }
- /*   return sample;*/
+
   }
   Future<dynamic> getResults() async {
     try {
@@ -589,7 +595,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                   _formKey.currentState.save();
                                                   if (_formIsValid) {
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
-                                                        id,
+                                                        widget.visitId,
                                                         result_string,
                                                         null, null,
                                                         result, widget.visitId, testKit);

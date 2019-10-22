@@ -56,7 +56,6 @@ class OverviewState extends State<Overview> {
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
-    getHtsRecord(_patient.id);
     print(_patient.toString());
 
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
@@ -400,8 +399,8 @@ class OverviewState extends State<Overview> {
           ),
           ),
           new RoundedButton(text: "HTS",  onTap: () {
-            
-              if(htsRegistration == null ){
+            getHtsRecord(_patient.id);
+            if(htsRegistration == null ){
                 print('bbbbbbbbbbbbbb htsreg null ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(visitId, _patient.id)
