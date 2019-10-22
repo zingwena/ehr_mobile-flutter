@@ -41,28 +41,10 @@ class _Art_Registration extends State<Art_Registration> {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     dateOfHivTest = DateTime.now();
     dateOfEnrolmentIntoCare = DateTime.now();
+    oiArtNumber = '';
     super.initState();
   }
 
-
-
-  /*Future<void> getFacilities() async {
-    String response;
-    try {
-      response = await dataChannel.invokeMethod('getEntryPointsOptions');
-      setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = EntryPoint.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
-        });
-
-      });
-    } catch (e) {
-      print('--------------------Something went wrong  $e');
-    }
-  }*/
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -156,6 +138,31 @@ class _Art_Registration extends State<Art_Registration> {
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              child: Padding( padding: EdgeInsets.symmetric(
+                                                                  vertical: 16.0,
+                                                                  horizontal: 60.0),
+                                                                child: TextFormField(
+                                                                  validator: (value) {
+                                                                    return value.isEmpty ? 'Enter some text' : null;
+                                                                  },
+                                                                  onSaved: (value) => setState(() {
+                                                                    oiArtNumber = value;
+                                                                  }),
+                                                                  decoration: InputDecoration(
+                                                                      labelText: 'Suburb/Village',
+                                                                      border: OutlineInputBorder()),
+                                                                ),
+                                                              ),
+                                                              width: 100,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+
 
                                                       Row(
                                                         children: <Widget>[
@@ -221,6 +228,7 @@ class _Art_Registration extends State<Art_Registration> {
                                                       SizedBox(
                                                         height: 10.0,
                                                       ),
+/*
 
                                                       Row(
                                                         children: <Widget>[
@@ -246,10 +254,7 @@ class _Art_Registration extends State<Art_Registration> {
                                                           ),
                                                         ],
                                                       ),
-
-
-
-
+*/
 
                                                       SizedBox(
                                                         height: 35.0,
@@ -273,7 +278,7 @@ class _Art_Registration extends State<Art_Registration> {
                                                             onPressed: () async {
                                                               if (_formIsValid) {
                                                                 ArtRegistration artRegistrationDetails = ArtRegistration(widget.patientId, dateOfEnrolmentIntoCare, dateOfHivTest, '1234');
-
+                                                                print('OI ARRRRT NUMBER NUMBER NUMBER' + oiArtNumber);
                                                                 await artRegistration(artRegistrationDetails);
 
                                                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(_artRegistration)));

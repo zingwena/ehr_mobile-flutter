@@ -54,7 +54,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
-  String labInvestId;
+  String labInvestId = "eb5c7e6c-f49d-11e9-8bdf-302432f39bd9";
+  String labInvestTestId;
   String _identifier;
   String test;
   String sample_name;
@@ -609,7 +610,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(widget.personId, labInvestId, widget.visitId, result_string)
+                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, result_string)
                                                         ));
                                                   } else {
                                                     setState(() {
@@ -675,7 +676,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
       setState(() {
         print('###################'+ labInvestTestResponse);
-        labInvestId = labInvestTestResponse;
+        labInvestTestId = labInvestTestResponse;
 
       });
 
