@@ -38,7 +38,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   var selectedDate, selectedStarttime, selectedReadingtime, selectedReadingDate;
   DateTime date, startTime, readingTime,  readingDate;
   int _result = 0;
-  int _testKit = 0;
+  int _testKit = -1;
   int testCount=0;
   String id ="1";
   String result_string;
