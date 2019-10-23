@@ -535,6 +535,16 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+                        if(methodCall.method.equals("getLabInvestigation")){
+                            try {
+                                LaboratoryInvestigation laboratoryInvestigation = htsService.getLaboratoryInvestigation(arguments);
+                                String labINvestId = laboratoryInvestigation.getId();
+                                result.success(labINvestId);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+
+                        }
                         if (methodCall.method.equals("getcurrenthts")) {
 
                             try {
@@ -813,7 +823,21 @@ public class MainActivity extends FlutterActivity {
 
                             try{
                                 Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  : HERE ARE THE TESTKITS FROM ANDROID" + htsService.getTestKitByTestLevel(arguments));
-                                result.success(htsService.getTestKitByTestLevel(arguments));
+                                String testkitlist = gson.toJson(htsService.getTestKitByTestLevel(arguments));
+                                result.success(testkitlist);
+
+                            }catch(Exception e) {
+                                Log.d(TAG, "================================= : " +e.getMessage());
+                            }
+
+                        }
+                        if (methodCall.method.equals("getTestkitbycode")) {
+                            Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  test kit by code  : " + arguments);
+
+                            try{
+                                String testkit_name = ehrMobileDatabase.testKitDao().findTestKitById(arguments).getName();
+                                result.success(testkit_name);
+
                             }catch(Exception e) {
                                 Log.d(TAG, "================================= : " +e.getMessage());
                             }

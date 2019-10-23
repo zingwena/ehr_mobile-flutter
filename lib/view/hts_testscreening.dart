@@ -42,7 +42,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   int testCount=0;
   String id ="1";
   String result_string;
-  List<dynamic>_testKits=[];
   String labId;
   List<Result>results = List ();
   String testKit = "";
@@ -54,16 +53,22 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
-  String labInvestId = "eb5c7e6c-f49d-11e9-8bdf-302432f39bd9";
+  String labInvestId ;
   String labInvestTestId;
   String _identifier;
   String test;
   String sample_name;
   List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
   String _entryPoint;
+  String _testkit_string_response;
+  TestKit testKitobj  = TestKit('', '', '', '');
+  List test_kits = List();
+  List _dropDownListtestkits = List();
+  List<TestKit>_testkitslist = List();
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
   List<Result> _entryPointList = List();
+  int testkitcount = 0 ;
   List _identifierList = [
     "Select Identifier",
     "Passport",
@@ -88,11 +93,14 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     _identifier = _identifierDropdownMenuItem[0].value;
 
          getPersonInvestigation(widget.personId);
-         getTestKitsByCount(testCount);
+         getLabInvestigation(widget.personId);
          getLabTest(widget.personId);
-         //getTestResults(widget.personId);
+
+    //getTestResults(widget.personId);
          getFacilities(widget.personId);
-         getLabId();
+    //getTestKitsByCount(testCount);
+
+    getLabId();
          getResults();
     super.initState();
   }
@@ -218,18 +226,36 @@ Future<dynamic> getTestKitsByCount(int count) async {
     print('>>>>>>>>>>>>>>> LAB INVEST ' + labInvestId);
     try {
       String response = await htsChannel.invokeMethod('getTestKitsByLevel', labInvestId);
-      List<TestKit> testKits = TestKit.fromJsonDecodedMap(jsonDecode(response));
-
-/*
-      List<dynamic> testKits = json.decode(await htsChannel.invokeMethod('',labInvestId) );
-*/
-
-      print("************************************************************* tttttttttt : " + testKits.toString());
+      print("************************************************************* tttttttttt response of testkit list: " + response);
 
        setState(() {
-         _testKits=testKits;
+         _testkit_string_response = response;
+         test_kits = jsonDecode(_testkit_string_response);
+         _dropDownListtestkits = TestKit.mapFromJson(test_kits);
+         print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"+ _dropDownListtestkits.toString());
+         _dropDownListtestkits.forEach((e){
+           _testkitslist.add(e);
+         });
+
        });
-      print("*********sample from android"+testKits.toString());
+      print("*********sample from android"+_testkitslist.toString());
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+  }
+  Future<dynamic> getLabInvestigation(String personId) async {
+
+    try {
+      String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
+      print("************************************************************* LAB INVEST ID : " + response);
+
+      setState(() {
+        labInvestId = response;
+        print("************************************************************* LAB INVEST ID  AFTER ASIGNMENT: " + labInvestId);
+
+        getTestKitsByCount(testCount);
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -245,30 +271,49 @@ Future<dynamic> getTestKitsByCount(int count) async {
     }
   /*  return sample;*/
   }
+  Future<dynamic> getTestKitByCode(String code) async {
+    try {
+
+      String response = await htsChannel.invokeMethod('getTestkitbycode');
+      setState(() {
+        testKit = response;
+
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    /*  return sample;*/
+  }
+
 
   void _handleTestKitChange(int value) {
-    setState(() {
-      _testKit = value;
-
-      switch (_testKit) {
-        case 1:
-          testKit = "Standard Q HIV 1/2 Ab";
-          break;
-        case 2:
-          testKit = "Determine";
-          break;
-      }
-    });
+    getTestKitByCode(value.toString());
+ 
   }
 
   Widget getResultsRadioButtons(List<Result> results)
   {
     return new Row(children: results.map((item) =>
       Radio(
-          value: 1,
+          value: int.parse(item.code),
           groupValue: _testKit,
           activeColor: Colors.blue,
           onChanged: _handleTestKitChange),).toList());
+  }
+  Widget getTestKIts(List<TestKit> testkits)
+  {
+    return new Row(children: testkits.map((item) =>
+       Column(
+      children: <Widget>[
+        Text(item.name),
+        Radio(
+            value: testkitcount++,
+            groupValue: _testKit,
+            activeColor: Colors.blue,
+            onChanged: _handleTestKitChange)
+
+      ],
+       ),).toList());
   }
 
   void _handleResultChange(int value)  {
@@ -430,8 +475,9 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 SizedBox(
                                   height: 16,
                                 ),
+getTestKIts(_testkitslist)
 
-
+/*
                                 Row(
                                   children: <Widget>[
 
@@ -464,7 +510,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         activeColor: Colors.blue,
                                         onChanged: _handleTestKitChange)
                                   ],
-                                ),
+                                ),*/,
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -649,7 +695,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
     @override
   Widget build(BuildContext context) {
-    var list=this._testKits ;
+    var list=this._testkitslist ;
     print("+++++++++++  $list");
     return Scaffold(
       appBar: AppBar(
