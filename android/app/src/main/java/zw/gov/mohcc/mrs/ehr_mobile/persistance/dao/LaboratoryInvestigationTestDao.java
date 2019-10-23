@@ -35,8 +35,6 @@ public interface LaboratoryInvestigationTestDao {
     @Query("SELECT count(id) FROM LaboratoryInvestigationTest WHERE laboratoryInvestigationId=:laboratoryInvestigationId")
     int countByLaboratoryInvestigation(String laboratoryInvestigationId);
 
-
     @Query("SELECT * FROM LaboratoryInvestigationTest WHERE laboratoryInvestigationId=:laboratoryInvestigationId order by startTime ASC")
     List<LaboratoryInvestigationTest> findEarliestTests(String laboratoryInvestigationId);
-
 }

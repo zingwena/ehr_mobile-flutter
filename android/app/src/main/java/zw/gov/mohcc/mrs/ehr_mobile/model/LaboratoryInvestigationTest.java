@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
@@ -11,11 +12,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 @Entity
 public class LaboratoryInvestigationTest extends BaseEntity {
 
+    @NonNull
     private String laboratoryInvestigationId;
     @TypeConverters(DateConverter.class)
     private Date startTime;
     @TypeConverters(DateConverter.class)
     private Date endTime;
+    @NonNull
     private String visitId;
     @Embedded
     private Result result;

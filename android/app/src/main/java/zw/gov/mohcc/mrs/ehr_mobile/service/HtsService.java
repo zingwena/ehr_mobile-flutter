@@ -158,8 +158,6 @@ public class HtsService {
         int count = getTestCount(test.getLaboratoryInvestigationId());
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
-        Log.i(TAG, "Current test count is at : "+ count);
-        Log.i(TAG, "The result from client is : "+ test.getResult());
         // check current count
         if (count == 0) {
             // if result is negative set final result
