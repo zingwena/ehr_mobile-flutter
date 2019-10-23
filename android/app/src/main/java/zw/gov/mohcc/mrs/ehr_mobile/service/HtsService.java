@@ -136,6 +136,12 @@ public class HtsService {
     public Set<TestKit> getTestKitByTestLevel(String laboratoryInvestigationId) {
         int count = getTestCount(laboratoryInvestigationId);
         String level = getTestLevel(count);
+        Log.i(TAG, "Laboratory Investigation ID : " + laboratoryInvestigationId);
+        Log.i(TAG, "All laboratory investigations : ");
+        Log.i(TAG, ehrMobileDatabase.laboratoryInvestigationDao().getAllLaboratoryInvestigations().toString());
+        Log.i(TAG, "Retrieving test kits count is at : "+ count +" Using level : "+ level);
+        Log.i(TAG, "All laboratory investigation tests : ");
+        Log.i(TAG, ehrMobileDatabase.labInvestTestdao().findAll().toString());
         if (count == 0 || count == 1 || count == 4) {
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitsByLevel(level));
         } else if (count == 2) {
@@ -152,6 +158,8 @@ public class HtsService {
         int count = getTestCount(test.getLaboratoryInvestigationId());
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
+        Log.i(TAG, "Current test count is at : "+ count);
+        Log.i(TAG, "The result from client is : "+ test.getResult());
         // check current count
         if (count == 0) {
             // if result is negative set final result
