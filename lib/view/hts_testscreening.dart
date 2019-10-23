@@ -273,8 +273,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
   }
   Future<dynamic> getTestKitByCode(String code) async {
     try {
-
-      String response = await htsChannel.invokeMethod('getTestkitbycode');
+      print("HERE IS THE CODE FROM RADIO BUTON ##################### "+ code);
+      String response = await htsChannel.invokeMethod('getTestkitbycode', code);
       setState(() {
         testKit = response;
 
@@ -285,33 +285,40 @@ Future<dynamic> getTestKitsByCount(int count) async {
     /*  return sample;*/
   }
 
-
   void _handleTestKitChange(int value) {
-    getTestKitByCode(value.toString());
- 
+    setState(() {
+      _testKit = value;
+      _testkitslist.forEach((e){
+        if(value == _testkitslist.indexOf(e)){
+          print("VALUE THAT WAS SENT FROM RADIO BUTTON"+ value.toString());
+          print("VALUE FOR RADIO BUTTON CODE "+ e.code);
+          getTestKitByCode(e.code);
+          testKitobj.name = testKit;
+          print('>>>>>>>>>>>>>>>>>>>>>>>> HERE IS THE TESTKIT '+ testKit);
+
+        }
+      });
+
+
+    });
+
   }
 
-  Widget getResultsRadioButtons(List<Result> results)
-  {
-    return new Row(children: results.map((item) =>
-      Radio(
-          value: int.parse(item.code),
-          groupValue: _testKit,
-          activeColor: Colors.blue,
-          onChanged: _handleTestKitChange),).toList());
-  }
   Widget getTestKIts(List<TestKit> testkits)
   {
     return new Row(children: testkits.map((item) =>
        Column(
       children: <Widget>[
-        Text(item.name),
-        Radio(
-            value: testkitcount++,
-            groupValue: _testKit,
-            activeColor: Colors.blue,
-            onChanged: _handleTestKitChange)
+        Row(
+          children: <Widget>[
+          Text(item.name),
+          Radio(
+              value: testkits.indexOf(item),
+              groupValue: _testKit,
+              activeColor: Colors.blue,
+              onChanged: _handleTestKitChange)
 
+        ],),
       ],
        ),).toList());
   }
@@ -475,9 +482,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 SizedBox(
                                   height: 16,
                                 ),
-getTestKIts(_testkitslist)
-
-/*
                                 Row(
                                   children: <Widget>[
 
@@ -497,20 +501,9 @@ getTestKIts(_testkitslist)
                                         width: 250,
                                       ),
                                     ),
-                                    Text('Standard Q HIV 1/2 Ab'),
-                                    Radio(
-                                        value: 1,
-                                        groupValue: _testKit,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleTestKitChange),
-                                    Text('Determine'),
-                                    Radio(
-                                        value: 2,
-                                        groupValue: _testKit,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleTestKitChange)
+                                    getTestKIts(_testkitslist),
                                   ],
-                                ),*/,
+                                ),
                                 SizedBox(
                                   height: 20,
                                 ),
