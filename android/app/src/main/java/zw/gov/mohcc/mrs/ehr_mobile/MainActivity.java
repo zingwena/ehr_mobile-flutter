@@ -762,6 +762,7 @@ public class MainActivity extends FlutterActivity {
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
                                 List<Result>results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
+                                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + results.toString());
                                 String results_list = gson.toJson(results);
                                 result.success(results_list);
                             } catch (Exception e) {
