@@ -13,7 +13,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 @Entity
 public class LaboratoryInvestigation extends BaseEntity {
 
+    @NonNull
     private String facilityId;
+    @NonNull
     private String personInvestigationId;
     @TypeConverters(DateConverter.class)
     private Date resultDate;

@@ -517,6 +517,8 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 List<Result> resultList = ehrMobileDatabase.resultDao().getAllResults();
                                 String results = gson.toJson(resultList);
+                                Log.i(TAG, "\n\n\n\n\n ************************************* \n\n\n\n\n");
+                                Log.i(TAG, "Investigation results :"+ resultList.toString());
                                 result.success(results);
                             } catch (Exception e) {
 
