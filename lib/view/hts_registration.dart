@@ -402,7 +402,7 @@ class _Registration extends State<Registration> {
       DateTime date = htsRegistration.dateOfHivTest;
       PersonInvestigation personInvestigation = new PersonInvestigation(
           patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-      await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
+    //  await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
 
       print('---------------------saved file id  $id');
     } catch (e) {

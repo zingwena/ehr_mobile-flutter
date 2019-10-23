@@ -832,18 +832,24 @@ public class MainActivity extends FlutterActivity {
 
                         }
                         if (methodCall.method.equals("getTestkitbycode")) {
-                            Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  test kit by code  : " + arguments);
 
                             try{
                                 String testkit_name = ehrMobileDatabase.testKitDao().findTestKitById(arguments).getName();
                                 result.success(testkit_name);
 
                             }catch(Exception e) {
-                                Log.d(TAG, "================================= : " +e.getMessage());
                             }
 
                         }
+                        if(methodCall.method.equals("getTestName")){
+                            try {
+                                String name = htsService.getTestName(arguments);
+                                result.success(name);
 
+                            }catch (Exception e){
+
+                            }
+                        }
                         if (methodCall.method.equals("getSample")) {
 
                             try {
