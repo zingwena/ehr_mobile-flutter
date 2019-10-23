@@ -49,7 +49,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   DateTime date1;
   DateTime date2;
   DateTime date3;
-  Result result = Result('Positive', '01');
+  Result result = Result('', '');
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
@@ -323,17 +323,23 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       switch (_result) {
         case 1:
+          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 1 chosen");
+          print("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + _entryPointList.toString());
+
           _entryPointList.forEach((e) {
             if (e.name == "negative " || e.name == "Negative" || e.name == "NEGATIVE"){
               result.code = e.code;
               result.name = e.name;
+              print(">>>>>>>>>>>>>>>>>>>>>>>>> here is the result clicked in negative >>>>"+e.name );
 
             }
           });
           break;
         
         case 2:
-      _entryPointList.forEach((e){
+          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 2 chosen");
+
+          _entryPointList.forEach((e){
         if(e.name == "positive " || e.name == "Positive" || e.name == "POSITIVE"){
           result.code = e.code;
           result.name = e.name;
@@ -341,6 +347,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
       });
       break;
         case 3:
+          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 3 chosen");
+
           _entryPointList.forEach((e){
             if(e.name == "Inconclusive " || e.name == "Indeterminate" || e.name == "INDERTERMINATE"){
               result.code = e.code;
@@ -629,7 +637,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                   if (_formIsValid) {
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
                                                         widget.visitId,
-                                                        result_string,
+                                                        labInvestId,
                                                         null, null,
                                                         result, widget.visitId, testKit);
 
