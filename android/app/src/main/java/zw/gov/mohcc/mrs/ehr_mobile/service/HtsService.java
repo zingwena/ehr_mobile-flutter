@@ -152,12 +152,23 @@ public class HtsService {
         return null;
     }
 
+    public String getFinalResult(String laboratoryInvestigationId) {
+        LaboratoryInvestigation laboratoryInvestigation =
+                ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId);
+
+        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
+                .findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
+
+        return  personInvestigation.getResultId();
+    }
+
     @Transaction
     public String processTestResults(LaboratoryInvestigationTest test) {
 
         int count = getTestCount(test.getLaboratoryInvestigationId());
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
+        Log.d(TAG, "Current test object : " + test);
         // check current count
         if (count == 0) {
             // if result is negative set final result
