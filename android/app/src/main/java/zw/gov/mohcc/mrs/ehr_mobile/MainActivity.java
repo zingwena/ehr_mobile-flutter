@@ -400,19 +400,6 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
-
-
-                        if (methodCall1.method.equals("saveHtsRegistration")) {
-                            // TODO judge to add code here useless comment
-                            /*try {
-                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
-//                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration()
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-
-                            }*/
-                        }
-
                     }
                 });
         new MethodChannel(getFlutterView(), PATIENT_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -693,8 +680,9 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("saveLabInvestTest")) {
                             try {
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
-                                htsService.processTestResults(labInvestTest);
-                                result.success(labInvestTest.getId());
+
+                                String labInvestigationTestId = htsService.processTestResults(labInvestTest);
+                                result.success(labInvestigationTestId);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
