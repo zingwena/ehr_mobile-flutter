@@ -526,15 +526,6 @@ public class MainActivity extends FlutterActivity {
                         String arguments = methodCall.arguments();
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
 
-                        if (methodCall.method.equals("getResults")) {
-                            try {
-                                List<Result> resultList = ehrMobileDatabase.resultDao().getAllResults();
-                                String results = gson.toJson(resultList);
-                                result.success(results);
-                            } catch (Exception e) {
-
-                            }
-                        }
                         if(methodCall.method.equals("getLabInvestigation")){
                             try {
                                 LaboratoryInvestigation laboratoryInvestigation = htsService.getLaboratoryInvestigation(arguments);
@@ -701,11 +692,9 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("saveLabInvestTest")) {
                             try {
-
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
-
                                 htsService.processTestResults(labInvestTest);
-                                result.success(null);
+                                result.success(labInvestTest.getId());
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
@@ -771,6 +760,7 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("getTestResults")) {
 
                             try {
+                                System.out.println("HERE ARE THE ARGUMENTS SENT FROM FLUTTER FOR RESULTS"+ arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
