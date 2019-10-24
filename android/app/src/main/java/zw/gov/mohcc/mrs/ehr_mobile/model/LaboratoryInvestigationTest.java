@@ -15,7 +15,6 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     @NonNull
     private String laboratoryInvestigationId;
     @TypeConverters(DateConverter.class)
-    @NonNull
     private Date startTime;
     @TypeConverters(DateConverter.class)
     private Date endTime;
