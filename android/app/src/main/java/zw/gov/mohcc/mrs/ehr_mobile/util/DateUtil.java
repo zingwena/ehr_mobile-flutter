@@ -18,6 +18,13 @@ public class DateUtil {
         return cal.getTime();
     }
 
+    public static Date getDateDiff() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, -20);
+        return cal.getTime();
+    }
+
     private static Integer getMonthEndDate(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

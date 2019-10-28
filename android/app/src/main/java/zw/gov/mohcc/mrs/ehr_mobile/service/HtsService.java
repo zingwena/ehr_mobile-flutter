@@ -21,6 +21,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class HtsService {
 
@@ -160,7 +161,7 @@ public class HtsService {
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
 
-        return  personInvestigation.getResultId();ysql 
+        return  personInvestigation.getResultId();
     }
 
     @Transaction
@@ -169,6 +170,8 @@ public class HtsService {
         int count = getTestCount(test.getLaboratoryInvestigationId());
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
+        test.setStartTime(DateUtil.getDateDiff());
+        test.setEndTime(DateUtil.getDateDiff());
         // check current count
         if (count == 0) {
             // if result is negative set final result
