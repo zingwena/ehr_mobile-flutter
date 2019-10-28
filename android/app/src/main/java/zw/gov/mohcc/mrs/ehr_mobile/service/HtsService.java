@@ -189,11 +189,11 @@ public class HtsService {
                 setFinalResult(test);
             }
         } // coming to this point means we are now in a parallel test ignore first parallel test and jump to second parallel test
-        else if(count == 2) {
+        else if(count == 3) {
             // retrieve last test before this one
             List<LaboratoryInvestigationTest>laboratoryInvestigationTestList =  ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId());
             LaboratoryInvestigationTest lastTest =
-                    ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(1);
+                    ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(2);
             if (lastTest.getResult().getName().equalsIgnoreCase(test.getResult().getName())) {
                 
                 setFinalResult(test);
