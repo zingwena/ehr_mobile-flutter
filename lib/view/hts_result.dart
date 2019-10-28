@@ -317,12 +317,16 @@ class _Hts_Result  extends State<Hts_Result > {
                                                       child: DataTable(
                                                         columns: [
                                                           DataColumn(label: Text("TestKit")),
-                                                          DataColumn(label: Text("Result"))],
+                                                          DataColumn(label: Text("Result")),
+                                                          DataColumn(label: Text("Start Time")),
+                                                          DataColumn(label: Text("End Time"))],
                                                       rows: _entryPointList.map((labinvesttest)=>
                                                        DataRow(
                                                            cells: [
                                                        DataCell(Text(labinvesttest.testkitId)),
-                                                       DataCell(Text(labinvesttest.result.name)),])
+                                                       DataCell(Text(labinvesttest.result.name)),
+                                                       DataCell(Text(labinvesttest.startTime)),
+                                                       DataCell(Text(labinvesttest.endTime))])
 
                                                       ).toList()
 

@@ -233,6 +233,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   }
   Future<dynamic>getTestName()async{
+    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id"+ labInvestId);
+
     try{
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
@@ -644,7 +646,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         widget.visitId,
                                                         labInvestId,
                                                         null, null,
-                                                        result, widget.visitId, testKit);
+                                                        result, widget.visitId, testKit, null, null);
 
 
                                                     saveLabInvestigationTest(
@@ -699,7 +701,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(test_name),
+        title: Text("test_name"),
       ),
       // appBar: AppBar(
       //  backgroundColor: Colors.blue,
