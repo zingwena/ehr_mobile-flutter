@@ -99,8 +99,13 @@ public class HtsService {
 
     private List<String> getFirstTwoTestKits(String laboratoryInvestigationId, int maxCount) {
         List<String> testKitIds = new ArrayList<>();
-        Log.i(TAG, "Current investigation tests : "+ ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId).toString());
+        int retainMaxCount = maxCount;
+        String lastParallelTest = "";
         for (LaboratoryInvestigationTest item : ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId)) {
+            if (retainMaxCount == 3 && maxCount == 0) {
+                lastParallelTest = ehrMobileDatabase.testKitDao().findTestKitByName(item.getTestkitId()).getCode();
+                continue;
+            }
             if (maxCount > 0) {
                 // get testkit ID using name
                 TestKit testKit = ehrMobileDatabase.testKitDao().findTestKitByName(item.getTestkitId());
@@ -110,6 +115,9 @@ public class HtsService {
                 break;
             }
             maxCount--;
+        }
+        if (StringUtils.isNoneBlank(lastParallelTest)) {
+            testKitIds.remove(lastParallelTest);
         }
         Log.i(TAG, "Retrieved test kit ids : %%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "+ testKitIds.toString());
         return testKitIds;
@@ -153,7 +161,8 @@ public class HtsService {
         } else if (count == 2) {
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 2)));
         } else if (count == 3) {
-            return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 2)));
+            // remove test done on 2
+            return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 3)));
         }
         return null;
     }
