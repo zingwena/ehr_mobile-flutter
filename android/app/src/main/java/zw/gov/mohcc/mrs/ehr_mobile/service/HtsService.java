@@ -99,14 +99,19 @@ public class HtsService {
 
     private List<String> getFirstTwoTestKits(String laboratoryInvestigationId, int maxCount) {
         List<String> testKitIds = new ArrayList<>();
+        Log.i(TAG, "Current investigation tests : "+ ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId).toString());
         for (LaboratoryInvestigationTest item : ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId)) {
-            if (maxCount <= 0) {
-                testKitIds.add(item.getTestkitId());
+            if (maxCount > 0) {
+                // get testkit ID using name
+                TestKit testKit = ehrMobileDatabase.testKitDao().findTestKitByName(item.getTestkitId());
+                Log.i(TAG, "Test kit retreived : "+ testKit + " testkit name :"+ item.getTestkitId());
+                testKitIds.add(testKit.getCode());
             } else {
                 break;
             }
             maxCount--;
         }
+        Log.i(TAG, "Retrieved test kit ids : %%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "+ testKitIds.toString());
         return testKitIds;
     }
 

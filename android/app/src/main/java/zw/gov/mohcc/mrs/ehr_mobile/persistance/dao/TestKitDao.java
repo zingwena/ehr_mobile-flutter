@@ -29,6 +29,9 @@ public interface TestKitDao {
     @Query("SELECT * FROM TestKit WHERE code=:id")
     TestKit findTestKitById(String id);
 
+    @Query("SELECT * FROM TestKit WHERE name=:name")
+    TestKit findTestKitByName(String name);
+
     @Query("SELECT * FROM TestKit WHERE level=:level")
     List<TestKit> findTestKitsByLevel(String level);
 
