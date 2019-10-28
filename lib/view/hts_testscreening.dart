@@ -95,14 +95,16 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
          getPersonInvestigation(widget.personId);
          getLabInvestigation(widget.personId);
+         getTestName();
          getLabTest(widget.personId);
+         getResults(widget.personId);
 
     //getTestResults(widget.personId);
-         getFacilities(widget.personId);
+        // getFacilities();
     //getTestKitsByCount(testCount);
 
-    getLabId();
-         getResults();
+         getLabId();
+
     super.initState();
   }
   Future<Null> _selectDate(BuildContext context) async {
@@ -169,7 +171,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   }
 
 
-  Future<void> getFacilities(String personId) async {
+  Future<void> getResults(String personId) async {
     String response;
     try {
       response = await htsChannel.invokeMethod('getTestResults', personId);
@@ -177,6 +179,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
+        print("HHHHHHHHHHHHHHHHHHH results from android"+ _dropDownListEntryPoints.toString());
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
@@ -192,10 +195,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       labtest_name = await htsChannel.invokeMethod('getLabTest', personId);
       setState(() {
         this.test=labtest_name;
-/*
-          this.test=investigation.test;
-*/
-
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -252,23 +251,29 @@ Future<dynamic> getTestKitsByCount(int count) async {
       setState(() {
         labInvestId = response;
         getTestKitsByCount(testCount);
-        getTestName();
       });
     } catch (e) {
       print("channel failure: '$e'");
     }
 
   }
-  Future<dynamic> getResults() async {
+ /* Future<dynamic> getResults() async {
     try {
 
       String response = await htsChannel.invokeMethod('getResults');
-      List<Result> resultsList = Result.fromJsonDecodedMap(jsonDecode(response));
+      setState(() {
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
 
-  }
+  }*/
   Future<dynamic> getTestKitByCode(String code) async {
     try {
       String response = await htsChannel.invokeMethod('getTestkitbycode', code);
@@ -650,7 +655,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, result_string)
+                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, )
                                                         ));
                                                   } else {
                                                     setState(() {

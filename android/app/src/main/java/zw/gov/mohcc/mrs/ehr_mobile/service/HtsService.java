@@ -153,6 +153,7 @@ public class HtsService {
     }
 
     public String getFinalResult(String laboratoryInvestigationId) {
+
         LaboratoryInvestigation laboratoryInvestigation =
                 ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId);
 
@@ -168,7 +169,6 @@ public class HtsService {
         int count = getTestCount(test.getLaboratoryInvestigationId());
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
-        Log.d(TAG, "Current test object : " + test);
         // check current count
         if (count == 0) {
             // if result is negative set final result
@@ -183,9 +183,11 @@ public class HtsService {
         } // coming to this point means we are now in a parallel test ignore first parallel test and jump to second parallel test
         else if(count == 2) {
             // retrieve last test before this one
+            List<LaboratoryInvestigationTest>laboratoryInvestigationTestList =  ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId());
             LaboratoryInvestigationTest lastTest =
-                    ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(2);
-            if (lastTest.getResult().getName().equalsIgnoreCase(lastTest.getResult().getName())) {
+                    ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(1);
+            if (lastTest.getResult().getName().equalsIgnoreCase(test.getResult().getName())) {
+                
                 setFinalResult(test);
             }
 
@@ -203,7 +205,6 @@ public class HtsService {
         LaboratoryInvestigation laboratoryInvestigation =
                 ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(test.getLaboratoryInvestigationId());
         Log.d(TAG, "Retrieved laboratory investigation record : "+ laboratoryInvestigation);
-
         laboratoryInvestigation.setResultDate(test.getEndTime());
         ehrMobileDatabase.laboratoryInvestigationDao().update(laboratoryInvestigation);
         Log.d(TAG, "Updated laboratory investigation record : "+ laboratoryInvestigation);
@@ -211,9 +212,7 @@ public class HtsService {
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(
                 laboratoryInvestigation.getPersonInvestigationId());
         personInvestigation.setResultId(test.getResult().getCode());
-
         Log.d(TAG, "Retrieved person investigation record : "+ personInvestigation);
-
         ehrMobileDatabase.personInvestigationDao().update(personInvestigation);
     }
 
