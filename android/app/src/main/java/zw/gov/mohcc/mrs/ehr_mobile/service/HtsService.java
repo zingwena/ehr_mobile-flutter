@@ -159,7 +159,7 @@ public class HtsService {
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
 
-        return  personInvestigation.getResultId();
+        return  personInvestigation.getResultId();ysql 
     }
 
     @Transaction
