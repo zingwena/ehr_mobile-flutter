@@ -25,9 +25,9 @@ class Hts_Result extends StatefulWidget {
   String visitId;
   String patientId;
   String labInvetsTestId;
-  String result_string;
+  String labInvestId;
 
-  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.result_string);
+  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId);
 
   //Hts_Result (this.visitId, this.patientId);
 
@@ -65,7 +65,7 @@ class _Hts_Result  extends State<Hts_Result > {
   String endTime;
   bool showInput = true;
   bool showInputTabOptions = true;
-  String final_result;
+  String final_result = '';
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<LaboratoryInvestigationTest> _entryPointList = List();
 
@@ -77,17 +77,13 @@ class _Hts_Result  extends State<Hts_Result > {
 //    patient id
     patientId = widget.patientId;
     labInvetsTestId = widget.labInvetsTestId;
-    result_string = widget.result_string;
+    getFinalResult(widget.labInvestId);
     getFacilities();
    // getLabInvestigationTests();
     getTestKIt(widget.labInvetsTestId);
     getStartTime(widget.labInvetsTestId);
     //getEndTime(widget.labInvetsTestId);
-    if(widget.result_string == "Negative"){
-      final_result = "Negative";
-    } else{
-      final_result = "";
-    }
+
 
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
@@ -108,11 +104,13 @@ class _Hts_Result  extends State<Hts_Result > {
           });
         }
       });
+      print("HERE IS THE LIST OF LAB INVESTIGATIONS"+ _entryPointList.toString());
+
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
   }
-  Future<void> getResultName() async {
+/*  Future<void> getResultName() async {
     String response;
     try {
       response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
@@ -129,7 +127,7 @@ class _Hts_Result  extends State<Hts_Result > {
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
-  }
+  }*/
 
 
 
@@ -358,7 +356,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(0.0),
                                                                 child: Text(
-                                                                  (" "),
+                                                                  (final_result),
                                                                   style: TextStyle(
                                                                     color: Colors.grey.shade600,
                                                                     fontSize: 18,
@@ -393,15 +391,11 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           style: TextStyle(color: Colors.white),
                                                         ),
                                                           onPressed: () async {
-                                                            if (widget.result_string == "Negative") {
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(final_result, widget.patientId)));
+                                                            if (final_result == '') {
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(this.patientId, this._visitId)));
 
                                                             }else{
-                                                              /**
-                                                               * redirecting back to home screen
-                                                               */
-                                                              //Hts_Result(this._visitId, this.patientId, this.labInvetsTestId, this.result_string); HtsScreeningTest
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(this.patientId, this._visitId)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId)));
 
 
                                                             }
@@ -510,6 +504,24 @@ class _Hts_Result  extends State<Hts_Result > {
     }
     setState(() {
       testkit = testkitId;
+    });
+  }
+  Future<void> getFinalResult(labInvestId) async {
+    String response;
+    try {
+      response = await htsChannel.invokeMethod('getFinalResult',labInvestId);
+      print('Final Result here >>>>>>>>>> '+ response);
+    } catch (e) {
+      print('--------------something went wrong  $e');
+    }
+    setState(() {
+      if(response == null){
+        final_result = '';
+      } else{
+
+        final_result = response;
+
+      }
     });
   }
   Future<void> getStartTime(labInvestId) async {
