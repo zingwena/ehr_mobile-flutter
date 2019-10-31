@@ -114,7 +114,7 @@ public class HtsService {
         int retainMaxCount = maxCount;
         String lastParallelTest = "";
         for (LaboratoryInvestigationTest item : ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId)) {
-            if (retainMaxCount == 3 && maxCount == 0) {
+            if (retainMaxCount == 3 && maxCount == 1) {
                 Log.d(TAG, "Is this ever executed");
                 lastParallelTest = ehrMobileDatabase.testKitDao().findTestKitByName(item.getTestkitId()).getCode();
                 continue;
