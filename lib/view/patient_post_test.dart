@@ -196,7 +196,7 @@ class _PatientPostTest extends State<PatientPostTest> {
 
 
 
-                  Container(
+               /*   Container(
                     padding:
                     EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                     width: double.infinity,
@@ -224,8 +224,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                       ),
                       onPressed: () {},
                     ),
-                  ),
-
+                  ),*/
 
                   SizedBox(
                     height: 10.0,
