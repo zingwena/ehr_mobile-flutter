@@ -7,6 +7,7 @@ import androidx.room.Transaction;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,10 +45,21 @@ public class HtsService {
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         ehrMobileDatabase.htsDao().createHts(hts);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
+        createInvestigation(dto.getPersonId(), dto.getDateOfHivTest(), visitId, "36069471-adee-11e7-b30f-3372a2d8551e");
+        return hts.getId();
+    }
+
+    @Transaction
+    private void createInvestigation(String personId, Date dateOfTest, String visitId, String investigationId) {
+
+        if (StringUtils.isBlank(visitId)) {
+            visitId = visitService.getCurrentVisit(personId);
+            Log.i(TAG, "Retrieving or creating current visit : "+ visitId);
+        }
+
         Log.i(TAG, "Creating Person Investigation record");
         String personInvestigationId = UUID.randomUUID().toString();
-        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(),
-                "36069471-adee-11e7-b30f-3372a2d8551e", dto.getDateOfHivTest());
+        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, personId, investigationId, dateOfTest);
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         Log.i(TAG, "Creating laboratory investigation record");
@@ -55,8 +67,8 @@ public class HtsService {
         LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, "ZW000A01", personInvestigationId);
         ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
         Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
-        return hts.getId();
     }
+
     /**
      * @param investigationId
      * @return list of results
@@ -231,6 +243,12 @@ public class HtsService {
         personInvestigation.setResultId(test.getResult().getCode());
         Log.d(TAG, "Retrieved person investigation record : "+ personInvestigation);
         ehrMobileDatabase.personInvestigationDao().update(personInvestigation);
+    }
+
+    public boolean getPersonHivStatus(String personId) {
+        String hivBloodInvestigationId = "36069471-adee-11e7-b30f-3372a2d8551e";
+        String hivPositiveResultId = "41d3c228-fd7d-11e6-9840-000c29c7ff5e";
+        return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndInvestigationIdAndResultId(personId, hivBloodInvestigationId, hivPositiveResultId) != null;
     }
 
 }

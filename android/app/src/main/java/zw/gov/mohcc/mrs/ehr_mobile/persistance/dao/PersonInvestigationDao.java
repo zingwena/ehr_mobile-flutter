@@ -36,4 +36,7 @@ public interface PersonInvestigationDao {
 
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId")
     PersonInvestigation findByPersonId(String personId);
+
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId=:investigationId and resultId=:resultId")
+    PersonInvestigation findByPersonIdAndInvestigationIdAndResultId(String personId, String investigationId, String resultId);
 }
