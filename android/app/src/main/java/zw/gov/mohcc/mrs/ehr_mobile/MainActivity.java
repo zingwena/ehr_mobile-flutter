@@ -857,6 +857,16 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if(methodCall.method.equals("getPatientStatus")){
+                            try{
+                                boolean is_positive = htsService.getPersonHivStatus(arguments);
+                                String status = gson.toJson(is_positive);
+                                result.success(status);
+
+                            }catch (Exception e){
+
+                            }
+                        }
 
                     }
                 });
