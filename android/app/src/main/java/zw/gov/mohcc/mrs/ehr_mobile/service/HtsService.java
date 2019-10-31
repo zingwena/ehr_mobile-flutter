@@ -196,8 +196,8 @@ public class HtsService {
         int count = getTestCount(test.getLaboratoryInvestigationId());
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
-        test.setStartTime(DateUtil.getDateDiff());
-        test.setEndTime(DateUtil.getDateDiff());
+        test.setStartTime(DateUtil.getDateDiff(true));
+        test.setEndTime(DateUtil.getDateDiff(false));
         // check current count
         if (count == 0) {
             // if result is negative set final result

@@ -18,10 +18,10 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    public static Date getDateDiff() {
+    public static Date getDateDiff(boolean start) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.MINUTE, -20);
+        cal.add(Calendar.MINUTE, start ? -15 : -10);
         return cal.getTime();
     }
 
