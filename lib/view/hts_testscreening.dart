@@ -2,30 +2,36 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
 import 'package:ehr_mobile/model/testKit.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
+import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+
+import 'package:ehr_mobile/view/art_reg.dart';
+import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/hts_result.dart';
-
-
+import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:flutter/services.dart';
-
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-
-
 import 'edit_demographics.dart';
 
 
 class HtsScreeningTest extends StatefulWidget {
   final String personId;
   final String visitId;
-  HtsScreeningTest(this.personId, this.visitId);
+  final Person person;
+  final String htsId;
+  HtsScreeningTest(this.personId, this.visitId, this.person, this.htsId);
 
   @override
   State createState() {
@@ -37,6 +43,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   final _formKey = GlobalKey<FormState>();
   var selectedDate, selectedStarttime, selectedReadingtime, selectedReadingDate;
   DateTime date, startTime, readingTime,  readingDate;
+  HtsRegistration htsRegistration;
   int _result = 0;
   int _testKit = -1;
   int testCount=0;
@@ -92,18 +99,13 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     date = DateTime.now();
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
-
          getPersonInvestigation(widget.personId);
          getLabInvestigation(widget.personId);
-         getTestName();
          getLabTest(widget.personId);
          getResults(widget.personId);
-
-    //getTestResults(widget.personId);
-        // getFacilities();
-    //getTestKitsByCount(testCount);
-
+         getTestName();
          getLabId();
+         getHtsRecord(widget.personId);
 
     super.initState();
   }
@@ -215,7 +217,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   }
 
 Future<dynamic> getTestKitsByCount(int count) async {
-    try {
+  print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTKITS"+ labInvestId);
+
+  try {
       String response = await htsChannel.invokeMethod('getTestKitsByLevel', labInvestId);
        setState(() {
          _testkit_string_response = response;
@@ -233,12 +237,13 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   }
   Future<dynamic>getTestName()async{
-    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id"+ labInvestId);
+    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTNAME"+ labInvestId);
 
     try{
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
         test_name = response;
+        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH TEST NAME TEST NAME"+ test_name);
 
       });
 
@@ -252,6 +257,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
       setState(() {
         labInvestId = response;
+        getTestName();
         getTestKitsByCount(testCount);
       });
     } catch (e) {
@@ -286,6 +292,23 @@ Future<dynamic> getTestKitsByCount(int count) async {
     } catch (e) {
       print("channel failure: '$e'");
     }
+
+  }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
+
 
   }
 
@@ -393,9 +416,11 @@ Future<dynamic> getTestKitsByCount(int count) async {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+
                       Container(
                         height: 900,
                         child: Card(
@@ -657,7 +682,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, )
+                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)
                                                         ));
                                                   } else {
                                                     setState(() {
@@ -701,17 +726,109 @@ Future<dynamic> getTestKitsByCount(int count) async {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text("test_name"),
+        centerTitle: true,
+        title: new Column(children: <Widget>[
+      new Text(test_name),
+      new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+      ],)
       ),
       // appBar: AppBar(
       //  backgroundColor: Colors.blue,
       //  title: Text('Add Patient'),
 
     
-      body:_body(list)
+      body:_body(list),
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Reception Vitals"), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS"), onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
+                ));
+              }
+            }),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART"), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.personId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
     );
   }
+Widget _testnameText(){
+    print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT test count test count"+ testCount.toString());
 
+    switch(testCount){
+      case 0:
+        return  Text("Screening Test");
+      case 1:
+        return Text("Confirmatory Test");
+      case 2:
+        return Text("Parallel Test 1");
+      case 3:
+        return Text("Parallel Test 2");
+      case 4:
+        return Text("Third Test");
+
+
+
+    }
+
+}
+
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(
+            text: "HTS Registration",
+          ),
+          new RoundedButton(
+            text: "HTS Pre-Testing",
+            /*    onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
+            ),*/
+          ),
+          new RoundedButton(text: "Hts Result", selected: true,
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;

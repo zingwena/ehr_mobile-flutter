@@ -11,10 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
-
-
-import 'art_registration.dart';
-import 'art_registration.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 

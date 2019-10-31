@@ -3,6 +3,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
@@ -10,10 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
-
-
-import 'art_registration.dart';
-import 'art_registration.dart';
+import 'art_reg.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -49,9 +47,7 @@ class OverviewState extends State<Overview> {
   String htsId;
   bool showInput = true;
   bool showInputTabOptions = true;
-
   String visitId;
-
   @override
   void initState() {
     _patient = widget.patient;
@@ -119,6 +115,50 @@ class OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(title: new Text("Patient Overview ",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(_patient)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals", style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(_patient.id, visitId, _patient)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
+                ));
+              }
+            }),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART", style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(_patient.id, visitId, _patient)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -396,26 +436,22 @@ class OverviewState extends State<Overview> {
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(
-                        _patient.id)),
+                        _patient.id, visitId, _patient)),
           ),
           ),
           new RoundedButton(text: "HTS",  onTap: () {
             if(htsRegistration == null ){
                 print('bbbbbbbbbbbbbb htsreg null ');
                 Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(visitId, _patient.id)
+                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
                 ));
               } else {
                 print('bbbbbbbbbbbbbb htsreg  not null ');
 
                 Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId)
+                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
                 ));
               }
-
-
-
-
           }
           ),
 
@@ -424,7 +460,7 @@ class OverviewState extends State<Overview> {
     context,
     MaterialPageRoute(
     builder: (context) =>
-        Art_Registration(_patient.id)),
+        ArtReg(_patient.id, visitId, _patient)),
     ),),
 
 
@@ -439,7 +475,15 @@ class OverviewState extends State<Overview> {
       ),
     );
   }
+Widget _sidemenu(){
+    return new Drawer(
+      child: ListView(
+        children: <Widget>[
 
+        ],
+      ),
+    );
+}
 
   Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
     String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;

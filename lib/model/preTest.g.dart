@@ -13,7 +13,7 @@ PreTest _$PreTestFromJson(Map<String, dynamic> json) {
     json['htsApproach'] as String,
     json['htsModelId'] as String,
     json['newTest'] as bool,
-    json['coupleCounselling'] as String,
+    json['coupleCounselling'] as bool,
     json['preTestInformationGiven'] as bool,
     json['optOutOfTest'] as bool,
     json['newTestPregLact'] as bool,

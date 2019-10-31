@@ -527,6 +527,7 @@ public class MainActivity extends FlutterActivity {
 
                             try {
                                Hts hts = htsService.getCurrentHts(arguments);
+                                System.out.println(">>>>>>>>>>>>>>>> current HTS >>>>>>>>>" + hts.toString());
                                 String htsjson = gson.toJson(hts);
                                 result.success(htsjson);
                             } catch (Exception e) {
@@ -644,6 +645,9 @@ public class MainActivity extends FlutterActivity {
                                 hts.setNewTestPregLact(preTestDTO.getNewTestPregLact());
                                 hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
+                                hts.setPreTestInformationGiven(preTestDTO.getPreTestInfoGiven());
+                                System.out.println("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ  ISPREFINFO GIVEN"+ hts.isPreTestInformationGiven());
+                                hts.setHtsModelId(preTestDTO.getHtsModel_id());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
                                 Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(hts.getId());
                                 String htsjson = gson.toJson(hts1);
@@ -832,6 +836,8 @@ public class MainActivity extends FlutterActivity {
                         if(methodCall.method.equals("getTestName")){
                             try {
                                 String name = htsService.getTestName(arguments);
+                                System.out.println("MMMMMMMMMMMMMMMMMMMMM TEST NAME IN ANDROID HERE >>>>>>>>>>>>>>>>>>" + name);
+
                                 result.success(name);
 
                             }catch (Exception e){

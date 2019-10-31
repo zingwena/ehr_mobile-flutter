@@ -140,6 +140,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                   return value.isEmpty ? 'Enter some text' : null; },
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_1 = value; }),
+                                                                  keyboardType: TextInputType.number,
                                                                 decoration: InputDecoration(
                                                                     labelText: 'Phone No 1.',
                                                                     border: OutlineInputBorder()),
@@ -165,6 +166,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_2 = value;
                                                                 }),
+                                                                keyboardType: TextInputType.number,
                                                                 decoration: InputDecoration(
                                                                     labelText: 'Phone No 2.',
                                                                     border: OutlineInputBorder()),

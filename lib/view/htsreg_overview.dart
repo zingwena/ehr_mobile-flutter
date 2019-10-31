@@ -1,25 +1,21 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
-import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/hts_pretest_overview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
-
-
-import 'art_registration.dart';
-import 'art_registration.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
-
 import 'hts_testscreening.dart';
 import 'hts_registration.dart';
-
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
@@ -28,7 +24,8 @@ class HtsRegOverview extends StatefulWidget {
   final String htsid ;
   final String personId;
   final String visitId;
-  HtsRegOverview(this.htsRegistration, this.personId, this.htsid, this.visitId);
+  final Person person;
+  HtsRegOverview(this.htsRegistration, this.personId, this.htsid, this.visitId, this.person);
 
   @override
   State<StatefulWidget> createState() {
@@ -45,21 +42,56 @@ class HtsOverviewState extends State<HtsRegOverview> {
   Visit _visit;
   Map<String, dynamic> details;
   String _entrypoint;
+  HtsRegistration htsRegistration;
 
   bool showInput = true;
   bool showInputTabOptions = true;
+  PreTest preTest;
+  String htsApproach;
 
   @override
   void initState() {
-
     print(_patient.toString());
     getEntryPoint(widget.htsRegistration.entryPointId);
-    print('HHHHHHHHHHHHHHHHHHHH'+ widget.visitId);
-
+    getPretestRecord(widget.personId);
+    getHtsRecord(widget.personId);
     super.initState();
   }
 
+  Future<void> getVisit(String patientId) async {
+    Visit visit;
 
+    try {
+      visit = jsonDecode(
+          await platform.invokeMethod('visit', patientId)
+      );
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+      _visit = visit;
+    });
+
+
+  }
+  Future<void> getPretestRecord(String patientId) async {
+    var  pre_test;
+    try {
+      pre_test = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('PRETEST IN THE FLUTTER THE RETURNED ONE '+ pre_test.toString());
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+
+      preTest = PreTest.fromJson(jsonDecode(pre_test));
+      htsApproach = preTest.htsApproach;
+      print("HERE IS THE PRETEST AFTER ASSIGNMENT HTS APPROACH #######################" + htsApproach);
+
+    });
+
+
+  }
   Future<void> getEntryPoint(String entrypointId) async {
    String entrypoint;
 
@@ -77,6 +109,24 @@ class HtsOverviewState extends State<HtsRegOverview> {
 
 
   }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
+
+
+  }
+
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
@@ -84,6 +134,57 @@ class HtsOverviewState extends State<HtsRegOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home ",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview ",  style: new TextStyle(
+                  color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),  onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
+                ));
+              }
+            }),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.personId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -100,9 +201,11 @@ class HtsOverviewState extends State<HtsRegOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-                "HTS Registration OverView"
-            ),
+            title: new Column(children: <Widget>[
+              new Text("HTS Reg Overview"),
+              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+            ],)
           ),
           Positioned.fill(
             child: Padding(
@@ -265,13 +368,24 @@ class HtsOverviewState extends State<HtsRegOverview> {
                 builder: (context) =>
                     Registration(_patient.id)),
           ),*/),
-          new RoundedButton(text: "HTS Pre-Testing", onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    PatientPretest(widget.personId, widget.htsid, widget.htsRegistration,widget.visitId
-                        )),
-          ),
+          new RoundedButton(text: "HTS Pre-Testing", onTap: () {
+            if(htsApproach == null ){
+              print('bbbbbbbbbbbbbb htsPretest null ');
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  PatientPretest(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId, widget.person)
+              ));
+            } else {
+              print('bbbbbbbbbbbbbb htsreg  not null ');
+
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> PretestOverview(preTest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
+              ));
+            }
+
+
+
+
+          }
           ),
           new RoundedButton(text: "HTS Testing",/* onTap: () =>     Navigator.push(
             context,
