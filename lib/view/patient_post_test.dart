@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/reasonForNotIssuingResult.dart';
+import 'package:ehr_mobile/view/posttest_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +39,6 @@ class _PatientPostTest extends State<PatientPostTest> {
   final _formKey = GlobalKey<FormState>();
   var selectedDate;
   DateTime date;
-  PostTest postTest;
   List<ReasonForNotIssuingResult> _reasonForNotIssuingResultList=List();
   bool _resultReceived=false;
   String resultReceived="NO";
@@ -51,7 +51,6 @@ class _PatientPostTest extends State<PatientPostTest> {
 
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
-  getDropDrowns();
   getHtsRecord(widget.patientId);
 
   print('reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
@@ -129,42 +128,6 @@ class _PatientPostTest extends State<PatientPostTest> {
     }
     return items;
   }*/
-
-
-  Future<void> getDropDrowns() async {
-
-
-    List reasonForNotIssuingResultList = [];
-
-    try {
-      reasonForNotIssuingResultList= jsonDecode(await htsChannel.invokeMethod('reasonForNotIssuingResultOptions'));
-
-
-
-       } catch (e) {
-      print("channel failure: '$e'");
-    }
-
-    setState(() {
-
-
-      reasonForNotIssuingResultList = ReasonForNotIssuingResult.mapFromJson(reasonForNotIssuingResultList);
-
-
-      _dropDownMenuItemsReasonForNotIssuingResult =
-          getDropDownMenuItemsReasonForNotIssuingResult();
-
-      _currentReasonForNotIssuingResult = _dropDownMenuItemsReasonForNotIssuingResult[0].value;
-    });
-  }
-
-
-
-  List<DropdownMenuItem<String>>
-
-  _dropDownMenuItemsReasonForNotIssuingResult;
-
-  String _currentReasonForNotIssuingResult;
 
 
 
@@ -344,21 +307,11 @@ class _PatientPostTest extends State<PatientPostTest> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                          insertPostTest(postTest);
-
-
-                          if(widget.result == "Positive"){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtReg(widget.patientId, widget.visitId, widget.person)));
-
-
-                          }else{
-                            Navigator.push(context,MaterialPageRoute(
-                                builder: (context)=> Overview(widget.person)
-                            ));
-                          }
-                        }
+                        PostTest postTest = new PostTest(widget.htsId, date, true, null, widget.result, false);
+                        insertPostTest(postTest);
+                        Navigator.push(context,MaterialPageRoute(
+                            builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId)
+                        ));
                       },
                     ),
                   ),
@@ -370,11 +323,6 @@ class _PatientPostTest extends State<PatientPostTest> {
   }
 
 
-  void changedDropDownItemReasonForNotIssuingResult(String value) {
-    setState(() {
-      _currentReasonForNotIssuingResult = value;
 
-    });
-  }
 
 }
