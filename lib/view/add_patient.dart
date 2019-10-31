@@ -179,7 +179,7 @@ class _AddPatient extends State<AddPatient> {
                                                                 decoration: InputDecoration(
                                                                     labelText: _identifier ==
                                                                             "Select Identifier"
-                                                                        ? "ID Number"
+                                                                        ? "ID Number e.g 22-345276T67"
                                                                         : _identifier +
                                                                             " Number",
                                                                     border:
@@ -361,7 +361,8 @@ class _AddPatient extends State<AddPatient> {
                                                                   decoration: InputDecoration(
                                                                       border: OutlineInputBorder(
                                                                           borderRadius:
-                                                                              BorderRadius.circular(0.0))),
+                                                                              BorderRadius.circular(0.0)),
+                                                                  labelText: "Date of birth"),
                                                                 ),
                                                               ),
                                                               width: 100,

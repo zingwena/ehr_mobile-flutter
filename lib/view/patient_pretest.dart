@@ -4,11 +4,16 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
-import 'package:ehr_mobile/view/hts_pretest_overview.dart';
+import 'package:ehr_mobile/model/person.dart';
 
+import 'package:ehr_mobile/view/hts_pretest_overview.dart';
+import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/hts_registration.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 
 import 'package:flutter/material.dart';
@@ -25,7 +30,8 @@ class PatientPretest extends StatefulWidget {
   final String personId;
   final HtsRegistration htsRegistration;
   final String visitId;
-  PatientPretest(this.personId, this.htsid, this.htsRegistration, this.visitId);
+  final Person person;
+  PatientPretest(this.personId, this.htsid, this.htsRegistration, this.visitId, this.person);
 
   @override
   State createState() {
@@ -46,8 +52,7 @@ class _PatientPretest extends State<PatientPretest> {
  // String _coupleCounselling="" ;
   String _newTest = " " ;
   String _htsApproach="" ;
-
-
+  HtsRegistration htsRegistration;
   bool _newTestInPreg = false;
 
   bool _newTestInLife = false;
@@ -74,7 +79,7 @@ class _PatientPretest extends State<PatientPretest> {
   @override
   void initState() {
   getDropDrowns();
-
+  getHtsRecord(widget.personId);
     super.initState();
   }
 
@@ -169,6 +174,23 @@ class _PatientPretest extends State<PatientPretest> {
       _currentPurposeOfTest = _dropDownMenuItemsPurposeOfTest[0].value;
     });
   }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
+
+
+  }
 
    void _handleHtsChange(int value) {
     setState(() {
@@ -199,6 +221,46 @@ class _PatientPretest extends State<PatientPretest> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+              new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals"), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS"), onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
+                ));
+              }
+            }),
+            new ListTile( leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART"), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.personId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -215,7 +277,11 @@ class _PatientPretest extends State<PatientPretest> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Pre-Test Counselling"),
+            title: new Column(children: <Widget>[
+              new Text("Pre-Test"),
+              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+            ],)
           ),
           Positioned.fill(
             child: Padding(
@@ -367,7 +433,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                               });
                                                               if(value) {
                                                                 setState(() {
-                                                                  coupleCounselling="YES";
+                                                                  _coupleCounselling=true;
                                                                 });
                                                               }
                                                             },
@@ -375,36 +441,6 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-
-                                                   /*  Container(
-                                                      padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                      width: double.infinity,
-                                                      child: OutlineButton(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(5.0)),
-                                                        color: Colors.white,
-                                                        padding: const EdgeInsets.all(0.0),
-                                                        child: Container(
-                                                          width: double.infinity,
-                                                          padding: EdgeInsets.symmetric(
-                                                              vertical: 8.0, horizontal: 30.0),
-                                                          child: DropdownButton(
-                                                            icon: Icon(Icons.keyboard_arrow_down),
-                                                            iconEnabledColor: Colors.black,
-                                                            value: _currentPurposeOfTest,
-                                                            items: _dropDownMenuItemsPurposeOfTest,
-                                                            onChanged: changedDropDownItemPurposeOfTest,
-                                                          ),
-                                                        ),
-                                                        borderSide: BorderSide(
-                                                          color: Colors.blue, //Color of the border
-                                                          style: BorderStyle.solid, //Style of the border
-                                                          width: 2.0, //width of the border
-                                                        ),
-                                                        onPressed: () {},
-                                                      ),
-                                                    ), */
 
                                                     Container(
                                                       width: double.infinity,
@@ -429,7 +465,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                               });
                                                               if(value) {
                                                                 setState(() {
-                                                                  preTestInfoGiven="YES";
+                                                                  _preTestInfoGiven = true;
                                                                 });
                                                               }
                                                             },
@@ -437,39 +473,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-
-
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child:            Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text(
-                                                                    'New test for pregnant and lactating women.'),
-                                                              ),
-                                                              width: 250,
-                                                            ),
-                                                          ),
-                                                          Checkbox(
-                                                            value:_newTestInPreg,
-                                                            onChanged: (bool value) {
-                                                              setState(() {
-                                                                _newTestInPreg=value;
-                                                              });
-                                                              if(value) {
-                                                                setState(() {
-                                                                  _newTestInPreg=true;
-                                                                });
-                                                              }
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                    pregnatandlactatingqstn(),
 
                                                     Container(
                                                       width: double.infinity,
@@ -525,15 +529,15 @@ class _PatientPretest extends State<PatientPretest> {
                                                             getPurposeByName(_currentPurposeOfTest);
                                                             getHtsModelByName(_currentHtsModel);
                                                             PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, _newTestInLife,
-                                                                coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
+                                                                _coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
                                                             insertPreTest(patient_pretest);
                                                             if(patient_pretest.optOutOfTest ){
                                                               Navigator.push(context,MaterialPageRoute(
-                                                                  builder: (context)=> SearchPatient()
+                                                                  builder: (context)=> Overview(widget.person)
                                                               ));
                                                             } else {
                                                               Navigator.push(context,MaterialPageRoute(
-                                                                  builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId)
+                                                                  builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
                                                               ));
                                                             }
 
@@ -583,7 +587,7 @@ class _PatientPretest extends State<PatientPretest> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HtsRegOverview(widget.htsRegistration, widget.personId, widget.htsid, widget.visitId
+                    HtsRegOverview(widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person
                         )),
           ),
           ),
@@ -599,7 +603,46 @@ class _PatientPretest extends State<PatientPretest> {
       ),
     );
   }
+Widget pregnatandlactatingqstn(){
+    if(widget.person.sex ==" female" || widget.person.sex == "FEMALE" || widget.person.sex == "Female"){
+      return     Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+        child:            Row(
+          children: <Widget>[
+            Expanded(
+              child: SizedBox(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      'New test for pregnant and lactating women.'),
+                ),
+                width: 250,
+              ),
+            ),
+            Checkbox(
+              value:_newTestInPreg,
+              onChanged: (bool value) {
+                setState(() {
+                  _newTestInPreg=value;
+                });
+                if(value) {
+                  setState(() {
+                    _newTestInPreg=true;
+                  });
+                }
+              },
+            ),
+          ],
+        ),
+      );
 
+} else{
+      return  SizedBox(
+        height: 10.0,
+      );
+    }
+}
   void changedDropDownItemHtsModel(String value) {
     setState(() {
       _currentHtsModel = value;

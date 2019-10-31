@@ -5,29 +5,34 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
+import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'rounded_button.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
-
-
 class Hts_Result extends StatefulWidget {
   String visitId;
   String patientId;
   String labInvetsTestId;
   String labInvestId;
+  Person person;
+  String htsId;
 
-  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId);
+  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId);
 
   //Hts_Result (this.visitId, this.patientId);
 
@@ -47,6 +52,7 @@ class _Hts_Result  extends State<Hts_Result > {
   String patientId;
   String labInvetsTestId;
   String result_string;
+  HtsRegistration htsRegistration;
   Person patient;
   var selectedDate;
   bool _showError = false;
@@ -82,6 +88,7 @@ class _Hts_Result  extends State<Hts_Result > {
    // getLabInvestigationTests();
     getTestKIt(widget.labInvetsTestId);
     getStartTime(widget.labInvetsTestId);
+    getHtsRecord(widget.patientId);
     //getEndTime(widget.labInvetsTestId);
 
 
@@ -143,7 +150,23 @@ class _Hts_Result  extends State<Hts_Result > {
         date = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
 
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
+
+
+  }
   void _handleHtsTypeChange(int value) {
     print("hts value : $value");
     setState(() {
@@ -169,6 +192,55 @@ class _Hts_Result  extends State<Hts_Result > {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Home "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+              new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text(" Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),   onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.patientId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.patientId, widget.htsId, widget.visitId, widget.person)
+                ));
+              }
+            }),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -185,7 +257,11 @@ class _Hts_Result  extends State<Hts_Result > {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("HTS Patient Registration"),
+            title: new Column(children: <Widget>[
+              new Text("HTS Test Results"),
+              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+            ],)
           ),
           Positioned.fill(
             child: Padding(
@@ -396,10 +472,10 @@ class _Hts_Result  extends State<Hts_Result > {
                                                         ),
                                                           onPressed: () async {
                                                             if (final_result == '') {
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(this.patientId, this._visitId)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId)));
 
                                                             }else{
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId)));
 
 
                                                             }

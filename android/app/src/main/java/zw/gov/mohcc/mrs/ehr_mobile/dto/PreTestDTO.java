@@ -33,7 +33,7 @@ public class PreTestDTO {
         this.coupleCounselling = coupleCounselling;
         this.optOutOfTest = optOutOfTest;
         this.preTestInfoGiven = preTestInfoGiven;
-        HtsModel_id = htsModel_id;
+        this.HtsModel_id = htsModel_id;
         this.purpose_of_test_id = purpose_of_test_id;
     }
 

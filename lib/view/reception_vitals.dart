@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/vitals/blood_pressure.dart';
 import 'package:ehr_mobile/vitals/height.dart';
 import 'package:ehr_mobile/vitals/pulse.dart';
@@ -7,6 +6,10 @@ import 'package:ehr_mobile/vitals/respiratory_rate.dart';
 import 'package:ehr_mobile/vitals/temperature.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
+import 'package:ehr_mobile/view/hts_registration.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
+import 'package:ehr_mobile/model/person.dart';
+
 import 'package:ehr_mobile/vitals/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +17,9 @@ import 'package:flutter/services.dart';
 
 class ReceptionVitals extends StatefulWidget {
   final String personId;
-  ReceptionVitals(this.personId);
+  final String visitId;
+  final Person person;
+  ReceptionVitals(this.personId, this.visitId, this.person);
 
 
   @override
@@ -72,6 +77,41 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            /*  new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(_patient)),
+            )),*/
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS", style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Registration(widget.visitId,widget.personId, widget.person)),
+            )),
+            new ListTile( leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.personId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -88,8 +128,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-                "Reception Vitals"
+            title: new Text("Vitals",
             ),
           ),
           Positioned.fill(
@@ -101,7 +140,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  _buildButtonsRow(),
+              /*    _buildButtonsRow(),*/
                   Expanded(
 
                     child: new Card(

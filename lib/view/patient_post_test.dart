@@ -1,22 +1,31 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/postTest.dart';
-
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/reasonForNotIssuingResult.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
-
 import 'package:flutter/services.dart';
-import 'package:ehr_mobile/view/art_registration.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/hts_registration.dart';
+
+
+
 
 
 
 class PatientPostTest extends StatefulWidget {
   String result;
   String patientId;
-  PatientPostTest(this.result, this.patientId);
+  String visitId;
+  Person person;
+  String htsId;
+  PatientPostTest(this.result, this.patientId, this.visitId,  this.person, this.htsId);
   @override
   State createState() {
     return _PatientPostTest();
@@ -25,33 +34,25 @@ class PatientPostTest extends StatefulWidget {
 
 class _PatientPostTest extends State<PatientPostTest> {
   static const platform = MethodChannel('example.channel.dev/people');
-
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-
-
   final _formKey = GlobalKey<FormState>();
-
   var selectedDate;
   DateTime date;
-
   PostTest postTest;
   List<ReasonForNotIssuingResult> _reasonForNotIssuingResultList=List();
   bool _resultReceived=false;
   String resultReceived="NO";
   bool _postTestCounselled = false;
   String postTestCounselled = "NO";
-
-
-
+  HtsRegistration htsRegistration;
 
   @override
   void initState() {
 
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
-
-
   getDropDrowns();
+  getHtsRecord(widget.patientId);
 
   print('reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
 
@@ -84,6 +85,23 @@ class _PatientPostTest extends State<PatientPostTest> {
     } catch (e) {
       print("channel failure: '$e'");
     }
+
+
+  }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
 
 
   }
@@ -157,9 +175,61 @@ class _PatientPostTest extends State<PatientPostTest> {
 
 
     return Scaffold(
-      //  appBar: AppBar(
-      //   title: Text('Patient Pretest'),
-      //  ),
+      appBar: AppBar(
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+          title: new Column(children: <Widget>[
+            new Text("Post Test"),
+            new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+          ],)
+      ),
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Reception Vitals"), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS"), onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.patientId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.patientId, widget.htsId, widget.visitId, widget.person)
+                ));
+              }
+            }),
+            new ListTile(title: new Text("ART"), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
@@ -193,38 +263,6 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 20.0,
                   ),
-
-
-
-               /*   Container(
-                    padding:
-                    EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                    width: double.infinity,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 30.0),
-                        child: DropdownButton(
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          iconEnabledColor: Colors.black,
-                          value: _currentReasonForNotIssuingResult,
-                          items: _dropDownMenuItemsReasonForNotIssuingResult,
-                          onChanged: changedDropDownItemReasonForNotIssuingResult,
-                        ),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.blue, //Color of the border
-                        style: BorderStyle.solid, //Style of the border
-                        width: 2.0, //width of the border
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),*/
 
                   SizedBox(
                     height: 10.0,
@@ -312,12 +350,12 @@ class _PatientPostTest extends State<PatientPostTest> {
 
 
                           if(widget.result == "Positive"){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> Art_Registration(widget.patientId)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtReg(widget.patientId, widget.visitId, widget.person)));
 
 
                           }else{
                             Navigator.push(context,MaterialPageRoute(
-                                builder: (context)=> SearchPatient()
+                                builder: (context)=> Overview(widget.person)
                             ));
                           }
                         }

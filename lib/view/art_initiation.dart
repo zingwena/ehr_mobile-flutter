@@ -8,10 +8,16 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 
 import 'package:ehr_mobile/model/personInvestigation.dart';
-import 'package:ehr_mobile/view/art_registration.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/art_initiationoverview.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
+import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/hts_registration.dart';
+
+
+
 
 import 'rounded_button.dart';
 
@@ -22,7 +28,9 @@ import 'package:intl/intl.dart';
 class Art_Initiation extends StatefulWidget {
 
   String patientId ;
-  Art_Initiation(this.patientId);
+  String visitId;
+  Person person;
+  Art_Initiation(this.patientId, this.visitId);
 
   @override
   State createState() {
@@ -187,11 +195,44 @@ class _Art_Initiation extends State<Art_Initiation> {
     return items;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            /*  new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(_patient)),
+            )),*/
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Registration(widget.visitId,widget.patientId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -546,20 +587,14 @@ class _Art_Initiation extends State<Art_Initiation> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
-          new RoundedButton(text: "ART Initiation", onTap: () =>     Navigator.push(
+          new RoundedButton(text: "ART Registration", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Art_Initiation(widget.patientId)),
+                    ArtReg(widget.patientId, widget.visitId, widget.person)),
           ),
           ),
-          new RoundedButton(text: "Art Registration", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    HomePage()),
-          ),
-          ),
+          new RoundedButton(text: "Art Initiation", selected: true),
           new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
