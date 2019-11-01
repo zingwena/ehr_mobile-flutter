@@ -114,7 +114,8 @@ public class HtsService {
         int retainMaxCount = maxCount;
         String lastParallelTest = "";
         for (LaboratoryInvestigationTest item : ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId)) {
-            if (retainMaxCount == 3 && maxCount == 0) {
+            if (retainMaxCount == 3 && maxCount == 1) {
+                Log.d(TAG, "Is this ever executed");
                 lastParallelTest = ehrMobileDatabase.testKitDao().findTestKitByName(item.getTestkitId()).getCode();
                 continue;
             }
@@ -129,7 +130,9 @@ public class HtsService {
             maxCount--;
         }
         if (StringUtils.isNoneBlank(lastParallelTest)) {
+            Log.i(TAG, "Before removing : " + testKitIds);
             testKitIds.remove(lastParallelTest);
+            Log.i(TAG, "After removing : " + testKitIds);
         }
         Log.i(TAG, "Retrieved test kit ids : %%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "+ testKitIds.toString());
         return testKitIds;
@@ -174,6 +177,7 @@ public class HtsService {
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 2)));
         } else if (count == 3) {
             // remove test done on 2
+            Log.d(TAG, "We are now on second parallel test : "+ count);
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 3)));
         }
         return null;
