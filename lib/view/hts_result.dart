@@ -71,7 +71,7 @@ class _Hts_Result  extends State<Hts_Result > {
   String endTime;
   bool showInput = true;
   bool showInputTabOptions = true;
-  String final_result = '';
+  String final_result = 'Pending';
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<LaboratoryInvestigationTest> _entryPointList = List();
 
@@ -596,7 +596,7 @@ class _Hts_Result  extends State<Hts_Result > {
     }
     setState(() {
       if(response == null){
-        final_result = '';
+        final_result = 'Pending';
       } else{
 
         final_result = response;

@@ -69,6 +69,7 @@ class _Recency extends State<RecencyTest> {
   String _entryPoint;
   String _testkit_string_response;
   String test_name;
+  int recency_count;
   TestKit testKitobj  = TestKit('', '', '', '');
   List test_kits = List();
   List _dropDownListtestkits = List();
@@ -517,7 +518,16 @@ class _Recency extends State<RecencyTest> {
                                         width: 250,
                                       ),
                                     ),
-                                    getTestKIts(_testkitslist),
+                                    Row(
+                                      children: <Widget>[
+                                        Text('Asante'),
+                                        Radio(
+                                            value: 1,
+                                            groupValue:recency_count,
+                                            activeColor: Colors.blue,
+                                            onChanged: _handleTestKitChange)
+
+                                      ],),
                                   ],
                                 ),
                                 SizedBox(
