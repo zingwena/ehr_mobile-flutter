@@ -69,7 +69,7 @@ class _Recency extends State<RecencyTest> {
   String _entryPoint;
   String _testkit_string_response;
   String test_name;
-  int recency_count;
+  int recency_count = 0;
   TestKit testKitobj  = TestKit('', '', '', '');
   List test_kits = List();
   List _dropDownListtestkits = List();
@@ -299,35 +299,13 @@ class _Recency extends State<RecencyTest> {
   void _handleTestKitChange(int value) {
     setState(() {
       _testKit = value;
-      _testkitslist.forEach((e){
-        if(value == _testkitslist.indexOf(e)){
-          getTestKitByCode(e.code);
-          testKitobj.name = testKit;
-        }
+       if(_testKit == 1){
+         testKit = "Asante";
+
+       }
       });
 
 
-    });
-
-  }
-
-  Widget getTestKIts(List<TestKit> testkits)
-  {
-    return new Row(children: testkits.map((item) =>
-        Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(item.name),
-                Radio(
-                    value: testkits.indexOf(item),
-                    groupValue: _testKit,
-                    activeColor: Colors.blue,
-                    onChanged: _handleTestKitChange)
-
-              ],),
-          ],
-        ),).toList());
   }
 
   void _handleResultChange(int value)  {
@@ -337,40 +315,21 @@ class _Recency extends State<RecencyTest> {
 
       switch (_result) {
         case 1:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 1 chosen");
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + _entryPointList.toString());
-
-          _entryPointList.forEach((e) {
-            if (e.name == "negative " || e.name == "Negative" || e.name == "NEGATIVE"){
-              result.code = e.code;
-              result.name = e.name;
-              print(">>>>>>>>>>>>>>>>>>>>>>>>> here is the result clicked in negative >>>>"+e.name );
-
-            }
-          });
+          result.name = "RTRI Negative";
+          result.code = "01";
           break;
 
         case 2:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 2 chosen");
-
-          _entryPointList.forEach((e){
-            if(e.name == "positive " || e.name == "Positive" || e.name == "POSITIVE"){
-              result.code = e.code;
-              result.name = e.name;
-            }
-          });
+          result.name = "Invalid";
+          result.code = "02";
           break;
         case 3:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 3 chosen");
-
-          _entryPointList.forEach((e){
-            if(e.name == "Inconclusive " || e.name == "Indeterminate" || e.name == "INDERTERMINATE"){
-              result.code = e.code;
-              result.name = e.name;
-            }
-          });
-
+        result.name = "Long Term";
+        result.code = "03";
           break;
+        case 4:
+          result.name ="Recent";
+          result.code ="04";
 
       }
 
@@ -611,19 +570,25 @@ class _Recency extends State<RecencyTest> {
                                         width: 250,
                                       ),
                                     ),
-                                    Text('Negative'),
+                                    Text('RTRI Negative'),
                                     Radio(
                                         value: 1,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
-                                    Text('Positive'),
+                                    Text('Invalid'),
                                     Radio(
                                         value: 2,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
-                                    Text('Inconclusive'),
+                                    Text('Long Term'),
+                                    Radio(
+                                        value: 3,
+                                        groupValue: _result,
+                                        activeColor: Colors.blue,
+                                        onChanged: _handleResultChange),
+                                    Text('Recent'),
                                     Radio(
                                         value: 3,
                                         groupValue: _result,

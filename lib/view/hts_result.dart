@@ -471,7 +471,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           style: TextStyle(color: Colors.white),
                                                         ),
                                                           onPressed: () async {
-                                                            if (final_result == '') {
+                                                            if (final_result == 'Pending' || final_result == '') {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId)));
 
                                                             }else{
@@ -596,7 +596,7 @@ class _Hts_Result  extends State<Hts_Result > {
     }
     setState(() {
       if(response == null){
-        final_result = 'Pending';
+        final_result = '';
       } else{
 
         final_result = response;
