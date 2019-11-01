@@ -166,8 +166,6 @@ public class HtsService {
         int count = getTestCount(laboratoryInvestigationId);
         String level = getTestLevel(count);
         Log.i(TAG, "Laboratory Investigation ID : " + laboratoryInvestigationId);
-        Log.i(TAG, "All laboratory investigations : ");
-        Log.i(TAG, ehrMobileDatabase.laboratoryInvestigationDao().getAllLaboratoryInvestigations().toString());
         Log.i(TAG, "Retrieving test kits count is at : "+ count +" Using level : "+ level);
         Log.i(TAG, "All laboratory investigation tests : ");
         Log.i(TAG, ehrMobileDatabase.labInvestTestdao().findAll().toString());
@@ -225,6 +223,10 @@ public class HtsService {
             }
 
         } else if (count == 4) {
+            // if result is positive set result to be inconclusive
+            if (test.getResult().getName().equalsIgnoreCase("Positive")) {
+                test.setResult(new Result("41d3c289-fd7d-11e6-9840-000c29c7ff5e", "INCONCLUSIVE"));
+            }
             setFinalResult(test);
         }
         ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
