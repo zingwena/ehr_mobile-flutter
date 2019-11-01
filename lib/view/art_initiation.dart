@@ -15,6 +15,7 @@ import 'package:ehr_mobile/view/art_initiationoverview.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 
 
 
@@ -202,12 +203,18 @@ class _Art_Initiation extends State<Art_Initiation> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            /*  new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Home "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      Overview(_patient)),
-            )),*/
+                      SearchPatient()),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
@@ -544,8 +551,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
                                                             await artInitiation(artInitiationDetails);
 
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(initiation)));
-
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(initiation, widget.person, widget.patientId, widget.visitId)));
 
                                                           },
 
