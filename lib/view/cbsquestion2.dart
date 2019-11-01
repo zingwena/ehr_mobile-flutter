@@ -253,7 +253,7 @@ class _CbsQuestion extends State<CbsQuestions2> {
               elevation: 0.0,
               centerTitle: true,
               title: new Column(children: <Widget>[
-                new Text("Pre-Test"),
+                new Text("Sexual History"),
                 new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
 
               ],)

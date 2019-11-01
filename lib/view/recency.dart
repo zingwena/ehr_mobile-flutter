@@ -10,9 +10,9 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/recency_result.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
-
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/hts_result.dart';
@@ -45,7 +45,7 @@ class _Recency extends State<RecencyTest> {
   DateTime date, startTime, readingTime,  readingDate;
   HtsRegistration htsRegistration;
   int _result = 0;
-  int _testKit = -1;
+  int _testKit = 0;
   int testCount=0;
   String id ="1";
   String result_string;
@@ -56,7 +56,7 @@ class _Recency extends State<RecencyTest> {
   DateTime date1;
   DateTime date2;
   DateTime date3;
-  Result result = Result('', '');
+  Result result = Result('01', 'RTI');
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
@@ -104,7 +104,6 @@ class _Recency extends State<RecencyTest> {
     getLabInvestigation(widget.personId);
     getLabTest(widget.personId);
     getResults(widget.personId);
-    getTestName();
     getLabId();
     getHtsRecord(widget.personId);
 
@@ -257,8 +256,7 @@ class _Recency extends State<RecencyTest> {
       String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
       setState(() {
         labInvestId = response;
-        getTestName();
-        getTestKitsByCount(testCount);
+
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -299,11 +297,11 @@ class _Recency extends State<RecencyTest> {
   void _handleTestKitChange(int value) {
     setState(() {
       _testKit = value;
-       if(_testKit == 1){
-         testKit = "Asante";
-
-       }
-      });
+      switch(_testKit){
+        case 1:
+          testKit = "Asante";
+      }
+    });
 
 
   }
@@ -482,7 +480,7 @@ class _Recency extends State<RecencyTest> {
                                         Text('Asante'),
                                         Radio(
                                             value: 1,
-                                            groupValue:recency_count,
+                                            groupValue:_testKit,
                                             activeColor: Colors.blue,
                                             onChanged: _handleTestKitChange)
 
@@ -590,7 +588,7 @@ class _Recency extends State<RecencyTest> {
                                         onChanged: _handleResultChange),
                                     Text('Recent'),
                                     Radio(
-                                        value: 3,
+                                        value: 4,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
@@ -630,18 +628,13 @@ class _Recency extends State<RecencyTest> {
                                                         labInvestId,
                                                         null, null,
                                                         result, widget.visitId, testKit, null, null);
-
-
-                                                    saveLabInvestigationTest(
-                                                        labInvestTest);
-
-
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)
-                                                        ));
+                                                                Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest)
+
+                                                    ));
                                                   } else {
                                                     setState(() {
                                                       _showError = true;

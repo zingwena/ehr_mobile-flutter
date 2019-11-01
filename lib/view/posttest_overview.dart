@@ -155,7 +155,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  _buildButtonsRow(),
+                  //_buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     onWillPop: () {
                       if (!showInput) {
@@ -250,10 +250,6 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                                     builder: (context)=> RecencyTest(widget.personId, widget.visitId, widget.person, widget.htsId)
                                                                 ));
 
-
-
-
-
                                                           },
                                                         ),
                                                       ),
@@ -270,7 +266,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                           color: Colors.blue,
                                                           padding: const EdgeInsets.all(20.0),
                                                           child: Text(
-                                                            "CBS Questions",
+                                                            "Sexual History",
                                                             style: TextStyle(color: Colors.white),
                                                           ),
                                                           onPressed: () {
