@@ -1,8 +1,10 @@
 package zw.gov.mohcc.mrs.ehr_mobile;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.google.gson.Gson;
@@ -31,6 +33,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
@@ -82,6 +85,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
+import zw.gov.mohcc.mrs.ehr_mobile.sync.DemographicsSyncProcessor;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
@@ -94,6 +98,7 @@ public class MainActivity extends FlutterActivity {
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
     private final static String VITALS_CHANNEL = "ehr_mobile.channel/vitals";
     private final static String ART_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile.channel/art";
+    final static String DATA_SYNC_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataSyncChannel";
     private final static String TAG = "Main Activity";
     public Token token;
     public String url, username, password;
@@ -107,6 +112,7 @@ public class MainActivity extends FlutterActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("testing");
         GeneratedPluginRegistrant.registerWith(this);
 
         getApplicationContext();
@@ -146,6 +152,7 @@ public class MainActivity extends FlutterActivity {
                     person.setAddress(patientDto.getAddress());
                     person.setOccupationId(patientDto.getOccupation());
                     person.setBirthDate(patientDto.getBirthDate());
+                    person.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.personDao().createPatient(person);
                     Person person1 = ehrMobileDatabase.personDao().findPatientById(personId);
                     System.out.println("PERSON PERSON PERSON"+ person1.toString());
@@ -938,12 +945,25 @@ public class MainActivity extends FlutterActivity {
 
         }});
 
-
+        new MethodChannel(getFlutterView(), DATA_SYNC_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
+                final String arguments = call.arguments();
+                //syncPatients
+                if (call.method.equals("syncPatients")) {
+                    System.out.println("DATA SYNC PATIENTS");
+                    DemographicsSyncProcessor sychProcessor=new DemographicsSyncProcessor();
+                    sychProcessor.synchPatient(ehrMobileDatabase,arguments,"http://192.168.43.66:8080/api/");
+                }
+            }
+        });
 
     }
 
 
     private void pullData(Token token, String url) {
+
         getSample(token, url + "/api/");
         getLaboratoryTest(token, url + "/api/");
         getNationalities(token, url + "/api/");
@@ -959,7 +979,11 @@ public class MainActivity extends FlutterActivity {
         getReasonForNotIssuingResults(token, url + "/api/");
         getUsers(token, url + "/api/");
         getTestKits(token, url + "/api/");
-        getInvestigations(token, url + "/api/");
+        try{
+            getInvestigations(token, url + "/api/");
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         getTowns(token, url + "/api/");
         getLaboratoryResults(token, url + "/api/");
         getInvestigationResults(token, url + "/api/");
@@ -970,7 +994,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void getPatients(String baseUrl) {
-        ehrMobileDatabase.personDao().deleteAll();
+        //ehrMobileDatabase.personDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
     }
 

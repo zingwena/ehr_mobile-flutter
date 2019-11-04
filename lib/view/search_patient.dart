@@ -8,9 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'add_patient.dart';
-import 'list_patients.dart';
 import 'patient_overview.dart';
-import 'reception_vitals.dart';
+import 'package:http/http.dart' as http;
 
 class SearchPatient extends StatefulWidget {
   _SearchPatientState createState() => _SearchPatientState();
@@ -18,9 +17,11 @@ class SearchPatient extends StatefulWidget {
 
 class _SearchPatientState extends State<SearchPatient> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
+  static const platformDataSync=MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataSyncChannel');
   String searchItem;
   final _searchFormKey = GlobalKey<FormState>();
   List<Person> _patientList;
+
 
   Future<void> searchPatient(String searchItem) async {
     List<dynamic> list;
@@ -36,6 +37,12 @@ class _SearchPatientState extends State<SearchPatient> {
     });
 
     print("=====================searched$_patientList");
+  }
+
+  Future<void>syncPatients(String tokenString) async {
+    await platformDataSync.invokeMethod('syncPatients',tokenString).then((value){
+      print("sync method called----->$value");
+    });
   }
 
   String nullHandler(String value) {
@@ -113,31 +120,54 @@ class _SearchPatientState extends State<SearchPatient> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Welcome To Impilo Mobile",
+                          "Impilo Mobile",
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               color: Colors.white,
                               fontSize: 30),
                         ),
+
                         Expanded(
                           flex: 1,
                           child: Container(),
                         ),
-
-                      /*  RaisedButton(
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
+//                        RaisedButton(
+//                          child: Text(
+//                            "Sync",
+//                            style: TextStyle(
+//                                color: Colors.blue,
+//                                fontWeight: FontWeight.w500,
+//                                fontSize: 16),
+//                          ),
+//                          onPressed: () {
+//                            authenticate().then((value){
+//                              syncPatients(value);
+//                            });
+//                          },
+//                          elevation: 1.0,
+//                          color: Colors.white,
+//                        ),
+                        new InkWell(
+                          onTap: (){
+                              authenticate().then((value){
+                              syncPatients(value);
+                            });
+                          },
+                          child: new Container(
+                            height: 36.0,
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              border: new Border.all(color: Colors.white, width: 1.0),
+                              borderRadius: new BorderRadius.circular(10.0),
+                            ),
+                            child: new Center(
+                              child: new Text(
+                                "Sync",
+                                style: new TextStyle(color: Colors.blue),
+                              ),
+                            ),
                           ),
-                          onPressed: () {},
-                          elevation: 1.0,
-                          color: Colors.white,
-                        ), */
-
-
+                        ),
                       ],
                     ),
                   ),
@@ -329,5 +359,25 @@ class _SearchPatientState extends State<SearchPatient> {
 
     );
   }
+
+  Future<String> authenticate() async {
+    var body = json.encode({"username": "admin", "password": "admin"});
+    final response = await http.post("http://192.168.43.66:8080/api/authenticate",
+        headers: {
+          "Content-type": "application/json",
+          "Accept": "application/json",
+        },
+        body: body);
+
+    if (response.statusCode == 200) {
+      // If server returns an OK response, parse the JSON.
+      return json.decode(response.body)['id_token'];
+
+    } else {
+      print(response.body);
+      throw Exception('Failed to authenticate');
+    }
+  }
+
 
 }

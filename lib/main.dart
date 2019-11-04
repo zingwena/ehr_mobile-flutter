@@ -8,7 +8,7 @@ class EhrMobileApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Impilo Mobile App',
+      title: 'Impilo Mobile',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,

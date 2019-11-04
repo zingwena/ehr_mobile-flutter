@@ -17,7 +17,10 @@ class _DataSyncronizationState extends State<DataSyncronization> {
   static const MethodChannel platform = MethodChannel('Authentication');
   Token token;
 
-  String url, username, password;
+  String url;
+  String ipAndPort;
+  String username;
+  String password;
   final _key = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -89,7 +92,8 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                   },
                   onSaved: (value) {
                     setState(() {
-                      url = value;
+                      ipAndPort=value;
+                      url='http://$ipAndPort';
                     });
                   },
                   decoration: InputDecoration(
