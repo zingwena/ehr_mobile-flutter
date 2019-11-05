@@ -21,6 +21,8 @@ public class VisitService {
 
     public String getCurrentVisit(String personId) {
 
+        Log.i(TAG, "Person ID used in HTS : " + personId);
+
         Visit visit = getVisit(personId);
         if (visit != null) {
             return visit.getId();
@@ -33,7 +35,7 @@ public class VisitService {
 
     public Visit getVisit(String personId) {
 
-        Visit visit = ehrMobileDatabase.visitDao().findByPerson(personId);
+        Visit visit = ehrMobileDatabase.visitDao().findByPersonVisit(personId, new Date().getTime());
 
         Log.d(TAG, "All visits in database : "+ ehrMobileDatabase.visitDao().getAll().toString());
 

@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
+import androidx.annotation.NonNull;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -11,7 +12,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 public class VitalsBaseEntityId extends BaseEntity {
 
     private String visitId;
-    private  transient String personId;
+    @NonNull
+    private  String personId;
     @TypeConverters(DateConverter.class)
     private Date dateTime = new Date();
 
@@ -42,9 +44,10 @@ public class VitalsBaseEntityId extends BaseEntity {
 
     @Override
     public String toString() {
-        return super.toString() + "VitalsBaseEntityId{" +
-                ", visitId=" + visitId +
+        return super.toString().concat("VitalsBaseEntityId{" +
+                "visitId='" + visitId + '\'' +
+                ", personId='" + personId + '\'' +
                 ", dateTime=" + dateTime +
-                '}';
+                '}');
     }
 }
