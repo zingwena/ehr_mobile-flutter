@@ -813,17 +813,24 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("getLabInvestigationTest")) {
+
+                            try {
+
+                                LaboratoryInvestigationTest laboratoryInvestigationTest = ehrMobileDatabase.labInvestTestdao().findByLaboratoryInvestId(arguments);
+                                String labInvestTestId = laboratoryInvestigationTest.getId();
+                                result.success(labInvestTestId);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
 
                         if (methodCall.method.equals("getTestKitsByLevel")) {
-                            Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  : " + arguments);
-
                             try{
-                                Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  : HERE ARE THE TESTKITS FROM ANDROID" + htsService.getTestKitByTestLevel(arguments));
                                 String testkitlist = gson.toJson(htsService.getTestKitByTestLevel(arguments));
                                 result.success(testkitlist);
 
                             }catch(Exception e) {
-                                Log.d(TAG, "================================= : " +e.getMessage());
                             }
 
                         }
@@ -840,8 +847,6 @@ public class MainActivity extends FlutterActivity {
                         if(methodCall.method.equals("getTestName")){
                             try {
                                 String name = htsService.getTestName(arguments);
-                                System.out.println("MMMMMMMMMMMMMMMMMMMMM TEST NAME IN ANDROID HERE >>>>>>>>>>>>>>>>>>" + name);
-
                                 result.success(name);
 
                             }catch (Exception e){

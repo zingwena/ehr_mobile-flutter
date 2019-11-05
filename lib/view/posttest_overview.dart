@@ -241,13 +241,13 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                           color: Colors.blue,
                                                           padding: const EdgeInsets.all(20.0),
                                                           child: Text(
-                                                            "Recency Testing",
+                                                            "Proceed to Recency Testing",
                                                             style: TextStyle(color: Colors.white),
                                                           ),
                                                           onPressed: () {
 
                                                                 Navigator.push(context,MaterialPageRoute(
-                                                                    builder: (context)=> RecencyTest(widget.personId, widget.visitId, widget.person, widget.htsId)
+                                                                    builder: (context)=>CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)
                                                                 ));
 
                                                           },
@@ -256,54 +256,11 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                      Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Sexual History",
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          onPressed: () {
-
-                                                            Navigator.push(context,MaterialPageRoute(
-                                                                builder: (context)=> CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)
-                                                            ));
-
-
-
-
-
-                                                          },
-                                                        ),
-                                                      ),
-
-
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 

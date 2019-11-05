@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/vitals/blood_pressure.dart';
 import 'package:ehr_mobile/vitals/height.dart';
 import 'package:ehr_mobile/vitals/pulse.dart';
 import 'package:ehr_mobile/vitals/respiratory_rate.dart';
 import 'package:ehr_mobile/vitals/temperature.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -50,6 +53,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
 
   @override
   void initState() {
+    setVisit();
     super.initState();
   }
 
@@ -81,12 +85,18 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            /*  new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("HOme "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      Overview(_patient)),
-            )),*/
+                      SearchPatient()),
+            )),
+              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
