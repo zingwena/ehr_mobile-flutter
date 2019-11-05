@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class HtsRegDTO {
     private String personId;
@@ -22,7 +23,7 @@ public class HtsRegDTO {
         hts.setId(htsId);
         hts.setVisitId(visitId);
         hts.setPersonId(dto.getPersonId());
-        hts.setDateOfHivTest(dto.getDateOfHivTest());
+        hts.setDateOfHivTest(DateUtil.getStartOfDay(dto.getDateOfHivTest()));
         hts.setHtsType(dto.getHtsType());
         hts.setEntryPointId(dto.getEntryPointId());
         return hts;

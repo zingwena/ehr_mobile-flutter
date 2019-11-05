@@ -45,7 +45,7 @@ public class HtsService {
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         ehrMobileDatabase.htsDao().createHts(hts);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
-        createInvestigation(dto.getPersonId(), dto.getDateOfHivTest(), visitId, "36069471-adee-11e7-b30f-3372a2d8551e");
+        createInvestigation(dto.getPersonId(), hts.getDateOfHivTest(), visitId, "36069471-adee-11e7-b30f-3372a2d8551e");
         return hts.getId();
     }
 
@@ -158,7 +158,6 @@ public class HtsService {
 
     public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {
 
-        //PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonId(personId);
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(personId, new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
         return ehrMobileDatabase.laboratoryInvestigationDao().findByPersonInvestigationId(personInvestigation.getId());
     }

@@ -28,7 +28,7 @@ public class VisitService {
             return visit.getId();
         }
         String visitId = UUID.randomUUID().toString();
-        visit = new Visit(visitId, personId, new Date(), DateUtil.getEndOfDay(new Date()));
+        visit = new Visit(visitId, personId, DateUtil.getStartOfDay(new Date()), DateUtil.getEndOfDay(new Date()));
         ehrMobileDatabase.visitDao().insert(visit);
         return visitId;
     }
