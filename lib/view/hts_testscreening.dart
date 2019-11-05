@@ -237,8 +237,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   }
   Future<dynamic>getTestName()async{
-    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTNAME"+ labInvestId);
-
     try{
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
