@@ -87,6 +87,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
 public class MainActivity extends FlutterActivity {
@@ -751,7 +752,7 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
-                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
@@ -769,7 +770,7 @@ public class MainActivity extends FlutterActivity {
                                 System.out.println("HERE ARE THE ARGUMENTS SENT FROM FLUTTER FOR RESULTS"+ arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
-                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 List<Result>results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
                                 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + results.toString());
                                 String results_list = gson.toJson(results);
@@ -784,7 +785,7 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
-                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime());
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
                                 String labtest_name = laboratoryTest.getName();

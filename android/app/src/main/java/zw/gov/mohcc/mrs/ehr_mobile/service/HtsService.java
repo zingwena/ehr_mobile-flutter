@@ -158,7 +158,8 @@ public class HtsService {
 
     public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {
 
-        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(personId, new Date().getTime());
+        //PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonId(personId);
+        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(personId, new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
         return ehrMobileDatabase.laboratoryInvestigationDao().findByPersonInvestigationId(personInvestigation.getId());
     }
 
