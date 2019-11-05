@@ -15,8 +15,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 public class PersonInvestigation extends BaseEntity {
 
     @ColumnInfo(name = "personId")
+    @NonNull
     private String personId;
     @ColumnInfo(name = "investigationId")
+    @NonNull
     private String investigationId;
     @ColumnInfo(name = "date")
     @TypeConverters(DateConverter.class)

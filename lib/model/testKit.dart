@@ -27,8 +27,14 @@ static List<TestKit> mapFromJson(List dynamicList){
   }
   return list;
 }
+  static List<TestKit> fromJsonDecodedMap(List dynamicList) {
+    List<TestKit> testkitList = [];
 
-
-
-
+    if (dynamicList != null) {
+      dynamicList.forEach((e) {
+        TestKit testKit = TestKit.fromJson(e);
+        testkitList.add(testKit);
+      });
+    }
+  }
 }

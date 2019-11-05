@@ -13,7 +13,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 @Entity
 public class LaboratoryInvestigation extends BaseEntity {
 
+    @NonNull
     private String facilityId;
+    @NonNull
     private String personInvestigationId;
     @TypeConverters(DateConverter.class)
     private Date resultDate;
@@ -50,5 +52,15 @@ public class LaboratoryInvestigation extends BaseEntity {
 
     public void setResultDate(Date resultDate) {
         this.resultDate = resultDate;
+    }
+
+    @Override
+    public String toString() {
+        return "LaboratoryInvestigation{" +
+                "id='" + getId() + '\'' +
+                "facilityId='" + facilityId + '\'' +
+                ", personInvestigationId='" + personInvestigationId + '\'' +
+                ", resultDate=" + resultDate +
+                '}';
     }
 }

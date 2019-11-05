@@ -57,7 +57,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
             height: 20.0,
           ),
           Text(
-            "Implilo Mobile App",
+            "Impilo Mobile App",
             style: TextStyle(
                 fontWeight: FontWeight.w300,
                 color: Colors.grey.shade600,
@@ -163,11 +163,11 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                     color: Colors.teal,
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
-                      "LOGIN",
+                      "Log In",
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 23,
                           color: Colors.white,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w400),
                     ),
                     onPressed: () async {
                       if (_key.currentState.validate()) {
@@ -184,7 +184,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
               SizedBox(
                 height: 20.0,
               ),
-              SpinKitHourGlass(color: Colors.teal),
+              SpinKitRipple(color: Colors.teal, size: 90,),
               SizedBox(
                 height: 30.0,
               ),

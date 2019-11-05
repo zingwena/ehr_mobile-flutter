@@ -7,8 +7,14 @@ import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/hts_registration.dart';
+import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
+
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -17,9 +23,8 @@ import 'rounded_button.dart';
 class Registration extends StatefulWidget {
   String visitId;
   String patientId;
-
-
-  Registration(this.visitId, this.patientId);
+  Person person;
+  Registration(this.visitId, this.patientId, this.person);
 
   @override
   State createState() {
@@ -48,6 +53,7 @@ class _Registration extends State<Registration> {
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
   String hts_id;
+  HtsRegistration htsRegistration;
 
   bool showInput = true;
   bool showInputTabOptions = true;
@@ -65,6 +71,7 @@ class _Registration extends State<Registration> {
     patientId = widget.patientId;
     print('SSSSSSSSSSSSSSSSSSSSSSSSS' + visitId);
     getFacilities();
+    getHtsRecord(patientId);
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     super.initState();
@@ -137,6 +144,55 @@ class _Registration extends State<Registration> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Home "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(visitId, widget.patientId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.patientId, hts_id, visitId, widget.person)
+                ));
+              }
+            }),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -153,7 +209,11 @@ class _Registration extends State<Registration> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("HTS Patient Registration"),
+            title: new Column(children: <Widget>[
+              new Text("HTS Registration"),
+              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+              
+    ],)
           ),
           Positioned.fill(
             child: Padding(
@@ -330,7 +390,7 @@ class _Registration extends State<Registration> {
 
                                                               await registration(htsDetails);
 
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id, visitId)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id, visitId, widget.person)));
 
                                                             }
                                                           }
@@ -402,12 +462,30 @@ class _Registration extends State<Registration> {
       DateTime date = htsRegistration.dateOfHivTest;
       PersonInvestigation personInvestigation = new PersonInvestigation(
           patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-      await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
+    //  await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
 
       print('---------------------saved file id  $id');
     } catch (e) {
       print('--------------something went wrong  $e');
     }
+  }
+
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
+
+
   }
 
   void changedDropDownItemEntryPoint(String selectedEntryPoint) {

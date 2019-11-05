@@ -10,10 +10,6 @@ part 'artInitiation.g.dart';
 class ArtInitiation{
 
   String personId;
- // DateTime dateOfEnrolmentIntoCare;
- // DateTime dateInitiatedOnArt;
- // String clientType;
- // String clientEligibility;
   String line;
   String artRegimenId;
   String artReasonId;

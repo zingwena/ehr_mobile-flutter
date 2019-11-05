@@ -16,10 +16,11 @@ public class HtsRegDTO {
     private Date dateOfHivTest;
     private String entryPointId;
 
-    public static Hts getInstance(HtsRegDTO dto) {
+    public static Hts getInstance(HtsRegDTO dto, String visitId) {
         String htsId = UUID.randomUUID().toString();
         Hts hts = new Hts();
         hts.setId(htsId);
+        hts.setVisitId(visitId);
         hts.setPersonId(dto.getPersonId());
         hts.setDateOfHivTest(dto.getDateOfHivTest());
         hts.setHtsType(dto.getHtsType());

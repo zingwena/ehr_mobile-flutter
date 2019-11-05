@@ -7,15 +7,17 @@ part 'laboratoryInvestigationTest.g.dart';
 class LaboratoryInvestigationTest{
    String id;
    String laboratoryInvestigationId;
-   DateTime startTime;
-   DateTime endTime;
+   String startTime;
+   String endTime;
+   DateTime startDate;
+   DateTime endDate;
    Result result;
    String visitId;
    String testkitId;
 
 
    LaboratoryInvestigationTest(this.id, this.laboratoryInvestigationId,
-       this.startTime, this.endTime, this.result, this.visitId, this.testkitId);
+       this.startDate, this.endDate, this.result, this.visitId, this.testkitId, this.startTime, this.endTime);
 
    factory LaboratoryInvestigationTest.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestFromJson(json);
 

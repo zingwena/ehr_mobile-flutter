@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/CbsQuestions.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -21,19 +23,23 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
-class Overview extends StatefulWidget {
+class CbsOverview extends StatefulWidget {
   final Person patient;
+  final CbsQuestion cbsQuestion;
+  final String htsId;
+  final String visitId;
+  final String personId;
 
-  Overview(this.patient);
+  CbsOverview(this.patient, this.cbsQuestion, this.htsId, this.visitId, this.personId);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return OverviewState();
+    return _CbsOverview();
   }
 }
 
-class OverviewState extends State<Overview> {
+class _CbsOverview extends State<CbsOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
@@ -48,15 +54,85 @@ class OverviewState extends State<Overview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   String visitId;
+  String sexuallyactive;
+  String victimofsexualause;
+  String sexwithmale;
+  String sexwithfemale;
+  String unprotectedsex;
+  String sexwithsexworker;
+  String exchangedsexformoney;
+  String injectedrecreationaldrugs;
+  String beencaredintojail;
+  String historyofsti;
+  String receivedbloodtrans;
+  String unsterilisedinstruments;
   @override
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     print(_patient.toString());
-
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
-
+   if(widget.cbsQuestion.sexuallyactive){
+     sexuallyactive = "YES";
+   }else{
+     sexuallyactive ="NO";
+   }
+   if(widget.cbsQuestion.victimofsexualabuse){
+     victimofsexualause = "YES";
+   }else{
+     victimofsexualause ="NO";
+   }
+   if(widget.cbsQuestion.hadsexwithmale){
+     sexwithmale = "YES";
+    }else{
+     sexwithmale = "NO";
+   }
+   if(widget.cbsQuestion.hadsexwithfemale){
+     sexwithfemale = "YES";
+   }else{
+     sexwithfemale = "NO";
+   }
+   if(widget.cbsQuestion.unprotectedsex){
+     unprotectedsex = "YES";
+   }else{
+     unprotectedsex = "NO";
+   }
+   if(widget.cbsQuestion.hadsexwithsexworker){
+     sexwithsexworker = "YES";
+   }else{
+     sexwithsexworker = "NO";
+   }
+   if(widget.cbsQuestion.exchangedsexformoney){
+     exchangedsexformoney = "YES";
+   }else{
+     exchangedsexformoney = "NO";
+   }
+   if(widget.cbsQuestion.injectedrecreationaldrugs){
+     injectedrecreationaldrugs = "YES";
+   }else{
+     injectedrecreationaldrugs = "NO";
+    }
+   if(widget.cbsQuestion.beenincerceratedintojail){
+     beencaredintojail = "YES";
+   }else{
+     beencaredintojail = "NO";
+   }
+   if(widget.cbsQuestion.historyofansti){
+     historyofsti = "YES";
+   }else{
+     historyofsti = 'NO';
+   }
+   if(widget.cbsQuestion.receivedbloodtransfusions){
+     receivedbloodtrans = "YES";
+   }else{
+     receivedbloodtrans = "NO";
+   }
+   if(widget.cbsQuestion.tatooedwithunsterilisedinstruments){
+     unsterilisedinstruments = "YES";
+   }else{
+     unsterilisedinstruments = "NO";
+   }
     super.initState();
   }
 
@@ -65,7 +141,7 @@ class OverviewState extends State<Overview> {
 
     try {
       visit =
-          await platform.invokeMethod('visit', patientId);
+      await platform.invokeMethod('visit', patientId);
 
     } catch (e) {
       print("channel failure: '$e'");
@@ -119,12 +195,17 @@ class OverviewState extends State<Overview> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(title: new Text("Patient Overview ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      Overview(_patient)),
+                      SearchPatient()),
+            )),
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.patient)),
             )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals", style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
@@ -175,9 +256,11 @@ class OverviewState extends State<Overview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-                "Patient OverView"
-            ),
+            title:new Column(children: <Widget>[
+              new Text("CBS Overview"),
+              new Text("Patient Name : " + " "+ widget.patient.firstName + " " + widget.patient.lastName)
+
+            ],)
           ),
           Positioned.fill(
             child: Padding(
@@ -235,12 +318,12 @@ class OverviewState extends State<Overview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: _patient.firstName +" "+
-                                                                        _patient.lastName),
+                                                                    text:
+                                                                        sexuallyactive),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.person, color: Colors.blue),
-                                                                    labelText: "Full Name",
-                                                                    hintText: "Full Name"
+                                                                    labelText: "Sexually active ?",
+                                                                    hintText: "Sexually active ?"
                                                                 ),
                                                               ),
                                                             ),
@@ -251,11 +334,11 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _patient.sex)),
+                                                                        widget.cbsQuestion.age_whenclienthadfirstsexualintercourse)),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
-                                                                    labelText: "Sex",
-                                                                    hintText: "Sex"
+                                                                    labelText: "Age fwhen client had first intercourse ",
+                                                                    hintText: "Age fwhen client had first intercourse"
                                                                 ),
                                                               ),
                                                             ),
@@ -270,9 +353,9 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _patient.nationalId)),
+                                                                        widget.cbsQuestion.numberofsexualpartners)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'National ID',
+                                                                  labelText: 'Number of sexual partners in the last 12 months',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -284,10 +367,10 @@ class OverviewState extends State<Overview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: DateFormat("dd/MM/yyyy").format(_patient.birthDate)),
+                                                                    text: nullHandler(victimofsexualause)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Date Of Birth',
-                                                                  icon: Icon(Icons.date_range, color: Colors.blue),
+                                                                  labelText: 'Victim of sexual abuse ?',
+                                                                  icon: Icon(Icons.person, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -305,10 +388,10 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _maritalStatus)),
+                                                                        sexwithmale)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Marital Status',
-                                                                  icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
+                                                                  labelText: 'Had sex with male ?',
+                                                                  icon: new Icon(MdiIcons.humanMale, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -320,10 +403,10 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _educationLevel)),
+                                                                        sexwithfemale)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Education',
-                                                                  icon: Icon(Icons.book, color: Colors.blue),
+                                                                  labelText: 'Had sex with female ?',
+                                                                  icon: Icon(MdiIcons.humanFemale, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -341,9 +424,9 @@ class OverviewState extends State<Overview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        _nationality)),
+                                                                        unprotectedsex)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Nationality',
+                                                                  labelText: 'Had unprotected sex ?',
                                                                   icon: Icon(Icons.flag, color: Colors.blue),
                                                                 ),
 
@@ -356,10 +439,97 @@ class OverviewState extends State<Overview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: _phonenumber),
+                                                                    text: sexwithsexworker),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Phone Number',
-                                                                  icon: Icon(Icons.smartphone, color: Colors.blue),
+                                                                  labelText: 'Had sex with sex worker ?',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        injectedrecreationaldrugs)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Ever injected recreational drugs ?',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: historyofsti),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Has history of an STI ?',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        unprotectedsex)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Had unprotected sex ?',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: beencaredintojail),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Been in jail  ?',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        unsterilisedinstruments)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Tatooed with unsterilised instruments ?',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
                                                                 ),
 
                                                               ),
@@ -372,9 +542,9 @@ class OverviewState extends State<Overview> {
                                                         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 64.0, 8.0),
                                                         child: TextFormField(
                                                           controller: TextEditingController(
-                                                              text: _address),
+                                                              text: receivedbloodtrans),
                                                           decoration: InputDecoration(
-                                                            labelText: 'Address',
+                                                            labelText: 'Received blood transfusions ?',
                                                             icon: Icon(Icons.home, color: Colors.blue),
                                                           ),
 
@@ -441,27 +611,27 @@ class OverviewState extends State<Overview> {
           ),
           new RoundedButton(text: "HTS",  onTap: () {
             if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null ');
+              print('bbbbbbbbbbbbbb htsreg null ');
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  Registration(visitId, _patient.id, _patient)
+              ));
+            } else {
+              print('bbbbbbbbbbbbbb htsreg  not null ');
 
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-                ));
-              }
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
+              ));
+            }
           }
           ),
 
 
-    new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) =>
-        ArtReg(_patient.id, visitId, _patient)),
-    ),),
+          new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ArtReg(_patient.id, visitId, _patient)),
+          ),),
 
 
           new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
@@ -475,7 +645,7 @@ class OverviewState extends State<Overview> {
       ),
     );
   }
-Widget _sidemenu(){
+  Widget _sidemenu(){
     return new Drawer(
       child: ListView(
         children: <Widget>[
@@ -483,7 +653,7 @@ Widget _sidemenu(){
         ],
       ),
     );
-}
+  }
 
   Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
     String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;

@@ -20,6 +20,6 @@ public interface CountryDao {
     @Insert
     void insertCountries(List<Country> countries);
 
-    @Query("SELECT * FROM country ORDER BY name ASC")
+    @Query("SELECT * FROM country ORDER BY name DESC")
     List<Country> getAllCountries();
 }
