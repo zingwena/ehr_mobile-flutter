@@ -14,8 +14,8 @@ public class VitalsBaseValue extends VitalsBaseEntityId {
 
     @Override
     public String toString() {
-        return super.toString() + "VitalsBaseValue{" +
+        return super.toString().concat("VitalsBaseValue{" +
                 "value='" + value + '\'' +
-                '}';
+                '}');
     }
 }

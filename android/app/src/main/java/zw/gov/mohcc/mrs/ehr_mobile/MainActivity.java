@@ -448,6 +448,8 @@ public class MainActivity extends FlutterActivity {
                 } else if (methodCall.method.equals("temperature")) {
 
                     Temperature temperature = gson.fromJson(arguments, Temperature.class);
+                    Log.i(TAG, "person ID from flutter : "+ temperature.getPersonId());
+                    Log.i(TAG, "Temparture : "+ temperature);
                     temperature.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(temperature.getPersonId());
                     temperature.setVisitId(visitId);
@@ -458,6 +460,8 @@ public class MainActivity extends FlutterActivity {
                 } else if (methodCall.method.equals("respiratoryRate")) {
 
                     RespiratoryRate respiratoryRate = gson.fromJson(arguments, RespiratoryRate.class);
+                    Log.i(TAG, "person ID from flutter : "+ respiratoryRate.getPersonId());
+                    Log.i(TAG, "RespiratoryRate : "+ respiratoryRate);
                     respiratoryRate.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(respiratoryRate.getPersonId());
                     respiratoryRate.setVisitId(visitId);
