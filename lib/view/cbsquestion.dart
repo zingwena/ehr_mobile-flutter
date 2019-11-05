@@ -580,11 +580,15 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                         "Proceed",
                                                         style: TextStyle(color: Colors.white),
                                                       ),
-                                                      onPressed: () {
-                                                        CbsQuestion cbsquestion = new CbsQuestion(_sexuallyactive, agewhenfirsthadsex, numberofsexualpartners, _victimofsexualabuse, _hadsexwithmale, _hadsexwithfemale, _hadunprotectedsex, _hadsexwithsexworker, false, false, false, false, false, false);
-                                                        Navigator.push(context,MaterialPageRoute(
-                                                            builder: (context)=> CbsQuestions2(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId, widget.person, cbsquestion)
-                                                        ));
+                                                      onPressed: () async {
+                                                        if(_formKey.currentState.validate()){
+                                                          _formKey.currentState.save();
+                                                          CbsQuestion cbsquestion = new CbsQuestion(_sexuallyactive, agewhenfirsthadsex, numberofsexualpartners, _victimofsexualabuse, _hadsexwithmale, _hadsexwithfemale, _hadunprotectedsex, _hadsexwithsexworker, false, false, false, false, false, false);
+                                                          Navigator.push(context,MaterialPageRoute(
+                                                              builder: (context)=> CbsQuestions2(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId, widget.person, cbsquestion)
+                                                          ));
+
+                                                        }
 
                                                       },
                                                     ),

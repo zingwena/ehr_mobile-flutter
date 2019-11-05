@@ -265,23 +265,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
     }
 
   }
- /* Future<dynamic> getResults() async {
-    try {
 
-      String response = await htsChannel.invokeMethod('getResults');
-      setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
-        });
-      });
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-
-  }*/
   Future<dynamic> getTestKitByCode(String code) async {
     try {
       String response = await htsChannel.invokeMethod('getTestkitbycode', code);
@@ -787,26 +771,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
       ),
     );
   }
-Widget _testnameText(){
-    print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT test count test count"+ testCount.toString());
-
-    switch(testCount){
-      case 0:
-        return  Text("Screening Test");
-      case 1:
-        return Text("Confirmatory Test");
-      case 2:
-        return Text("Parallel Test 1");
-      case 3:
-        return Text("Parallel Test 2");
-      case 4:
-        return Text("Third Test");
-
-
-
-    }
-
-}
 
   Widget _buildButtonsRow() {
     return Padding(
@@ -836,8 +800,8 @@ Widget _testnameText(){
     var labInvestTestResponse;
     try {
 
-      String jsonPatient = jsonEncode(laboratoryInvestTest);
-      labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
+      String jsonLabInvestTest = jsonEncode(laboratoryInvestTest);
+      labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonLabInvestTest);
       setState(() {
         print('###################'+ labInvestTestResponse);
         labInvestTestId = labInvestTestResponse;

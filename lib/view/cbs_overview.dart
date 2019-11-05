@@ -271,7 +271,6 @@ class _CbsOverview extends State<CbsOverview> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  _buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     onWillPop: () {
                       if (!showInput) {

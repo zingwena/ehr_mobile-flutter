@@ -6,20 +6,18 @@ import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
-
+import 'package:ehr_mobile/view/hts_testscreening.dart';
+import 'package:ehr_mobile/view/hts_result.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
-
 import 'hts_testscreening.dart';
 import 'hts_registration.dart';
-
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
@@ -56,12 +54,15 @@ class PretestOverviewState extends State<PretestOverview> {
   String visitId="1";
   String htsApproach;
   String _htsModelId;
+  String final_result;
   bool newTest;
   String _newTest;
   String coupleCounselling;
   HtsRegistration htsRegistration;
   bool preTestInformationGiven;
   String _pretestInfoGiven;
+  String labInvestId;
+  String labInvestTestId;
 
   bool optOutOfTest;
   String _optOutOfTest;
@@ -75,6 +76,8 @@ class PretestOverviewState extends State<PretestOverview> {
   void initState() {
      getHtsModel(widget.preTest.htsModelId);
      getHtsRecord(widget.personId);
+     getLabInvestigation(widget.personId);
+
      if(widget.preTest.newTest == false){
        _newTest = "NO";
      }else{
@@ -159,6 +162,54 @@ class PretestOverviewState extends State<PretestOverview> {
 
 
   }
+  Future<dynamic> getLabInvestigation(String personId) async {
+
+    try {
+      String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
+      setState(() {
+        labInvestId = response;
+        getFinalResult(labInvestId);
+        getLabInvestigationTest(labInvestId);
+
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+  }
+  Future<dynamic> getLabInvestigationTest(String labInvestigationId) async {
+
+    try {
+      String response = await htsChannel.invokeMethod('getLabInvestigationTest', labInvestigationId);
+      setState(() {
+        labInvestTestId = response;
+        print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJ LabInvestTestId here " + labInvestTestId);
+        getFinalResult(labInvestId);
+
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+  }
+  Future<void> getFinalResult(labInvestId) async {
+    String response;
+    try {
+      response = await htsChannel.invokeMethod('getFinalResult',labInvestId);
+      print('Final Result here >>>>>>>>>>####################### '+ response);
+    } catch (e) {
+      print('--------------something went wrong  $e');
+    }
+    setState(() {
+      if(response == null){
+        final_result = '';
+      } else{
+
+        final_result = response;
+
+      }
+    });
+  }
 
   String nullHandler(String value) {
     return value == null ? "" : value;
@@ -207,7 +258,7 @@ class PretestOverviewState extends State<PretestOverview> {
                 ));
               }
             }),
-            new ListTile(title: new Text("ART",  style: new TextStyle(
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -482,18 +533,29 @@ class PretestOverviewState extends State<PretestOverview> {
           ),
 
 
-          new RoundedButton(text: "Testing", onTap: () =>     Navigator.push(
+          new RoundedButton(text: "Testing", onTap: ( ) {
+            if(labInvestId == null){
+             Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    HtsScreeningTest(widget.personId, widget.visitId, widget.person, widget.htsId)),
-          ),),
+            builder: (context) =>
+            HtsScreeningTest(widget.personId, widget.visitId, widget.person, widget.htsId)),
+            );
+            } else{
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)),
+              );
+
+            }
+          } ,),
 
         ],
       ),
     );
   }
-
 
   Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
     String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;
