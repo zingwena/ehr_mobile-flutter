@@ -10,6 +10,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ActivityStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PrepOption;
 import zw.gov.mohcc.mrs.ehr_mobile.util.ActivityStatusConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.PrepOptionConverter;
 
 @Entity
@@ -24,6 +25,7 @@ public class HtsScreening extends BaseEntity {
 
     private String result;
 
+    @TypeConverters(DateConverter.class)
     private Date dateLastTested;
 
     private String artNumber;

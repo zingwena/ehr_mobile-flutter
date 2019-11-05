@@ -4,7 +4,7 @@ public enum PrepOption {
 
     INFANT(0), PRE_EXPOSURE(1), POST_EXPOSURE(2), NONE(3);
 
-    private Integer prepOption;
+    private int prepOption;
 
     private PrepOption(Integer prepOption) {
         this.prepOption = prepOption;

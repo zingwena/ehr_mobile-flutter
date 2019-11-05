@@ -94,6 +94,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsApproachConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.NewTestConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.PrepOptionConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 
@@ -117,7 +118,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
-        HtsTypeConverter.class, ActivityStatusConverter.class, PrepOption.class})
+        HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;

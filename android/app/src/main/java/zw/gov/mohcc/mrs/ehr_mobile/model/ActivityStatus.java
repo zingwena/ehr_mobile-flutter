@@ -4,7 +4,7 @@ public enum ActivityStatus {
 
     DONE(0), NOT_DONE(1), UNKNOWN(2);
 
-    private Integer activityStatus;
+    private int activityStatus;
 
     private ActivityStatus(Integer activityStatus) {
         this.activityStatus = activityStatus;

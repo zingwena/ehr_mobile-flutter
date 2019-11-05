@@ -2,8 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
+
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 @Entity
 public class SexualHistory extends BaseEntity {
@@ -13,10 +16,13 @@ public class SexualHistory extends BaseEntity {
 
     private boolean sexuallyActive;
 
+    @TypeConverters(DateConverter.class)
     private Date sexWithMaleDate;
 
+    @TypeConverters(DateConverter.class)
     private Date sexWithFemaleDate;
 
+    @TypeConverters(DateConverter.class)
     private Date date;
 
     private Integer numberOfSexualPartners;
