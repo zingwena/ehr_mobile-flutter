@@ -4,14 +4,11 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.RawQuery;
 import androidx.room.Update;
-import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.HtsScreening;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
 
 
 @Dao
@@ -28,7 +25,7 @@ public interface HtsScreeningDao {
     void update(HtsScreening htsScreening);
 
     @Query("SELECT * FROM HtsScreening")
-    List<ArtInitiation> findAll();
+    List<HtsScreening> findAll();
 
     @Query("SELECT * FROM HtsScreening WHERE id =:id")
     HtsScreening findOne(String id);
