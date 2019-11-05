@@ -30,6 +30,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
@@ -876,6 +877,23 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
+                        if(methodCall.method.equals("savehtsscreening")){
+                            try{
+                                HtsScreeningDTO htsScreeningDTO = gson.fromJson(arguments, HtsScreeningDTO.class);
+                                HtsScreening htsScreening = new HtsScreening();
+                                htsScreening.setArt(htsScreeningDTO.getArt());
+                                htsScreening.setArtNumber(htsScreeningDTO.getArtNumber());
+                                htsScreening.setCd4Done(htsScreeningDTO.getCd4Done());
+                                htsScreening.setResult(htsScreeningDTO.getResult());
+                                htsScreening.setDateLastTested(htsScreeningDTO.getDateLastTested());
+                                ehrMobileDatabase.htsscreeningDao().createHtsscreening(htsScreening);
+                                System.out.println("HERE IS THE HTS SCREENING SAVED"+ htsScreening.toString());
+                          //      result.success(status);
+
+                            }catch (Exception e){
+
+                            }
+                        }
 
                     }
                 });
@@ -1174,10 +1192,7 @@ public class MainActivity extends FlutterActivity {
                     for (TestKit item : response.body()) {
                         thirdTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "THIRD"));
                     }
-
-                    System.out.println("******Third test kiiiiiiiiiiiiiits ==========" + thirdTestKits);
                     saveTestKitsToDB(thirdTestKits);
-                    System.out.println("All test kits$$$$$$$$$$$$$" + ehrMobileDatabase.testKitDao().getAllTestKits());
 
                 } else {
 
@@ -1405,7 +1420,6 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-                System.out.println("tttttttttttttttttttttttt" + t);
 
             }
         });

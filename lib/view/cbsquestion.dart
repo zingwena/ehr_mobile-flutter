@@ -267,7 +267,6 @@ class _CbsQuestion extends State<CbsQuestions> {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,

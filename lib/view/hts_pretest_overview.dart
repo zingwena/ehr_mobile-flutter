@@ -168,6 +168,7 @@ class PretestOverviewState extends State<PretestOverview> {
       String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
       setState(() {
         labInvestId = response;
+        print("@@@@@@@@@@@@@@@@@@@@@@ labinvest @@@@@@@@@@@@"+ labInvestId);
         getFinalResult(labInvestId);
         getLabInvestigationTest(labInvestId);
 
@@ -533,8 +534,8 @@ class PretestOverviewState extends State<PretestOverview> {
           ),
 
 
-          new RoundedButton(text: "Testing", onTap: ( ) {
-            if(labInvestId == null){
+          new RoundedButton(text: "Testing", onTap: () {
+            if(final_result == null || final_result == ''  || final_result == 'Pending'){
              Navigator.push(
             context,
             MaterialPageRoute(

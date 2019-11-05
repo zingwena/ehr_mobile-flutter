@@ -370,13 +370,10 @@ class HtsOverviewState extends State<HtsRegOverview> {
           ),*/),
           new RoundedButton(text: "HTS Pre-Testing", onTap: () {
             if(htsApproach == null ){
-              print('bbbbbbbbbbbbbb htsPretest null ');
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=>  PatientPretest(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId, widget.person)
               ));
             } else {
-              print('bbbbbbbbbbbbbb htsreg  not null ');
-
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=> PretestOverview(preTest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
               ));

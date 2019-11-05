@@ -57,6 +57,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EntryPointDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsscreeningDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
@@ -188,6 +189,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract HtsDao htsDao();
 
     public abstract ResultDao resultDao();
+    public abstract HtsscreeningDao htsscreeningDao();
 
     public abstract LaboratoryInvestigationTestDao labInvestTestdao();
 

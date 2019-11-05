@@ -1,7 +1,5 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
-
 import java.util.Date;
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.ActivityStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PrepOption;
 

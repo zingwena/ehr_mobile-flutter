@@ -85,7 +85,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("HOme "), onTap: () => Navigator.push(
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>

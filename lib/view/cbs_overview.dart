@@ -336,8 +336,8 @@ class _CbsOverview extends State<CbsOverview> {
                                                                         widget.cbsQuestion.age_whenclienthadfirstsexualintercourse)),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
-                                                                    labelText: "Age fwhen client had first intercourse ",
-                                                                    hintText: "Age fwhen client had first intercourse"
+                                                                    labelText: "Age when client had first intercourse ",
+                                                                    hintText: "Age when client had first intercourse"
                                                                 ),
                                                               ),
                                                             ),

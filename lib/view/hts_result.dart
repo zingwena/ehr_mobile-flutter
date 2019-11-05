@@ -74,6 +74,7 @@ class _Hts_Result  extends State<Hts_Result > {
   String final_result = 'Pending';
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<LaboratoryInvestigationTest> _entryPointList = List();
+  String test_name;
 
   String _currentEntryPoint;
 
@@ -89,6 +90,7 @@ class _Hts_Result  extends State<Hts_Result > {
     getTestKIt(widget.labInvetsTestId);
     getStartTime(widget.labInvetsTestId);
     getHtsRecord(widget.patientId);
+    getTestName();
     //getEndTime(widget.labInvetsTestId);
 
 
@@ -117,26 +119,19 @@ class _Hts_Result  extends State<Hts_Result > {
       print('--------------------Something went wrong  $e');
     }
   }
-/*  Future<void> getResultName() async {
-    String response;
-    try {
-      response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
+  Future<dynamic>getTestName()async{
+    try{
+      String response = await htsChannel.invokeMethod('getTestName', widget.labInvestId);
       setState(() {
-        {
-          _entryPoint = response;
-          entryPoints = jsonDecode(_entryPoint);
-          _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
-          _dropDownListEntryPoints.forEach((e) {
-            _entryPointList.add(e);
-          });
-        }
+        test_name = response;
+        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH TEST NAME TEST NAME IN RESULT"+ test_name);
+
       });
-    } catch (e) {
-      print('--------------------Something went wrong  $e');
+
+    }catch(e){
+
     }
-  }*/
-
-
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -466,10 +461,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Proceed",
-                                                          style: TextStyle(color: Colors.white),
-                                                        ),
+                                                        child: getNextTestButton(),
                                                           onPressed: () async {
                                                             if (final_result == 'Pending' || final_result == '') {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId)));
@@ -539,6 +531,16 @@ class _Hts_Result  extends State<Hts_Result > {
     );
   }
 
+
+  Widget getNextTestButton(){
+    if(final_result ==''|| final_result == 'Pending'){
+    return new Text("Proceed to "+ test_name,  style: TextStyle(color: Colors.white),);
+    } else{
+      return new Text("Proceed to Post Test",  style: TextStyle(color: Colors.white),);
+
+    }
+  }
+
   Widget _buildProductItem(BuildContext context, int index) {
     return Card(
       child: Column(
@@ -549,6 +551,7 @@ class _Hts_Result  extends State<Hts_Result > {
       ),
     );
   }
+
   @override
   Widget buildlistview(BuildContext context) {
     return ListView.builder(

@@ -156,24 +156,6 @@ public class HtsService {
         }
     }
 
-    public String getNextTestName(String laboratoryInvestigationId) {
-        int count = getTestCount(laboratoryInvestigationId) + 1;
-        switch (count) {
-            case 0:
-                return "Screening Test";
-            case 1:
-                return "Confirmatory Test";
-            case 2:
-                return "Parallel Test 1";
-            case 3:
-                return "Parallel Test 2";
-            case 4:
-                return "Third Test";
-            default:
-                throw new IllegalStateException("Illegal parameter passed to method : "+ count);
-        }
-    }
-
     public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {
 
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonId(personId);
