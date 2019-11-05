@@ -36,5 +36,5 @@ public interface SexualHistoryDao {
     void deleteById(String id);
 
     @Query("SELECT * FROM SexualHistory WHERE personId =:personId")
-    HtsScreening findByPersonId(String personId);
+    SexualHistory findByPersonId(String personId);
 }
