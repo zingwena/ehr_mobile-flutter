@@ -38,11 +38,18 @@ public interface PersonDao {
     @RawQuery
     List<Person> searchPatient(SimpleSQLiteQuery query);
 
-//
-
     @Query("SELECT * FROM Person WHERE nationalId=:number ")
     Person findPatientByNationalId(String number);
 
     @Query("SELECT * FROM Person WHERE firstName=:firstName AND lastName=:lastName")
     Person findPatientByName (String firstName, String lastName);
+
+    @Query("SELECT COUNT(*) FROM Person")
+    int getTotalCount();
+
+    @Query("SELECT * FROM Person")
+    List<Person> getPatients();
+
+    @Query("SELECT * FROM Person ORDER BY firstName LIMIT 10")
+    List<Person> getFirstPatientByName();
 }

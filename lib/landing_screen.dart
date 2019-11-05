@@ -43,7 +43,7 @@ class _LandingScreenState extends State<LandingScreen> {
             height: 20.0,
           ),
           Text(
-            "Welcome to Impilo Mobile",
+            "Impilo Mobile",
             style: TextStyle(
                 fontWeight: FontWeight.w300,
                 color: Colors.grey.shade600,

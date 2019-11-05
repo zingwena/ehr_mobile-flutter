@@ -9,18 +9,19 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.RegisterPersonDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
-import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.IdentityDTO;
 
 public interface DataSyncService {
 
@@ -102,4 +103,7 @@ public interface DataSyncService {
 
     @GET("arv-combination-regimens")
     Call<TerminologyModel> getArvCombinationRegimen(@Header("Authorization")String token);
+
+    @POST("people")
+    Call<IdentityDTO>registerPerson(@Header("Authorization")String token,@Body RegisterPersonDTO registerPersonDTO);
 }
