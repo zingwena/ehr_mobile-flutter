@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/datasync/stored_preferences.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
@@ -134,6 +135,20 @@ class _SearchPatientState extends State<SearchPatient> {
                           flex: 1,
                           child: Container(),
                         ),
+                        RoundedButton(
+                          onTap: (){
+                              retrieveString(AUTH_TOKEN).then((value){
+                                syncPatients(value).then((value){
+                                print('Sync Done');
+                                }).catchError((error){
+                                  print('Sync Done');
+                                });
+                              });
+                          },
+                          text: 'Sync',
+                          //selected: true,
+                        ),
+
 //                        RaisedButton(
 //                          child: Text(
 //                            "Sync",
@@ -150,27 +165,27 @@ class _SearchPatientState extends State<SearchPatient> {
 //                          elevation: 1.0,
 //                          color: Colors.white,
 //                        ),
-                        new InkWell(
-                          onTap: (){
-                              retrieveString(AUTH_TOKEN).then((value){
-                                syncPatients(value);
-                              });
-                          },
-                          child: new Container(
-                            height: 36.0,
-                            decoration: new BoxDecoration(
-                              color: Colors.white,
-                              border: new Border.all(color: Colors.white, width: 1.0),
-                              borderRadius: new BorderRadius.circular(10.0),
-                            ),
-                            child: new Center(
-                              child: new Text(
-                                "Sync",
-                                style: new TextStyle(color: Colors.blue),
-                              ),
-                            ),
-                          ),
-                        ),
+//                        new InkWell(
+//                          onTap: (){
+//                              retrieveString(AUTH_TOKEN).then((value){
+//                                syncPatients(value);
+//                              });
+//                          },
+//                          child: new Container(
+//                            height: 36.0,
+//                            decoration: new BoxDecoration(
+//                              color: Colors.white,
+//                              border: new Border.all(color: Colors.white, width: 1.0),
+//                              borderRadius: new BorderRadius.circular(10.0),
+//                            ),
+//                            child: new Center(
+//                              child: new Text(
+//                                "Sync",
+//                                style: new TextStyle(color: Colors.blue),
+//                              ),
+//                            ),
+//                          ),
+//                        ),
                       ],
                     ),
                   ),
