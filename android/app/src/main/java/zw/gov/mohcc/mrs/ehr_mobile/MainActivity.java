@@ -133,8 +133,6 @@ public class MainActivity extends FlutterActivity {
 
         historyService = new HistoryService(ehrMobileDatabase, htsService);
 
-
-
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
@@ -895,7 +893,7 @@ public class MainActivity extends FlutterActivity {
                             Log.i(TAG, "Save hts method in Android"+ arguments);
                             try{
                                 HtsScreeningDTO htsScreeningDTO = gson.fromJson(arguments, HtsScreeningDTO.class);
-                                historyService.saveHtsScreening(htsScreeningDTO, visitService.getVisit(htsScreeningDTO.getPersonId()).getId());
+                                historyService.saveHtsScreening(htsScreeningDTO, visitService.getCurrentVisit(htsScreeningDTO.getPersonId()));
                                 result.success(1);
                             }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());

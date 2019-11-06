@@ -6,6 +6,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.room.Transaction;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.HtsScreening;
@@ -13,6 +18,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -31,6 +39,10 @@ public class HistoryService {
     public SexualHistory getSexualHistory(String personId) {
 
         return ehrMobileDatabase.sexualHistoryDao().findByPersonId(personId);
+    }
+
+    public boolean existsByPersonId(String personId) {
+        return ehrMobileDatabase.htsDao().countByPersonId(personId) >=1;
     }
 
     public HtsScreeningDTO getHtsScreening(String currentVisitId) {

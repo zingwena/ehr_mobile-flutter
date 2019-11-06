@@ -17,6 +17,8 @@ public class Hts extends BaseEntity {
     private String visitId;
     @NonNull
     private String htsType;
+    @NonNull
+    private String laboratoryInvestigationId;
     @TypeConverters(DateConverter.class)
     @NonNull
     private Date dateOfHivTest;
@@ -42,6 +44,14 @@ public class Hts extends BaseEntity {
     @Ignore
     public Hts(String visitId) {
         this.visitId = visitId;
+    }
+
+    public String getLaboratoryInvestigationId() {
+        return laboratoryInvestigationId;
+    }
+
+    public void setLaboratoryInvestigationId(String laboratoryInvestigationId) {
+        this.laboratoryInvestigationId = laboratoryInvestigationId;
     }
 
     public String getVisitId() {
