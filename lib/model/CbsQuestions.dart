@@ -6,21 +6,21 @@ import 'package:json_annotation/json_annotation.dart';
 @CustomDateTimeConverter()
 @JsonSerializable(explicitToJson: true)
 class CbsQuestion{
-  bool sexuallyactive;
+  String  sexuallyactive;
   String age_whenclienthadfirstsexualintercourse;
   String numberofsexualpartners;
-  bool victimofsexualabuse;
-  bool hadsexwithmale;
-  bool hadsexwithfemale;
-  bool unprotectedsex;
-  bool hadsexwithsexworker;
-  bool exchangedsexformoney;
-  bool injectedrecreationaldrugs;
-  bool beenincerceratedintojail;
-  bool historyofansti;
-  bool receivedmedicalinjections;
-  bool receivedbloodtransfusions;
-  bool tatooedwithunsterilisedinstruments;
+  String victimofsexualabuse;
+  String  hadsexwithmale;
+  String  hadsexwithfemale;
+  String  unprotectedsex;
+  String  hadsexwithsexworker;
+  String  exchangedsexformoney;
+  String  injectedrecreationaldrugs;
+  String  beenincerceratedintojail;
+  String  historyofansti;
+  String  receivedmedicalinjections;
+  String  receivedbloodtransfusions;
+  String  tatooedwithunsterilisedinstruments;
 
 
   CbsQuestion(this.sexuallyactive, this.age_whenclienthadfirstsexualintercourse,

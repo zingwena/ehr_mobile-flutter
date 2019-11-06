@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/model/art_reason.dart';
 import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
-
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/home_page.dart';
@@ -16,12 +14,7 @@ import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
-
-
-
-
 import 'rounded_button.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -45,10 +38,7 @@ class _Art_Initiation extends State<Art_Initiation> {
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
 
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
-
-
   String personId;
-
  // var selectedDate;
   bool _showError = false;
   bool _arvCombinationRegimenIsValid = false;

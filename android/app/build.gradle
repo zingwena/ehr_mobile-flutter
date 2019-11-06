@@ -177,7 +177,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     implementation 'org.apache.commons:commons-lang3:3.9'
 
-    //
+    //stetho
+     implementation 'com.facebook.stetho:stetho:1.5.1'
+     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+
 
     //    compile 'android.test.runner'
 

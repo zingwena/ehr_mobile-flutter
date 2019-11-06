@@ -72,67 +72,7 @@ class _CbsOverview extends State<CbsOverview> {
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     print(_patient.toString());
-    getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
-   if(widget.cbsQuestion.sexuallyactive){
-     sexuallyactive = "YES";
-   }else{
-     sexuallyactive ="NO";
-   }
-   if(widget.cbsQuestion.victimofsexualabuse){
-     victimofsexualause = "YES";
-   }else{
-     victimofsexualause ="NO";
-   }
-   if(widget.cbsQuestion.hadsexwithmale){
-     sexwithmale = "YES";
-    }else{
-     sexwithmale = "NO";
-   }
-   if(widget.cbsQuestion.hadsexwithfemale){
-     sexwithfemale = "YES";
-   }else{
-     sexwithfemale = "NO";
-   }
-   if(widget.cbsQuestion.unprotectedsex){
-     unprotectedsex = "YES";
-   }else{
-     unprotectedsex = "NO";
-   }
-   if(widget.cbsQuestion.hadsexwithsexworker){
-     sexwithsexworker = "YES";
-   }else{
-     sexwithsexworker = "NO";
-   }
-   if(widget.cbsQuestion.exchangedsexformoney){
-     exchangedsexformoney = "YES";
-   }else{
-     exchangedsexformoney = "NO";
-   }
-   if(widget.cbsQuestion.injectedrecreationaldrugs){
-     injectedrecreationaldrugs = "YES";
-   }else{
-     injectedrecreationaldrugs = "NO";
-    }
-   if(widget.cbsQuestion.beenincerceratedintojail){
-     beencaredintojail = "YES";
-   }else{
-     beencaredintojail = "NO";
-   }
-   if(widget.cbsQuestion.historyofansti){
-     historyofsti = "YES";
-   }else{
-     historyofsti = 'NO';
-   }
-   if(widget.cbsQuestion.receivedbloodtransfusions){
-     receivedbloodtrans = "YES";
-   }else{
-     receivedbloodtrans = "NO";
-   }
-   if(widget.cbsQuestion.tatooedwithunsterilisedinstruments){
-     unsterilisedinstruments = "YES";
-   }else{
-     unsterilisedinstruments = "NO";
-   }
+    //getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     super.initState();
   }
 
@@ -554,21 +494,16 @@ class _CbsOverview extends State<CbsOverview> {
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
+  Padding(
                                               padding: const EdgeInsets.only(
                                                   bottom: 16.0, top: 8.0),
                                               child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
+                                                onPressed: () {},
                                                 child: Icon(
                                                     Icons.add, size: 36.0),
                                               ),
-                                            ), */
+                                            ),
+
                                             ],
                                           )
 

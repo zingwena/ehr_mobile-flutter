@@ -4,9 +4,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'arv_combination_regimen.g.dart';
 @JsonSerializable()
 class ArvCombinationRegimen extends BaseCode{
-  ArvCombinationRegimen(String name,String code){
+  String regimen_type;
+  String age_group;
+  ArvCombinationRegimen(String name,String code, String regimen_type, String age_group){
     this.name = name;
     this.code = code;
+    this.regimen_type = regimen_type;
+    this.age_group = age_group;
   }
 
 

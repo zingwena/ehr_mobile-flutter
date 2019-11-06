@@ -250,46 +250,6 @@ class _HtsScreening extends State<Hts_Screening> {
                                                               padding: const EdgeInsets
                                                                   .all(8.0),
                                                               child: Text(
-                                                                  'Have you been tested before?'),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-
-                                                        Checkbox(
-                                                          value: _testedbefore,
-                                                          onChanged: (
-                                                              bool value) {
-                                                            setState(() {
-                                                              _testedbefore =
-                                                                  value;
-                                                            });
-                                                            if (value) {
-                                                              setState(() {
-                                                                _testedbefore =
-                                                                true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 16.0,
-                                                        horizontal: 60.0),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets
-                                                                  .all(8.0),
-                                                              child: Text(
                                                                   'Have you ever been tested before ?'),
                                                             ),
                                                             width: 250,

@@ -29,5 +29,7 @@ public interface ArvCombinationRegimenDao {
 
     @Query("SELECT * FROM ArvCombinationRegimen WHERE name=:name")
     ArvCombinationRegimen findByName(String name);
-
+/*
+    @Query("SELECT * FROM ArvCombinationRegimen WHERE regimen_type =:line")
+    List<ArvCombinationRegimen>findByLine(int line);*/
 }
