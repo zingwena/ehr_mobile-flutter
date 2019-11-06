@@ -6,6 +6,7 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.RelationshipTypeConverter;
 
 @Entity
@@ -19,10 +20,11 @@ public class IndexContact extends BaseEntity {
     @TypeConverters(RelationshipTypeConverter.class)
     private RelationshipType relation;
     private String hivStatus;
+    @TypeConverters(DateConverter.class)
     private Date dateOfHivStatus;
     private boolean fearOfIpv;
     private String disclosureMethodPlanId;
-    private TestingPlan testingPlanId;
+    private String testingPlanId;
     private Boolean disclosureStatus;
     private String disclosureMethodId;
 
@@ -85,11 +87,11 @@ public class IndexContact extends BaseEntity {
         this.disclosureMethodPlanId = disclosureMethodPlanId;
     }
 
-    public TestingPlan getTestingPlanId() {
+    public String getTestingPlanId() {
         return testingPlanId;
     }
 
-    public void setTestingPlanId(TestingPlan testingPlanId) {
+    public void setTestingPlanId(String testingPlanId) {
         this.testingPlanId = testingPlanId;
     }
 
