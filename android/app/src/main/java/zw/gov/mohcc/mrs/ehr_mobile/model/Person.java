@@ -10,10 +10,8 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.RecordStatusConvertor;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -64,9 +62,6 @@ public class Person extends BaseEntity {
     private String countryId;
     @Embedded
     private Address address;
-
-    @TypeConverters(RecordStatusConvertor.class)
-    private RecordStatus status;
 
     public Person() {
     }
@@ -181,14 +176,6 @@ public class Person extends BaseEntity {
 
     public Date getBirthDate() {
         return birthDate;
-    }
-
-    public  RecordStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(RecordStatus status) {
-        this.status = status;
     }
 
     public void setBirthDate(Date birthDate) {

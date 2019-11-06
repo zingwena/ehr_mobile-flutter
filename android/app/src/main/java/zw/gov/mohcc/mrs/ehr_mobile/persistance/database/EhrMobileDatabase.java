@@ -106,7 +106,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
-        InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class, ArvCombinationRegimen.class}, version = 39, exportSchema = false)
+        InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class, ArvCombinationRegimen.class}, version = 40, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,

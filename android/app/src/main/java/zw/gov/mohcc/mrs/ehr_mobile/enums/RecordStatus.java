@@ -5,7 +5,7 @@ public enum RecordStatus {
 
     NEW(0),
     IMPORTED(1),
-    UPDATED(2),
+    SYNCED(2),
     DELETED(3),
     CHANGED(4);
 
@@ -22,18 +22,16 @@ public enum RecordStatus {
 
     public static RecordStatus get(String name) {
         switch (name) {
-            case "NEW":
-                return NEW;
             case "IMPORTED":
                 return IMPORTED;
-            case "UPDATED":
-                return UPDATED;
+            case "SYNCED":
+                return SYNCED;
             case "DELETED":
                 return DELETED;
             case "CHANGED":
                 return CHANGED;
             default:
-                return IMPORTED;
+                return NEW;
                 //throw new IllegalArgumentException("Unknown argument passes to method : " + name);
         }
     }

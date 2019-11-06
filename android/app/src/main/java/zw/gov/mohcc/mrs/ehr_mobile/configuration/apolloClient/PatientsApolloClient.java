@@ -67,13 +67,10 @@ public class PatientsApolloClient {
                                     Gender sex = patientData.sex() != null ? Gender.valueOf(patientData.sex().rawValue()) : null;
                                     Gender selfIdentifiedGender = patientData.selfIdentifiedGender() != null ?
                                             Gender.valueOf(patientData.selfIdentifiedGender().rawValue()) : null;
-                                    //Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
-
+                                    Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
                                     int numberOfIdentifications = patientData.identifications().size();
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
-
-
                                     person = new Person(firstName, lastName, sex);
                                     person.setId(patientData.personId());
                                     person.setStatus(RecordStatus.IMPORTED);
@@ -84,21 +81,17 @@ public class PatientsApolloClient {
                                             ? patientData.countryOfBirth().id() : null);
                                     person.setEducationLevelId(patientData.education() != null && StringUtils.isNoneBlank(patientData.education().id())
                                             ? patientData.education().id() : null);
-                                    //person.setAddress(address);
+                                    person.setAddress(address);
                                     person.setMaritalStatusId(patientData.marital() != null && StringUtils.isNoneBlank(patientData.marital().id())
                                             ? patientData.marital().id() : null);
                                     person.setNationalityId(patientData.nationality() != null && StringUtils.isNoneBlank(patientData.nationality().id())
                                             ? patientData.nationality().id() : null);
-                                    person.setNationalityId(null);
+                                    //person.setNationalityId(null);
                                     person.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
                                             ? patientData.occupation().id() : null);
-
                                     try {
-
                                         Date dateOfBirth = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(patientData.birthdate());
                                         person.setBirthDate(dateOfBirth);
-
-
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
