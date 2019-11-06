@@ -21,6 +21,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
@@ -65,6 +67,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsScreeningDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsscreeningDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IndexContactDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IndexTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
@@ -120,7 +124,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
-        ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class}, version = 48, exportSchema = false)
+        ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
+        IndexTest.class, IndexContact.class}, version = 48, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -229,4 +234,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract TestingPlanDao testingPlanDao();
 
     public abstract DisclosureMethodDao disclosureMethodDao();
+
+    public abstract IndexTestDao indexTestDao();
+
+    public abstract IndexContactDao indexContactDao();
 }
