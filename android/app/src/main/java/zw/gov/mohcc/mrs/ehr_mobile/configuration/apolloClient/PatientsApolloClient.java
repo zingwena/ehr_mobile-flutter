@@ -60,14 +60,14 @@ public class PatientsApolloClient {
                         List<GetPatientsQuery.Content> patients = response.data().people().content();
                         for (GetPatientsQuery.Content patientData : patients)
                             try {
-                                {
-
-
                                     System.out.println("=============-=-=-=-=============1=1=1=1=1=1=1=1=patientData"+patientData.birthdate());
                                     Gender sex = patientData.sex() != null ? Gender.valueOf(patientData.sex().rawValue()) : null;
                                     Gender selfIdentifiedGender = patientData.selfIdentifiedGender() != null ?
                                             Gender.valueOf(patientData.selfIdentifiedGender().rawValue()) : null;
-                                    Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
+                                    if(patientData.address()!=null){
+                                        Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
+                                        person.setAddress(address);
+                                    }
                                     int numberOfIdentifications = patientData.identifications().size();
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
@@ -81,7 +81,6 @@ public class PatientsApolloClient {
                                             ? patientData.countryOfBirth().id() : null);
                                     person.setEducationLevelId(patientData.education() != null && StringUtils.isNoneBlank(patientData.education().id())
                                             ? patientData.education().id() : null);
-                                    person.setAddress(address);
                                     person.setMaritalStatusId(patientData.marital() != null && StringUtils.isNoneBlank(patientData.marital().id())
                                             ? patientData.marital().id() : null);
                                     person.setNationalityId(patientData.nationality() != null && StringUtils.isNoneBlank(patientData.nationality().id())
@@ -109,13 +108,10 @@ public class PatientsApolloClient {
 
                                         }
 
-
                                     }
-
                                     ehrMobileDatabase.personDao().createPatient(person);
                                     System.out.println("*********** PATIENT ***********       "+ person);
                                     System.out.println("Number of Patients  = " + ehrMobileDatabase.personDao().listPatients().size());
-                                }
                             } catch (Exception e) {
                                 e.printStackTrace()
                                 ;

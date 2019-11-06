@@ -11,8 +11,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,15 +26,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.AddPatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.DataChannel;
+import zw.gov.mohcc.mrs.ehr_mobile.channels.DataSyncChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.HtsChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
@@ -59,9 +55,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Pageable;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -84,7 +77,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
-import zw.gov.mohcc.mrs.ehr_mobile.sync.DemographicsSyncProcessor;
+import zw.gov.mohcc.mrs.ehr_mobile.sync.PatientDataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
 
@@ -322,19 +315,22 @@ public class MainActivity extends FlutterActivity {
 
         }});
 
-        new MethodChannel(getFlutterView(), DATA_SYNC_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
-                final String arguments = call.arguments();
-                //syncPatients
-                if (call.method.equals("syncPatients")) {
-                    System.out.println("DATA SYNC PATIENTS");
-                    DemographicsSyncProcessor sychProcessor=new DemographicsSyncProcessor();
-                    sychProcessor.synchPatient(ehrMobileDatabase,arguments,"http://192.168.43.66:8080/api/");
-                }
-            }
-        });
+        new DataSyncChannel(getFlutterView(), DATA_SYNC_CHANNEL,ehrMobileDatabase);
+
+//        new MethodChannel(getFlutterView(), DATA_SYNC_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            @Override
+//            public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
+//                final String arguments = call.arguments();
+//                //syncPatients
+//                System.out.println("Args=== "+arguments);
+////                if (call.method.equals("syncPatients")) {
+////                    System.out.println("DATA SYNC PATIENTS");
+////                    PatientDataSyncService sychProcessor=new PatientDataSyncService();
+////                    sychProcessor.synchPatient(ehrMobileDatabase,arguments,"http://192.168.43.66:8080/api/");
+////                }
+//            }
+//        });
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()

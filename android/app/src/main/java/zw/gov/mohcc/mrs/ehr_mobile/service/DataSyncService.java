@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSyncDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.RegisterPersonDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
@@ -24,9 +25,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.IdentityDTO;
 
 public interface DataSyncService {
-
-
-
 
     @GET("nationalities")
     Call<Nationality> getNationality(@Header("Authorization") String token);
@@ -106,4 +104,7 @@ public interface DataSyncService {
 
     @POST("people")
     Call<IdentityDTO>registerPerson(@Header("Authorization")String token,@Body RegisterPersonDTO registerPersonDTO);
+
+    @POST("people/update-patient")
+    Call<IdentityDTO>updatePatient(@Header("Authorization")String token,@Body PatientSyncDto patientSyncDto);
 }

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 
+import 'package:ehr_mobile/datasync/stored_preferences.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +42,8 @@ class _SearchPatientState extends State<SearchPatient> {
   }
 
   Future<void>syncPatients(String tokenString) async {
-    await platformDataSync.invokeMethod('syncPatients',tokenString).then((value){
+    String url=await retrieveString(SERVER_IP);
+    await platformDataSync.invokeMethod('syncPatients',[tokenString,'$url/api/']).then((value){
       print("sync method called----->$value");
     });
   }
@@ -149,9 +152,9 @@ class _SearchPatientState extends State<SearchPatient> {
 //                        ),
                         new InkWell(
                           onTap: (){
-                              authenticate().then((value){
-                              syncPatients(value);
-                            });
+                              retrieveString(AUTH_TOKEN).then((value){
+                                syncPatients(value);
+                              });
                           },
                           child: new Container(
                             height: 36.0,

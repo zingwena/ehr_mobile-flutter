@@ -1,7 +1,5 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
-import java.time.LocalDate;
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 
 public class RegisterPersonDTO {

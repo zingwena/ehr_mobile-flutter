@@ -13,6 +13,7 @@ import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.IdentityDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSyncDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PersonDtoBuilder;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.RegisterPersonDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
@@ -20,7 +21,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.Constants;
 
-public class DemographicsSyncProcessor {
+public class PatientDataSyncService {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void synchPatient(EhrMobileDatabase ehrMobileDatabase, String token, String baseUrl) {
@@ -42,13 +43,29 @@ public class DemographicsSyncProcessor {
                     @Override
                     public void onResponse(Call<IdentityDTO> call, Response<IdentityDTO> response) {
                         System.out.println(response.body());
+                        person.setStatus(RecordStatus.SYNCED);
+                        ehrMobileDatabase.personDao().updatePatient(person);
                     }
-
                     @Override
                     public void onFailure(Call<IdentityDTO> call, Throwable t) {
-
+                        System.out.println(t.getMessage());
                     }
                 });
+
+                //dateFormat.format()
+//                PatientSyncDto patientSyncDto =createSyncDto(person);
+//                patientSyncDto.setPersonDto(new PersonDtoBuilder().fromPerson(person).build());
+//                Call<IdentityDTO> call = service.updatePatient("Bearer " + token,patientSyncDto);
+//                call.enqueue(new Callback<IdentityDTO>() {
+//                    @Override
+//                    public void onResponse(Call<IdentityDTO> call, Response<IdentityDTO> response) {
+//                        System.out.println(response.body());
+//                    }
+//                    @Override
+//                    public void onFailure(Call<IdentityDTO> call, Throwable t) {
+//                        System.out.println(t.getMessage());
+//                    }
+//                });
             } else if(person.getStatus()== RecordStatus.CHANGED){
                 PatientSyncDto patientSyncDto =new PatientSyncDto();
 
@@ -56,5 +73,9 @@ public class DemographicsSyncProcessor {
         }
     }
 
-    //private PatientSyncDto
+    private PatientSyncDto createSyncDto(Person person){
+        PatientSyncDto dto=new PatientSyncDto();
+        dto.setPersonDto(new PersonDtoBuilder().fromPerson(person).build());
+        return dto;
+    }
 }
