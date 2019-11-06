@@ -7,12 +7,16 @@ import java.util.List;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
@@ -20,6 +24,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -137,5 +142,37 @@ public class TerminologyService {
 
         ehrMobileDatabase.arvCombinationRegimenDao().insertAll(arvCombinationRegimens);
         Log.d(TAG, "Saved arv combination regimen : " + ehrMobileDatabase.arvCombinationRegimenDao().findAll());
+    }
+
+    public void saveDisclosureMethod(List<DisclosureMethod> disclosureMethods) {
+
+        ehrMobileDatabase.disclosureMethodDao().saveAll(disclosureMethods);
+        Log.d(TAG, "Saved disclosure method : " + ehrMobileDatabase.disclosureMethodDao().findAll());
+    }
+
+    public void saveTestingPlan(List<TestingPlan> testingPlans) {
+
+        ehrMobileDatabase.testingPlanDao().saveAll(testingPlans);
+        Log.d(TAG, "Saved testing plan : " + ehrMobileDatabase.testingPlanDao().findAll());
+    }
+
+    public void saveCountriesToDB(List<Country> countries) {
+
+
+        ehrMobileDatabase.countryDao().insertCountries(countries);
+        Log.d(TAG, "Saved countries : " + ehrMobileDatabase.testingPlanDao().findAll());
+    }
+
+    public void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
+
+
+        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
+        Log.d(TAG, "Saved marital state : " + ehrMobileDatabase.testingPlanDao().findAll());
+    }
+
+    public void saveFacilityToDB(List<Facility> facilities) {
+
+        ehrMobileDatabase.facilityDao().insertFacilities(facilities);
+        Log.d(TAG, "Saved facility : " + ehrMobileDatabase.testingPlanDao().findAll());
     }
 }
