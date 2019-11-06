@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
+import 'package:ehr_mobile/model/sexualhistory.dart';
 
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
@@ -18,6 +19,7 @@ import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/sexual_history_overview.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
@@ -52,26 +54,17 @@ class _CbsQuestion extends State<CbsQuestions> {
   List<PurposeOfTest> _purposeOfTestList= List();
 
   int _hts = 0;
-  // String _coupleCounselling="" ;
-  String _newTest = " " ;
-  String _htsApproach="" ;
+  int _victim = 0;
   HtsRegistration htsRegistration;
-  bool _newTestInPreg = false;
-
-  bool _sexuallyactive = false;
   String sexuallyactive = "";
   String agewhenfirsthadsex;
-  String numberofsexualpartners;
+  int numberOfSexualPartners;
+  int numberofsexualpartnersinpast12months;
+  var selectedMaleDate, selectedFemaleDate;
+  DateTime maledate, femaledate;
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
-
-  int _patientPretest = 0;
-  //int _optOutTest = 0;
-  PreTest patient_preTest;
-
-
-  bool _victimofsexualabuse=false ;
-  String victimofsexualabuse = "NO";
+  String victimofsexualabuse = "";
 
   bool _hadsexwithmale=false ;
   String hadsexwithmale = "NO";
@@ -97,19 +90,6 @@ class _CbsQuestion extends State<CbsQuestions> {
     super.initState();
   }
 
-  Future<void> insertPreTest(PreTest preTest) async {
-    String pretestjson;
-    try {
-      pretestjson =  await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
-      print('LLLLLLLLLLLLLLLL'+ pretestjson);
-      setState(() {
-        patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
-        print('LLLLLLLLLLLLLLLLLLLLL'+ patient_preTest.toString());
-      });
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-  }
 
   Future <void> getHtsModelByName(String htsmodelstring) async{
     var model_response;
@@ -121,42 +101,6 @@ class _CbsQuestion extends State<CbsQuestions> {
       print("channel failure: '$e'");
 
     }
-  }
-  Future <void> getPurposeByName(String purposemodelstring) async{
-    var model_response;
-    try{
-      model_response = await htsChannel.invokeMethod('getPurposeofTest', purposemodelstring);
-      purposeOfTest = PurposeOfTest.mapFromJson(model_response);
-
-    }catch (e){
-      print("channel failure: '$e'");
-
-    }
-  }
-
-
-  List<DropdownMenuItem<String>>
-  getDropDownMenuItemsHtsModel() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (HtsModel htsModel in _htsModelList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(
-          DropdownMenuItem(value: htsModel.code, child: Text(htsModel.name)));
-    }
-    return items;
-  }
-
-  List<DropdownMenuItem<String>>
-  getDropDownMenuItemsPurposeOfTest() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (PurposeOfTest purposeOfTest in _purposeOfTestList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(
-          DropdownMenuItem(value: purposeOfTest.code, child: Text(purposeOfTest.name)));
-    }
-    return items;
   }
 
 
@@ -177,17 +121,30 @@ class _CbsQuestion extends State<CbsQuestions> {
 
 
   }
-
-
-  List<DropdownMenuItem<String>>
-  _dropDownMenuItemsHtsModel,
-      _dropDownMenuItemsPurposeOfTest;
-
-  String  _currentHtsModel;
-  String _currentPurposeOfTest;
-
-  bool showInput = true;
-  bool showInputTabOptions = true;
+  Future<Null> _selectMaleDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedMaleDate)
+      setState(() {
+        selectedMaleDate = DateFormat("yyyy/MM/dd").format(picked);
+        maledate = DateFormat("yyyy/MM/dd").parse(selectedMaleDate);
+      });
+  }
+  Future<Null> _selectFemaleDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedFemaleDate)
+      setState(() {
+        selectedFemaleDate = DateFormat("yyyy/MM/dd").format(picked);
+        femaledate = DateFormat("yyyy/MM/dd").parse(selectedFemaleDate);
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -310,19 +267,21 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                           ),
                                                         ),
 
-                                                        Checkbox(
-                                                          value:_sexuallyactive,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _sexuallyactive=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _sexuallyactive=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue: _hts,
+                                                            onChanged: _handleHtsChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _hts,
+                                                            onChanged: _handleHtsChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue: _hts,
+                                                            onChanged: _handleHtsChange)
                                                       ],
                                                     ),
                                                   ),
@@ -343,21 +302,14 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                      .isEmpty
-                                                                      ? 'Enter Art Number'
-                                                                      : null;
-                                                                },
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
                                                                             () {
-                                                                         agewhenfirsthadsex  = value;                                           }),
+                                                                              numberOfSexualPartners  = int.parse(value);                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
-                                                                    'Age when client had first sexual intercourse',
+                                                                    'Number of sexual partners',
                                                                     border:
                                                                     OutlineInputBorder()),
                                                               ),
@@ -384,18 +336,11 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                      .isEmpty
-                                                                      ? 'Enter Art Number'
-                                                                      : null;
-                                                                },
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
                                                                             () {
-                                                                          numberofsexualpartners  = value;                                           }),
+                                                                          numberofsexualpartnersinpast12months  = int.parse(value);                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'Number of sexual partners in the past 12 months ',
@@ -409,160 +354,66 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       ],
                                                     ),
                                                   ),
-
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:        Row(
+                                                    child:              Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child:  Text("Victim/ Suspected victim of sexual abuse ?"),
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 0.0, horizontal: 30.0),
+                                                              child: TextFormField(
+                                                                controller:
+                                                                TextEditingController(text: selectedMaleDate),
+                                                                decoration: InputDecoration(
+                                                                    labelText: 'Date of Sex with Male ',
+                                                                    border: OutlineInputBorder()),
+                                                              ),
                                                             ),
-                                                            width: 250,
                                                           ),
                                                         ),
-
-                                                        Checkbox(
-                                                          value:_victimofsexualabuse,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _victimofsexualabuse=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _victimofsexualabuse = true;
-                                                              });
-                                                            }
-                                                          },
+                                                        IconButton(
+                                                            icon: Icon(Icons.calendar_today),
+                                                            color: Colors.blue,
+                                                            onPressed: () {
+                                                              _selectMaleDate(context);
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child:              Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 0.0, horizontal: 30.0),
+                                                              child: TextFormField(
+                                                                controller:
+                                                                TextEditingController(text: selectedFemaleDate),
+                                                                decoration: InputDecoration(
+                                                                    labelText: 'Date of Sex with Female ',
+                                                                    border: OutlineInputBorder()),
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
+                                                        IconButton(
+                                                            icon: Icon(Icons.calendar_today),
+                                                            color: Colors.blue,
+                                                            onPressed: () {
+                                                              _selectFemaleDate(context);
+                                                            })
                                                       ],
                                                     ),
                                                   ),
 
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had sex with male ?"),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Checkbox(
-                                                          value:_hadsexwithmale,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithmale=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithmale=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
 
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had sex with female ?"),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Checkbox(
-                                                          value:_hadsexwithfemale,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithfemale=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithfemale=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had Unprotected sex ?"),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Checkbox(
-                                                          value:_hadunprotectedsex,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadunprotectedsex=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadunprotectedsex=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had sex with sex worker ?"),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Checkbox(
-                                                          value:_hadsexwithsexworker,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithsexworker=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithsexworker=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
@@ -582,10 +433,9 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       onPressed: () async {
                                                         if(_formKey.currentState.validate()){
                                                           _formKey.currentState.save();
-                                                          CbsQuestion cbsquestion = new CbsQuestion(_sexuallyactive, agewhenfirsthadsex, numberofsexualpartners, _victimofsexualabuse, _hadsexwithmale, _hadsexwithfemale, _hadunprotectedsex, _hadsexwithsexworker, false, false, false, false, false, false);
-                                                          Navigator.push(context,MaterialPageRoute(
-                                                              builder: (context)=> CbsQuestions2(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId, widget.person, cbsquestion)
-                                                          ));
+                                                          SexualHistory sexualhistory = SexualHistory(widget.personId, sexuallyactive, maledate, femaledate, numberOfSexualPartners, numberofsexualpartnersinpast12months);
+                                                          saveSexualHistory(sexualhistory);
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> SexualHistoryOverview(widget.person, sexualhistory, widget.htsid, widget.visitId, widget.personId)));
 
                                                         }
 
@@ -649,59 +499,33 @@ class _CbsQuestion extends State<CbsQuestions> {
       ),
     );
   }
-  Widget pregnatandlactatingqstn(){
-    if(widget.person.sex ==" female" || widget.person.sex == "FEMALE" || widget.person.sex == "Female"){
-      return     Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-        child:            Row(
-          children: <Widget>[
-            Expanded(
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                      'New test for pregnant and lactating women.'),
-                ),
-                width: 250,
-              ),
-            ),
-            Checkbox(
-              value:_newTestInPreg,
-              onChanged: (bool value) {
-                setState(() {
-                  _newTestInPreg=value;
-                });
-                if(value) {
-                  setState(() {
-                    _newTestInPreg=true;
-                  });
-                }
-              },
-            ),
-          ],
-        ),
-      );
+  void _handleHtsChange(int value) {
+    setState(() {
+      _hts = value;
 
-    } else{
-      return  SizedBox(
-        height: 10.0,
-      );
+      switch (_hts) {
+        case 1:
+          sexuallyactive = 'YES';
+          break;
+        case 2:
+          sexuallyactive = 'NO';
+          break;
+        case 3:
+          sexuallyactive = 'REFUSE';
+          break;
+      }
+    });
+  }
+
+Future<void>saveSexualHistory(SexualHistory sexualHistory) async{
+    var response ;
+    try{
+   await htsChannel.invokeMethod('saveSexualHistory', jsonEncode(sexualHistory));
+
+
+} catch(e){
     }
-  }
-  void changedDropDownItemHtsModel(String value) {
-    setState(() {
-      _currentHtsModel = value;
-
-    });
-  }
-
-  void changedDropDownItemPurposeOfTest(String value) {
-    setState(() {
-      _currentPurposeOfTest = value;
-
-    });
-  }
+}
 
 }
 

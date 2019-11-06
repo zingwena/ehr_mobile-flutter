@@ -37,13 +37,14 @@ class _ArtReg extends State<ArtReg> {
   String oi_art_number;
   ArtRegistration _artRegistration;
   var dateOfTest,dateOfEnrollment, displayDate;
+  DateTime enrollment_date, test_date;
   String _nationalIdError = "National Id number is invalid";
 
   @override
   void initState() {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfEnrollment = DateTime.now();
-    dateOfTest = DateTime.now();
+    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    dateOfTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
     super.initState();
   }
 
@@ -56,8 +57,8 @@ class _ArtReg extends State<ArtReg> {
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
-        dateOfTest = picked;
-        displayDate = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfTest = DateFormat("yyyy/MM/dd").format(picked);
+        test_date = DateFormat("yyyy/MM/dd").parse(dateOfTest);
       });
   }
   Future<Null> _selectDateOfEnrollment(BuildContext context) async {
@@ -70,8 +71,8 @@ class _ArtReg extends State<ArtReg> {
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfEnrollment)
       setState(() {
-        dateOfEnrollment = picked;
-        displayDate = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
+        enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
       });
   }
 
@@ -238,7 +239,7 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    displayDate),
+                                                                    dateOfTest),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -291,7 +292,7 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    displayDate),
+                                                                    dateOfEnrollment),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -349,7 +350,7 @@ class _ArtReg extends State<ArtReg> {
                                                               .currentState
                                                               .save();
                                                           setState(() {
-                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, dateOfEnrollment, dateOfTest, oi_art_number);
+                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
                                                             artRegistration(artRegistrationDetails);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person)));
 

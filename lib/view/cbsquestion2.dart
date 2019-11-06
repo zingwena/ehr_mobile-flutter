@@ -5,7 +5,7 @@ import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
-import 'package:ehr_mobile/view/cbs_overview.dart';
+import 'package:ehr_mobile/view/sexual_history_overview.dart';
 
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
@@ -524,12 +524,12 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                         style: TextStyle(color: Colors.white),
                                                       ),
                                                       onPressed: () {
-                                                        CbsQuestion cbsquestion = new CbsQuestion(widget.cbsQuestion.sexuallyactive, widget.cbsQuestion.age_whenclienthadfirstsexualintercourse, widget.cbsQuestion.numberofsexualpartners, widget.cbsQuestion.victimofsexualabuse, widget.cbsQuestion.hadsexwithmale, widget.cbsQuestion.hadsexwithfemale, widget.cbsQuestion.unprotectedsex,
-                                                            widget.cbsQuestion.hadsexwithsexworker, widget.cbsQuestion.exchangedsexformoney, _injectedrecreationaldrugs, _beenincarcetadintojail, _historyofSTI, _receivedbloodtransfusion, _unsterilisedinstruments);
-                                                        Navigator.push(context,MaterialPageRoute(
+                                                       /* CbsQuestion cbsquestion = new CbsQuestion(widget.cbsQuestion.sexuallyactive, widget.cbsQuestion.age_whenclienthadfirstsexualintercourse, widget.cbsQuestion.numberofsexualpartners, widget.cbsQuestion.victimofsexualabuse, widget.cbsQuestion.hadsexwithmale, widget.cbsQuestion.hadsexwithfemale, widget.cbsQuestion.unprotectedsex,
+                                                            widget.cbsQuestion.hadsexwithsexworker, widget.cbsQuestion.exchangedsexformoney, _injectedrecreationaldrugs, _beenincarcetadintojail, _historyofSTI, _receivedbloodtransfusion, _unsterilisedinstruments);*/
+                                                      /*  Navigator.push(context,MaterialPageRoute(
                                                             builder: (context)=> CbsOverview(widget.person, cbsquestion, widget.htsid, widget.visitId, widget.personId)
 
-                                                        ));
+                                                        ));*/
 
 
                                                       },

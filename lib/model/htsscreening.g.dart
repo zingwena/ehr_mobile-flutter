@@ -8,6 +8,7 @@ part of 'htsscreening.dart';
 
 HtsScreening _$HtsScreeningFromJson(Map<String, dynamic> json) {
   return HtsScreening(
+    json['personId'] as String,
     json['visitId'] as String,
     json['testedBefore'] as bool,
     json['art'] as bool,
@@ -25,6 +26,7 @@ HtsScreening _$HtsScreeningFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$HtsScreeningToJson(HtsScreening instance) => <String, dynamic>{
+  'personId': instance.personId,
   'visitId': instance.visitId,
   'testedBefore': instance.testedBefore,
   'art': instance.art,

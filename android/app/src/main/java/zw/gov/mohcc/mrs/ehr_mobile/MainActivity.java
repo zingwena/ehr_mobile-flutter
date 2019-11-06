@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,6 +25,7 @@ import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,6 +75,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
@@ -126,8 +130,12 @@ public class MainActivity extends FlutterActivity {
         visitService = new VisitService(ehrMobileDatabase);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
-        historyService = new HistoryService(ehrMobileDatabase, htsService);
+        Stetho.initializeWithDefaults(this);
+        new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
 
+        historyService = new HistoryService(ehrMobileDatabase, htsService);
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
@@ -886,6 +894,7 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
                         if(methodCall.method.equals("saveHtsScreening")){
+                            Log.i(TAG, "Save hts method in Android"+ arguments);
                             try{
                                 HtsScreeningDTO htsScreeningDTO = gson.fromJson(arguments, HtsScreeningDTO.class);
                                 historyService.saveHtsScreening(htsScreeningDTO, visitService.getCurrentVisit(htsScreeningDTO.getPersonId()));
@@ -906,6 +915,7 @@ public class MainActivity extends FlutterActivity {
                             try{
                                 SexualHistoryDTO sexualHistoryDTO = gson.fromJson(arguments, SexualHistoryDTO.class);
                                 historyService.saveSexualHistory(sexualHistoryDTO);
+                               // SexualHistory sexualHistory = historyService.getSexualHistory(sexualHistoryDTO.getPersonId());
                                 result.success(1);
 
                             }catch (Exception e){

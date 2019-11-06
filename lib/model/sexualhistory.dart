@@ -5,20 +5,18 @@ part 'sexualhistory.g.dart';
 class SexualHistory{
 
  String personId;
- bool sexuallyActive;
+ String sexuallyActive;
  DateTime sexWithMaleDate;
  DateTime sexWithFemaleDate;
- DateTime date;
  int numberOfSexualPartners;
  int numberOfSexualPartnersLastTwelveMonths;
 
- SexualHistory(String personId, bool sexuallyActive, DateTime sexwithMaleDate, DateTime sexwithFemale, DateTime date, int numberofsexualpartners,
+ SexualHistory(String personId, String sexuallyActive, DateTime sexwithMaleDate, DateTime sexwithFemale,  int numberofsexualpartners,
      int numberofsexualpartnerslasttwelveMonths){
    this.personId = personId;
    this.sexuallyActive = sexuallyActive;
    this.sexWithMaleDate = sexwithMaleDate;
-   this.sexWithFemaleDate = sexWithFemaleDate;
-   this.date = date;
+   this.sexWithFemaleDate = sexwithFemale;
    this.numberOfSexualPartners = numberofsexualpartners;
    this.numberOfSexualPartnersLastTwelveMonths = numberofsexualpartnerslasttwelveMonths;
  }
@@ -30,7 +28,7 @@ class SexualHistory{
  @override
  String toString() {
    return 'SexualHistory{sexuallyActive: $sexuallyActive, sexWithMaleDate: $sexWithMaleDate, sexWithFemaleDate: $sexWithFemaleDate, '
-       'date: $date, numberOfSexualPartners:$numberOfSexualPartners, numberOfSexualPartnersLastTwelveMonths:$numberOfSexualPartnersLastTwelveMonths}';
+       ' numberOfSexualPartners:$numberOfSexualPartners, numberOfSexualPartnersLastTwelveMonths:$numberOfSexualPartnersLastTwelveMonths}';
  }
 
  static List<SexualHistory> fromJsonDecodedMap(List dynamicList) {

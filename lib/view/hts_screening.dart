@@ -54,7 +54,6 @@ class _HtsScreening extends State<Hts_Screening> {
   String cd4Done;
   bool _testedbefore;
   bool _patientonart;
-
   int _hts = 0;
   int _art = 0;
   int _prep = 0;
@@ -62,12 +61,15 @@ class _HtsScreening extends State<Hts_Screening> {
   int _viralload = 0;
   int _cd4done = 0;
   var birthDate, displayDate;
+  var selectedDate;
+  DateTime date;
+
 
   @override
   void initState() {
     //getHtsRecord(widget.personId);
-    displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    birthDate = DateTime.now();
+    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    date = DateTime.now();
     super.initState();
   }
 
@@ -87,9 +89,10 @@ class _HtsScreening extends State<Hts_Screening> {
 
   Future<void> savehtsscreening(HtsScreening htsScreening) async {
     var response;
+    print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'+ htsScreening.toString());
     try {
       String jsonhtsscreening = jsonEncode(htsScreening);
-      response = await htsChannel.invokeMethod('savehtsscreening', jsonhtsscreening);
+      response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -102,15 +105,28 @@ class _HtsScreening extends State<Hts_Screening> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(1900, 8),
+        firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != birthDate)
+    if (picked != null && picked != selectedDate)
       setState(() {
-        birthDate = picked;
-        displayDate = DateFormat("yyyy/MM/dd").format(picked);
+        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
 
+  /*Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate =
+        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
+      });
+  }
+*/
 
   @override
   Widget build(BuildContext context) {
@@ -250,46 +266,6 @@ class _HtsScreening extends State<Hts_Screening> {
                                                               padding: const EdgeInsets
                                                                   .all(8.0),
                                                               child: Text(
-                                                                  'Have you been tested before?'),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-
-                                                        Checkbox(
-                                                          value: _testedbefore,
-                                                          onChanged: (
-                                                              bool value) {
-                                                            setState(() {
-                                                              _testedbefore =
-                                                                  value;
-                                                            });
-                                                            if (value) {
-                                                              setState(() {
-                                                                _testedbefore =
-                                                                true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 16.0,
-                                                        horizontal: 60.0),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets
-                                                                  .all(8.0),
-                                                              child: Text(
                                                                   'Have you ever been tested before ?'),
                                                             ),
                                                             width: 250,
@@ -371,7 +347,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handleResultChange),
                                                         Text('Inconclusive'),
                                                         Radio(
-                                                            value: 2,
+                                                            value: 3,
                                                             groupValue: _result,
                                                             onChanged: _handleResultChange)
                                                       ],
@@ -397,7 +373,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    displayDate),
+                                                                    selectedDate),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -531,6 +507,11 @@ class _HtsScreening extends State<Hts_Screening> {
                                                         Radio(
                                                             value: 2,
                                                             groupValue: _viralload,
+                                                            onChanged: _handleViralLoadDone),
+                                                        Text('UNKNOWN'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue: _viralload,
                                                             onChanged: _handleViralLoadDone)
                                                       ],
                                                     ),
@@ -598,7 +579,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          HtsScreening htsscreening = new HtsScreening(widget.visitId, testedBefore, art, result, dateLastTested, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
+                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, _patientonart, result, date, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
                                                           savehtsscreening(htsscreening);
                                                         }
                                                       },
@@ -700,10 +681,10 @@ class _HtsScreening extends State<Hts_Screening> {
 
       switch (_prep) {
         case 1:
-          prepOption = 'Yes';
+          beenOnPrep = true;
           break;
         case 2:
-          prepOption = 'No';
+          beenOnPrep = false;
           break;
       }
     });
@@ -715,11 +696,13 @@ class _HtsScreening extends State<Hts_Screening> {
 
       switch (_viralload) {
         case 1:
-          viralLoadDone = 'Yes';
+          viralLoadDone = 'DONE';
           break;
         case 2:
-          viralLoadDone = 'No';
+          viralLoadDone = 'NOT_DONE';
           break;
+        case 3:
+          viralLoadDone = 'UNKNOWN';
       }
     });
   }
