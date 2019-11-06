@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_initiation.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+
 
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
@@ -12,10 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
-
-
-import 'art_registration.dart';
-import 'art_registration.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -27,8 +26,11 @@ import 'package:ehr_mobile/model/artRegistration.dart';
 
 class ArtRegOverview extends StatefulWidget {
   final ArtRegistration artRegistration;
+  final String personId;
+  final String visitId;
+  final Person person;
 
-  ArtRegOverview(this.artRegistration);
+  ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person);
 
   @override
   State<StatefulWidget> createState() {
@@ -85,6 +87,41 @@ class ArtOverviewState extends State<ArtRegOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+              new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(_patient)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Registration(widget.visitId,widget.personId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.personId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -270,34 +307,11 @@ class ArtOverviewState extends State<ArtRegOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Art_Initiation(widget.artRegistration.personId
+                    Art_Initiation(widget.personId, widget.visitId
                     )),
           ),
           ),
-          new RoundedButton(text: "Close",/* onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    HtsScreeningTest(widget.personId)),
-          ),*/
-          ),
-
-
-          /*new RoundedButton(text: "HTS Post-Testing", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Art_Registration(_patient.id)),
-          ),),*/
-
-
-          /* new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
-          ),*/
+          new RoundedButton(text: "Close",)
         ],
       ),
     );

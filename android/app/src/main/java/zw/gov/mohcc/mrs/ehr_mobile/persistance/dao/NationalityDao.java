@@ -21,7 +21,7 @@ public interface NationalityDao {
     @Insert
     void insertNationality(Nationality nationality);
 
-    @Query("SELECT * FROM nationality ORDER BY name ASC")
+    @Query("SELECT * FROM nationality ORDER BY name DESC")
     List<Nationality> selectAllNationalities();
 
 

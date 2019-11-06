@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
@@ -10,10 +11,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 @Entity
 public class Hts extends BaseEntity {
+    @NonNull
     private String personId;
+    @NonNull
     private String visitId;
+    @NonNull
     private String htsType;
     @TypeConverters(DateConverter.class)
+    @NonNull
     private Date dateOfHivTest;
     private String entryPointId;
     private String htsApproach;

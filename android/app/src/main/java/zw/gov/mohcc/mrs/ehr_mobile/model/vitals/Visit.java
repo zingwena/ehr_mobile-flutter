@@ -54,4 +54,13 @@ public class Visit extends BaseEntity {
     public void setVisitEndDate(Date visitEndDate) {
         this.visitEndDate = visitEndDate;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("Visit{" +
+                "personId='" + personId + '\'' +
+                ", visitStartDate=" + visitStartDate +
+                ", visitEndDate=" + visitEndDate +
+                '}');
+    }
 }

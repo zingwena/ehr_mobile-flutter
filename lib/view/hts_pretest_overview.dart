@@ -3,7 +3,10 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
+
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
@@ -11,10 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
-
-
-import 'art_registration.dart';
-import 'art_registration.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -30,7 +29,8 @@ class PretestOverview extends StatefulWidget {
  final String htsId ;
  final String personId;
  final String visitId;
-  PretestOverview(this.preTest, this.htsRegistration, this.personId, this.htsId, this.visitId);
+ final Person person;
+  PretestOverview(this.preTest, this.htsRegistration, this.personId, this.htsId, this.visitId, this.person);
 
   @override
   State<StatefulWidget> createState() {
@@ -59,7 +59,7 @@ class PretestOverviewState extends State<PretestOverview> {
   bool newTest;
   String _newTest;
   String coupleCounselling;
-
+  HtsRegistration htsRegistration;
   bool preTestInformationGiven;
   String _pretestInfoGiven;
 
@@ -74,6 +74,7 @@ class PretestOverviewState extends State<PretestOverview> {
   @override
   void initState() {
      getHtsModel(widget.preTest.htsModelId);
+     getHtsRecord(widget.personId);
      if(widget.preTest.newTest == false){
        _newTest = "NO";
      }else{
@@ -98,6 +99,11 @@ class PretestOverviewState extends State<PretestOverview> {
        _optOutOfTest = "YES";
      }else{
       _optOutOfTest = "NO";
+     }
+     if(widget.preTest.coupleCounselling){
+       coupleCounselling = "YES";
+     }else{
+       coupleCounselling = "NO";
      }
     super.initState();
   }
@@ -136,6 +142,23 @@ class PretestOverviewState extends State<PretestOverview> {
 
 
   }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
+
+
+  }
 
   String nullHandler(String value) {
     return value == null ? "" : value;
@@ -144,6 +167,57 @@ class PretestOverviewState extends State<PretestOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home ",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview ",  style: new TextStyle(
+                  color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text(" Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),  onTap: () {
+              if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
+                ));
+              }
+            }),
+            new ListTile(title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.personId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -160,9 +234,11 @@ class PretestOverviewState extends State<PretestOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-                "Pre-Test Overview"
-            ),
+            title: new Column(children: <Widget>[
+              new Text("PreTest Overview"),
+              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+            ],)
           ),
           Positioned.fill(
             child: Padding(
@@ -269,7 +345,7 @@ class PretestOverviewState extends State<PretestOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.preTest.coupleCounselling.toString())),
+                                                                        coupleCounselling)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Couple counselling ?',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
@@ -394,7 +470,7 @@ class PretestOverviewState extends State<PretestOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HtsRegOverview(widget.htsRegistration,widget.personId, widget.htsId, widget.visitId
+                    HtsRegOverview(widget.htsRegistration,widget.personId, widget.htsId, widget.visitId, widget.person
                         )),
           ),
           ),
@@ -410,7 +486,7 @@ class PretestOverviewState extends State<PretestOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HtsScreeningTest(widget.personId, widget.visitId)),
+                    HtsScreeningTest(widget.personId, widget.visitId, widget.person, widget.htsId)),
           ),),
 
         ],

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/model/laboratory_investigation.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
@@ -24,30 +25,31 @@ import 'package:intl/intl.dart';
 import 'rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
-class Hts_Result extends StatefulWidget {
+class Recency_Result extends StatefulWidget {
   String visitId;
   String patientId;
   String labInvetsTestId;
   String labInvestId;
   Person person;
   String htsId;
+  LaboratoryInvestigationTest laboratoryInvestigation;
 
-  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId);
+  Recency_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId, this.laboratoryInvestigation);
 
   //Hts_Result (this.visitId, this.patientId);
 
   @override
   State createState() {
-    return _Hts_Result ();
+    return _Recency_Result ();
   }
 }
 
-class _Hts_Result  extends State<Hts_Result > {
+class _Recency_Result  extends State<Recency_Result > {
   final _formKey = GlobalKey<FormState>();
   static const dataChannel =
-      MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel =
-      MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   String _visitId;
   String patientId;
   String labInvetsTestId;
@@ -85,7 +87,7 @@ class _Hts_Result  extends State<Hts_Result > {
     labInvetsTestId = widget.labInvetsTestId;
     getFinalResult(widget.labInvestId);
     getFacilities();
-   // getLabInvestigationTests();
+    // getLabInvestigationTests();
     getTestKIt(widget.labInvetsTestId);
     getStartTime(widget.labInvetsTestId);
     getHtsRecord(widget.patientId);
@@ -202,7 +204,7 @@ class _Hts_Result  extends State<Hts_Result > {
                   builder: (context) =>
                       SearchPatient()),
             )),
-              new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
@@ -254,14 +256,14 @@ class _Hts_Result  extends State<Hts_Result > {
             height: 210.0,
           ),
           new AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            centerTitle: true,
-            title: new Column(children: <Widget>[
-              new Text("HTS Test Results"),
-              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              centerTitle: true,
+              title: new Column(children: <Widget>[
+                new Text("Recency Test Results"),
+                new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
 
-            ],)
+              ],)
           ),
           Positioned.fill(
             child: Padding(
@@ -269,217 +271,209 @@ class _Hts_Result  extends State<Hts_Result > {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  _buildButtonsRow(),
+                  //_buildButtonsRow(),
                   Expanded(
-                      child: new Card(
-                        elevation: 4.0,
-                        margin: const EdgeInsets.all(8.0),
-                        child: DefaultTabController(
-                          child: new LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints viewportConstraints) {
-                              return Column(
-                                children: <Widget>[
-                                  //   _buildTabBar(),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      child: new ConstrainedBox(
-                                        constraints: new BoxConstraints(
-                                          minHeight:
-                                          viewportConstraints.maxHeight -
-                                              48.0,
-                                        ),
-                                        child: new IntrinsicHeight(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Form(
-                                                key: _formKey,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: <Widget>[
-                                                    SizedBox(
-                                                      height: 20.0,
-                                                    ),
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text(
-                                                                  "Sample :",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
+                    child: new Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.all(8.0),
+                      child: DefaultTabController(
+                        child: new LayoutBuilder(
+                          builder: (BuildContext context,
+                              BoxConstraints viewportConstraints) {
+                            return Column(
+                              children: <Widget>[
+                                //   _buildTabBar(),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: new ConstrainedBox(
+                                      constraints: new BoxConstraints(
+                                        minHeight:
+                                        viewportConstraints.maxHeight -
+                                            48.0,
+                                      ),
+                                      child: new IntrinsicHeight(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Form(
+                                              key: _formKey,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    height: 20.0,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text(
+                                                                "Sample :",
+                                                                style: TextStyle(
+                                                                  color: Colors.grey.shade600,
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.w500,
                                                                 ),
                                                               ),
-                                                              width: 100,
                                                             ),
+                                                            width: 100,
                                                           ),
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(0.0),
-                                                                child: Text(
-                                                                  ("Blood"),
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
+                                                        ),
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(0.0),
+                                                              child: Text(
+                                                                ("Blood"),
+                                                                style: TextStyle(
+                                                                  color: Colors.grey.shade600,
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.w500,
                                                                 ),
                                                               ),
-                                                              width: 100,
                                                             ),
+                                                            width: 100,
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
+                                                  ),
 
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text(
-                                                                  "Investigation:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text(
+                                                                "Investigation:",
+                                                                style: TextStyle(
+                                                                  color: Colors.grey.shade600,
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.w500,
                                                                 ),
                                                               ),
-                                                              width: 100,
                                                             ),
+                                                            width: 100,
                                                           ),
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(0.0),
-                                                                child: Text(
-                                                                  ("HIV"),
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
+                                                        ),
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(0.0),
+                                                              child: Text(
+                                                                ("HIV"),
+                                                                style: TextStyle(
+                                                                  color: Colors.grey.shade600,
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.w500,
                                                                 ),
                                                               ),
-                                                              width: 100,
                                                             ),
+                                                            width: 100,
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
+                                                  ),
 
-                                                    SizedBox(
-                                                      height: 20.0,
-                                                    ),
+                                                  SizedBox(
+                                                    height: 20.0,
+                                                  ),
 
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                      child: DataTable(
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                    child: DataTable(
                                                         columns: [
                                                           DataColumn(label: Text("TestKit")),
                                                           DataColumn(label: Text("Result")),
-                                                          DataColumn(label: Text("Start Time")),
-                                                          DataColumn(label: Text("End Time"))],
-                                                      rows: _entryPointList.map((labinvesttest)=>
-                                                       DataRow(
-                                                           cells: [
-                                                       DataCell(Text(labinvesttest.testkitId)),
-                                                       DataCell(Text(labinvesttest.result.name)),
-                                                       DataCell(Text(labinvesttest.startTime)),
-                                                       DataCell(Text(labinvesttest.endTime))])
-
-                                                      ).toList()
-
-
-                                                      ),
-                                                    ),
-
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text(
-                                                                  "Final Result:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              width: 100,
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(0.0),
-                                                                child: Text(
-                                                                  (final_result),
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              width: 100,
-                                                            ),
-                                                          ),
                                                         ],
-                                                      ),
+                                                        rows: [
+                                                          DataRow(cells: [
+                                                            DataCell(Text(widget.laboratoryInvestigation.testkitId)),
+                                                            DataCell(Text(widget.laboratoryInvestigation.result.name))
+                                                          ])
+                                                        ]
+
                                                     ),
+                                                  ),
 
-
-
-
-                                                    SizedBox(
-                                                      height: 30.0,
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text(
+                                                                "Final Result:",
+                                                                style: TextStyle(
+                                                                  color: Colors.grey.shade600,
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.w500,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(0.0),
+                                                              child: Text(
+                                                                (widget.laboratoryInvestigation.result.name),
+                                                                style: TextStyle(
+                                                                  color: Colors.grey.shade600,
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.w500,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                      child: RaisedButton(
+                                                  ),
+
+
+
+
+                                                  SizedBox(
+                                                    height: 30.0,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                    child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
                                                         child: Text(
-                                                          "Proceed",
+                                                          "Close",
                                                           style: TextStyle(color: Colors.white),
                                                         ),
-                                                          onPressed: () async {
-                                                            if (final_result == 'Pending' || final_result == '') {
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId)));
+                                                        onPressed: () async {
 
-                                                            }else{
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId)));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchPatient()));
 
 
-                                                            }
-                                                          }
+
+                                                        }
 /*
                                                         onPressed: () =>
                                                             Navigator.push(
@@ -488,24 +482,24 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               builder: (context) =>
                                                                   Hts_Result()),),*/
 
-                                                      ),
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  )
-                                ],
-                              );
-                            },
-                          ),
-                          length: 3,
+                                  ),
+                                )
+                              ],
+                            );
+                          },
                         ),
+                        length: 3,
                       ),
+                    ),
 
                   ),
                 ],
@@ -527,7 +521,7 @@ class _Hts_Result  extends State<Hts_Result > {
           ),
           new RoundedButton(
             text: "HTS Pre-Testing",
-        /*    onTap: () => Navigator.push(
+            /*    onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
             ),*/
@@ -543,7 +537,7 @@ class _Hts_Result  extends State<Hts_Result > {
     return Card(
       child: Column(
         children: <Widget>[
-         // Image.asset('assets/macbook.jpg'),
+          // Image.asset('assets/macbook.jpg'),
           Text('Hie', style: TextStyle(color: Colors.deepPurple))
         ],
       ),
@@ -578,7 +572,7 @@ class _Hts_Result  extends State<Hts_Result > {
     String testkitId;
     try {
       testkitId = await htsChannel.invokeMethod('getTestKit',labInvestId);
-     print('TEST KIT HERE '+ testkit);
+      print('TEST KIT HERE '+ testkit);
     } catch (e) {
       print('--------------something went wrong  $e');
     }
