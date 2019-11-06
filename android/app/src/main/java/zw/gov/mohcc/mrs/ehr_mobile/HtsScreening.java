@@ -36,6 +36,10 @@ public class HtsScreening extends BaseEntity {
     @TypeConverters(ActivityStatusConverter.class)
     private ActivityStatus cd4Done;
 
+    public HtsScreening(@NonNull String visitId) {
+        this.visitId = visitId;
+    }
+
     @NonNull
     public String getVisitId() {
         return visitId;

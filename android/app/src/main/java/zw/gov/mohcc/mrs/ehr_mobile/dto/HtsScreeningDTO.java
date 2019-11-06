@@ -154,7 +154,7 @@ public class HtsScreeningDTO {
     }
 
     public HtsScreening getHtsScreeningInstance(HtsScreeningDTO dto, String visitId) {
-        HtsScreening item = new HtsScreening();
+        HtsScreening item = new HtsScreening(visitId);
         item.setArt(dto.getArt());
         item.setArtNumber(dto.getArtNumber());
         item.setCd4Done(dto.getCd4Done());
