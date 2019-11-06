@@ -35,6 +35,9 @@ public interface ArtRegistrationDao {
     @Query("SELECT * FROM Art WHERE id =:id")
     Art findArtRegistrationById(String id);
 
+    @Query("SELECT * FROM Art WHERE personId =:personId")
+    Art findByPersonId(String personId);
+
     @Query("DELETE FROM Art where id = :id")
     void deleteById(String id);
 

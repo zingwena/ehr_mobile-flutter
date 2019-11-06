@@ -30,11 +30,6 @@ public class HtsScreening extends BaseEntity {
 
     private String artNumber;
 
-    private boolean beenOnPrep;
-
-    @TypeConverters(PrepOptionConverter.class)
-    private PrepOption prepOption;
-
     @TypeConverters(ActivityStatusConverter.class)
     private ActivityStatus viralLoadDone;
 
@@ -90,22 +85,6 @@ public class HtsScreening extends BaseEntity {
         this.artNumber = artNumber;
     }
 
-    public boolean isBeenOnPrep() {
-        return beenOnPrep;
-    }
-
-    public void setBeenOnPrep(boolean beenOnPrep) {
-        this.beenOnPrep = beenOnPrep;
-    }
-
-    public PrepOption getPrepOption() {
-        return prepOption;
-    }
-
-    public void setPrepOption(PrepOption prepOption) {
-        this.prepOption = prepOption;
-    }
-
     public ActivityStatus getViralLoadDone() {
         return viralLoadDone;
     }
@@ -120,5 +99,19 @@ public class HtsScreening extends BaseEntity {
 
     public void setCd4Done(ActivityStatus cd4Done) {
         this.cd4Done = cd4Done;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("HtsScreening{" +
+                "visitId='" + visitId + '\'' +
+                ", testedBefore=" + testedBefore +
+                ", art=" + art +
+                ", result='" + result + '\'' +
+                ", dateLastTested=" + dateLastTested +
+                ", artNumber='" + artNumber + '\'' +
+                ", viralLoadDone=" + viralLoadDone +
+                ", cd4Done=" + cd4Done +
+                '}');
     }
 }

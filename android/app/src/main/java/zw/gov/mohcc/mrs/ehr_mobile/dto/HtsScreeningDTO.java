@@ -1,9 +1,18 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
+import androidx.annotation.NonNull;
+
 import java.util.Date;
+import java.util.UUID;
+
+import zw.gov.mohcc.mrs.ehr_mobile.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ActivityStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PrepOption;
 
 public class HtsScreeningDTO {
+
+    @NonNull
+    private String personId;
 
     private boolean testedBefore;
 
@@ -27,19 +36,18 @@ public class HtsScreeningDTO {
 
     private Date dateEnrolled;
 
-    private boolean beenOnPrep;
-
-    private PrepOption prepOption;
-
     private ActivityStatus viralLoadDone;
 
     private ActivityStatus cd4Done;
 
-    private Date prophylaxisMedicationStartDate;
+    @NonNull
+    public String getPersonId() {
+        return personId;
+    }
 
-    private Date prophylaxisMedicationEndDate;
-
-    private String medicationId;
+    public void setPersonId(@NonNull String personId) {
+        this.personId = personId;
+    }
 
     public boolean isTestedBefore() {
         return testedBefore;
@@ -129,22 +137,6 @@ public class HtsScreeningDTO {
         this.dateEnrolled = dateEnrolled;
     }
 
-    public boolean isBeenOnPrep() {
-        return beenOnPrep;
-    }
-
-    public void setBeenOnPrep(boolean beenOnPrep) {
-        this.beenOnPrep = beenOnPrep;
-    }
-
-    public PrepOption getPrepOption() {
-        return prepOption;
-    }
-
-    public void setPrepOption(PrepOption prepOption) {
-        this.prepOption = prepOption;
-    }
-
     public ActivityStatus getViralLoadDone() {
         return viralLoadDone;
     }
@@ -161,27 +153,46 @@ public class HtsScreeningDTO {
         this.cd4Done = cd4Done;
     }
 
-    public Date getProphylaxisMedicationStartDate() {
-        return prophylaxisMedicationStartDate;
+    public HtsScreening getHtsScreeningInstance(HtsScreeningDTO dto, String visitId) {
+        HtsScreening item = new HtsScreening();
+        item.setArt(dto.getArt());
+        item.setArtNumber(dto.getArtNumber());
+        item.setCd4Done(dto.getCd4Done());
+        item.setDateLastTested(dto.getDateLastTested());
+        item.setResult(dto.getResult());
+        item.setTestedBefore(dto.isTestedBefore());
+        item.setViralLoadDone(dto.getViralLoadDone());
+        item.setVisitId(visitId);
+        item.setId(UUID.randomUUID().toString());
+        return item;
     }
 
-    public void setProphylaxisMedicationStartDate(Date prophylaxisMedicationStartDate) {
-        this.prophylaxisMedicationStartDate = prophylaxisMedicationStartDate;
+    public Art getArtInstance(HtsScreeningDTO dto, String personId) {
+        Art art = new Art();
+        art.setDateOfEnrolmentIntoCare(dto.getDateEnrolled());
+        art.setDateOfHivTest(dto.getDateLastTested());
+        art.setOiArtNumber(dto.getArtNumber());
+        art.setPersonId(personId);
+        art.setId(UUID.randomUUID().toString());
+        return art;
     }
 
-    public Date getProphylaxisMedicationEndDate() {
-        return prophylaxisMedicationEndDate;
-    }
-
-    public void setProphylaxisMedicationEndDate(Date prophylaxisMedicationEndDate) {
-        this.prophylaxisMedicationEndDate = prophylaxisMedicationEndDate;
-    }
-
-    public String getMedicationId() {
-        return medicationId;
-    }
-
-    public void setMedicationId(String medicationId) {
-        this.medicationId = medicationId;
+    @Override
+    public String toString() {
+        return "HtsScreeningDTO{" +
+                "testedBefore=" + testedBefore +
+                ", art=" + art +
+                ", result='" + result + '\'' +
+                ", dateLastTested=" + dateLastTested +
+                ", artNumber='" + artNumber + '\'' +
+                ", dateLastNegative=" + dateLastNegative +
+                ", viralLoad=" + viralLoad +
+                ", viralLoadDate=" + viralLoadDate +
+                ", cd4Count=" + cd4Count +
+                ", cd4CountDate=" + cd4CountDate +
+                ", dateEnrolled=" + dateEnrolled +
+                ", viralLoadDone=" + viralLoadDone +
+                ", cd4Done=" + cd4Done +
+                '}';
     }
 }

@@ -82,4 +82,16 @@ public class SexualHistoryDTO {
         item.setId(UUID.randomUUID().toString());
         return item;
     }
+
+    @Override
+    public String toString() {
+        return "SexualHistoryDTO{" +
+                "personId='" + personId + '\'' +
+                ", sexuallyActive=" + sexuallyActive +
+                ", sexWithMaleDate=" + sexWithMaleDate +
+                ", sexWithFemaleDate=" + sexWithFemaleDate +
+                ", numberOfSexualPartners=" + numberOfSexualPartners +
+                ", numberOfSexualPartnersLastTwelveMonths=" + numberOfSexualPartnersLastTwelveMonths +
+                '}';
+    }
 }

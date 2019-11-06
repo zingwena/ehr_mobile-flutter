@@ -5,9 +5,6 @@ import java.util.Date;
 public class LaboratoryInvestigationDTO {
 
     private int facilityId;
-
-
-
     private Date resultDate;
 
     public LaboratoryInvestigationDTO(int facilityId, Date resultDate) {

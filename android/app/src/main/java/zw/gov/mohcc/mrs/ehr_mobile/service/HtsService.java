@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
@@ -45,21 +46,25 @@ public class HtsService {
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         ehrMobileDatabase.htsDao().createHts(hts);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
-        createInvestigation(dto.getPersonId(), hts.getDateOfHivTest(), visitId, "36069471-adee-11e7-b30f-3372a2d8551e");
+        createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
+                visitId, "36069471-adee-11e7-b30f-3372a2d8551e", null));
         return hts.getId();
     }
 
     @Transaction
-    private void createInvestigation(String personId, Date dateOfTest, String visitId, String investigationId) {
+    public void createInvestigation(InvestigationDTO dto) {
 
-        if (StringUtils.isBlank(visitId)) {
-            visitId = visitService.getCurrentVisit(personId);
+        if (StringUtils.isBlank(dto.getVisitId())) {
+            String visitId = visitService.getCurrentVisit(dto.getPersonId());
             Log.i(TAG, "Retrieving or creating current visit : "+ visitId);
         }
 
         Log.i(TAG, "Creating Person Investigation record");
         String personInvestigationId = UUID.randomUUID().toString();
-        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, personId, investigationId, dateOfTest);
+        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(), dto.getInvestigationId(), dto.getDateOfTest());
+        if (StringUtils.isNoneBlank(dto.getResult())) {
+            personInvestigation.setResultId(dto.getResult());
+        }
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         Log.i(TAG, "Creating laboratory investigation record");

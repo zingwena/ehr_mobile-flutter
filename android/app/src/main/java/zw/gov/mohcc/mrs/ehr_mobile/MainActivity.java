@@ -891,21 +891,21 @@ public class MainActivity extends FlutterActivity {
 
                             }
                         }
-                        if(methodCall.method.equals("savehtsscreening")){
+                        if(methodCall.method.equals("saveHtsScreening")){
                             try{
                                 HtsScreeningDTO htsScreeningDTO = gson.fromJson(arguments, HtsScreeningDTO.class);
-                                HtsScreening htsScreening = new HtsScreening();
-                                htsScreening.setArt(htsScreeningDTO.getArt());
-                                htsScreening.setArtNumber(htsScreeningDTO.getArtNumber());
-                                htsScreening.setCd4Done(htsScreeningDTO.getCd4Done());
-                                htsScreening.setResult(htsScreeningDTO.getResult());
-                                htsScreening.setDateLastTested(htsScreeningDTO.getDateLastTested());
-                                ehrMobileDatabase.htsscreeningDao().createHtsscreening(htsScreening);
-                                System.out.println("HERE IS THE HTS SCREENING SAVED"+ htsScreening.toString());
-                          //      result.success(status);
-
+                                historyService.saveHtsScreening(htsScreeningDTO, visitService.getVisit(htsScreeningDTO.getPersonId()).getId());
+                                result.success(1);
                             }catch (Exception e){
-
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("getHtsScreening")){
+                            try{
+                                String personId = arguments;
+                                result.success(historyService.getHtsScreening(visitService.getVisit(personId).getId()));
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
                         if(methodCall.method.equals("saveSexualHistory")){

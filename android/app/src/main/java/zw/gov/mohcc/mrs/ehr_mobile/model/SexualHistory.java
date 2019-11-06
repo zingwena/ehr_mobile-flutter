@@ -85,4 +85,17 @@ public class SexualHistory extends BaseEntity {
     public void setNumberOfSexualPartnersLastTwelveMonths(Integer numberOfSexualPartnersLastTwelveMonths) {
         this.numberOfSexualPartnersLastTwelveMonths = numberOfSexualPartnersLastTwelveMonths;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("SexualHistory{" +
+                "personId='" + personId + '\'' +
+                ", sexuallyActive=" + sexuallyActive +
+                ", sexWithMaleDate=" + sexWithMaleDate +
+                ", sexWithFemaleDate=" + sexWithFemaleDate +
+                ", date=" + date +
+                ", numberOfSexualPartners=" + numberOfSexualPartners +
+                ", numberOfSexualPartnersLastTwelveMonths=" + numberOfSexualPartnersLastTwelveMonths +
+                '}');
+    }
 }
