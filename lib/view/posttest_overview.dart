@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/cbsquestion.dart';
+import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/recency.dart';
 import 'package:ehr_mobile/view/hts_screening.dart';
@@ -302,8 +303,32 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                           },
                                                         ),
                                                       ),
+                                                      SizedBox(
+                                                        height: 25.0,
+                                                      ),
+                                                      Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                        child: RaisedButton(
+                                                          elevation: 4.0,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.blue,
+                                                          padding: const EdgeInsets.all(20.0),
+                                                          child: Text(
+                                                            "Index Testing",
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                          onPressed: () {
 
-                                ],
+                                                            Navigator.push(context,MaterialPageRoute(
+                                                                builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId)
+                                                            ));
+                                                          },
+                                                        ),
+                                                      )
+
+                                      ],
                                                   ),
                                                 ),
                                               ),

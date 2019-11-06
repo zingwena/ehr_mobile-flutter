@@ -184,7 +184,6 @@ class PretestOverviewState extends State<PretestOverview> {
       String response = await htsChannel.invokeMethod('getLabInvestigationTest', labInvestigationId);
       setState(() {
         labInvestTestId = response;
-        print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJ LabInvestTestId here " + labInvestTestId);
         getFinalResult(labInvestId);
 
       });
@@ -197,7 +196,6 @@ class PretestOverviewState extends State<PretestOverview> {
     String response;
     try {
       response = await htsChannel.invokeMethod('getFinalResult',labInvestId);
-      print('Final Result here >>>>>>>>>>####################### '+ response);
     } catch (e) {
       print('--------------something went wrong  $e');
     }

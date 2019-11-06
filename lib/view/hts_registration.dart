@@ -449,7 +449,6 @@ class _Registration extends State<Registration> {
       id = await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
       hts_id = id;
       htsresponse = await htsChannel.invokeMethod('getHtsRegDetails', hts_id);
-
       setState(() {
         _htsRegistration = HtsRegistration.fromJson(jsonDecode(htsresponse));
       });

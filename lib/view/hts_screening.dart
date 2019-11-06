@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
+import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -63,6 +64,7 @@ class _HtsScreening extends State<Hts_Screening> {
   var birthDate, displayDate;
   var selectedDate;
   DateTime date;
+  HtsScreening htsScreening;
 
 
   @override
@@ -89,15 +91,25 @@ class _HtsScreening extends State<Hts_Screening> {
 
   Future<void> savehtsscreening(HtsScreening htsScreening) async {
     var response;
-    print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'+ htsScreening.toString());
     try {
-      String jsonhtsscreening = jsonEncode(htsScreening);
       response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
+      gethtsscreening(widget.personId);
 
+    });
+  }
+  Future<void> gethtsscreening(String personId) async {
+    var response;
+    try {
+      response = await htsChannel.invokeMethod('getHtsScreening', widget.personId);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
+      htsScreening = HtsScreening.fromJson(jsonDecode(response));
     });
   }
 
@@ -581,6 +593,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                               .save();
                                                           HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, _patientonart, result, date, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
                                                           savehtsscreening(htsscreening);
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningOverview(widget.person, htsscreening, widget.htsid, widget.visitId, widget.personId)));
+
                                                         }
                                                       },
                                                     ),

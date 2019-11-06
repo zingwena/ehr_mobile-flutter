@@ -14,12 +14,6 @@ import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
-
-
-
-
-
-
 class PatientPostTest extends StatefulWidget {
   String result;
   String patientId;

@@ -902,7 +902,9 @@ public class MainActivity extends FlutterActivity {
                         if(methodCall.method.equals("getHtsScreening")){
                             try{
                                 String personId = arguments;
-                                result.success(historyService.getHtsScreening(visitService.getVisit(personId).getId()));
+                                String htsscreeningdto = gson.toJson(historyService.getHtsScreening(visitService.getVisit(personId).getId()));
+                                Log.i(TAG, "Retrieve Htsscreening from Android"+ htsscreeningdto);
+                                result.success(htsscreeningdto);
                             }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
