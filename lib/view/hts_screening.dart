@@ -579,7 +579,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          HtsScreening htsscreening = new HtsScreening(widget.visitId, _testedbefore, _patientonart, result, date, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
+                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, _patientonart, result, date, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
                                                           savehtsscreening(htsscreening);
                                                         }
                                                       },

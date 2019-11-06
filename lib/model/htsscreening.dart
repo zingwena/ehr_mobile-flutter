@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'htsscreening.g.dart';
 @JsonSerializable()
 class HtsScreening{
+  String personId;
   String visitId;
   bool testedBefore;
   bool art;
@@ -15,8 +16,9 @@ class HtsScreening{
   String viralLoadDone;
   String cd4Done;
 
-  HtsScreening(String visitId, bool testedBefore, bool art, String result,  DateTime dateLastTested, String artNumber, bool beenOnPrep,
+  HtsScreening(String personId, String visitId, bool testedBefore, bool art, String result,  DateTime dateLastTested, String artNumber, bool beenOnPrep,
       String prepOption, String viralLoadDone, String cd4Done){
+    this.personId = personId;
     this.visitId = visitId;
     this.testedBefore = testedBefore;
     this.art = art;

@@ -48,6 +48,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
   bool showInputTabOptions = true;
   PreTest preTest;
   String htsApproach;
+  var dateofreg;
 
   @override
   void initState() {
@@ -55,6 +56,8 @@ class HtsOverviewState extends State<HtsRegOverview> {
     getEntryPoint(widget.htsRegistration.entryPointId);
     getPretestRecord(widget.personId);
     getHtsRecord(widget.personId);
+    dateofreg =  DateFormat("yyyy/MM/dd").format(widget.htsRegistration.dateOfHivTest);
+
     super.initState();
   }
 
@@ -162,13 +165,10 @@ class HtsOverviewState extends State<HtsRegOverview> {
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)),  onTap: () {
               if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
                 ));
               } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
                 ));
@@ -263,7 +263,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.htsRegistration.dateOfHivTest.toString()),
+                                                                    text: dateofreg),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.date_range, color: Colors.blue),
                                                                     labelText: "Date of Hiv Test",
