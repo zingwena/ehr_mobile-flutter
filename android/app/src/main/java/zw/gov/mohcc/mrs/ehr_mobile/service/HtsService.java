@@ -158,8 +158,13 @@ public class HtsService {
 
     public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {
 
-        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(personId, new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
+        PersonInvestigation personInvestigation = getPersonInvestigation(personId);
         return ehrMobileDatabase.laboratoryInvestigationDao().findByPersonInvestigationId(personInvestigation.getId());
+    }
+
+    public PersonInvestigation getPersonInvestigation(String personId) {
+
+        return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(personId, new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
     }
 
     public Set<TestKit> getTestKitByTestLevel(String laboratoryInvestigationId) {

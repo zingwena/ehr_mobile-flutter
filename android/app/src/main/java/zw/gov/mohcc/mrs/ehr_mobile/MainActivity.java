@@ -34,6 +34,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
@@ -82,6 +83,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PersonQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
@@ -105,8 +107,8 @@ public class MainActivity extends FlutterActivity {
     private EhrMobileDatabase ehrMobileDatabase;
     private VisitService visitService;
     private HtsService htsService;
-    private ArtService artService;
     private TerminologyService terminologyService;
+    private HistoryService historyService;
 
 
     @Override
@@ -120,6 +122,7 @@ public class MainActivity extends FlutterActivity {
         visitService = new VisitService(ehrMobileDatabase);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
+        historyService = new HistoryService(ehrMobileDatabase);
 
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -893,6 +896,25 @@ public class MainActivity extends FlutterActivity {
 
                             }catch (Exception e){
 
+                            }
+                        }
+                        if(methodCall.method.equals("saveSexualHistory")){
+                            try{
+                                SexualHistoryDTO sexualHistoryDTO = gson.fromJson(arguments, SexualHistoryDTO.class);
+                                historyService.saveSexualHistory(sexualHistoryDTO);
+                                result.success(1);
+
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("getSexualHistory")){
+                            try{
+                                String personId = arguments;
+                                result.success(historyService.getSexualHistory(personId));
+
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
 

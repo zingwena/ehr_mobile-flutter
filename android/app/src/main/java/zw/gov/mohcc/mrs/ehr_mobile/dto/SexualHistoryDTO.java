@@ -1,8 +1,16 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
+import java.util.UUID;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
 
 public class SexualHistoryDTO {
+
+    @NonNull
+    private String personId;
 
     private boolean sexuallyActive;
 
@@ -13,6 +21,14 @@ public class SexualHistoryDTO {
     private Integer numberOfSexualPartners;
 
     private Integer numberOfSexualPartnersLastTwelveMonths;
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
 
     public boolean isSexuallyActive() {
         return sexuallyActive;
@@ -52,5 +68,18 @@ public class SexualHistoryDTO {
 
     public void setNumberOfSexualPartnersLastTwelveMonths(Integer numberOfSexualPartnersLastTwelveMonths) {
         this.numberOfSexualPartnersLastTwelveMonths = numberOfSexualPartnersLastTwelveMonths;
+    }
+
+    public SexualHistory getInstance(SexualHistoryDTO dto) {
+        SexualHistory item = new SexualHistory();
+        item.setDate(new Date());
+        item.setNumberOfSexualPartners(dto.getNumberOfSexualPartners());
+        item.setNumberOfSexualPartnersLastTwelveMonths(dto.getNumberOfSexualPartnersLastTwelveMonths());
+        item.setPersonId(dto.getPersonId());
+        item.setSexuallyActive(dto.isSexuallyActive());
+        item.setSexWithFemaleDate(dto.getSexWithFemaleDate());
+        item.setSexWithMaleDate(dto.getSexWithMaleDate());
+        item.setId(UUID.randomUUID().toString());
+        return item;
     }
 }
