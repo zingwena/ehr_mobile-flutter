@@ -14,6 +14,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 public class Art extends BaseEntity{
 
     @ColumnInfo(name = "personId")
+    @NonNull
     private String personId;
 
     @TypeConverters(DateConverter.class)
