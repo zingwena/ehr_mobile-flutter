@@ -48,6 +48,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
@@ -61,6 +62,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.NameIdModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.NameIdSynchModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Pageable;
@@ -75,6 +78,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
@@ -1011,11 +1015,7 @@ public class MainActivity extends FlutterActivity {
 
 
         }});
-
-
-
     }
-
 
     private void pullData(Token token, String url) {
         getSample(token, url + "/api/");
@@ -1040,6 +1040,8 @@ public class MainActivity extends FlutterActivity {
         getArtStatus(token, url + "/api/");
         getArtReasons(token, url + "/api/");
         getArvCombinationregimens(token, url + "/api/");
+        getDisclosureMethods(token, url + "/api/");
+        getTestingPlan(token, url + "/api/");
         getPatients(url);
     }
 
@@ -1061,7 +1063,7 @@ public class MainActivity extends FlutterActivity {
                         maritalStatusList.add(new MaritalStatus(item.getCode(), item.getName()));
                     }
                     if (maritalStatusList != null && !maritalStatusList.isEmpty()) {
-                        saveMaritalStatesToDB(maritalStatusList);
+                        terminologyService.saveMaritalStatesToDB(maritalStatusList);
                     }
                 }
             }
@@ -1137,10 +1139,8 @@ public class MainActivity extends FlutterActivity {
                 }
                 if (facilityList != null && !facilityList.isEmpty()) {
 
-                    saveFacilityToDB(facilityList);
+                    terminologyService.saveFacilityToDB(facilityList);
                 }
-
-
             }
 
             @Override
@@ -1367,7 +1367,7 @@ public class MainActivity extends FlutterActivity {
                         countries.add(new Country(item.getCode(), item.getName()));
                     }
                     if (!countries.isEmpty()) {
-                        saveCountriesToDB(countries);
+                        terminologyService.saveCountriesToDB(countries);
                     }
                 }
             }
@@ -1379,6 +1379,56 @@ public class MainActivity extends FlutterActivity {
         });
 
 
+    }
+
+    public void getDisclosureMethods(Token token, String baseUrl) {
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+
+        Call<NameIdSynchModel> call = service.getDisclosureMethods("Bearer " + token.getId_token());
+        call.enqueue(new Callback<NameIdSynchModel>() {
+            @Override
+            public void onResponse(Call<NameIdSynchModel> call, Response<NameIdSynchModel> response) {
+                List<DisclosureMethod> items = new ArrayList<DisclosureMethod>();
+                if (response.isSuccessful()) {
+                    for (NameIdModel item : response.body().getContent()) {
+                        items.add(new DisclosureMethod(item.getId(), item.getName()));
+                    }
+                    if (!items.isEmpty()) {
+                        terminologyService.saveDisclosureMethod(items);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NameIdSynchModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getTestingPlan(Token token, String baseUrl) {
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+
+        Call<NameIdSynchModel> call = service.getTestPlans("Bearer " + token.getId_token());
+        call.enqueue(new Callback<NameIdSynchModel>() {
+            @Override
+            public void onResponse(Call<NameIdSynchModel> call, Response<NameIdSynchModel> response) {
+                List<TestingPlan> items = new ArrayList<TestingPlan>();
+                if (response.isSuccessful()) {
+                    for (NameIdModel item : response.body().getContent()) {
+                        items.add(new TestingPlan(item.getId(), item.getName()));
+                    }
+                    if (!items.isEmpty()) {
+                        terminologyService.saveTestingPlan(items);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NameIdSynchModel> call, Throwable t) {
+
+            }
+        });
     }
 
     //Phineas
@@ -1552,35 +1602,6 @@ public class MainActivity extends FlutterActivity {
     }
 
 
-    /**
-     * Save to DB methods
-     */
-
-    void saveCountriesToDB(List<Country> countries) {
-
-
-        ehrMobileDatabase.countryDao().insertCountries(countries);
-
-
-        System.out.println("countries from DBBBBBBBBBBBBBB" + ehrMobileDatabase.countryDao().getAllCountries());
-    }
-
-    void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
-
-
-        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
-
-        System.out.println("marital states from DB #################" + ehrMobileDatabase.maritalStateDao().getAllMaritalStates());
-    }
-
-    void saveFacilityToDB(List<Facility> facilities) {
-
-        ehrMobileDatabase.facilityDao().insertFacilities(facilities);
-
-        System.out.println("facilities from DB #################" + ehrMobileDatabase.facilityDao().getAllFacilities());
-    }
-
-
     public void getReligion(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
@@ -1630,6 +1651,8 @@ public class MainActivity extends FlutterActivity {
     public void clearTables() {
 
         ehrMobileDatabase.artRegistrationDao().deleteAll();
+        ehrMobileDatabase.htsScreeningDao().deleteAll();
+        ehrMobileDatabase.sexualHistoryDao().deleteAll();
         ehrMobileDatabase.artInitiationDao().deleteAll();
         ehrMobileDatabase.personInvestigationDao().deletePersonInvestigations();
         ehrMobileDatabase.htsDao().deleteAll();
@@ -1647,6 +1670,8 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.townsDao().deleteAllTowns();
         ehrMobileDatabase.religionDao().deleteReligions();
         ehrMobileDatabase.occupationDao().deleteOccupations();
+        ehrMobileDatabase.disclosureMethodDao().deleteALl();
+        ehrMobileDatabase.testingPlanDao().deleteALl();
         ehrMobileDatabase.nationalityDao().deleteNationalities();
         ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
         ehrMobileDatabase.entryPointDao().deleteEntryPoints();

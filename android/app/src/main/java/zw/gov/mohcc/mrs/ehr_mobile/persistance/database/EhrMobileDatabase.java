@@ -15,11 +15,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
@@ -39,6 +42,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
@@ -55,6 +59,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArvCombinationRegimenDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.DisclosureMethodDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EntryPointDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
@@ -62,6 +67,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsScreeningDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsscreeningDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IndexContactDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IndexTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
@@ -80,6 +87,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SampleDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestingPlanDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TownsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.BloodPressureDao;
@@ -96,6 +104,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.HtsApproachConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.NewTestConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.PrepOptionConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.RelationshipTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
 
 
@@ -115,12 +124,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
-        ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class}, version = 47, exportSchema = false)
-
+        ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
+        IndexTest.class, IndexContact.class}, version = 48, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
-        HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class})
+        HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -221,4 +230,12 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract SexualHistoryDao sexualHistoryDao();
 
     public abstract HtsScreeningDao htsScreeningDao();
+
+    public abstract TestingPlanDao testingPlanDao();
+
+    public abstract DisclosureMethodDao disclosureMethodDao();
+
+    public abstract IndexTestDao indexTestDao();
+
+    public abstract IndexContactDao indexContactDao();
 }

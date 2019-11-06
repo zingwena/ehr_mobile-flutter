@@ -11,14 +11,17 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
+import zw.gov.mohcc.mrs.ehr_mobile.model.NameIdSynchModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 
@@ -102,4 +105,10 @@ public interface DataSyncService {
 
     @GET("arv-combination-regimens")
     Call<TerminologyModel> getArvCombinationRegimen(@Header("Authorization")String token);
+
+    @GET("disclosure-methods")
+    Call<NameIdSynchModel> getDisclosureMethods(@Header("Authorization")String token);
+
+    @GET("testing-plans")
+    Call<NameIdSynchModel> getTestPlans(@Header("Authorization")String token);
 }
