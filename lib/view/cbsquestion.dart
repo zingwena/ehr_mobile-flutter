@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
+import 'package:ehr_mobile/model/sexualhistory.dart';
 
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
@@ -52,10 +53,14 @@ class _CbsQuestion extends State<CbsQuestions> {
   List<PurposeOfTest> _purposeOfTestList= List();
 
   int _hts = 0;
+  int _victim = 0;
   HtsRegistration htsRegistration;
   String sexuallyactive = "";
   String agewhenfirsthadsex;
-  String numberofsexualpartners;
+  int numberOfSexualPartners;
+  int numberofsexualpartnersinpast12months;
+  var selectedMaleDate, selectedFemaleDate;
+  DateTime maledate, femaledate;
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
   String victimofsexualabuse = "";
@@ -114,6 +119,30 @@ class _CbsQuestion extends State<CbsQuestions> {
     });
 
 
+  }
+  Future<Null> _selectMaleDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedMaleDate)
+      setState(() {
+        selectedMaleDate = DateFormat("yyyy/MM/dd").format(picked);
+        maledate = DateFormat("yyyy/MM/dd").parse(selectedMaleDate);
+      });
+  }
+  Future<Null> _selectFemaleDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedFemaleDate)
+      setState(() {
+        selectedFemaleDate = DateFormat("yyyy/MM/dd").format(picked);
+        femaledate = DateFormat("yyyy/MM/dd").parse(selectedFemaleDate);
+      });
   }
 
   @override
@@ -276,17 +305,58 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                     (value) {
                                                                   return value
                                                                       .isEmpty
-                                                                      ? 'Enter Art Number'
+                                                                      ? 'Enter Number of sexual partners'
                                                                       : null;
                                                                 },
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
                                                                             () {
-                                                                         agewhenfirsthadsex  = value;                                           }),
+                                                                              numberOfSexualPartners  = int.parse(value);                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
-                                                                    'Age when client had first sexual intercourse',
+                                                                    'Number of sexual partners',
+                                                                    border:
+                                                                    OutlineInputBorder()),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child:     Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                  vertical:
+                                                                  16.0,
+                                                                  horizontal:
+                                                                  60.0),
+                                                              child:
+                                                              TextFormField(
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter Number of sexual partners'
+                                                                      : null;
+                                                                },
+                                                                onSaved:
+                                                                    (value) =>
+                                                                    setState(
+                                                                            () {
+                                                                          numberOfSexualPartners  = int.parse(value);                                           }),
+                                                                decoration: InputDecoration(
+                                                                    labelText:
+                                                                    'Number of sexual partners in the past 12 months',
                                                                     border:
                                                                     OutlineInputBorder()),
                                                               ),
@@ -324,7 +394,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                     (value) =>
                                                                     setState(
                                                                             () {
-                                                                          numberofsexualpartners  = value;                                           }),
+                                                                          numberofsexualpartnersinpast12months  = int.parse(value);                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'Number of sexual partners in the past 12 months ',
@@ -338,163 +408,66 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       ],
                                                     ),
                                                   ),
-
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:        Row(
+                                                    child:              Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child:  Text("Victim/ Suspected victim of sexual abuse ?"),
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 0.0, horizontal: 30.0),
+                                                              child: TextFormField(
+                                                                controller:
+                                                                TextEditingController(text: selectedMaleDate),
+                                                                decoration: InputDecoration(
+                                                                    labelText: 'Date of Sex with Male ',
+                                                                    border: OutlineInputBorder()),
+                                                              ),
                                                             ),
-                                                            width: 250,
                                                           ),
                                                         ),
-
-
-                                                        Text('YES'),
-                                                        Radio(
-                                                            value: 4,
-                                                            groupValue: _hts,
-                                                            onChanged: _handleHtsChange),
-                                                        Text('NO'),
-                                                        Radio(
-                                                            value: 5,
-                                                            groupValue: _hts,
-                                                            onChanged: _handleHtsChange),
-                                                        Text('REFUSE'),
-                                                        Radio(
-                                                            value: 6,
-                                                            groupValue: _hts,
-                                                            onChanged: _handleHtsChange)
-                                                      ],
-                                                    ),
-                                                  ),
-
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had sex with male ?"),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Checkbox(
-                                                          value:_hadsexwithmale,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithmale=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithmale=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had sex with female ?"),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Checkbox(
-                                                          value:_hadsexwithfemale,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithfemale=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithfemale=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        IconButton(
+                                                            icon: Icon(Icons.calendar_today),
+                                                            color: Colors.blue,
+                                                            onPressed: () {
+                                                              _selectMaleDate(context);
+                                                            })
                                                       ],
                                                     ),
                                                   ),
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
+                                                    child:              Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had Unprotected sex ?"),
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 0.0, horizontal: 30.0),
+                                                              child: TextFormField(
+                                                                controller:
+                                                                TextEditingController(text: selectedFemaleDate),
+                                                                decoration: InputDecoration(
+                                                                    labelText: 'Date of Sex with Female ',
+                                                                    border: OutlineInputBorder()),
+                                                              ),
                                                             ),
-                                                            width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_hadunprotectedsex,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadunprotectedsex=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadunprotectedsex=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        IconButton(
+                                                            icon: Icon(Icons.calendar_today),
+                                                            color: Colors.blue,
+                                                            onPressed: () {
+                                                              _selectFemaleDate(context);
+                                                            })
                                                       ],
                                                     ),
                                                   ),
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:            Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Had sex with sex worker ?"),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Checkbox(
-                                                          value:_hadsexwithsexworker,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithsexworker=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithsexworker=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+
+
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
@@ -514,12 +487,9 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       onPressed: () async {
                                                         if(_formKey.currentState.validate()){
                                                           _formKey.currentState.save();
-                                                       /*   CbsQuestion cbsquestion = new CbsQuestion(sexuallyactive, agewhenfirsthadsex, numberofsexualpartners, victimofsexualabuse, hadsexwithmale, hadsexwithfemale, hadunprotectedsex, hadsexwithsexworker, '', '', '', '', '', );
-                                                          Navigator.push(context,MaterialPageRoute(
-                                                              builder: (context)=> CbsQuestions2(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId, widget.person, cbsquestion)
-                                                          ));
-*/
-                                                        }
+                                                          SexualHistory sexualhistory = SexualHistory(widget.personId, sexuallyactive, maledate, femaledate, numberOfSexualPartners, numberofsexualpartnersinpast12months);
+                                                          print('FFFFFFFFFFFFF HERE IS THE SEXUAL HISTORY >>>>>>>>>>>>'+ sexualhistory.toString());
+                                                             }
 
                                                       },
                                                     ),
@@ -595,19 +565,19 @@ class _CbsQuestion extends State<CbsQuestions> {
         case 3:
           sexuallyactive = 'REFUSE';
           break;
-        case 4:
-          victimofsexualabuse = 'YES';
-          break;
-        case 5:
-          victimofsexualabuse = 'NO';
-          break;
-        case 6:
-          victimofsexualabuse = 'REFUSE';
-          break;
       }
     });
   }
 
+Future<void>saveSexualHistory(SexualHistory sexualHistory) async{
+    var response ;
+    try{
+
+   /*   await htsChannel.invokeMethod(method)*/
+
+} catch(e){
+    }
+}
 
 }
 
