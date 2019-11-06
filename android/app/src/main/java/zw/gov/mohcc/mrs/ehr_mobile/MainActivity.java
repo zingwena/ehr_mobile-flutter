@@ -122,7 +122,7 @@ public class MainActivity extends FlutterActivity {
         visitService = new VisitService(ehrMobileDatabase);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
-        historyService = new HistoryService(ehrMobileDatabase);
+        historyService = new HistoryService(ehrMobileDatabase, htsService);
 
 
         new MethodChannel(getFlutterView(), PATIENTCHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -884,7 +884,7 @@ public class MainActivity extends FlutterActivity {
                         if(methodCall.method.equals("saveHtsScreening")){
                             try{
                                 HtsScreeningDTO htsScreeningDTO = gson.fromJson(arguments, HtsScreeningDTO.class);
-                                historyService.saveHtsScreening(htsScreeningDTO, visitService.getVisit(htsScreeningDTO.getPersonId()).getId());
+                                historyService.saveHtsScreening(htsScreeningDTO, visitService.getCurrentVisit(htsScreeningDTO.getPersonId()));
                                 result.success(1);
                             }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());

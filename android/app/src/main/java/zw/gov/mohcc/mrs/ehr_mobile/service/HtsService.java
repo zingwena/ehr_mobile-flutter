@@ -44,15 +44,16 @@ public class HtsService {
 
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
-        ehrMobileDatabase.htsDao().createHts(hts);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
-        createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
+        String laboratoryInvestigationId = createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
                 visitId, "36069471-adee-11e7-b30f-3372a2d8551e", null));
+        hts.setLaboratoryInvestigationId(laboratoryInvestigationId);
+        ehrMobileDatabase.htsDao().createHts(hts);
         return hts.getId();
     }
 
     @Transaction
-    public void createInvestigation(InvestigationDTO dto) {
+    public String createInvestigation(InvestigationDTO dto) {
 
         if (StringUtils.isBlank(dto.getVisitId())) {
             String visitId = visitService.getCurrentVisit(dto.getPersonId());
@@ -72,6 +73,7 @@ public class HtsService {
         LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, "ZW000A01", personInvestigationId);
         ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
         Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
+        return laboratoryInvestigationId;
     }
 
     /**
@@ -159,6 +161,10 @@ public class HtsService {
             default:
                 throw new IllegalStateException("Illegal parameter passed to method : "+ count);
         }
+    }
+
+    public Hts getHtsByLaboratoryInvestigation(String laboratoryInvestigationId) {
+        return ehrMobileDatabase.htsDao().findByLaboratoryInvestigationId(laboratoryInvestigationId);
     }
 
     public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {

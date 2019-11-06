@@ -6,6 +6,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
+import java.util.Set;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 
@@ -39,4 +40,13 @@ public interface PersonInvestigationDao {
 
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId=:investigationId and resultId=:resultId")
     PersonInvestigation findByPersonIdAndInvestigationIdAndResultId(String personId, String investigationId, String resultId);
+
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and resultId=:negativeHivResult and investigationId in (:hivTests)")
+    PersonInvestigation findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(
+            String personId, String negativeHivResult, Set<String> hivTests);
+
+    /*
+    .findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(patient.getPersonId(),
+                        negativeHivResult, hivTests);
+     */
 }

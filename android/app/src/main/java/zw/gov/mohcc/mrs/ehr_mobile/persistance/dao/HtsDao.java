@@ -46,4 +46,12 @@ public interface HtsDao {
     @Query("SELECT * FROM Hts WHERE visitId =:visitId")
     Hts findCurrentHts(String visitId);
 
+    @Query("SELECT count(*) FROM Hts WHERE personId =:personId")
+    int  countByPersonId(String personId);
+
+    @Query("SELECT h.* FROM Hts h inner join Visit v on v.personId = h.personId WHERE h.personId=:personId Order By v.visitStartDate Desc limit 0,1")
+    Hts findLatestHts(String personId);
+
+    @Query("SELECT * FROM Hts Where laboratoryInvestigationId=:laboratoryInvestigationId")
+    Hts findByLaboratoryInvestigationId(String laboratoryInvestigationId);
 }
