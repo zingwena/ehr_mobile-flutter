@@ -131,7 +131,7 @@ public class MainActivity extends FlutterActivity {
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
-        historyService = new HistoryService(ehrMobileDatabase);
+        historyService = new HistoryService(ehrMobileDatabase, htsService);
 
 
 
@@ -892,6 +892,7 @@ public class MainActivity extends FlutterActivity {
                             }
                         }
                         if(methodCall.method.equals("saveHtsScreening")){
+                            Log.i(TAG, "Save hts method in Android"+ arguments);
                             try{
                                 HtsScreeningDTO htsScreeningDTO = gson.fromJson(arguments, HtsScreeningDTO.class);
                                 historyService.saveHtsScreening(htsScreeningDTO, visitService.getVisit(htsScreeningDTO.getPersonId()).getId());

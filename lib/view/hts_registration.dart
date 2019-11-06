@@ -69,7 +69,6 @@ class _Registration extends State<Registration> {
     visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
-    print('SSSSSSSSSSSSSSSSSSSSSSSSS' + visitId);
     getFacilities();
     getHtsRecord(patientId);
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -108,6 +107,7 @@ class _Registration extends State<Registration> {
         date = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
+
 
   void _handleHtsTypeChange(int value) {
     print("hts value : $value");

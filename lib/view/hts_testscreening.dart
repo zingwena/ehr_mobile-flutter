@@ -217,7 +217,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   }
 
 Future<dynamic> getTestKitsByCount(int count) async {
-  print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTKITS"+ labInvestId);
 
   try {
       String response = await htsChannel.invokeMethod('getTestKitsByLevel', labInvestId);
@@ -230,7 +229,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
          });
 
        });
-      print("*********sample from android"+_testkitslist.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -241,7 +239,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
         test_name = response;
-        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH TEST NAME TEST NAME"+ test_name);
 
       });
 
@@ -335,22 +332,15 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       switch (_result) {
         case 1:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 1 chosen");
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + _entryPointList.toString());
-
           _entryPointList.forEach((e) {
             if (e.name == "negative " || e.name == "Negative" || e.name == "NEGATIVE"){
               result.code = e.code;
               result.name = e.name;
-              print(">>>>>>>>>>>>>>>>>>>>>>>>> here is the result clicked in negative >>>>"+e.name );
-
             }
           });
           break;
         
         case 2:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 2 chosen");
-
           _entryPointList.forEach((e){
         if(e.name == "positive " || e.name == "Positive" || e.name == "POSITIVE"){
           result.code = e.code;
@@ -359,7 +349,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
       });
       break;
         case 3:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 3 chosen");
 
           _entryPointList.forEach((e){
             if(e.name == "Inconclusive " || e.name == "Indeterminate" || e.name == "INDERTERMINATE"){
