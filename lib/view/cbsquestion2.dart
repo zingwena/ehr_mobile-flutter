@@ -5,7 +5,7 @@ import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
-import 'package:ehr_mobile/view/cbs_overview.dart';
+import 'package:ehr_mobile/view/sexual_history_overview.dart';
 
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';

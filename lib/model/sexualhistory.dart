@@ -16,7 +16,7 @@ class SexualHistory{
    this.personId = personId;
    this.sexuallyActive = sexuallyActive;
    this.sexWithMaleDate = sexwithMaleDate;
-   this.sexWithFemaleDate = sexWithFemaleDate;
+   this.sexWithFemaleDate = sexwithFemale;
    this.numberOfSexualPartners = numberofsexualpartners;
    this.numberOfSexualPartnersLastTwelveMonths = numberofsexualpartnerslasttwelveMonths;
  }

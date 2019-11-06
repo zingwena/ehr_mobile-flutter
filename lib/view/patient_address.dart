@@ -136,8 +136,6 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                   vertical: 16.0,
                                                                   horizontal: 60.0),
                                                               child: TextFormField(
-                                                                validator: (value) {
-                                                                  return value.isEmpty ? 'Enter some text' : null; },
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_1 = value; }),
                                                                   keyboardType: TextInputType.number,
@@ -160,9 +158,6 @@ class _PatientAddressState extends State<PatientAddress> {
                                                               padding: EdgeInsets.symmetric(
                                                                   vertical: 16.0, horizontal: 60.0),
                                                               child: TextFormField(
-                                                                validator: (value) {
-                                                                  return value.isEmpty ? 'Enter some text' : null;
-                                                                },
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_2 = value;
                                                                 }),

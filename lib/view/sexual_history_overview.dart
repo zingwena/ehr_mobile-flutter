@@ -345,15 +345,6 @@ class _SexualHistoryOverview extends State<SexualHistoryOverview> {
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () {},
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ),
 
                                             ],
                                           )

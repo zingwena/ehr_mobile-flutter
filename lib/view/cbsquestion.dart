@@ -19,6 +19,7 @@ import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/sexual_history_overview.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
@@ -301,13 +302,6 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                      .isEmpty
-                                                                      ? 'Enter Number of sexual partners'
-                                                                      : null;
-                                                                },
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
@@ -342,54 +336,6 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                      .isEmpty
-                                                                      ? 'Enter Number of sexual partners'
-                                                                      : null;
-                                                                },
-                                                                onSaved:
-                                                                    (value) =>
-                                                                    setState(
-                                                                            () {
-                                                                          numberOfSexualPartners  = int.parse(value);                                           }),
-                                                                decoration: InputDecoration(
-                                                                    labelText:
-                                                                    'Number of sexual partners in the past 12 months',
-                                                                    border:
-                                                                    OutlineInputBorder()),
-                                                              ),
-                                                            ),
-                                                            width: 100,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:     Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical:
-                                                                  16.0,
-                                                                  horizontal:
-                                                                  60.0),
-                                                              child:
-                                                              TextFormField(
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                      .isEmpty
-                                                                      ? 'Enter Art Number'
-                                                                      : null;
-                                                                },
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
@@ -488,8 +434,10 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                         if(_formKey.currentState.validate()){
                                                           _formKey.currentState.save();
                                                           SexualHistory sexualhistory = SexualHistory(widget.personId, sexuallyactive, maledate, femaledate, numberOfSexualPartners, numberofsexualpartnersinpast12months);
-                                                          print('FFFFFFFFFFFFF HERE IS THE SEXUAL HISTORY >>>>>>>>>>>>'+ sexualhistory.toString());
-                                                             }
+                                                          saveSexualHistory(sexualhistory);
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> SexualHistoryOverview(widget.person, sexualhistory, widget.htsid, widget.visitId, widget.personId)));
+
+                                                        }
 
                                                       },
                                                     ),
@@ -572,8 +520,8 @@ class _CbsQuestion extends State<CbsQuestions> {
 Future<void>saveSexualHistory(SexualHistory sexualHistory) async{
     var response ;
     try{
+   await htsChannel.invokeMethod('saveSexualHistory', jsonEncode(sexualHistory));
 
-   /*   await htsChannel.invokeMethod(method)*/
 
 } catch(e){
     }

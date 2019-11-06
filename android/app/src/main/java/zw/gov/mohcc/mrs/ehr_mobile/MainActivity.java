@@ -72,6 +72,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
@@ -911,6 +912,7 @@ public class MainActivity extends FlutterActivity {
                             try{
                                 SexualHistoryDTO sexualHistoryDTO = gson.fromJson(arguments, SexualHistoryDTO.class);
                                 historyService.saveSexualHistory(sexualHistoryDTO);
+                               // SexualHistory sexualHistory = historyService.getSexualHistory(sexualHistoryDTO.getPersonId());
                                 result.success(1);
 
                             }catch (Exception e){

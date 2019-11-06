@@ -385,11 +385,7 @@ class _Registration extends State<Registration> {
                                                             if (_formIsValid) {
                                                               HtsRegistration htsDetails = HtsRegistration(widget.patientId,
                                                                   visitId, htsType, date, _currentEntryPoint);
-                                                              print('*************************htsType ${htsDetails.toString()}');
-
-
                                                               await registration(htsDetails);
-
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id, visitId, widget.person)));
 
                                                             }
