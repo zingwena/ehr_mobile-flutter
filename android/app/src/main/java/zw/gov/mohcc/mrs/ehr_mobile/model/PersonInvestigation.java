@@ -10,6 +10,7 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 @Entity
 public class PersonInvestigation extends BaseEntity {
