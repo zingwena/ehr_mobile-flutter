@@ -131,6 +131,7 @@ public class MainActivity extends FlutterActivity {
         visitService = new VisitService(ehrMobileDatabase);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
+        indexTestingService = new IndexTestingService(ehrMobileDatabase);
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
