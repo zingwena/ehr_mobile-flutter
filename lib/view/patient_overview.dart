@@ -4,9 +4,9 @@ import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
+import 'package:ehr_mobile/view/hts_screening.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -20,7 +20,6 @@ import 'hts_registration.dart';
 
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
-
 class Overview extends StatefulWidget {
   final Person patient;
 
@@ -446,6 +445,13 @@ class OverviewState extends State<Overview> {
                         _patient.id, visitId, _patient)),
           ),
           ),
+          new RoundedButton(text: "HTS SCREENING", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Hts_Screening(widget.patient.id, htsId, null, visitId, _patient)),
+          ),
+          ),
           new RoundedButton(text: "HTS",  onTap: () {
             if(htsRegistration == null ){
                 print('bbbbbbbbbbbbbb htsreg null ');
@@ -470,14 +476,6 @@ class OverviewState extends State<Overview> {
         ArtReg(_patient.id, visitId, _patient)),
     ),),
 
-
-          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
-          ),
         ],
       ),
     );

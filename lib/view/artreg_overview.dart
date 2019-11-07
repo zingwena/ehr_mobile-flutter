@@ -201,7 +201,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: dateOfTest),
+                                                                    text: widget.artRegistration.dateOfHivTest.toString()),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.date_range, color: Colors.blue),
                                                                     labelText: "Date of Hiv Test",
@@ -216,7 +216,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        dateOfEnrollment)),
+                                                                        widget.artRegistration.dateOfEnrolmentIntoCare.toString())),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(Icons.date_range, color: Colors.blue),
                                                                     labelText: "Date of enrollment into care",

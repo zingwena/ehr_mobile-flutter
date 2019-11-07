@@ -59,6 +59,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   var dateOfTest;
+  String indexTestId;
 
   @override
   void initState() {
@@ -124,6 +125,20 @@ class PostTestOverviewState extends State<PostTestOverview> {
               MaterialPageRoute(
                   builder: (context) =>
                       ArtReg(widget.personId, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)),
             ))
 
           ],
@@ -236,7 +251,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                      Container(
+                                                 /*     Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         child: RaisedButton(
@@ -257,11 +272,11 @@ class PostTestOverviewState extends State<PostTestOverview> {
 
                                                           },
                                                         ),
-                                                      ),
+                                                      ),*/
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                      Container(
+                                                   /*   Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         child: RaisedButton(
@@ -281,11 +296,11 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                             ));
                                                           },
                                                         ),
-                                                      ),
+                                                      ),*/
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                      Container(
+                                                     /* Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         child: RaisedButton(
@@ -305,7 +320,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                             ));
                                                           },
                                                         ),
-                                                      ),
+                                                      ),*/
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
@@ -358,10 +373,10 @@ class PostTestOverviewState extends State<PostTestOverview> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            IndexTest indexTest = new IndexTest(widget.personId, widget.postTest.datePostTestCounselled);
-
+            IndexTest indexTest = IndexTest(widget.personId, widget.postTest.datePostTestCounselled);
+            saveIndexTest(indexTest);
             Navigator.push(context,MaterialPageRoute(
-                builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId)
+                builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId, indexTestId)
             ));
           },
         ),
@@ -375,8 +390,16 @@ class PostTestOverviewState extends State<PostTestOverview> {
 
   }
 
-  Future<void>saveIndexTest()async{
+  Future<void>saveIndexTest(IndexTest indexTest)async{
+    var response ;
+    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX '+ indexTest.toString());
     try{
+      response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
+      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
+      setState(() {
+        indexTestId = response;
+
+      });
 
     }catch(e){
 

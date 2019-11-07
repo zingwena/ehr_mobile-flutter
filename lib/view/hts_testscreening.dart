@@ -181,7 +181,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
-        print("HHHHHHHHHHHHHHHHHHH results from android"+ _dropDownListEntryPoints.toString());
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
@@ -277,14 +276,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
 
       htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
     });
 
@@ -693,7 +690,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
     @override
   Widget build(BuildContext context) {
     var list=this._testkitslist ;
-    print("+++++++++++  $list");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -734,12 +730,10 @@ Future<dynamic> getTestKitsByCount(int count) async {
             )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS"), onTap: () {
               if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
                 ));
               } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
 
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
@@ -783,14 +777,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;
-    print(">>>>>>>>>>>>>>>>>> SAVE LAB INVESTIGATION TEST"+ laboratoryInvestTest.toString());
     var labInvestTestResponse;
     try {
 
       String jsonLabInvestTest = jsonEncode(laboratoryInvestTest);
       labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonLabInvestTest);
       setState(() {
-        print('###################'+ labInvestTestResponse);
         labInvestTestId = labInvestTestResponse;
 
       });

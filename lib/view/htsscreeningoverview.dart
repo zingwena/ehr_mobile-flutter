@@ -402,6 +402,27 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                 ),
                                               ),
                                               Expanded(child: Container()),
+                                               Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                        child: RaisedButton(
+                                                          elevation: 4.0,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.blue,
+                                                          padding: const EdgeInsets.all(20.0),
+                                                          child: Text(
+                                                            "Proceed to HTS Registration",
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                          onPressed: () {
+
+                                                            Navigator.push(context,MaterialPageRoute(
+                                                                builder: (context)=> Registration(visitId, _patient.id, _patient)
+                                                            ));
+                                                          },
+                                                        ),
+                                                      ),
                                               /*  Padding(
                                               padding: const EdgeInsets.only(
                                                   bottom: 16.0, top: 8.0),

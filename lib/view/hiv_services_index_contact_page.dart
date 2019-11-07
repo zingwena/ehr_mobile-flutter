@@ -22,8 +22,8 @@ class HIVServicesIndexContactList extends StatefulWidget {
   final String personId;
   final String visitId;
   final Person person;
-
-  HIVServicesIndexContactList(this.person, this.visitId, this.htsId, this.htsRegistration, this.personId);
+  final String indexTestId;
+  HIVServicesIndexContactList(this.person, this.visitId, this.htsId, this.htsRegistration, this.personId, this.indexTestId);
   @override
   HIVServicesIndexContactListState createState() {
     return new HIVServicesIndexContactListState();
@@ -188,7 +188,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                                 ),
                                                                 onPressed: () => Navigator.push(
                                                                   context,
-                                                                  MaterialPageRoute(builder: (context) => SearchPatientIndex()),
+                                                                  MaterialPageRoute(builder: (context) => SearchPatientIndex(widget.indexTestId)),
                                                                 ),
                                                               ),
                                                             ),

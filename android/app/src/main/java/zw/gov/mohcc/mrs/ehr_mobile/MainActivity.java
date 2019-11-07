@@ -34,6 +34,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClie
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexTestDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
@@ -54,6 +55,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
@@ -91,6 +93,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
@@ -114,6 +117,7 @@ public class MainActivity extends FlutterActivity {
     private HtsService htsService;
     private TerminologyService terminologyService;
     private HistoryService historyService;
+    private IndexTestingService indexTestingService;
 
 
     @Override
@@ -929,6 +933,19 @@ public class MainActivity extends FlutterActivity {
                                 result.success(historyService.getSexualHistory(personId));
 
                             } catch (Exception e) {
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("saveIndexTest")){
+                            try{
+                                System.out.println("ARGUMENTS FROM FLUTTER IN INDEX"+ arguments);
+                                IndexTest indexTest = gson.fromJson(arguments, IndexTest.class);
+                                System.out.println("RRRRRRRRRRRRRRRRRR INDEX TEST "+ indexTest.toString());
+                               String indexTestId =  indexTestingService.createIndexTest(indexTest);
+                               Log.i(TAG, "HHHHHHHHHHHHHHHHHHHHHH INDEX TEST ID" + indexTestId);
+                                result.success(indexTestId);
+
+                            }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }

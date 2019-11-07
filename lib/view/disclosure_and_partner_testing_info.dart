@@ -1,3 +1,5 @@
+import 'package:ehr_mobile/model/indexcontact.dart';
+import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
@@ -20,6 +22,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
 
 class PatientIndexHivInfo extends StatefulWidget {
+
+  IndexContact indexcontact;
+
+  PatientIndexHivInfo(this.indexcontact);
   @override
   State createState() {
     return _PatientIndexHivInfo();
@@ -32,6 +38,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
   var selectedDate;
   DateTime date;
   int _options = 0;
+  bool fear = false;
   String options = "";
 
 
@@ -113,10 +120,10 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
 
       switch (_options) {
         case 1:
-          options = "Yes";
+          fear = true;
           break;
         case 2:
-          options = "No";
+          fear = false;
           break;
       }
     });
@@ -469,7 +476,14 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                       Icon(Icons.save, color: Colors.white, ),
                                                                     ],
                                                                   ),
-                                                                  onPressed: () {}
+                                                                  onPressed: () {
+                                                               /*   IndexContact indexcontact = IndexContact(widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
+                                                                  , widget.indexcontact.dateOfHivStatus, fear, _currentDisclosurePlanStatus, _currentTestingPlanStatus)
+
+                                                                  IndexContact(String indexTestId, String personId, String relation, String hivStatus, DateTime dateofHivstatus,
+                                                                      bool fearOfIpv, String disclosureMethodPlanId, String testingPlanId, bool disclosureStatus, String disclosureMethodId)*/
+
+                                                                  }
                                                               ),
                                                             ),
                                                           ),

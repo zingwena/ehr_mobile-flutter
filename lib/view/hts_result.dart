@@ -113,7 +113,6 @@ class _Hts_Result  extends State<Hts_Result > {
           });
         }
       });
-      print("HERE IS THE LIST OF LAB INVESTIGATIONS"+ _entryPointList.toString());
 
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -122,13 +121,15 @@ class _Hts_Result  extends State<Hts_Result > {
   Future<dynamic>getTestName()async{
     try{
       String response = await htsChannel.invokeMethod('getTestName', widget.labInvestId);
+      print('');
       setState(() {
         test_name = response;
-        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH TEST NAME TEST NAME IN RESULT"+ test_name);
 
       });
 
     }catch(e){
+      print('--------------------Something went wrong  $e');
+
 
     }
   }
@@ -149,14 +150,12 @@ class _Hts_Result  extends State<Hts_Result > {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
 
       htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
     });
 
@@ -561,7 +560,6 @@ class _Hts_Result  extends State<Hts_Result > {
   }
   Future<void> registration(HtsRegistration htsRegistration) async {
     String id;
-    print('*************************htsType ${htsRegistration.toString()}');
     try {
       id = await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
       hts_id = id;
@@ -572,7 +570,6 @@ class _Hts_Result  extends State<Hts_Result > {
           patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
       await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
 
-      print('---------------------saved file id  $id');
     } catch (e) {
       print('--------------something went wrong  $e');
     }
@@ -581,7 +578,6 @@ class _Hts_Result  extends State<Hts_Result > {
     String testkitId;
     try {
       testkitId = await htsChannel.invokeMethod('getTestKit',labInvestId);
-     print('TEST KIT HERE '+ testkit);
     } catch (e) {
       print('--------------something went wrong  $e');
     }
@@ -593,7 +589,7 @@ class _Hts_Result  extends State<Hts_Result > {
     String response;
     try {
       response = await htsChannel.invokeMethod('getFinalResult',labInvestId);
-      print('Final Result here >>>>>>>>>> '+ response);
+
     } catch (e) {
       print('--------------something went wrong  $e');
     }
@@ -611,7 +607,6 @@ class _Hts_Result  extends State<Hts_Result > {
     String starttime;
     try {
       starttime = await htsChannel.invokeMethod('getStartTime',labInvestId);
-      print('start time HERE '+ starttime);
     } catch (e) {
       print('--------------something went wrong  $e');
     }
@@ -623,7 +618,6 @@ class _Hts_Result  extends State<Hts_Result > {
     String endtime;
     try {
       endtime = await htsChannel.invokeMethod('getStartTime',labInvestId);
-      print('start time HERE '+ endtime);
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
