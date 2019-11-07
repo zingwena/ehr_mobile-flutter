@@ -15,6 +15,8 @@ import 'patient_overview.dart';
 import 'reception_vitals.dart';
 
 class SearchPatientIndex extends StatefulWidget {
+  String indexTestId;
+  SearchPatientIndex(this.indexTestId);
   _SearchPatientState createState() => _SearchPatientState();
 }
 
@@ -279,7 +281,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PatientIndexOverview(patient)));
+                            builder: (context) => PatientIndexOverview(patient, widget.indexTestId)));
                   },
                 );
               }).toList(),

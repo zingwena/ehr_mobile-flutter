@@ -20,6 +20,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
 
 class PatientIndexContactDetails extends StatefulWidget {
+  String indexTestId;
+  PatientIndexContactDetails(this.indexTestId);
   @override
   State createState() {
     return _PatientIndexContactDetails();
@@ -379,9 +381,12 @@ class _PatientIndexContactDetails extends State<PatientIndexContactDetails> with
                                                                     ],
                                                                   ),
                                                                  // onPressed: () {}
-                                                                  onPressed: () => Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(builder: (context) => HivInformation()),),
+                                                                  onPressed: () {
+                                                               /*     Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(builder: (context) => HivInformation(widget.indexTestId, )),),*/
+
+                              }
                                                               ),
                                                             ),
                                                           ),

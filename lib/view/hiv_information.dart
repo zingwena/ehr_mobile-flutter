@@ -1,3 +1,5 @@
+import 'package:ehr_mobile/model/indexcontact.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
@@ -16,6 +18,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
 
 class HivInformation extends StatefulWidget {
+  String indexId;
+  Person person;
+  HivInformation(this.indexId, this.person);
 
   @override
   State createState() {
@@ -86,19 +91,19 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
 
       switch (_relation) {
         case 1:
-          relations = "Yes";
+          relations = "CHILD";
           break;
         case 2:
-          relations = "No";
+          relations = "PARENT";
           break;
         case 3:
-          relations = "Not Known";
+          relations = "SPOUSE";
           break;
         case 4:
-          relations = "Not Known";
+          relations = "SIBLING";
           break;
         case 5:
-          relations = "Not Known";
+          relations = "SEXUAL PARTNER";
           break;
       }
     });
@@ -130,6 +135,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
+
       });
   }
 
@@ -499,9 +506,13 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                     ],
                                                                   ),
                                                                   //onPressed: () {}
-                                                                  onPressed: () => Navigator.push(
-                                                                  context,
-                                                                    MaterialPageRoute(builder: (context) => PatientIndexHivInfo()),),
+                                                                  onPressed: () {
+                                                                IndexContact indexcontact = new IndexContact(widget.indexId, widget.person.id, relations, result, date, null, null, null, null, null);
+                                                                    Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact)),);
+
+                                                                }
                                                               ),
                                                             ),
                                                           ),

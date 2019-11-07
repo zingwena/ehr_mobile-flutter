@@ -364,7 +364,7 @@ class _RegisterIndexPatient extends State<RegisterIndexPatient> with TickerProvi
                                                                  // onPressed: () {}
                                                                   onPressed: () => Navigator.push(
                                                                   context,
-                                                                  MaterialPageRoute(builder: (context) => PatientIndexContactDetails()),),
+                                                                  MaterialPageRoute(builder: (context) => PatientIndexContactDetails('')),),
                                                               ),
                                                             ),
                                                           ),
