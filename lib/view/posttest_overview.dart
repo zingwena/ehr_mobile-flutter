@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -33,8 +34,9 @@ class PostTestOverview extends StatefulWidget {
   final String visitId;
   final Person person;
   final String htsId;
+  final bool consenttoIndex;
 
-  PostTestOverview(this.postTest, this.personId, this.visitId, this.person, this.htsId);
+  PostTestOverview(this.postTest, this.personId, this.visitId, this.person, this.htsId, this.consenttoIndex);
 
   @override
   State<StatefulWidget> createState() {
@@ -56,10 +58,11 @@ class PostTestOverviewState extends State<PostTestOverview> {
 
   bool showInput = true;
   bool showInputTabOptions = true;
+  var dateOfTest;
 
   @override
   void initState() {
-
+    dateOfTest = DateFormat("yyyy/MM/dd").format(widget.postTest.datePostTestCounselled);
     print(_patient.toString());
     //  getEntryPoint(widget.htsRegistration.entryPointId);
     super.initState();
@@ -204,7 +207,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.postTest.datePostTestCounselled.toIso8601String()),
+                                                                    text: dateOfTest),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.date_range, color: Colors.blue),
                                                                     labelText: "Date Post Counselled",
@@ -306,28 +309,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                      Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Index Testing",
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          onPressed: () {
-
-                                                            Navigator.push(context,MaterialPageRoute(
-                                                                builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId)
-                                                            ));
-                                                          },
-                                                        ),
-                                                      )
-
+                                                      _IndexButton()
                                       ],
                                                   ),
                                                 ),
@@ -359,30 +341,47 @@ class PostTestOverviewState extends State<PostTestOverview> {
     );
   }
 
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
+  Widget _IndexButton() {
 
-          new RoundedButton(text: "ART Registration", selected: true,/* onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Registration(_patient.id)),
-          ),*/),
-          new RoundedButton(text: "ART Initiation", onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Art_Initiation(widget.personId, widget.visitId
-                    )),
+    if(widget.consenttoIndex == true){
+      return   Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+        child: RaisedButton(
+          elevation: 4.0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0)),
+          color: Colors.blue,
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "Index Testing",
+            style: TextStyle(color: Colors.white),
           ),
-          ),
-          new RoundedButton(text: "Close",)
-        ],
-      ),
-    );
+          onPressed: () {
+            IndexTest indexTest = new IndexTest(widget.personId, widget.postTest.datePostTestCounselled);
+
+            Navigator.push(context,MaterialPageRoute(
+                builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId)
+            ));
+          },
+        ),
+      );
+
+    }else{
+      return SizedBox(
+        height: 10.0,
+      );
+    }
+
+  }
+
+  Future<void>saveIndexTest()async{
+    try{
+
+    }catch(e){
+
+    }
+
   }
 
 }

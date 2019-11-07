@@ -34,6 +34,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   String options = "";
   int _option = 0;
   String option = "";
+  int _result = 0;
+  String result = "";
 
 
   @override
@@ -56,6 +58,24 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
           break;
         case 3:
           options = "Not Known";
+          break;
+      }
+    });
+  }
+
+  void _handleResultChange(int value) {
+    setState(() {
+      _result = value;
+
+      switch (_result) {
+        case 1:
+          result = "POSITIVE";
+          break;
+        case 2:
+          result = "NEGATIVE";
+          break;
+        case 3:
+          result = "NOT KNOWN";
           break;
       }
     });
@@ -268,68 +288,57 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                       Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                        child: Row(
+                                                        child:                                Row(
                                                           children: <Widget>[
                                                             Expanded(
                                                               child: SizedBox(
                                                                 child: Padding(
-                                                                  padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
-                                                                  child: Text('Select Relation'),
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: Text(
+                                                                    'Relation',
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey.shade600,
+                                                                      fontSize: 18,
+                                                                      fontWeight: FontWeight.w500,
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                                width: 100,
+                                                                width: 250,
                                                               ),
                                                             ),
-                                                            Text('CHILD',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),),
+                                                            Text('CHILD'),
                                                             Radio(
                                                                 value: 1,
-                                                                groupValue: _options,
+                                                                groupValue: _relation,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleRelationChange),
-                                                            Text('PARENT',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('PARENT'),
                                                             Radio(
                                                                 value: 2,
-                                                                groupValue: _options,
+                                                                groupValue: _relation,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleRelationChange),
-                                                            Text('SPOUSE',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('SPOUSE'),
                                                             Radio(
                                                                 value: 3,
-                                                                groupValue: _options,
+                                                                groupValue: _relation,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleRelationChange),
-                                                            Text('SIBLING',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('SIBLING'),
                                                             Radio(
                                                                 value: 4,
-                                                                groupValue: _options,
+                                                                groupValue: _relation,
                                                                 activeColor: Colors.blue,
-                                                                onChanged: _handleOptionsChange),
-                                                            Text('SEXUAL_PARTNER',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                                onChanged: _handleRelationChange),
+                                                            Text('SEXUAL PARTNER'),
                                                             Radio(
-                                                                value: 4,
-                                                                groupValue: _options,
+                                                                value: 5,
+                                                                groupValue: _relation,
                                                                 activeColor: Colors.blue,
-                                                                onChanged: _handleOptionsChange)
+                                                                onChanged: _handleRelationChange),
                                                           ],
                                                         ),
+
                                                       ),
 
                                                       SizedBox(
@@ -442,9 +451,9 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                               ),),
                                                             Radio(
                                                                 value: 1,
-                                                                groupValue: _option,
+                                                                groupValue: _options,
                                                                 activeColor: Colors.blue,
-                                                                onChanged: _handleOptionChange),
+                                                                onChanged: _handleResultChange),
                                                             Text('Negative',
                                                               style: TextStyle(
                                                                 color: Colors.grey.shade500,
@@ -452,9 +461,9 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                             ),
                                                             Radio(
                                                                 value: 2,
-                                                                groupValue: _option,
+                                                                groupValue: _options,
                                                                 activeColor: Colors.blue,
-                                                                onChanged: _handleOptionsChange),
+                                                                onChanged: _handleResultChange),
                                                             Text('Not Known',
                                                               style: TextStyle(
                                                                 color: Colors.grey.shade500,
@@ -462,9 +471,9 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                             ),
                                                             Radio(
                                                                 value: 3,
-                                                                groupValue: _option,
+                                                                groupValue: _options,
                                                                 activeColor: Colors.blue,
-                                                                onChanged: _handleOptionChange)
+                                                                onChanged: _handleResultChange)
                                                           ],
                                                         ),
                                                       ),

@@ -38,6 +38,8 @@ class _PatientPostTest extends State<PatientPostTest> {
   String resultReceived="NO";
   bool _postTestCounselled = false;
   String postTestCounselled = "NO";
+  bool _consenttoindex = false;
+  String consenttoindex = "NO";
   HtsRegistration htsRegistration;
 
   @override
@@ -218,14 +220,8 @@ class _PatientPostTest extends State<PatientPostTest> {
                     ],
                   ),
                   SizedBox(
-                    height: 20.0,
-                  ),
-
-                  SizedBox(
                     height: 10.0,
                   ),
-
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -282,12 +278,12 @@ class _PatientPostTest extends State<PatientPostTest> {
                     ],
                   ),
                   SizedBox(
-                    height: 35.0,
+                    height: 10.0,
                   ),
-
-
-
-
+                  getIndexQuestion(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
                   Container(
                     width: double.infinity,
                     child: RaisedButton(
@@ -304,7 +300,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                         PostTest postTest = new PostTest(widget.htsId, date, true, null, widget.result, false);
                         insertPostTest(postTest);
                         Navigator.push(context,MaterialPageRoute(
-                            builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId)
+                            builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId, _consenttoindex)
                         ));
                       },
                     ),
@@ -314,9 +310,36 @@ class _PatientPostTest extends State<PatientPostTest> {
         ),
       ),
     );
+
   }
 
+  Widget getIndexQuestion(){
+    if(widget.result == 'POSITIVE' || widget.result == 'Positive' || widget.result == 'positive'){
+      return  Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text("Consent to Index testing"),
+          Checkbox(
+            value:_consenttoindex,
+            onChanged: (bool value) {
+              setState(() {
+                _consenttoindex=value;
+              });
+              if(value) {
+                setState(() {
+                  consenttoindex="YES";
+                });
+              }
+            },
+          ),
+        ],
+      );
+    } else {
+      return SizedBox(
+        height: 10.0,
+      );
+    }
 
-
+  }
 
 }

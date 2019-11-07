@@ -12,9 +12,6 @@ class HtsRegistration {
 
   HtsRegistration(this.personId, this.visitId, this.htsType, this.dateOfHivTest,this.entryPointId);
 
-
-
-
   factory HtsRegistration.fromJson(Map<String, dynamic> json) => _$HtsRegistrationFromJson(json);
 
   Map<String, dynamic> toJson() => _$HtsRegistrationToJson(this);
