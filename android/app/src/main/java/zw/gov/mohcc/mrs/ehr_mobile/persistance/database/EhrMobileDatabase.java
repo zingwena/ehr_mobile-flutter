@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import zw.gov.mohcc.mrs.ehr_mobile.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
@@ -66,7 +66,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsScreeningDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsscreeningDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IndexContactDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IndexTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
@@ -125,7 +124,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
-        IndexTest.class, IndexContact.class}, version = 48, exportSchema = false)
+        IndexTest.class, IndexContact.class}, version = 49, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -207,7 +206,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract HtsDao htsDao();
 
     public abstract ResultDao resultDao();
-    public abstract HtsscreeningDao htsscreeningDao();
 
     public abstract LaboratoryInvestigationTestDao labInvestTestdao();
 

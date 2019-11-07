@@ -587,6 +587,9 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                   IndexContact indexcontact = IndexContact(widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
                                                                   , widget.indexcontact.dateOfHivStatus, fear, _currentReligion,_currentTestingPlanStatus,disclosed_status, _currentReligion  );
                                                                   saveIndexContact(indexcontact);
+                                                                 /* Navigator.push(context,MaterialPageRoute(
+                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId, indexTestId)
+                                                                  ));*/
                                                                   }
                                                               ),
                                                             ),

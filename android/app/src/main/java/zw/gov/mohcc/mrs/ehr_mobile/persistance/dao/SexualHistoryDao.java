@@ -8,7 +8,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
 

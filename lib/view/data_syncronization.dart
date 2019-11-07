@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/token.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -17,7 +19,10 @@ class _DataSyncronizationState extends State<DataSyncronization> {
   static const MethodChannel platform = MethodChannel('Authentication');
   Token token;
 
-  String url, username, password;
+  String url;
+  String ipAndPort;
+  String username;
+  String password;
   final _key = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -89,7 +94,8 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                   },
                   onSaved: (value) {
                     setState(() {
-                      url = value;
+                      ipAndPort=value;
+                      url='http://$ipAndPort';
                     });
                   },
                   decoration: InputDecoration(
@@ -203,12 +209,12 @@ class _DataSyncronizationState extends State<DataSyncronization> {
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON.
       token = Token.fromJson(json.decode(response.body));
-
+      await storeString(AUTH_TOKEN, token.id_token);
+      await storeString(SERVER_IP, ehr_url);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
       String result =
           await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
-
       print("Response =================" + result.toString());
 
       await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
