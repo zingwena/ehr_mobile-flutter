@@ -236,7 +236,8 @@ class _EditDemographicsState extends State<EditDemographics> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Continue Patient Registration"),
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(
             child: Padding(
@@ -244,6 +245,11 @@ class _EditDemographicsState extends State<EditDemographics> {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("Continue Patient Registration", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
                   _buildButtonsRow(),
                   Expanded(
                     child: new Card(
@@ -287,6 +293,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           width: double.infinity,
                                                           padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint:Text("Self Identified Gender"),
                                                             iconEnabledColor: Colors.black,
@@ -325,6 +332,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Marital Status"),
                                                             iconEnabledColor: Colors.black,
@@ -362,6 +370,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Education Level"),
                                                             iconEnabledColor: Colors.black,
@@ -399,6 +408,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Occupation"),
                                                             iconEnabledColor: Colors.black,
@@ -436,6 +446,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Religion"),
                                                             iconEnabledColor: Colors.black,
@@ -474,6 +485,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Nationality"),
                                                             iconEnabledColor: Colors.black,
@@ -512,6 +524,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Country of Birth"),
                                                             iconEnabledColor: Colors.black,

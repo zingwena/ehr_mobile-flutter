@@ -91,7 +91,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   style: TextStyle(
                       fontSize: 23,
                       color: Colors.teal,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w400),
                 ),
                 borderSide: BorderSide(
                   color: Colors.teal, //Color of the border
@@ -131,11 +131,11 @@ class _LandingScreenState extends State<LandingScreen> {
                 color: Colors.white,
                 padding: const EdgeInsets.all(30.0),
                 child: Text(
-                  "LOGIN",
+                  "Login",
                   style: TextStyle(
                       fontSize: 23,
                       color: Colors.blue,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w400),
                 ),
                 borderSide: BorderSide(
                   color: Colors.blue, //Color of the border
