@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:ehr_mobile/model/disclosuremethod.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/indextest.dart';
+import 'package:ehr_mobile/model/testingplan.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:flutter/services.dart';
 /*
 import 'package:cbs_app/view/link_bar.dart';
 */
@@ -38,21 +43,41 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
   var selectedDate;
   DateTime date;
   int _options = 0;
+  int status= 0;
   bool fear = false;
+  bool disclosed_status = false;
   String options = "";
+  List _religions= List();
+  List<DisclosureMethod> _religionListDropdown= List();
+  List _testingplans = List();
+  List<TestingPlan>_testingplanListDropdown = List();
+  List _religionList = List();
+  List _testingplanlist = List();
+  String religion;
+  String testingplan;
+  String disclosure_method;
+  String indexContactId;
+  List _disclosuremethods= List();
+  List<DisclosureMethod> _disclosuremethodsListDropdown= List();
+  List _disclosureList = List();
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+  static const htsChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
 
   String _currentDisclosurePlanStatus;
+  String _currentReligion;
 
   List<DropdownMenuItem<String>> _dropDownMenuItemsDisclosurePlanStatus;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsTesting_plans;
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedDisclosurePlanStatus() {
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsReligion() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String disclosurePlanStatus in _diclosurePlanStatusList) {
+    for (DisclosureMethod disclosuremethod in _religionList) {
+
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(
-          DropdownMenuItem(value: disclosurePlanStatus, child: Text(disclosurePlanStatus)));
+      items.add(DropdownMenuItem(value: disclosuremethod.id, child: Text(disclosuremethod.name)));
     }
     return items;
   }
@@ -71,11 +96,11 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedTestingPlanStatus() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String testingPlanStatus in _testingPlanStatusList) {
+    for (TestingPlan testingPlan in _testingplanlist) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
-          DropdownMenuItem(value: testingPlanStatus, child: Text(testingPlanStatus)));
+          DropdownMenuItem(value: testingPlan.id, child: Text(testingPlan.name)));
     }
     return items;
   }
@@ -87,21 +112,54 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
     "Community Testing",
     "Self-Test Screening",
   ];
-
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReligion;
+  List<DropdownMenuItem<String>>_dropDownMenuItemsTestingPlans;
 
   @override
   void initState() {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
-    _dropDownMenuItemsDisclosurePlanStatus = getDropDownMenuItemsIdentifiedDisclosurePlanStatus();
-    _currentDisclosurePlanStatus = _dropDownMenuItemsDisclosurePlanStatus[0].value;
+    getDropdowninfo();
+    _dropDownMenuItemsDisclosurePlanStatus = getDropDownMenuItemsReligion();
+   /* _currentDisclosurePlanStatus = _dropDownMenuItemsDisclosurePlanStatus[0].value;*/
 
-    _dropDownMenuItemsTestingPlanStatus = getDropDownMenuItemsIdentifiedTestingPlanStatus();
-    _currentTestingPlanStatus = _dropDownMenuItemsTestingPlanStatus[0].value;
+    _dropDownMenuItemsTesting_plans = getDropDownMenuItemsIdentifiedTestingPlanStatus();
+  /*  _currentTestingPlanStatus = _dropDownMenuItemsTestingPlanStatus[0].value;*/
 
     super.initState();
   }
 
+  Future<void>getDropdowninfo() async{
+    String disclosure_string,testing_plan_string ;
+    try{
+      disclosure_string = await dataChannel.invokeMethod('getdisclosuremethods');
+      testing_plan_string = await dataChannel.invokeMethod('getTestingPlan');
+      setState(() {
+        religion=disclosure_string;
+        _religions=jsonDecode(religion);
+        _religionListDropdown= DisclosureMethod.mapFromJson(_religions);
+        _religionListDropdown.forEach((e){
+          _religionList.add(e);
+        });
+        _dropDownMenuItemsReligion = getDropDownMenuItemsReligion();
+
+        testingplan = testing_plan_string;
+        _testingplans = jsonDecode(testingplan);
+        _testingplanListDropdown = TestingPlan.mapFromJson(_testingplans);
+        _testingplanListDropdown.forEach((e){
+          _testingplanlist.add(e);
+        });
+        _dropDownMenuItemsTestingPlans = getDropDownMenuItemsIdentifiedTestingPlanStatus();
+
+        print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"+ _testingplanlist.toString());
+
+      });
+
+
+    }catch(e){
+
+    }
+  }
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -124,6 +182,20 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
           break;
         case 2:
           fear = false;
+          break;
+      }
+    });
+  }
+  void _handleStatusDiscloseChange(int value) {
+    setState(() {
+      status = value;
+
+      switch (status) {
+        case 1:
+          disclosed_status = true;
+          break;
+        case 2:
+          disclosed_status = false;
           break;
       }
     });
@@ -319,7 +391,42 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                         ),
                                                       ),
 
-
+                                                      Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child: SizedBox(
+                                                                child: Padding(
+                                                                  padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
+                                                                  child: Text('Disclosed status?'),
+                                                                ),
+                                                                width: 100,
+                                                              ),
+                                                            ),
+                                                            Text('Yes',
+                                                              style: TextStyle(
+                                                                color: Colors.grey.shade500,
+                                                              ),),
+                                                            Radio(
+                                                                value: 1,
+                                                                groupValue: status,
+                                                                activeColor: Colors.blue,
+                                                                onChanged: _handleStatusDiscloseChange),
+                                                            Text('No',
+                                                              style: TextStyle(
+                                                                color: Colors.grey.shade500,
+                                                              ),
+                                                            ),
+                                                            Radio(
+                                                                value: 2,
+                                                                groupValue: status,
+                                                                activeColor: Colors.blue,
+                                                                onChanged: _handleOptionsChange)
+                                                          ],
+                                                        ),
+                                                      ),
 
                                                       Container(
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
@@ -348,9 +455,9 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                               isExpanded: true,
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
-                                                              value: _currentDisclosurePlanStatus,
-                                                              items: _dropDownMenuItemsDisclosurePlanStatus,
-                                                              onChanged: changedDropDownItemDisclosurePlanStatus,
+                                                              value: _currentReligion,
+                                                              items: _dropDownMenuItemsReligion,
+                                                              onChanged: changedDropDownItemReligion,
                                                               style: TextStyle(
                                                                 fontSize: 15,
                                                                 color: Colors.black,
@@ -394,7 +501,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentTestingPlanStatus,
-                                                              items: _dropDownMenuItemsTestingPlanStatus,
+                                                              items: _dropDownMenuItemsTestingPlans,
                                                               onChanged: changedDropDownItemTestingPlanStatus,
                                                               style: TextStyle(
                                                                 fontSize: 15,
@@ -477,12 +584,12 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                     ],
                                                                   ),
                                                                   onPressed: () {
-                                                               /*   IndexContact indexcontact = IndexContact(widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
-                                                                  , widget.indexcontact.dateOfHivStatus, fear, _currentDisclosurePlanStatus, _currentTestingPlanStatus)
-
-                                                                  IndexContact(String indexTestId, String personId, String relation, String hivStatus, DateTime dateofHivstatus,
-                                                                      bool fearOfIpv, String disclosureMethodPlanId, String testingPlanId, bool disclosureStatus, String disclosureMethodId)*/
-
+                                                                  IndexContact indexcontact = IndexContact(widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
+                                                                  , widget.indexcontact.dateOfHivStatus, fear, _currentReligion,_currentTestingPlanStatus,disclosed_status, _currentReligion  );
+                                                                  saveIndexContact(indexcontact);
+                                                                 /* Navigator.push(context,MaterialPageRoute(
+                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId, indexTestId)
+                                                                  ));*/
                                                                   }
                                                               ),
                                                             ),
@@ -539,29 +646,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
     );
   }
 
-/*  Widget _buildLinkBar({bool showFirstOption}) {
-    return
-      Row(
-        children: <Widget>[
-          new LinkBarItems(
-            text: "Personal Details />",
-
-          ),
-          new LinkBarItems(
-            text: "Address & Phone No. />",
-          ),
-          new LinkBarItems(
-            text: "HIV Info />",
-          ),
-          new LinkBarItems(
-            text: "HIV Disclosure />",
-            selected: true,
-          ),
-
-        ],
-      );
-  }*/
-
   void changedDropDownItemDisclosurePlanStatus(String selectedDisclosurePlanStatus) {
     setState(() {
       _currentDisclosurePlanStatus = selectedDisclosurePlanStatus;
@@ -574,68 +658,26 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
       _currentTestingPlanStatus = selectedTestingPlanStatus;
     });
   }
+  void changedDropDownItemReligion(String selectedReligion) {
+    setState(() {
+      _currentReligion = selectedReligion;
+    });
 
-  /* Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(
-            text: "VITALS",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ReceptionVitals()),
-            ),
-          ),
-          new RoundedButton(
-            text: "HTS",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HivScreening()),
-            ),
-          ),
-          new RoundedButton(
-            text: "ART",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ReceptionVitals()),
-            ),
-          ),
-        ],
-      ),
-    );
+    print('@@@@@@@@@@@@@@@@@@ $_currentReligion');
   }
 
-  */
 
-/*  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(
-            text: "Personal Details",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            ),
-          ),
-          new RoundedButton(
-            text: "Address & Phone No.", selected: true,
+  Future<void> saveIndexContact(IndexContact indexcontact) async{
+    var response;
+    try{
+      response = await htsChannel.invokeMethod('saveIndexContact', jsonEncode(indexcontact));
+      setState(() {
+        indexContactId = response;
+      });
 
-          ),
-          new RoundedButton(
-            text: "HIV Info",
+    }catch(e){
 
-          ),
-          new RoundedButton(
-            text: "Disclosure & Partner Testing",
-
-          ),
-        ],
-      ),
-    );
-  }*/
-
+    }
+  }
 
 }

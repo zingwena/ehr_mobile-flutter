@@ -7,7 +7,6 @@ import 'package:ehr_mobile/vitals/respiratory_rate.dart';
 import 'package:ehr_mobile/vitals/temperature.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
-
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';

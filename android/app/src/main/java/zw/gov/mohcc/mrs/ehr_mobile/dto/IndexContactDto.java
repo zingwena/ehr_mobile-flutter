@@ -1,18 +1,16 @@
-package zw.gov.mohcc.mrs.ehr_mobile.model;
+package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.RelationshipType;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.RelationshipTypeConverter;
 
-@Entity
-public class IndexContact extends BaseEntity {
+public class IndexContactDto {
 
-    @NonNull
     private String indexTestId;
     @NonNull
     private String personId;
@@ -28,13 +26,24 @@ public class IndexContact extends BaseEntity {
     private Boolean disclosureStatus;
     private String disclosureMethodId;
 
+    public IndexContactDto(String indexTestId, @NonNull String personId, @NonNull RelationshipType relation, String hivStatus, Date dateOfHivStatus, boolean fearOfIpv, String disclosureMethodPlanId, String testingPlanId, Boolean disclosureStatus, String disclosureMethodId) {
+        this.indexTestId = indexTestId;
+        this.personId = personId;
+        this.relation = relation;
+        this.hivStatus = hivStatus;
+        this.dateOfHivStatus = dateOfHivStatus;
+        this.fearOfIpv = fearOfIpv;
+        this.disclosureMethodPlanId = disclosureMethodPlanId;
+        this.testingPlanId = testingPlanId;
+        this.disclosureStatus = disclosureStatus;
+        this.disclosureMethodId = disclosureMethodId;
+    }
 
-    @NonNull
     public String getIndexTestId() {
         return indexTestId;
     }
 
-    public void setIndexTestId(@NonNull String indexTestId) {
+    public void setIndexTestId(String indexTestId) {
         this.indexTestId = indexTestId;
     }
 

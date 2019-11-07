@@ -29,6 +29,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexContactDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexTestDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
@@ -44,6 +53,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
@@ -161,7 +172,6 @@ public class MainActivity extends FlutterActivity {
                 }
             }
         });
-
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase);
 
@@ -328,6 +338,7 @@ public class MainActivity extends FlutterActivity {
                     }
                 });
         new DataSyncChannel(getFlutterView(), DATA_SYNC_CHANNEL, ehrMobileDatabase);
+
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()

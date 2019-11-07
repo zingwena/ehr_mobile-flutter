@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.sync;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -42,9 +43,14 @@ public class PatientDataSyncService {
                 call.enqueue(new Callback<IdentityDTO>() {
                     @Override
                     public void onResponse(Call<IdentityDTO> call, Response<IdentityDTO> response) {
-                        System.out.println(response.body());
-                        person.setStatus(RecordStatus.SYNCED);
-                        ehrMobileDatabase.personDao().updatePatient(person);
+                        if(response.isSuccessful()){
+                            System.out.println(response.body());
+                            person.setStatus(RecordStatus.SYNCED);
+                            ehrMobileDatabase.personDao().updatePatient(person);
+                        }else {
+                            Log.e("PATIENT_APOLLO",response.message());
+                        }
+
                     }
                     @Override
                     public void onFailure(Call<IdentityDTO> call, Throwable t) {

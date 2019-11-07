@@ -16,11 +16,13 @@ import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.MainActivity;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexContactDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
 import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
@@ -455,16 +457,32 @@ public class HtsChannel {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
-                        if (methodCall.method.equals("saveIndexTest")) {
-                            try {
-                                System.out.println("ARGUMENTS FROM FLUTTER IN INDEX" + arguments);
+                        if(methodCall.method.equals("saveIndexTest")){
+                            try{
                                 IndexTest indexTest = gson.fromJson(arguments, IndexTest.class);
-                                System.out.println("RRRRRRRRRRRRRRRRRR INDEX TEST " + indexTest.toString());
-                                String indexTestId = indexTestingService.createIndexTest(indexTest);
-                                Log.i(TAG, "HHHHHHHHHHHHHHHHHHHHHH INDEX TEST ID" + indexTestId);
+                                String indexTestId =  indexTestingService.createIndexTest(indexTest);
                                 result.success(indexTestId);
 
-                            } catch (Exception e) {
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("saveIndexContact")){
+                            try{
+                                IndexContactDto indexContactDto = gson.fromJson(arguments, IndexContactDto.class);
+                                IndexContact indexContact = new IndexContact();
+                                indexContact.setPersonId(indexContactDto.getPersonId());
+                                indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());
+                                indexContact.setDisclosureMethodId(indexContactDto.getDisclosureMethodId());
+                                indexContact.setDisclosureMethodPlanId(indexContactDto.getDisclosureMethodPlanId());
+                                indexContact.setIndexTestId(indexContactDto.getIndexTestId());
+                                indexContact.setFearOfIpv(indexContactDto.isFearOfIpv());
+                                indexContact.setTestingPlanId(indexContact.getTestingPlanId());
+                                indexContact.setRelation(indexContactDto.getRelation());
+                                indexContact.setHivStatus(indexContactDto.getHivStatus());
+                                String indexTestId =  indexTestingService.createIndexContact(indexContact);
+                                result.success(indexTestId);
+                            }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
