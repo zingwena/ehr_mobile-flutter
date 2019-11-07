@@ -45,7 +45,7 @@ class _SearchPatientState extends State<SearchPatient> {
   Future<void>syncPatients() async {
     String token =await retrieveString(AUTH_TOKEN);
     String url=await retrieveString(SERVER_IP);
-    await platformDataSync.invokeMethod('syncPatients',[token,url]).then((value){
+    await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']).then((value){
       print("sync method called----->$value");
     });
   }
