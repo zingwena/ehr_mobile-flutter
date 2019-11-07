@@ -75,7 +75,6 @@ class _Hts_Result  extends State<Hts_Result > {
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<LaboratoryInvestigationTest> _entryPointList = List();
   String test_name;
-
   String _currentEntryPoint;
 
   @override

@@ -28,6 +28,7 @@ public class IndexContact extends BaseEntity {
     private Boolean disclosureStatus;
     private String disclosureMethodId;
 
+
     @NonNull
     public String getIndexTestId() {
         return indexTestId;

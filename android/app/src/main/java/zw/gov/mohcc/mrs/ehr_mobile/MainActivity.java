@@ -34,6 +34,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClie
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexContactDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexTestDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
@@ -55,6 +56,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
 import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
@@ -134,6 +136,7 @@ public class MainActivity extends FlutterActivity {
         visitService = new VisitService(ehrMobileDatabase);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
+        indexTestingService = new IndexTestingService(ehrMobileDatabase);
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
@@ -419,6 +422,26 @@ public class MainActivity extends FlutterActivity {
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
+                            }
+                        }
+                        if(methodCall1.method.equals("getdisclosuremethods")){
+                            try{
+                                List<DisclosureMethod>disclosureMethods = ehrMobileDatabase.disclosureMethodDao().findAll();
+                                String disclosuremethodsList = gson.toJson(disclosureMethods);
+                                result1.success(disclosuremethodsList);
+
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall1.method.equals("getTestingPlan")){
+                            try{
+                                List<TestingPlan>testingPlans = ehrMobileDatabase.testingPlanDao().findAll();
+                                String testplanstring = gson.toJson(testingPlans);
+                                result1.success(testplanstring);
+
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
                     }
@@ -938,22 +961,37 @@ public class MainActivity extends FlutterActivity {
                         }
                         if(methodCall.method.equals("saveIndexTest")){
                             try{
-                                System.out.println("ARGUMENTS FROM FLUTTER IN INDEX"+ arguments);
                                 IndexTest indexTest = gson.fromJson(arguments, IndexTest.class);
-                                System.out.println("RRRRRRRRRRRRRRRRRR INDEX TEST "+ indexTest.toString());
                                String indexTestId =  indexTestingService.createIndexTest(indexTest);
-                               Log.i(TAG, "HHHHHHHHHHHHHHHHHHHHHH INDEX TEST ID" + indexTestId);
                                 result.success(indexTestId);
 
                             }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
+                        if(methodCall.method.equals("saveIndexContact")){
+                            try{
+                                IndexContactDto indexContactDto = gson.fromJson(arguments, IndexContactDto.class);
+                                IndexContact indexContact = new IndexContact();
+                                indexContact.setPersonId(indexContactDto.getPersonId());
+                                indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());
+                                indexContact.setDisclosureMethodId(indexContactDto.getDisclosureMethodId());
+                                indexContact.setDisclosureMethodPlanId(indexContactDto.getDisclosureMethodPlanId());
+                                indexContact.setIndexTestId(indexContactDto.getIndexTestId());
+                                indexContact.setFearOfIpv(indexContactDto.isFearOfIpv());
+                                indexContact.setTestingPlanId(indexContact.getTestingPlanId());
+                                indexContact.setRelation(indexContactDto.getRelation());
+                                indexContact.setHivStatus(indexContactDto.getHivStatus());
+                                String indexTestId =  indexTestingService.createIndexContact(indexContact);
+                                result.success(indexTestId);
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+
 
                     }
                 });
-
-
 
         /*   ===============================================ART REGISTRATION AND INITIATION  =============================================================== */
         new MethodChannel(getFlutterView(), ART_CHANNEL).setMethodCallHandler(
