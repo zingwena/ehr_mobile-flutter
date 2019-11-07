@@ -1,9 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="zw.gov.mohcc.mrs.ehr_mobile">
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Required for fetching feed data. -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- Required to register a SyncStatusObserver to display a "syncing..." progress indicator. -->
     <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
     <!-- Required to enable our SyncAdapter after it's created. -->
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
@@ -64,7 +61,7 @@
 
         <!-- This service implements our SyncAdapter. It needs to be exported, so that the system
         sync framework can access it. -->
-        <service android:name=".sync.SyncService"
+        <service android:name=".SyncService"
             android:exported="true">
             <!-- This intent filter is required. It allows the system to launch our sync service
             as needed. -->
@@ -91,7 +88,6 @@
             <meta-data android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
 
     </application>
 </manifest>

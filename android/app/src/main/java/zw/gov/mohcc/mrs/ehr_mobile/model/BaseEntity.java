@@ -2,14 +2,21 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.io.Serializable;
+
+import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.util.RecordStatusConvertor;
 
 public class BaseEntity implements Serializable {
 
     @PrimaryKey
     @NonNull
     private String id;
+
+    @TypeConverters(RecordStatusConvertor.class)
+    private RecordStatus status;
 
     public BaseEntity() {
     }
@@ -24,6 +31,14 @@ public class BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public RecordStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RecordStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -48,6 +63,7 @@ public class BaseEntity implements Serializable {
     public String toString() {
         return "BaseEntity{" +
                 "id='" + id + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

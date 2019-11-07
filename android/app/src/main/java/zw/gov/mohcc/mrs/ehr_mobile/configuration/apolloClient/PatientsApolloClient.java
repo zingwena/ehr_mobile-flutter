@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
@@ -59,22 +60,20 @@ public class PatientsApolloClient {
                         List<GetPatientsQuery.Content> patients = response.data().people().content();
                         for (GetPatientsQuery.Content patientData : patients)
                             try {
-                                {
-
-
                                     System.out.println("=============-=-=-=-=============1=1=1=1=1=1=1=1=patientData"+patientData.birthdate());
                                     Gender sex = patientData.sex() != null ? Gender.valueOf(patientData.sex().rawValue()) : null;
                                     Gender selfIdentifiedGender = patientData.selfIdentifiedGender() != null ?
                                             Gender.valueOf(patientData.selfIdentifiedGender().rawValue()) : null;
-                                    Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
-
+                                    if(patientData.address()!=null){
+                                        Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
+                                        person.setAddress(address);
+                                    }
                                     int numberOfIdentifications = patientData.identifications().size();
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
-
-
                                     person = new Person(firstName, lastName, sex);
                                     person.setId(patientData.personId());
+                                    person.setStatus(RecordStatus.IMPORTED);
                                     person.setSelfIdentifiedGender(selfIdentifiedGender);
                                     person.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
                                             ? patientData.religion().id() : null);
@@ -82,20 +81,16 @@ public class PatientsApolloClient {
                                             ? patientData.countryOfBirth().id() : null);
                                     person.setEducationLevelId(patientData.education() != null && StringUtils.isNoneBlank(patientData.education().id())
                                             ? patientData.education().id() : null);
-                                    person.setAddress(address);
                                     person.setMaritalStatusId(patientData.marital() != null && StringUtils.isNoneBlank(patientData.marital().id())
                                             ? patientData.marital().id() : null);
                                     person.setNationalityId(patientData.nationality() != null && StringUtils.isNoneBlank(patientData.nationality().id())
                                             ? patientData.nationality().id() : null);
+                                    //person.setNationalityId(null);
                                     person.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
                                             ? patientData.occupation().id() : null);
-
                                     try {
-
                                         Date dateOfBirth = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(patientData.birthdate());
                                         person.setBirthDate(dateOfBirth);
-
-
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -113,13 +108,10 @@ public class PatientsApolloClient {
 
                                         }
 
-
                                     }
-
                                     ehrMobileDatabase.personDao().createPatient(person);
                                     System.out.println("*********** PATIENT ***********       "+ person);
                                     System.out.println("Number of Patients  = " + ehrMobileDatabase.personDao().listPatients().size());
-                                }
                             } catch (Exception e) {
                                 e.printStackTrace()
                                 ;
