@@ -64,16 +64,17 @@ public class PatientsApolloClient {
                                     Gender sex = patientData.sex() != null ? Gender.valueOf(patientData.sex().rawValue()) : null;
                                     Gender selfIdentifiedGender = patientData.selfIdentifiedGender() != null ?
                                             Gender.valueOf(patientData.selfIdentifiedGender().rawValue()) : null;
-                                    if(patientData.address()!=null){
-                                        Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
-                                        person.setAddress(address);
-                                    }
+
                                     int numberOfIdentifications = patientData.identifications().size();
                                     String firstName = patientData.firstname();
                                     String lastName = patientData.lastname();
                                     person = new Person(firstName, lastName, sex);
                                     person.setId(patientData.personId());
                                     person.setStatus(RecordStatus.IMPORTED);
+                                    if(patientData.address()!=null){
+                                        Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
+                                        person.setAddress(address);
+                                    }
                                     person.setSelfIdentifiedGender(selfIdentifiedGender);
                                     person.setReligionId(patientData.religion() != null  && StringUtils.isNoneBlank(patientData.religion().id())
                                             ? patientData.religion().id() : null);

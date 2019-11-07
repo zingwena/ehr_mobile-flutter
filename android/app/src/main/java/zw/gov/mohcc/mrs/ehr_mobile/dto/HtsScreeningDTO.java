@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ActivityStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PrepOption;

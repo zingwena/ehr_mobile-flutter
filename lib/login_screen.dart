@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -163,7 +164,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   
               if(result.contains("Welcome"))
                 {
-
                   // display Search Patient Screen
                        Navigator.push(
                   context,

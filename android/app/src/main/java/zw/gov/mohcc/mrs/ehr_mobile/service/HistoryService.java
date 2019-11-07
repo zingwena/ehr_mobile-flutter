@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;

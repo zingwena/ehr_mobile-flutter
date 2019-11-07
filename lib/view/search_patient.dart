@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 
-import 'package:ehr_mobile/datasync/stored_preferences.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +43,9 @@ class _SearchPatientState extends State<SearchPatient> {
   }
 
   Future<void>syncPatients() async {
-    await platformDataSync.invokeMethod('syncPatients').then((value){
+    String token =await retrieveString(AUTH_TOKEN);
+    String url=await retrieveString(SERVER_IP);
+    await platformDataSync.invokeMethod('syncPatients',[token,url]).then((value){
       print("sync method called----->$value");
     });
   }

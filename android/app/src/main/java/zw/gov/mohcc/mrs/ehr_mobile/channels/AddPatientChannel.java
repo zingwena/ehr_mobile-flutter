@@ -22,15 +22,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 
-import static com.tekartik.sqflite.Constant.TAG;
-
 public class AddPatientChannel {
 
     public AddPatientChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase){
         new MethodChannel(flutterView, channelName).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
             public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-
+                String TAG="AddPatientChannel";
                 Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();

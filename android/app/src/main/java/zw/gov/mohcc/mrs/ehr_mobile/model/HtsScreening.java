@@ -1,4 +1,4 @@
-package zw.gov.mohcc.mrs.ehr_mobile;
+package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
