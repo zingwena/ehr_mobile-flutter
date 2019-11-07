@@ -1,3 +1,4 @@
+import 'package:ehr_mobile/view/search_patient_index.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/view/home_page.dart';
@@ -187,7 +188,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                                 ),
                                                                 onPressed: () => Navigator.push(
                                                                   context,
-                                                                  MaterialPageRoute(builder: (context) => HivTestingIndexContactPage()),
+                                                                  MaterialPageRoute(builder: (context) => SearchPatientIndex()),
                                                                 ),
                                                               ),
                                                             ),

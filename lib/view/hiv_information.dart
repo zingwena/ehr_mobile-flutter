@@ -16,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
 
 class HivInformation extends StatefulWidget {
+
   @override
   State createState() {
     return _HivInformation();
@@ -28,6 +29,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   var selectedDate;
   DateTime date;
   int _options = 0;
+  int _relation = 0;
+  String relations = "";
   String options = "";
   int _option = 0;
   String option = "";
@@ -53,6 +56,29 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
           break;
         case 3:
           options = "Not Known";
+          break;
+      }
+    });
+  }
+  void _handleRelationChange(int value) {
+    setState(() {
+      _relation = value;
+
+      switch (_relation) {
+        case 1:
+          relations = "Yes";
+          break;
+        case 2:
+          relations = "No";
+          break;
+        case 3:
+          relations = "Not Known";
+          break;
+        case 4:
+          relations = "Not Known";
+          break;
+        case 5:
+          relations = "Not Known";
           break;
       }
     });
@@ -238,6 +264,74 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                     CrossAxisAlignment.start,
                                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                     children: <Widget>[
+
+                                                      Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child: SizedBox(
+                                                                child: Padding(
+                                                                  padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
+                                                                  child: Text('Select Relation'),
+                                                                ),
+                                                                width: 100,
+                                                              ),
+                                                            ),
+                                                            Text('CHILD',
+                                                              style: TextStyle(
+                                                                color: Colors.grey.shade500,
+                                                              ),),
+                                                            Radio(
+                                                                value: 1,
+                                                                groupValue: _options,
+                                                                activeColor: Colors.blue,
+                                                                onChanged: _handleRelationChange),
+                                                            Text('PARENT',
+                                                              style: TextStyle(
+                                                                color: Colors.grey.shade500,
+                                                              ),
+                                                            ),
+                                                            Radio(
+                                                                value: 2,
+                                                                groupValue: _options,
+                                                                activeColor: Colors.blue,
+                                                                onChanged: _handleRelationChange),
+                                                            Text('SPOUSE',
+                                                              style: TextStyle(
+                                                                color: Colors.grey.shade500,
+                                                              ),
+                                                            ),
+                                                            Radio(
+                                                                value: 3,
+                                                                groupValue: _options,
+                                                                activeColor: Colors.blue,
+                                                                onChanged: _handleRelationChange),
+                                                            Text('SIBLING',
+                                                              style: TextStyle(
+                                                                color: Colors.grey.shade500,
+                                                              ),
+                                                            ),
+                                                            Radio(
+                                                                value: 4,
+                                                                groupValue: _options,
+                                                                activeColor: Colors.blue,
+                                                                onChanged: _handleOptionsChange),
+                                                            Text('SEXUAL_PARTNER',
+                                                              style: TextStyle(
+                                                                color: Colors.grey.shade500,
+                                                              ),
+                                                            ),
+                                                            Radio(
+                                                                value: 4,
+                                                                groupValue: _options,
+                                                                activeColor: Colors.blue,
+                                                                onChanged: _handleOptionsChange)
+                                                          ],
+                                                        ),
+                                                      ),
+
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
