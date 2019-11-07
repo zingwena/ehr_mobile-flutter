@@ -3,6 +3,8 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -28,24 +30,33 @@ public class IndexTestingService {
         return indexTestId;
     }
 
-    public IndexTest getIndexTestByPresonId(String personId) {
+    public IndexTest getIndexTestByPresonId(@NonNull String personId) {
 
-        return ehrMobileDatabase.indexTestDao().findByPersonId(personId);
+        IndexTest indexTest = ehrMobileDatabase.indexTestDao().findByPersonId(personId);
+        Log.i(TAG, "Retrieved index test using person id : " + personId + " And index test record : " + indexTest);
+        return indexTest;
     }
 
     public List<IndexContact> findIndexContactsByPersonId(String personId) {
 
-        return null;
+        List<IndexContact> indexContacts = ehrMobileDatabase.indexContactDao().findByPersonId(personId);
+        Log.i(TAG, "Retrieved index contacts using person id : " + personId + " And index contacts records : " + indexContacts);
+        return indexContacts;
     }
 
     public List<IndexContact> findIndexContactsByIndexTestId(String indexTestId) {
-
-        return null;
+        List<IndexContact> indexContacts = ehrMobileDatabase.indexContactDao().findByPersonId(indexTestId);
+        Log.i(TAG, "Retrieved index contacts using index test id : " + indexTestId + " And index contacts records : " + indexContacts);
+        return indexContacts;
     }
 
     public String createIndexContact(IndexContact indexContact) {
-
-        return null;
+        String indexTestContactId = UUID.randomUUID().toString();
+        indexContact.setId(indexTestContactId);
+        Log.i(TAG, "Index contact record : " + indexTestContactId);
+        ehrMobileDatabase.indexContactDao().saveOne(indexContact);
+        Log.i(TAG, "Saved index contact record : " + ehrMobileDatabase.indexContactDao().findById(indexContact.getId()));
+        return indexTestContactId;
     }
 
     public IndexContact getIndexContactByPersonId(String personId) {
