@@ -23,7 +23,7 @@ public interface IndexTestDao {
     void saveOne(IndexTest indexTest);
 
     @Query("SELECT * FROM IndexTest Where personId=:personId")
-    List<IndexTest> findByPersonId(String personId);
+    IndexTest findByPersonId(String personId);
 
     @Query("SELECT * FROM IndexTest WHERE id=:id")
     IndexTest findById(String id);
