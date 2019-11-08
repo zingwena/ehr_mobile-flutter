@@ -24,6 +24,7 @@ public class IndexTestingService {
     public String createIndexTest(IndexTest indexTest) {
         String indexTestId = UUID.randomUUID().toString();
         indexTest.setId(indexTestId);
+        System.out.println("KKKKKKKKKKKKKKKKKKKKK"+ indexTest.getPersonId());
         Log.i(TAG, "Index Test record : " + indexTest);
         ehrMobileDatabase.indexTestDao().saveOne(indexTest);
         Log.i(TAG, "Saved index test record : " + ehrMobileDatabase.indexTestDao().findByPersonId(indexTest.getPersonId()));
@@ -53,6 +54,7 @@ public class IndexTestingService {
     public String createIndexContact(IndexContact indexContact) {
         String indexTestContactId = UUID.randomUUID().toString();
         indexContact.setId(indexTestContactId);
+        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGG INDEX CONTACT PERSON ID "+ indexContact.toString());
         Log.i(TAG, "Index contact record : " + indexTestContactId);
         ehrMobileDatabase.indexContactDao().saveOne(indexContact);
         Log.i(TAG, "Saved index contact record : " + ehrMobileDatabase.indexContactDao().findById(indexContact.getId()));

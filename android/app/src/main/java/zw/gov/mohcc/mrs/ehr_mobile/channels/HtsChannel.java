@@ -52,12 +52,14 @@ public class HtsChannel {
     public HtsChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase, HtsService htsService,
                       LaboratoryInvestigation laboratoryInvestigation, HistoryService historyService,
                       IndexTestingService indexTestingService, VisitService visitService) {
+        final String index_id ;
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                         String arguments = methodCall.arguments();
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+                        String indexTest_Id ;
 
                         if (methodCall.method.equals("getLabInvestigation")) {
                             try {
@@ -470,6 +472,7 @@ public class HtsChannel {
                             }
                         }
                         if(methodCall.method.equals("getIndexContactList")){
+                            System.out.println("UUUUUUUUUUUUUUUUUUUUUUU index id in get contactlist"+ arguments);
                             try{
                                 List<IndexContact> indexContactList = indexTestingService.findIndexContactsByIndexTestId(arguments);
                                 List<Person>contactlist = new ArrayList<>();
@@ -486,9 +489,11 @@ public class HtsChannel {
                             }
                         }
                         if(methodCall.method.equals("saveIndexContact")){
+                            System.out.println("JJJJJJJJJJJJJJJJJJ INDEX CONTACT FROM FLUTTER "+ arguments );
                             try{
-                                IndexContactDto indexContactDto = gson.fromJson(arguments, IndexContactDto.class);
-                                IndexContact indexContact = new IndexContact();
+                                IndexContact indexContact = gson.fromJson(arguments, IndexContact.class);
+                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKK index contact dto"+ indexContact.toString());
+                               /* IndexContact indexContact = new IndexContact();
                                 indexContact.setPersonId(indexContactDto.getPersonId());
                                 indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());
                                 indexContact.setDisclosureMethodId(indexContactDto.getDisclosureMethodId());
@@ -498,6 +503,7 @@ public class HtsChannel {
                                 indexContact.setTestingPlanId(indexContact.getTestingPlanId());
                                 indexContact.setRelation(indexContactDto.getRelation());
                                 indexContact.setHivStatus(indexContactDto.getHivStatus());
+                                System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + indexContact.toString());*/
                                 String indexTestId =  indexTestingService.createIndexContact(indexContact);
                                 result.success(indexTestId);
                             }catch (Exception e){

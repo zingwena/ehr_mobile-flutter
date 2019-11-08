@@ -42,12 +42,36 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   String option = "";
   int _result = 0;
   String result = "";
+  List _testingPlanStatusList = [
+    "CHILD",
+    "SPOUSE",
+    "SEXUAL PARTNER",
+    "PARENT",
+    "OTHER",
+  ];
+  String _currentDisclosurePlanStatus;
+  List<DropdownMenuItem<String>>_dropDownMenuItemsTestingPlans;
 
-
+  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedTestingPlanStatus() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String relation in _testingPlanStatusList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(
+          DropdownMenuItem(value: relation, child: Text(relation)));
+    }
+    return items;
+  }
+  void changedDropDownItemDisclosurePlanStatus(String selectedDisclosurePlanStatus) {
+    setState(() {
+      _currentDisclosurePlanStatus = selectedDisclosurePlanStatus;
+    });
+  }
   @override
   void initState() {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
+    _dropDownMenuItemsTestingPlans = getDropDownMenuItemsIdentifiedTestingPlanStatus();
     super.initState();
   }
 
@@ -200,7 +224,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                     child: Text("HIV Information", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                  Container(
+               /*   Container(
                       child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment:
@@ -249,7 +273,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
 
                             ),
                           ])
-                  ),
+                  ),*/
 
                   SizedBox(
                     height: 10.0,
@@ -292,67 +316,56 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                     CrossAxisAlignment.start,
                                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                     children: <Widget>[
-
-                                                      Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                        child:                                Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: SizedBox(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: Text(
-                                                                    'Relation',
-                                                                    style: TextStyle(
-                                                                      color: Colors.grey.shade600,
-                                                                      fontSize: 18,
-                                                                      fontWeight: FontWeight.w500,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                width: 250,
-                                                              ),
-                                                            ),
-                                                            Text('CHILD'),
-                                                            Radio(
-                                                                value: 1,
-                                                                groupValue: _relation,
-                                                                activeColor: Colors.blue,
-                                                                onChanged: _handleRelationChange),
-                                                            Text('PARENT'),
-                                                            Radio(
-                                                                value: 2,
-                                                                groupValue: _relation,
-                                                                activeColor: Colors.blue,
-                                                                onChanged: _handleRelationChange),
-                                                            Text('SPOUSE'),
-                                                            Radio(
-                                                                value: 3,
-                                                                groupValue: _relation,
-                                                                activeColor: Colors.blue,
-                                                                onChanged: _handleRelationChange),
-                                                            Text('SIBLING'),
-                                                            Radio(
-                                                                value: 4,
-                                                                groupValue: _relation,
-                                                                activeColor: Colors.blue,
-                                                                onChanged: _handleRelationChange),
-                                                            Text('SEXUAL PARTNER'),
-                                                            Radio(
-                                                                value: 5,
-                                                                groupValue: _relation,
-                                                                activeColor: Colors.blue,
-                                                                onChanged: _handleRelationChange),
-                                                          ],
-                                                        ),
-
-                                                      ),
-
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
+                                                      Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
+                                                        width: double.infinity,
+                                                        child:      Text("Relation",
+                                                          style: TextStyle( fontSize: 15,
+                                                            color: Colors.black,
+                                                            // fontWeight: FontWeight.w500
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                            width: double.infinity,
+                                                            padding:
+                                                            EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            child: DropdownButton(
+                                                              isExpanded: true,
+                                                              icon: Icon(Icons.keyboard_arrow_down),
+                                                              iconEnabledColor: Colors.black,
+                                                              value: _currentDisclosurePlanStatus,
+                                                              items: _dropDownMenuItemsTestingPlans,
+                                                              onChanged: changedDropDownItemDisclosurePlanStatus,
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
 
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20.0,
+                                                      ),
                                                       Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
@@ -459,7 +472,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                               ),),
                                                             Radio(
                                                                 value: 1,
-                                                                groupValue: _options,
+                                                                groupValue: _result,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleResultChange),
                                                             Text('Negative',
@@ -469,7 +482,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                             ),
                                                             Radio(
                                                                 value: 2,
-                                                                groupValue: _options,
+                                                                groupValue: _result,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleResultChange),
                                                             Text('Not Known',
@@ -479,7 +492,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                             ),
                                                             Radio(
                                                                 value: 3,
-                                                                groupValue: _options,
+                                                                groupValue: _result,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleResultChange)
                                                           ],
@@ -508,7 +521,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                   ),
                                                                   //onPressed: () {}
                                                                   onPressed: () {
-                                                                IndexContact indexcontact = new IndexContact(widget.indexId, widget.person.id, relations, result, date, null, null, null, null, null);
+                                                                IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person.id, _currentDisclosurePlanStatus, result, date, null, null, null, null, null);
                                                                     Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact, widget.personId, widget.person)),);

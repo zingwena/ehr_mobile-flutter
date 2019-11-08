@@ -53,6 +53,11 @@ class _SearchPatientState extends State<SearchPatientIndex> {
     return value == null ? "" : value;
   }
 
+
+  @override
+  void initState() {
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
