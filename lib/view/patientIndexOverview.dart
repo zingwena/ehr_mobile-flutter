@@ -27,8 +27,9 @@ import 'package:ehr_mobile/model/address.dart';
 class PatientIndexOverview extends StatefulWidget {
   final Person patient;
   final String indexTestId;
+  final String personId;
 
-  PatientIndexOverview(this.patient, this.indexTestId);
+  PatientIndexOverview(this.patient, this.indexTestId, this.personId);
 
   @override
   State<StatefulWidget> createState() {
@@ -414,7 +415,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                   onPressed: () {
 
                                                     Navigator.push(context,MaterialPageRoute(
-                                                        builder: (context)=> HivInformation(widget.indexTestId, _patient)
+                                                        builder: (context)=> HivInformation(widget.indexTestId, widget.patient, widget.personId)
                                                     ));
                                                   },
                                                 ),

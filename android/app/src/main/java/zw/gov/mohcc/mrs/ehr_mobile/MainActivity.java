@@ -112,8 +112,6 @@ public class MainActivity extends FlutterActivity {
     private TerminologyService terminologyService;
     private HistoryService historyService;
     private IndexTestingService indexTestingService;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

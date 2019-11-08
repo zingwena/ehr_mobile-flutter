@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/disclosuremethod.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/indextest.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/testingplan.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/services.dart';
@@ -27,10 +30,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
 
 class PatientIndexHivInfo extends StatefulWidget {
-
+    Person person;
+    String personId;
   IndexContact indexcontact;
 
-  PatientIndexHivInfo(this.indexcontact);
+  PatientIndexHivInfo(this.indexcontact, this.personId, this.person);
   @override
   State createState() {
     return _PatientIndexHivInfo();
@@ -587,9 +591,9 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                   IndexContact indexcontact = IndexContact(widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
                                                                   , widget.indexcontact.dateOfHivStatus, fear, _currentReligion,_currentTestingPlanStatus,disclosed_status, _currentReligion  );
                                                                   saveIndexContact(indexcontact);
-                                                                 /* Navigator.push(context,MaterialPageRoute(
-                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId, indexTestId)
-                                                                  ));*/
+                                                                  Navigator.push(context,MaterialPageRoute(
+                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, null, null, null, widget.personId, widget.indexcontact.indexTestId)
+                                                                  ));
                                                                   }
                                                               ),
                                                             ),

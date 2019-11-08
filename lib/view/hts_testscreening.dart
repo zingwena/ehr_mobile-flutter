@@ -181,6 +181,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
+        print("HHHHHHHHHHHHHHHHHHH results from android"+ _dropDownListEntryPoints.toString());
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });

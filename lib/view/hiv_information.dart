@@ -20,7 +20,8 @@ import '../bloc/person_bloc.dart';*/
 class HivInformation extends StatefulWidget {
   String indexId;
   Person person;
-  HivInformation(this.indexId, this.person);
+  String personId;
+  HivInformation(this.indexId, this.person, this.personId);
 
   @override
   State createState() {
@@ -510,7 +511,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                 IndexContact indexcontact = new IndexContact(widget.indexId, widget.person.id, relations, result, date, null, null, null, null, null);
                                                                     Navigator.push(
                                                                       context,
-                                                                      MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact)),);
+                                                                      MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact, widget.personId, widget.person)),);
 
                                                                 }
                                                               ),

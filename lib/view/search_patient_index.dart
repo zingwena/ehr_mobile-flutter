@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/view/add_patient_index.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
 
 import 'package:flutter/material.dart';
@@ -16,7 +18,12 @@ import 'reception_vitals.dart';
 
 class SearchPatientIndex extends StatefulWidget {
   String indexTestId;
-  SearchPatientIndex(this.indexTestId);
+  String person;
+  String visitId;
+  String htsId;
+  HtsRegistration htsRegistration;
+  String personId;
+  SearchPatientIndex(this.indexTestId, this.visitId, this.personId);
   _SearchPatientState createState() => _SearchPatientState();
 }
 
@@ -281,7 +288,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PatientIndexOverview(patient, widget.indexTestId)));
+                            builder: (context) => PatientIndexOverview(patient, widget.indexTestId, widget.personId)));
                   },
                 );
               }).toList(),
@@ -317,7 +324,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
             ),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddPatient()),
+              MaterialPageRoute(builder: (context) => AddPatientIndex(widget.indexTestId, widget.personId)),
             ),
           )
               :   SizedBox( ),

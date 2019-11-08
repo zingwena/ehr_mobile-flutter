@@ -11,12 +11,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -148,7 +150,26 @@ public class DataChannel {
 
                             }
                         }
+                        if (methodCall1.method.equals("getTestingPlan")) {
+                            try {
+                                List<TestingPlan> testingPlans = ehrMobileDatabase.testingPlanDao().findAll();
+                                String list = gson.toJson(testingPlans);
+                                result1.success(list);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
 
+                            }
+                        }
+                        if (methodCall1.method.equals("getdisclosuremethods")) {
+                            try {
+                                List<DisclosureMethod> disclosureMethods = ehrMobileDatabase.disclosureMethodDao().findAll();
+                                String list = gson.toJson(disclosureMethods);
+                                result1.success(list);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
 
                         if (methodCall1.method.equals("saveHtsRegistration")) {
                             // TODO judge to add code here useless comment
