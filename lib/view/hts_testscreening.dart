@@ -217,7 +217,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   }
 
 Future<dynamic> getTestKitsByCount(int count) async {
-  print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTKITS"+ labInvestId);
 
   try {
       String response = await htsChannel.invokeMethod('getTestKitsByLevel', labInvestId);
@@ -230,7 +229,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
          });
 
        });
-      print("*********sample from android"+_testkitslist.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -241,7 +239,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
         test_name = response;
-        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH TEST NAME TEST NAME"+ test_name);
 
       });
 
@@ -280,14 +277,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
 
       htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
     });
 
@@ -335,22 +330,15 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       switch (_result) {
         case 1:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 1 chosen");
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + _entryPointList.toString());
-
           _entryPointList.forEach((e) {
             if (e.name == "negative " || e.name == "Negative" || e.name == "NEGATIVE"){
               result.code = e.code;
               result.name = e.name;
-              print(">>>>>>>>>>>>>>>>>>>>>>>>> here is the result clicked in negative >>>>"+e.name );
-
             }
           });
           break;
         
         case 2:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 2 chosen");
-
           _entryPointList.forEach((e){
         if(e.name == "positive " || e.name == "Positive" || e.name == "POSITIVE"){
           result.code = e.code;
@@ -359,7 +347,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
       });
       break;
         case 3:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 3 chosen");
 
           _entryPointList.forEach((e){
             if(e.name == "Inconclusive " || e.name == "Indeterminate" || e.name == "INDERTERMINATE"){
@@ -439,7 +426,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('Blood'),
+                                              (sample_name),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -480,7 +467,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('HIV'),
+                                              (test),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -704,7 +691,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
     @override
   Widget build(BuildContext context) {
     var list=this._testkitslist ;
-    print("+++++++++++  $list");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -745,12 +731,10 @@ Future<dynamic> getTestKitsByCount(int count) async {
             )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS"), onTap: () {
               if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
                 ));
               } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
 
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
@@ -794,14 +778,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;
-    print(">>>>>>>>>>>>>>>>>> SAVE LAB INVESTIGATION TEST"+ laboratoryInvestTest.toString());
     var labInvestTestResponse;
     try {
 
       String jsonLabInvestTest = jsonEncode(laboratoryInvestTest);
       labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonLabInvestTest);
       setState(() {
-        print('###################'+ labInvestTestResponse);
         labInvestTestId = labInvestTestResponse;
 
       });

@@ -5,8 +5,6 @@ import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_initiation.dart';
-import 'package:ehr_mobile/view/patient_overview.dart';
-
 
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
@@ -52,14 +50,11 @@ class ArtOverviewState extends State<ArtRegOverview> {
 
   bool showInput = true;
   bool showInputTabOptions = true;
-  var dateOfTest, dateOfEnrollment;
 
   @override
   void initState() {
 
     print(_patient.toString());
-    dateOfTest = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfHivTest);
-    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfEnrolmentIntoCare);
   //  getEntryPoint(widget.htsRegistration.entryPointId);
     super.initState();
   }
@@ -94,12 +89,12 @@ class ArtOverviewState extends State<ArtRegOverview> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-              new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+            /*  new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
                       Overview(_patient)),
-            )),
+            )),*/
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,

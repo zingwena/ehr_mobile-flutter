@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/search_patient_index.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
@@ -16,6 +18,8 @@ import 'package:ehr_mobile/view/hiv_testing_index_contact_search.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+
+import 'art_reg.dart';
 
 
 class HIVServicesIndexContactList extends StatefulWidget {
@@ -91,6 +95,54 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home ",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview ",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.person)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
+            )),
+         /*   new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),  onTap: () {
+              if(htsRegistration == null ){
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
+                ));
+              } else {
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
+                ));
+              }
+            }),*/
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtReg(widget.personId, widget.visitId, widget.person)),
+            ))
+
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -175,7 +227,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                     children: <Widget>[
                                                       Row(
                                                         children: <Widget>[
-                                                          Expanded(
+                                                        /*  Expanded(
                                                             child: Padding(
                                                               padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0),
                                                               child: RaisedButton(
@@ -202,7 +254,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                               ),
 
                                                             ),
-                                                          ),
+                                                          ),*/
 
                                                           Expanded(
                                                             child: Padding(
@@ -484,7 +536,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
 
 Widget getContactList(){
   if(_entryPointList.length > 0){
-    Container(
+     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
       child: DataTable(
@@ -492,7 +544,7 @@ Widget getContactList(){
             DataColumn(label: Text("First Name")),
             DataColumn(label: Text("Last Name")),
             DataColumn(label: Text("Sex")),
-
+            DataColumn(label: Text("Sex")),
           ],
           rows:_entryPointList.map((person)=>
               DataRow(
@@ -500,6 +552,8 @@ Widget getContactList(){
                     DataCell(Text(person.firstName)),
                     DataCell(Text(person.lastName)),
                     DataCell(Text(person.sex)),
+                    DataCell(Text(person.nationalityId)),
+
 
                   ])
 
@@ -509,7 +563,7 @@ Widget getContactList(){
       ),
     );
   }else{
-    new Text("No Contacts Added");
+     return new Text("No Contacts Added");
   }
 }
 

@@ -415,7 +415,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                   onPressed: () {
 
                                                     Navigator.push(context,MaterialPageRoute(
-                                                        builder: (context)=> HivInformation(widget.indexTestId, _patient, widget.personId)
+                                                        builder: (context)=> HivInformation(widget.indexTestId, widget.patient, widget.personId)
                                                     ));
                                                   },
                                                 ),

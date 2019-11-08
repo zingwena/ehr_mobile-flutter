@@ -35,8 +35,9 @@ class PostTestOverview extends StatefulWidget {
   final Person person;
   final String htsId;
   final bool consenttoIndex;
+  final String result;
 
-  PostTestOverview(this.postTest, this.personId, this.visitId, this.person, this.htsId, this.consenttoIndex);
+  PostTestOverview(this.postTest, this.personId, this.visitId, this.person, this.htsId, this.consenttoIndex, this.result);
 
   @override
   State<StatefulWidget> createState() {
@@ -251,28 +252,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                 /*     Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Recency Testing",
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          onPressed: () {
 
-                                                                Navigator.push(context,MaterialPageRoute(
-                                                                    builder: (context)=> RecencyTest(widget.personId, widget.visitId, widget.person, widget.htsId)
-                                                                ));
-
-                                                          },
-                                                        ),
-                                                      ),*/
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
@@ -324,7 +304,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                      _IndexButton()
+                                                      _recencyTesting(),
                                       ],
                                                   ),
                                                 ),
@@ -354,6 +334,56 @@ class PostTestOverviewState extends State<PostTestOverview> {
         ],
       ),
     );
+  }
+  Widget _recencyTesting(){
+    if(widget.result == 'POSITIVE' || widget.result == 'Positive'){
+      return   Container(                                      width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                        child: RaisedButton(
+                                                          elevation: 4.0,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.blue,
+                                                          padding: const EdgeInsets.all(20.0),
+                                                          child: Text(
+                                                            "Recency Testing",
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                          onPressed: () {
+
+                                                                Navigator.push(context,MaterialPageRoute(
+                                                                    builder: (context)=> RecencyTest(widget.personId, widget.visitId, widget.person, widget.htsId , indexTestId)
+                                                                ));
+
+                                                          },
+                                                        ),
+                                                      );
+    }
+    else{
+
+      return Container(                                      width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+        child: RaisedButton(
+          elevation: 4.0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0)),
+          color: Colors.blue,
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "Close ",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+
+            Navigator.push(context,MaterialPageRoute(
+                builder: (context)=> Overview( widget.person)
+            ));
+
+          },
+        ),
+      );
+
+    }
   }
 
   Widget _IndexButton() {
