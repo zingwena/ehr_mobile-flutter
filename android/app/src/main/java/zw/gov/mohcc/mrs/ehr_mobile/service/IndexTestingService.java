@@ -46,7 +46,7 @@ public class IndexTestingService {
     }
 
     public List<IndexContact> findIndexContactsByIndexTestId(String indexTestId) {
-        List<IndexContact> indexContacts = ehrMobileDatabase.indexContactDao().findByPersonId(indexTestId);
+        List<IndexContact> indexContacts = ehrMobileDatabase.indexContactDao().findByIndexTestId(indexTestId);
         Log.i(TAG, "Retrieved index contacts using index test id : " + indexTestId + " And index contacts records : " + indexContacts);
         return indexContacts;
     }

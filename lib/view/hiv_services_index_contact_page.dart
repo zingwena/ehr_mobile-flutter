@@ -543,19 +543,36 @@ Widget getContactList(){
           columns: [
             DataColumn(label: Text("First Name")),
             DataColumn(label: Text("Last Name")),
-            DataColumn(label: Text("Sex")),
-            DataColumn(label: Text("Sex")),
           ],
           rows:_entryPointList.map((person)=>
               DataRow(
                   cells: [
                     DataCell(Text(person.firstName)),
                     DataCell(Text(person.lastName)),
-                    DataCell(Text(person.sex)),
-                    DataCell(Text(person.nationalityId)),
+                    DataCell(    Padding(
+                      padding: const EdgeInsets.only(right: 0),
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Overview(person)));
+
+                        },
+                        color: Colors.blue,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                          child: Text('View',
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      )),
 
 
-                  ])
+                    )])
 
           ).toList()
 
