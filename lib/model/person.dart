@@ -71,4 +71,15 @@ class Person {
 
     return personList;
   }
+
+  static List<Person> mapFromJson(List dynamicList){
+    List<Person> religionList=[];
+    if(dynamicList!=null){
+      dynamicList.forEach((e){
+        Person person=  Person.fromJson(e);
+        religionList.add(person);
+      });
+    }
+    return religionList;
+  }
 }

@@ -10,9 +10,9 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/recency_result.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
-
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/hts_result.dart';
@@ -26,26 +26,26 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'edit_demographics.dart';
 
 
-class HtsScreeningTest extends StatefulWidget {
+class RecencyTest extends StatefulWidget {
   final String personId;
   final String visitId;
   final Person person;
   final String htsId;
-  HtsScreeningTest(this.personId, this.visitId, this.person, this.htsId);
+  RecencyTest(this.personId, this.visitId, this.person, this.htsId);
 
   @override
   State createState() {
-    return _HtsScreeningTest();
+    return _Recency();
   }
 }
 
-class _HtsScreeningTest extends State<HtsScreeningTest> {
+class _Recency extends State<RecencyTest> {
   final _formKey = GlobalKey<FormState>();
   var selectedDate, selectedStarttime, selectedReadingtime, selectedReadingDate;
   DateTime date, startTime, readingTime,  readingDate;
   HtsRegistration htsRegistration;
   int _result = 0;
-  int _testKit = -1;
+  int _testKit = 0;
   int testCount=0;
   String id ="1";
   String result_string;
@@ -56,7 +56,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   DateTime date1;
   DateTime date2;
   DateTime date3;
-  Result result = Result('', '');
+  Result result = Result('01', 'RTI');
   bool _entryPointIsValid = false;
   bool _formIsValid = true;
   bool _showError = false;
@@ -69,6 +69,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String _entryPoint;
   String _testkit_string_response;
   String test_name;
+  int recency_count = 0;
   TestKit testKitobj  = TestKit('', '', '', '');
   List test_kits = List();
   List _dropDownListtestkits = List();
@@ -99,13 +100,12 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     date = DateTime.now();
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
-         getPersonInvestigation(widget.personId);
-         getLabInvestigation(widget.personId);
-         getLabTest(widget.personId);
-         getResults(widget.personId);
-         getTestName();
-         getLabId();
-         getHtsRecord(widget.personId);
+    getPersonInvestigation(widget.personId);
+    getLabInvestigation(widget.personId);
+    getLabTest(widget.personId);
+    getResults(widget.personId);
+    getLabId();
+    getHtsRecord(widget.personId);
 
     super.initState();
   }
@@ -163,9 +163,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     var sample_name;
     try {
       sample_name = await htsChannel.invokeMethod('getSample', personId);
-          setState(() {
-          this.sample_name=sample_name;
-          });
+      setState(() {
+        this.sample_name=sample_name;
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -208,28 +208,27 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       Map <String,dynamic> data= json.decode(await htsChannel.invokeMethod('getLabInvestigation')) ;
       var labId= data["labId"];
       var visitPatientId= data["visitPatientId"];
-            print("Visit Patient Id : $visitPatientId || Lab Id : $labId"  );
-     
+      print("Visit Patient Id : $visitPatientId || Lab Id : $labId"  );
+
     } catch (e) {
       print("channel failure: '$e'");
     }
-  
+
   }
 
-Future<dynamic> getTestKitsByCount(int count) async {
-  print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTKITS"+ labInvestId);
+  Future<dynamic> getTestKitsByCount(int count) async {
 
-  try {
+    try {
       String response = await htsChannel.invokeMethod('getTestKitsByLevel', labInvestId);
-       setState(() {
-         _testkit_string_response = response;
-         test_kits = jsonDecode(_testkit_string_response);
-         _dropDownListtestkits = TestKit.mapFromJson(test_kits);
-         _dropDownListtestkits.forEach((e){
-           _testkitslist.add(e);
-         });
+      setState(() {
+        _testkit_string_response = response;
+        test_kits = jsonDecode(_testkit_string_response);
+        _dropDownListtestkits = TestKit.mapFromJson(test_kits);
+        _dropDownListtestkits.forEach((e){
+          _testkitslist.add(e);
+        });
 
-       });
+      });
       print("*********sample from android"+_testkitslist.toString());
     } catch (e) {
       print("channel failure: '$e'");
@@ -237,6 +236,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   }
   Future<dynamic>getTestName()async{
+    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTNAME"+ labInvestId);
+
     try{
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
@@ -255,8 +256,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
       setState(() {
         labInvestId = response;
-        getTestName();
-        getTestKitsByCount(testCount);
+
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -297,78 +297,37 @@ Future<dynamic> getTestKitsByCount(int count) async {
   void _handleTestKitChange(int value) {
     setState(() {
       _testKit = value;
-      _testkitslist.forEach((e){
-        if(value == _testkitslist.indexOf(e)){
-          getTestKitByCode(e.code);
-          testKitobj.name = testKit;
-        }
-      });
-
-
+      switch(_testKit){
+        case 1:
+          testKit = "Asante";
+      }
     });
 
-  }
 
-  Widget getTestKIts(List<TestKit> testkits)
-  {
-    return new Row(children: testkits.map((item) =>
-       Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-          Text(item.name),
-          Radio(
-              value: testkits.indexOf(item),
-              groupValue: _testKit,
-              activeColor: Colors.blue,
-              onChanged: _handleTestKitChange)
-
-        ],),
-      ],
-       ),).toList());
   }
 
   void _handleResultChange(int value)  {
 
-      setState(() {
+    setState(() {
       _result = value;
 
       switch (_result) {
         case 1:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 1 chosen");
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + _entryPointList.toString());
-
-          _entryPointList.forEach((e) {
-            if (e.name == "negative " || e.name == "Negative" || e.name == "NEGATIVE"){
-              result.code = e.code;
-              result.name = e.name;
-              print(">>>>>>>>>>>>>>>>>>>>>>>>> here is the result clicked in negative >>>>"+e.name );
-
-            }
-          });
+          result.name = "RTRI Negative";
+          result.code = "01";
           break;
-        
+
         case 2:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 2 chosen");
-
-          _entryPointList.forEach((e){
-        if(e.name == "positive " || e.name == "Positive" || e.name == "POSITIVE"){
-          result.code = e.code;
-          result.name = e.name;
-        }
-      });
-      break;
-        case 3:
-          print("@@@@@@@@@@@@@@@@@@@@@@@@ case 3 chosen");
-
-          _entryPointList.forEach((e){
-            if(e.name == "Inconclusive " || e.name == "Indeterminate" || e.name == "INDERTERMINATE"){
-              result.code = e.code;
-              result.name = e.name;
-            }
-          });
-
+          result.name = "Invalid";
+          result.code = "02";
           break;
+        case 3:
+        result.name = "Long Term";
+        result.code = "03";
+          break;
+        case 4:
+          result.name ="Recent";
+          result.code ="04";
 
       }
 
@@ -439,7 +398,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('Blood'),
+                                              (sample_name),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -480,7 +439,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('HIV'),
+                                              (test),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -516,7 +475,16 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 250,
                                       ),
                                     ),
-                                    getTestKIts(_testkitslist),
+                                    Row(
+                                      children: <Widget>[
+                                        Text('Asante'),
+                                        Radio(
+                                            value: 1,
+                                            groupValue:_testKit,
+                                            activeColor: Colors.blue,
+                                            onChanged: _handleTestKitChange)
+
+                                      ],),
                                   ],
                                 ),
                                 SizedBox(
@@ -600,21 +568,27 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 250,
                                       ),
                                     ),
-                                    Text('Negative'),
+                                    Text('RTRI Negative'),
                                     Radio(
                                         value: 1,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
-                                    Text('Positive'),
+                                    Text('Invalid'),
                                     Radio(
                                         value: 2,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
-                                    Text('Inconclusive'),
+                                    Text('Long Term'),
                                     Radio(
                                         value: 3,
+                                        groupValue: _result,
+                                        activeColor: Colors.blue,
+                                        onChanged: _handleResultChange),
+                                    Text('Recent'),
+                                    Radio(
+                                        value: 4,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
@@ -654,18 +628,13 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         labInvestId,
                                                         null, null,
                                                         result, widget.visitId, testKit, null, null);
-
-
-                                                    saveLabInvestigationTest(
-                                                        labInvestTest);
-
-
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)
-                                                        ));
+                                                                Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest)
+
+                                                    ));
                                                   } else {
                                                     setState(() {
                                                       _showError = true;
@@ -701,25 +670,25 @@ Future<dynamic> getTestKitsByCount(int count) async {
     );
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     var list=this._testkitslist ;
     print("+++++++++++  $list");
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        title: new Column(children: <Widget>[
-      new Text(test_name),
-      new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+          title: new Column(children: <Widget>[
+            new Text("Recency Testing"),
+            new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
 
-      ],)
+          ],)
       ),
       // appBar: AppBar(
       //  backgroundColor: Colors.blue,
       //  title: Text('Add Patient'),
 
-    
+
       body:_body(list),
       drawer:  new Drawer(
         child: ListView(
@@ -731,7 +700,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                   builder: (context) =>
                       SearchPatient()),
             )),
-              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
@@ -798,8 +767,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
     var labInvestTestResponse;
     try {
 
-      String jsonLabInvestTest = jsonEncode(laboratoryInvestTest);
-      labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonLabInvestTest);
+      String jsonPatient = jsonEncode(laboratoryInvestTest);
+      labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
       setState(() {
         print('###################'+ labInvestTestResponse);
         labInvestTestId = labInvestTestResponse;
