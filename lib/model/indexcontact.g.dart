@@ -8,6 +8,7 @@ part of 'indexcontact.dart';
 
 IndexContact _$IndexContactFromJson(Map<String, dynamic> json) {
   return IndexContact(
+    json['id']as String,
     json['indexTestId'] as String,
     json['personId'] as String,
     json['relation'] as String,
@@ -26,6 +27,7 @@ IndexContact _$IndexContactFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$IndexContactToJson(IndexContact instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'indexTestId': instance.indexTestId,
       'personId': instance.personId,
       'relation': instance.relation,

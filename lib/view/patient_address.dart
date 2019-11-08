@@ -384,7 +384,6 @@ class _PatientAddressState extends State<PatientAddress> {
     try {
       String jsonPatient = jsonEncode(patient.toJson());
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
-
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
         registeredPatient = Person.fromJson(jsonDecode(patientResponse));

@@ -5,6 +5,7 @@ part 'indexcontact.g.dart';
 @JsonSerializable()
 @CustomDateTimeConverter()
 class IndexContact{
+  String id;
   String indexTestId;
   String personId;
   String relation;
@@ -16,7 +17,7 @@ class IndexContact{
   bool  disclosureStatus;
   String disclosureMethodId;
 
-  IndexContact(String indexTestId, String personId, String relation, String hivStatus, DateTime dateofHivstatus,
+  IndexContact(String id, String indexTestId, String personId, String relation, String hivStatus, DateTime dateofHivstatus,
       bool fearOfIpv, String disclosureMethodPlanId, String testingPlanId, bool disclosureStatus, String disclosureMethodId){
     this.indexTestId = indexTestId;
     this.personId = personId;
@@ -28,6 +29,7 @@ class IndexContact{
     this.testingPlanId = testingPlanId;
     this.disclosureStatus = disclosureStatus;
     this.disclosureMethodId = disclosureMethodId;
+    this.id = id;
   }
 
   factory IndexContact.fromJson(Map<String, dynamic> json) => _$IndexContactFromJson(json);

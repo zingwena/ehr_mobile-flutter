@@ -430,13 +430,6 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                 60.0),
                                                             child:
                                                             TextFormField(
-                                                              validator:
-                                                                  (value) {
-                                                                return value
-                                                                    .isEmpty
-                                                                    ? 'Enter Art Number'
-                                                                    : null;
-                                                              },
                                                               onSaved:
                                                                   (value) =>
                                                                   setState(

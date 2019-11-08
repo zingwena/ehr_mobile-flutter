@@ -55,6 +55,7 @@ class _Recency_Result  extends State<Recency_Result > {
   String _visitId;
   String patientId;
   String indextestid;
+  String INDEXTEST ;
   String labInvetsTestId;
   String result_string;
   HtsRegistration htsRegistration;
@@ -471,7 +472,7 @@ class _Recency_Result  extends State<Recency_Result > {
                             IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
                             saveIndexTest(indexTest);
                             Navigator.push(context,MaterialPageRoute(
-                            builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+                            builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.patientId, INDEXTEST)
                             ));
                             },
                             ),
@@ -527,11 +528,14 @@ class _Recency_Result  extends State<Recency_Result > {
   Future<void>saveIndexTest(IndexTest indexTest)async{
     var response ;
     print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX '+ indexTest.toString());
+    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE ID FOR PERSON WATIKUDEALER NAYE INDEX TEST'+ indexTest.personId);
+
     try{
       response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
       print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
       setState(() {
-        indextestid = response;
+        INDEXTEST = response;
+        print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED" + indextestid);
 
       });
 

@@ -386,7 +386,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
     }
   }
 
-  Widget _IndexButton() {
+/*  Widget _IndexButton() {
 
     if(widget.consenttoIndex == true){
       return   Container(
@@ -418,7 +418,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
       );
     }
 
-  }
+  }*/
 
   Future<void>saveIndexTest(IndexTest indexTest)async{
     var response ;
@@ -428,7 +428,6 @@ class PostTestOverviewState extends State<PostTestOverview> {
       print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
       setState(() {
         indexTestId = response;
-
       });
 
     }catch(e){
