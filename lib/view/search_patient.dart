@@ -63,13 +63,11 @@ class _SearchPatientState extends State<SearchPatient> {
       backgroundColor: Colors.white,
 
       body: Column(
-
         children: <Widget>[
-
           Stack(
             children: <Widget>[
               Container(
-                height: 200.0,
+                height: 180.0,
                 width: double.infinity,
                 color: Colors.blue,
               ),
@@ -117,7 +115,7 @@ class _SearchPatientState extends State<SearchPatient> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 70.0,
+                    height: 35.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -184,9 +182,7 @@ class _SearchPatientState extends State<SearchPatient> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                     child: Text(
@@ -196,9 +192,6 @@ class _SearchPatientState extends State<SearchPatient> {
                           color: Colors.white.withOpacity(0.80),
                           fontWeight: FontWeight.w400),
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
                   ),
 
                   Padding(
@@ -212,7 +205,7 @@ class _SearchPatientState extends State<SearchPatient> {
                         child: Padding(
                           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                           child: Material(
-                            elevation: 5.0,
+                            elevation: 0,
                             borderRadius: BorderRadius.circular(5.0),
                             child: TextFormField(
                               decoration: InputDecoration(
@@ -278,7 +271,7 @@ class _SearchPatientState extends State<SearchPatient> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   subtitle: Container(
@@ -291,7 +284,7 @@ class _SearchPatientState extends State<SearchPatient> {
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
@@ -302,7 +295,7 @@ class _SearchPatientState extends State<SearchPatient> {
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
