@@ -4,27 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("personId")})
+@ForeignKey(entity = Person.class, onDelete = CASCADE,
+        parentColumns = "id",
+        childColumns = "personId")
 public class ArtInitiation extends BaseEntity{
 
     @ColumnInfo(name = "personId")
     private String personId;
-
-   /* @TypeConverters(DateConverter.class)
-    private Date dateOfEnrolmentIntoCare;
-
-    @TypeConverters(DateConverter.class)
-    private Date dateInitiatedOnArt;
-
-    private String clientType;
-    private String clientEligibility;*/
    private String line;
     private String artRegimenId;
     private String artReasonId;
