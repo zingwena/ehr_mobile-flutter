@@ -549,9 +549,6 @@ Widget getContactList(){
                   cells: [
                     DataCell(Text(person.firstName)),
                     DataCell(Text(person.lastName)),
-
-
-
                   ])
 
           ).toList()

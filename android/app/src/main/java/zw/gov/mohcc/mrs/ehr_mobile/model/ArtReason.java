@@ -1,9 +1,16 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("artStatusId")})
+@ForeignKey(entity = ArtStatus.class, onDelete = CASCADE,
+        parentColumns = "code",
+        childColumns = "artStatusId")
 public class ArtReason extends BaseNameModel {
 
     private String artStatusId;

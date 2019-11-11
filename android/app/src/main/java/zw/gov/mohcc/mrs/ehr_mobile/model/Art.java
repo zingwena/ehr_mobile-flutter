@@ -3,14 +3,20 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+@Entity(indices = {@Index("personId")})
+@ForeignKey(entity = Person.class, onDelete = CASCADE,
+        parentColumns = "id",
+        childColumns = "personId")
 public class Art extends BaseEntity{
 
     @ColumnInfo(name = "personId")

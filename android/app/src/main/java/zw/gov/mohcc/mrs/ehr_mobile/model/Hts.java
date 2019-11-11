@@ -2,14 +2,40 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("personId"), @Index("visitId"), @Index("laboratoryInvestigationId"),
+        @Index("entryPointId"), @Index("reasonForHivTestingId"), @Index("htsModelId"), @Index("reasonForNotIssuingResultId")},
+foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
+        parentColumns = "id",
+        childColumns = "personId"),
+        @ForeignKey(entity = Visit.class, onDelete = CASCADE,
+                parentColumns = "id",
+                childColumns = "visitId"),
+        @ForeignKey(entity = LaboratoryInvestigation.class, onDelete = CASCADE,
+                parentColumns = "id",
+                childColumns = "laboratoryInvestigationId"),
+        @ForeignKey(entity = EntryPoint.class, onDelete = CASCADE,
+                parentColumns = "code",
+                childColumns = "entryPointId"),
+        @ForeignKey(entity = HtsModel.class, onDelete = CASCADE,
+                parentColumns = "code",
+                childColumns = "htsModelId"),
+        @ForeignKey(entity = ReasonForNotIssuingResult.class, onDelete = CASCADE,
+                parentColumns = "code",
+                childColumns = "reasonForNotIssuingResultId"),
+})
+
 public class Hts extends BaseEntity {
     @NonNull
     private String personId;
