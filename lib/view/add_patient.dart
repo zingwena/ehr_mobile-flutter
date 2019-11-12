@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
-import 'package:ehr_mobile/view/link_bar.dart';
 
 import 'edit_demographics.dart';
 
@@ -107,6 +106,7 @@ class _AddPatient extends State<AddPatient> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
+<<<<<<< HEAD
             title: new Text("Impilo Mobile",   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
 <<<<<<< HEAD
@@ -133,6 +133,9 @@ class _AddPatient extends State<AddPatient> {
               ),
             ],
 >>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
+=======
+            title: new Text("Add New Patient"),
+>>>>>>> parent of 507c652... UI Update 11/11/2019
           ),
           Positioned.fill(
             child: Padding(
@@ -140,6 +143,7 @@ class _AddPatient extends State<AddPatient> {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
+<<<<<<< HEAD
                   Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Text("Add New Patient", style: TextStyle(
@@ -150,6 +154,9 @@ class _AddPatient extends State<AddPatient> {
 =======
                   // _buildButtonsRow(),
 >>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
+=======
+                   _buildButtonsRow(),
+>>>>>>> parent of 507c652... UI Update 11/11/2019
                   Expanded(
                       child: new Card(
                         elevation: 4.0,
@@ -160,10 +167,7 @@ class _AddPatient extends State<AddPatient> {
                                 BoxConstraints viewportConstraints) {
                               return Column(
                                 children: <Widget>[
-                                  Container(
-                                    height: 2.0,
-                                    color: Colors.blue,
-                                  ),
+                                  //   _buildTabBar(),
                                   Expanded(
                                     child: SingleChildScrollView(
                                       child: new ConstrainedBox(
@@ -180,7 +184,9 @@ class _AddPatient extends State<AddPatient> {
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: <Widget>[
                                                     SizedBox(
                                                       height: 20.0,
@@ -190,8 +196,14 @@ class _AddPatient extends State<AddPatient> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
-                                                              child: TextFormField(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          16.0,
+                                                                      horizontal:
+                                                                          60.0),
+                                                              child:
+                                                                  TextFormField(
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -223,15 +235,13 @@ class _AddPatient extends State<AddPatient> {
                                                     ),
                                                     !showError
                                                         ? SizedBox.shrink()
-                                                        : Padding(
-                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
-                                                      child:Text(
+                                                        : Text(
                                                             _nationalIdError ??
                                                                 "",
                                                             style: TextStyle(
                                                                 color:
                                                                     Colors.red),
-                                                          ), ),
+                                                          ),
                                                     SizedBox(
                                                       height: 10.0,
                                                     ),
@@ -425,13 +435,12 @@ class _AddPatient extends State<AddPatient> {
                                                             BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: <Widget>[
-                                                            Text('Proceed to Demographics', style: TextStyle(color: Colors.white),),
-                                                            Icon(Icons.navigate_next, color: Colors.white, ),
-                                                          ],
+                                                        child: Text(
+                                                          "Register Patient",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.w500),
                                                         ),
                                                         onPressed: () async {
                                                           if (_formKey
@@ -498,27 +507,6 @@ class _AddPatient extends State<AddPatient> {
         ],
       ),
     );
-  }
-
-  Widget _buildLinkBar({bool showFirstOption}) {
-    return
-      Row(
-        children: <Widget>[
-          new LinkBarItems(
-            text: "Home Page",
-          ),
-          new LinkBarItems(
-            text: "Add Patient",
-            selected: true,
-          ),
-          new LinkBarItems(
-            text: "Demographics",
-          ),
-          new LinkBarItems(
-            text: "Contact Details",
-          ),
-        ],
-      );
   }
 
   Widget _buildButtonsRow() {

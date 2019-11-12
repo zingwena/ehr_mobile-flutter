@@ -148,14 +148,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(5.0)),
                 color: Colors.blue,
                 padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Login', style: TextStyle(color: Colors.white, fontSize: 18),),
-                      Icon(Icons.navigate_next, color: Colors.white, ),
-                    ],
-                  ),
+                child: Text(
+                  "LOG IN",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed:
                     () async{
                       
