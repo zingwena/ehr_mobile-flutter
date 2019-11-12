@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:ehr_mobile/view/link_bar.dart';
 
 class PatientAddress extends StatefulWidget {
   final Person patient;
@@ -80,12 +81,8 @@ class _PatientAddressState extends State<PatientAddress> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-<<<<<<< HEAD
-<<<<<<< HEAD
             title: new Text("Impilo Mobile",   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
-<<<<<<< HEAD
-=======
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -107,13 +104,6 @@ class _PatientAddressState extends State<PatientAddress> {
                       ])
               ),
             ],
->>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
-=======
-            title: new Text("Patient Address"),
->>>>>>> parent of 507c652... UI Update 11/11/2019
-=======
-            title: new Text("Patient Address"),
->>>>>>> parent of 507c652... UI Update 11/11/2019
           ),
           Positioned.fill(
             child: Padding(
@@ -124,27 +114,12 @@ class _PatientAddressState extends State<PatientAddress> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
-<<<<<<< HEAD
-<<<<<<< HEAD
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-<<<<<<< HEAD
-                    child: Text("Patient Address", style: TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
-                  ),
-                    _buildButtonsRow(),
-=======
                     child: Text("Add Patient Contact Details", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   //  _buildButtonsRow(),
->>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
-=======
-                    _buildButtonsRow(),
->>>>>>> parent of 507c652... UI Update 11/11/2019
-=======
-                    _buildButtonsRow(),
->>>>>>> parent of 507c652... UI Update 11/11/2019
                   Expanded(
                     child: new Card( elevation: 4.0,
                       margin: const EdgeInsets.all(8.0),
@@ -154,7 +129,11 @@ class _PatientAddressState extends State<PatientAddress> {
                               BoxConstraints viewportConstraints) {
                             return Column(
                               children: <Widget>[
-                                //  _buildTabBar(),
+                                _buildLinkBar(),
+                                Container(
+                                  height: 2.0,
+                                  color: Colors.blue,
+                                ),
 
                                 SizedBox(
                                   height: 15.0,
@@ -294,6 +273,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Town"),
                                                             iconEnabledColor: Colors.black,
@@ -328,9 +308,14 @@ class _PatientAddressState extends State<PatientAddress> {
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Save",
-                                                          style: TextStyle(color: Colors.white),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Save Patient Record', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: () async {
                                                           if (_formKey.currentState.validate()) {
@@ -396,6 +381,26 @@ class _PatientAddressState extends State<PatientAddress> {
         ],
       ),
     );
+  }
+
+  Widget _buildLinkBar({bool showFirstOption}) {
+    return
+      Row(
+        children: <Widget>[
+          new LinkBarItems(
+            text: "Home Page",
+          ),
+          new LinkBarItems(
+            text: "Add Patient",
+          ),
+          new LinkBarItems(
+            text: "Demographics",
+          ),
+          new LinkBarItems(
+            text: "Contact Details", selected: true,
+          ),
+        ],
+      );
   }
 
   Widget _buildButtonsRow() {
