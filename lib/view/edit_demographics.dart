@@ -11,6 +11,7 @@ import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
 import 'package:ehr_mobile/view/patient_address.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/link_bar.dart';
 
 import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
@@ -238,6 +239,30 @@ class _EditDemographicsState extends State<EditDemographics> {
             centerTitle: true,
             title: new Text("Impilo Mobile",   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+<<<<<<< HEAD
+=======
+            actions: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+            ],
+>>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
           ),
           Positioned.fill(
             child: Padding(
@@ -247,10 +272,17 @@ class _EditDemographicsState extends State<EditDemographics> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
+<<<<<<< HEAD
                     child: Text("Continue Patient Registration", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   _buildButtonsRow(),
+=======
+                    child: Text("Add Patient Demographics", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
+                 // _buildButtonsRow(),
+>>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -261,7 +293,11 @@ class _EditDemographicsState extends State<EditDemographics> {
                               BoxConstraints viewportConstraints) {
                             return Column(
                               children: <Widget>[
-                                //   _buildTabBar(),
+                                _buildLinkBar(),
+                                Container(
+                                  height: 2.0,
+                                  color: Colors.blue,
+                                ),
                                 Expanded(
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
@@ -565,9 +601,13 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Next",
-                                                          style: TextStyle(color: Colors.white),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Proceed to Contact Details', style: TextStyle(color: Colors.white),),
+                                                            Icon(Icons.navigate_next, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: () {
                                                           setState(() {
@@ -654,6 +694,27 @@ class _EditDemographicsState extends State<EditDemographics> {
         ],
       ),
     );
+  }
+
+  Widget _buildLinkBar({bool showFirstOption}) {
+    return
+      Row(
+        children: <Widget>[
+          new LinkBarItems(
+            text: "Home Page",
+          ),
+          new LinkBarItems(
+            text: "Add Patient",
+          ),
+          new LinkBarItems(
+            text: "Demographics",
+            selected: true,
+          ),
+          new LinkBarItems(
+            text: "Contact Details",
+          ),
+        ],
+      );
   }
 
   Widget _buildButtonsRow() {

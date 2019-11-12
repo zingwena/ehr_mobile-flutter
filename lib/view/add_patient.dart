@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:ehr_mobile/view/link_bar.dart';
 
 import 'edit_demographics.dart';
 
@@ -108,6 +109,30 @@ class _AddPatient extends State<AddPatient> {
             centerTitle: true,
             title: new Text("Impilo Mobile",   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+<<<<<<< HEAD
+=======
+            actions: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+            ],
+>>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
           ),
           Positioned.fill(
             child: Padding(
@@ -120,7 +145,11 @@ class _AddPatient extends State<AddPatient> {
                     child: Text("Add New Patient", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
+<<<<<<< HEAD
                    _buildButtonsRow(),
+=======
+                  // _buildButtonsRow(),
+>>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
                   Expanded(
                       child: new Card(
                         elevation: 4.0,
@@ -131,7 +160,10 @@ class _AddPatient extends State<AddPatient> {
                                 BoxConstraints viewportConstraints) {
                               return Column(
                                 children: <Widget>[
-                                  //   _buildTabBar(),
+                                  Container(
+                                    height: 2.0,
+                                    color: Colors.blue,
+                                  ),
                                   Expanded(
                                     child: SingleChildScrollView(
                                       child: new ConstrainedBox(
@@ -148,9 +180,7 @@ class _AddPatient extends State<AddPatient> {
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
                                                     SizedBox(
                                                       height: 20.0,
@@ -160,14 +190,8 @@ class _AddPatient extends State<AddPatient> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          16.0,
-                                                                      horizontal:
-                                                                          60.0),
-                                                              child:
-                                                                  TextFormField(
+                                                              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                              child: TextFormField(
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -199,13 +223,15 @@ class _AddPatient extends State<AddPatient> {
                                                     ),
                                                     !showError
                                                         ? SizedBox.shrink()
-                                                        : Text(
+                                                        : Padding(
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
+                                                      child:Text(
                                                             _nationalIdError ??
                                                                 "",
                                                             style: TextStyle(
                                                                 color:
                                                                     Colors.red),
-                                                          ),
+                                                          ), ),
                                                     SizedBox(
                                                       height: 10.0,
                                                     ),
@@ -399,12 +425,13 @@ class _AddPatient extends State<AddPatient> {
                                                             BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Register Patient",
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.w500),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Proceed to Demographics', style: TextStyle(color: Colors.white),),
+                                                            Icon(Icons.navigate_next, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: () async {
                                                           if (_formKey
@@ -471,6 +498,27 @@ class _AddPatient extends State<AddPatient> {
         ],
       ),
     );
+  }
+
+  Widget _buildLinkBar({bool showFirstOption}) {
+    return
+      Row(
+        children: <Widget>[
+          new LinkBarItems(
+            text: "Home Page",
+          ),
+          new LinkBarItems(
+            text: "Add Patient",
+            selected: true,
+          ),
+          new LinkBarItems(
+            text: "Demographics",
+          ),
+          new LinkBarItems(
+            text: "Contact Details",
+          ),
+        ],
+      );
   }
 
   Widget _buildButtonsRow() {
