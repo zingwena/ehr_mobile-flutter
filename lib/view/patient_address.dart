@@ -81,7 +81,6 @@ class _PatientAddressState extends State<PatientAddress> {
             elevation: 0.0,
             centerTitle: true,
 <<<<<<< HEAD
-<<<<<<< HEAD
             title: new Text("Impilo Mobile",   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
 <<<<<<< HEAD
@@ -111,9 +110,6 @@ class _PatientAddressState extends State<PatientAddress> {
 =======
             title: new Text("Patient Address"),
 >>>>>>> parent of 507c652... UI Update 11/11/2019
-=======
-            title: new Text("Patient Address"),
->>>>>>> parent of 507c652... UI Update 11/11/2019
           ),
           Positioned.fill(
             child: Padding(
@@ -124,7 +120,6 @@ class _PatientAddressState extends State<PatientAddress> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
-<<<<<<< HEAD
 <<<<<<< HEAD
                   Padding(
                     padding: const EdgeInsets.all(6.0),
@@ -139,9 +134,6 @@ class _PatientAddressState extends State<PatientAddress> {
                   ),
                   //  _buildButtonsRow(),
 >>>>>>> 507c6527e093e614d968a933c189ddd693e5b403
-=======
-                    _buildButtonsRow(),
->>>>>>> parent of 507c652... UI Update 11/11/2019
 =======
                     _buildButtonsRow(),
 >>>>>>> parent of 507c652... UI Update 11/11/2019
