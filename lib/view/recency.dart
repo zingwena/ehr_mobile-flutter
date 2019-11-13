@@ -32,7 +32,8 @@ class RecencyTest extends StatefulWidget {
   final Person person;
   final String htsId;
   final String indexTestId;
-  RecencyTest(this.personId, this.visitId, this.person, this.htsId, this.indexTestId);
+  final HtsRegistration htsRegistration;
+  RecencyTest(this.personId, this.visitId, this.person, this.htsId, this.indexTestId, this.htsRegistration);
 
   @override
   State createState() {
@@ -728,7 +729,7 @@ class _Recency extends State<RecencyTest> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],

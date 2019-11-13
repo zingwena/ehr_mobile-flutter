@@ -27,8 +27,9 @@ class ArtRegOverview extends StatefulWidget {
   final String personId;
   final String visitId;
   final Person person;
+  HtsRegistration htsRegistration;
 
-  ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person);
+  ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person, this.htsRegistration);
 
   @override
   State<StatefulWidget> createState() {
@@ -114,7 +115,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],
@@ -309,7 +310,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Art_Initiation(widget.personId, widget.visitId
+                    Art_Initiation(widget.personId, widget.visitId, widget.htsRegistration
                     )),
           ),
           ),

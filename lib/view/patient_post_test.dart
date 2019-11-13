@@ -184,7 +184,7 @@ class _PatientPostTest extends State<PatientPostTest> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+                      ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
             ))
 
           ],
@@ -301,7 +301,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                         PostTest postTest = new PostTest(widget.htsId, date, true, null, widget.result, false);
                         insertPostTest(postTest);
                         Navigator.push(context,MaterialPageRoute(
-                            builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId, _consenttoindex, widget.result)
+                            builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId, _consenttoindex, widget.result, htsRegistration)
                         ));
                       },
                     ),

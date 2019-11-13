@@ -24,7 +24,8 @@ class Art_Initiation extends StatefulWidget {
   String patientId ;
   String visitId;
   Person person;
-  Art_Initiation(this.patientId, this.visitId);
+  HtsRegistration htsRegistration;
+  Art_Initiation(this.patientId, this.visitId, this.htsRegistration);
 
   @override
   State createState() {
@@ -224,7 +225,7 @@ class _Art_Initiation extends State<Art_Initiation> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+                      ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],
@@ -597,7 +598,7 @@ class _Art_Initiation extends State<Art_Initiation> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(widget.patientId, widget.visitId, widget.person)),
+                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration)),
           ),
           ),
           new RoundedButton(text: "Art Initiation", selected: true),

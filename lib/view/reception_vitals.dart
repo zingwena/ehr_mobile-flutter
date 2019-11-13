@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/vitals/blood_pressure.dart';
 import 'package:ehr_mobile/vitals/height.dart';
@@ -30,6 +31,8 @@ class ReceptionVitals extends StatefulWidget {
 
 class _ReceptionVitalsState extends State<ReceptionVitals> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  HtsRegistration htsRegistration;
   final _formKey = GlobalKey<FormState>();
   final _formKeyHeight = GlobalKey<FormState>();
   final _formKeyTemperature = GlobalKey<FormState>();
@@ -55,7 +58,21 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
     setVisit();
     super.initState();
   }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
 
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+
+    });
+
+
+  }
 
   Future<void> saveVitals(var object, String method) async {
     try {
@@ -115,7 +132,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, htsRegistration)),
             ))
 
           ],

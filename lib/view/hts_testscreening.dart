@@ -745,7 +745,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, htsRegistration)),
             ))
 
           ],
