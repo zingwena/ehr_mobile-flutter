@@ -3,18 +3,27 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("laboratoryInvestigationId"), @Index("visitId"), @Index("testkitId")},
+        foreignKeys = {@ForeignKey(entity = LaboratoryInvestigation.class, parentColumns = "id", childColumns = "laboratoryInvestigationId", onDelete = CASCADE),
+                @ForeignKey(entity = Visit.class, parentColumns = "id", childColumns = "visitId", onDelete = CASCADE),
+                @ForeignKey(entity = TestKit.class, parentColumns = "code", childColumns = "testkitId", onDelete = CASCADE)})
 public class LaboratoryInvestigationTest extends BaseEntity {
 
     @NonNull
     private String laboratoryInvestigationId;
     @TypeConverters(DateConverter.class)
+    @NonNull
     private Date startTime;
     @TypeConverters(DateConverter.class)
     private Date endTime;

@@ -2,6 +2,8 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -9,7 +11,25 @@ import java.util.Date;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.RelationshipTypeConverter;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index(value = "indexTestId", unique = true), @Index("personId"),
+        @Index("disclosureMethodPlanId"), @Index("testingPlanId"), @Index("disclosureMethodId")},
+        foreignKeys = {@ForeignKey(entity = IndexTest.class, onDelete = CASCADE,
+                parentColumns = "id",
+                childColumns = "indexTestId"),
+                @ForeignKey(entity = Person.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "personId"),
+                @ForeignKey(entity = DisclosureMethod.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "disclosureMethodPlanId"),
+                @ForeignKey(entity = TestingPlan.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "testingPlanId"),
+                @ForeignKey(entity = DisclosureMethod.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "disclosureMethodId")})
 public class IndexContact extends BaseEntity {
 
     @NonNull

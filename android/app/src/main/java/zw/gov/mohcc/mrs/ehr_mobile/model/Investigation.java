@@ -17,32 +17,36 @@ import static androidx.room.ForeignKey.CASCADE;
                         childColumns = "sampleId")})
 public class Investigation extends BaseEntity {
 
+    @NonNull
     private String laboratoryTestId;
+    @NonNull
     private String sampleId;
 
     public Investigation() {
     }
 
     @Ignore
-    public Investigation(@NonNull String id, String laboratoryTestId, String sampleId) {
+    public Investigation(@NonNull String id, @NonNull String laboratoryTestId, @NonNull String sampleId) {
         super(id);
         this.laboratoryTestId = laboratoryTestId;
         this.sampleId = sampleId;
     }
 
+    @NonNull
     public String getLaboratoryTestId() {
         return laboratoryTestId;
     }
 
-    public void setLaboratoryTestId(String laboratoryTestId) {
+    public void setLaboratoryTestId(@NonNull String laboratoryTestId) {
         this.laboratoryTestId = laboratoryTestId;
     }
 
+    @NonNull
     public String getSampleId() {
         return sampleId;
     }
 
-    public void setSampleId(String sampleId) {
+    public void setSampleId(@NonNull String sampleId) {
         this.sampleId = sampleId;
     }
 

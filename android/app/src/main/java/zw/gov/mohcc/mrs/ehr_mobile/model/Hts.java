@@ -14,7 +14,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("personId"), @Index("visitId"), @Index("laboratoryInvestigationId"),
+@Entity(indices = {@Index("personId"), @Index(value = "visitId", unique = true), @Index("laboratoryInvestigationId"),
         @Index("entryPointId"), @Index("reasonForHivTestingId"), @Index("htsModelId"), @Index("reasonForNotIssuingResultId")},
 foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
         parentColumns = "id",

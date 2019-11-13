@@ -29,15 +29,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexContactDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexTestDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
@@ -53,8 +44,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
@@ -299,7 +288,6 @@ public class MainActivity extends FlutterActivity {
                                 artInitiation.setPersonId(artInitiation.getPersonId());
                                 artInitiation.setArtRegimenId(artInitiation.getArtRegimenId());
                                 artInitiation.setArtReasonId(artInitiation.getArtReasonId());
-                                artInitiation.setLine(artInitiation.getLine());
                                 ehrMobileDatabase.artInitiationDao().createArtInitiation(artInitiation);
                                 ArtInitiation initiation = ehrMobileDatabase.artInitiationDao().findArtInitiationById(artInitiation.getId());
                                 String response = gson.toJson(initiation);
@@ -352,8 +340,10 @@ public class MainActivity extends FlutterActivity {
         getFacilities(token, url + "/api/");
         getCountries(token, url + "/api/");
         getOccupation(token, url + "/api/");
+        getInvestigations(token, url + "/api/");
         getMaritalStates(token, url + "/api/");
         getEducationLevels(token, url + "/api/");
+        getLaboratoryResults(token, url + "/api/");
         getReligion(token, url + "/api/");
         getEntryPoints(token, url + "/api/");
         getHtsModels(token, url + "/api/");
@@ -361,13 +351,7 @@ public class MainActivity extends FlutterActivity {
         getReasonForNotIssuingResults(token, url + "/api/");
         getUsers(token, url + "/api/");
         getTestKits(token, url + "/api/");
-        try {
-            getInvestigations(token, url + "/api/");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         getTowns(token, url + "/api/");
-        getLaboratoryResults(token, url + "/api/");
         getInvestigationResults(token, url + "/api/");
         getArtStatus(token, url + "/api/");
         getArtReasons(token, url + "/api/");
@@ -658,7 +642,7 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<InvestigationResultModel>() {
             @Override
             public void onResponse(Call<InvestigationResultModel> call, Response<InvestigationResultModel> response) {
-                terminologyService.saveInvestiogationResultsToDB(response.body().getContent());
+                terminologyService.saveInvestigationResultsToDB(response.body().getContent());
             }
 
             @Override
@@ -998,6 +982,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.heightDao().deleteAll();
         ehrMobileDatabase.visitDao().deleteAll();
         ehrMobileDatabase.personDao().deleteAll();
+        ehrMobileDatabase.investigationResultDao().delete();
         ehrMobileDatabase.countryDao().deleteCountries();
         ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
         ehrMobileDatabase.facilityDao().deleteAllFacilities();
@@ -1018,7 +1003,6 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.resultDao().deleteResults();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
-        ehrMobileDatabase.investigationResultDao().delete();
         ehrMobileDatabase.arvCombinationRegimenDao().deleteAll();
         ehrMobileDatabase.artStatusDao().deleteAll();
         ehrMobileDatabase.artReasonDao().deleteAll();

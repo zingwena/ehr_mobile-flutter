@@ -114,7 +114,7 @@ public class TerminologyService {
         Log.d(TAG, "Saved reason for not issuing results : " + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
     }
 
-    public void saveInvestiogationResultsToDB(List<InvestigationResult> investigationResults) {
+    public void saveInvestigationResultsToDB(List<InvestigationResult> investigationResults) {
 
         ehrMobileDatabase.investigationResultDao().insertAll(investigationResults);
         Log.d(TAG, "Saved investigation results : " + ehrMobileDatabase.investigationResultDao().getInvestigationResults());

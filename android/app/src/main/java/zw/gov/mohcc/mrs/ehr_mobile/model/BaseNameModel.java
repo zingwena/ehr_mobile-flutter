@@ -1,7 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -12,30 +11,32 @@ public class BaseNameModel implements Serializable {
     @PrimaryKey
     @NonNull
     private String code;
+    @NonNull
     private String name;
 
     public BaseNameModel() {
     }
 
-    @Ignore
-    public BaseNameModel(String code, String name) {
+    public BaseNameModel(@NonNull String code, @NonNull String name) {
         this.code = code;
         this.name = name;
     }
 
+    @NonNull
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(@NonNull String code) {
         this.code = code;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
