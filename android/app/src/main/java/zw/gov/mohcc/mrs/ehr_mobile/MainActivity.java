@@ -29,6 +29,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
 import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
@@ -362,14 +363,14 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void getPatients(String baseUrl) {
-        //ehrMobileDatabase.personDao().deleteAll();
+        ehrMobileDatabase.personDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
     }
 
     public void getMaritalStates(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getMaritalStates("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getMaritalStates("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -394,7 +395,7 @@ public class MainActivity extends FlutterActivity {
     public void getOccupation(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getOccupation("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getOccupation("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -422,7 +423,7 @@ public class MainActivity extends FlutterActivity {
 
     public void getUsers(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<List<User>> call = service.getAllUsers("Bearer " + token.getId_token());
+        Call<List<User>> call = service.getAllUsers("Bearer " + token.getId_token(), new Page().size);
 
         call.enqueue(new Callback<List<User>>() {
             @Override
@@ -445,7 +446,7 @@ public class MainActivity extends FlutterActivity {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
 
-        Call<TerminologyModel> call = service.getFacilities("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getFacilities("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -481,7 +482,7 @@ public class MainActivity extends FlutterActivity {
     public void getTestKits(Token token, String url) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
         //Call First Level Test Kits
-        Call<List<TestKit>> call = service.getTestKits("Bearer " + token.getId_token(), "FIRST");
+        Call<List<TestKit>> call = service.getTestKits("Bearer " + token.getId_token(), "FIRST", new Page().size);
 
         call.enqueue(new Callback<List<TestKit>>() {
             @Override
@@ -508,7 +509,7 @@ public class MainActivity extends FlutterActivity {
             }
         });
         //Call All Second Level Test kits
-        Call<List<TestKit>> callSecond = service.getTestKits("Bearer " + token.getId_token(), "SECOND");
+        Call<List<TestKit>> callSecond = service.getTestKits("Bearer " + token.getId_token(), "SECOND", new Page().size);
         callSecond.enqueue(new Callback<List<TestKit>>() {
             @Override
             public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
@@ -534,7 +535,7 @@ public class MainActivity extends FlutterActivity {
             }
         });
         //Call all Third Level Test Kits
-        Call<List<TestKit>> callThird = service.getTestKits("Bearer " + token.getId_token(), "THIRD");
+        Call<List<TestKit>> callThird = service.getTestKits("Bearer " + token.getId_token(), "THIRD", new Page().size);
         callThird.enqueue(new Callback<List<TestKit>>() {
             @Override
             public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
@@ -563,7 +564,7 @@ public class MainActivity extends FlutterActivity {
     public void getNationalities(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getNationalities("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -590,7 +591,7 @@ public class MainActivity extends FlutterActivity {
     public void getLaboratoryResults(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getLaboratoryResults("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getLaboratoryResults("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -614,7 +615,7 @@ public class MainActivity extends FlutterActivity {
     public void getArtStatus(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getArtStatuses("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getArtStatuses("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -638,7 +639,7 @@ public class MainActivity extends FlutterActivity {
     public void getInvestigationResults(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<InvestigationResultModel> call = service.getInvestigationResults("Bearer " + token.getId_token());
+        Call<InvestigationResultModel> call = service.getInvestigationResults("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<InvestigationResultModel>() {
             @Override
             public void onResponse(Call<InvestigationResultModel> call, Response<InvestigationResultModel> response) {
@@ -655,7 +656,7 @@ public class MainActivity extends FlutterActivity {
     public void getArtReasons(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<ArtReasonModel> call = service.getArtReasons("Bearer " + token.getId_token());
+        Call<ArtReasonModel> call = service.getArtReasons("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<ArtReasonModel>() {
             @Override
             public void onResponse(Call<ArtReasonModel> call, Response<ArtReasonModel> response) {
@@ -673,7 +674,7 @@ public class MainActivity extends FlutterActivity {
     public void getCountries(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
 
-        Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getCountries("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -700,7 +701,7 @@ public class MainActivity extends FlutterActivity {
     public void getDisclosureMethods(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
 
-        Call<NameIdSynchModel> call = service.getDisclosureMethods("Bearer " + token.getId_token());
+        Call<NameIdSynchModel> call = service.getDisclosureMethods("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<NameIdSynchModel>() {
             @Override
             public void onResponse(Call<NameIdSynchModel> call, Response<NameIdSynchModel> response) {
@@ -725,7 +726,7 @@ public class MainActivity extends FlutterActivity {
     public void getTestingPlan(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
 
-        Call<NameIdSynchModel> call = service.getTestPlans("Bearer " + token.getId_token());
+        Call<NameIdSynchModel> call = service.getTestPlans("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<NameIdSynchModel>() {
             @Override
             public void onResponse(Call<NameIdSynchModel> call, Response<NameIdSynchModel> response) {
@@ -751,7 +752,7 @@ public class MainActivity extends FlutterActivity {
     public void getEducationLevels(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getEducationLevels("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getEducationLevels("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -779,7 +780,7 @@ public class MainActivity extends FlutterActivity {
     public void getEntryPoints(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getEntryPoints("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getEntryPoints("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -804,7 +805,7 @@ public class MainActivity extends FlutterActivity {
 
     public void getHtsModels(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -830,7 +831,7 @@ public class MainActivity extends FlutterActivity {
     public void getPurpose_Of_Tests(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -858,7 +859,7 @@ public class MainActivity extends FlutterActivity {
     public void getReasonForNotIssuingResults(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getReasonForNotIssuingResults("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getReasonForNotIssuingResults("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -921,7 +922,7 @@ public class MainActivity extends FlutterActivity {
     public void getReligion(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getReligion("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -944,7 +945,7 @@ public class MainActivity extends FlutterActivity {
 
     public void getTowns(Token token, String baseUrl) {
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getTowns("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getTowns("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -1022,7 +1023,7 @@ public class MainActivity extends FlutterActivity {
     public void getSample(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getSamples("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getSamples("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -1047,7 +1048,7 @@ public class MainActivity extends FlutterActivity {
             baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getLaboratoryTests("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getLaboratoryTests("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -1072,7 +1073,7 @@ public class MainActivity extends FlutterActivity {
             baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<InvestigationModel> call = service.getInvestigations("Bearer " + token.getId_token());
+        Call<InvestigationModel> call = service.getInvestigations("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<InvestigationModel>() {
             @Override
             public void onResponse(Call<InvestigationModel> call, Response<InvestigationModel> response) {
@@ -1098,7 +1099,7 @@ public class MainActivity extends FlutterActivity {
     public void getArvCombinationregimens(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getArvCombinationRegimen("Bearer " + token.getId_token());
+        Call<TerminologyModel> call = service.getArvCombinationRegimen("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {

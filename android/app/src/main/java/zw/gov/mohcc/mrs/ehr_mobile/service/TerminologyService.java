@@ -158,7 +158,8 @@ public class TerminologyService {
 
     public void saveCountriesToDB(List<Country> countries) {
 
-
+        Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!! " + countries.size());
+        Log.d(TAG, "########################### : " + countries);
         ehrMobileDatabase.countryDao().insertCountries(countries);
         Log.d(TAG, "Saved countries : " + ehrMobileDatabase.testingPlanDao().findAll());
     }
