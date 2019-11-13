@@ -137,9 +137,8 @@ class ArtOverviewState extends State<ArtRegOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-                "ART Registration OverView"
-            ),
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(
             child: Padding(
@@ -150,6 +149,11 @@ class ArtOverviewState extends State<ArtRegOverview> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("ART Registration OverView", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
                   _buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     onWillPop: () {
