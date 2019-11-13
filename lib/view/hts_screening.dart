@@ -194,7 +194,7 @@ class _HtsScreening extends State<Hts_Screening> {
                       MaterialPageRoute(
                           builder: (context) =>
                               ArtReg(widget.personId, widget.visitId,
-                                  widget.person)),
+                                  widget.person, widget.htsRegistration)),
                     ))
 
           ],
@@ -296,7 +296,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ),
-                                                  Container(
+                                                  _testedbefore == true? Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -327,8 +327,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handleArtChange)
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ): SizedBox(height: 10.0,),
+                                                 _testedbefore == true? Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -364,8 +364,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handleResultChange)
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ): SizedBox(height: 10.0,),
+                                                  _testedbefore == true? Container(
                                                     width: double.infinity,
                                                     padding:
                                                     EdgeInsets.symmetric(
@@ -399,7 +399,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                         BorderRadius
                                                                             .circular(
                                                                             0.0)),
-                                                                    labelText: "Date"),
+                                                                    labelText: "Date of HIV Test"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -416,8 +416,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             })
                                                       ],
                                                     ),
-                                                  ),
-                                                  Row(
+                                                  ): SizedBox(height: 10.0,),
+                                                  _testedbefore == true?  Row(
                                                     children: <Widget>[
                                                       Expanded(
                                                         child: SizedBox(
@@ -430,6 +430,13 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                 60.0),
                                                             child:
                                                             TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter Art Number'
+                                                                    : null;
+                                                              },
                                                               onSaved:
                                                                   (value) =>
                                                                   setState(
@@ -448,11 +455,11 @@ class _HtsScreening extends State<Hts_Screening> {
                                                         ),
                                                       ),
                                                     ],
-                                                  ),
+                                                  ): SizedBox(height: 10.0,),
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
-                                                  Container(
+                                                  _testedbefore == true?  Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -483,8 +490,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handlePrepchange)
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ): SizedBox(height: 10.0,),
+                                                 beenOnPrep == true? Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -520,8 +527,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handleViralLoadDone)
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ): SizedBox(height: 10.0,),
+                                                  viralLoadDone == "DONE"?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -557,7 +564,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handleCd4Done)
                                                       ],
                                                     ),
-                                                  ),
+                                                  ): SizedBox(height: 10.0,),
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets

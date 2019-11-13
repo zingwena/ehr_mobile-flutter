@@ -262,7 +262,7 @@ class PretestOverviewState extends State<PretestOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],

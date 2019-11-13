@@ -137,7 +137,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],

@@ -255,7 +255,7 @@ class _PatientPretest extends State<PatientPretest> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],

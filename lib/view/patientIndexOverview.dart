@@ -165,7 +165,7 @@ class OverviewState extends State<PatientIndexOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient)),
+                      ArtReg(_patient.id, visitId, _patient,htsRegistration)),
             ))
 
           ],
@@ -496,7 +496,7 @@ class OverviewState extends State<PatientIndexOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient)),
+                    ArtReg(_patient.id, visitId, _patient, htsRegistration)),
           ),),
 
 

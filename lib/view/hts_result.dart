@@ -228,7 +228,7 @@ class _Hts_Result  extends State<Hts_Result > {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+                      ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
             ))
 
           ],

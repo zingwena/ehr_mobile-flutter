@@ -179,7 +179,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person,widget.htsRegistration)),
             ))
 
           ],

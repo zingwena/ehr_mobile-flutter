@@ -182,7 +182,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient)),
+                      ArtReg(_patient.id, visitId, _patient, htsRegistration)),
             ))
 
           ],
@@ -498,7 +498,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient)),
+                    ArtReg(_patient.id, visitId, _patient, htsRegistration)),
           ),),
 
 
