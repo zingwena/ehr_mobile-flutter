@@ -6,8 +6,8 @@ import androidx.room.TypeConverters;
 
 import java.io.Serializable;
 
-import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.util.RecordStatusConvertor;
+import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class BaseEntity implements Serializable {
 

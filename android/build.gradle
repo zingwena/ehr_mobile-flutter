@@ -3,23 +3,25 @@ buildscript {
         jcenter()
         mavenCentral()
         google()
-
+        maven{
+            url='https://apps.mohcc.gov.zw/nexus/repository/maven-releases/'
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'com.apollographql.apollo:apollo-gradle-plugin:1.0.2'
-
-
     }
 }
 
 allprojects {
     repositories {
-
         jcenter()
         mavenCentral()
         google()
+        maven{
+            url='https://apps.mohcc.gov.zw/nexus/repository/maven-releases/'
+        }
     }
 }
 
