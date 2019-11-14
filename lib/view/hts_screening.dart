@@ -55,8 +55,10 @@ class _HtsScreening extends State<Hts_Screening> {
   String cd4Done;
   bool _testedbefore;
   bool _patientonart;
+  bool first_patient_on_art;
   int _hts = 0;
   int _art = 0;
+  int first_art = 0;
   int _prep = 0;
   int _result = 0;
   int _viralload = 0;
@@ -233,7 +235,7 @@ class _HtsScreening extends State<Hts_Screening> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  _buildButtonsRow(),
+               //   _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -296,39 +298,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ),
+                                                  SizedBox(height: 10.0,),
                                                   _testedbefore == true? Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 16.0,
-                                                        horizontal: 60.0),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets
-                                                                  .all(8.0),
-                                                              child: Text(
-                                                                  'Are you on Art ?'),
-                                                            ),
-                                                            width: 250,
-                                                          ),
-                                                        ),
-                                                        Text('YES'),
-                                                        Radio(
-                                                            value: 1,
-                                                            groupValue: _art,
-                                                            onChanged: _handleArtChange),
-                                                        Text('NO'),
-                                                        Radio(
-                                                            value: 2,
-                                                            groupValue: _art,
-                                                            onChanged: _handleArtChange)
-                                                      ],
-                                                    ),
-                                                  ): SizedBox(height: 10.0,),
-                                                 _testedbefore == true? Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -364,8 +335,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handleResultChange)
                                                       ],
                                                     ),
-                                                  ): SizedBox(height: 10.0,),
-                                                  _testedbefore == true? Container(
+                                                  ): SizedBox(height: 0.0,),
+                                                  result == 'POSITIVE' || result == 'Positive'? Container(
                                                     width: double.infinity,
                                                     padding:
                                                     EdgeInsets.symmetric(
@@ -399,7 +370,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                         BorderRadius
                                                                             .circular(
                                                                             0.0)),
-                                                                    labelText: "Date of HIV Test"),
+                                                                    labelText: "Date of Last Negative HIV Test"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -416,8 +387,40 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             })
                                                       ],
                                                     ),
-                                                  ): SizedBox(height: 10.0,),
-                                                  _testedbefore == true?  Row(
+                                                  ): SizedBox(height: 0.0,),
+                                                  result == 'POSITIVE' || result == 'Positive'?Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets
+                                                                  .all(8.0),
+                                                              child: Text(
+                                                                  'Are you on ART ?'),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue: first_art,
+                                                            onChanged: _handlefirstArtChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: first_art,
+                                                            onChanged: _handlefirstArtChange)
+                                                      ],
+                                                    ),
+                                                  ): SizedBox(height: 0.0),
+                                                  first_patient_on_art == true?  Row(
                                                     children: <Widget>[
                                                       Expanded(
                                                         child: SizedBox(
@@ -455,14 +458,11 @@ class _HtsScreening extends State<Hts_Screening> {
                                                         ),
                                                       ),
                                                     ],
-                                                  ): SizedBox(height: 10.0,),
-                                                  SizedBox(
-                                                    height: 20.0,
-                                                  ),
-                                                  _testedbefore == true?  Container(
+                                                  ): SizedBox(height: 0.0,),
+                                                  first_patient_on_art == true? Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets
-                                                        .symmetric(
+                                                    padding:
+                                                    EdgeInsets.symmetric(
                                                         vertical: 16.0,
                                                         horizontal: 60.0),
                                                     child: Row(
@@ -470,28 +470,48 @@ class _HtsScreening extends State<Hts_Screening> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: const EdgeInsets
-                                                                  .all(8.0),
-                                                              child: Text(
-                                                                  'Have you ever been on Prep?'),
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(
+                                                                  0.0),
+                                                              child:
+                                                              TextFormField(
+                                                                controller:
+                                                                TextEditingController(
+                                                                    text:
+                                                                    selectedDate),
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter some text'
+                                                                      : null;
+                                                                },
+                                                                decoration: InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                            0.0)),
+                                                                    labelText: "Date of enrollment into care"),
+                                                              ),
                                                             ),
-                                                            width: 250,
+                                                            width: 100,
                                                           ),
                                                         ),
-                                                        Text('YES'),
-                                                        Radio(
-                                                            value: 1,
-                                                            groupValue: _prep,
-                                                            onChanged: _handlePrepchange),
-                                                        Text('NO'),
-                                                        Radio(
-                                                            value: 2,
-                                                            groupValue: _prep,
-                                                            onChanged: _handlePrepchange)
+                                                        IconButton(
+                                                            icon: Icon(Icons
+                                                                .calendar_today),
+                                                            color:
+                                                            Colors.blue,
+                                                            onPressed: () {
+                                                              _selectDate(
+                                                                  context);
+                                                            })
                                                       ],
                                                     ),
-                                                  ): SizedBox(height: 10.0,),
-                                                 beenOnPrep == true? Container(
+                                                  ): SizedBox(height: 0.0,),
+                                                  result == 'POSITIVE' || result == 'Positive'? Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -528,7 +548,98 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 10.0,),
-                                                  viralLoadDone == "DONE"?Container(
+                                                  viralLoadDone == 'DONE'? Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(
+                                                                  0.0),
+                                                              child:
+                                                              TextFormField(
+                                                                controller:
+                                                                TextEditingController(
+                                                                    text:
+                                                                    selectedDate),
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter some text'
+                                                                      : null;
+                                                                },
+                                                                decoration: InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                            0.0)),
+                                                                    labelText: "Date of Viral Load Count"),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                            icon: Icon(Icons
+                                                                .calendar_today),
+                                                            color:
+                                                            Colors.blue,
+                                                            onPressed: () {
+                                                              _selectDate(
+                                                                  context);
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ): SizedBox(height: 0.0,),
+                                                  viralLoadDone == 'DONE'?  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                vertical:
+                                                                16.0,
+                                                                horizontal:
+                                                                60.0),
+                                                            child:
+                                                            TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter Viral Load Count'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                  setState(
+                                                                          () {
+                                                                        artNumber =
+                                                                            value;
+                                                                      }),
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                  'Viral Load',
+                                                                  border:
+                                                                  OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ): SizedBox(height: 0.0,),
+                                                  result == "POSITIVE" || result == 'Positive'?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
                                                         .symmetric(
@@ -565,6 +676,130 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 10.0,),
+                                                  cd4Done == 'DONE'? Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(
+                                                                  0.0),
+                                                              child:
+                                                              TextFormField(
+                                                                controller:
+                                                                TextEditingController(
+                                                                    text:
+                                                                    selectedDate),
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter some text'
+                                                                      : null;
+                                                                },
+                                                                decoration: InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                            0.0)),
+                                                                    labelText: "Date of CD4 Count"),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                            icon: Icon(Icons
+                                                                .calendar_today),
+                                                            color:
+                                                            Colors.blue,
+                                                            onPressed: () {
+                                                              _selectDate(
+                                                                  context);
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ): SizedBox(height: 0.0,),
+                                                  cd4Done == 'DONE'?  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                vertical:
+                                                                16.0,
+                                                                horizontal:
+                                                                60.0),
+                                                            child:
+                                                            TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter CD4 Count'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                  setState(
+                                                                          () {
+                                                                        artNumber =
+                                                                            value;
+                                                                      }),
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                  'CD4 Count',
+                                                                  border:
+                                                                  OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ): SizedBox(height: 0.0,),
+
+                                                   Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets
+                                                                  .all(8.0),
+                                                              child: Text(
+                                                                  'Have you ever been exposed to ARVs ?'),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue: _art,
+                                                            onChanged: _handleArtChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _art,
+                                                            onChanged: _handleArtChange)
+                                                      ],
+                                                    ),
+                                                  ),
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
@@ -684,6 +919,21 @@ class _HtsScreening extends State<Hts_Screening> {
           break;
         case 2:
           _patientonart = false;
+          break;
+      }
+    });
+  }
+
+  void _handlefirstArtChange(int value) {
+    setState(() {
+      first_art = value;
+
+      switch (first_art) {
+        case 1:
+          first_patient_on_art = true;
+          break;
+        case 2:
+          first_patient_on_art = false;
           break;
       }
     });

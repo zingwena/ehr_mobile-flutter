@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'cbsquestion.dart';
 import 'edit_demographics.dart';
 
 
@@ -730,7 +731,15 @@ class _Recency extends State<RecencyTest> {
               MaterialPageRoute(
                   builder: (context) =>
                       ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            ))
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
+            )),
+
 
           ],
         ),

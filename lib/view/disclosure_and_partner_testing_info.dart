@@ -610,21 +610,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                   ),
                                                 ),
 
-                                                Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      bottom: 16.0, top: 8.0),
-                                                  child: FloatingActionButton(
-                                                    onPressed: () =>
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  SearchPatient()),
-                                                        ),
-                                                    child: Icon(
-                                                        Icons.home, size: 30.0),
-                                                  ),
-                                                ),
                                               ],
                                             )
 
