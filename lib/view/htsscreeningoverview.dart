@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import 'art_reg.dart';
+import 'cbsquestion.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -183,7 +184,14 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
               MaterialPageRoute(
                   builder: (context) =>
                       ArtReg(_patient.id, visitId, _patient, htsRegistration)),
-            ))
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),

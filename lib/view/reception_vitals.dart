@@ -17,6 +17,8 @@ import 'package:ehr_mobile/vitals/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'cbsquestion.dart';
+
 
 class ReceptionVitals extends StatefulWidget {
   final String personId;
@@ -133,7 +135,14 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
               MaterialPageRoute(
                   builder: (context) =>
                       ArtReg(widget.personId, widget.visitId, widget.person, htsRegistration)),
-            ))
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, null, null, widget.visitId, widget.person)),
+            )),
 
           ],
         ),

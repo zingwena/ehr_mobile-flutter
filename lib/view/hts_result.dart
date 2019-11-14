@@ -594,7 +594,7 @@ class _Hts_Result  extends State<Hts_Result > {
     }
     setState(() {
       if(response == null){
-        final_result = 'Pending';
+        final_result = '';
       } else{
 
         final_result = response;

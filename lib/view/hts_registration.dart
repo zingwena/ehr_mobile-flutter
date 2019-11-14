@@ -18,6 +18,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'cbsquestion.dart';
 import 'rounded_button.dart';
 
 class Registration extends StatefulWidget {
@@ -188,7 +189,14 @@ class _Registration extends State<Registration> {
               MaterialPageRoute(
                   builder: (context) =>
                       ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
-            ))
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.patientId, hts_id, htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),

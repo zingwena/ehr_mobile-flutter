@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import 'cbsquestion.dart';
 import 'edit_demographics.dart';
 import 'hts_testscreening.dart';
 import 'rounded_button.dart';
@@ -256,7 +257,14 @@ class _PatientPretest extends State<PatientPretest> {
               MaterialPageRoute(
                   builder: (context) =>
                       ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            ))
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsid, htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),

@@ -149,6 +149,13 @@ class PostTestOverviewState extends State<PostTestOverview> {
                   builder: (context) =>
                       CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)),
             )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),

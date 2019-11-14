@@ -23,6 +23,7 @@ import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'cbsquestion.dart';
 import 'rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
@@ -242,7 +243,14 @@ class _Recency_Result  extends State<Recency_Result > {
               MaterialPageRoute(
                   builder: (context) =>
                       ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
-            ))
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.patientId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),
