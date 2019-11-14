@@ -1001,13 +1001,13 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.userDao().deleteUsers();
         ehrMobileDatabase.testKitDao().deleteTestKits();
         ehrMobileDatabase.investigationDao().deleteInvestigations();
-        ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.resultDao().deleteResults();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
         ehrMobileDatabase.arvCombinationRegimenDao().deleteAll();
         ehrMobileDatabase.artStatusDao().deleteAll();
         ehrMobileDatabase.artReasonDao().deleteAll();
         ehrMobileDatabase.laboratoryInvestigationDao().deleteAll();
+        ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.labInvestTestdao().deleteLaboratoryInvestTests();
     }
 

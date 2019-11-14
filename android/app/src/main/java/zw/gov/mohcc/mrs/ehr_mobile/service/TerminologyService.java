@@ -2,6 +2,8 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;

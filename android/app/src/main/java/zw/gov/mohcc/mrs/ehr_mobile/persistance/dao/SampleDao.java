@@ -20,7 +20,7 @@ public interface SampleDao {
     @Insert
     void insertSample(Sample sample);
 
-    @Query("SELECT * FROM EducationLevel ")
+    @Query("SELECT * FROM Sample")
     List<Sample> getSamples();
 
 
