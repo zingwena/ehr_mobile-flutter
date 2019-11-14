@@ -24,7 +24,8 @@ class Art_Initiation extends StatefulWidget {
   String patientId ;
   String visitId;
   Person person;
-  Art_Initiation(this.patientId, this.visitId);
+  HtsRegistration htsRegistration;
+  Art_Initiation(this.patientId, this.visitId, this.htsRegistration);
 
   @override
   State createState() {
@@ -224,7 +225,7 @@ class _Art_Initiation extends State<Art_Initiation> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person)),
+                      ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],
@@ -246,9 +247,8 @@ class _Art_Initiation extends State<Art_Initiation> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-                "Art Initiation"
-            ),
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(
             child: Padding(
@@ -259,6 +259,11 @@ class _Art_Initiation extends State<Art_Initiation> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("Art Initiation", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
                   _buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     child: new Card(
@@ -444,7 +449,10 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                             padding: EdgeInsets.symmetric(
                                                                 vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
-                                                              hint: Text('Select Art Combination Regimen'),
+                                                              isExpanded: true,
+                                                              hint: Text('Select Art Combination Regimen', style: TextStyle( fontSize: 15,
+                                                                color: Colors.black,
+                                                              ),),
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentArvCombinationRegimen,
@@ -487,7 +495,10 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                             padding: EdgeInsets.symmetric(
                                                                 vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
-                                                              hint: Text('Reason'),
+                                                              isExpanded: true,
+                                                              hint: Text('Reason',style: TextStyle( fontSize: 15,
+                                                                color: Colors.black,
+                                                              ),),
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentArtReason,
@@ -587,7 +598,7 @@ class _Art_Initiation extends State<Art_Initiation> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(widget.patientId, widget.visitId, widget.person)),
+                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration)),
           ),
           ),
           new RoundedButton(text: "Art Initiation", selected: true),

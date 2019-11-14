@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/laboratory_investigation.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -19,9 +19,11 @@ import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'cbsquestion.dart';
 import 'rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
@@ -32,9 +34,10 @@ class Recency_Result extends StatefulWidget {
   String labInvestId;
   Person person;
   String htsId;
+  String indexTestId;
   LaboratoryInvestigationTest laboratoryInvestigation;
 
-  Recency_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId, this.laboratoryInvestigation);
+  Recency_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId, this.laboratoryInvestigation, this.indexTestId);
 
   //Hts_Result (this.visitId, this.patientId);
 
@@ -52,6 +55,8 @@ class _Recency_Result  extends State<Recency_Result > {
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   String _visitId;
   String patientId;
+  String indextestid;
+  String INDEXTEST ;
   String labInvetsTestId;
   String result_string;
   HtsRegistration htsRegistration;
@@ -237,8 +242,15 @@ class _Recency_Result  extends State<Recency_Result > {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person)),
-            ))
+                      ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.patientId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),
@@ -448,42 +460,31 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     ),
                                                   ),
 
-
-
-
                                                   SizedBox(
                                                     height: 30.0,
                                                   ),
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                    child: RaisedButton(
-                                                        elevation: 4.0,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(5.0)),
-                                                        color: Colors.blue,
-                                                        padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Close",
-                                                          style: TextStyle(color: Colors.white),
-                                                        ),
-                                                        onPressed: () async {
-
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchPatient()));
-
-
-
-                                                        }
-/*
-                                                        onPressed: () =>
-                                                            Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  Hts_Result()),),*/
-
-                                                    ),
-                                                  ),
+                            Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                            child: RaisedButton(
+                            elevation: 4.0,
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                            color: Colors.blue,
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                            "Proceed to Index Testing",
+                            style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                            IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
+                            saveIndexTest(indexTest);
+                            Navigator.push(context,MaterialPageRoute(
+                            builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.patientId, INDEXTEST)
+                            ));
+                            },
+                            ),
+                            ),
                                                 ],
                                               ),
                                             ),
@@ -532,7 +533,25 @@ class _Recency_Result  extends State<Recency_Result > {
       ),
     );
   }
+  Future<void>saveIndexTest(IndexTest indexTest)async{
+    var response ;
+    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX '+ indexTest.toString());
+    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE ID FOR PERSON WATIKUDEALER NAYE INDEX TEST'+ indexTest.personId);
 
+    try{
+      response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
+      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
+      setState(() {
+        INDEXTEST = response;
+        print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED" + indextestid);
+
+      });
+
+    }catch(e){
+
+    }
+
+  }
   Widget _buildProductItem(BuildContext context, int index) {
     return Card(
       child: Column(

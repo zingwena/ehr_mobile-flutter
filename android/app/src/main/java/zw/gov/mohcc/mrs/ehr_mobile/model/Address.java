@@ -1,6 +1,8 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 
+import androidx.annotation.NonNull;
+
 public class Address {
     public Address(String street, String city, String town) {
         this.street = street;
@@ -8,7 +10,9 @@ public class Address {
         this.town = town;
     }
 
+    @NonNull
     private String street;
+    @NonNull
     private String suburbVillage;
 
     public String getCity() {
@@ -27,7 +31,9 @@ public class Address {
         this.town = town;
     }
 
+    @NonNull
     private String city;
+    @NonNull
     private String town;
 
     public String getStreet() {

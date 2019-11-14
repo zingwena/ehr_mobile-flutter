@@ -1,20 +1,20 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.room.Entity;
-import androidx.room.Ignore;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("artStatusId")},
+        foreignKeys = {@ForeignKey(entity = ArtStatus.class, onDelete = CASCADE,
+                parentColumns = "code",
+                childColumns = "artStatusId")})
 public class ArtReason extends BaseNameModel {
 
     private String artStatusId;
 
     public ArtReason() {
-    }
-
-    @Ignore
-    public ArtReason(String code, String name, String artStatusId) {
-        super(code, name);
-        this.artStatusId = artStatusId;
     }
 
     public String getArtStatusId() {

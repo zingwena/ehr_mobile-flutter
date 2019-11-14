@@ -20,7 +20,7 @@ public interface LaboratoryTestDao {
     @Insert
     void insertLaboratoryTest(LaboratoryTest laboratoryTest);
 
-    @Query("SELECT * FROM EducationLevel ")
+    @Query("SELECT * FROM LaboratoryTest")
     List<LaboratoryTest> getLaboratoryTests();
 
     @Query("SELECT * FROM LaboratoryTest WHERE code=:id")

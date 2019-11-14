@@ -15,6 +15,8 @@ import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
+
+import 'cbsquestion.dart';
 class PatientPostTest extends StatefulWidget {
   String result;
   String patientId;
@@ -184,8 +186,15 @@ class _PatientPostTest extends State<PatientPostTest> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person)),
-            ))
+                      ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.patientId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),
@@ -301,7 +310,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                         PostTest postTest = new PostTest(widget.htsId, date, true, null, widget.result, false);
                         insertPostTest(postTest);
                         Navigator.push(context,MaterialPageRoute(
-                            builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId, _consenttoindex)
+                            builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId, _consenttoindex, widget.result, htsRegistration)
                         ));
                       },
                     ),

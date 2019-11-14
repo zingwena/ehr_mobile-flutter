@@ -2,6 +2,8 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
@@ -114,7 +116,7 @@ public class TerminologyService {
         Log.d(TAG, "Saved reason for not issuing results : " + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
     }
 
-    public void saveInvestiogationResultsToDB(List<InvestigationResult> investigationResults) {
+    public void saveInvestigationResultsToDB(List<InvestigationResult> investigationResults) {
 
         ehrMobileDatabase.investigationResultDao().insertAll(investigationResults);
         Log.d(TAG, "Saved investigation results : " + ehrMobileDatabase.investigationResultDao().getInvestigationResults());
@@ -158,7 +160,8 @@ public class TerminologyService {
 
     public void saveCountriesToDB(List<Country> countries) {
 
-
+        Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!! " + countries.size());
+        Log.d(TAG, "########################### : " + countries);
         ehrMobileDatabase.countryDao().insertCountries(countries);
         Log.d(TAG, "Saved countries : " + ehrMobileDatabase.testingPlanDao().findAll());
     }

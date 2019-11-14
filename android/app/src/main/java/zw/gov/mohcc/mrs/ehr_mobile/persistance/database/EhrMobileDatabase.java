@@ -7,11 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
@@ -21,6 +20,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
 import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
@@ -34,7 +34,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PrepOption;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
@@ -52,10 +51,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtInitiationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArvCombinationRegimenDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
@@ -124,7 +123,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
-        IndexTest.class, IndexContact.class}, version = 49, exportSchema = false)
+        IndexTest.class, IndexContact.class}, version = 1, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -139,7 +138,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "ehrMobile")
+                            EhrMobileDatabase.class, "impiloMobile")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();

@@ -1,75 +1,58 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.TypeConverters;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 
-import java.util.Date;
+import static androidx.room.ForeignKey.CASCADE;
 
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+@Entity(indices = {@Index(value = "personId", unique = true), @Index("artRegimenId"), @Index("artReasonId")},
+        foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
+                parentColumns = "id",
+                childColumns = "personId"),
+                @ForeignKey(entity = ArvCombinationRegimen.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "artRegimenId"),
+                @ForeignKey(entity = ArtReason.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "artReasonId")})
+public class ArtInitiation extends BaseEntity {
 
-@Entity
-public class ArtInitiation extends BaseEntity{
-
-    @ColumnInfo(name = "personId")
+    @NonNull
     private String personId;
-
-   /* @TypeConverters(DateConverter.class)
-    private Date dateOfEnrolmentIntoCare;
-
-    @TypeConverters(DateConverter.class)
-    private Date dateInitiatedOnArt;
-
-    private String clientType;
-    private String clientEligibility;*/
-   private String line;
+    @NonNull
     private String artRegimenId;
+    @NonNull
     private String artReasonId;
-   // private String artStatusId;
 
     public ArtInitiation() {
     }
 
-    @Ignore
-    public ArtInitiation(String personId, String artRegimenId, String artReasonId) {
-        this.personId = personId;
-        this.artRegimenId = artRegimenId;
-        this.artReasonId = artReasonId;
-    }
-
-    public String getLine() {
-        return line;
-    }
-
-    public void setLine(String line) {
-        this.line = line;
-    }
-
+    @NonNull
     public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(String personId) {
+    public void setPersonId(@NonNull String personId) {
         this.personId = personId;
     }
 
-
+    @NonNull
     public String getArtRegimenId() {
         return artRegimenId;
     }
 
-    public void setArtRegimenId(String artRegimenId) {
+    public void setArtRegimenId(@NonNull String artRegimenId) {
         this.artRegimenId = artRegimenId;
     }
 
+    @NonNull
     public String getArtReasonId() {
         return artReasonId;
     }
 
-    public void setArtReasonId(String artReasonId) {
+    public void setArtReasonId(@NonNull String artReasonId) {
         this.artReasonId = artReasonId;
     }
 

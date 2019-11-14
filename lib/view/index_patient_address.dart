@@ -4,16 +4,19 @@ import 'package:ehr_mobile/model/address.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/town.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/view/patientIndexOverview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 
-class PatientAddress extends StatefulWidget {
+class IndexPatientAddress extends StatefulWidget {
   final Person patient;
+  final String indexTestId;
+  final String personId;
 
-  PatientAddress(this.patient);
+  IndexPatientAddress(this.patient, this.indexTestId, this.personId);
 
   @override
   State createState() {
@@ -21,7 +24,7 @@ class PatientAddress extends StatefulWidget {
   }
 }
 
-class _PatientAddressState extends State<PatientAddress> {
+class _PatientAddressState extends State<IndexPatientAddress> {
   static const platform = MethodChannel('example.channel.dev/people');
   static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
@@ -46,7 +49,7 @@ class _PatientAddressState extends State<PatientAddress> {
   @override
   void initState() {
     print("=======");
- getTowns();
+    getTowns();
     super.initState();
   }
 
@@ -91,7 +94,7 @@ class _PatientAddressState extends State<PatientAddress> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
-                    _buildButtonsRow(),
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card( elevation: 4.0,
                       margin: const EdgeInsets.all(8.0),
@@ -136,10 +139,9 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                   vertical: 16.0,
                                                                   horizontal: 60.0),
                                                               child: TextFormField(
-                                                                validator: (value) {
-                                                                  return value.isEmpty ? 'Enter some text' : null; },
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_1 = value; }),
+                                                                keyboardType: TextInputType.number,
                                                                 decoration: InputDecoration(
                                                                     labelText: 'Phone No 1.',
                                                                     border: OutlineInputBorder()),
@@ -159,12 +161,10 @@ class _PatientAddressState extends State<PatientAddress> {
                                                               padding: EdgeInsets.symmetric(
                                                                   vertical: 16.0, horizontal: 60.0),
                                                               child: TextFormField(
-                                                                validator: (value) {
-                                                                  return value.isEmpty ? 'Enter some text' : null;
-                                                                },
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_2 = value;
                                                                 }),
+                                                                keyboardType: TextInputType.number,
                                                                 decoration: InputDecoration(
                                                                     labelText: 'Phone No 2.',
                                                                     border: OutlineInputBorder()),
@@ -304,7 +304,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                 Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
-                                                                        builder: (context) => Overview(registeredPatient)));
+                                                                        builder: (context) => PatientIndexOverview(registeredPatient, widget.indexTestId, widget.personId)));
                                                               });
                                                               SnackBar(
                                                                 content: Text("Patient saved"),
@@ -421,7 +421,7 @@ class _PatientAddressState extends State<PatientAddress> {
     String towns;
     try{
       towns= await dataChannel.invokeMethod('townOptions');
-   print('****************************** $towns');
+      print('****************************** $towns');
       setState(() {
         _towns=towns;
         townList =jsonDecode(_towns);

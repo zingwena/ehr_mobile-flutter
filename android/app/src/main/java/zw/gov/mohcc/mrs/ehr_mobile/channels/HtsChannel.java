@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
@@ -50,12 +52,14 @@ public class HtsChannel {
     public HtsChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase, HtsService htsService,
                       LaboratoryInvestigation laboratoryInvestigation, HistoryService historyService,
                       IndexTestingService indexTestingService, VisitService visitService) {
+        final String index_id ;
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                         String arguments = methodCall.arguments();
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
+                        String indexTest_Id ;
 
                         if (methodCall.method.equals("getLabInvestigation")) {
                             try {
@@ -467,10 +471,29 @@ public class HtsChannel {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
-                        if(methodCall.method.equals("saveIndexContact")){
+                        if(methodCall.method.equals("getIndexContactList")){
+                            System.out.println("UUUUUUUUUUUUUUUUUUUUUUU index id in get contactlist"+ arguments);
                             try{
-                                IndexContactDto indexContactDto = gson.fromJson(arguments, IndexContactDto.class);
-                                IndexContact indexContact = new IndexContact();
+                                List<IndexContact> indexContactList = indexTestingService.findIndexContactsByIndexTestId(arguments);
+                                List<Person>contactlist = new ArrayList<>();
+                                for( IndexContact indexContact : indexContactList){
+                                    Person person = ehrMobileDatabase.personDao().findPatientById(indexContact.getPersonId());
+                                    contactlist.add(person);
+                                }
+                                String indexContacts = gson.toJson(contactlist);
+                                System.out.println("DDDDDDDDDDDDDDDDDDDD INDEX CONTACTS"+ indexContacts);
+                                result.success(indexContacts);
+
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("saveIndexContact")){
+                            System.out.println("JJJJJJJJJJJJJJJJJJ INDEX CONTACT FROM FLUTTER "+ arguments );
+                            try{
+                                IndexContact indexContact = gson.fromJson(arguments, IndexContact.class);
+                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKK index contact dto"+ indexContact.toString());
+                               /* IndexContact indexContact = new IndexContact();
                                 indexContact.setPersonId(indexContactDto.getPersonId());
                                 indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());
                                 indexContact.setDisclosureMethodId(indexContactDto.getDisclosureMethodId());
@@ -480,6 +503,7 @@ public class HtsChannel {
                                 indexContact.setTestingPlanId(indexContact.getTestingPlanId());
                                 indexContact.setRelation(indexContactDto.getRelation());
                                 indexContact.setHivStatus(indexContactDto.getHivStatus());
+                                System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + indexContact.toString());*/
                                 String indexTestId =  indexTestingService.createIndexContact(indexContact);
                                 result.success(indexTestId);
                             }catch (Exception e){

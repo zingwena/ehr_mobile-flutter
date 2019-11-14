@@ -1,128 +1,99 @@
 import 'dart:convert';
 
-import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
-import 'package:ehr_mobile/view/patient_overview.dart';
-import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/edit_demographics_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
-import 'package:ehr_mobile/model/artRegistration.dart';
-import 'package:ehr_mobile/view/artreg_overview.dart';
-import 'package:ehr_mobile/view/reception_vitals.dart';
-import 'package:ehr_mobile/view/hts_registration.dart';
-
-
 
 import 'edit_demographics.dart';
 
-class ArtReg extends StatefulWidget {
+class AddPatientIndex extends StatefulWidget {
   String personId;
-  String visitId;
-  Person person;
-  HtsRegistration htsRegistration;
-  ArtReg(this.personId, this.visitId, this.person, this.htsRegistration);
-
+  String indexTestId;
+  AddPatientIndex(this.indexTestId, this.personId);
   @override
   State createState() {
-    return _ArtReg();
+    return _AddPatient();
   }
 }
 
-class _ArtReg extends State<ArtReg> {
+class _AddPatient extends State<AddPatientIndex> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   static final MethodChannel addPatient =
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
-  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
-  String oi_art_number;
-  ArtRegistration _artRegistration;
-  var dateOfTest,dateOfEnrollment, displayDate;
-  DateTime enrollment_date, test_date;
+  String lastName, firstName, nationalId, nationalIdNumber;
+
+  var birthDate, displayDate;
+  bool showError = false;
+  int _gender = 0;
+  String gender = "";
+  String _identifier;
+  List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
+  List _identifierList = [
+    "Select Identifier",
+    "Passport",
+    "Birth Certificate",
+    "National Id",
+    "Driver's Licence"
+  ];
   String _nationalIdError = "National Id number is invalid";
 
   @override
   void initState() {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfEnrollment = DateTime.now();
-    dateOfTest = DateTime.now();
+    birthDate = DateTime.now();
+
+    _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
+    _identifier = _identifierDropdownMenuItem[0].value;
     super.initState();
   }
 
-  Future<Null> _selectDateOfHivTest(BuildContext context) async {
-    print('KKKKKKKKKKKKKKKKKKKK dat of hiv test picked');
+  Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(1900, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != dateOfTest)
+    if (picked != null && picked != birthDate)
       setState(() {
-        dateOfTest = picked;
+        birthDate = picked;
         displayDate = DateFormat("yyyy/MM/dd").format(picked);
       });
   }
-  Future<Null> _selectDateOfEnrollment(BuildContext context) async {
-    print('KKKKKKKKKKKKKKKKKKKK dat of enrollment picked');
 
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1900, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != dateOfEnrollment)
-      setState(() {
-        dateOfEnrollment = picked;
-        displayDate = DateFormat("yyyy/MM/dd").format(picked);
-      });
+  void _handleGenderChange(int value) {
+    setState(() {
+      _gender = value;
+
+      switch (_gender) {
+        case 1:
+          gender = "MALE";
+          break;
+        case 2:
+          gender = "FEMALE";
+
+          break;
+      }
+    });
+  }
+
+  List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String identifier in _identifierList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(value: identifier, child: Text(identifier)));
+    }
+    return items;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Registration(widget.visitId,widget.personId, widget.person)),
-            )),
-            new ListTile( leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            ))
-
-          ],
-        ),
-      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -139,8 +110,7 @@ class _ArtReg extends State<ArtReg> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+            title: new Text("Add New Patient Index"),
           ),
           Positioned.fill(
             child: Padding(
@@ -148,11 +118,6 @@ class _ArtReg extends State<ArtReg> {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Text("ART Registration", style: TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
-                  ),
                   _buildButtonsRow(),
                   Expanded(
                     child: new Card(
@@ -186,6 +151,60 @@ class _ArtReg extends State<ArtReg> {
                                                     .spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
+                                                    height: 20.0,
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                vertical:
+                                                                16.0,
+                                                                horizontal:
+                                                                60.0),
+                                                            child:
+                                                            TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter National Id number'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                  setState(
+                                                                          () {
+                                                                        nationalId =
+                                                                            value;
+                                                                      }),
+                                                              decoration: InputDecoration(
+                                                                  labelText: _identifier ==
+                                                                      "Select Identifier"
+                                                                      ? "ID Number e.g 22-345276T67"
+                                                                      : _identifier +
+                                                                      " Number",
+                                                                  border:
+                                                                  OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  !showError
+                                                      ? SizedBox.shrink()
+                                                      : Text(
+                                                    _nationalIdError ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        color:
+                                                        Colors.red),
+                                                  ),
+                                                  SizedBox(
                                                     height: 10.0,
                                                   ),
                                                   Row(
@@ -205,17 +224,17 @@ class _ArtReg extends State<ArtReg> {
                                                                   (value) {
                                                                 return value
                                                                     .isEmpty
-                                                                    ? 'Enter Art Number'
+                                                                    ? 'Enter Last Name'
                                                                     : null;
                                                               },
                                                               onSaved:
                                                                   (value) =>
                                                                   setState(
                                                                           () {
-                                                                        oi_art_number = value;                                           }),
+                                                                        lastName = value;                                           }),
                                                               decoration: InputDecoration(
                                                                   labelText:
-                                                                  'Art Number',
+                                                                  'Last Name',
                                                                   border:
                                                                   OutlineInputBorder()),
                                                             ),
@@ -228,8 +247,44 @@ class _ArtReg extends State<ArtReg> {
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
-                                                  SizedBox(
-                                                    height: 10.0,
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                vertical:
+                                                                16.0,
+                                                                horizontal:
+                                                                60.0),
+                                                            child:
+                                                            TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter First Name'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                  setState(
+                                                                          () {
+                                                                        firstName =
+                                                                            value;
+                                                                      }),
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                  'First Name',
+                                                                  border:
+                                                                  OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                   SizedBox(
                                                     height: 10.0,
@@ -248,44 +303,36 @@ class _ArtReg extends State<ArtReg> {
                                                               padding:
                                                               const EdgeInsets
                                                                   .all(
-                                                                  0.0),
+                                                                  8.0),
                                                               child:
-                                                              TextFormField(
-                                                                controller:
-                                                                TextEditingController(
-                                                                    text:
-                                                                    displayDate),
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                      .isEmpty
-                                                                      ? 'Enter some text'
-                                                                      : null;
-                                                                },
-                                                                decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius.circular(0.0)),
-                                                                labelText: "Date of HIV Test"),
-                                                              ),
+                                                              Text('Sex'),
                                                             ),
-                                                            width: 100,
+                                                            width: 250,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
+                                                        Text('Male'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _gender,
+                                                            activeColor:
                                                             Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfHivTest(
-                                                                  context);
-                                                            })
+                                                            onChanged:
+                                                            _handleGenderChange),
+                                                        Text('Female'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _gender,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleGenderChange)
                                                       ],
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: 35.0,
+                                                    height: 10.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
@@ -319,7 +366,7 @@ class _ArtReg extends State<ArtReg> {
                                                                     border: OutlineInputBorder(
                                                                         borderRadius:
                                                                         BorderRadius.circular(0.0)),
-                                                                labelText: "Date of enrollment"),
+                                                                    labelText: "Date of birth"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -331,7 +378,7 @@ class _ArtReg extends State<ArtReg> {
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
-                                                              _selectDateOfEnrollment(
+                                                              _selectDate(
                                                                   context);
                                                             })
                                                       ],
@@ -351,7 +398,7 @@ class _ArtReg extends State<ArtReg> {
                                                       color: Colors.blue,
                                                       padding: const EdgeInsets.all(20.0),
                                                       child: Text(
-                                                        "Register",
+                                                        "Register Patient",
                                                         style: TextStyle(
                                                             fontSize: 15,
                                                             color: Colors.white,
@@ -364,14 +411,33 @@ class _ArtReg extends State<ArtReg> {
                                                           _formKey
                                                               .currentState
                                                               .save();
+
+//                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
+//                           await registerPatient(patient);
                                                           setState(() {
-                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, dateOfEnrollment, dateOfTest, oi_art_number);
-                                                            artRegistration(artRegistrationDetails);
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration)));
-
-
-
+                                                            nationalIdNumber =
+                                                                nationalId.replaceAll(
+                                                                    new RegExp(
+                                                                        r'[^\w\s]+'),
+                                                                    '');
                                                           });
+                                                          RegExp regex =
+                                                          new RegExp(
+                                                              r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
+                                                          if (regex.hasMatch(
+                                                              nationalIdNumber)) {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => EditDemographicsIndex(
+                                                                        lastName,
+                                                                        firstName,
+                                                                        birthDate,
+                                                                        gender,
+                                                                        nationalId, widget.indexTestId, widget.personId)));
+                                                          } else {
+                                                            showError = true;
+                                                          }
                                                         }
                                                       },
                                                     ),
@@ -411,19 +477,19 @@ class _ArtReg extends State<ArtReg> {
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "ART Registration",
+            text: "Add Patient",
             selected: true,
           ),
 
           new RoundedButton(
-            text: "ART Initiation",
+            text: "Continue Registration",
           ),
 
           new RoundedButton(
             text: "Close",
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SearchPatient()),
+              MaterialPageRoute(builder: (context) => LoginScreen()),
             ),
           ),
         ],
@@ -431,22 +497,13 @@ class _ArtReg extends State<ArtReg> {
     );
   }
 
-  Future<void> artRegistration(ArtRegistration artRegistration) async {
-    String art_registration_response;
+  Future<void> registerPatient(Person person) async {
+    String response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod');
-
-      art_registration_response = await artChannel.invokeMethod(
-          'saveArtRegistration', jsonEncode(artRegistration.toJson()));
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
-      setState(() {
-        _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
-      });
-
+      String jsonPatient = jsonEncode(person);
+      response = await addPatient.invokeMethod('registerPatient', jsonPatient);
     } catch (e) {
-      print('--------------something went wrong  $e');
+      print('Something went wrong...... cause $e');
     }
-
   }
 }

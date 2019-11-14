@@ -10,7 +10,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.RelationshipTypeConverter;
 
 public class IndexContactDto {
-
+    private String id;
     private String indexTestId;
     @NonNull
     private String personId;
@@ -26,7 +26,7 @@ public class IndexContactDto {
     private Boolean disclosureStatus;
     private String disclosureMethodId;
 
-    public IndexContactDto(String indexTestId, @NonNull String personId, @NonNull RelationshipType relation, String hivStatus, Date dateOfHivStatus, boolean fearOfIpv, String disclosureMethodPlanId, String testingPlanId, Boolean disclosureStatus, String disclosureMethodId) {
+    public IndexContactDto(String id, String indexTestId, @NonNull String personId, @NonNull RelationshipType relation, String hivStatus, Date dateOfHivStatus, boolean fearOfIpv, String disclosureMethodPlanId, String testingPlanId, Boolean disclosureStatus, String disclosureMethodId) {
         this.indexTestId = indexTestId;
         this.personId = personId;
         this.relation = relation;
@@ -37,6 +37,7 @@ public class IndexContactDto {
         this.testingPlanId = testingPlanId;
         this.disclosureStatus = disclosureStatus;
         this.disclosureMethodId = disclosureMethodId;
+        this.id = id;
     }
 
     public String getIndexTestId() {

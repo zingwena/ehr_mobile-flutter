@@ -2,29 +2,37 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("personId"), @Index("investigationId"), @Index("resultId")},
+        foreignKeys = {
+                @ForeignKey(entity = Person.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "personId"),
+                @ForeignKey(entity = Investigation.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "investigationId"),
+                @ForeignKey(entity = Result.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "resultId")})
 public class PersonInvestigation extends BaseEntity {
 
-    @ColumnInfo(name = "personId")
     @NonNull
     private String personId;
-    @ColumnInfo(name = "investigationId")
     @NonNull
     private String investigationId;
-    @ColumnInfo(name = "date")
     @TypeConverters(DateConverter.class)
     private Date date;
-    @ColumnInfo(name = "resultId")
     private String resultId;
 
     public PersonInvestigation() {

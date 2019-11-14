@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/disclosuremethod.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/indextest.dart';
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/testingplan.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/services.dart';
@@ -27,10 +30,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
 
 class PatientIndexHivInfo extends StatefulWidget {
-
+    Person person;
+    String personId;
   IndexContact indexcontact;
 
-  PatientIndexHivInfo(this.indexcontact);
+  PatientIndexHivInfo(this.indexcontact, this.personId, this.person);
   @override
   State createState() {
     return _PatientIndexHivInfo();
@@ -260,7 +264,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                     child: Text("Disclosure And Partner Testing Information", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                  Container(
+                /*  Container(
                       child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment:
@@ -310,7 +314,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                             ),
                           ])
                   ),
-
+*/
                   SizedBox(
                     height: 15.0,
                   ),
@@ -423,7 +427,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                 value: 2,
                                                                 groupValue: status,
                                                                 activeColor: Colors.blue,
-                                                                onChanged: _handleOptionsChange)
+                                                                onChanged: _handleStatusDiscloseChange)
                                                           ],
                                                         ),
                                                       ),
@@ -584,12 +588,13 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                     ],
                                                                   ),
                                                                   onPressed: () {
-                                                                  IndexContact indexcontact = IndexContact(widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
+                                                                  IndexContact indexcontact = IndexContact('', widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
                                                                   , widget.indexcontact.dateOfHivStatus, fear, _currentReligion,_currentTestingPlanStatus,disclosed_status, _currentReligion  );
+                                                                  print("TTTTTTTTTTTTTTTTTT HERE IS THE INDEX CONTACT PASSED TO BE SAVED"+ indexcontact.toString());
                                                                   saveIndexContact(indexcontact);
-                                                                 /* Navigator.push(context,MaterialPageRoute(
-                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId, indexTestId)
-                                                                  ));*/
+                                                                  Navigator.push(context,MaterialPageRoute(
+                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, null, null, null, widget.personId, widget.indexcontact.indexTestId)
+                                                                  ));
                                                                   }
                                                               ),
                                                             ),
@@ -605,21 +610,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                   ),
                                                 ),
 
-                                                Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      bottom: 16.0, top: 8.0),
-                                                  child: FloatingActionButton(
-                                                    onPressed: () =>
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  SearchPatient()),
-                                                        ),
-                                                    child: Icon(
-                                                        Icons.home, size: 30.0),
-                                                  ),
-                                                ),
                                               ],
                                             )
 
@@ -662,12 +652,12 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
     setState(() {
       _currentReligion = selectedReligion;
     });
-
     print('@@@@@@@@@@@@@@@@@@ $_currentReligion');
   }
 
 
   Future<void> saveIndexContact(IndexContact indexcontact) async{
+    print("HHHHHHHHHHHHHHHHHHH  HERE IS THE ID OF THE INDEXCONTACT SAVED "+ indexcontact.personId);
     var response;
     try{
       response = await htsChannel.invokeMethod('saveIndexContact', jsonEncode(indexcontact));

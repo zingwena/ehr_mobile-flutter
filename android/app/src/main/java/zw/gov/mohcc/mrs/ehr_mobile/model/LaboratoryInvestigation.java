@@ -2,15 +2,21 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
+import static androidx.room.ForeignKey.CASCADE;
 
-@Entity
+
+@Entity(indices = {@Index("facilityId"), @Index(value = "personInvestigationId", unique = true)},
+        foreignKeys = {@ForeignKey(entity = Facility.class, parentColumns = "code", childColumns = "facilityId", onDelete = CASCADE),
+                @ForeignKey(entity = PersonInvestigation.class, parentColumns = "id", childColumns = "personInvestigationId", onDelete = CASCADE)})
 public class LaboratoryInvestigation extends BaseEntity {
 
     @NonNull
@@ -24,25 +30,27 @@ public class LaboratoryInvestigation extends BaseEntity {
     }
 
     @Ignore
-    public LaboratoryInvestigation(@NonNull String id, String facilityId, String personInvestigationId) {
+    public LaboratoryInvestigation(@NonNull String id, @NonNull String facilityId, @NonNull String personInvestigationId) {
         super(id);
         this.facilityId = facilityId;
         this.personInvestigationId = personInvestigationId;
     }
 
+    @NonNull
     public String getFacilityId() {
         return facilityId;
     }
 
-    public void setFacilityId(String facilityId) {
+    public void setFacilityId(@NonNull String facilityId) {
         this.facilityId = facilityId;
     }
 
+    @NonNull
     public String getPersonInvestigationId() {
         return personInvestigationId;
     }
 
-    public void setPersonInvestigationId(String personInvestigationId) {
+    public void setPersonInvestigationId(@NonNull String personInvestigationId) {
         this.personInvestigationId = personInvestigationId;
     }
 

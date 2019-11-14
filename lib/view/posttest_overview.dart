@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import 'htsreg_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -35,8 +36,10 @@ class PostTestOverview extends StatefulWidget {
   final Person person;
   final String htsId;
   final bool consenttoIndex;
+  final String result;
+  final HtsRegistration htsRegistration;
 
-  PostTestOverview(this.postTest, this.personId, this.visitId, this.person, this.htsId, this.consenttoIndex);
+  PostTestOverview(this.postTest, this.personId, this.visitId, this.person, this.htsId, this.consenttoIndex, this.result, this.htsRegistration);
 
   @override
   State<StatefulWidget> createState() {
@@ -99,7 +102,13 @@ class PostTestOverviewState extends State<PostTestOverview> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-              new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
+            new ListTile( leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+              new ListTile( leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
@@ -112,19 +121,26 @@ class PostTestOverviewState extends State<PostTestOverview> {
                   builder: (context) =>
                       ReceptionVitals(widget.personId, widget.visitId, widget.person)),
             )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Registration(widget.visitId,widget.personId, widget.person)),
-            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS"), onTap: () {
+              if(widget.htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
+                ));
+              } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> HtsRegOverview(widget.htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
+                ));
+              }
+            }),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
@@ -138,8 +154,8 @@ class PostTestOverviewState extends State<PostTestOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)),
-            ))
+                      CbsQuestions(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)),
+            )),
 
           ],
         ),
@@ -251,28 +267,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                 /*     Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Recency Testing",
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          onPressed: () {
 
-                                                                Navigator.push(context,MaterialPageRoute(
-                                                                    builder: (context)=> RecencyTest(widget.personId, widget.visitId, widget.person, widget.htsId)
-                                                                ));
-
-                                                          },
-                                                        ),
-                                                      ),*/
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
@@ -324,7 +319,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       SizedBox(
                                                         height: 25.0,
                                                       ),
-                                                      _IndexButton()
+                                                      _recencyTesting(),
                                       ],
                                                   ),
                                                 ),
@@ -355,8 +350,58 @@ class PostTestOverviewState extends State<PostTestOverview> {
       ),
     );
   }
+  Widget _recencyTesting(){
+    if(widget.result == 'POSITIVE' || widget.result == 'Positive'){
+      return   Container(                                      width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                        child: RaisedButton(
+                                                          elevation: 4.0,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.blue,
+                                                          padding: const EdgeInsets.all(20.0),
+                                                          child: Text(
+                                                            "Recency Testing",
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                          onPressed: () {
 
-  Widget _IndexButton() {
+                                                                Navigator.push(context,MaterialPageRoute(
+                                                                    builder: (context)=> RecencyTest(widget.personId, widget.visitId, widget.person, widget.htsId , indexTestId, widget.htsRegistration)
+                                                                ));
+
+                                                          },
+                                                        ),
+                                                      );
+    }
+    else{
+
+      return Container(                                      width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+        child: RaisedButton(
+          elevation: 4.0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0)),
+          color: Colors.blue,
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "Close ",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+
+            Navigator.push(context,MaterialPageRoute(
+                builder: (context)=> Overview( widget.person)
+            ));
+
+          },
+        ),
+      );
+
+    }
+  }
+
+/*  Widget _IndexButton() {
 
     if(widget.consenttoIndex == true){
       return   Container(
@@ -388,7 +433,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
       );
     }
 
-  }
+  }*/
 
   Future<void>saveIndexTest(IndexTest indexTest)async{
     var response ;
@@ -398,7 +443,6 @@ class PostTestOverviewState extends State<PostTestOverview> {
       print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
       setState(() {
         indexTestId = response;
-
       });
 
     }catch(e){

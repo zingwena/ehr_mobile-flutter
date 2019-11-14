@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/vitals/blood_pressure.dart';
 import 'package:ehr_mobile/vitals/height.dart';
@@ -16,6 +17,8 @@ import 'package:ehr_mobile/vitals/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'cbsquestion.dart';
+
 
 class ReceptionVitals extends StatefulWidget {
   final String personId;
@@ -30,6 +33,8 @@ class ReceptionVitals extends StatefulWidget {
 
 class _ReceptionVitalsState extends State<ReceptionVitals> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  HtsRegistration htsRegistration;
   final _formKey = GlobalKey<FormState>();
   final _formKeyHeight = GlobalKey<FormState>();
   final _formKeyTemperature = GlobalKey<FormState>();
@@ -55,7 +60,21 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
     setVisit();
     super.initState();
   }
+  Future<void> getHtsRecord(String patientId) async {
+    var  hts;
+    try {
+      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+    setState(() {
 
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+
+    });
+
+
+  }
 
   Future<void> saveVitals(var object, String method) async {
     try {
@@ -115,8 +134,15 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
-            ))
+                      ArtReg(widget.personId, widget.visitId, widget.person, htsRegistration)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, null, null, widget.visitId, widget.person)),
+            )),
 
           ],
         ),
@@ -137,8 +163,8 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Vitals",
-            ),
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(
             child: Padding(
@@ -149,6 +175,11 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("Vitals", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
               /*    _buildButtonsRow(),*/
                   Expanded(
 

@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("userId")}, foreignKeys = @ForeignKey(entity = User.class,
+@Entity(indices = {@Index("userId")},
+        foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "userId",
         childColumns = "userId",
         onDelete = CASCADE))

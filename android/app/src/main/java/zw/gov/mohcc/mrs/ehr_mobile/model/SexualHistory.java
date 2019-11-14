@@ -2,13 +2,20 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("personId")},
+foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
+        parentColumns = "id",
+        childColumns = "personId")})
 public class SexualHistory extends BaseEntity {
 
     @NonNull

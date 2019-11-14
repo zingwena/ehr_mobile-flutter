@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'cbsquestion.dart';
 import 'edit_demographics.dart';
 
 
@@ -31,7 +32,9 @@ class RecencyTest extends StatefulWidget {
   final String visitId;
   final Person person;
   final String htsId;
-  RecencyTest(this.personId, this.visitId, this.person, this.htsId);
+  final String indexTestId;
+  final HtsRegistration htsRegistration;
+  RecencyTest(this.personId, this.visitId, this.person, this.htsId, this.indexTestId, this.htsRegistration);
 
   @override
   State createState() {
@@ -89,9 +92,6 @@ class _Recency extends State<RecencyTest> {
   List __results = List();
   List _radiobuttonResults = List();
   List<Result> _resultList = List();
-
-
-
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
@@ -398,7 +398,7 @@ class _Recency extends State<RecencyTest> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              (sample_name),
+                                              ('Blood'),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -439,7 +439,7 @@ class _Recency extends State<RecencyTest> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              (test),
+                                              ('HIV'),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -632,7 +632,7 @@ class _Recency extends State<RecencyTest> {
                                                         MaterialPageRoute(
                                                             builder: (
                                                                 context) =>
-                                                                Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest)
+                                                                Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest, widget.indexTestId)
 
                                                     ));
                                                   } else {
@@ -730,8 +730,16 @@ class _Recency extends State<RecencyTest> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
-            ))
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
+            )),
+
 
           ],
         ),

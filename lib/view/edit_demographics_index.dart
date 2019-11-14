@@ -9,6 +9,7 @@ import 'package:ehr_mobile/model/nationality.dart';
 import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
+import 'package:ehr_mobile/view/index_patient_address.dart';
 import 'package:ehr_mobile/view/patient_address.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/link_bar.dart';
@@ -21,11 +22,11 @@ import 'package:flutter/services.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 
-class EditDemographics extends StatefulWidget {
-  final String lastName, firstName, sex, nationalId;
+class EditDemographicsIndex extends StatefulWidget {
+  final String lastName, firstName, sex, nationalId, indexTestId, personId;
   final DateTime birthDate;
 
-  EditDemographics(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId);
+  EditDemographicsIndex(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId, this.indexTestId, this.personId);
 
   @override
   State createState() {
@@ -33,7 +34,7 @@ class EditDemographics extends StatefulWidget {
   }
 }
 
-class _EditDemographicsState extends State<EditDemographics> {
+class _EditDemographicsState extends State<EditDemographicsIndex> {
   static const platform = MethodChannel('example.channel.dev/people');
   static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
 
@@ -161,7 +162,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   List<DropdownMenuItem<String>>
-      getDropDownMenuItemsIdentifiedEducationLevel() {
+  getDropDownMenuItemsIdentifiedEducationLevel() {
     List<DropdownMenuItem<String>> items = new List();
     for (EducationLevel educationLevel in _educationLevelList) {
       // here we are creating the drop down menu items, you can customize the item right here
@@ -269,10 +270,9 @@ class _EditDemographicsState extends State<EditDemographics> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("Continue Patient Registration", style: TextStyle(
+                    child: Text(" Patient Demographics Index", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -647,7 +647,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        PatientAddress(patient)));
+                                                                        IndexPatientAddress(patient, widget.indexTestId, widget.personId)));
                                                           }
 
                                                         },
@@ -706,6 +706,7 @@ class _EditDemographicsState extends State<EditDemographics> {
         ],
       );
   }
+
 
   Widget _buildButtonsRow() {
     return Padding(
@@ -895,13 +896,13 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   void changedDropDownItemCountry(String selectedCountry) {
-          if(selectedCountry!=null) {
-            setState(() {
-              _currentCountry = selectedCountry;
-              _dropdownError = null;
-              countryIsValid = !countryIsValid;
-            });
-          }
+    if(selectedCountry!=null) {
+      setState(() {
+        _currentCountry = selectedCountry;
+        _dropdownError = null;
+        countryIsValid = !countryIsValid;
+      });
+    }
   }
 
   Future<void> registerPatient(Person person)async{

@@ -30,8 +30,9 @@ class SexualHistoryOverview extends StatefulWidget {
   final String htsId;
   final String visitId;
   final String personId;
+  final HtsRegistration htsRegistration;
 
-  SexualHistoryOverview(this.patient, this.sexualHistory, this.htsId, this.visitId, this.personId);
+  SexualHistoryOverview(this.patient, this.sexualHistory, this.htsId, this.visitId, this.personId, this.htsRegistration);
 
   @override
   State<StatefulWidget> createState() {
@@ -175,7 +176,7 @@ class _SexualHistoryOverview extends State<SexualHistoryOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient)),
+                      ArtReg(_patient.id, visitId, _patient, widget.htsRegistration)),
             ))
 
           ],
@@ -406,7 +407,7 @@ class _SexualHistoryOverview extends State<SexualHistoryOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient)),
+                    ArtReg(_patient.id, visitId, _patient, widget.htsRegistration)),
           ),),
 
 

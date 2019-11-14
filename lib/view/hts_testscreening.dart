@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'cbsquestion.dart';
 import 'edit_demographics.dart';
 
 
@@ -181,6 +182,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
+        print("HHHHHHHHHHHHHHHHHHH results from android"+ _dropDownListEntryPoints.toString());
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
@@ -690,6 +692,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
     @override
   Widget build(BuildContext context) {
     var list=this._testkitslist ;
+    print("+++++++++++  $list");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -744,8 +747,16 @@ Future<dynamic> getTestKitsByCount(int count) async {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
-            ))
+                      ArtReg(widget.personId, widget.visitId, widget.person, htsRegistration)),
+            )),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
+            )),
+
 
           ],
         ),

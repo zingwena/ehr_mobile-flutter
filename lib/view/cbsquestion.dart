@@ -190,7 +190,7 @@ class _CbsQuestion extends State<CbsQuestions> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],
@@ -435,7 +435,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                           _formKey.currentState.save();
                                                           SexualHistory sexualhistory = SexualHistory(widget.personId, sexuallyactive, maledate, femaledate, numberOfSexualPartners, numberofsexualpartnersinpast12months);
                                                           saveSexualHistory(sexualhistory);
-                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> SexualHistoryOverview(widget.person, sexualhistory, widget.htsid, widget.visitId, widget.personId)));
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> SexualHistoryOverview(widget.person, sexualhistory, widget.htsid, widget.visitId, widget.personId, widget.htsRegistration)));
 
                                                         }
 

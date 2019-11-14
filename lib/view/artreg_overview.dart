@@ -5,8 +5,6 @@ import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_initiation.dart';
-import 'package:ehr_mobile/view/patient_overview.dart';
-
 
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
@@ -29,8 +27,9 @@ class ArtRegOverview extends StatefulWidget {
   final String personId;
   final String visitId;
   final Person person;
+  HtsRegistration htsRegistration;
 
-  ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person);
+  ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person, this.htsRegistration);
 
   @override
   State<StatefulWidget> createState() {
@@ -52,14 +51,11 @@ class ArtOverviewState extends State<ArtRegOverview> {
 
   bool showInput = true;
   bool showInputTabOptions = true;
-  var dateOfTest, dateOfEnrollment;
 
   @override
   void initState() {
 
     print(_patient.toString());
-    dateOfTest = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfHivTest);
-    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfEnrolmentIntoCare);
   //  getEntryPoint(widget.htsRegistration.entryPointId);
     super.initState();
   }
@@ -94,12 +90,12 @@ class ArtOverviewState extends State<ArtRegOverview> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-              new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
+            /*  new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
                       Overview(_patient)),
-            )),
+            )),*/
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
@@ -119,7 +115,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
+                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
             ))
 
           ],
@@ -141,9 +137,8 @@ class ArtOverviewState extends State<ArtRegOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-                "ART Registration OverView"
-            ),
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(
             child: Padding(
@@ -154,6 +149,11 @@ class ArtOverviewState extends State<ArtRegOverview> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("ART Registration OverView", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
                   _buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     onWillPop: () {
@@ -310,7 +310,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Art_Initiation(widget.personId, widget.visitId
+                    Art_Initiation(widget.personId, widget.visitId, widget.htsRegistration
                     )),
           ),
           ),
