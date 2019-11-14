@@ -8,9 +8,9 @@ import androidx.room.Index;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity/*(indices = {@Index("resultId"), @Index("investigationId")},
+@Entity(indices = {@Index("resultId"), @Index("investigationId")},
 foreignKeys = {@ForeignKey(entity = Result.class, parentColumns = "code", childColumns = "resultId", onDelete = CASCADE),
-        @ForeignKey(entity = Investigation.class, parentColumns = "id", childColumns = "investigationId", onDelete = CASCADE)})*/
+        @ForeignKey(entity = Investigation.class, parentColumns = "id", childColumns = "investigationId", onDelete = CASCADE)})
 public class InvestigationResult extends BaseEntity {
 
     @NonNull
