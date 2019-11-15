@@ -29,10 +29,10 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     private Date endTime;
     @NonNull
     private String visitId;
-    @Embedded
+    @Embedded(prefix = "result_")
     @NonNull
     private NameCode result;
-    @Embedded
+    @Embedded(prefix = "testkit_")
     @NonNull
     private NameCode testkit;
 
