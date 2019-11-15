@@ -296,6 +296,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       _testkitslist.forEach((e){
         if(value == _testkitslist.indexOf(e)){
           testKitobj.code = e.code;
+          testKitobj.name = e.name;
 
         }
       });
@@ -641,7 +642,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                         widget.visitId,
                                                         labInvestId,
                                                         null, null,
-                                                        result, widget.visitId, testKitobj.code, null, null);
+                                                        result, widget.visitId, testKitobj, null, null);
 
 
                                                     saveLabInvestigationTest(

@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/model/result.dart';
+import 'package:ehr_mobile/model/testKit.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'laboratoryInvestigationTest.g.dart';
 
@@ -13,11 +14,11 @@ class LaboratoryInvestigationTest{
    DateTime endDate;
    Result result;
    String visitId;
-   String testkitId;
+   TestKit testKit;
 
 
    LaboratoryInvestigationTest(this.id, this.laboratoryInvestigationId,
-       this.startDate, this.endDate, this.result, this.visitId, this.testkitId, this.startTime, this.endTime);
+       this.startDate, this.endDate, this.result, this.visitId, this.testKit, this.startTime, this.endTime);
 
    factory LaboratoryInvestigationTest.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestFromJson(json);
 
@@ -39,7 +40,7 @@ class LaboratoryInvestigationTest{
 
    @override
    String toString() {
-     return 'LaboratoryInvestigationTest{id: $id, laboratoryInvestigationId: $laboratoryInvestigationId, startTime: $startTime, endTime: $endTime, result: $result, visitId: $visitId, testkiId: $testkitId}';
+     return 'LaboratoryInvestigationTest{id: $id, laboratoryInvestigationId: $laboratoryInvestigationId, startTime: $startTime, endTime: $endTime, result: $result, visitId: $visitId, testkit: $testKit}';
    }
 
    List<LaboratoryInvestigationTest> fromJsonDecodedMap(List dynamicList) {

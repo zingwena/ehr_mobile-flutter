@@ -411,7 +411,7 @@ class _Recency_Result  extends State<Recency_Result > {
                                                         ],
                                                         rows: [
                                                           DataRow(cells: [
-                                                            DataCell(Text(widget.laboratoryInvestigation.testkitId)),
+                                                            DataCell(Text(widget.laboratoryInvestigation.testKit.name)),
                                                             DataCell(Text(widget.laboratoryInvestigation.result.name))
                                                           ])
                                                         ]
