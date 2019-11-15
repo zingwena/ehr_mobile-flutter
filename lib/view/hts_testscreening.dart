@@ -295,8 +295,9 @@ Future<dynamic> getTestKitsByCount(int count) async {
       _testKit = value;
       _testkitslist.forEach((e){
         if(value == _testkitslist.indexOf(e)){
-          getTestKitByCode(e.code);
-          testKitobj.name = testKit;
+          testKitobj.code = e.code;
+          testKitobj.name = e.name;
+
         }
       });
 
@@ -637,11 +638,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                     .validate()) {
                                                   _formKey.currentState.save();
                                                   if (_formIsValid) {
+                                                    print('FFFFFFFFFFFFFFFFFFFFFFFFFFF TESTKIT OBJECT HERE'+ testKitobj.toString());
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
                                                         widget.visitId,
                                                         labInvestId,
                                                         null, null,
-                                                        result, widget.visitId, testKit, null, null);
+                                                        result, widget.visitId, testKitobj, null, null);
 
 
                                                     saveLabInvestigationTest(

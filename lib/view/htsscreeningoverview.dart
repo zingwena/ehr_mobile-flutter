@@ -166,13 +166,10 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
               if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(visitId, _patient.id, _patient)
                 ));
               } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
                 ));
@@ -404,6 +401,40 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                           ),
                                                         ],
                                                       ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          widget.htsScreening.viralLoadDone == 'DONE'?Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        widget.htsScreening.viralLoadDone)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Viral load',
+                                                                  icon: Icon(Icons.flag, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ): SizedBox(height: 0.0,),
+                                                          widget.htsScreening.cd4Done == 'DONE'? Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: widget.htsScreening.cd4Done),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Cd4 count',
+                                                                  icon: Icon(Icons.smartphone, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ): SizedBox(height: 0.0,)
+                                                        ],
+                                                      ),
+
 
                                                     ],
                                                   ),

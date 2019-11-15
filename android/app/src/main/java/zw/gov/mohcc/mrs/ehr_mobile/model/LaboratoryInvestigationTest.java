@@ -14,10 +14,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("laboratoryInvestigationId"), @Index("visitId"), @Index("testkitId")},
+@Entity(indices = {@Index("laboratoryInvestigationId"), @Index("visitId"), @Index("testkit_code")},
         foreignKeys = {@ForeignKey(entity = LaboratoryInvestigation.class, parentColumns = "id", childColumns = "laboratoryInvestigationId", onDelete = CASCADE),
                 @ForeignKey(entity = Visit.class, parentColumns = "id", childColumns = "visitId", onDelete = CASCADE),
-                @ForeignKey(entity = TestKit.class, parentColumns = "code", childColumns = "testkitId", onDelete = CASCADE)})
+                @ForeignKey(entity = TestKit.class, parentColumns = "code", childColumns = "testkit_code", onDelete = CASCADE)})
 public class LaboratoryInvestigationTest extends BaseEntity {
 
     @NonNull
@@ -29,11 +29,12 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     private Date endTime;
     @NonNull
     private String visitId;
-    @Embedded
+    @Embedded(prefix = "result_")
     @NonNull
-    private Result result;
+    private NameCode result;
+    @Embedded(prefix = "testkit_")
     @NonNull
-    private String testkitId;
+    private NameCode testkit;
 
     public String getVisitId() {
         return visitId;
@@ -51,11 +52,11 @@ public class LaboratoryInvestigationTest extends BaseEntity {
         this.laboratoryInvestigationId = laboratoryInvestigationId;
     }
 
-    public Result getResult() {
+    public NameCode getResult() {
         return result;
     }
 
-    public void setResult(Result result) {
+    public void setResult(NameCode result) {
         this.result = result;
     }
 
@@ -75,12 +76,12 @@ public class LaboratoryInvestigationTest extends BaseEntity {
         this.endTime = endTime;
     }
 
-    public String getTestkitId() {
-        return testkitId;
+    public NameCode getTestkit() {
+        return testkit;
     }
 
-    public void setTestkitId(String testkitId) {
-        this.testkitId = testkitId;
+    public void setTestkit(NameCode testkit) {
+        this.testkit = testkit;
     }
 
     @Override
@@ -91,7 +92,7 @@ public class LaboratoryInvestigationTest extends BaseEntity {
                 ", endTime=" + endTime +
                 ", visitId='" + visitId + '\'' +
                 ", result='" + result.toString() + '\'' +
-                ", testkitId='" + testkitId + '\'' +
+                ", testkitId='" + testkit + '\'' +
                 '}';
     }
 }

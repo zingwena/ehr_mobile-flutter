@@ -64,8 +64,8 @@ class _HtsScreening extends State<Hts_Screening> {
   int _viralload = 0;
   int _cd4done = 0;
   var birthDate, displayDate;
-  var selectedDate;
-  DateTime date;
+  var selectedDate, selectedDateOfEnrollment, selectedDateOfViralLoad, selectedDateOfCd4Count;
+  DateTime date, dateOfEnrollmentIntoCare, dateOfViralLoad, dateOfCd4Count;
   HtsScreening htsScreening;
 
 
@@ -73,7 +73,13 @@ class _HtsScreening extends State<Hts_Screening> {
   void initState() {
     //getHtsRecord(widget.personId);
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    selectedDateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    selectedDateOfViralLoad =  DateFormat("yyyy/MM/dd").format(DateTime.now());
+    selectedDateOfCd4Count = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
+    dateOfViralLoad = DateTime.now();
+    dateOfEnrollmentIntoCare = DateTime.now();
+    dateOfCd4Count = DateTime.now();
     super.initState();
   }
 
@@ -127,20 +133,44 @@ class _HtsScreening extends State<Hts_Screening> {
         date = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
   }
-
-  /*Future<Null> _selectDate(BuildContext context) async {
+  Future<Null> _selectDateOfEnrollment(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDateOfEnrollment)
       setState(() {
-        selectedDate =
-        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
+        selectedDateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfEnrollmentIntoCare = DateFormat("yyyy/MM/dd").parse(selectedDateOfEnrollment);
       });
   }
-*/
+
+  Future<Null> _selectDateOfViralLoad(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDateOfViralLoad)
+      setState(() {
+        selectedDateOfViralLoad = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfViralLoad = DateFormat("yyyy/MM/dd").parse(selectedDateOfViralLoad);
+      });
+  }
+  Future<Null> _selectDateOfCD4Count(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDateOfCd4Count)
+      setState(() {
+        selectedDateOfCd4Count = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfCd4Count = DateFormat("yyyy/MM/dd").parse(selectedDateOfCd4Count);
+      });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -479,7 +509,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    selectedDate),
+                                                                    selectedDateOfEnrollment),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -505,7 +535,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
-                                                              _selectDate(
+                                                              _selectDateOfEnrollment(
                                                                   context);
                                                             })
                                                       ],
@@ -568,7 +598,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    selectedDate),
+                                                                    selectedDateOfViralLoad),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -594,7 +624,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
-                                                              _selectDate(
+                                                              _selectDateOfViralLoad(
                                                                   context);
                                                             })
                                                       ],
@@ -696,7 +726,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    selectedDate),
+                                                                    selectedDateOfCd4Count),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -722,7 +752,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
-                                                              _selectDate(
+                                                              _selectDateOfCD4Count(
                                                                   context);
                                                             })
                                                       ],

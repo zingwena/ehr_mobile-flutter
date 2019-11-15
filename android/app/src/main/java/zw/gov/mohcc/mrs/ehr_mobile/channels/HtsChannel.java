@@ -226,7 +226,9 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("saveLabInvestTest")) {
+
                             try {
+                                System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH LAB INVEST TEST SAVED" + arguments);
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
                                 String labInvestigationTestId = htsService.processTestResults(labInvestTest);
                                 result.success(labInvestigationTestId);

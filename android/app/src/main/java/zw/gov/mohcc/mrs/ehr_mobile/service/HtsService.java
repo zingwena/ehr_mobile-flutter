@@ -18,6 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
@@ -123,14 +124,12 @@ public class HtsService {
         for (LaboratoryInvestigationTest item : ehrMobileDatabase.labInvestTestdao().findEarliestTests(laboratoryInvestigationId)) {
             if (retainMaxCount == 3 && maxCount == 1) {
                 Log.d(TAG, "Is this ever executed");
-                lastParallelTest = ehrMobileDatabase.testKitDao().findTestKitByName(item.getTestkitId()).getCode();
+                lastParallelTest = item.getTestkit().getCode();
                 continue;
             }
             if (maxCount > 0) {
                 // get testkit ID using name
-                TestKit testKit = ehrMobileDatabase.testKitDao().findTestKitByName(item.getTestkitId());
-                Log.i(TAG, "Test kit retreived : "+ testKit + " testkit name :"+ item.getTestkitId());
-                testKitIds.add(testKit.getCode());
+                testKitIds.add(item.getTestkit().getCode());
             } else {
                 break;
             }
@@ -241,7 +240,7 @@ public class HtsService {
         } else if (count == 4) {
             // if result is positive set result to be inconclusive
             if (test.getResult().getName().equalsIgnoreCase("Positive")) {
-                test.setResult(new Result("41d3c289-fd7d-11e6-9840-000c29c7ff5e", "INCONCLUSIVE"));
+                test.setResult(new NameCode("41d3c289-fd7d-11e6-9840-000c29c7ff5e", "INCONCLUSIVE"));
             }
             setFinalResult(test);
         }

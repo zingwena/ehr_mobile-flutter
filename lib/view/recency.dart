@@ -299,7 +299,8 @@ class _Recency extends State<RecencyTest> {
       _testKit = value;
       switch(_testKit){
         case 1:
-          testKit = "Asante";
+          testKitobj.code = '1';
+          testKitobj.name = 'Asante';
       }
     });
 
@@ -627,7 +628,7 @@ class _Recency extends State<RecencyTest> {
                                                         widget.visitId,
                                                         labInvestId,
                                                         null, null,
-                                                        result, widget.visitId, testKit, null, null);
+                                                        result, widget.visitId, testKitobj, null, null);
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (

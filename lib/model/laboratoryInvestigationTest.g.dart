@@ -19,7 +19,7 @@ LaboratoryInvestigationTest _$LaboratoryInvestigationTestFromJson(
         ? null
         : Result.fromJson(json['result'] as Map<String, dynamic>),
     json['visitId'] as String,
-    json['testkitId'] as String,
+    json['testkit'] == null ? null: TestKit.fromJson(json['testkit'] as Map<String, dynamic>),
     json['startTime'] as String,
     json['endTime'] as String
 
@@ -35,7 +35,7 @@ Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
       'endDate': instance.endDate?.toIso8601String(),
       'result': instance.result,
       'visitId': instance.visitId,
-      'testkitId': instance.testkitId,
+      'testkit': instance.testKit,
       'startTime' : instance.startTime,
       'endTime': instance.endTime
     };
