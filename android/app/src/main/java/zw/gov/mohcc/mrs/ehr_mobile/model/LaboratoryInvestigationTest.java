@@ -14,10 +14,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("laboratoryInvestigationId"), @Index("visitId"), @Index("testkitId")},
+@Entity(indices = {@Index("laboratoryInvestigationId"), @Index("visitId"), @Index("testkit_code")},
         foreignKeys = {@ForeignKey(entity = LaboratoryInvestigation.class, parentColumns = "id", childColumns = "laboratoryInvestigationId", onDelete = CASCADE),
                 @ForeignKey(entity = Visit.class, parentColumns = "id", childColumns = "visitId", onDelete = CASCADE),
-                @ForeignKey(entity = TestKit.class, parentColumns = "code", childColumns = "testkitId", onDelete = CASCADE)})
+                @ForeignKey(entity = TestKit.class, parentColumns = "code", childColumns = "testkit_code", onDelete = CASCADE)})
 public class LaboratoryInvestigationTest extends BaseEntity {
 
     @NonNull
@@ -29,10 +29,10 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     private Date endTime;
     @NonNull
     private String visitId;
-    @Embedded
+    @Embedded(prefix = "result_")
     @NonNull
     private NameCode result;
-    @Embedded
+    @Embedded(prefix = "testkit_")
     @NonNull
     private NameCode testkit;
 
