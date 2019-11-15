@@ -937,8 +937,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
+                Log.i(TAG,t.getMessage());
             }
         });
     }
@@ -1038,8 +1037,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
+                Log.i(TAG,t.getMessage());
             }
         });
     }
@@ -1063,8 +1061,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
+                Log.i(TAG,t.getMessage());
             }
         });
     }
@@ -1082,7 +1079,6 @@ public class MainActivity extends FlutterActivity {
                     investigations.add(new Investigation(item.getInvestigationId(), item.getLaboratoryTestId(), item.getSampleId()));
                 }
                 Log.i(TAG, ";;;;;;;;;;;;;; investigations from ehr : " + investigations);
-                System.out.println(TAG + ";;;;;;;;;;;;;; investigations from ehr : " + investigations);
                 if (investigations != null && !investigations.isEmpty()) {
                     terminologyService.saveInvestigations(investigations);
                 }
@@ -1090,8 +1086,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<InvestigationModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
+                Log.i(TAG,t.getMessage());
             }
         });
     }
@@ -1114,8 +1109,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-
-                System.out.println("tttttttttttttttttttttttt" + t);
+                Log.i(TAG,t.getMessage());
             }
         });
     }

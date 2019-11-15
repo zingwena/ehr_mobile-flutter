@@ -1,4 +1,4 @@
-package zw.gov.mohcc.mrs.ehr_mobile.dto;
+package zw.gov.mohcc.mrs.ehr_mobile.dto.builder;
 
 import org.jetbrains.annotations.NotNull;
 
