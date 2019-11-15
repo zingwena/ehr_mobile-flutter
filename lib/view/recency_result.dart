@@ -411,8 +411,8 @@ class _Recency_Result  extends State<Recency_Result > {
                                                         ],
                                                         rows: [
                                                           DataRow(cells: [
-                                                            DataCell(Text(widget.laboratoryInvestigation.testKit.name)),
-                                                            DataCell(Text(widget.laboratoryInvestigation.result.name))
+                                                            DataCell(Text(widget.laboratoryInvestigation.testKit_.name)),
+                                                            DataCell(Text(widget.laboratoryInvestigation.result_.name))
                                                           ])
                                                         ]
 
@@ -445,7 +445,7 @@ class _Recency_Result  extends State<Recency_Result > {
                                                             child: Padding(
                                                               padding: const EdgeInsets.all(0.0),
                                                               child: Text(
-                                                                (widget.laboratoryInvestigation.result.name),
+                                                                (widget.laboratoryInvestigation.result_.name),
                                                                 style: TextStyle(
                                                                   color: Colors.grey.shade600,
                                                                   fontSize: 18,

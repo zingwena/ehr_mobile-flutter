@@ -638,6 +638,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                     .validate()) {
                                                   _formKey.currentState.save();
                                                   if (_formIsValid) {
+                                                    print('FFFFFFFFFFFFFFFFFFFFFFFFFFF TESTKIT OBJECT HERE'+ testKitobj.toString());
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
                                                         widget.visitId,
                                                         labInvestId,
