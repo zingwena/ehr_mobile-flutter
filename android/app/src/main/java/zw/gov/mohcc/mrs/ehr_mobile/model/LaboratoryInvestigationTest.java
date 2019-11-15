@@ -31,9 +31,10 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     private String visitId;
     @Embedded
     @NonNull
-    private Result result;
+    private NameCode result;
+    @Embedded
     @NonNull
-    private String testkitId;
+    private NameCode testkit;
 
     public String getVisitId() {
         return visitId;
@@ -51,11 +52,11 @@ public class LaboratoryInvestigationTest extends BaseEntity {
         this.laboratoryInvestigationId = laboratoryInvestigationId;
     }
 
-    public Result getResult() {
+    public NameCode getResult() {
         return result;
     }
 
-    public void setResult(Result result) {
+    public void setResult(NameCode result) {
         this.result = result;
     }
 
@@ -75,12 +76,12 @@ public class LaboratoryInvestigationTest extends BaseEntity {
         this.endTime = endTime;
     }
 
-    public String getTestkitId() {
-        return testkitId;
+    public NameCode getTestkit() {
+        return testkit;
     }
 
-    public void setTestkitId(String testkitId) {
-        this.testkitId = testkitId;
+    public void setTestkit(NameCode testkit) {
+        this.testkit = testkit;
     }
 
     @Override
@@ -91,7 +92,7 @@ public class LaboratoryInvestigationTest extends BaseEntity {
                 ", endTime=" + endTime +
                 ", visitId='" + visitId + '\'' +
                 ", result='" + result.toString() + '\'' +
-                ", testkitId='" + testkitId + '\'' +
+                ", testkitId='" + testkit + '\'' +
                 '}';
     }
 }

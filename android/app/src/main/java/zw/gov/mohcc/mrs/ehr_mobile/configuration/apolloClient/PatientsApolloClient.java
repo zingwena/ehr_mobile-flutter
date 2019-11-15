@@ -19,11 +19,11 @@ import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
-import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 
 public class PatientsApolloClient {

@@ -11,20 +11,18 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.IdentityDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSyncDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.RegisterPersonDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.NameIdSynchModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.sync.adapter.dto.PatientSyncDto;
+import zw.gov.mohcc.mrs.sync.adapter.dto.PersonResponseDto;
 
 public interface DataSyncService {
 
@@ -106,6 +104,6 @@ public interface DataSyncService {
     @POST("people")
     Call<IdentityDTO> registerPerson(@Header("Authorization") String token, @Body RegisterPersonDTO registerPersonDTO);
 
-    @POST("people/update-patient")
-    Call<IdentityDTO> updatePatient(@Header("Authorization") String token, @Body PatientSyncDto patientSyncDto);
+    @POST("data-sync/patient")
+    Call<PersonResponseDto> syncPatient(@Header("Authorization") String token, @Body PatientSyncDto patientSyncDto);
 }

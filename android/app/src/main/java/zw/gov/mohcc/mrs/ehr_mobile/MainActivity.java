@@ -30,7 +30,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
-import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
@@ -82,6 +81,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
+import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class MainActivity extends FlutterActivity {
 

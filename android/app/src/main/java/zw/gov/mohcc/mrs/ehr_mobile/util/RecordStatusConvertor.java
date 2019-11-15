@@ -2,7 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.util;
 
 import androidx.room.TypeConverter;
 
-import zw.gov.mohcc.mrs.ehr_mobile.enums.RecordStatus;
+import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class RecordStatusConvertor {
 

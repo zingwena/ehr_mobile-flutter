@@ -183,6 +183,7 @@ dependencies {
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+    implementation 'zw.gov.mohcc.mrs:mobile-sync-adapter:1.0.2'
     
     //    compile 'android.test.runner'
 

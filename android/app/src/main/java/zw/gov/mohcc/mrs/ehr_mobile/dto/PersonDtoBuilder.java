@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
+import zw.gov.mohcc.mrs.sync.adapter.dto.PersonDto;
 
 public class PersonDtoBuilder {
 
@@ -13,6 +14,7 @@ public class PersonDtoBuilder {
     public PersonDtoBuilder fromPerson(@NotNull Person person) {
         dto =new PersonDto();
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        dto.setPersonId(person.getId());
         dto.setBirthDate(dateFormat.format(person.getBirthDate()));
         dto.setCountryId(person.getCountryId());
         dto.setEducationLevelId(person.getEducationLevelId());

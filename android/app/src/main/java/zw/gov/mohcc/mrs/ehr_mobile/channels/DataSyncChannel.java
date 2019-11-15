@@ -11,6 +11,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.sync.PatientDataSyncService;
+import zw.gov.mohcc.mrs.sync.adapter.dto.PatientSyncDto;
 
 public class DataSyncChannel {
     public DataSyncChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase){
@@ -19,7 +20,6 @@ public class DataSyncChannel {
             @Override
             public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
                 List<String>arguments = call.arguments();
-                //syncPatients
                 System.out.println("Args=== "+arguments);
                 if (call.method.equals("syncPatients")) {
                     System.out.println("DATA SYNC PATIENTS");
