@@ -15,7 +15,7 @@ public interface TownsDao {
     @Insert
     void createTowns(List<Town> towns);
 
-    @Query("SELECT * FROM town")
+    @Query("SELECT * FROM town order by name asc")
     List<Town> getAllTowns();
 
     @Query("DELETE FROM town")
