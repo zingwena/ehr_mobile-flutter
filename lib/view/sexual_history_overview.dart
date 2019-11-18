@@ -143,6 +143,20 @@ class _CbsOverview extends State<CbsOverview> {
                   builder: (context) =>
                       CbsOverview(_patient)),
             )),*/
+            new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Home", style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPatient()),
+            )),
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview", style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Overview(widget.patient)),
+            )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals", style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
