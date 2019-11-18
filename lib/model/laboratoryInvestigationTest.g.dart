@@ -33,9 +33,9 @@ Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
       'laboratoryInvestigationId': instance.laboratoryInvestigationId,
       'startDate': instance.startDate?.toIso8601String(),
       'endDate': instance.endDate?.toIso8601String(),
-      'result_': instance.result_,
+      'result': instance.result,
       'visitId': instance.visitId,
-      'testkit_': instance.testKit_,
+      'testkit': instance.testKit,
       'startTime' : instance.startTime,
       'endTime': instance.endTime
     };

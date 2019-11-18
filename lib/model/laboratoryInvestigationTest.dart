@@ -12,13 +12,13 @@ class LaboratoryInvestigationTest{
    String endTime;
    DateTime startDate;
    DateTime endDate;
-   Result result_;
+   Result result;
    String visitId;
-   TestKit testKit_;
+   TestKit testKit;
 
 
    LaboratoryInvestigationTest(this.id, this.laboratoryInvestigationId,
-       this.startDate, this.endDate, this.result_, this.visitId, this.testKit_, this.startTime, this.endTime);
+       this.startDate, this.endDate, this.result, this.visitId, this.testKit, this.startTime, this.endTime);
 
    factory LaboratoryInvestigationTest.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestFromJson(json);
 
@@ -40,7 +40,7 @@ class LaboratoryInvestigationTest{
 
    @override
    String toString() {
-     return 'LaboratoryInvestigationTest{id: $id, laboratoryInvestigationId: $laboratoryInvestigationId, startTime: $startTime, endTime: $endTime, result: $result_, visitId: $visitId, testkit: $testKit_}';
+     return 'LaboratoryInvestigationTest{id: $id, laboratoryInvestigationId: $laboratoryInvestigationId, startTime: $startTime, endTime: $endTime, result: $result, visitId: $visitId, testkit: $testKit}';
    }
 
    List<LaboratoryInvestigationTest> fromJsonDecodedMap(List dynamicList) {

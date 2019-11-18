@@ -102,13 +102,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile( leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-              new ListTile( leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+              new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
@@ -121,20 +115,13 @@ class PostTestOverviewState extends State<PostTestOverview> {
                   builder: (context) =>
                       ReceptionVitals(widget.personId, widget.visitId, widget.person)),
             )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS"), onTap: () {
-              if(widget.htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(widget.htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
-                ));
-              }
-            }),
+            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Registration(widget.visitId,widget.personId, widget.person)),
+            )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
@@ -154,8 +141,8 @@ class PostTestOverviewState extends State<PostTestOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)),
-            )),
+                      CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)),
+            ))
 
           ],
         ),
@@ -401,7 +388,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
     }
   }
 
-/*  Widget _IndexButton() {
+  Widget _IndexButton() {
 
     if(widget.consenttoIndex == true){
       return   Container(
@@ -433,7 +420,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
       );
     }
 
-  }*/
+  }
 
   Future<void>saveIndexTest(IndexTest indexTest)async{
     var response ;

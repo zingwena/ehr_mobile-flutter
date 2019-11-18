@@ -5,7 +5,6 @@ import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
-import 'package:ehr_mobile/model/sexualhistory.dart';
 
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
@@ -19,7 +18,6 @@ import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
-import 'package:ehr_mobile/view/sexual_history_overview.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
@@ -53,20 +51,25 @@ class _CbsQuestion extends State<CbsQuestions> {
   List<HtsModel> _htsModelList=List();
   List<PurposeOfTest> _purposeOfTestList= List();
 
-  int _hts = 0;
-  int _victim = 0;
   HtsRegistration htsRegistration;
+  bool _newTestInPreg = false;
+
+  int _victim = 0;
+  int _sexuallyActive =0;
+  int _sexwithmale = 0;
+  int _sexwithfemale = 0;
+  int unprotectedsex = 0;
+  int sexWithSExWorker = 0;
   String sexuallyactive = "";
   String agewhenfirsthadsex;
-  int numberOfSexualPartners;
-  int numberofsexualpartnersinpast12months;
-  var selectedMaleDate, selectedFemaleDate;
-  DateTime maledate, femaledate;
+  String numberofsexualpartners;
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
-  String victimofsexualabuse = "";
 
-  bool _hadsexwithmale=false ;
+
+  //int _optOutTest = 0;
+  PreTest patient_preTest;
+  String victimofsexualabuse = "NO";
   String hadsexwithmale = "NO";
 
   bool _hadsexwithfemale=false ;
@@ -90,6 +93,19 @@ class _CbsQuestion extends State<CbsQuestions> {
     super.initState();
   }
 
+  Future<void> insertPreTest(PreTest preTest) async {
+    String pretestjson;
+    try {
+      pretestjson =  await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
+      print('LLLLLLLLLLLLLLLL'+ pretestjson);
+      setState(() {
+        patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
+        print('LLLLLLLLLLLLLLLLLLLLL'+ patient_preTest.toString());
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  }
 
   Future <void> getHtsModelByName(String htsmodelstring) async{
     var model_response;
@@ -101,6 +117,42 @@ class _CbsQuestion extends State<CbsQuestions> {
       print("channel failure: '$e'");
 
     }
+  }
+  Future <void> getPurposeByName(String purposemodelstring) async{
+    var model_response;
+    try{
+      model_response = await htsChannel.invokeMethod('getPurposeofTest', purposemodelstring);
+      purposeOfTest = PurposeOfTest.mapFromJson(model_response);
+
+    }catch (e){
+      print("channel failure: '$e'");
+
+    }
+  }
+
+
+  List<DropdownMenuItem<String>>
+  getDropDownMenuItemsHtsModel() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (HtsModel htsModel in _htsModelList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(
+          DropdownMenuItem(value: htsModel.code, child: Text(htsModel.name)));
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<String>>
+  getDropDownMenuItemsPurposeOfTest() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (PurposeOfTest purposeOfTest in _purposeOfTestList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(
+          DropdownMenuItem(value: purposeOfTest.code, child: Text(purposeOfTest.name)));
+    }
+    return items;
   }
 
 
@@ -121,30 +173,17 @@ class _CbsQuestion extends State<CbsQuestions> {
 
 
   }
-  Future<Null> _selectMaleDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedMaleDate)
-      setState(() {
-        selectedMaleDate = DateFormat("yyyy/MM/dd").format(picked);
-        maledate = DateFormat("yyyy/MM/dd").parse(selectedMaleDate);
-      });
-  }
-  Future<Null> _selectFemaleDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedFemaleDate)
-      setState(() {
-        selectedFemaleDate = DateFormat("yyyy/MM/dd").format(picked);
-        femaledate = DateFormat("yyyy/MM/dd").parse(selectedFemaleDate);
-      });
-  }
+
+
+  List<DropdownMenuItem<String>>
+  _dropDownMenuItemsHtsModel,
+      _dropDownMenuItemsPurposeOfTest;
+
+  String  _currentHtsModel;
+  String _currentPurposeOfTest;
+
+  bool showInput = true;
+  bool showInputTabOptions = true;
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +252,7 @@ class _CbsQuestion extends State<CbsQuestions> {
               elevation: 0.0,
               centerTitle: true,
               title: new Column(children: <Widget>[
-                new Text("Sexual History"),
+                new Text("Pre-Test"),
                 new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
 
               ],)
@@ -224,6 +263,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -270,18 +310,30 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                         Text('YES'),
                                                         Radio(
                                                             value: 1,
-                                                            groupValue: _hts,
-                                                            onChanged: _handleHtsChange),
+                                                            groupValue:
+                                                            _sexuallyActive,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexuallyActiveChange),
                                                         Text('NO'),
                                                         Radio(
                                                             value: 2,
-                                                            groupValue: _hts,
-                                                            onChanged: _handleHtsChange),
+                                                            groupValue:
+                                                            _sexuallyActive,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexuallyActiveChange),
                                                         Text('REFUSE'),
                                                         Radio(
                                                             value: 3,
-                                                            groupValue: _hts,
-                                                            onChanged: _handleHtsChange)
+                                                            groupValue:
+                                                            _sexuallyActive,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexuallyActiveChange)
                                                       ],
                                                     ),
                                                   ),
@@ -302,14 +354,21 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter Art Number'
+                                                                      : null;
+                                                                },
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
                                                                             () {
-                                                                              numberOfSexualPartners  = int.parse(value);                                           }),
+                                                                         agewhenfirsthadsex  = value;                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
-                                                                    'Number of sexual partners',
+                                                                    'Age when client had first sexual intercourse',
                                                                     border:
                                                                     OutlineInputBorder()),
                                                               ),
@@ -336,11 +395,18 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter Art Number'
+                                                                      : null;
+                                                                },
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
                                                                             () {
-                                                                          numberofsexualpartnersinpast12months  = int.parse(value);                                           }),
+                                                                          numberofsexualpartners  = value;                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'Number of sexual partners in the past 12 months ',
@@ -354,66 +420,230 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       ],
                                                     ),
                                                   ),
+
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:              Row(
+                                                    child:        Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets.symmetric(
-                                                                  vertical: 0.0, horizontal: 30.0),
-                                                              child: TextFormField(
-                                                                controller:
-                                                                TextEditingController(text: selectedMaleDate),
-                                                                decoration: InputDecoration(
-                                                                    labelText: 'Date of Sex with Male ',
-                                                                    border: OutlineInputBorder()),
-                                                              ),
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child:  Text("Victim/ Suspected victim of sexual abuse ?"),
                                                             ),
+                                                            width: 250,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectMaleDate(context);
-                                                            })
+
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _victim,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleVictimChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _victim,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleVictimChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _victim,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleVictimChange)
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child:            Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text("Had sex with male ?"),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _sexwithmale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithMaleChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _sexwithmale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithMaleChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _sexwithmale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithMaleChange)
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child:            Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text("Had sex with female ?"),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _sexwithfemale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSExWithFemaleChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _sexwithfemale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSExWithFemaleChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _sexwithfemale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSExWithFemaleChange)
                                                       ],
                                                     ),
                                                   ),
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:              Row(
+                                                    child:            Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets.symmetric(
-                                                                  vertical: 0.0, horizontal: 30.0),
-                                                              child: TextFormField(
-                                                                controller:
-                                                                TextEditingController(text: selectedFemaleDate),
-                                                                decoration: InputDecoration(
-                                                                    labelText: 'Date of Sex with Female ',
-                                                                    border: OutlineInputBorder()),
-                                                              ),
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text("Had Unprotected sex ?"),
                                                             ),
+                                                            width: 250,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectFemaleDate(context);
-                                                            })
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            unprotectedsex,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnprotectedSExChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            unprotectedsex,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnprotectedSExChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            unprotectedsex,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnprotectedSExChange)
                                                       ],
                                                     ),
                                                   ),
-
-
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    child:            Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text("Had sex with sex worker ?"),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            sexWithSExWorker,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithSexWorker),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            sexWithSExWorker,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithSexWorker),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            sexWithSExWorker,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithSexWorker)
+                                                      ],
+                                                    ),
+                                                  ),
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
@@ -430,14 +660,11 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                         "Proceed",
                                                         style: TextStyle(color: Colors.white),
                                                       ),
-                                                      onPressed: () async {
-                                                        if(_formKey.currentState.validate()){
-                                                          _formKey.currentState.save();
-                                                          SexualHistory sexualhistory = SexualHistory(widget.personId, sexuallyactive, maledate, femaledate, numberOfSexualPartners, numberofsexualpartnersinpast12months);
-                                                          saveSexualHistory(sexualhistory);
-                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> SexualHistoryOverview(widget.person, sexualhistory, widget.htsid, widget.visitId, widget.personId, widget.htsRegistration)));
-
-                                                        }
+                                                      onPressed: () {
+                                                        CbsQuestion cbsquestion = new CbsQuestion(sexuallyactive, agewhenfirsthadsex, numberofsexualpartners, victimofsexualabuse, hadsexwithmale, hadsexwithfemale, hadunprotectedsex, hadsexwithsexworker, '', '', '', '', '', '');
+                                                        Navigator.push(context,MaterialPageRoute(
+                                                            builder: (context)=> CbsQuestions2(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId, widget.person, cbsquestion)
+                                                        ));
 
                                                       },
                                                     ),
@@ -499,33 +726,170 @@ class _CbsQuestion extends State<CbsQuestions> {
       ),
     );
   }
-  void _handleHtsChange(int value) {
-    setState(() {
-      _hts = value;
+  Widget pregnatandlactatingqstn(){
+    if(widget.person.sex ==" female" || widget.person.sex == "FEMALE" || widget.person.sex == "Female"){
+      return     Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+        child:            Row(
+          children: <Widget>[
+            Expanded(
+              child: SizedBox(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      'New test for pregnant and lactating women.'),
+                ),
+                width: 250,
+              ),
+            ),
+            Checkbox(
+              value:_newTestInPreg,
+              onChanged: (bool value) {
+                setState(() {
+                  _newTestInPreg=value;
+                });
+                if(value) {
+                  setState(() {
+                    _newTestInPreg=true;
+                  });
+                }
+              },
+            ),
+          ],
+        ),
+      );
 
-      switch (_hts) {
+    } else{
+      return  SizedBox(
+        height: 10.0,
+      );
+    }
+  }
+  void changedDropDownItemHtsModel(String value) {
+    setState(() {
+      _currentHtsModel = value;
+
+    });
+  }
+
+  void changedDropDownItemPurposeOfTest(String value) {
+    setState(() {
+      _currentPurposeOfTest = value;
+
+    });
+  }
+  void _handleVictimChange(int value) {
+    setState(() {
+      _victim = value;
+
+      switch (_victim) {
         case 1:
-          sexuallyactive = 'YES';
+          victimofsexualabuse = "YES";
           break;
         case 2:
-          sexuallyactive = 'NO';
+        victimofsexualabuse = "NO";
+        break;
+        case 3:
+          victimofsexualabuse = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleSExWithFemaleChange(int value) {
+    setState(() {
+      _sexwithfemale = value;
+
+      switch (_sexwithfemale) {
+        case 1:
+          hadsexwithfemale = "YES";
+          break;
+        case 2:
+          hadsexwithfemale = "NO";
           break;
         case 3:
-          sexuallyactive = 'REFUSE';
+          hadsexwithfemale = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleUnprotectedSExChange(int value) {
+    setState(() {
+      unprotectedsex = value;
+
+      switch (unprotectedsex) {
+        case 1:
+          hadunprotectedsex = "YES";
+          break;
+        case 2:
+          hadunprotectedsex = "NO";
+          break;
+        case 3:
+          hadunprotectedsex = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleSexWithSexWorker(int value) {
+    setState(() {
+      sexWithSExWorker = value;
+
+      switch (sexWithSExWorker) {
+        case 1:
+          hadsexwithsexworker = "YES";
+          break;
+        case 2:
+          hadsexwithsexworker = "NO";
+          break;
+        case 3:
+          hadsexwithsexworker = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleSexWithMaleChange(int value) {
+    setState(() {
+      _sexwithmale = value;
+
+      switch (_sexwithmale) {
+        case 1:
+          hadsexwithmale = "YES";
+          break;
+        case 2:
+          hadsexwithmale = "NO";
+          break;
+        case 3:
+          hadsexwithmale = "REFUSE";
+
           break;
       }
     });
   }
 
-Future<void>saveSexualHistory(SexualHistory sexualHistory) async{
-    var response ;
-    try{
-   await htsChannel.invokeMethod('saveSexualHistory', jsonEncode(sexualHistory));
 
+  void _handleSexuallyActiveChange(int value) {
+    setState(() {
+      _sexuallyActive = value;
 
-} catch(e){
-    }
-}
+      switch (_sexuallyActive) {
+        case 1:
+          sexuallyactive = "YES";
+          break;
+        case 2:
+          sexuallyactive = "NO";
+          break;
+        case 3:
+          sexuallyactive = "REFUSE";
+
+          break;
+      }
+    });
+  }
+
 
 }
 
