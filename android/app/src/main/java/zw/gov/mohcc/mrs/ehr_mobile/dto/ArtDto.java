@@ -1,14 +1,12 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
-import androidx.room.ColumnInfo;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
 public class ArtDto {
 

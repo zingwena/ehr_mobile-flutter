@@ -10,7 +10,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 
 @Dao
 public interface PersonDao {

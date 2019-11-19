@@ -1,13 +1,12 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
 import androidx.annotation.NonNull;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
 public class VitalsBaseEntityId extends BaseEntity {
 

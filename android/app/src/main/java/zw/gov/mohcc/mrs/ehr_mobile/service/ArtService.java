@@ -4,17 +4,9 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
-import java.util.List;
-import java.util.UUID;
-
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class ArtService {
@@ -38,5 +30,13 @@ public class ArtService {
         return art.getId();
     }
 
+    public Hts getLatestHivPositiveRecord(String personId) {
 
+        return null;
+    }
+
+    public String initiatePatientOnArt(String artId) {
+
+        return null;
+    }
 }

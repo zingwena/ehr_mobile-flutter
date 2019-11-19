@@ -15,13 +15,13 @@ import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.NameCode;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
@@ -182,8 +182,6 @@ public class HtsService {
         String level = getTestLevel(count);
         Log.i(TAG, "Laboratory Investigation ID : " + laboratoryInvestigationId);
         Log.i(TAG, "Retrieving test kits count is at : "+ count +" Using level : "+ level);
-        Log.i(TAG, "All laboratory investigation tests : ");
-        Log.i(TAG, ehrMobileDatabase.labInvestTestdao().findAll().toString());
         if (count == 0 || count == 1 || count == 4) {
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitsByLevel(level));
         } else if (count == 2) {
@@ -229,7 +227,6 @@ public class HtsService {
         } // coming to this point means we are now in a parallel test ignore first parallel test and jump to second parallel test
         else if(count == 3) {
             // retrieve last test before this one
-            List<LaboratoryInvestigationTest>laboratoryInvestigationTestList =  ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId());
             LaboratoryInvestigationTest lastTest =
                     ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(2);
             if (lastTest.getResult().getName().equalsIgnoreCase(test.getResult().getName())) {

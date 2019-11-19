@@ -7,42 +7,44 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.TypeOfContactConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Relationship;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
-import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResult;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
-import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResult;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.PatientPhoneNumber;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistory;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
@@ -80,6 +82,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PurposeOfTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReasonForNotIssuingResultDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.RelationshipDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ReligionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SampleDao;
@@ -95,15 +98,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.RespiratoryRateDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.TemperatureDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.VisitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
-import zw.gov.mohcc.mrs.ehr_mobile.util.ActivityStatusConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.CoupleCounsellingConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.HtsApproachConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.HtsTypeConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.NewTestConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.PrepOptionConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.RelationshipTypeConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.ActivityStatusConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.CoupleCounsellingConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsApproachConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.NewTestConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.PrepOptionConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.RelationshipTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.TestForPregnantLactatingMotherConverter;
 
 
 /**
@@ -123,11 +126,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.TestForPregnantLactatingMotherConverter;
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
-        IndexTest.class, IndexContact.class}, version = 4, exportSchema = false)
+        IndexTest.class, IndexContact.class, Relationship.class}, version = 5, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
-        HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class})
+        HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
+        TypeOfContactConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -235,4 +239,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract IndexTestDao indexTestDao();
 
     public abstract IndexContactDao indexContactDao();
+
+    public abstract RelationshipDao relationshipDao();
 }

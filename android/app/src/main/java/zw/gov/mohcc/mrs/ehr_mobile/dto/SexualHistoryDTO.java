@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.SexualHistory;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistory;
 
 public class SexualHistoryDTO {
 

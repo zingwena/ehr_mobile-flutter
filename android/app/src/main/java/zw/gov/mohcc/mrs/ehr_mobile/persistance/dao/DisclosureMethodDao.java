@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 
 @Dao
 public interface DisclosureMethodDao {

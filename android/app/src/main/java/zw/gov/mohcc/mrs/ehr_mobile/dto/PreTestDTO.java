@@ -2,10 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.room.TypeConverters;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsApproach;
-import zw.gov.mohcc.mrs.ehr_mobile.model.NewTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.TestForPregnantLactatingMother;
-import zw.gov.mohcc.mrs.ehr_mobile.util.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
 
 public class PreTestDTO {
 
