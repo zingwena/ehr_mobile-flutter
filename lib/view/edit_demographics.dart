@@ -603,28 +603,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           setState(() {
                                                             _formValid = true;
                                                           });
-                                                          /*   if (countryIsValid && maritalStatusIsValid && educationLevelIsValid
-                            && religionIsValid && selfIdentifiedGenderIsValid
-                            && nationalityIsValid && occupationIsValid ) {
-                          print('ALL FIELDS ARE VALID');
-                          setState(() {
-                            _formValid = true;
-                          });
-                        }
-                        else{
-                          print('9999999999999999999999999999999999999999999999999999 country $countryIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 marital $maritalStatusIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 education $educationLevelIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 religious $religionIsValid');
-                          print('9999999999999999999999999999999999999999999999999999  gender $selfIdentifiedGenderIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 nationality $nationalityIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 occupation $occupationIsValid');
 
-
-                          setState(() {
-                            showError= true;
-                          });
-                        }*/
 
                                                           if (_formValid) {
                                                             _formKey.currentState.save();

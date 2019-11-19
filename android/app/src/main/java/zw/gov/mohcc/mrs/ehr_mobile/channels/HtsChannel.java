@@ -75,7 +75,6 @@ public class HtsChannel {
 
                             try {
                                 Hts hts = htsService.getCurrentHts(arguments);
-                                System.out.println(">>>>>>>>>>>>>>>> current HTS >>>>>>>>>" + hts.toString());
                                 String htsjson = gson.toJson(hts);
                                 result.success(htsjson);
                             } catch (Exception e) {

@@ -167,13 +167,10 @@ class _CbsOverview extends State<CbsOverview> {
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
               if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(visitId, _patient.id, _patient)
                 ));
               } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
                 ));
