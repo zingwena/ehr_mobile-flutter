@@ -37,6 +37,9 @@ public class Relationship extends BaseEntity {
     @TypeConverters(TypeOfContactConverter.class)
     private TypeOfContact typeOfContact;
 
+    public Relationship() {
+    }
+
     @Ignore
     public Relationship(@NonNull String id, @NonNull String personId, @NonNull String memberId, @NonNull RelationshipType relation, TypeOfContact typeOfContact) {
         super(id);
