@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
 
 @Dao
 public interface NationalityDao {

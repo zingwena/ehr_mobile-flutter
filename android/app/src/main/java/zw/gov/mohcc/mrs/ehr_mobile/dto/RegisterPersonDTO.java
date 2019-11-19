@@ -1,6 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 
 public class RegisterPersonDTO {
 

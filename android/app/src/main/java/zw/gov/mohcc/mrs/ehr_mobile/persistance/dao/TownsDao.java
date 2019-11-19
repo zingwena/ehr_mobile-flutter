@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 
 @Dao
 public interface TownsDao {

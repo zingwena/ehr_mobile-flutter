@@ -5,9 +5,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
-import java.util.Set;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 
 @Dao
 public interface ResultDao {

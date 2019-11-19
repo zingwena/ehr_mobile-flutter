@@ -5,9 +5,9 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.RelationshipType;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.RelationshipTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RelationshipType;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.RelationshipTypeConverter;
 
 public class IndexContactDto {
     private String id;

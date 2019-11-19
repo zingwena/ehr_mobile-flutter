@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 
 @Dao
 public interface InvestigationDao {

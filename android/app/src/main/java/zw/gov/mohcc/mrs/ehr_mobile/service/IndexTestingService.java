@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexTest;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class IndexTestingService {

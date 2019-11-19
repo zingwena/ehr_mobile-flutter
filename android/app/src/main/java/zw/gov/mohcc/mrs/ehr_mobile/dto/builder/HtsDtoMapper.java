@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.sync.adapter.dto.HtsDto;
 
 /**

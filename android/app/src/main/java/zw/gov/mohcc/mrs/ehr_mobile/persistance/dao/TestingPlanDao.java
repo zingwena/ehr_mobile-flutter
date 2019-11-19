@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
 
 @Dao
 public interface TestingPlanDao {

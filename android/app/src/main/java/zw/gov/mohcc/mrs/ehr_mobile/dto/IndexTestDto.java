@@ -4,8 +4,7 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
 public class IndexTestDto {
 

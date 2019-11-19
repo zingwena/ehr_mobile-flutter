@@ -4,14 +4,11 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.RawQuery;
 import androidx.room.Update;
-import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 
 @Dao
 public interface HtsScreeningDao {

@@ -14,28 +14,26 @@ import java.util.Map;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
-import zw.gov.mohcc.mrs.ehr_mobile.MainActivity;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.IndexContactDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexContact;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigationTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
@@ -238,7 +236,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getLabInvestigations")) {
                             try {
-
+                                Log.d(TAG, "Calling laboratory investigations with : &&&&&&&&&&&&&&&& : " + arguments);
                                 List<LaboratoryInvestigationTest> laboratoryInvestigationTests = ehrMobileDatabase.labInvestTestdao().findAllByVisitId(arguments);
                                 String list = gson.toJson(laboratoryInvestigationTests);
                                 System.out.println(" SIZE OF LAB INVEST TEST LIST :::::::::::::::::::" + laboratoryInvestigationTests.size());

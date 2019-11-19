@@ -2,32 +2,30 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtReason;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArvCombinationRegimen;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Country;
-import zw.gov.mohcc.mrs.ehr_mobile.model.DisclosureMethod;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EducationLevel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Facility;
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Investigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationResult;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.MaritalStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Nationality;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Occupation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PurposeOfTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ReasonForNotIssuingResult;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Religion;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Sample;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TestingPlan;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResult;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class TerminologyService {

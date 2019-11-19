@@ -16,12 +16,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
-import zw.gov.mohcc.mrs.ehr_mobile.model.InvestigationEhr;
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Person;
-import zw.gov.mohcc.mrs.ehr_mobile.model.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;

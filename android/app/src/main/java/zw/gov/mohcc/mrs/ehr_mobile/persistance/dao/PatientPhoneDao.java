@@ -7,8 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.PatientPhoneNumber;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Result;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.PatientPhoneNumber;
 
 @Dao
 public interface PatientPhoneDao {

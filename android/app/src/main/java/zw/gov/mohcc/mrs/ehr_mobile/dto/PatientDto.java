@@ -2,8 +2,8 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Gender;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 
 public class PatientDto {
 

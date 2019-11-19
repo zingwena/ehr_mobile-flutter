@@ -6,8 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.EntryPoint;
-import zw.gov.mohcc.mrs.ehr_mobile.model.IndexTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexTest;
 
 
 @Dao
