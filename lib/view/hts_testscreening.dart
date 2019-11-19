@@ -637,30 +637,28 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                 if (_formKey.currentState
                                                     .validate()) {
                                                   _formKey.currentState.save();
-                                                  if (_formIsValid) {
-                                                    print('FFFFFFFFFFFFFFFFFFFFFFFFFFF TESTKIT OBJECT HERE'+ testKitobj.toString());
-                                                    LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
-                                                        widget.visitId,
-                                                        labInvestId,
-                                                        null, null,
-                                                        result, widget.visitId, testKitobj, null, null);
+                                                  LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
+                                                      widget.visitId,
+                                                      labInvestId,
+                                                      null, null,
+                                                      result, widget.visitId, testKitobj, null, null);
 
+                                                  saveLabInvestigationTest(
+                                                      labInvestTest);
 
-                                                    saveLabInvestigationTest(
-                                                        labInvestTest);
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                          builder: (
+                                                              context) =>
+                                                              Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)
+                                                      ));
+                                              /*    if (_formIsValid) {
 
-
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (
-                                                                context) =>
-                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)
-                                                        ));
                                                   } else {
                                                     setState(() {
                                                       _showError = true;
                                                     });
-                                                  }
+                                                  }*/
                                                 }
                                               }
 
