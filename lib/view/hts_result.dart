@@ -460,18 +460,8 @@ class _Hts_Result  extends State<Hts_Result > {
 
                                                             }else{
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId)));
-
-
                                                             }
                                                           }
-/*
-                                                        onPressed: () =>
-                                                            Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  Hts_Result()),),*/
-
                                                       ),
                                                     ),
                                                   ],
