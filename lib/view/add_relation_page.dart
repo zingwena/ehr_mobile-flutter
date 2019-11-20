@@ -30,7 +30,7 @@ class AddRelationshipPage extends StatefulWidget {
   Person person_relative;
   HtsRegistration htsRegistration;
   String htsId;
-  AddRelationshipPage(this.person_patient, this.visitId, this.patientId, this.person_relative, this.htsId);
+  AddRelationshipPage(this.person_patient, this.visitId, this.patientId, this.person_relative, this.htsId, this.htsRegistration);
 
   @override
   State createState() {

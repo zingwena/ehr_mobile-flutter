@@ -1,19 +1,24 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/edit_demographics_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'edit_demographics_relation.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 
 import 'edit_demographics.dart';
 
 class AddPatientRelation extends StatefulWidget {
-  String personId;
-  String indexTestId;
-  AddPatientRelation(this.personId);
+  String patient_personId;
+  String visitId;
+  String htsId;
+  HtsRegistration htsRegistration;
+  Person person;
+  AddPatientRelation(this.patient_personId, this.visitId, this.htsId, this.htsRegistration, this.person);
   @override
   State createState() {
     return _AddPatient();
@@ -412,8 +417,6 @@ class _AddPatient extends State<AddPatientRelation> {
                                                               .currentState
                                                               .save();
 
-//                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
-//                           await registerPatient(patient);
                                                           setState(() {
                                                             nationalIdNumber =
                                                                 nationalId.replaceAll(
@@ -421,6 +424,7 @@ class _AddPatient extends State<AddPatientRelation> {
                                                                         r'[^\w\s]+'),
                                                                     '');
                                                           });
+
                                                           RegExp regex =
                                                           new RegExp(
                                                               r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
@@ -429,12 +433,13 @@ class _AddPatient extends State<AddPatientRelation> {
                                                             Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (context) => EditDemographicsIndex(
+                                                                    builder: (context) => EditDemographicsRelation(
                                                                         lastName,
                                                                         firstName,
                                                                         birthDate,
                                                                         gender,
-                                                                        nationalId, widget.indexTestId, widget.personId)));
+                                                                        nationalId, widget.patient_personId, widget.person, widget.visitId,
+                                                                    widget.htsId, widget.htsRegistration)));
                                                           } else {
                                                             showError = true;
                                                           }

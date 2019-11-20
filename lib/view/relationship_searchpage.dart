@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/add_patient_index.dart';
+import 'package:ehr_mobile/view/add_patient_relation.dart';
 import 'package:ehr_mobile/view/add_relation_page.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
 
@@ -278,7 +279,7 @@ class _RelationSearchState extends State<RelationshipSearch> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddRelationshipPage(widget._currentperson, widget.visitId, widget.personId, patient, widget.htsId)));
+                            builder: (context) => AddRelationshipPage(widget._currentperson, widget.visitId, widget.personId, patient, widget.htsId, widget.htsRegistration)));
                   },
                 );
               }).toList(),
@@ -311,10 +312,11 @@ class _RelationSearchState extends State<RelationshipSearch> {
               style: BorderStyle.solid, //Style of the border
               width: 3.0, //width of the border
             ),
-            /*onPressed: () => Navigator.push(
+            onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddPatientIndex(widget.indexTestId, widget.personId)),
-            ),*/
+              MaterialPageRoute(builder: (context) => AddPatientRelation(widget.personId, widget.visitId, widget.htsId, widget.htsRegistration, widget._currentperson)),
+            ),
+
           )
               :   SizedBox( ),
 
