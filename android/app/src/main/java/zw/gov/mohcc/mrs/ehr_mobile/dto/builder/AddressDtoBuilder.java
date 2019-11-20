@@ -1,6 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto.builder;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Address;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
 import zw.gov.mohcc.mrs.sync.adapter.dto.AddressDto;
 
 public class AddressDtoBuilder {

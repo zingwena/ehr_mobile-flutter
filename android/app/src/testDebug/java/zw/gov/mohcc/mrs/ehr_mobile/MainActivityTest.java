@@ -10,9 +10,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
-import zw.gov.mohcc.mrs.ehr_mobile.util.LoginValidator;
-
-import static org.junit.Assert.*;
 
 public class MainActivityTest {
 

@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Town;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 
 @Dao
 public interface TownsDao {
@@ -15,7 +15,7 @@ public interface TownsDao {
     @Insert
     void createTowns(List<Town> towns);
 
-    @Query("SELECT * FROM town")
+    @Query("SELECT * FROM town order by name asc")
     List<Town> getAllTowns();
 
     @Query("DELETE FROM town")

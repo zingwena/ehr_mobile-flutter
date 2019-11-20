@@ -25,12 +25,12 @@ import 'rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
 class Hts_Result extends StatefulWidget {
-  String visitId;
-  String patientId;
-  String labInvetsTestId;
-  String labInvestId;
-  Person person;
-  String htsId;
+  final String visitId;
+  final  String patientId;
+  final  String labInvetsTestId;
+  final String labInvestId;
+  final Person person;
+  final  String htsId;
 
   Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId);
 
@@ -79,26 +79,26 @@ class _Hts_Result  extends State<Hts_Result > {
 
   @override
   void initState() {
+    print("FFFFFFFFFFFFFFFFFFFFFFFF HERE IS THE RESULT PAGE");
     _visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
     labInvetsTestId = widget.labInvetsTestId;
     getFinalResult(widget.labInvestId);
-    getFacilities();
+    getLabInvestigationTests();
    // getLabInvestigationTests();
     getTestKIt(widget.labInvetsTestId);
-    getStartTime(widget.labInvetsTestId);
+    //getStartTime(widget.labInvetsTestId);
     getHtsRecord(widget.patientId);
     getTestName();
     //getEndTime(widget.labInvetsTestId);
-
-
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     super.initState();
   }
 
-  Future<void> getFacilities() async {
+  Future<void> getLabInvestigationTests() async {
+    print("KKKKKKKKKKKKKKKKKKKKKKKK getLabInvestigationTests ");
     String response;
     try {
       response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
@@ -117,10 +117,9 @@ class _Hts_Result  extends State<Hts_Result > {
       print('--------------------Something went wrong  $e');
     }
   }
-  Future<dynamic>getTestName()async{
+  Future<void>getTestName()async{
     try{
       String response = await htsChannel.invokeMethod('getTestName', widget.labInvestId);
-      print('');
       setState(() {
         test_name = response;
 
@@ -149,15 +148,14 @@ class _Hts_Result  extends State<Hts_Result > {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-
-    });
-
 
   }
   void _handleHtsTypeChange(int value) {
@@ -443,10 +441,6 @@ class _Hts_Result  extends State<Hts_Result > {
                                                         ],
                                                       ),
                                                     ),
-
-
-
-
                                                     SizedBox(
                                                       height: 30.0,
                                                     ),
@@ -517,10 +511,6 @@ class _Hts_Result  extends State<Hts_Result > {
           ),
           new RoundedButton(
             text: "HTS Pre-Testing",
-        /*    onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
-            ),*/
           ),
           new RoundedButton(text: "Hts Result", selected: true,
           ),
@@ -557,78 +547,51 @@ class _Hts_Result  extends State<Hts_Result > {
       itemCount: _entryPointList.length,
     );
   }
-  Future<void> registration(HtsRegistration htsRegistration) async {
-    String id;
-    try {
-      id = await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
-      hts_id = id;
 
-      String patientid = patientId.toString();
-      DateTime date = htsRegistration.dateOfHivTest;
-      PersonInvestigation personInvestigation = new PersonInvestigation(
-          patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-      await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
-
-    } catch (e) {
-      print('--------------something went wrong  $e');
-    }
-  }
   Future<void> getTestKIt(labInvestId) async {
     String testkitId;
     try {
       testkitId = await htsChannel.invokeMethod('getTestKit',labInvestId);
+      setState(() {
+        testkit = testkitId;
+      });
     } catch (e) {
       print('--------------something went wrong  $e');
     }
-    setState(() {
-      testkit = testkitId;
-    });
+
   }
   Future<void> getFinalResult(labInvestId) async {
     String response;
     try {
       response = await htsChannel.invokeMethod('getFinalResult',labInvestId);
+      setState(() {
+        if(response == null){
+          final_result = '';
+        } else{
+
+          final_result = response;
+
+        }
+      });
 
     } catch (e) {
       print('--------------something went wrong  $e');
     }
-    setState(() {
-      if(response == null){
-        final_result = '';
-      } else{
 
-        final_result = response;
-
-      }
-    });
   }
   Future<void> getStartTime(labInvestId) async {
     String starttime;
     try {
       starttime = await htsChannel.invokeMethod('getStartTime',labInvestId);
+      setState(() {
+        startTime = starttime;
+      });
     } catch (e) {
       print('--------------something went wrong  $e');
     }
-    setState(() {
-      startTime = starttime;
-    });
-  }
-  Future<void> getEndTime(labInvestId) async {
-    String endtime;
-    try {
-      endtime = await htsChannel.invokeMethod('getStartTime',labInvestId);
-    } catch (e) {
-      print('--------------------Something went wrong  $e');
-    }
+
   }
 
-  void changedDropDownItemEntryPoint(String selectedEntryPoint) {
-    setState(() {
-      _currentEntryPoint = selectedEntryPoint;
-      _entryPointError = null;
-      _entryPointIsValid = !_entryPointIsValid;
-    });
-  }
 }
 
 

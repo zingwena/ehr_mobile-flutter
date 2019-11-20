@@ -56,36 +56,26 @@ class _CbsQuestion extends State<CbsQuestions2> {
   String _newTest = " " ;
   String _htsApproach="" ;
   HtsRegistration htsRegistration;
-  bool _newTestInPreg = false;
 
-  bool _exchangedsexformoney = false;
+  int _exchangedsexformoney = 0;
+  int _injecteddrugs = 0;
+  int  incarcetadintojail = 0;
+  int historyofsti = 0;
+  int medicaltrans = 0;
+  int _medicalinjections = 0;
+  int unsterilisedInstru = 0 ;
   String exchangedsexformoney = "";
   String agewhenfirsthadsex;
   String numberofsexualpartners;
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
 
-  int _patientPretest = 0;
-  //int _optOutTest = 0;
   PreTest patient_preTest;
-
-
-  bool _injectedrecreationaldrugs=false ;
   String injectedrecreationaldrugs = "NO";
-
-  bool _beenincarcetadintojail=false ;
   String beenincarcetadintojail = "NO";
-
-  bool _historyofSTI=false ;
   String historyofSTI = "NO";
-
-  bool _medicalinjections=false ;
   String  medicalinjections= "NO";
-
-  bool _receivedbloodtransfusion=false ;
   String receivedbloodtransfusion = "NO";
-
-  bool _unsterilisedinstruments=false ;
   String unsterilisedinstruments = "NO";
 
 
@@ -308,19 +298,33 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                           ),
                                                         ),
 
-                                                        Checkbox(
-                                                          value:_exchangedsexformoney,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _exchangedsexformoney=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _exchangedsexformoney=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _exchangedsexformoney,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleEXchangedSExForMoney),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _exchangedsexformoney,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleEXchangedSExForMoney),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _exchangedsexformoney,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleEXchangedSExForMoney)
                                                       ],
                                                     ),
                                                   ),
@@ -339,19 +343,33 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                           ),
                                                         ),
 
-                                                        Checkbox(
-                                                          value:_injectedrecreationaldrugs,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _injectedrecreationaldrugs=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _injectedrecreationaldrugs = true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _injecteddrugs,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleInjectedDrugsChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _injecteddrugs,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleInjectedDrugsChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _injecteddrugs,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleInjectedDrugsChange)
                                                       ],
                                                     ),
                                                   ),
@@ -370,19 +388,33 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_beenincarcetadintojail,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _beenincarcetadintojail=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _beenincarcetadintojail=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            incarcetadintojail,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleBeenIncanedtIntoJail),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            incarcetadintojail,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleBeenIncanedtIntoJail),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            incarcetadintojail,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleBeenIncanedtIntoJail)
                                                       ],
                                                     ),
                                                   ),
@@ -401,19 +433,33 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_historyofSTI,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _historyofSTI=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _historyofSTI=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            historyofsti,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleStiHistory),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            historyofsti,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleStiHistory),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            historyofsti,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleStiHistory)
                                                       ],
                                                     ),
                                                   ),
@@ -426,24 +472,38 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Received medical injections"),
+                                                              child: Text("Received blood transfusions"),
                                                             ),
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_medicalinjections,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _medicalinjections=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _medicalinjections=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            medicaltrans,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleMedicalTrans),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            medicaltrans,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleMedicalTrans),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            medicaltrans,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleMedicalTrans)
                                                       ],
                                                     ),
                                                   ),
@@ -456,24 +516,38 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding: const EdgeInsets.all(8.0),
-                                                              child: Text("Received blood transfusions ?"),
+                                                              child: Text("Received medical  injections ?"),
                                                             ),
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_receivedbloodtransfusion,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _receivedbloodtransfusion=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _receivedbloodtransfusion=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _medicalinjections,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleMedicalInjections),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _medicalinjections,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleMedicalInjections),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _medicalinjections,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleMedicalInjections)
                                                       ],
                                                     ),
                                                   ),
@@ -491,19 +565,33 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_unsterilisedinstruments,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _unsterilisedinstruments=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _unsterilisedinstruments=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            unsterilisedInstru,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnsterilisedINstru),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            unsterilisedInstru,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnsterilisedINstru),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            unsterilisedInstru,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnsterilisedINstru)
                                                       ],
                                                     ),
                                                   ),
@@ -524,12 +612,12 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                         style: TextStyle(color: Colors.white),
                                                       ),
                                                       onPressed: () {
-                                                       /* CbsQuestion cbsquestion = new CbsQuestion(widget.cbsQuestion.sexuallyactive, widget.cbsQuestion.age_whenclienthadfirstsexualintercourse, widget.cbsQuestion.numberofsexualpartners, widget.cbsQuestion.victimofsexualabuse, widget.cbsQuestion.hadsexwithmale, widget.cbsQuestion.hadsexwithfemale, widget.cbsQuestion.unprotectedsex,
-                                                            widget.cbsQuestion.hadsexwithsexworker, widget.cbsQuestion.exchangedsexformoney, _injectedrecreationaldrugs, _beenincarcetadintojail, _historyofSTI, _receivedbloodtransfusion, _unsterilisedinstruments);*/
-                                                      /*  Navigator.push(context,MaterialPageRoute(
+                                                        CbsQuestion cbsquestion = new CbsQuestion(widget.cbsQuestion.sexuallyactive, widget.cbsQuestion.age_whenclienthadfirstsexualintercourse, widget.cbsQuestion.numberofsexualpartners, widget.cbsQuestion.victimofsexualabuse, widget.cbsQuestion.hadsexwithmale, widget.cbsQuestion.hadsexwithfemale, widget.cbsQuestion.unprotectedsex,
+                                                            widget.cbsQuestion.hadsexwithsexworker, widget.cbsQuestion.exchangedsexformoney, injectedrecreationaldrugs, beenincarcetadintojail, historyofSTI, receivedbloodtransfusion, unsterilisedinstruments);
+                                                        Navigator.push(context,MaterialPageRoute(
                                                             builder: (context)=> CbsOverview(widget.person, cbsquestion, widget.htsid, widget.visitId, widget.personId)
 
-                                                        ));*/
+                                                        ));
 
 
                                                       },
@@ -592,45 +680,134 @@ class _CbsQuestion extends State<CbsQuestions2> {
       ),
     );
   }
-  Widget pregnatandlactatingqstn(){
-    if(widget.person.sex ==" female" || widget.person.sex == "FEMALE" || widget.person.sex == "Female"){
-      return     Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-        child:            Row(
-          children: <Widget>[
-            Expanded(
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                      'New test for pregnant and lactating women.'),
-                ),
-                width: 250,
-              ),
-            ),
-            Checkbox(
-              value:_newTestInPreg,
-              onChanged: (bool value) {
-                setState(() {
-                  _newTestInPreg=value;
-                });
-                if(value) {
-                  setState(() {
-                    _newTestInPreg=true;
-                  });
-                }
-              },
-            ),
-          ],
-        ),
-      );
 
-    } else{
-      return  SizedBox(
-        height: 10.0,
-      );
-    }
+
+  void _handleEXchangedSExForMoney(int value) {
+    setState(() {
+      _exchangedsexformoney = value;
+
+      switch (_exchangedsexformoney) {
+        case 1:
+          exchangedsexformoney = "YES";
+          break;
+        case 2:
+          exchangedsexformoney = "NO";
+          break;
+        case 3:
+          exchangedsexformoney = "REFUSE";
+
+          break;
+      }
+    });
+  }
+
+  void _handleInjectedDrugsChange(int value) {
+    setState(() {
+      _injecteddrugs = value;
+
+      switch (_injecteddrugs) {
+        case 1:
+          injectedrecreationaldrugs = "YES";
+          break;
+        case 2:
+          injectedrecreationaldrugs = "NO";
+          break;
+        case 3:
+          injectedrecreationaldrugs = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleBeenIncanedtIntoJail(int value) {
+    setState(() {
+      incarcetadintojail = value;
+
+      switch (incarcetadintojail) {
+        case 1:
+          beenincarcetadintojail = "YES";
+          break;
+        case 2:
+          beenincarcetadintojail = "NO";
+          break;
+        case 3:
+          beenincarcetadintojail = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleStiHistory(int value) {
+    setState(() {
+      historyofsti = value;
+
+      switch (historyofsti) {
+        case 1:
+          historyofSTI = "YES";
+          break;
+        case 2:
+          historyofSTI = "NO";
+          break;
+        case 3:
+          historyofSTI = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleMedicalTrans(int value) {
+    setState(() {
+      medicaltrans = value;
+
+      switch (medicaltrans) {
+        case 1:
+          receivedbloodtransfusion = "YES";
+          break;
+        case 2:
+          receivedbloodtransfusion = "NO";
+          break;
+        case 3:
+          receivedbloodtransfusion = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleMedicalInjections(int value) {
+    setState(() {
+      _medicalinjections = value;
+
+      switch (_medicalinjections) {
+        case 1:
+          medicalinjections = "YES";
+          break;
+        case 2:
+          medicalinjections = "NO";
+          break;
+        case 3:
+          medicalinjections = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleUnsterilisedINstru(int value) {
+    setState(() {
+      unsterilisedInstru = value;
+
+      switch (unsterilisedInstru) {
+        case 1:
+          unsterilisedinstruments = "YES";
+          break;
+        case 2:
+          unsterilisedinstruments = "NO";
+          break;
+        case 3:
+          unsterilisedinstruments = "REFUSE";
+
+          break;
+      }
+    });
   }
 
 }

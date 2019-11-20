@@ -4,10 +4,9 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsScreening;
-import zw.gov.mohcc.mrs.ehr_mobile.model.ActivityStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.PrepOption;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 
 public class HtsScreeningDTO {
 

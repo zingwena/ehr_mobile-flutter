@@ -51,29 +51,25 @@ class _CbsQuestion extends State<CbsQuestions> {
   List<HtsModel> _htsModelList=List();
   List<PurposeOfTest> _purposeOfTestList= List();
 
-  int _hts = 0;
-  // String _coupleCounselling="" ;
-  String _newTest = " " ;
-  String _htsApproach="" ;
   HtsRegistration htsRegistration;
   bool _newTestInPreg = false;
 
-  bool _sexuallyactive = false;
+  int _victim = 0;
+  int _sexuallyActive =0;
+  int _sexwithmale = 0;
+  int _sexwithfemale = 0;
+  int unprotectedsex = 0;
+  int sexWithSExWorker = 0;
   String sexuallyactive = "";
   String agewhenfirsthadsex;
   String numberofsexualpartners;
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
 
-  int _patientPretest = 0;
+
   //int _optOutTest = 0;
   PreTest patient_preTest;
-
-
-  bool _victimofsexualabuse=false ;
   String victimofsexualabuse = "NO";
-
-  bool _hadsexwithmale=false ;
   String hadsexwithmale = "NO";
 
   bool _hadsexwithfemale=false ;
@@ -311,19 +307,33 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                           ),
                                                         ),
 
-                                                        Checkbox(
-                                                          value:_sexuallyactive,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _sexuallyactive=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _sexuallyactive=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _sexuallyActive,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexuallyActiveChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _sexuallyActive,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexuallyActiveChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _sexuallyActive,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexuallyActiveChange)
                                                       ],
                                                     ),
                                                   ),
@@ -426,19 +436,33 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                           ),
                                                         ),
 
-                                                        Checkbox(
-                                                          value:_victimofsexualabuse,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _victimofsexualabuse=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _victimofsexualabuse = true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _victim,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleVictimChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _victim,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleVictimChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _victim,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleVictimChange)
                                                       ],
                                                     ),
                                                   ),
@@ -457,19 +481,33 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_hadsexwithmale,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithmale=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithmale=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _sexwithmale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithMaleChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _sexwithmale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithMaleChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _sexwithmale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithMaleChange)
                                                       ],
                                                     ),
                                                   ),
@@ -488,19 +526,33 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_hadsexwithfemale,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithfemale=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithfemale=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _sexwithfemale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSExWithFemaleChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            _sexwithfemale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSExWithFemaleChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            _sexwithfemale,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSExWithFemaleChange)
                                                       ],
                                                     ),
                                                   ),
@@ -518,19 +570,33 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_hadunprotectedsex,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadunprotectedsex=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadunprotectedsex=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            unprotectedsex,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnprotectedSExChange),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            unprotectedsex,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnprotectedSExChange),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            unprotectedsex,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleUnprotectedSExChange)
                                                       ],
                                                     ),
                                                   ),
@@ -548,19 +614,33 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             width: 250,
                                                           ),
                                                         ),
-                                                        Checkbox(
-                                                          value:_hadsexwithsexworker,
-                                                          onChanged: (bool value) {
-                                                            setState(() {
-                                                              _hadsexwithsexworker=value;
-                                                            });
-                                                            if(value) {
-                                                              setState(() {
-                                                                _hadsexwithsexworker=true;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
+                                                        Text('YES'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            sexWithSExWorker,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithSexWorker),
+                                                        Text('NO'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue:
+                                                            sexWithSExWorker,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithSexWorker),
+                                                        Text('REFUSE'),
+                                                        Radio(
+                                                            value: 3,
+                                                            groupValue:
+                                                            sexWithSExWorker,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleSexWithSexWorker)
                                                       ],
                                                     ),
                                                   ),
@@ -699,6 +779,117 @@ class _CbsQuestion extends State<CbsQuestions> {
 
     });
   }
+  void _handleVictimChange(int value) {
+    setState(() {
+      _victim = value;
+
+      switch (_victim) {
+        case 1:
+          victimofsexualabuse = "YES";
+          break;
+        case 2:
+        victimofsexualabuse = "NO";
+        break;
+        case 3:
+          victimofsexualabuse = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleSExWithFemaleChange(int value) {
+    setState(() {
+      _sexwithfemale = value;
+
+      switch (_sexwithfemale) {
+        case 1:
+          hadsexwithfemale = "YES";
+          break;
+        case 2:
+          hadsexwithfemale = "NO";
+          break;
+        case 3:
+          hadsexwithfemale = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleUnprotectedSExChange(int value) {
+    setState(() {
+      unprotectedsex = value;
+
+      switch (unprotectedsex) {
+        case 1:
+          hadunprotectedsex = "YES";
+          break;
+        case 2:
+          hadunprotectedsex = "NO";
+          break;
+        case 3:
+          hadunprotectedsex = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleSexWithSexWorker(int value) {
+    setState(() {
+      sexWithSExWorker = value;
+
+      switch (sexWithSExWorker) {
+        case 1:
+          hadsexwithsexworker = "YES";
+          break;
+        case 2:
+          hadsexwithsexworker = "NO";
+          break;
+        case 3:
+          hadsexwithsexworker = "REFUSE";
+
+          break;
+      }
+    });
+  }
+  void _handleSexWithMaleChange(int value) {
+    setState(() {
+      _sexwithmale = value;
+
+      switch (_sexwithmale) {
+        case 1:
+          hadsexwithmale = "YES";
+          break;
+        case 2:
+          hadsexwithmale = "NO";
+          break;
+        case 3:
+          hadsexwithmale = "REFUSE";
+
+          break;
+      }
+    });
+  }
+
+
+  void _handleSexuallyActiveChange(int value) {
+    setState(() {
+      _sexuallyActive = value;
+
+      switch (_sexuallyActive) {
+        case 1:
+          sexuallyactive = "YES";
+          break;
+        case 2:
+          sexuallyactive = "NO";
+          break;
+        case 3:
+          sexuallyactive = "REFUSE";
+
+          break;
+      }
+    });
+  }
+
 
 }
 

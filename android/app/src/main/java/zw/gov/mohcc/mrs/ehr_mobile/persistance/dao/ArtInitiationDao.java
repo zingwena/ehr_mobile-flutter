@@ -10,7 +10,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
 
 
 

@@ -8,7 +8,7 @@ import androidx.room.Update;
 import java.util.List;
 import java.util.Set;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 
 
 @Dao

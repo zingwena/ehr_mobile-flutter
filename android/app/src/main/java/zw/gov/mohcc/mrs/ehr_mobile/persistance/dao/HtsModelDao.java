@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 
 
 @Dao

@@ -5,8 +5,8 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class HtsRegDTO {

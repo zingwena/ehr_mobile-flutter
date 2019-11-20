@@ -8,7 +8,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.LaboratoryInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 
 @Dao
 public interface LaboratoryInvestigationDao {

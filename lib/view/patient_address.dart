@@ -136,6 +136,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                   vertical: 16.0,
                                                                   horizontal: 60.0),
                                                               child: TextFormField(
+                                                                keyboardType: TextInputType.number,
                                                                 validator: (value) {
                                                                   return value.isEmpty ? 'Enter some text' : null; },
                                                                 onSaved: (value) => setState(() {
@@ -159,15 +160,14 @@ class _PatientAddressState extends State<PatientAddress> {
                                                               padding: EdgeInsets.symmetric(
                                                                   vertical: 16.0, horizontal: 60.0),
                                                               child: TextFormField(
-                                                                validator: (value) {
-                                                                  return value.isEmpty ? 'Enter some text' : null;
-                                                                },
+                                                                keyboardType: TextInputType.number,
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_2 = value;
                                                                 }),
                                                                 decoration: InputDecoration(
                                                                     labelText: 'Phone No 2.',
                                                                     border: OutlineInputBorder()),
+
                                                               ),
                                                             ),
                                                             width: 100,

@@ -9,10 +9,7 @@ import androidx.room.Update;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
-import java.util.stream.Stream;
-
-import zw.gov.mohcc.mrs.ehr_mobile.model.Hts;
-import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 
 @Dao
 public interface HtsDao {
@@ -56,7 +53,4 @@ public interface HtsDao {
 
     @Query("SELECT * FROM Hts Where laboratoryInvestigationId=:laboratoryInvestigationId")
     Hts findByLaboratoryInvestigationId(String laboratoryInvestigationId);
-
-    @Query("SELECT * FROM Hts WHERE personId=:personId AND status=:recordStatus")
-    List<Hts> findHtsByPersonAndStatus(String personId,int recordStatus);
 }
