@@ -24,10 +24,10 @@ class RelationshipSearch extends StatefulWidget {
   HtsRegistration htsRegistration;
   String personId;
   RelationshipSearch(this._currentperson, this.visitId, this.personId, this.htsRegistration, this.htsId);
-  _SearchPatientState createState() => _SearchPatientState();
+  _RelationSearchState createState() => _RelationSearchState();
 }
 
-class _SearchPatientState extends State<RelationshipSearch> {
+class _RelationSearchState extends State<RelationshipSearch> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
   String searchItem;
   final _searchFormKey = GlobalKey<FormState>();
@@ -129,7 +129,7 @@ class _SearchPatientState extends State<RelationshipSearch> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Search Index Contact",
+                          "Search Relations Contact",
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               color: Colors.white,

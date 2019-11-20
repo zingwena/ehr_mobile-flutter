@@ -293,187 +293,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                             mainAxisSize: MainAxisSize.max,
                                                             mainAxisAlignment: MainAxisAlignment.start,
                                                             children: <Widget>[                                                             // three line description
-
-                                                           /*   Divider(
-                                                                height: 10.0,
-                                                                color: Colors.blue.shade500,
-                                                              ),*/
                                                             getContactList(),
-                                                            /*  Row(
-                                                                mainAxisSize: MainAxisSize.max,
-                                                                mainAxisAlignment:
-                                                                MainAxisAlignment.spaceBetween,
-                                                                children: <Widget>[
-                                                                  Container(
-                                                                      padding: EdgeInsets.all(3.0),
-                                                                      child: Column(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.center,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            'Full Name',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3.0),
-                                                                            child: Text(
-                                                                              'Tom Wilson',
-                                                                              style: TextStyle(
-                                                                                  fontSize: 15.0,
-                                                                                  color: Colors.black87),
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      )),
-                                                                  Container(
-                                                                      padding: EdgeInsets.all(3.0),
-                                                                      child: Column(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.center,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            'Relationship',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3.0),
-                                                                            child: Text(
-                                                                              'Brother',
-                                                                              style: TextStyle(
-                                                                                  fontSize: 15.0,
-                                                                                  color: Colors.black87),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      )),
-                                                                  Container(
-                                                                      padding: EdgeInsets.all(3.0),
-                                                                      child: Column(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.center,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            'Sex',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3.0),
-                                                                            child: Text(
-                                                                              'Male',
-                                                                              style: TextStyle(
-                                                                                  fontSize: 15.0,
-                                                                                  color: Colors.black87),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      )),
-                                                                  Container(
-                                                                      padding: EdgeInsets.all(3.0),
-                                                                      child: Column(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.center,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            'Age',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3.0),
-                                                                            child: Text(
-                                                                              '44',
-                                                                              style: TextStyle(
-                                                                                  fontSize: 15.0,
-                                                                                  color: Colors.black87),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      )),
-                                                                  Container(
-                                                                      padding: EdgeInsets.all(3.0),
-                                                                      child: Column(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.center,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            'Adress',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3.0),
-                                                                            child: Text(
-                                                                              '22 Northway Road Harare',
-                                                                              style: TextStyle(
-                                                                                  fontSize: 15.0,
-                                                                                  color: Colors.black87),
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      )
-                                                                  ),
-
-                                                                  Container(
-                                                                      padding: EdgeInsets.all(3.0),
-                                                                      child: Column(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.center,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            'Phone Number',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3.0),
-                                                                            child: Text(
-                                                                              '+263 774563473',
-                                                                              style: TextStyle(
-                                                                                  fontSize: 15.0,
-                                                                                  color: Colors.black87),
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      )
-                                                                  ),
-
-                                                                  Container(
-                                                                      padding: EdgeInsets.all(3.0),
-                                                                      child: Column(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.center,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            'Status Disclosed',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),
-                                                                          Container(
-                                                                            margin: EdgeInsets.only(top: 3.0),
-                                                                            child: Text(
-                                                                              'Yes',
-                                                                              style: TextStyle(
-                                                                                  fontSize: 15.0,
-                                                                                  color: Colors.black87),
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      )
-                                                                  ),
-
-                                                                ],
-                                                              ),*/
-
                                                               Divider(
                                                                 height: 10.0,
                                                                 color: Colors.blue.shade500,
@@ -493,21 +313,6 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                           /*       Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              HomeScreen()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.home, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 
@@ -543,13 +348,37 @@ Widget getContactList(){
           columns: [
             DataColumn(label: Text("First Name")),
             DataColumn(label: Text("Last Name")),
+            DataColumn(label: Text(""))
           ],
           rows:_entryPointList.map((person)=>
               DataRow(
                   cells: [
                     DataCell(Text(person.firstName)),
                     DataCell(Text(person.lastName)),
-                  ])
+                    DataCell(    Padding(
+                      padding: const EdgeInsets.only(right: 0),
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Overview(person)));
+
+                        },
+                        color: Colors.blue,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                          child: Text('View',
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      )),
+
+
+                    )])
 
           ).toList()
 

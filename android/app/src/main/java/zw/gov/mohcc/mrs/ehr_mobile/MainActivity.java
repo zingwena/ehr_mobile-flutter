@@ -77,6 +77,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.RelationshipService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
@@ -102,6 +103,7 @@ public class MainActivity extends FlutterActivity {
     private TerminologyService terminologyService;
     private HistoryService historyService;
     private IndexTestingService indexTestingService;
+    private RelationshipService relationshipService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +117,7 @@ public class MainActivity extends FlutterActivity {
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);
+        relationshipService = new RelationshipService(ehrMobileDatabase);
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
@@ -163,7 +166,7 @@ public class MainActivity extends FlutterActivity {
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase);
 
-        new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase);
+        new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
 
         new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override

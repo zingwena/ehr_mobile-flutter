@@ -95,7 +95,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                   onSaved: (value) {
                     setState(() {
                       ipAndPort=value;
-                      url='http://$ipAndPort';
+                      url='$ipAndPort';
                     });
                   },
                   decoration: InputDecoration(

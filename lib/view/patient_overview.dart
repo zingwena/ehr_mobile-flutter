@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/relationship_listPage.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_screening.dart';
@@ -457,29 +458,14 @@ class OverviewState extends State<Overview> {
                         _patient.id, visitId, _patient)),
           ),
           ),
-          new RoundedButton(text: "HTS SCREENING", onTap: () =>     Navigator.push(
+
+          new RoundedButton(text: "HTS", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     Hts_Screening(widget.patient.id, htsId, null, visitId, _patient)),
           ),
           ),
-          new RoundedButton(text: "HTS",  onTap: () {
-            if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-                ));
-              }
-          }
-          ),
-
 
     new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
     context,
@@ -487,6 +473,15 @@ class OverviewState extends State<Overview> {
     builder: (context) =>
         ArtReg(_patient.id, visitId, _patient, htsRegistration)),
     ),),
+          new RoundedButton(text: "RELATIONS", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    RelationshipListPage(_patient, visitId, htsId, htsRegistration, _patient.id)
+            ),
+          ),
+          ),
+
 
         ],
       ),

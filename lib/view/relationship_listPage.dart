@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/relationship.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/relationship_searchpage.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -43,6 +44,7 @@ class PelationshipListState extends State<RelationshipListPage>
   var selectedDate;
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const patient_channel = MethodChannel('ehr_mobile.channel/patient');
   String person_string;
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
@@ -56,7 +58,7 @@ class PelationshipListState extends State<RelationshipListPage>
 
   @override
   void initState() {
-   // getIndexContactList(widget.indexTestId);
+    getRelationContactList(widget.personId);
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -70,10 +72,10 @@ class PelationshipListState extends State<RelationshipListPage>
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
       });
   }
-  Future<void>getIndexContactList(String indexId)async{
+  Future<void>getRelationContactList(String personId)async{
     var response ;
     try{
-      response = await htsChannel.invokeMethod('getIndexContactList', indexId);
+      response = await patient_channel.invokeMethod('getRelationshipList', personId);
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
@@ -81,7 +83,7 @@ class PelationshipListState extends State<RelationshipListPage>
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        print('TTTTTTTTTTTTTTTTTTTTTTTTT  list of people added'+ _religionList.toString());
+        print('TTTTTTTTTTTTTTTTTTTTTTTTT  list of people added'+ _entryPointList.toString());
       });
 
     }catch(e){
@@ -263,7 +265,12 @@ class PelationshipListState extends State<RelationshipListPage>
                                                           child: Column(
                                                             mainAxisSize: MainAxisSize.max,
                                                             mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: <Widget>[                                                             // three line description
+                                                            children: <Widget>[
+
+                                                              Divider(
+                                                                height: 10.0,
+                                                                color: Colors.blue.shade500,
+                                                              ),// three line description
                                                               getContactList(),
 
                                                               Divider(
@@ -320,12 +327,36 @@ class PelationshipListState extends State<RelationshipListPage>
             columns: [
               DataColumn(label: Text("First Name")),
               DataColumn(label: Text("Last Name")),
+              DataColumn(label: Text("")),
+
             ],
             rows:_entryPointList.map((person)=>
                 DataRow(
                     cells: [
                       DataCell(Text(person.firstName)),
                       DataCell(Text(person.lastName)),
+                      DataCell(    Padding(
+                          padding: const EdgeInsets.only(right: 0),
+                          child: RaisedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Overview(person)));
+
+                            },
+                            color: Colors.blue,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                              child: Text('View',
+                                style: TextStyle(
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          )),
+                      ),
                     ])
 
             ).toList()
@@ -334,7 +365,7 @@ class PelationshipListState extends State<RelationshipListPage>
         ),
       );
     }else{
-      return new Text("No Contacts Added");
+      return new Text("No Relations Added");
     }
   }
 

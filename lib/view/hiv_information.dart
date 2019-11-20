@@ -42,19 +42,19 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   String option = "";
   int _result = 0;
   String result = "";
-  List _testingPlanStatusList = [
+  List _relations = [
     "CHILD",
     "SPOUSE",
     "SEXUAL PARTNER",
     "PARENT",
     "OTHER",
   ];
-  String _currentDisclosurePlanStatus;
-  List<DropdownMenuItem<String>>_dropDownMenuItemsTestingPlans;
+  String _currentRelation;
+  List<DropdownMenuItem<String>>_dropDownMenuItemsRelations;
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedTestingPlanStatus() {
+  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedRelations() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String relation in _testingPlanStatusList) {
+    for (String relation in _relations) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
@@ -64,14 +64,14 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   }
   void changedDropDownItemDisclosurePlanStatus(String selectedDisclosurePlanStatus) {
     setState(() {
-      _currentDisclosurePlanStatus = selectedDisclosurePlanStatus;
+      _currentRelation = selectedDisclosurePlanStatus;
     });
   }
   @override
   void initState() {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
-    _dropDownMenuItemsTestingPlans = getDropDownMenuItemsIdentifiedTestingPlanStatus();
+    _dropDownMenuItemsRelations = getDropDownMenuItemsIdentifiedRelations();
     super.initState();
   }
 
@@ -345,8 +345,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                               isExpanded: true,
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
-                                                              value: _currentDisclosurePlanStatus,
-                                                              items: _dropDownMenuItemsTestingPlans,
+                                                              value: _currentRelation,
+                                                              items: _dropDownMenuItemsRelations,
                                                               onChanged: changedDropDownItemDisclosurePlanStatus,
                                                               style: TextStyle(
                                                                 fontSize: 15,
@@ -521,7 +521,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                   ),
                                                                   //onPressed: () {}
                                                                   onPressed: () {
-                                                                IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person.id, _currentDisclosurePlanStatus, result, date, null, null, null, null, null);
+                                                                IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person.id, _currentRelation, result, date, null, null, null, null, null);
                                                                     Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact, widget.personId, widget.person)),);

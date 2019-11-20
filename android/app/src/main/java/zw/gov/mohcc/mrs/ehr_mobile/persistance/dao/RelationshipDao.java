@@ -35,6 +35,11 @@ public interface RelationshipDao {
     @Query("SELECT * FROM Relationship WHERE personId=:personId and memberId=:memberId")
     Relationship findByPersonIdAndMemberId(String personId, String memberId);
 
+
+    @Query("SELECT * FROM Relationship WHERE memberId=:memberId")
+    List<Relationship> findByMemberId(String memberId);
+
+
     @Query("SELECT count(*) FROM Relationship WHERE personId=:personId and memberId=:memberId")
     int existsByPersonIdAndMemberId(String personId, String memberId);
 
