@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import '../sidebar.dart';
 import 'htsreg_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
@@ -98,55 +99,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-              new ListTile(title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(_patient)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Registration(widget.visitId,widget.personId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)),
-            ))
-
-          ],
-        ),
-      ),
+      drawer:   Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(

@@ -283,7 +283,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                               BoxConstraints viewportConstraints) {
                             return Column(
                               children: <Widget>[
-                                _buildLinkBar(),
+                                //_buildLinkBar(),
                                 Container(
                                   height: 2.0,
                                   color: Colors.blue,

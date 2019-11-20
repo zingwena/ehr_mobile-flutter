@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/preTest.dart';
+import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -82,17 +83,18 @@ class HtsOverviewState extends State<HtsRegOverview> {
     var  pre_test;
     try {
       pre_test = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        preTest = PreTest.fromJson(jsonDecode(pre_test));
+        htsApproach = preTest.htsApproach;
+        print("HERE IS THE PRETEST AFTER ASSIGNMENT HTS APPROACH #######################" + htsApproach);
+
+      });
       print('PRETEST IN THE FLUTTER THE RETURNED ONE '+ pre_test.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      preTest = PreTest.fromJson(jsonDecode(pre_test));
-      htsApproach = preTest.htsApproach;
-      print("HERE IS THE PRETEST AFTER ASSIGNMENT HTS APPROACH #######################" + htsApproach);
-
-    });
+  ;
 
 
   }
@@ -102,14 +104,15 @@ class HtsOverviewState extends State<HtsRegOverview> {
     try {
       entrypoint =
           await htsChannel.invokeMethod('getEntrypoint', entrypointId);
+      setState(() {
+        _entrypoint = entrypoint;
+      });
 
 
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-     _entrypoint = entrypoint;
-    });
+
 
 
   }
@@ -118,15 +121,16 @@ class HtsOverviewState extends State<HtsRegOverview> {
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
 
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -138,61 +142,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview ",  style: new TextStyle(
-                  color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),  onTap: () {
-              if(htsRegistration == null ){
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
-                ));
-              } else {
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person,widget.htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsid, htsRegistration, widget.visitId, widget.person)),
-            )),
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsid),
       body: Stack(
         children: <Widget>[
           Container(
@@ -323,21 +273,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 

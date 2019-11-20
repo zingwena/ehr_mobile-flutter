@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import '../sidebar.dart';
 import 'cbsquestion.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
@@ -218,61 +219,7 @@ class PretestOverviewState extends State<PretestOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview ",  style: new TextStyle(
-                  color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text(" Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),  onTap: () {
-              if(htsRegistration == null ){
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
-                ));
-              } else {
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
-            )),
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -543,14 +490,14 @@ class PretestOverviewState extends State<PretestOverview> {
             context,
             MaterialPageRoute(
             builder: (context) =>
-            HtsScreeningTest(widget.personId, widget.visitId, widget.person, widget.htsId)),
+            HtsScreeningTest(widget.personId, widget.visitId, widget.person, widget.htsId, widget.htsRegistration)),
             );
             } else{
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)),
+                        Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, widget.htsRegistration)),
               );
 
             }

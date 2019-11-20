@@ -67,13 +67,14 @@ class OverviewState extends State<Overview> {
     try {
       visit =
           await platform.invokeMethod('visit', patientId);
+      setState(() {
+        visitId = visit;
+      });
+
 
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      visitId = visit;
-    });
 
 
   }
@@ -81,16 +82,17 @@ class OverviewState extends State<Overview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+      });
+
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -99,15 +101,13 @@ class OverviewState extends State<Overview> {
 
     try {
       hts = await htsChannel.invokeMethod('getHtsId', patientId);
+      setState(() {
+        htsId = hts;
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      htsId = hts;
-    });
-
-
-  }
+     }
 
   String nullHandler(String value) {
     return value == null ? "" : value;
@@ -508,6 +508,16 @@ Widget _sidemenu(){
       address = await patientChannel.invokeMethod('getAddress', patientId);
       patientphonenumber = await patientChannel.invokeMethod('getPhonenumber', patientId);
 
+      setState(() {
+        _maritalStatus = maritalStatus;
+        _educationLevel = educationLevel;
+        _occupation = occupation;
+        _nationality = nationality;
+        _address = address;
+        _phonenumber = patientphonenumber;
+      });
+      print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
+
 
       print('ADDRESS ADDRESS'+ address);
 
@@ -517,15 +527,6 @@ Widget _sidemenu(){
           'Something went wrong during getting marital status........cause $e');
     }
 
-    setState(() {
-      _maritalStatus = maritalStatus;
-      _educationLevel = educationLevel;
-      _occupation = occupation;
-      _nationality = nationality;
-      _address = address;
-      _phonenumber = patientphonenumber;
-    });
-    print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
 
   }
 

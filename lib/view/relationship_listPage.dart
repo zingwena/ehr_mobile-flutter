@@ -161,8 +161,11 @@ class PelationshipListState extends State<RelationshipListPage>
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+            title:  new Column(children: <Widget>[
+    new Text("Relations list page"),
+    new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+    ],),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

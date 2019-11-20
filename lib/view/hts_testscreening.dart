@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import '../sidebar.dart';
 import 'cbsquestion.dart';
 import 'edit_demographics.dart';
 
@@ -32,7 +33,8 @@ class HtsScreeningTest extends StatefulWidget {
   final String visitId;
   final Person person;
   final String htsId;
-  HtsScreeningTest(this.personId, this.visitId, this.person, this.htsId);
+  final HtsRegistration htsRegistration;
+  HtsScreeningTest(this.personId, this.visitId, this.person, this.htsId, this.htsRegistration);
 
   @override
   State createState() {
@@ -278,14 +280,15 @@ Future<dynamic> getTestKitsByCount(int count) async {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
 
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-
-    });
 
 
   }
@@ -650,7 +653,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                       MaterialPageRoute(
                                                           builder: (
                                                               context) =>
-                                                              Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId)
+                                                              Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, widget.htsRegistration)
                                                       ));
                                               /*    if (_formIsValid) {
 
@@ -709,58 +712,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
     
       body:_body(list),
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Reception Vitals"), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS"), onTap: () {
-              if(htsRegistration == null ){
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
-                ));
-              } else {
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART"), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
-            )),
-
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
     );
   }
 
