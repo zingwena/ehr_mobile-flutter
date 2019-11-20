@@ -74,7 +74,7 @@ public interface DataSyncService {
     Call<TestKitModel> getAllTestKits(@Header("Authorization") String token, @Query("size") int size);
 
     @GET("test-kits/test-level/{LEVEL}")
-    Call<TestKitModel> getTestKitLevels(@Header("Authorization") String token, @Path("LEVEL") TestLevel level);
+    Call<List<TestKit>> getTestKitLevels(@Header("Authorization") String token, @Path("LEVEL") TestLevel level);
 
     @GET("laboratory-tests")
     Call<TerminologyModel> getLaboratoryTests(@Header("Authorization") String token, @Query("size") int size);

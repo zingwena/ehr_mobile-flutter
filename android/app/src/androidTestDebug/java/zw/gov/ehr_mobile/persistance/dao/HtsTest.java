@@ -61,7 +61,7 @@ public class HtsTest {
         InvestigationEhr investigation=new InvestigationEhr(investigationId,sample,test);
 
         HtsTestProcedure htsTestProcedure=new HtsTestProcedure(investigation);
-//        htsTestProcedure.getTestKitLevels(count);
+//        htsTestProcedure.getTestKits(count);
 //
 //        Assert.assertEquals(0,count);
     }

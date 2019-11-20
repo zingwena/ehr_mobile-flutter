@@ -343,7 +343,7 @@ public class MainActivity extends FlutterActivity {
 
     private void pullData(Token token, String url) {
 
-        /*getSample(token, url + "/api/");
+        getSample(token, url + "/api/");
         getLaboratoryTest(token, url + "/api/");
         getNationalities(token, url + "/api/");
         getFacilities(token, url + "/api/");
@@ -358,16 +358,16 @@ public class MainActivity extends FlutterActivity {
         getHtsModels(token, url + "/api/");
         getPurpose_Of_Tests(token, url + "/api/");
         getReasonForNotIssuingResults(token, url + "/api/");
-        getUsers(token, url + "/api/");*/
-        getTestKitLevels(token, url + "/api/");
-        /*getTowns(token, url + "/api/");
+        getUsers(token, url + "/api/");
+        getTestKits(token, url + "/api/");
+        getTowns(token, url + "/api/");
         getInvestigationResults(token, url + "/api/");
         getArtStatus(token, url + "/api/");
         getArtReasons(token, url + "/api/");
         getArvCombinationregimens(token, url + "/api/");
         getDisclosureMethods(token, url + "/api/");
         getTestingPlan(token, url + "/api/");
-        getPatients(url);*/
+        getPatients(url);
     }
 
     private void getPatients(String baseUrl) {
@@ -488,8 +488,8 @@ public class MainActivity extends FlutterActivity {
     }
 
     @Transaction
-    public void getTestKitLevels(Token token, String url) {
-        DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
+    public void getTestKits(Token token, String url) {
+        final DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
         Call<TestKitModel> call = service.getAllTestKits("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TestKitModel>() {
             @Override
@@ -502,17 +502,17 @@ public class MainActivity extends FlutterActivity {
                     }
                     int count = saveTestKitsToDB(testKits);
                     Log.i(TAG, "Saved testkits : " + ehrMobileDatabase.testKitDao().getAllTestKits());
-                    Log.i(TAG, "Test levels : " + TestLevel.getEhrTestLevels());
+
                     for (TestLevel testLevel : TestLevel.getEhrTestLevels()) {
-                        Log.d(TAG, "Entering loop at this point : "+ testLevel);
-                        Call<TestKitModel> innerCall = service.getTestKitLevels("Bearer " + token.getId_token(), testLevel);
+                        Log.d(TAG, "Entering loop at this point : " + testLevel);
+                        Call<List<TestKit>> innerCall = service.getTestKitLevels("Bearer " + token.getId_token(), testLevel);
                         Log.d(TAG, "After call to EHR for test levels");
-                        innerCall.enqueue(new Callback<TestKitModel>() {
+                        innerCall.enqueue(new Callback<List<TestKit>>() {
                             @Override
-                            public void onResponse(Call<TestKitModel> innerCall, Response<TestKitModel> innerResponse) {
+                            public void onResponse(Call<List<TestKit>> innerCall, Response<List<TestKit>> innerResponse) {
                                 // remove all duplicate testKitIds at this stage
-                                Log.d(TAG, "Is anything coming from EHR : " + innerResponse.body().getContent());
-                                Set<TestKit> formattedTestsKits = new HashSet<>(innerResponse.body().getContent());
+                                Log.d(TAG, "Is anything coming from EHR : " + innerResponse.body());
+                                Set<TestKit> formattedTestsKits = new HashSet<>(innerResponse.body());
                                 Log.d(TAG, "After formatting and removing all duplicated testkit IDS : " + formattedTestsKits);
                                 List<TestKitTestLevel> testKitTestLevels = new ArrayList<>();
                                 for (TestKit item : formattedTestsKits) {
@@ -524,12 +524,11 @@ public class MainActivity extends FlutterActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<TestKitModel> innerCall, Throwable t) {
+                            public void onFailure(Call<List<TestKit>> innerCall, Throwable t) {
                                 Log.e(TAG, "Error has occurred : " + t.getMessage());
                             }
                         });
                     }
-
                 }
             }
 
@@ -538,10 +537,7 @@ public class MainActivity extends FlutterActivity {
                 Log.e(TAG, "Error saving testkits : " + t.getMessage());
             }
         });
-
-
     }
-
 
     public void getNationalities(Token token, String baseUrl) {
 

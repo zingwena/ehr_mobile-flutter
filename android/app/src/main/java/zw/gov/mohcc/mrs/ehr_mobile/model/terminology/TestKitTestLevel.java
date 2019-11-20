@@ -15,9 +15,7 @@ import static androidx.room.ForeignKey.CASCADE;
 /**
  * @author kombo on 8/21/19
  */
-@Entity(primaryKeys = {"testKitId", "testLevel"},
-        foreignKeys = @ForeignKey(entity = TestKit.class,
-                parentColumns = "code", childColumns = "testKitId", onDelete = CASCADE))
+@Entity(primaryKeys = {"testKitId", "testLevel"})
 public class TestKitTestLevel implements Serializable {
 
     @NonNull
@@ -68,5 +66,13 @@ public class TestKitTestLevel implements Serializable {
         hash = 19 * hash + ((this.testKitId != null && this.testLevel != null) ?
                 (this.testKitId.hashCode() + this.testLevel.hashCode()) : 0);
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "TestKitTestLevel{" +
+                "testKitId='" + testKitId + '\'' +
+                ", testLevel=" + testLevel +
+                '}';
     }
 }
