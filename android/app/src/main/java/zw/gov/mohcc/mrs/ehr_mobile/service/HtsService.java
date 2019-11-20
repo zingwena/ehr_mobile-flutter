@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
@@ -100,18 +101,18 @@ public class HtsService {
         return ehrMobileDatabase.labInvestTestdao().countByLaboratoryInvestigation(laboratoryInvestigationId);
     }
 
-    private String getTestLevel(int count) {
+    private TestLevel getTestLevel(int count) {
         switch (count) {
             case 0:
-                return "FIRST";
+                return TestLevel.get("FIRST");
             case 1:
-                return "SECOND";
+                return TestLevel.get("SECOND");
             case 2:
-                return "PARALLEL_ONE";
+                return TestLevel.get("PARALLEL_ONE");
             case 3:
-                return "PARALLEL_TWO";
+                return TestLevel.get("PARALLEL_TWO");
             case 4:
-                return "THIRD";
+                return TestLevel.get("THIRD");
             default:
                 throw new IllegalStateException("Illegal parameter passed to method : "+ count);
         }
@@ -179,7 +180,7 @@ public class HtsService {
 
     public Set<TestKit> getTestKitByTestLevel(String laboratoryInvestigationId) {
         int count = getTestCount(laboratoryInvestigationId);
-        String level = getTestLevel(count);
+        TestLevel level = getTestLevel(count);
         Log.i(TAG, "Laboratory Investigation ID : " + laboratoryInvestigationId);
         Log.i(TAG, "Retrieving test kits count is at : "+ count +" Using level : "+ level);
         if (count == 0 || count == 1 || count == 4) {
