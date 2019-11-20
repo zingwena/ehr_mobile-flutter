@@ -1,0 +1,72 @@
+package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.TypeConverters;
+
+import java.io.Serializable;
+
+import zw.gov.mohcc.mrs.ehr_mobile.converter.TestLevelConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
+
+import static androidx.room.ForeignKey.CASCADE;
+
+/**
+ * @author kombo on 8/21/19
+ */
+@Entity(primaryKeys = {"testKitId", "testLevel"},
+        foreignKeys = @ForeignKey(entity = TestKit.class,
+                parentColumns = "code", childColumns = "testKitId", onDelete = CASCADE))
+public class TestKitTestLevel implements Serializable {
+
+    @NonNull
+    private String testKitId;
+    @TypeConverters(TestLevelConverter.class)
+    @NonNull
+    private TestLevel testLevel;
+
+    public TestKitTestLevel(@NonNull String testKitId, @NonNull TestLevel testLevel) {
+        this.testKitId = testKitId;
+        this.testLevel = testLevel;
+    }
+
+    @NonNull
+    public String getTestKitId() {
+        return testKitId;
+    }
+
+    public void setTestKitId(@NonNull String testKitId) {
+        this.testKitId = testKitId;
+    }
+
+    @NonNull
+    public TestLevel getTestLevel() {
+        return testLevel;
+    }
+
+    public void setTestLevel(@NonNull TestLevel testLevel) {
+        this.testLevel = testLevel;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof TestKitTestLevel)) {
+            return false;
+        }
+
+        return this.getTestKitId().equals(((TestKitTestLevel) obj).getTestKitId()) &&
+                this.getTestLevel().equals(((TestKitTestLevel) obj).getTestLevel());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 19 * hash + ((this.testKitId != null && this.testLevel != null) ?
+                (this.testKitId.hashCode() + this.testLevel.hashCode()) : 0);
+        return hash;
+    }
+}
