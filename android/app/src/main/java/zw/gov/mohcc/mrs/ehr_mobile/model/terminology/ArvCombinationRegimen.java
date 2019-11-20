@@ -44,4 +44,12 @@ public class ArvCombinationRegimen extends BaseNameModel {
     public void setAgeGroup(AgeGroup ageGroup) {
         this.ageGroup = ageGroup;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("ArvCombinationRegimen{" +
+                "regimenType=" + regimenType +
+                ", ageGroup=" + ageGroup +
+                '}');
+    }
 }

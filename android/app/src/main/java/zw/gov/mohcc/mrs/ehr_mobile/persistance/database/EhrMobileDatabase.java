@@ -132,7 +132,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.TestForPregnantLactatingMotherConve
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
-IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class}, version = 9, exportSchema = false)
+IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class}, version = 10, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,

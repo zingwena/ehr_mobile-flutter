@@ -163,10 +163,6 @@ public class HtsService {
         }
     }
 
-    public Hts getHtsByLaboratoryInvestigation(String laboratoryInvestigationId) {
-        return ehrMobileDatabase.htsDao().findByLaboratoryInvestigationId(laboratoryInvestigationId);
-    }
-
     public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {
 
         PersonInvestigation personInvestigation = getPersonInvestigation(personId);

@@ -47,6 +47,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
@@ -1083,7 +1084,10 @@ public class MainActivity extends FlutterActivity {
         call.enqueue(new Callback<ArvCombinationRegimenModel>() {
             @Override
             public void onResponse(Call<ArvCombinationRegimenModel> call, Response<ArvCombinationRegimenModel> response) {
-                terminologyService.saveArvCombinationRegimen(response.body().getContent());
+
+                Log.d(TAG, "Arv combination regmines : " + response.body().getContent());
+
+                terminologyService.saveArvCombinationRegimen(ArvCombinationRegimenEhr.getInstance(response.body().getContent()));
             }
 
             @Override
