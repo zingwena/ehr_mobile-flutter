@@ -18,8 +18,8 @@ public interface HtsDtoMapper {
      * @return
      */
     @Mappings({
-            @Mapping(target="dateOfHivTest", source = "dateOfHivTest", dateFormat = "yyyy-MM-dd HH:mm:ss"),
-            @Mapping(target="datePostTestCounselled", source = "datePostTestCounselled", dateFormat = "yyyy-MM-dd HH:mm:ss")
+            @Mapping(target="dateOfHivTest", source = "dateOfHivTest", dateFormat = "yyyy-MM-dd"),
+            @Mapping(target="datePostTestCounselled", source = "datePostTestCounselled", dateFormat = "yyyy-MM-dd")
     })
     HtsDto htsToHtsDto(Hts hts);
 }

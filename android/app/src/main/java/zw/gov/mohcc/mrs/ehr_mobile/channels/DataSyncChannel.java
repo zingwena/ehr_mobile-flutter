@@ -26,7 +26,7 @@ public class DataSyncChannel {
                 if (call.method.equals("syncPatients")) {
                     Log.i(TAG,"DATA SYNC PATIENTS");
                     new PatientDataSyncService(ehrMobileDatabase,arguments.get(1),arguments.get(0))
-                    .synchPatient();
+                    .syncPatient();
                 }
             }
         });
