@@ -14,6 +14,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.IdentityDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.RegisterPersonDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
@@ -98,7 +99,7 @@ public interface DataSyncService {
     Call<ArtReasonModel> getArtReasons(@Header("Authorization") String token, @Query("size") int size);
 
     @GET("arv-combination-regimens")
-    Call<TerminologyModel> getArvCombinationRegimen(@Header("Authorization") String token, @Query("size") int size);
+    Call<ArvCombinationRegimenModel> getArvCombinationRegimen(@Header("Authorization") String token, @Query("size") int size);
 
     @GET("disclosure-methods")
     Call<NameIdSynchModel> getDisclosureMethods(@Header("Authorization") String token, @Query("size") int size);
