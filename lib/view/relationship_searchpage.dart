@@ -311,7 +311,7 @@ class _RelationSearchState extends State<RelationshipSearch> {
               style: BorderStyle.solid, //Style of the border
               width: 3.0, //width of the border
             ),
-          /*  onPressed: () => Navigator.push(
+            /*onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => AddPatientIndex(widget.indexTestId, widget.personId)),
             ),*/

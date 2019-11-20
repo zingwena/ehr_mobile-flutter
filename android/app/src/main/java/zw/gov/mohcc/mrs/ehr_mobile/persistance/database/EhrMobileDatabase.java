@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.TestLevelConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.TypeOfContactConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
@@ -43,6 +44,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKitTestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
@@ -88,6 +90,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SampleDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitTestLevelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestingPlanDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TownsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.UserDao;
@@ -126,12 +129,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.TestForPregnantLactatingMotherConve
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
-        IndexTest.class, IndexContact.class, Relationship.class}, version = 6, exportSchema = false)
+IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class}, version = 7, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
         HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
-        TypeOfContactConverter.class})
+        TypeOfContactConverter.class, TestLevelConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -241,4 +244,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract IndexContactDao indexContactDao();
 
     public abstract RelationshipDao relationshipDao();
+
+    public abstract TestKitTestLevelDao testKitTestLevelDao();
 }

@@ -13,16 +13,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 public class TestKit extends BaseNameModel {
 
     private String description;
-    private String level;
 
     public TestKit() {
     }
 
     @Ignore
-    public TestKit(String code, String name, String description, String level) {
+    public TestKit(String code, String name, String description) {
         super(code, name);
         this.description = description;
-        this.level = level;
     }
 
     public String getDescription() {
@@ -33,21 +31,12 @@ public class TestKit extends BaseNameModel {
         this.description = description;
     }
 
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
     @Override
     public String toString() {
         return "TestKit{" +
                 "code='" + getCode() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", description='" + description + '\'' +
-                ", level='" + level + '\'' +
                 '}';
     }
 }

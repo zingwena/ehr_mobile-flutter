@@ -24,6 +24,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKitTestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -175,5 +176,11 @@ public class TerminologyService {
 
         ehrMobileDatabase.facilityDao().insertFacilities(facilities);
         Log.d(TAG, "Saved facility : " + ehrMobileDatabase.testingPlanDao().findAll());
+    }
+
+    public void saveTestkitTestLevels(List<TestKitTestLevel> testKitTestLevels) {
+
+        ehrMobileDatabase.testKitTestLevelDao().saveAll(testKitTestLevels);
+        Log.d(TAG, "Saved testkit test levels : " + ehrMobileDatabase.testKitTestLevelDao().findAll());
     }
 }

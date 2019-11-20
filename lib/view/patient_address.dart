@@ -161,6 +161,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                   vertical: 16.0, horizontal: 60.0),
                                                               child: TextFormField(
                                                                 keyboardType: TextInputType.number,
+
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_2 = value;
                                                                 }),
