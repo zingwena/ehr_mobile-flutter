@@ -18,6 +18,25 @@ public class DateUtil {
         return cal.getTime();
     }
 
+    /*public static int getAgeInYears(Date dateOfBirth) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateOfBirth);
+        cal.add(Calendar.YEAR, -age);
+        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 11);
+        cal.set(Calendar.DAY_OF_MONTH, getMonthEndDate(cal.getTime()) - 1);
+        //return cal.getTime();
+        return 0;
+    }
+
+    public static int getAgeInMonths(Date dateOfBirth) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.YEAR, -age);
+        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 11);
+        cal.set(Calendar.DAY_OF_MONTH, getMonthEndDate(cal.getTime()) - 1);
+        return 0;
+    }*/
+
     public static Date getDateDiff(boolean start) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
