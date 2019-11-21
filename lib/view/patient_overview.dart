@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/relationship_listPage.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -116,64 +117,7 @@ class OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Home ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(_patient)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(_patient.id, visitId, _patient)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
-              if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient, htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.patient.id, htsId, htsRegistration, visitId, _patient)),
-            )),
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(_patient, widget.patient.id, visitId, htsRegistration, htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -455,7 +399,7 @@ class OverviewState extends State<Overview> {
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(
-                        _patient.id, visitId, _patient)),
+                        _patient.id, visitId, _patient,htsId)),
           ),
           ),
 
@@ -471,7 +415,7 @@ class OverviewState extends State<Overview> {
     context,
     MaterialPageRoute(
     builder: (context) =>
-        ArtReg(_patient.id, visitId, _patient, htsRegistration)),
+        ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
     ),),
           new RoundedButton(text: "RELATIONS", onTap: () =>     Navigator.push(
             context,

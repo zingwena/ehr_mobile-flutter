@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/edit_demographics_index.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,13 @@ import 'package:ehr_mobile/login_screen.dart';
 import 'edit_demographics.dart';
 
 class AddPatientIndex extends StatefulWidget {
-  String personId;
-  String indexTestId;
-  AddPatientIndex(this.indexTestId, this.personId);
+  final String personId;
+  final String indexTestId;
+  final String visitId;
+  final String htsId;
+  final HtsRegistration htsRegistration;
+
+  AddPatientIndex(this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
   @override
   State createState() {
     return _AddPatient();
@@ -434,7 +439,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                                                         firstName,
                                                                         birthDate,
                                                                         gender,
-                                                                        nationalId, widget.indexTestId, widget.personId)));
+                                                                        nationalId, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
                                                           } else {
                                                             showError = true;
                                                           }

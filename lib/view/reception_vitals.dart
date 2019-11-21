@@ -17,6 +17,7 @@ import 'package:ehr_mobile/vitals/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../sidebar.dart';
 import 'cbsquestion.dart';
 
 
@@ -24,7 +25,8 @@ class ReceptionVitals extends StatefulWidget {
   final String personId;
   final String visitId;
   final Person person;
-  ReceptionVitals(this.personId, this.visitId, this.person);
+   final String htsId;
+  ReceptionVitals(this.personId, this.visitId, this.person, this.htsId);
 
 
   @override
@@ -58,6 +60,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
   @override
   void initState() {
     setVisit();
+    getHtsRecord(widget.personId);
     super.initState();
   }
   Future<void> getHtsRecord(String patientId) async {
@@ -99,54 +102,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-              new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Registration(widget.visitId,widget.personId, widget.person)),
-            )),
-            new ListTile( leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, null, null, widget.visitId, widget.person)),
-            )),
-
-          ],
-        ),
-      ),
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -163,8 +119,11 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+            title:new Column(children: <Widget>[
+              new Text("Vitals"),
+              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+
+            ],),
           ),
           Positioned.fill(
             child: Padding(

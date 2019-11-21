@@ -293,7 +293,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PatientIndexOverview(patient, widget.indexTestId, widget.personId)));
+                            builder: (context) => PatientIndexOverview(patient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
                   },
                 );
               }).toList(),
@@ -329,7 +329,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
             ),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddPatientIndex(widget.indexTestId, widget.personId)),
+              MaterialPageRoute(builder: (context) => AddPatientIndex(widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)),
             ),
           )
               :   SizedBox( ),

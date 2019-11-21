@@ -14,6 +14,7 @@ import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import '../sidebar.dart';
 import 'rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,11 +22,12 @@ import 'package:intl/intl.dart';
 
 class Art_Initiation extends StatefulWidget {
 
-  String patientId ;
-  String visitId;
-  Person person;
-  HtsRegistration htsRegistration;
-  Art_Initiation(this.patientId, this.visitId, this.htsRegistration);
+  final String patientId ;
+  final String visitId;
+  final Person person;
+  final HtsRegistration htsRegistration;
+  final String htsId;
+  Art_Initiation(this.person, this.patientId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -190,47 +192,7 @@ class _Art_Initiation extends State<Art_Initiation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-              new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Registration(widget.visitId,widget.patientId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration)),
-            ))
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -296,115 +258,6 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
-
-                                                     /* Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    vertical: 0.0, horizontal: 30.0),
-                                                                child: TextFormField(
-                                                                  controller:
-                                                                  TextEditingController(text: selectedDate),
-                                                                  validator: (value) {
-                                                                    return value.isEmpty ? 'Enter some text' : null;
-                                                                  },
-                                                                  decoration: InputDecoration(
-                                                                      labelText: 'Date of Enrolment into Care',
-                                                                      border: OutlineInputBorder()),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDate(context);
-                                                            },
-                                                          ),
-
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    vertical: 0.0, horizontal: 30.0),
-                                                                child: TextFormField(
-                                                                  controller:
-                                                                  TextEditingController(text: selectedDate),
-                                                                  validator: (value) {
-                                                                    return value.isEmpty ? 'Enter some text' : null;
-                                                                  },
-                                                                  decoration: InputDecoration(
-                                                                      labelText: 'Date initiatiated on ART',
-                                                                      border: OutlineInputBorder()),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDate(context);
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),*/
-                                                     /* Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(30.0),
-                                                                child: Text('Client Type'),
-                                                              ),
-                                                              width: 250,
-                                                            ),
-                                                          ),
-                                                          Text('New Client'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: _selecType,
-                                                              onChanged: _handleHtsTypeChange),
-                                                          Text('Old Client'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: _selecType,
-                                                              onChanged: _handleHtsTypeChange)
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(30.0),
-                                                                child: Text('Please Select'),
-                                                              ),
-                                                              width: 250,
-                                                            ),
-                                                          ),
-                                                          Text('First Line'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: _selecType,
-                                                              onChanged: _handleHtsTypeChange),
-                                                          Text('2nd Line'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: _selecType,
-                                                              onChanged: _handleHtsTypeChange),
-                                                          Text('3rd Line'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: _selecType,
-                                                              onChanged: _handleHtsTypeChange)
-                                                        ],
-                                                      ),*/
-
 
                                                       Row(
                                                         children: <Widget>[
@@ -552,7 +405,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
                                                             await artInitiation(artInitiationDetails);
 
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(initiation, widget.person, widget.patientId, widget.visitId)));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(initiation, widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId)));
 
                                                           },
 
@@ -598,7 +451,7 @@ class _Art_Initiation extends State<Art_Initiation> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration)),
+                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
           ),
           ),
           new RoundedButton(text: "Art Initiation", selected: true),

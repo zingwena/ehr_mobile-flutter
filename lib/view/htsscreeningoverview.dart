@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import '../sidebar.dart';
 import 'art_reg.dart';
 import 'cbsquestion.dart';
 import 'rounded_button.dart';
@@ -140,61 +141,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Home ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-          /*  new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(_patient)),
-            )),*/
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(_patient.id, visitId, _patient)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
-              if(htsRegistration == null ){
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
-                ));
-              } else {
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient, htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
-            )),
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -515,7 +462,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(
-                        _patient.id, visitId, _patient)),
+                        _patient.id, visitId, _patient, htsId)),
           ),
           ),
           new RoundedButton(text: "HTS",  onTap: () {
@@ -539,7 +486,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient, htsRegistration)),
+                    ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
           ),),
 
 
