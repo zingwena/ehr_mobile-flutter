@@ -135,14 +135,34 @@ class _AddRelationsState extends State<AddRelationshipPage> {
             height: 210.0,
           ),
           new AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              centerTitle: true,
-              title: new Column(children: <Widget>[
-                new Text("Add Relation"),
-                new Text("Patient Name : " + " "+ widget.person_patient.firstName + " " + widget.person_patient.lastName)
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            centerTitle: true,
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ),
 
-              ],)
+            ),
+            actions: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -150,6 +170,37 @@ class _AddRelationsState extends State<AddRelationshipPage> {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
+
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("Add Relation", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
+
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(widget.person_patient.firstName + " " + widget.person_patient.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
+                            ),
+                          ])
+                  ),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,

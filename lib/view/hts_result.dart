@@ -81,21 +81,22 @@ class _Hts_Result  extends State<Hts_Result > {
 
   @override
   void initState() {
-    print("FFFFFFFFFFFFFFFFFFFFFFFF HERE IS THE RESULT PAGE");
     _visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
     labInvetsTestId = widget.labInvetsTestId;
-    getFinalResult(widget.labInvestId);
-    getLabInvestigationTests();
-   // getLabInvestigationTests();
-    getTestKIt(widget.labInvetsTestId);
-    //getStartTime(widget.labInvetsTestId);
-    getHtsRecord(widget.patientId);
-    getTestName();
+
     //getEndTime(widget.labInvetsTestId);
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
+
+    getFinalResult(widget.labInvestId);
+    getLabInvestigationTests();
+    // getLabInvestigationTests();
+    getTestKIt(widget.labInvetsTestId);
+    //getStartTime(widget.labInvetsTestId);
+    //getHtsRecord(widget.patientId);
+    getTestName();
     super.initState();
   }
 
@@ -202,11 +203,31 @@ class _Hts_Result  extends State<Hts_Result > {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Column(children: <Widget>[
-              new Text("HTS Test Results"),
-              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ),
 
-            ],)
+            ),
+            actions: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -214,6 +235,37 @@ class _Hts_Result  extends State<Hts_Result > {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
+
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("HTS Test Results", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
+
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
+                            ),
+                          ])
+                  ),
                   _buildButtonsRow(),
                   Expanded(
                       child: new Card(
@@ -408,7 +460,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
                                                         child: getNextTestButton(),
-                                                          onPressed: () async {
+                                                          onPressed: ()  {
                                                             if (final_result == 'Pending' || final_result == '') {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId, widget.htsRegistration)));
 
@@ -465,12 +517,18 @@ class _Hts_Result  extends State<Hts_Result > {
 
 
   Widget getNextTestButton(){
-    if(final_result ==''|| final_result == 'Pending'){
-    return new Text("Proceed to "+ test_name,  style: TextStyle(color: Colors.white),);
-    } else{
-      return new Text("Proceed to Post Test",  style: TextStyle(color: Colors.white),);
+    try{
+      if(final_result ==''|| final_result == 'Pending'){
+        return new Text("Proceed to "+ test_name,  style: TextStyle(color: Colors.white),);
+      } else{
+        return new Text("Proceed to Post Test",  style: TextStyle(color: Colors.white),);
 
+      }
+
+    }catch(e){
+      print('excption caught ************* $e');
     }
+
   }
 
   Widget _buildProductItem(BuildContext context, int index) {
