@@ -59,8 +59,8 @@ public class PatientDataSyncService {
         HtsDto htsDto = createHtsDto(person);
         dto.setHtsDto(htsDto);
 
-        VitalSyncService vitalSyncService=new VitalSyncService(ehrMobileDatabase);
-        List<VitalDto> vitals = vitalSyncService.getVitalsByPersonId(person.getId());
+        VitalSyncHelper vitalSyncHelper =new VitalSyncHelper(ehrMobileDatabase);
+        List<VitalDto> vitals = vitalSyncHelper.getVitalsByPersonId(person.getId());
         dto.setVitalDtos(vitals);
         return dto;
     }

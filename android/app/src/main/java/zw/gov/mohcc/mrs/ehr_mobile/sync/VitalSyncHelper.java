@@ -17,10 +17,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.sync.adapter.dto.VitalDto;
 import zw.gov.mohcc.mrs.sync.adapter.enums.VitalName;
 
-public class VitalSyncService {
+public class VitalSyncHelper {
 
     private EhrMobileDatabase ehrMobileDatabase;
-    public VitalSyncService(EhrMobileDatabase ehrMobileDatabase){
+    public VitalSyncHelper(EhrMobileDatabase ehrMobileDatabase){
         this.ehrMobileDatabase=ehrMobileDatabase;
     }
 
