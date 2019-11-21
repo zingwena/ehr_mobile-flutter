@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
@@ -206,6 +207,19 @@ public class HtsService {
                 .findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
 
         return  personInvestigation.getResultId();
+    }
+
+    @Transaction
+    public String processOtherInvestigationResults(LaboratoryInvestigationTestDTO testDTO) {
+        String laboratoryInvestigationId = createInvestigation(testDTO.get(testDTO), false);
+        LaboratoryInvestigationTest test = new LaboratoryInvestigationTest();
+        String labInvestigationTestId = UUID.randomUUID().toString();
+        test.setId(labInvestigationTestId);
+        test.setStartTime(DateUtil.getDateDiff(true));
+        test.setEndTime(DateUtil.getDateDiff(false));
+        ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
+        setFinalResult(test);
+        return labInvestigationTestId;
     }
 
     @Transaction
