@@ -19,4 +19,12 @@ public class NameCode implements Serializable {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "NameCode{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

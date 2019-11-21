@@ -48,14 +48,14 @@ public class HtsService {
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
         String laboratoryInvestigationId = createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
-                visitId, "36069471-adee-11e7-b30f-3372a2d8551e", null));
+                visitId, "36069471-adee-11e7-b30f-3372a2d8551e", null), true);
         hts.setLaboratoryInvestigationId(laboratoryInvestigationId);
         ehrMobileDatabase.htsDao().createHts(hts);
         return hts.getId();
     }
 
     @Transaction
-    public String createInvestigation(InvestigationDTO dto) {
+    public String createInvestigation(InvestigationDTO dto, boolean hivInvestigation) {
 
         if (StringUtils.isBlank(dto.getVisitId())) {
             String visitId = visitService.getCurrentVisit(dto.getPersonId());
@@ -163,10 +163,6 @@ public class HtsService {
         }
     }
 
-    public Hts getHtsByLaboratoryInvestigation(String laboratoryInvestigationId) {
-        return ehrMobileDatabase.htsDao().findByLaboratoryInvestigationId(laboratoryInvestigationId);
-    }
-
     public LaboratoryInvestigation getLaboratoryInvestigation(String personId) {
 
         PersonInvestigation personInvestigation = getPersonInvestigation(personId);
@@ -176,6 +172,12 @@ public class HtsService {
     public PersonInvestigation getPersonInvestigation(String personId) {
 
         return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(personId, new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
+    }
+
+    //ee7d91fc-b27f-11e8-b121-c48e8faf035b @Noku this is the recency investigation id use it when calling this method
+    public List<TestKit> getInvestigationTestKit(String investigationId) {
+
+        return ehrMobileDatabase.investigationTestkitDao().findByInvestigationId(investigationId);
     }
 
     public Set<TestKit> getTestKitByTestLevel(String laboratoryInvestigationId) {

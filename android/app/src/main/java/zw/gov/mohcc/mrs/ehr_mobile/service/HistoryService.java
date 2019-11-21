@@ -200,7 +200,7 @@ public class HistoryService {
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getDateLastTested(), visitId,
                         "36069471-adee-11e7-b30f-3372a2d8551e", dto.getResult());
                 Log.i(TAG, "Saving investigation record ");
-                htsService.createInvestigation(investigationDTO);
+                htsService.createInvestigation(investigationDTO, false);
             }
             // if date last negative is completed
             if (dto.isTestedBefore() && dto.getDateLastNegative() != null) {
