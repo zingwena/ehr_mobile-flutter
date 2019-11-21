@@ -570,7 +570,8 @@ class _Recency extends State<RecencyTest> {
                                                         widget.visitId,
                                                         labInvestId,
                                                         null, null,
-                                                        result, widget.visitId, testKitobj, null, null);
+                                                        result, widget.visitId, testKitobj, null, null, widget.personId);
+                                                    saveLabInvestigationTest(labInvestTest);
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (
