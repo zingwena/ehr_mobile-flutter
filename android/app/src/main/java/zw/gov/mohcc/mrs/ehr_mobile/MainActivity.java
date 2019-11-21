@@ -59,6 +59,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdModel;
@@ -366,6 +369,7 @@ public class MainActivity extends FlutterActivity {
         getUsers(token, url + "/api/");
         getTestKits(token, url + "/api/");
         getTowns(token, url + "/api/");
+        getInvestigationTestKits(token, url + "/api/");
         getInvestigationResults(token, url + "/api/");
         getArtStatus(token, url + "/api/");
         getArtReasons(token, url + "/api/");
@@ -984,6 +988,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.userDao().deleteUsers();
         ehrMobileDatabase.testKitTestLevelDao().deleteAll();
         ehrMobileDatabase.testKitDao().deleteTestKits();
+        ehrMobileDatabase.investigationTestkitDao().deleteAll();
         ehrMobileDatabase.investigationDao().deleteInvestigations();
         ehrMobileDatabase.resultDao().deleteResults();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
@@ -1072,6 +1077,29 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<InvestigationModel> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void getInvestigationTestKits(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<InvestigationTestkitModel> call = service.getInvestigationTestKits("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<InvestigationTestkitModel>() {
+            @Override
+            public void onResponse(Call<InvestigationTestkitModel> call, Response<InvestigationTestkitModel> response) {
+                List<InvestigationTestkit> investigationTestKits = new ArrayList<>();
+                for (InvestigationTestkitEhr item : response.body().getContent()) {
+                    //@NonNull String id, String investigationId, String testKitId
+                    investigationTestKits.add(new InvestigationTestkit(
+                            item.getInvestigationTestkitId(), item.getInvestigationId(), item.getTestKitId()));
+                }
+                terminologyService.saveInvestigationTestKits(investigationTestKits);
+            }
+
+            @Override
+            public void onFailure(Call<InvestigationTestkitModel> call, Throwable t) {
                 Log.i(TAG, t.getMessage());
             }
         });

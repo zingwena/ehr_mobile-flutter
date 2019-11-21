@@ -20,6 +20,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdSynchModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
@@ -86,6 +87,9 @@ public interface DataSyncService {
     @GET("investigations")
     Call<InvestigationModel> getInvestigations(@Header("Authorization") String token, @Query("size") int size);
 
+    @GET("investigations")
+    Call<InvestigationTestkitModel> getInvestigationTestKits(@Header("Authorization") String token, @Query("size") int size);
+
     @GET("investigations/result")
     Call<InvestigationResultModel> getInvestigationResults(@Header("Authorization") String token, @Query("size") int size);
 
@@ -98,7 +102,7 @@ public interface DataSyncService {
     @GET("art-reasons")
     Call<ArtReasonModel> getArtReasons(@Header("Authorization") String token, @Query("size") int size);
 
-    @GET("arv-combination-regimens")
+    @GET("arv-combination-regimens-for-export")
     Call<ArvCombinationRegimenModel> getArvCombinationRegimen(@Header("Authorization") String token, @Query("size") int size);
 
     @GET("disclosure-methods")

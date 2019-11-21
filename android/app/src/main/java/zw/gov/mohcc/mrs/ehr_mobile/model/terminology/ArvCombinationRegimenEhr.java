@@ -12,21 +12,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 public class ArvCombinationRegimenEhr extends NameCode {
 
     private String regimenType;
-    private String ageGroup;
+    private String arvAgeGroup;
 
     @Ignore
-    public ArvCombinationRegimenEhr(@NonNull String code, @NonNull String name, String regimenType, String ageGroup) {
+    public ArvCombinationRegimenEhr(@NonNull String code, @NonNull String name, String regimenType, String arvAgeGroup) {
         super(code, name);
         this.regimenType = regimenType;
-        this.ageGroup = ageGroup;
+        this.arvAgeGroup = arvAgeGroup;
     }
 
     public static List<ArvCombinationRegimen> getInstance(List<ArvCombinationRegimenEhr> items) {
         List<ArvCombinationRegimen> regiments = new ArrayList<>();
         for (ArvCombinationRegimenEhr item : items) {
             regiments.add(new ArvCombinationRegimen(
-                    //item.getCode(), item.getName(), RegimenType.get(item.getRegimenType()), AgeGroup.get(item.getAgeGroup())
-                    item.getCode(), item.getName(), null, null
+                    item.getCode(), item.getName(), RegimenType.get(item.getRegimenType()), AgeGroup.get(item.getArvAgeGroup())
+                    //item.getCode(), item.getName(), null, null
             ));
         }
         return regiments;
@@ -40,19 +40,19 @@ public class ArvCombinationRegimenEhr extends NameCode {
         this.regimenType = regimenType;
     }
 
-    public String getAgeGroup() {
-        return ageGroup;
+    public String getArvAgeGroup() {
+        return arvAgeGroup;
     }
 
-    public void setAgeGroup(String ageGroup) {
-        this.ageGroup = ageGroup;
+    public void setArvAgeGroup(String ageGroup) {
+        this.arvAgeGroup = arvAgeGroup;
     }
 
     @Override
     public String toString() {
         return super.toString().concat("ArvCombinationRegimen{" +
                 "regimenType=" + regimenType +
-                ", ageGroup=" + ageGroup +
+                ", arvAgeGroup=" + arvAgeGroup +
                 '}');
     }
 }
