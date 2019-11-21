@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.converter;
 
+import android.util.Log;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -13,9 +15,9 @@ public class LoginValidator {
 
     public static Boolean isUserValid(EhrMobileDatabase database, String username, String password) {
 
-     /*   /User user = database.userDao().findUserbyUsername(username);
-        return user != null && password.equals("password");*/
-     return  true;
+        User user = database.userDao().findUserbyUsername(username);
+        Log.d("Login Validator", "User details here : " + user);
+        return user != null && password.equals("password");
     }
 }
 
