@@ -1092,7 +1092,6 @@ public class MainActivity extends FlutterActivity {
                 List<InvestigationTestkit> investigationTestKits = new ArrayList<>();
                 Log.d(TAG, "Investigation testkits : " + response.body().getContent());
                 for (InvestigationTestkitEhr item : response.body().getContent()) {
-                    //@NonNull String id, String investigationId, String testKitId
                     investigationTestKits.add(new InvestigationTestkit(
                             item.getInvestigationTestKitId(), item.getInvestigationId(), item.getTestKitId()));
                 }

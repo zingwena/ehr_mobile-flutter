@@ -164,12 +164,13 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                         borderRadius: BorderRadius.circular(5.0)),
                     color: Colors.teal,
                     padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      "Log In",
-                      style: TextStyle(
-                          fontSize: 23,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text('Login', style: TextStyle(color: Colors.white, fontSize: 18),),
+                        Icon(Icons.navigate_next, color: Colors.white, ),
+                      ],
                     ),
                     onPressed: () async {
                       if (_key.currentState.validate()) {

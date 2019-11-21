@@ -80,7 +80,31 @@ class _PatientAddressState extends State<PatientAddress> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Patient Address"),
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ),
+
+            ),
+            actions: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -91,6 +115,13 @@ class _PatientAddressState extends State<PatientAddress> {
                       .top + 40.0),
               child: new Column(
                 children: <Widget>[
+
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("Patient Address", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
+
                     _buildButtonsRow(),
                   Expanded(
                     child: new Card( elevation: 4.0,
@@ -245,6 +276,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Town"),
                                                             iconEnabledColor: Colors.black,
@@ -279,9 +311,14 @@ class _PatientAddressState extends State<PatientAddress> {
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Save",
-                                                          style: TextStyle(color: Colors.white),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Save Patient Record', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: () async {
                                                           if (_formKey.currentState.validate()) {
