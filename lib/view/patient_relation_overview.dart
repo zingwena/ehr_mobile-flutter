@@ -147,7 +147,7 @@ class OverviewState extends State<PatientRelationOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ReceptionVitals(_patient.id, visitId, _patient)),
+                      ReceptionVitals(_patient.id, visitId, _patient, htsId)),
             )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
@@ -169,7 +169,7 @@ class OverviewState extends State<PatientRelationOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient,htsRegistration)),
+                      ArtReg(_patient.id, visitId, _patient,htsRegistration, htsId)),
             ))
 
           ],
@@ -465,7 +465,7 @@ class OverviewState extends State<PatientRelationOverview> {
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(
-                        _patient.id, visitId, _patient)),
+                        _patient.id, visitId, _patient, htsId)),
           ),
           ),
           new RoundedButton(text: "HTS",  onTap: () {
@@ -489,7 +489,7 @@ class OverviewState extends State<PatientRelationOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient, htsRegistration)),
+                    ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
           ),),
 
 

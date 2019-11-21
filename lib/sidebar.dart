@@ -1,3 +1,4 @@
+import 'package:ehr_mobile/landing_screen.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/cbsquestion.dart';
@@ -53,7 +54,7 @@ class sidebarstate extends State<Sidebar>{
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
+                    ReceptionVitals(widget.patientId, widget.visitId, widget.person, widget.htsId)),
           )),
           new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
@@ -75,7 +76,7 @@ class sidebarstate extends State<Sidebar>{
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration)),
+                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
           )),
           new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
@@ -84,6 +85,14 @@ class sidebarstate extends State<Sidebar>{
                 builder: (context) =>
                     CbsQuestions(widget.patientId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)),
           )),
+          new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Logout",  style: new TextStyle(
+              color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                LandingScreen()),
+          )),
+
 
         ],
       ),

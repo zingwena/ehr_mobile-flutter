@@ -2,6 +2,7 @@ import 'dart:convert';
 
 
 import 'package:ehr_mobile/model/country.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/model/education_level.dart';
@@ -25,8 +26,10 @@ import 'package:ehr_mobile/login_screen.dart';
 class EditDemographicsIndex extends StatefulWidget {
   final String lastName, firstName, sex, nationalId, indexTestId, personId;
   final DateTime birthDate;
+  final String htsId, visitId;
+  final HtsRegistration htsRegistration;
 
-  EditDemographicsIndex(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId, this.indexTestId, this.personId);
+  EditDemographicsIndex(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -647,7 +650,7 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        IndexPatientAddress(patient, widget.indexTestId, widget.personId)));
+                                                                        IndexPatientAddress(patient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
                                                           }
 
                                                         },

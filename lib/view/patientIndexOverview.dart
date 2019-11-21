@@ -28,8 +28,11 @@ class PatientIndexOverview extends StatefulWidget {
   final Person patient;
   final String indexTestId;
   final String personId;
+  final String visitId;
+  final String htsId;
+  final HtsRegistration htsRegistration;
 
-  PatientIndexOverview(this.patient, this.indexTestId, this.personId);
+  PatientIndexOverview(this.patient, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
@@ -143,7 +146,7 @@ class OverviewState extends State<PatientIndexOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ReceptionVitals(_patient.id, visitId, _patient)),
+                      ReceptionVitals(_patient.id, visitId, _patient, htsId)),
             )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
@@ -165,7 +168,7 @@ class OverviewState extends State<PatientIndexOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient,htsRegistration)),
+                      ArtReg(_patient.id, visitId, _patient,htsRegistration, htsId)),
             ))
 
           ],
@@ -415,27 +418,12 @@ class OverviewState extends State<PatientIndexOverview> {
                                                   onPressed: () {
 
                                                     Navigator.push(context,MaterialPageRoute(
-                                                        builder: (context)=> HivInformation(widget.indexTestId, widget.patient, widget.personId)
+                                                        builder: (context)=> HivInformation(widget.indexTestId, widget.patient, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
                                                     ));
                                                   },
                                                 ),
                                               )
 
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 
@@ -472,7 +460,7 @@ class OverviewState extends State<PatientIndexOverview> {
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(
-                        _patient.id, visitId, _patient)),
+                        _patient.id, visitId, _patient, htsId)),
           ),
           ),
           new RoundedButton(text: "HTS",  onTap: () {
@@ -496,7 +484,7 @@ class OverviewState extends State<PatientIndexOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient, htsRegistration)),
+                    ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
           ),),
 
 

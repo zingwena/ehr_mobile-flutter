@@ -116,12 +116,13 @@ class _CbsOverview extends State<CbsOverview> {
 
     try {
       hts = await htsChannel.invokeMethod('getHtsId', patientId);
+      setState(() {
+        htsId = hts;
+      });
+
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      htsId = hts;
-    });
 
 
   }
@@ -151,7 +152,7 @@ class _CbsOverview extends State<CbsOverview> {
             elevation: 0.0,
             centerTitle: true,
             title:new Column(children: <Widget>[
-              new Text("CBS Overview"),
+              new Text("Sexual History Overview"),
               new Text("Patient Name : " + " "+ widget.patient.firstName + " " + widget.patient.lastName)
 
             ],)
@@ -499,7 +500,7 @@ class _CbsOverview extends State<CbsOverview> {
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(
-                        _patient.id, visitId, _patient)),
+                        _patient.id, visitId, _patient, htsId)),
           ),
           ),
           new RoundedButton(text: "HTS",  onTap: () {
@@ -523,7 +524,7 @@ class _CbsOverview extends State<CbsOverview> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient, htsRegistration)),
+                    ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
           ),),
 
 
