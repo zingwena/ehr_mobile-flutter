@@ -11,16 +11,12 @@ import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hiv_screening.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
-/*
-import 'package:ehr_mobile/home_screen.dart';
-*/
 import 'package:ehr_mobile/view/reception_vitals.dart';
-import 'package:ehr_mobile/view/register_index_patient.dart';
-import 'package:ehr_mobile/view/hiv_testing_index_contact_search.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../sidebar.dart';
 import 'art_reg.dart';
 
 
@@ -97,54 +93,7 @@ class PelationshipListState extends State<RelationshipListPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            /*   new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),  onTap: () {
-              if(htsRegistration == null ){
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
-                ));
-              } else {
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
-                ));
-              }
-            }),*/
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            ))
-
-          ],
-        ),
-      ),
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(

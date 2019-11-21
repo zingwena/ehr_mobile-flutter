@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/disclosuremethod.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -25,16 +26,21 @@ import 'package:cbs_app/view/bottomnavigation.dart';
 import 'package:cbs_app/home_screen.dart';
 */
 import 'package:intl/intl.dart';
+
+import '../sidebar.dart';
 /*import 'package:cbs_app/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
 
 class PatientIndexHivInfo extends StatefulWidget {
-    Person person;
-    String personId;
-  IndexContact indexcontact;
+   final  Person person;
+   final String personId;
+  final IndexContact indexcontact;
+  final String htsId;
+  final String visitId;
+  final HtsRegistration htsRegistration;
 
-  PatientIndexHivInfo(this.indexcontact, this.personId, this.person);
+  PatientIndexHivInfo(this.indexcontact, this.personId, this.person, this.visitId, this.htsRegistration, this.htsId);
   @override
   State createState() {
     return _PatientIndexHivInfo();
@@ -212,6 +218,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
     final PersonBloc _personBloc = BlocProvider.of<PersonBloc>(context);
 */
     return Scaffold(
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(

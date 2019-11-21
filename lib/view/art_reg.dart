@@ -7,6 +7,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../sidebar.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
@@ -23,7 +24,8 @@ class ArtReg extends StatefulWidget {
   String visitId;
   Person person;
   HtsRegistration htsRegistration;
-  ArtReg(this.personId, this.visitId, this.person, this.htsRegistration);
+  String htsId;
+  ArtReg(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -82,47 +84,8 @@ class _ArtReg extends State<ArtReg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Registration(widget.visitId,widget.personId, widget.person)),
-            )),
-            new ListTile( leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            ))
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
 
-          ],
-        ),
-      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -367,7 +330,7 @@ class _ArtReg extends State<ArtReg> {
                                                           setState(() {
                                                             ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, dateOfEnrollment, dateOfTest, oi_art_number);
                                                             artRegistration(artRegistrationDetails);
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration)));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
 
 
 

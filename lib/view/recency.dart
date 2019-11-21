@@ -182,7 +182,7 @@ class _Recency extends State<RecencyTest> {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
-        print("HHHHHHHHHHHHHHHHHHH results from android"+ _dropDownListEntryPoints.toString());
+        print("HHHHHHHHHHHHHHHHHHH results from android in recency"+ _dropDownListEntryPoints.toString());
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
@@ -696,27 +696,6 @@ class _Recency extends State<RecencyTest> {
     );
   }
 
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(
-            text: "HTS Registration",
-          ),
-          new RoundedButton(
-            text: "HTS Pre-Testing",
-            /*    onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
-            ),*/
-          ),
-          new RoundedButton(text: "Hts Result", selected: true,
-          ),
-        ],
-      ),
-    );
-  }
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;

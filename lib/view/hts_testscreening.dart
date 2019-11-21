@@ -716,28 +716,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
     );
   }
 
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(
-            text: "HTS Registration",
-          ),
-          new RoundedButton(
-            text: "HTS Pre-Testing",
-            /*    onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
-            ),*/
-          ),
-          new RoundedButton(text: "Hts Result", selected: true,
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;
     var labInvestTestResponse;

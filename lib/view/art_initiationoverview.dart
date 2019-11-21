@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import '../sidebar.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -28,8 +29,9 @@ class ArtInitiationOverview extends StatefulWidget {
   final Person person;
   final String personId;
   final String visitId;
-
-  ArtInitiationOverview(this.artInitiation, this.person, this.personId, this.visitId);
+  final String htsId;
+  final HtsRegistration htsRegistration;
+  ArtInitiationOverview(this.artInitiation, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
@@ -124,41 +126,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     drawer: new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-         /*   new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Registration(widget.visitId,widget.personId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person)),
-            ))*/
-
-          ],
-        ),
-      ),
+     drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(

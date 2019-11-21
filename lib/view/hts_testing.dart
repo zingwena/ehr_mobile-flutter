@@ -17,10 +17,6 @@ class _HtcTestingState extends State<HtcTesting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //  appBar: AppBar(
-      //  backgroundColor: Colors.blue,
-      //  title: Text('Reception Vitals'),
-      //  ),
       backgroundColor: Colors.blue.shade200,
       body: ListView(
         children: <Widget>[

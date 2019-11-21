@@ -1,3 +1,4 @@
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -13,6 +14,8 @@ import 'package:ehr_mobile/view/bottomnavigation.dart';
 */
 /*import 'package:ehr_mobile/home_screen.dart';*/
 import 'package:intl/intl.dart';
+
+import '../sidebar.dart';
 /*import 'package:cbs_app/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/person_bloc.dart';*/
@@ -21,7 +24,10 @@ class HivInformation extends StatefulWidget {
   String indexId;
   Person person;
   String personId;
-  HivInformation(this.indexId, this.person, this.personId);
+  String visitId;
+  String htsId;
+  HtsRegistration htsRegistration;
+  HivInformation(this.indexId, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -168,10 +174,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) {
-/*
-    final PersonBloc _personBloc = BlocProvider.of<PersonBloc>(context);
-*/
     return Scaffold(
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -524,7 +528,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                 IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person.id, _currentRelation, result, date, null, null, null, null, null);
                                                                     Navigator.push(
                                                                       context,
-                                                                      MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact, widget.personId, widget.person)),);
+                                                                      MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact, widget.personId, widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),);
 
                                                                 }
                                                               ),
@@ -564,93 +568,5 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
       // bottomNavigationBar: BottomNavigation(),
     );
   }
-
-/*  Widget _buildLinkBar({bool showFirstOption}) {
-    return
-      Row(
-        children: <Widget>[
-          new LinkBarItems(
-            text: "Personal Details />",
-
-          ),
-          new LinkBarItems(
-            text: "Address & Phone No. />",
-          ),
-          new LinkBarItems(
-            text: "HIV Info />",
-            selected: true,
-          ),
-          new LinkBarItems(
-            text: "HIV Disclosure />",
-
-          ),
-
-        ],
-      );
-  }*/
-
-
-  /* Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(
-            text: "VITALS",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ReceptionVitals()),
-            ),
-          ),
-          new RoundedButton(
-            text: "HTS",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HivScreening()),
-            ),
-          ),
-          new RoundedButton(
-            text: "ART",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ReceptionVitals()),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  */
-
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(
-            text: "Personal Details",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            ),
-          ),
-          new RoundedButton(
-            text: "Address & Phone No.", selected: true,
-
-          ),
-          new RoundedButton(
-            text: "HIV Info",
-
-          ),
-          new RoundedButton(
-            text: "Disclosure & Partner Testing",
-
-          ),
-        ],
-      ),
-    );
-  }
-
 
 }

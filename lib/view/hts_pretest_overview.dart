@@ -476,9 +476,6 @@ class PretestOverviewState extends State<PretestOverview> {
                         )),
           ),
           ),
-      //HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
-
-      // HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
 
       new RoundedButton(text: "HTS Pre-Testing", selected: true,
           ),

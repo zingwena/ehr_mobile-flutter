@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/address.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/town.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
@@ -8,6 +9,7 @@ import 'package:ehr_mobile/view/patientIndexOverview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../sidebar.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 
@@ -15,8 +17,11 @@ class IndexPatientAddress extends StatefulWidget {
   final Person patient;
   final String indexTestId;
   final String personId;
+  final String visitId;
+  final String htsId;
+  final HtsRegistration htsRegistration;
 
-  IndexPatientAddress(this.patient, this.indexTestId, this.personId);
+  IndexPatientAddress(this.patient, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -67,6 +72,7 @@ class _PatientAddressState extends State<IndexPatientAddress> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      drawer: Sidebar(widget.patient, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -304,7 +310,7 @@ class _PatientAddressState extends State<IndexPatientAddress> {
                                                                 Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
-                                                                        builder: (context) => PatientIndexOverview(registeredPatient, widget.indexTestId, widget.personId)));
+                                                                        builder: (context) => PatientIndexOverview(registeredPatient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
                                                               });
                                                               SnackBar(
                                                                 content: Text("Patient saved"),

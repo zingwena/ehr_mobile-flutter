@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/person.dart';
 
 import 'package:flutter/services.dart';
 
+import '../sidebar.dart';
 import 'edit_demographics.dart';
 
 class HivScreening extends StatefulWidget {
+  final String visitId;
+  final String personId;
+  final String htsId;
+  final HtsRegistration htsRegistration;
+  final Person person;
+
+  HivScreening(this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
   @override
   State createState() {
     return _HivScreening();
@@ -115,11 +125,11 @@ class _HivScreening extends State<HivScreening> {
   @override
   Widget build(BuildContext context) {
 
-
     return Scaffold(
       // appBar: AppBar(
       // title: Text('HIV Screening'),
       //  ),
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
