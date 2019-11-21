@@ -11,12 +11,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 
 public class ArvCombinationRegimenEhr extends NameCode {
 
+    private String arvCombinationRegimenId;
     private String regimenType;
     private String arvAgeGroup;
 
-    @Ignore
-    public ArvCombinationRegimenEhr(@NonNull String code, @NonNull String name, String regimenType, String arvAgeGroup) {
+    public ArvCombinationRegimenEhr(String code, String name, String arvCombinationRegimenId, String regimenType, String arvAgeGroup) {
         super(code, name);
+        this.arvCombinationRegimenId = arvCombinationRegimenId;
         this.regimenType = regimenType;
         this.arvAgeGroup = arvAgeGroup;
     }
@@ -25,11 +26,19 @@ public class ArvCombinationRegimenEhr extends NameCode {
         List<ArvCombinationRegimen> regiments = new ArrayList<>();
         for (ArvCombinationRegimenEhr item : items) {
             regiments.add(new ArvCombinationRegimen(
-                    item.getCode(), item.getName(), RegimenType.get(item.getRegimenType()), AgeGroup.get(item.getArvAgeGroup())
+                    item.getArvCombinationRegimenId(), item.getName()+ " "+item.getCode(), RegimenType.get(item.getRegimenType()), AgeGroup.get(item.getArvAgeGroup())
                     //item.getCode(), item.getName(), null, null
             ));
         }
         return regiments;
+    }
+
+    public String getArvCombinationRegimenId() {
+        return arvCombinationRegimenId;
+    }
+
+    public void setArvCombinationRegimenId(String arvCombinationRegimenId) {
+        this.arvCombinationRegimenId = arvCombinationRegimenId;
     }
 
     public String getRegimenType() {

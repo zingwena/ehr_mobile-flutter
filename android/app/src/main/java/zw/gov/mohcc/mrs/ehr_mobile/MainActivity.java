@@ -1090,10 +1090,11 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<InvestigationTestkitModel> call, Response<InvestigationTestkitModel> response) {
                 List<InvestigationTestkit> investigationTestKits = new ArrayList<>();
+                Log.d(TAG, "Investigation testkits : " + response.body().getContent());
                 for (InvestigationTestkitEhr item : response.body().getContent()) {
                     //@NonNull String id, String investigationId, String testKitId
                     investigationTestKits.add(new InvestigationTestkit(
-                            item.getInvestigationTestkitId(), item.getInvestigationId(), item.getTestKitId()));
+                            item.getInvestigationTestKitId(), item.getInvestigationId(), item.getTestKitId()));
                 }
                 terminologyService.saveInvestigationTestKits(investigationTestKits);
             }
