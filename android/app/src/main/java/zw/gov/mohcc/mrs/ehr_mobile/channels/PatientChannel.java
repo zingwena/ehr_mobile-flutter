@@ -12,6 +12,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.RelationshipDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.RelationshipViewDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Relationship;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.raw.PersonQuery;
@@ -50,27 +51,14 @@ public class PatientChannel {
                     String relation_id = relationshipService.createRelationShip(relationship);
                     Log.i(TAG, "HERE IS THE RELATIONSHIP ID " + relation_id);
                     result1.success(relation_id);
-
-
                 }
                 if(call.method.equals("getRelationshipList")){
-                    List<Person>contacts = new ArrayList<>();
                     Gson gson = new Gson();
-                    List<Relationship> person_relationships = ehrMobileDatabase.relationshipDao().findByPersonId(arguments);
-                    Log.i(TAG, "HERE ARE THE RELATIONSHIPS FOUND BY PERSON ID"+ person_relationships.toString());
-                    List<Relationship>member_relationships = ehrMobileDatabase.relationshipDao().findByMemberId(arguments);
-                    for(Relationship relationship: person_relationships){
-                        Person person = ehrMobileDatabase.personDao().findPatientById(relationship.getMemberId());
-                        contacts.add(person);
-                    }
-                    for(Relationship relationship: member_relationships){
-                        Person person = ehrMobileDatabase.personDao().findPatientById(relationship.getPersonId());
-                        contacts.add(person);
-                    }
-                    Log.i(TAG, "HERE IS THE LIST OF CONTACTS RETRIEVED "+ contacts.toString());
-                    String contact_list = gson.toJson(contacts);
-                    result1.success(contact_list);
+                    List<RelationshipViewDTO> person_relationships = ehrMobileDatabase.relationshipDao().findByPersonId(arguments);
 
+                    Log.i(TAG, "HERE IS THE LIST OF CONTACTS RETRIEVED "+ person_relationships.toString());
+                    String contact_list = gson.toJson(person_relationships);
+                    result1.success(contact_list);
                 }
             }
 

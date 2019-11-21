@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import zw.gov.mohcc.mrs.ehr_mobile.dto.RelationshipViewDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RelationshipType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Relationship;
@@ -30,6 +31,10 @@ public class RelationshipService {
 
     public Relationship getRelationshipByPersonIdAndMemberId(String personId, String memberId) {
         return ehrMobileDatabase.relationshipDao().findByPersonIdAndMemberId(personId, memberId);
+    }
+
+    public List<RelationshipViewDTO> getPersonRelations(String personId) {
+        return ehrMobileDatabase.relationshipDao().findByPersonId(personId);
     }
 
     public List<Relationship> getByPersonIdAndMemberIdRelationAndSex(String personId, String memberId,
