@@ -21,7 +21,10 @@ LaboratoryInvestigationTest _$LaboratoryInvestigationTestFromJson(
     json['visitId'] as String,
     json['testkit'] == null ? null: TestKit.fromJson(json['testkit'] as Map<String, dynamic>),
     json['startTime'] as String,
-    json['endTime'] as String
+    json['endTime'] as String,
+    json['personId'] as String,
+
+
 
   );
 }

@@ -650,7 +650,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                       widget.visitId,
                                                       labInvestId,
                                                       null, null,
-                                                      result, widget.visitId, testKitobj, null, null);
+                                                      result, widget.visitId, testKitobj, null, null, widget.personId);
 
                                                   saveLabInvestigationTest(
                                                       labInvestTest);

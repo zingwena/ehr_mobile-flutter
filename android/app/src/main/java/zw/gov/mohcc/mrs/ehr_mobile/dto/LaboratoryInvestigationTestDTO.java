@@ -2,23 +2,9 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
-import androidx.room.TypeConverters;
-
 import java.io.Serializable;
 import java.util.Date;
-
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
-
-import static androidx.room.ForeignKey.CASCADE;
-
 public class LaboratoryInvestigationTestDTO implements Serializable {
 
     @NonNull

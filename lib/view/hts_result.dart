@@ -459,7 +459,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: getNextTestButton(),
+                                                        child: Text("Proceed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
                                                           onPressed: ()  {
                                                             if (final_result == 'Pending' || final_result == '') {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId, widget.htsRegistration)));
