@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
@@ -691,60 +692,7 @@ class _Recency extends State<RecencyTest> {
 
 
       body:_body(list),
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Reception Vitals"), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.personId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS"), onTap: () {
-              if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.personId, widget.person)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, widget.personId, widget.htsId, widget.visitId, widget.person)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("ART"), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.personId, widget.visitId, widget.person, widget.htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
-            )),
-
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
     );
   }
 

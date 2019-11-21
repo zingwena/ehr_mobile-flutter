@@ -2,6 +2,7 @@ import 'dart:convert';
 
 
 import 'package:ehr_mobile/model/country.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/model/education_level.dart';
@@ -9,9 +10,11 @@ import 'package:ehr_mobile/model/nationality.dart';
 import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
+import 'package:ehr_mobile/view/index_patient_address.dart';
 import 'package:ehr_mobile/view/patient_address.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/link_bar.dart';
+import 'package:ehr_mobile/view/relation_person_address.dart';
 
 import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
@@ -21,11 +24,17 @@ import 'package:flutter/services.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 
-class EditDemographics extends StatefulWidget {
-  final String lastName, firstName, sex, nationalId;
+class EditDemographicsRelation extends StatefulWidget {
+  final String lastName, firstName, sex, nationalId, patient_personId;
   final DateTime birthDate;
+  final Person _current_person;
+  final visitId;
+  final htsId;
+  final HtsRegistration htsRegistration;
 
-  EditDemographics(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId);
+
+  EditDemographicsRelation(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId,  this.patient_personId, this._current_person, this.visitId,
+      this.htsId, this.htsRegistration);
 
   @override
   State createState() {
@@ -33,7 +42,7 @@ class EditDemographics extends StatefulWidget {
   }
 }
 
-class _EditDemographicsState extends State<EditDemographics> {
+class _EditDemographicsState extends State<EditDemographicsRelation> {
   static const platform = MethodChannel('example.channel.dev/people');
   static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
 
@@ -161,7 +170,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   List<DropdownMenuItem<String>>
-      getDropDownMenuItemsIdentifiedEducationLevel() {
+  getDropDownMenuItemsIdentifiedEducationLevel() {
     List<DropdownMenuItem<String>> items = new List();
     for (EducationLevel educationLevel in _educationLevelList) {
       // here we are creating the drop down menu items, you can customize the item right here
@@ -269,10 +278,9 @@ class _EditDemographicsState extends State<EditDemographics> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("Continue Patient Registration", style: TextStyle(
+                    child: Text(" Patient Demographics Index", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -283,7 +291,6 @@ class _EditDemographicsState extends State<EditDemographics> {
                               BoxConstraints viewportConstraints) {
                             return Column(
                               children: <Widget>[
-                                //_buildLinkBar(),
                                 Container(
                                   height: 2.0,
                                   color: Colors.blue,
@@ -604,7 +611,6 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                             _formValid = true;
                                                           });
 
-
                                                           if (_formValid) {
                                                             _formKey.currentState.save();
 
@@ -626,10 +632,11 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        PatientAddress(patient)));
+                                                                        RelationPatientAddress(patient, widget.patient_personId, widget._current_person, widget.visitId,
+                                                                        widget.htsId, widget.htsRegistration)));
                                                           }
 
-                                                        },
+                                                          },
                                                       ),
                                                     ),
 
@@ -685,6 +692,7 @@ class _EditDemographicsState extends State<EditDemographics> {
         ],
       );
   }
+
 
   Widget _buildButtonsRow() {
     return Padding(
@@ -782,41 +790,6 @@ class _EditDemographicsState extends State<EditDemographics> {
     }
   }
 
-//  _handleAdd(String dataType) async {
-//    confirmDialog(context).then((bool value) async {});
-//  }
-
-
-//
-//  Future<bool> confirmDialog(BuildContext context) async {
-//    return showDialog<bool>(
-//      context: context,
-//      barrierDismissible: false, // user must tap button!
-//      builder: (BuildContext context) {
-//        return AlertDialog(
-//          title: Text("Nationality List"),
-//          content: Container(
-//            child: SingleChildScrollView(
-//              child: Column(
-//                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                children: <Widget>[
-//                  table(),
-//                ],
-//              ),
-//            ),
-//          ),
-//          actions: <Widget>[
-//            FlatButton(
-//                onPressed: () {
-//                  Navigator.of(context).pop(true);
-//                },
-//                child: Text("Cancel"))
-//          ],
-//        );
-//      },
-//    );
-//  }
-
   void changedDropDownItem(String selectedGender) {
     setState(() {
       _currentGender = selectedGender;
@@ -874,13 +847,13 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   void changedDropDownItemCountry(String selectedCountry) {
-          if(selectedCountry!=null) {
-            setState(() {
-              _currentCountry = selectedCountry;
-              _dropdownError = null;
-              countryIsValid = !countryIsValid;
-            });
-          }
+    if(selectedCountry!=null) {
+      setState(() {
+        _currentCountry = selectedCountry;
+        _dropdownError = null;
+        countryIsValid = !countryIsValid;
+      });
+    }
   }
 
   Future<void> registerPatient(Person person)async{
