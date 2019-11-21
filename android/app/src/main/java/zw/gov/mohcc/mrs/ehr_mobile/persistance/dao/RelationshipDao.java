@@ -10,6 +10,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
+import zw.gov.mohcc.mrs.ehr_mobile.dto.RelationshipViewDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RelationshipType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
@@ -29,8 +30,8 @@ public interface RelationshipDao {
     @Insert
     void saveOne(Relationship relationship);
 
-    @Query("SELECT * FROM Relationship WHERE personId=:personId")
-    List<Relationship> findByPersonId(String personId);
+    @Query("SELECT p.id, p.firstName, p.lastName, r.relation  FROM Relationship r inner join Person p on p.id=r.memberId WHERE personId=:personId")
+    List<RelationshipViewDTO> findByPersonId(String personId);
 
     @Query("SELECT * FROM Relationship WHERE personId=:personId and memberId=:memberId")
     Relationship findByPersonIdAndMemberId(String personId, String memberId);

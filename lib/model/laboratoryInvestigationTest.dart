@@ -15,10 +15,11 @@ class LaboratoryInvestigationTest{
    Result result;
    String visitId;
    TestKit testKit;
+   String personId;
 
 
    LaboratoryInvestigationTest(this.id, this.laboratoryInvestigationId,
-       this.startDate, this.endDate, this.result, this.visitId, this.testKit, this.startTime, this.endTime);
+       this.startDate, this.endDate, this.result, this.visitId, this.testKit, this.startTime, this.endTime, this.personId);
 
    factory LaboratoryInvestigationTest.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestFromJson(json);
 

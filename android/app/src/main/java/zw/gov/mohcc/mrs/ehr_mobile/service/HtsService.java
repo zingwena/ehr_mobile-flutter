@@ -215,6 +215,7 @@ public class HtsService {
         LaboratoryInvestigationTest test = new LaboratoryInvestigationTest();
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
+        test.setLaboratoryInvestigationId(laboratoryInvestigationId);
         test.setStartTime(DateUtil.getDateDiff(true));
         test.setEndTime(DateUtil.getDateDiff(false));
         ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);

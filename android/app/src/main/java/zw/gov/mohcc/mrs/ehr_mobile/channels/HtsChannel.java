@@ -18,6 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
@@ -402,7 +403,10 @@ public class HtsChannel {
                         }
                         if(methodCall.method.equals("saveRecency")){
                             try{
-                                Log.d(TAG, "Arguments passed from flutter: " + arguments);
+                                Log.d(TAG, "Arguments passed from flutter in save recency: " + arguments);
+                                LaboratoryInvestigationTestDTO laboratoryInvestigationTestDTO = gson.fromJson(arguments, LaboratoryInvestigationTestDTO.class);
+                                String labinvestTestId = htsService.processOtherInvestigationResults(laboratoryInvestigationTestDTO);
+                                result.success(labinvestTestId);
 
                             }catch (Exception e){
                                 Log.d(TAG, "Exception thrown in getRecencyResults method");
