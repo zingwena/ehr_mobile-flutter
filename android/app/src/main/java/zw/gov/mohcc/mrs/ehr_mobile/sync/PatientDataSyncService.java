@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,20 +16,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.builder.HtsDtoMapper;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.builder.PersonDtoBuilder;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.sync.adapter.dto.HtsDto;
-import zw.gov.mohcc.mrs.sync.adapter.dto.HtsResponseDto;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PatientSyncDto;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PersonResponseDto;
+import zw.gov.mohcc.mrs.sync.adapter.dto.VitalDto;
 import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class PatientDataSyncService {
     private EhrMobileDatabase ehrMobileDatabase;
     private String baseUrl;
     private String token;
-    final String TAG="PatientDataSyncService";
+    final String TAG="PatientSyncService----";
     public PatientDataSyncService(EhrMobileDatabase ehrMobileDatabase,String baseUrl,String token){
         this.ehrMobileDatabase=ehrMobileDatabase;
         this.baseUrl=baseUrl;
@@ -53,20 +53,15 @@ public class PatientDataSyncService {
 
     }
 
-//    public void syncNewHts(String personId,DataSyncService service){
-//        List<Hts> fetch = ehrMobileDatabase.htsDao().findHtsByPersonAndStatus(personId,RecordStatus.NEW.getStatus());
-//        for (Hts hts : fetch) {
-//            HtsDto htsDto=generateHtsDto(hts);
-//                Call<HtsResponseDto> call = service.syncHts("Bearer " + token,htsDto);
-//                performHtsSync(call,hts,ehrMobileDatabase);
-//        }
-//    }
-
     private PatientSyncDto createSyncDto(Person person){
         PatientSyncDto dto=new PatientSyncDto();
         dto.setPersonDto(new PersonDtoBuilder().fromPerson(person).build());
         HtsDto htsDto = createHtsDto(person);
         dto.setHtsDto(htsDto);
+
+        VitalSyncService vitalSyncService=new VitalSyncService(ehrMobileDatabase);
+        List<VitalDto> vitals = vitalSyncService.getVitalsByPersonId(person.getId());
+        dto.setVitalDtos(vitals);
         return dto;
     }
 
@@ -78,7 +73,6 @@ public class PatientDataSyncService {
                     System.out.println(response.body());
                     person.setStatus(RecordStatus.SYNCED);
                     ehrMobileDatabase.personDao().updatePatient(person);
-                    //syncNewHts(person.getId(),service);
                 }else {
                     Log.e("PATIENT_APOLLO",response.message());
                 }
@@ -103,35 +97,11 @@ public class PatientDataSyncService {
         return htsDto;
     }
 
-    private HtsDto generateHtsDto(Hts hts){
-        HtsDtoMapper mapper = Mappers.getMapper(HtsDtoMapper.class);
-        HtsDto htsDto=null;
-        if(hts!=null){
-            htsDto= mapper.htsToHtsDto(hts);
-            Log.i(TAG,"HtsDto---"+htsDto.getDateOfHivTest());
-            Log.i(TAG,"HtsDto---"+htsDto.getId());
-            Log.i(TAG,"HtsDto---"+htsDto.getLaboratoryInvestigationId());
+    private void createHtsScreenDto(Person person){
+        List<HtsScreening> htsScreenings=ehrMobileDatabase.htsScreeningDao().findByPersonId(person.getId());
+        for (HtsScreening htsScreening:htsScreenings) {
+            Log.i("HTS SCREENING===",htsScreening.getVisitId());
         }
-        return htsDto;
     }
 
-
-    private void performHtsSync(Call<HtsResponseDto> call, Hts hts, EhrMobileDatabase ehrMobileDatabase){
-        call.enqueue(new Callback<HtsResponseDto>() {
-            @Override
-            public void onResponse(Call<HtsResponseDto> call, Response<HtsResponseDto> response) {
-                if(response.isSuccessful()){
-                    System.out.println(response.body());
-                    hts.setStatus(RecordStatus.SYNCED);
-                    ehrMobileDatabase.htsDao().updateHts(hts);
-                }else {
-                    Log.e("PATIENT_APOLLO",response.message());
-                }
-            }
-            @Override
-            public void onFailure(Call<HtsResponseDto> call, Throwable t) {
-                System.out.println(t.getMessage());
-            }
-        });
-    }
 }

@@ -3,6 +3,8 @@ package zw.gov.mohcc.mrs.ehr_mobile;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.room.Transaction;
+
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -10,7 +12,9 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import io.flutter.app.FlutterActivity;
@@ -28,16 +32,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.HtsChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
+import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
+import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
@@ -48,7 +57,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
-import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdModel;
@@ -62,10 +70,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKitModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKitTestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
-import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
@@ -80,7 +88,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
 import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class MainActivity extends FlutterActivity {
@@ -102,6 +109,7 @@ public class MainActivity extends FlutterActivity {
     private TerminologyService terminologyService;
     private HistoryService historyService;
     private IndexTestingService indexTestingService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -479,87 +487,57 @@ public class MainActivity extends FlutterActivity {
 
     }
 
+    @Transaction
     public void getTestKits(Token token, String url) {
-        DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
-        //Call First Level Test Kits
-        Call<List<TestKit>> call = service.getTestKits("Bearer " + token.getId_token(), "FIRST", new Page().size);
-
-        call.enqueue(new Callback<List<TestKit>>() {
+        final DataSyncService service = RetrofitClient.getRetrofitInstance(url).create(DataSyncService.class);
+        Call<TestKitModel> call = service.getAllTestKits("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<TestKitModel>() {
             @Override
-            public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                List<TestKit> testKits = new ArrayList<TestKit>();
+            public void onResponse(Call<TestKitModel> call, Response<TestKitModel> response) {
+                List<TestKit> testKits = new ArrayList<>();
+
                 if (response.isSuccessful()) {
-                    for (TestKit item : response.body()) {
-                        testKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "FIRST"));
+                    for (TestKit item : response.body().getContent()) {
+                        testKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription()));
                     }
+                    int count = saveTestKitsToDB(testKits);
+                    Log.i(TAG, "Saved testkits : " + ehrMobileDatabase.testKitDao().getAllTestKits());
 
+                    for (TestLevel testLevel : TestLevel.getEhrTestLevels()) {
+                        Log.d(TAG, "Entering loop at this point : " + testLevel);
+                        Call<List<TestKit>> innerCall = service.getTestKitLevels("Bearer " + token.getId_token(), testLevel);
+                        Log.d(TAG, "After call to EHR for test levels");
+                        innerCall.enqueue(new Callback<List<TestKit>>() {
+                            @Override
+                            public void onResponse(Call<List<TestKit>> innerCall, Response<List<TestKit>> innerResponse) {
+                                // remove all duplicate testKitIds at this stage
+                                Log.d(TAG, "Is anything coming from EHR : " + innerResponse.body());
+                                Set<TestKit> formattedTestsKits = new HashSet<>(innerResponse.body());
+                                Log.d(TAG, "After formatting and removing all duplicated testkit IDS : " + formattedTestsKits);
+                                List<TestKitTestLevel> testKitTestLevels = new ArrayList<>();
+                                for (TestKit item : formattedTestsKits) {
+                                    testKitTestLevels.add(new TestKitTestLevel(item.getCode(), testLevel));
+                                }
+                                Log.i(TAG, "Test kits with test levels : " + testKitTestLevels);
+                                terminologyService.saveTestkitTestLevels(testKitTestLevels);
+                                Log.i(TAG, "Saved test kit test levels : " + ehrMobileDatabase.testKitTestLevelDao().findAll());
+                            }
 
-                    System.out.println("test kiiiiiiiiiiiiiits ==========" + testKits);
-
-                    saveTestKitsToDB(testKits);
-
-                } else {
-
+                            @Override
+                            public void onFailure(Call<List<TestKit>> innerCall, Throwable t) {
+                                Log.e(TAG, "Error has occurred : " + t.getMessage());
+                            }
+                        });
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<TestKit>> call, Throwable t) {
-
+            public void onFailure(Call<TestKitModel> call, Throwable t) {
+                Log.e(TAG, "Error saving testkits : " + t.getMessage());
             }
         });
-        //Call All Second Level Test kits
-        Call<List<TestKit>> callSecond = service.getTestKits("Bearer " + token.getId_token(), "SECOND", new Page().size);
-        callSecond.enqueue(new Callback<List<TestKit>>() {
-            @Override
-            public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                List<TestKit> secondTestKits = new ArrayList<TestKit>();
-                if (response.isSuccessful()) {
-                    for (TestKit item : response.body()) {
-                        secondTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "SECOND"));
-                    }
-
-                    System.out.println("******Secondtest kiiiiiiiiiiiiiits ==========" + secondTestKits);
-                    saveTestKitsToDB(secondTestKits);
-
-
-                } else {
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<TestKit>> call, Throwable t) {
-
-            }
-        });
-        //Call all Third Level Test Kits
-        Call<List<TestKit>> callThird = service.getTestKits("Bearer " + token.getId_token(), "THIRD", new Page().size);
-        callThird.enqueue(new Callback<List<TestKit>>() {
-            @Override
-            public void onResponse(Call<List<TestKit>> call, Response<List<TestKit>> response) {
-                List<TestKit> thirdTestKits = new ArrayList<TestKit>();
-                if (response.isSuccessful()) {
-                    for (TestKit item : response.body()) {
-                        thirdTestKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription(), "THIRD"));
-                    }
-                    saveTestKitsToDB(thirdTestKits);
-
-                } else {
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<TestKit>> call, Throwable t) {
-
-            }
-        });
-
     }
-
 
     public void getNationalities(Token token, String baseUrl) {
 
@@ -928,7 +906,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 List<Religion> religionList = new ArrayList<Religion>();
                 for (BaseNameModel item : response.body().getContent()) {
-                    religionList.add(new Religion(String.valueOf(item.getCode()), item.getName()));
+                    religionList.add(new Religion(item.getCode(), item.getName()));
                 }
                 if (religionList != null && !religionList.isEmpty()) {
                     terminologyService.saveReligionToDB(religionList);
@@ -937,7 +915,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-                Log.i(TAG,t.getMessage());
+                Log.i(TAG, t.getMessage());
             }
         });
     }
@@ -950,7 +928,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 List<Town> townList = new ArrayList<Town>();
                 for (BaseNameModel item : response.body().getContent()) {
-                    townList.add(new Town(String.valueOf(item.getCode()), item.getName()));
+                    townList.add(new Town(item.getCode(), item.getName()));
                 }
                 if (townList != null && !townList.isEmpty()) {
                     terminologyService.saveTownToDB(townList);
@@ -998,6 +976,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.purposeOfTestDao().deletePurposeOfTests();
         ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
         ehrMobileDatabase.userDao().deleteUsers();
+        ehrMobileDatabase.testKitTestLevelDao().deleteAll();
         ehrMobileDatabase.testKitDao().deleteTestKits();
         ehrMobileDatabase.investigationDao().deleteInvestigations();
         ehrMobileDatabase.resultDao().deleteResults();
@@ -1011,12 +990,13 @@ public class MainActivity extends FlutterActivity {
     }
 
 
-    private void saveTestKitsToDB
+    private int saveTestKitsToDB
             (List<TestKit> testKits) {
         ehrMobileDatabase.testKitDao().insertTestKits(testKits);
+        Log.d(TAG, "^^&&&&&&& " + testKits);
         int testKitsCount = ehrMobileDatabase.testKitDao().getAllTestKits().size();
-        System.out.println("Test Kits *****" + testKitsCount);
 
+        return testKitsCount;
     }
 
     public void getSample(Token token, String baseUrl) {
@@ -1028,7 +1008,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 List<Sample> sampleList = new ArrayList<Sample>();
                 for (BaseNameModel item : response.body().getContent()) {
-                    sampleList.add(new Sample(String.valueOf(item.getCode()), item.getName()));
+                    sampleList.add(new Sample(item.getCode(), item.getName()));
                 }
                 if (sampleList != null && !sampleList.isEmpty()) {
                     terminologyService.saveSample(sampleList);
@@ -1037,7 +1017,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-                Log.i(TAG,t.getMessage());
+                Log.i(TAG, t.getMessage());
             }
         });
     }
@@ -1052,7 +1032,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 List<LaboratoryTest> laboratoryTestList = new ArrayList<LaboratoryTest>();
                 for (BaseNameModel item : response.body().getContent()) {
-                    laboratoryTestList.add(new LaboratoryTest(String.valueOf(item.getCode()), item.getName()));
+                    laboratoryTestList.add(new LaboratoryTest(item.getCode(), item.getName()));
                 }
                 if (laboratoryTestList != null && !laboratoryTestList.isEmpty()) {
                     terminologyService.saveLaboratoryTests(laboratoryTestList);
@@ -1061,7 +1041,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-                Log.i(TAG,t.getMessage());
+                Log.i(TAG, t.getMessage());
             }
         });
     }
@@ -1086,7 +1066,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<InvestigationModel> call, Throwable t) {
-                Log.i(TAG,t.getMessage());
+                Log.i(TAG, t.getMessage());
             }
         });
     }
@@ -1100,7 +1080,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
                 List<ArvCombinationRegimen> arvCombinationRegimenList = new ArrayList<ArvCombinationRegimen>();
                 for (BaseNameModel item : response.body().getContent()) {
-                    arvCombinationRegimenList.add(new ArvCombinationRegimen(String.valueOf(item.getCode()), item.getName()));
+                    arvCombinationRegimenList.add(new ArvCombinationRegimen(item.getCode(), item.getName()));
                 }
                 if (arvCombinationRegimenList != null && !arvCombinationRegimenList.isEmpty()) {
                     terminologyService.saveArvCombinationRegimen(arvCombinationRegimenList);
@@ -1109,7 +1089,7 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
-                Log.i(TAG,t.getMessage());
+                Log.i(TAG, t.getMessage());
             }
         });
     }

@@ -12,6 +12,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.IdentityDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.RegisterPersonDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
@@ -23,6 +24,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.sync.adapter.dto.HtsDto;
 import zw.gov.mohcc.mrs.sync.adapter.dto.HtsResponseDto;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKitModel;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PatientSyncDto;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PersonResponseDto;
 
@@ -70,8 +72,11 @@ public interface DataSyncService {
     @GET("purpose-of-tests")
     Call<TerminologyModel> getPurpose_Of_Tests(@Header("Authorization") String token, @Query("size") int size);
 
+    @GET("test-kits")
+    Call<TestKitModel> getAllTestKits(@Header("Authorization") String token, @Query("size") int size);
+
     @GET("test-kits/test-level/{LEVEL}")
-    Call<List<TestKit>> getTestKits(@Header("Authorization") String token, @Path("LEVEL") String level, @Query("size") int size);
+    Call<List<TestKit>> getTestKitLevels(@Header("Authorization") String token, @Path("LEVEL") TestLevel level);
 
     @GET("laboratory-tests")
     Call<TerminologyModel> getLaboratoryTests(@Header("Authorization") String token, @Query("size") int size);

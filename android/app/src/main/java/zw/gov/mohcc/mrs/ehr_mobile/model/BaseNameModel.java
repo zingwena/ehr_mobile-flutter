@@ -45,7 +45,7 @@ public class BaseNameModel implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof BaseEntity)) {
+        if (!(obj instanceof BaseNameModel)) {
             return false;
         }
         return this.getCode().equals(((BaseNameModel) obj).getCode());
