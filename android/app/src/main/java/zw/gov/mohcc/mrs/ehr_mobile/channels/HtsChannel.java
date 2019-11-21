@@ -403,7 +403,7 @@ public class HtsChannel {
                         }
                         if(methodCall.method.equals("saveRecency")){
                             try{
-                                Log.d(TAG, "Arguments passed from flutter in save recency: " + arguments);
+                                Log.d(TAG, "Agi " + arguments);
                                 LaboratoryInvestigationTestDTO laboratoryInvestigationTestDTO = gson.fromJson(arguments, LaboratoryInvestigationTestDTO.class);
                                 String labinvestTestId = htsService.processOtherInvestigationResults(laboratoryInvestigationTestDTO);
                                 result.success(labinvestTestId);
