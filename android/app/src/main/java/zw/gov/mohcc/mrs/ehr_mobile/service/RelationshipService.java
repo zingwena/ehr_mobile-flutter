@@ -85,7 +85,7 @@ public class RelationshipService {
             person = new Relationship(UUID.randomUUID().toString(), relationship.getPersonId(),
                     relationship.getMemberId(), relationship.getRelation(), relationship.getTypeOfContact());
 
-            member = new Relationship(UUID.randomUUID().toString(), relationship.getPersonId(),
+            member = new Relationship(UUID.randomUUID().toString(), relationship.getMemberId(),
                     relationship.getMemberId(), memberType, null);
         }
         Relationship [] items = {person, member};

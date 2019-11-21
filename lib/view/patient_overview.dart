@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/relationship_listPage.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_screening.dart';
@@ -66,13 +67,14 @@ class OverviewState extends State<Overview> {
     try {
       visit =
           await platform.invokeMethod('visit', patientId);
+      setState(() {
+        visitId = visit;
+      });
+
 
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      visitId = visit;
-    });
 
 
   }
@@ -80,16 +82,17 @@ class OverviewState extends State<Overview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+      });
+
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -98,15 +101,13 @@ class OverviewState extends State<Overview> {
 
     try {
       hts = await htsChannel.invokeMethod('getHtsId', patientId);
+      setState(() {
+        htsId = hts;
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      htsId = hts;
-    });
-
-
-  }
+     }
 
   String nullHandler(String value) {
     return value == null ? "" : value;
@@ -457,29 +458,14 @@ class OverviewState extends State<Overview> {
                         _patient.id, visitId, _patient)),
           ),
           ),
-          new RoundedButton(text: "HTS SCREENING", onTap: () =>     Navigator.push(
+
+          new RoundedButton(text: "HTS", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     Hts_Screening(widget.patient.id, htsId, null, visitId, _patient)),
           ),
           ),
-          new RoundedButton(text: "HTS",  onTap: () {
-            if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-                ));
-              }
-          }
-          ),
-
 
     new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
     context,
@@ -487,6 +473,15 @@ class OverviewState extends State<Overview> {
     builder: (context) =>
         ArtReg(_patient.id, visitId, _patient, htsRegistration)),
     ),),
+          new RoundedButton(text: "RELATIONS", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    RelationshipListPage(_patient, visitId, htsId, htsRegistration, _patient.id)
+            ),
+          ),
+          ),
+
 
         ],
       ),
@@ -513,6 +508,16 @@ Widget _sidemenu(){
       address = await patientChannel.invokeMethod('getAddress', patientId);
       patientphonenumber = await patientChannel.invokeMethod('getPhonenumber', patientId);
 
+      setState(() {
+        _maritalStatus = maritalStatus;
+        _educationLevel = educationLevel;
+        _occupation = occupation;
+        _nationality = nationality;
+        _address = address;
+        _phonenumber = patientphonenumber;
+      });
+      print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
+
 
       print('ADDRESS ADDRESS'+ address);
 
@@ -522,15 +527,6 @@ Widget _sidemenu(){
           'Something went wrong during getting marital status........cause $e');
     }
 
-    setState(() {
-      _maritalStatus = maritalStatus;
-      _educationLevel = educationLevel;
-      _occupation = occupation;
-      _nationality = nationality;
-      _address = address;
-      _phonenumber = patientphonenumber;
-    });
-    print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
 
   }
 

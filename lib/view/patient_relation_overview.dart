@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
-import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/view/add_relation_page.dart';
+import 'package:ehr_mobile/view/hiv_information.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -13,7 +16,6 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import 'art_reg.dart';
-import 'cbsquestion.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -23,23 +25,24 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
-class HtsScreeningOverview extends StatefulWidget {
-  final String htsId ;
-  final String personId;
+class PatientRelationOverview extends StatefulWidget {
+  final Person patient_relative;
+  final String patient_personId;
   final String visitId;
-  final Person person;
-  final HtsScreening htsScreening;
+  final String htsId;
+  final HtsRegistration htsRegistration;
+  final Person _cureentPerson;
 
-  HtsScreeningOverview(this.person, this.htsScreening, this.htsId, this.visitId, this.personId);
+  PatientRelationOverview(this.patient_relative, this.patient_personId, this.visitId, this.htsId, this.htsRegistration, this._cureentPerson);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _HtsScreeningOverview();
+    return OverviewState();
   }
 }
 
-class _HtsScreeningOverview extends State<HtsScreeningOverview> {
+class OverviewState extends State<PatientRelationOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
@@ -54,32 +57,15 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   String visitId;
-  String beenTestedBefore;
-  String patientOnArt;
-  String everbeenonprep;
   @override
   void initState() {
-    _patient = widget.person;
+    _patient = widget.patient_relative;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     print(_patient.toString());
-    if(widget.htsScreening.testedBefore == true){
-      beenTestedBefore = 'YES';
-    }else{
-      beenTestedBefore = 'NO';
-    }
-    if(widget.htsScreening.art == true){
-      patientOnArt = 'YES';
 
-    }else{
-      patientOnArt = 'NO';
+    getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
 
-    }
-    if(widget.htsScreening.beenOnPrep == true){
-      everbeenonprep = 'YES';
-    }else{
-      everbeenonprep = 'NO';
-    }
     super.initState();
   }
 
@@ -103,17 +89,16 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      setState(() {
-
-        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-      });
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
+    setState(() {
 
+      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+    });
 
 
   }
@@ -122,13 +107,12 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
 
     try {
       hts = await htsChannel.invokeMethod('getHtsId', patientId);
-      setState(() {
-        htsId = hts;
-      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-
+    setState(() {
+      htsId = hts;
+    });
 
 
   }
@@ -151,13 +135,13 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                   builder: (context) =>
                       SearchPatient()),
             )),
-          /*  new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview ",  style: new TextStyle(
+            new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview ",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
                       Overview(_patient)),
-            )),*/
+            )),
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals", style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
               context,
@@ -168,10 +152,13 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
             new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
                 color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
               if(htsRegistration == null ){
+                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=>  Registration(visitId, _patient.id, _patient)
                 ));
               } else {
+                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+
                 Navigator.push(context,MaterialPageRoute(
                     builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
                 ));
@@ -182,15 +169,8 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient, htsRegistration)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CbsQuestions(widget.personId, widget.htsId, htsRegistration, widget.visitId, widget.person)),
-            )),
+                      ArtReg(_patient.id, visitId, _patient,htsRegistration)),
+            ))
 
           ],
         ),
@@ -211,11 +191,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Column(children: <Widget>[
-              new Text("HTS Screening Overview"),
-              new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
-
-            ],)
+            title: new Text(
+                "Patient OverView"
+            ),
           ),
           Positioned.fill(
             child: Padding(
@@ -272,11 +250,12 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: beenTestedBefore),
+                                                                    text: _patient.firstName +" "+
+                                                                        _patient.lastName),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.person, color: Colors.blue),
-                                                                    labelText: "Been testes before?",
-                                                                    hintText: "Been testes before?"
+                                                                    labelText: "Full Name",
+                                                                    hintText: "Full Name"
                                                                 ),
                                                               ),
                                                             ),
@@ -287,11 +266,11 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        patientOnArt)),
+                                                                        _patient.sex)),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
-                                                                    labelText: "Are you on Art?",
-                                                                    hintText: "Are you on Art?"
+                                                                    labelText: "Sex",
+                                                                    hintText: "Sex"
                                                                 ),
                                                               ),
                                                             ),
@@ -306,9 +285,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.htsScreening.result)),
+                                                                        _patient.nationalId)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Results when tested',
+                                                                  labelText: 'National ID',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -320,9 +299,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: DateFormat("dd/MM/yyyy").format(widget.htsScreening.dateLastTested)),
+                                                                    text: DateFormat("dd/MM/yyyy").format(_patient.birthDate)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Date last tested',
+                                                                  labelText: 'Date Of Birth',
                                                                   icon: Icon(Icons.date_range, color: Colors.blue),
                                                                 ),
 
@@ -341,9 +320,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.htsScreening.artNumber)),
+                                                                        _maritalStatus)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Art Number',
+                                                                  labelText: 'Marital Status',
                                                                   icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
                                                                 ),
 
@@ -356,9 +335,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        everbeenonprep)),
+                                                                        _educationLevel)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Have you ever been on Prep',
+                                                                  labelText: 'Education',
                                                                   icon: Icon(Icons.book, color: Colors.blue),
                                                                 ),
 
@@ -377,9 +356,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.htsScreening.viralLoadDone)),
+                                                                        _nationality)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Viral load done ?',
+                                                                  labelText: 'Nationality',
                                                                   icon: Icon(Icons.flag, color: Colors.blue),
                                                                 ),
 
@@ -392,9 +371,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.htsScreening.cd4Done),
+                                                                    text: _phonenumber),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Cd4 count done?',
+                                                                  labelText: 'Phone Number',
                                                                   icon: Icon(Icons.smartphone, color: Colors.blue),
                                                                 ),
 
@@ -403,82 +382,53 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                           ),
                                                         ],
                                                       ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          widget.htsScreening.viralLoadDone == 'DONE'?Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.htsScreening.viralLoadDone)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Viral load',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
 
-                                                              ),
-                                                            ),
-                                                          ): SizedBox(height: 0.0,),
-                                                          widget.htsScreening.cd4Done == 'DONE'? Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: widget.htsScreening.cd4Done),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Cd4 count',
-                                                                  icon: Icon(Icons.smartphone, color: Colors.blue),
-                                                                ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 64.0, 8.0),
+                                                        child: TextFormField(
+                                                          controller: TextEditingController(
+                                                              text: _address),
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Address',
+                                                            icon: Icon(Icons.home, color: Colors.blue),
+                                                          ),
 
-                                                              ),
-                                                            ),
-                                                          ): SizedBox(height: 0.0,)
-                                                        ],
+                                                        ),
                                                       ),
-
-
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                               Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Proceed to HTS Registration",
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          onPressed: () {
-
-                                                            Navigator.push(context,MaterialPageRoute(
-                                                                builder: (context)=> Registration(visitId, _patient.id, _patient)
-                                                            ));
-                                                          },
-                                                        ),
-                                                      ),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
+                                              SizedBox(
+                                                  height: 50.0
                                               ),
-                                            ), */
+                                              Container(
+                                                width: double.infinity,
+                                                padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                child: RaisedButton(
+                                                  elevation: 4.0,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(5.0)),
+                                                  color: Colors.blue,
+                                                  padding: const EdgeInsets.all(20.0),
+                                                  child: Text(
+                                                    "Add Relation",
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                  onPressed: () {
+
+                                                    Navigator.push(context,MaterialPageRoute(
+                                                        builder: (context)=> AddRelationshipPage(widget._cureentPerson, widget.visitId, widget.patient_personId, widget.patient_relative, widget.htsId, widget.htsRegistration)
+                                                    ));
+                                                  },
+                                                ),
+                                              )
+
+/*
+                                AddRelationshipPage(this.person_patient, this.visitId, this.patientId, this.person_relative, this.htsId);
+*/
+
                                             ],
                                           )
 
@@ -554,8 +504,46 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
       ),
     );
   }
+  Widget _sidemenu(){
+    return new Drawer(
+      child: ListView(
+        children: <Widget>[
+
+        ],
+      ),
+    );
+  }
+
+  Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
+    String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;
+    try{
+
+      maritalStatus = await patientChannel.invokeMethod('getPatientMaritalStatus',maritalStatusId);
+      educationLevel = await patientChannel.invokeMethod('getEducationLevel',educationLevelId);
+      occupation = await patientChannel.invokeMethod('getOccupation',occupationId);
+      nationality = await patientChannel.invokeMethod('getNationality',nationalityId);
+      address = await patientChannel.invokeMethod('getAddress', patientId);
+      patientphonenumber = await patientChannel.invokeMethod('getPhonenumber', patientId);
 
 
+      print('ADDRESS ADDRESS'+ address);
+
+    }
+    catch (e) {
+      print(
+          'Something went wrong during getting marital status........cause $e');
+    }
+
+    setState(() {
+      _maritalStatus = maritalStatus;
+      _educationLevel = educationLevel;
+      _occupation = occupation;
+      _nationality = nationality;
+      _address = address;
+      _phonenumber = patientphonenumber;
+    });
+
+  }
 
 
 }

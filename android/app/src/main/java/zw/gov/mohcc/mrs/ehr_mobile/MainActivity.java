@@ -47,6 +47,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
@@ -57,6 +59,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdModel;
@@ -85,6 +90,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.RelationshipService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
@@ -109,6 +115,7 @@ public class MainActivity extends FlutterActivity {
     private TerminologyService terminologyService;
     private HistoryService historyService;
     private IndexTestingService indexTestingService;
+    private RelationshipService relationshipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +130,7 @@ public class MainActivity extends FlutterActivity {
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);
+        relationshipService = new RelationshipService(ehrMobileDatabase);
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
@@ -171,7 +179,7 @@ public class MainActivity extends FlutterActivity {
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase);
 
-        new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase);
+        new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
 
         new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
@@ -361,10 +369,11 @@ public class MainActivity extends FlutterActivity {
         getUsers(token, url + "/api/");
         getTestKits(token, url + "/api/");
         getTowns(token, url + "/api/");
+        getInvestigationTestKits(token, url + "/api/");
         getInvestigationResults(token, url + "/api/");
         getArtStatus(token, url + "/api/");
         getArtReasons(token, url + "/api/");
-        getArvCombinationregimens(token, url + "/api/");
+        getArvCombinationRegimens(token, url + "/api/");
         getDisclosureMethods(token, url + "/api/");
         getTestingPlan(token, url + "/api/");
         getPatients(url);
@@ -959,6 +968,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.weightDao().deleteAll();
         ehrMobileDatabase.heightDao().deleteAll();
         ehrMobileDatabase.visitDao().deleteAll();
+        ehrMobileDatabase.relationshipDao().deleteAll();
         ehrMobileDatabase.personDao().deleteAll();
         ehrMobileDatabase.investigationResultDao().delete();
         ehrMobileDatabase.countryDao().deleteCountries();
@@ -978,6 +988,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.userDao().deleteUsers();
         ehrMobileDatabase.testKitTestLevelDao().deleteAll();
         ehrMobileDatabase.testKitDao().deleteTestKits();
+        ehrMobileDatabase.investigationTestkitDao().deleteAll();
         ehrMobileDatabase.investigationDao().deleteInvestigations();
         ehrMobileDatabase.resultDao().deleteResults();
         ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
@@ -1071,24 +1082,44 @@ public class MainActivity extends FlutterActivity {
         });
     }
 
-    public void getArvCombinationregimens(Token token, String baseUrl) {
+    public void getInvestigationTestKits(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getArvCombinationRegimen("Bearer " + token.getId_token(), new Page().size);
-        call.enqueue(new Callback<TerminologyModel>() {
+        Call<InvestigationTestkitModel> call = service.getInvestigationTestKits("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<InvestigationTestkitModel>() {
             @Override
-            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
-                List<ArvCombinationRegimen> arvCombinationRegimenList = new ArrayList<ArvCombinationRegimen>();
-                for (BaseNameModel item : response.body().getContent()) {
-                    arvCombinationRegimenList.add(new ArvCombinationRegimen(item.getCode(), item.getName()));
+            public void onResponse(Call<InvestigationTestkitModel> call, Response<InvestigationTestkitModel> response) {
+                List<InvestigationTestkit> investigationTestKits = new ArrayList<>();
+                for (InvestigationTestkitEhr item : response.body().getContent()) {
+                    //@NonNull String id, String investigationId, String testKitId
+                    investigationTestKits.add(new InvestigationTestkit(
+                            item.getInvestigationTestkitId(), item.getInvestigationId(), item.getTestKitId()));
                 }
-                if (arvCombinationRegimenList != null && !arvCombinationRegimenList.isEmpty()) {
-                    terminologyService.saveArvCombinationRegimen(arvCombinationRegimenList);
-                }
+                terminologyService.saveInvestigationTestKits(investigationTestKits);
             }
 
             @Override
-            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+            public void onFailure(Call<InvestigationTestkitModel> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void getArvCombinationRegimens(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<ArvCombinationRegimenModel> call = service.getArvCombinationRegimen("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<ArvCombinationRegimenModel>() {
+            @Override
+            public void onResponse(Call<ArvCombinationRegimenModel> call, Response<ArvCombinationRegimenModel> response) {
+
+                Log.d(TAG, "Arv combination regmines : " + response.body().getContent());
+
+                terminologyService.saveArvCombinationRegimen(ArvCombinationRegimenEhr.getInstance(response.body().getContent()));
+            }
+
+            @Override
+            public void onFailure(Call<ArvCombinationRegimenModel> call, Throwable t) {
                 Log.i(TAG, t.getMessage());
             }
         });

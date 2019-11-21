@@ -371,7 +371,9 @@ public class HtsChannel {
 
                         if (methodCall.method.equals("getTestKitsByLevel")) {
                             try {
+                                Log.d(TAG, "Arguments passed to get testkit : " + arguments);
                                 String testkitlist = gson.toJson(htsService.getTestKitByTestLevel(arguments));
+                                Log.d(TAG, "Testkits returned : " + testkitlist);
                                 result.success(testkitlist);
 
                             } catch (Exception e) {

@@ -1,36 +1,55 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.TypeConverters;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.AgeGroupConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.RegimenTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 
 @Entity
 public class ArvCombinationRegimen extends BaseNameModel {
-   enum regimen_type{
-       FIRST_LINE,
-       SECOND_LINE,
-       THIRD_LINE
-   }
-   enum age_group{
-       ADULT,
-       PEADS
-   }
+
+    @TypeConverters(RegimenTypeConverter.class)
+    private RegimenType regimenType;
+    @TypeConverters(AgeGroupConverter.class)
+    private AgeGroup ageGroup;
+
     public ArvCombinationRegimen() {
     }
 
     @Ignore
-    public ArvCombinationRegimen(String code, String name) {
+    public ArvCombinationRegimen(@NonNull String code, @NonNull String name, RegimenType regimenType, AgeGroup ageGroup) {
         super(code, name);
+        this.regimenType = regimenType;
+        this.ageGroup = ageGroup;
     }
 
-    public static age_group getAgeGroup(int age){
-       /* to work on actual implementation */
-        if(age== 0 && age<= 15){
-            return age_group.PEADS;
+    public RegimenType getRegimenType() {
+        return regimenType;
+    }
 
-        }else {
-            return age_group.ADULT;
-        }
+    public void setRegimenType(RegimenType regimenType) {
+        this.regimenType = regimenType;
+    }
+
+    public AgeGroup getAgeGroup() {
+        return ageGroup;
+    }
+
+    public void setAgeGroup(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("ArvCombinationRegimen{" +
+                "regimenType=" + regimenType +
+                ", ageGroup=" + ageGroup +
+                '}');
     }
 }

@@ -10,13 +10,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("laboratoryTestId"), @Index("sampleId")},
+@Entity(/*indices = {@Index("laboratoryTestId"), @Index("sampleId")},
         foreignKeys = {@ForeignKey(entity = LaboratoryTest.class, onDelete = CASCADE,
                 parentColumns = "code",
                 childColumns = "laboratoryTestId"),
                 @ForeignKey(entity = Sample.class, onDelete = CASCADE,
                         parentColumns = "code",
-                        childColumns = "sampleId")})
+                        childColumns = "sampleId")}*/)
 public class Investigation extends BaseEntity {
 
     @NonNull

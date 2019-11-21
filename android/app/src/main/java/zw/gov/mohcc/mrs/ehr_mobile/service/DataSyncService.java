@@ -13,10 +13,15 @@ import retrofit2.http.Query;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.IdentityDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.RegisterPersonDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
+import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdSynchModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
@@ -87,6 +92,9 @@ public interface DataSyncService {
     @GET("investigations")
     Call<InvestigationModel> getInvestigations(@Header("Authorization") String token, @Query("size") int size);
 
+    @GET("investigations")
+    Call<InvestigationTestkitModel> getInvestigationTestKits(@Header("Authorization") String token, @Query("size") int size);
+
     @GET("investigations/result")
     Call<InvestigationResultModel> getInvestigationResults(@Header("Authorization") String token, @Query("size") int size);
 
@@ -99,8 +107,8 @@ public interface DataSyncService {
     @GET("art-reasons")
     Call<ArtReasonModel> getArtReasons(@Header("Authorization") String token, @Query("size") int size);
 
-    @GET("arv-combination-regimens")
-    Call<TerminologyModel> getArvCombinationRegimen(@Header("Authorization") String token, @Query("size") int size);
+    @GET("arv-combination-regimens-for-export")
+    Call<ArvCombinationRegimenModel> getArvCombinationRegimen(@Header("Authorization") String token, @Query("size") int size);
 
     @GET("disclosure-methods")
     Call<NameIdSynchModel> getDisclosureMethods(@Header("Authorization") String token, @Query("size") int size);

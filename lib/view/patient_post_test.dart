@@ -15,13 +15,16 @@ import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
+
+import '../sidebar.dart';
 class PatientPostTest extends StatefulWidget {
   String result;
   String patientId;
   String visitId;
   Person person;
   String htsId;
-  PatientPostTest(this.result, this.patientId, this.visitId,  this.person, this.htsId);
+  HtsRegistration htsRegistration;
+  PatientPostTest(this.result, this.patientId, this.visitId,  this.person, this.htsId, this.htsRegistration);
   @override
   State createState() {
     return _PatientPostTest();
@@ -113,23 +116,7 @@ class _PatientPostTest extends State<PatientPostTest> {
     }
     return items;
   }
-
- /* List<DropdownMenuItem<String>>
-  getDropDownMenuItemsPurposeOfTest() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (PurposeOfTest purposeOfTest in _purposeOfTestList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(
-          DropdownMenuItem(value: purposeOfTest.id.toString(), child: Text(purposeOfTest.name)));
-    }
-    return items;
-  }*/
-
-
-
-
-  @override
+    @override
   Widget build(BuildContext context) {
 
 
@@ -144,52 +131,7 @@ class _PatientPostTest extends State<PatientPostTest> {
 
           ],)
       ),
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue),title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.person, color: Colors.blue),title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("Reception Vitals"), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS"), onTap: () {
-              if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.patientId, widget.person)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, widget.patientId, widget.htsId, widget.visitId, widget.person)
-                ));
-              }
-            }),
-            new ListTile(title: new Text("ART"), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
-            ))
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(

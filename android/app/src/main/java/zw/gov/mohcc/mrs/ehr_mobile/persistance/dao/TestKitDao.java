@@ -6,6 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
 
 /**
@@ -32,8 +33,8 @@ public interface TestKitDao {
     @Query("SELECT * FROM TestKit WHERE name=:name")
     TestKit findTestKitByName(String name);
 
-    @Query("SELECT * FROM TestKit t inner join TestKitTestLevel l on l.testKitId=t.code WHERE l.testLevel=:level")
-    List<TestKit> findTestKitsByLevel(String level);
+    @Query("SELECT t.* FROM TestKit t inner join TestKitTestLevel l on l.testKitId=t.code WHERE l.testLevel=:level")
+    List<TestKit> findTestKitsByLevel(TestLevel level);
 
     @Query("SELECT * FROM TestKit WHERE code in (:ids)")
     List<TestKit> findTestKitIdsIn(List<String> ids);

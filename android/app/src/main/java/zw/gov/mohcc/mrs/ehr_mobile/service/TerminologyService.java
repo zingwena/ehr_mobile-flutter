@@ -15,6 +15,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResult;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
@@ -54,6 +55,12 @@ public class TerminologyService {
 
         ehrMobileDatabase.investigationDao().insertInvestigations(investigations);
         Log.d(TAG, "Saved investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
+    }
+
+    public void saveInvestigationTestKits(List<InvestigationTestkit> investigationTestkits) {
+
+        ehrMobileDatabase.investigationTestkitDao().saveAll(investigationTestkits);
+        Log.d(TAG, "Saved investigation test kits : " + ehrMobileDatabase.investigationTestkitDao().findAll());
     }
 
     public void saveTownToDB(List<Town> towns) {

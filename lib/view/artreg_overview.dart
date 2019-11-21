@@ -51,10 +51,12 @@ class ArtOverviewState extends State<ArtRegOverview> {
 
   bool showInput = true;
   bool showInputTabOptions = true;
+  var dateOfEnrollment, dateOfHivTest;
 
   @override
   void initState() {
-
+    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfEnrolmentIntoCare);
+    dateOfHivTest = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfHivTest);
     print(_patient.toString());
   //  getEntryPoint(widget.htsRegistration.entryPointId);
     super.initState();
@@ -201,7 +203,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.artRegistration.dateOfHivTest.toString()),
+                                                                    text: dateOfHivTest),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.date_range, color: Colors.blue),
                                                                     labelText: "Date of Hiv Test",
@@ -216,7 +218,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.dateOfEnrolmentIntoCare.toString())),
+                                                                        dateOfEnrollment)),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(Icons.date_range, color: Colors.blue),
                                                                     labelText: "Date of enrollment into care",

@@ -21,6 +21,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../sidebar.dart';
 import 'rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
@@ -31,8 +32,9 @@ class Hts_Result extends StatefulWidget {
   final String labInvestId;
   final Person person;
   final  String htsId;
+  final HtsRegistration htsRegistration;
 
-  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId);
+  Hts_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId, this.htsRegistration);
 
   //Hts_Result (this.visitId, this.patientId);
 
@@ -183,55 +185,7 @@ class _Hts_Result  extends State<Hts_Result > {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Home "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-              new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text(" Vitals",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(widget.patientId, widget.visitId, widget.person)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue),title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),   onTap: () {
-              if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(widget.visitId, widget.patientId, widget.person)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, widget.patientId, widget.htsId, widget.visitId, widget.person)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(widget.patientId, widget.visitId, widget.person, htsRegistration)),
-            ))
-
-          ],
-        ),
-      ),
+      drawer: Sidebar(widget.person, widget.patientId, widget.visitId, htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -456,22 +410,12 @@ class _Hts_Result  extends State<Hts_Result > {
                                                         child: getNextTestButton(),
                                                           onPressed: () async {
                                                             if (final_result == 'Pending' || final_result == '') {
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId, widget.htsRegistration)));
 
                                                             }else{
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId)));
-
-
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId, widget.htsRegistration)));
                                                             }
                                                           }
-/*
-                                                        onPressed: () =>
-                                                            Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  Hts_Result()),),*/
-
                                                       ),
                                                     ),
                                                   ],
@@ -566,7 +510,7 @@ class _Hts_Result  extends State<Hts_Result > {
       response = await htsChannel.invokeMethod('getFinalResult',labInvestId);
       setState(() {
         if(response == null){
-          final_result = '';
+          final_result = 'Pending';
         } else{
 
           final_result = response;

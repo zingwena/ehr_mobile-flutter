@@ -1,28 +1,38 @@
 import 'dart:convert';
+
+
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
-import 'package:ehr_mobile/preferences/stored_preferences.dart';
-import 'package:ehr_mobile/util/constants.dart';
-import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/view/add_patient_index.dart';
+import 'package:ehr_mobile/view/add_patient_relation.dart';
+import 'package:ehr_mobile/view/add_relation_page.dart';
+import 'package:ehr_mobile/view/patientIndexOverview.dart';
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'add_patient.dart';
+import 'list_patients.dart';
 import 'patient_overview.dart';
-import 'package:http/http.dart' as http;
+import 'reception_vitals.dart';
 
-class SearchPatient extends StatefulWidget {
-  _SearchPatientState createState() => _SearchPatientState();
+class RelationshipSearch extends StatefulWidget {
+  Person _currentperson;
+  String visitId;
+  String htsId;
+  HtsRegistration htsRegistration;
+  String personId;
+  RelationshipSearch(this._currentperson, this.visitId, this.personId, this.htsRegistration, this.htsId);
+  _RelationSearchState createState() => _RelationSearchState();
 }
 
-class _SearchPatientState extends State<SearchPatient> {
+class _RelationSearchState extends State<RelationshipSearch> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
-  static const platformDataSync=MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataSyncChannel');
   String searchItem;
   final _searchFormKey = GlobalKey<FormState>();
   List<Person> _patientList;
-
 
   Future<void> searchPatient(String searchItem) async {
     List<dynamic> list;
@@ -40,32 +50,31 @@ class _SearchPatientState extends State<SearchPatient> {
     print("=====================searched$_patientList");
   }
 
-  Future<void>syncPatients() async {
-    String token =await retrieveString(AUTH_TOKEN);
-    String url=await retrieveString(SERVER_IP);
-    await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']).then((value){
-      print("sync method called----->$value");
-    });
-  }
-
   String nullHandler(String value) {
     return value == null ? "" : value;
+  }
+
+
+  @override
+  void initState() {
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    /*  appBar: AppBar(
+      /*  appBar: AppBar(
         title: Text('Search Patient'),
       ),*/
       backgroundColor: Colors.white,
 
       body: Column(
+
         children: <Widget>[
+
           Stack(
             children: <Widget>[
               Container(
-                height: 180.0,
+                height: 200.0,
                 width: double.infinity,
                 color: Colors.blue,
               ),
@@ -113,7 +122,7 @@ class _SearchPatientState extends State<SearchPatient> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 35.0,
+                    height: 70.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -121,66 +130,22 @@ class _SearchPatientState extends State<SearchPatient> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Impilo Mobile",
+                          "Search Relations Contact",
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               color: Colors.white,
                               fontSize: 30),
                         ),
-
                         Expanded(
                           flex: 1,
                           child: Container(),
                         ),
-                        RoundedButton(
-                          onTap: (){
-                                syncPatients();
-                          },
-                          text: 'Sync',
-                          //selected: true,
-                        ),
-
-//                        RaisedButton(
-//                          child: Text(
-//                            "Sync",
-//                            style: TextStyle(
-//                                color: Colors.blue,
-//                                fontWeight: FontWeight.w500,
-//                                fontSize: 16),
-//                          ),
-//                          onPressed: () {
-//                            authenticate().then((value){
-//                              syncPatients(value);
-//                            });
-//                          },
-//                          elevation: 1.0,
-//                          color: Colors.white,
-//                        ),
-//                        new InkWell(
-//                          onTap: (){
-//                              retrieveString(AUTH_TOKEN).then((value){
-//                                syncPatients(value);
-//                              });
-//                          },
-//                          child: new Container(
-//                            height: 36.0,
-//                            decoration: new BoxDecoration(
-//                              color: Colors.white,
-//                              border: new Border.all(color: Colors.white, width: 1.0),
-//                              borderRadius: new BorderRadius.circular(10.0),
-//                            ),
-//                            child: new Center(
-//                              child: new Text(
-//                                "Sync",
-//                                style: new TextStyle(color: Colors.blue),
-//                              ),
-//                            ),
-//                          ),
-//                        ),
                       ],
                     ),
                   ),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                     child: Text(
@@ -190,6 +155,9 @@ class _SearchPatientState extends State<SearchPatient> {
                           color: Colors.white.withOpacity(0.80),
                           fontWeight: FontWeight.w400),
                     ),
+                  ),
+                  SizedBox(
+                    height: 15,
                   ),
 
                   Padding(
@@ -203,27 +171,27 @@ class _SearchPatientState extends State<SearchPatient> {
                         child: Padding(
                           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                           child: Material(
-                            elevation: 0,
+                            elevation: 5.0,
                             borderRadius: BorderRadius.circular(5.0),
                             child: TextFormField(
                               decoration: InputDecoration(
-                                  border: InputBorder.none,
+                                border: InputBorder.none,
 
-                                  suffixIcon: IconButton(
-                                      icon: Icon(Icons.search,
-                                          color: Colors.blue),
-                                      onPressed: () async {
-                                        if (_searchFormKey.currentState.validate()) {
-                                          _searchFormKey.currentState.save();
-                                          await searchPatient(searchItem);
-                                        }
-                                      }),
+                                suffixIcon: IconButton(
+                                    icon: Icon(Icons.search,
+                                        color: Colors.blue),
+                                    onPressed: () async {
+                                      if (_searchFormKey.currentState.validate()) {
+                                        _searchFormKey.currentState.save();
+                                        await searchPatient(searchItem);
+                                      }
+                                    }),
 
-                                  contentPadding: EdgeInsets.all(15.0),
-                                  hintText: 'Search',
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                  ),
+                                contentPadding: EdgeInsets.all(15.0),
+                                hintText: 'Search',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
                               ),
                               onSaved: (value) {
                                 setState(() {
@@ -241,7 +209,7 @@ class _SearchPatientState extends State<SearchPatient> {
               ),
             ],
           ),
-       /*   SizedBox(
+          /*   SizedBox(
             height: 15.0,
           ), */
 
@@ -269,7 +237,7 @@ class _SearchPatientState extends State<SearchPatient> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   subtitle: Container(
@@ -282,7 +250,7 @@ class _SearchPatientState extends State<SearchPatient> {
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
@@ -293,7 +261,7 @@ class _SearchPatientState extends State<SearchPatient> {
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -311,14 +279,13 @@ class _SearchPatientState extends State<SearchPatient> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Overview(patient)));
+                            builder: (context) => AddRelationshipPage(widget._currentperson, widget.visitId, widget.personId, patient, widget.htsId, widget.htsRegistration)));
                   },
                 );
               }).toList(),
             ),
           )
-
-              : Center (
+        : Center (
             child: Text("No Patients Found"),
           ),
 
@@ -347,8 +314,9 @@ class _SearchPatientState extends State<SearchPatient> {
             ),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddPatient()),
+              MaterialPageRoute(builder: (context) => AddPatientRelation(widget.personId, widget.visitId, widget.htsId, widget.htsRegistration, widget._currentperson)),
             ),
+
           )
               :   SizedBox( ),
 
@@ -363,4 +331,5 @@ class _SearchPatientState extends State<SearchPatient> {
 
     );
   }
+
 }
