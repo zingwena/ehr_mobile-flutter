@@ -359,10 +359,10 @@ class _AddPatient extends State<AddPatient> {
                                                                         : null;
                                                                   },
                                                                   decoration: InputDecoration(
-                                                                    labelText: "Birth date",
                                                                       border: OutlineInputBorder(
                                                                           borderRadius:
-                                                                              BorderRadius.circular(0.0))),
+                                                                              BorderRadius.circular(0.0)),
+                                                                  labelText: "Date of birth"),
                                                                 ),
                                                               ),
                                                               width: 100,

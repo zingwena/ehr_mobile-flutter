@@ -16,6 +16,8 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
@@ -310,12 +312,10 @@ public class HtsChannel {
                         if (methodCall.method.equals("getTestResults")) {
 
                             try {
-                                System.out.println("HERE ARE THE ARGUMENTS SENT FROM FLUTTER FOR RESULTS" + arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 List<Result> results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
-                                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@ here is the list of results" + results.toString());
                                 String results_list = gson.toJson(results);
                                 result.success(results_list);
                             } catch (Exception e) {
@@ -343,10 +343,7 @@ public class HtsChannel {
                             try {
 
                                 String labId = laboratoryInvestigation.getId();
-                                System.out.println(" investigation***************" +
-                                        labId);
                                 Map<String, String> map = new HashMap<>();
-                                //System.out.println("visitIdPatient = " + visitIdPatient);
                                 System.out.println("labId = " + labId);
                                 // TODO jduge to resolve hard coded value here
                                 map.put("visitPatientId", "1");
@@ -377,8 +374,40 @@ public class HtsChannel {
                                 result.success(testkitlist);
 
                             } catch (Exception e) {
+                                Log.d(TAG, "Exception thrown");
                             }
 
+                        }
+                        if(methodCall.method.equals("getRecencyTestkits")){
+                            try{
+                                Log.d(TAG, "Arguments passed to get  Recency testkit : " + arguments);
+                                String testkitlist = gson.toJson(htsService.getInvestigationTestKit("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
+                                Log.d(TAG, "Testkits returned : " + testkitlist);
+                                result.success(testkitlist);
+                            }catch (Exception e){
+                                Log.d(TAG, "Exception thrown in getRecencyTestkits method");
+
+                            }
+                        }
+                        if(methodCall.method.equals("getRecencyResults")){
+                            try{
+                                Log.d(TAG, "Arguments passed to get testkit : " + arguments);
+                                String resultsList = gson.toJson(htsService.getInvestigationResults("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
+                                Log.d(TAG, "Results from recency returned : " + resultsList);
+                                result.success(resultsList);
+                            }catch (Exception e){
+                                Log.d(TAG, "Exception thrown in getRecencyResults method");
+
+                            }
+                        }
+                        if(methodCall.method.equals("saveRecency")){
+                            try{
+                                Log.d(TAG, "Arguments passed from flutter: " + arguments);
+
+                            }catch (Exception e){
+                                Log.d(TAG, "Exception thrown in getRecencyResults method");
+
+                            }
                         }
                         if (methodCall.method.equals("getTestkitbycode")) {
 

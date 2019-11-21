@@ -81,21 +81,22 @@ class _Hts_Result  extends State<Hts_Result > {
 
   @override
   void initState() {
-    print("FFFFFFFFFFFFFFFFFFFFFFFF HERE IS THE RESULT PAGE");
     _visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
     labInvetsTestId = widget.labInvetsTestId;
-    getFinalResult(widget.labInvestId);
-    getLabInvestigationTests();
-   // getLabInvestigationTests();
-    getTestKIt(widget.labInvetsTestId);
-    //getStartTime(widget.labInvetsTestId);
-    getHtsRecord(widget.patientId);
-    getTestName();
+
     //getEndTime(widget.labInvetsTestId);
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
+
+    getFinalResult(widget.labInvestId);
+    getLabInvestigationTests();
+    // getLabInvestigationTests();
+    getTestKIt(widget.labInvetsTestId);
+    //getStartTime(widget.labInvetsTestId);
+    //getHtsRecord(widget.patientId);
+    getTestName();
     super.initState();
   }
 
@@ -408,7 +409,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
                                                         child: getNextTestButton(),
-                                                          onPressed: () async {
+                                                          onPressed: ()  {
                                                             if (final_result == 'Pending' || final_result == '') {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId, widget.htsRegistration)));
 
@@ -465,12 +466,18 @@ class _Hts_Result  extends State<Hts_Result > {
 
 
   Widget getNextTestButton(){
-    if(final_result ==''|| final_result == 'Pending'){
-    return new Text("Proceed to "+ test_name,  style: TextStyle(color: Colors.white),);
-    } else{
-      return new Text("Proceed to Post Test",  style: TextStyle(color: Colors.white),);
+    try{
+      if(final_result ==''|| final_result == 'Pending'){
+        return new Text("Proceed to "+ test_name,  style: TextStyle(color: Colors.white),);
+      } else{
+        return new Text("Proceed to Post Test",  style: TextStyle(color: Colors.white),);
 
+      }
+
+    }catch(e){
+      print('excption caught ************* $e');
     }
+
   }
 
   Widget _buildProductItem(BuildContext context, int index) {

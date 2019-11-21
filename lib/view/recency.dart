@@ -48,8 +48,8 @@ class _Recency extends State<RecencyTest> {
   var selectedDate, selectedStarttime, selectedReadingtime, selectedReadingDate;
   DateTime date, startTime, readingTime,  readingDate;
   HtsRegistration htsRegistration;
-  int _result = 0;
-  int _testKit = 0;
+  int _result = -1;
+  int _testKit = -1;
   int testCount=0;
   String id ="1";
   String result_string;
@@ -82,6 +82,7 @@ class _Recency extends State<RecencyTest> {
   List _dropDownListEntryPoints = List();
   List<Result> _entryPointList = List();
   int testkitcount = 0 ;
+  String investigationId = "ee7d91fc-b27f-11e8-b121-c48e8faf035b ";
   List _identifierList = [
     "Select Identifier",
     "Passport",
@@ -104,8 +105,9 @@ class _Recency extends State<RecencyTest> {
     getPersonInvestigation(widget.personId);
     getLabInvestigation(widget.personId);
     getLabTest(widget.personId);
-    getResults(widget.personId);
+    getResults(investigationId);
     getLabId();
+    getTestKitsByInvestigationId(investigationId);
     getHtsRecord(widget.personId);
 
     super.initState();
@@ -174,10 +176,10 @@ class _Recency extends State<RecencyTest> {
   }
 
 
-  Future<void> getResults(String personId) async {
+  Future<void> getResults(String investigationId) async {
     String response;
     try {
-      response = await htsChannel.invokeMethod('getTestResults', personId);
+      response = await htsChannel.invokeMethod('getRecencyResults');
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
@@ -191,7 +193,7 @@ class _Recency extends State<RecencyTest> {
       print('--------------------Something went wrong  $e');
     }
   }
-  Future<dynamic> getLabTest(String personId) async {
+  Future<void> getLabTest(String personId) async {
 
     var labtest_name;
     try {
@@ -202,9 +204,8 @@ class _Recency extends State<RecencyTest> {
     } catch (e) {
       print("channel failure: '$e'");
     }
-    return test;
   }
-  Future<dynamic> getLabId() async {
+  Future<void> getLabId() async {
     try {
       Map <String,dynamic> data= json.decode(await htsChannel.invokeMethod('getLabInvestigation')) ;
       var labId= data["labId"];
@@ -217,10 +218,10 @@ class _Recency extends State<RecencyTest> {
 
   }
 
-  Future<dynamic> getTestKitsByCount(int count) async {
+  Future<void> getTestKitsByInvestigationId(String investigationId) async {
 
     try {
-      String response = await htsChannel.invokeMethod('getTestKitsByLevel', labInvestId);
+      String response = await htsChannel.invokeMethod('getRecencyTestkits', investigationId);
       setState(() {
         _testkit_string_response = response;
         test_kits = jsonDecode(_testkit_string_response);
@@ -236,9 +237,7 @@ class _Recency extends State<RecencyTest> {
     }
 
   }
-  Future<dynamic>getTestName()async{
-    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK lab invest id IN TESTNAME"+ labInvestId);
-
+  Future<void>getTestName()async{
     try{
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
@@ -251,7 +250,7 @@ class _Recency extends State<RecencyTest> {
 
     }
   }
-  Future<dynamic> getLabInvestigation(String personId) async {
+  Future<void> getLabInvestigation(String personId) async {
 
     try {
       String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
@@ -265,7 +264,7 @@ class _Recency extends State<RecencyTest> {
 
   }
 
-  Future<dynamic> getTestKitByCode(String code) async {
+  Future<void> getTestKitByCode(String code) async {
     try {
       String response = await htsChannel.invokeMethod('getTestkitbycode', code);
       setState(() {
@@ -298,11 +297,13 @@ class _Recency extends State<RecencyTest> {
   void _handleTestKitChange(int value) {
     setState(() {
       _testKit = value;
-      switch(_testKit){
-        case 1:
-          testKitobj.code = '1';
-          testKitobj.name = 'Asante';
-      }
+      _testkitslist.forEach((e){
+        if(value == _testkitslist.indexOf(e)){
+          testKitobj.code = e.code;
+          testKitobj.name = e.name;
+
+        }
+      });
     });
 
 
@@ -312,31 +313,17 @@ class _Recency extends State<RecencyTest> {
 
     setState(() {
       _result = value;
-
-      switch (_result) {
-        case 1:
-          result.name = "RTRI Negative";
-          result.code = "01";
-          break;
-
-        case 2:
-          result.name = "Invalid";
-          result.code = "02";
-          break;
-        case 3:
-        result.name = "Long Term";
-        result.code = "03";
-          break;
-        case 4:
-          result.name ="Recent";
-          result.code ="04";
-
-      }
-
+      _entryPointList.forEach((e) {
+        if (value == _entryPointList.indexOf(e)){
+          result.code = e.code;
+          result.name = e.name;
+        }
+      });
 
     });
 
   }
+
 
   List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();
@@ -477,16 +464,7 @@ class _Recency extends State<RecencyTest> {
                                         width: 250,
                                       ),
                                     ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text('Asante'),
-                                        Radio(
-                                            value: 1,
-                                            groupValue:_testKit,
-                                            activeColor: Colors.blue,
-                                            onChanged: _handleTestKitChange)
-
-                                      ],),
+                                 getTestKIts(_testkitslist),
                                   ],
                                 ),
                                 SizedBox(
@@ -552,50 +530,12 @@ class _Recency extends State<RecencyTest> {
                                 SizedBox(
                                   height: 24,
                                 ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            'Result',
-                                            style: TextStyle(
-                                              color: Colors.grey.shade600,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        width: 250,
-                                      ),
-                                    ),
-                                    Text('RTRI Negative'),
-                                    Radio(
-                                        value: 1,
-                                        groupValue: _result,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleResultChange),
-                                    Text('Invalid'),
-                                    Radio(
-                                        value: 2,
-                                        groupValue: _result,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleResultChange),
-                                    Text('Long Term'),
-                                    Radio(
-                                        value: 3,
-                                        groupValue: _result,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleResultChange),
-                                    Text('Recent'),
-                                    Radio(
-                                        value: 4,
-                                        groupValue: _result,
-                                        activeColor: Colors.blue,
-                                        onChanged: _handleResultChange),
-                                  ],
-                                ),
+                                Row(children: <Widget>[
+                                  Text("Results"),
+                                  getRecencyResults(_entryPointList),
+
+                                ],),
+
                                 SizedBox(
                                   height: 24,
                                 ),
@@ -625,6 +565,7 @@ class _Recency extends State<RecencyTest> {
                                                     .validate()) {
                                                   _formKey.currentState.save();
                                                   if (_formIsValid) {
+                                                    print('HERE IS THE TESTKIT OBJECT USED >>>>>>>>>> NAME' + testKitobj.name+ ">>>>>>>>>>>>>>>>>>> CODE"+ testKitobj.code);
                                                     LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
                                                         widget.visitId,
                                                         labInvestId,
@@ -686,11 +627,6 @@ class _Recency extends State<RecencyTest> {
 
           ],)
       ),
-      // appBar: AppBar(
-      //  backgroundColor: Colors.blue,
-      //  title: Text('Add Patient'),
-
-
       body:_body(list),
       drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
     );
@@ -703,8 +639,8 @@ class _Recency extends State<RecencyTest> {
     var labInvestTestResponse;
     try {
 
-      String jsonPatient = jsonEncode(laboratoryInvestTest);
-      labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonPatient);
+      String jsonLabInvestTest = jsonEncode(laboratoryInvestTest);
+      labInvestTestResponse= await htsChannel.invokeMethod('saveRecency',jsonLabInvestTest);
       setState(() {
         print('###################'+ labInvestTestResponse);
         labInvestTestId = labInvestTestResponse;
@@ -716,6 +652,44 @@ class _Recency extends State<RecencyTest> {
       print('Something went wrong...... cause $e');
     }
   }
+
+  Widget getTestKIts(List<TestKit> testkits)
+  {
+    return new Row(children: testkits.map((item) =>
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(item.name),
+                Radio(
+                    value: testkits.indexOf(item),
+                    groupValue: _testKit,
+                    activeColor: Colors.blue,
+                    onChanged: _handleTestKitChange)
+
+              ],),
+          ],
+        ),).toList());
+  }
+  Widget getRecencyResults(List<Result> results)
+  {
+    return new Row(children: results.map((item) =>
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(item.name),
+                Radio(
+                    value: results.indexOf(item),
+                    groupValue: _result,
+                    activeColor: Colors.blue,
+                    onChanged: _handleResultChange)
+
+              ],),
+          ],
+        ),).toList());
+  }
+
 
 
 }

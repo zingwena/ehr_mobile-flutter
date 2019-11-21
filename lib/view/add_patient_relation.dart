@@ -115,7 +115,7 @@ class _AddPatient extends State<AddPatientRelation> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Add New Patient Index"),
+            title: new Text("Add New Patient Relation"),
           ),
           Positioned.fill(
             child: Padding(

@@ -1,3 +1,4 @@
+import 'dart:async' as prefix0;
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/investigation.dart';
@@ -24,9 +25,6 @@ import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import '../sidebar.dart';
-import 'cbsquestion.dart';
-import 'edit_demographics.dart';
-
 
 class HtsScreeningTest extends StatefulWidget {
   final String personId;
@@ -97,18 +95,16 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
-  void initState()  {
+  void initState()   {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+     getPersonInvestigation(widget.personId);
+      getLabInvestigation(widget.personId);
+     getLabTest(widget.personId);
+      getResults(widget.personId);
+      getTestName();
+      getLabId();
+      getHtsRecord(widget.personId);
     date = DateTime.now();
-    _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
-    _identifier = _identifierDropdownMenuItem[0].value;
-         getPersonInvestigation(widget.personId);
-         getLabInvestigation(widget.personId);
-         getLabTest(widget.personId);
-         getResults(widget.personId);
-         getTestName();
-         getLabId();
-         getHtsRecord(widget.personId);
 
     super.initState();
   }
@@ -175,6 +171,17 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
   }
 
+  Future<dynamic>loaddetails() async{
+
+    try{
+
+
+    }catch(e){
+      print("Exception thrown :'$e");
+
+    }
+  }
+
 
   Future<void> getResults(String personId) async {
     String response;
@@ -194,17 +201,16 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     }
   }
   Future<dynamic> getLabTest(String personId) async {
-
-    var labtest_name;
+     String labtestname;
     try {
-      labtest_name = await htsChannel.invokeMethod('getLabTest', personId);
+      labtestname = await htsChannel.invokeMethod('getLabTest', personId);
       setState(() {
-        this.test=labtest_name;
+        this.test=labtestname;
       });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    return test;
+
   }
   Future<dynamic> getLabId() async {
     try {
@@ -636,7 +642,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                     fontWeight: FontWeight
                                                         .w500),
                                               ),
-                                              onPressed: () async {
+                                              onPressed: ()  {
                                                 if (_formKey.currentState
                                                     .validate()) {
                                                   _formKey.currentState.save();
@@ -655,13 +661,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                               context) =>
                                                               Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, widget.htsRegistration)
                                                       ));
-                                              /*    if (_formIsValid) {
-
-                                                  } else {
-                                                    setState(() {
-                                                      _showError = true;
-                                                    });
-                                                  }*/
                                                 }
                                               }
 
@@ -706,11 +705,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       ],)
       ),
-      // appBar: AppBar(
-      //  backgroundColor: Colors.blue,
-      //  title: Text('Add Patient'),
-
-    
       body:_body(list),
       drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
     );
