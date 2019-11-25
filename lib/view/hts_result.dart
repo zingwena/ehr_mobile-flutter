@@ -64,9 +64,9 @@ class _Hts_Result  extends State<Hts_Result > {
   DateTime date;
   int _htsType = 0;
   String htsType = "";
-  String _labinvestigations_string;
-  List labinvestTests = List();
-  List _labinvestigationtests = List();
+  String _labinvestigation_string;
+  List labinvestigationlist = List();
+  List _labinvestigations = List();
   String hts_id;
   String testkit;
   String startTime;
@@ -75,7 +75,7 @@ class _Hts_Result  extends State<Hts_Result > {
   bool showInputTabOptions = true;
   String final_result = 'Pending';
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
-  List<LaboratoryInvestigationTest> _labInvestTestsList = List();
+  List<LaboratoryInvestigationTest> _labinvestList = List();
   String test_name;
   String _currentEntryPoint;
 
@@ -106,14 +106,14 @@ class _Hts_Result  extends State<Hts_Result > {
     try {
       response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
       setState(() {
-
-        _labinvestigations_string = response;
-        labinvestTests = jsonDecode(_labinvestigations_string);
-        _labinvestigationtests = LaboratoryInvestigationTest.mapFromJson(labinvestTests);
-        _labinvestigationtests.forEach((e) {
-          _labInvestTestsList.add(e);
+        {
+          _labinvestigation_string = response;
+          labinvestigationlist = jsonDecode(_labinvestigation_string);
+          _labinvestigations = LaboratoryInvestigationTest.mapFromJson(labinvestigationlist);
+          _labinvestigations.forEach((e) {
+            _labinvestList.add(e);
           });
-
+        }
       });
 
     } catch (e) {
@@ -152,7 +152,6 @@ class _Hts_Result  extends State<Hts_Result > {
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
       setState(() {
-
 
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
 
@@ -394,10 +393,10 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           DataColumn(label: Text("Result")),
                                                           DataColumn(label: Text("Start Time")),
                                                           DataColumn(label: Text("End Time"))],
-                                                      rows: _labInvestTestsList.map((labinvesttest)=>
+                                                      rows: _labinvestList.map((labinvesttest)=>
                                                        DataRow(
                                                            cells: [
-                                                       DataCell(Text(labinvesttest.testKit.name)),
+                                                       DataCell(Text(labinvesttest.testkit.name)),
                                                        DataCell(Text(labinvesttest.result.name)),
                                                        DataCell(Text(labinvesttest.startTime)),
                                                        DataCell(Text(labinvesttest.endTime))])
@@ -547,7 +546,7 @@ class _Hts_Result  extends State<Hts_Result > {
   Widget buildlistview(BuildContext context) {
     return ListView.builder(
       itemBuilder: _buildProductItem,
-      itemCount: _labInvestTestsList.length,
+      itemCount: _labinvestList.length,
     );
   }
 
