@@ -3,6 +3,8 @@ package zw.gov.mohcc.mrs.ehr_mobile.model;
 import androidx.annotation.NonNull;
 import androidx.room.PrimaryKey;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 
 public class BaseNameModel implements Serializable {
@@ -33,6 +35,10 @@ public class BaseNameModel implements Serializable {
 
     @NonNull
     public String getName() {
+
+        if (StringUtils.isNoneBlank(name)) {
+            return name.replaceAll("[^a-zA-Z0-9]", " ");
+        }
         return name;
     }
 
