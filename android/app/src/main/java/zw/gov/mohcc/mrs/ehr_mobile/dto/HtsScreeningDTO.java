@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 import androidx.annotation.NonNull;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 import java.util.UUID;
@@ -32,7 +33,6 @@ public class HtsScreeningDTO {
     private Integer cd4Count;
 
     private Date cd4CountDate;
-
     private Date dateEnrolled;
 
     private ActivityStatus viralLoadDone;
