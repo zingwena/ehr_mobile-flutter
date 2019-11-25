@@ -21,7 +21,6 @@ class Sidebar extends StatefulWidget{
 
   Sidebar(this.person, this.patientId, this.visitId, this.htsRegistration, this.htsId);
 
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -36,27 +35,65 @@ class sidebarstate extends State<Sidebar>{
     return   Drawer(
       child: ListView(
         children: <Widget>[
-          new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
+
+          new  Padding(
+            padding: const EdgeInsets.fromLTRB(7.0, 10.0, 0.0, 0.0),
+            child:Image(
+              image: AssetImage('images/mhc.png'),
+              width: 120,
+              height: 120,
+            ), ),
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(75.0, 12.0, 0.0, 10.0),
+            child: Text(
+              "Impilo Mobile",
+              style: TextStyle(fontSize: 25.0),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(75.0, 0.0, 0.0, 20.0),
+            child: Text(
+              "Logged In as admin",
+              style: TextStyle(color: Colors.black45, fontSize: 16.0),
+            ),
+          ),
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
           new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Home "), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     SearchPatient()),
           )),
-          new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
+          new ListTile(leading: new Icon(Icons.settings_overscan, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     Overview(widget.person)),
           )),
-          new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
+          new ListTile(leading: new Icon(Icons.add_box, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(widget.patientId, widget.visitId, widget.person, widget.htsId)),
           )),
-          new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
+          new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
             if(widget.htsRegistration == null ){
               print('bbbbbbbbbbbbbb htsreg null in side bar  ');
@@ -71,32 +108,46 @@ class sidebarstate extends State<Sidebar>{
               ));
             }
           }),
-          new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
+          new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
           )),
-          new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
+          new ListTile(leading: new Icon(Icons.history, color: Colors.blue), title: new Text("Sexual History",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     CbsQuestions(widget.patientId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)),
           )),
-          new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Logout",  style: new TextStyle(
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
+          new ListTile(leading: new Icon(Icons.add_to_home_screen, color: Colors.blue), title: new Text("Logout",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                 LandingScreen()),
-          )),
-
-
+          )
+          ),
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
         ],
       ),
     );
-
   }
 }

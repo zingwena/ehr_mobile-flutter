@@ -224,7 +224,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                               Expanded(
                                                                 child: Padding(
                                                                   padding: const EdgeInsets.only(left: 16.0, top: 20.0),
-                                                                  child: Text("Blood Pressure",
+                                                                  child: Text("Blood Pressure (bpm)",
                                                                     textAlign: TextAlign.start,
                                                                     style: TextStyle(
                                                                         color: Colors.blue.shade600,
@@ -320,7 +320,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                 child: Padding(
                                                                   padding: const EdgeInsets.only(left: 16.0, top: 20.0),
                                                                   child: Text(
-                                                                    "Temperature",
+                                                                    "Temperature(degrees celcius)",
                                                                     textAlign: TextAlign.start,
                                                                     style: TextStyle(
                                                                         color: Colors.blue.shade600,
@@ -416,7 +416,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                           : null;
                                                                     },
                                                                     decoration: InputDecoration(
-                                                                      labelText: 'pulse',
+                                                                      labelText: 'pulse(bpm)',
 
                                                                     ),
                                                                     style: TextStyle(
@@ -463,7 +463,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                 child: Padding(
                                                                   padding: const EdgeInsets.only(left: 16.0, top: 20.0),
                                                                   child: Text(
-                                                                    "Respiratory Rate",
+                                                                    "Respiratory Rate(breathes/ min)",
                                                                     textAlign: TextAlign.start,
                                                                     style: TextStyle(
                                                                         color: Colors.blue.shade600,
@@ -536,7 +536,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                 child: Padding(
                                                                   padding: const EdgeInsets.only(left: 16.0, top: 20.0),
                                                                   child: Text(
-                                                                    "Height",
+                                                                    "Height(cm)",
                                                                     textAlign: TextAlign.start,
                                                                     style: TextStyle(
                                                                         color: Colors.blue.shade600,
@@ -610,7 +610,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                 child: Padding(
                                                                   padding: const EdgeInsets.only(left: 16.0, top: 20.0),
                                                                   child: Text(
-                                                                    "Weight",
+                                                                    "Weight(kg)",
                                                                     textAlign: TextAlign.start,
                                                                     style: TextStyle(
                                                                         color: Colors.blue.shade600,
