@@ -21,6 +21,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.TestForPregnantLactatingMotherConve
 import zw.gov.mohcc.mrs.ehr_mobile.converter.TestLevelConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.TypeOfContactConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
+import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
@@ -61,6 +62,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKitTestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
@@ -78,6 +80,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.DisclosureMethodDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EducationLevelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EntryPointDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityQueueDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityWardDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsScreeningDao;
@@ -133,7 +137,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
-        IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class}, version = 17, exportSchema = false)
+        IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
+        FacilityQueue.class, FacilityWard.class}, version = 18, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -252,4 +257,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract TestKitTestLevelDao testKitTestLevelDao();
 
     public abstract InvestigationTestkitDao investigationTestkitDao();
+
+    public abstract FacilityQueueDao facilityQueueDao();
+
+    public abstract FacilityWardDao facilityWardDao();
 }

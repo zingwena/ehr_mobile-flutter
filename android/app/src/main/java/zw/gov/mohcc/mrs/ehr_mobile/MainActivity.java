@@ -376,12 +376,24 @@ public class MainActivity extends FlutterActivity {
         getArvCombinationRegimens(token, url + "/api/");
         getDisclosureMethods(token, url + "/api/");
         getTestingPlan(token, url + "/api/");
+        getFacilityQueues(url);
+        getFacilityWards(url);
         getPatients(url);
     }
 
     private void getPatients(String baseUrl) {
         ehrMobileDatabase.personDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
+    }
+
+    private void getFacilityQueues(String baseUrl) {
+        ehrMobileDatabase.facilityQueueDao().deleteAll();
+        PatientsApolloClient.getFacilityQueuesFromEhr(ehrMobileDatabase, baseUrl);
+    }
+
+    private void getFacilityWards(String baseUrl) {
+        ehrMobileDatabase.facilityWardDao().deleteAll();
+        PatientsApolloClient.getFacilityWardsFromEhr(ehrMobileDatabase, baseUrl);
     }
 
     public void getMaritalStates(Token token, String baseUrl) {

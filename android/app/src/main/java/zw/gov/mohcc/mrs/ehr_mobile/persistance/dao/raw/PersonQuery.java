@@ -26,6 +26,9 @@ public class PersonQuery {
         String searchItemNoSpace = getStringWithoutSpecialCharacters(searchItem);
 
         String[] searchArray = searchItem.split("\\s");
+        if (searchArray == null || searchArray.length <= 0) {
+            return null;
+        }
         if (searchArray.length == 1) {
             SearchPatientDTO searchDTO = SearchPatientDTO.getNationalIdInstance(searchArray[0]);
             stringQuery.append(" WHERE nationalId is ?");

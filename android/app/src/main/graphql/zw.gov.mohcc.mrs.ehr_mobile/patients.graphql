@@ -1,13 +1,11 @@
 query GetPatientsQuery{
 
-    people(text: "", page: 0, sort: "", size: 50) {
+people(text: "", page: 0, sort: "", size: 100000) {
         content {
             personId
-
             firstname
             lastname
             phones{number,phoneId}
-
             sex
             identifications{number,type{name}}
             occupation{id,name}
@@ -19,7 +17,6 @@ query GetPatientsQuery{
             birthdate
             nationality{id,name}
             countryOfBirth{id,name}
-
             address {
                 city
                 town {
