@@ -111,6 +111,8 @@ class _Hts_Result  extends State<Hts_Result > {
           entryPoints = jsonDecode(_entryPoint);
           _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
           _dropDownListEntryPoints.forEach((e) {
+            print("*********************************************************");
+            print(e);
             _entryPointList.add(e);
           });
         }
@@ -396,7 +398,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                       rows: _entryPointList.map((labinvesttest)=>
                                                        DataRow(
                                                            cells: [
-                                                       DataCell(Text(labinvesttest.testKit.name)),
+                                                       DataCell(Text(labinvesttest.testkit.name)),
                                                        DataCell(Text(labinvesttest.result.name)),
                                                        DataCell(Text(labinvesttest.startTime)),
                                                        DataCell(Text(labinvesttest.endTime))])

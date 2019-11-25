@@ -241,7 +241,7 @@ public class HtsChannel {
                                 Log.d(TAG, "Calling laboratory investigations with : &&&&&&&&&&&&&&&& : " + arguments);
                                 List<LaboratoryInvestigationTest> laboratoryInvestigationTests = ehrMobileDatabase.labInvestTestdao().findAllByVisitId(arguments);
                                 String list = gson.toJson(laboratoryInvestigationTests);
-                                System.out.println(" SIZE OF LAB INVEST TEST LIST :::::::::::::::::::" + laboratoryInvestigationTests.size());
+                                Log.d(TAG, "Laboratory investigations retrieved from sqlite : " + list);
                                 result.success(list);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
