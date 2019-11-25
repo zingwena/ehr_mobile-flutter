@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/relationship_listPage.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -46,6 +48,7 @@ class OverviewState extends State<Overview> {
   Map<String, dynamic> details;
   String _maritalStatus,_educationLevel,_occupation,_nationality, _address, _phonenumber;
   HtsRegistration htsRegistration;
+  HtsScreening htsScreening;
   String htsId;
   bool showInput = true;
   bool showInputTabOptions = true;
@@ -55,8 +58,7 @@ class OverviewState extends State<Overview> {
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
-    print(_patient.toString());
-
+    getHtsScreeningRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
 
     super.initState();
@@ -84,13 +86,29 @@ class OverviewState extends State<Overview> {
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
       setState(() {
-
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
         print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
       });
 
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+
+  }
+  Future<void> getHtsScreeningRecord(String patientId) async {
+    var  hts_screening;
+    try {
+      hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
+      debugPrint("JJJJJJJJJJJJJJJJJJJJJJ HERE IS THE HTS SCREENIN RECORD RETURNED "+ hts_screening);
+      setState(() {
+        debugPrint("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IN SET STATE METHOD OF HTSSCREENING");
+        htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
+        debugPrint("HERE IS THE HTSSCREENING AFTER ASSIGNMENT >>>>>>>>>> $htsScreening");
+      });
+
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -348,21 +366,6 @@ class OverviewState extends State<Overview> {
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 
@@ -403,15 +406,22 @@ class OverviewState extends State<Overview> {
           ),
           ),
 
-          new RoundedButton(text: "HTS", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Hts_Screening(widget.patient.id, htsId, null, visitId, _patient)),
-          ),
+          new RoundedButton(text: "HTS", onTap: () {
+            if(htsScreening == null ){
+              debugPrint("The htsscreening record was null ######");
+               Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  Hts_Screening(widget.patient.id, htsId, htsRegistration, visitId, _patient)
+              ));
+            } else {
+              debugPrint("The htsscreening record wasn't null #######");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HtsScreeningOverview(widget.patient, htsScreening, htsId, visitId,  widget.patient.id)
+              ));
+            }
+          }
           ),
 
-    new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
+      new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
     context,
     MaterialPageRoute(
     builder: (context) =>

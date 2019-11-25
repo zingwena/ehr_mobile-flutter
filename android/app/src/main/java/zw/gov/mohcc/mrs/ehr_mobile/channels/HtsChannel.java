@@ -77,6 +77,7 @@ public class HtsChannel {
                             try {
                                 Hts hts = htsService.getCurrentHts(arguments);
                                 String htsjson = gson.toJson(hts);
+                                Log.i(TAG, "HTS SCREENING MODEL"+ htsjson);
                                 result.success(htsjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

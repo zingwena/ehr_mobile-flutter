@@ -88,24 +88,26 @@ class _HtsScreening extends State<Hts_Screening> {
     var response;
     try {
       response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
+      setState(() {
+        gethtsscreening(widget.personId);
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      gethtsscreening(widget.personId);
 
-    });
   }
   Future<void> gethtsscreening(String personId) async {
     var response;
     try {
       response = await htsChannel.invokeMethod('getHtsScreening', widget.personId);
+      setState(() {
+        htsScreening = HtsScreening.fromJson(jsonDecode(response));
+      });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure getting hts screen record: '$e'");
     }
-    setState(() {
-      htsScreening = HtsScreening.fromJson(jsonDecode(response));
-    });
+
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -836,7 +838,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, _patientonart, result, date, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
+                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result, date, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, dateOfViralLoad, cd4Done, dateOfCd4Count);
                                                           savehtsscreening(htsscreening);
                                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningOverview(widget.person, htsscreening, widget.htsid, widget.visitId, widget.personId)));
 
