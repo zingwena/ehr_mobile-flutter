@@ -5,6 +5,7 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 import java.util.UUID;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
@@ -20,19 +21,25 @@ public class HtsScreeningDTO {
 
     private String result;
 
+    @TypeConverters(DateConverter.class)
     private Date dateLastTested;
 
     private String artNumber;
 
+    @TypeConverters(DateConverter.class)
     private Date dateLastNegative;
 
     private Integer viralLoad;
 
+    @TypeConverters(DateConverter.class)
     private Date viralLoadDate;
 
     private Integer cd4Count;
 
+    @TypeConverters(DateConverter.class)
     private Date cd4CountDate;
+
+    @TypeConverters(DateConverter.class)
     private Date dateEnrolled;
 
     private ActivityStatus viralLoadDone;
