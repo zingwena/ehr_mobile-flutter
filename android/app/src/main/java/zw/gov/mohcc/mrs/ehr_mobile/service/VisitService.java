@@ -14,6 +14,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -48,10 +49,17 @@ public class VisitService {
         return ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
     }
 
+    public PatientWard getPatientWard(String personId) {
+        Visit visit = getVisit(personId);
+        if (visit == null) {
+            return null;
+        }
+        return ehrMobileDatabase.patientWardDao().findByVisitId(visit.getId());
+    }
+
     public Visit getVisit(String personId) {
 
-        return ehrMobileDatabase.visitDao().findByPersonIdAndTypeAndDischargedIsNull(
-                personId, PatientType.OUTPATIENT);
+        return ehrMobileDatabase.visitDao().findByPersonIdAndDischargedIsNull(personId);
     }
 
     public String getCurrentVisit(String personId) {
@@ -109,8 +117,8 @@ public class VisitService {
         return visit.getId();
     }
 
-    /*@EventHandler
-    public void onInPatientAdmitted(InPatientAdmitted event) {
+    @Transaction
+    public String onInPatientAdmitted(InPatientDTO dto) {
 
         if (event.getOutPatientId() != null) {
             dischargePatient(event.getOutPatientId().toString(), event.getTime().toLocalDate());
@@ -136,48 +144,7 @@ public class VisitService {
 
     }
 
-    @EventHandler
-    public void onOutPatientRegistered(OutPatientRegistered event) {
-        Patient patient = patientRepository.findOne(event.getPatientId().toString());
-
-        if (patient != null) {
-            patient.setHospitalNumber(event.getHospitalNumber());
-
-            patientRepository.save(patient);
-
-        }
-    }
-
-
-
-@EventHandler
-    @Transactional
-    public void onPatientDischarged(PatientDischarged event, @MetaDataValue("time") String timestamp) {
-        log.debug("Discharge patient");
-
-        LocalDateTime time = Utils.toLocalDateTime(timestamp);
-
-        Patient patient = patientRepository.findOne(event.getPatientId().toString());
-
-        if (patient == null) {
-            return;
-        }
-
-        if (patient != null && patient.getDischarged() != null) {
-            if (patientQueueRepository.existsByPatientPatientId(event.getPatientId().toString())) {
-                patientQueueRepository.delete(event.getPatientId().toString());
-            }
-            if (patientWardRepository.existsByPatientPatientId(event.getPatientId().toString())) {
-                patientWardRepository.delete(event.getPatientId().toString());
-            }
-        }
-
-        dischargePatient(event.getPatientId().toString(),
-                time != null ? time.toLocalDate() : patient.getTime().toLocalDate());
-
-    }
-
-    @EventHandler
+    /*@EventHandler
     @Transactional
     public void onPatientQueueChanged(PatientQueueChanged event) {
 
