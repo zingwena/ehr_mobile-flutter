@@ -1,6 +1,8 @@
 package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 
+import android.util.Log;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.SiteSetting;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -16,7 +18,8 @@ public class SiteService {
 
     public NameCode getFacilityDetails() {
 
-        SiteSetting siteSetting = ehrMobileDatabase.siteSettingDao().findSiteSetting();
+        SiteSetting siteSetting = ehrMobileDatabase.siteSettingDao().findAll().get(0);
+        Log.d(TAG,"Site Setting retrieved : " + siteSetting);
         return new NameCode(siteSetting.getId(), siteSetting.getName());
     }
 }
