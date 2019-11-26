@@ -17,6 +17,9 @@ public interface PatientWardDao {
     @Insert
     void saveOne(PatientWard patientWard);
 
+    @Insert
+    void update(PatientWard patientWard);
+
     @Query("SELECT * FROM PatientWard")
     List<PatientWard> findAll();
 
@@ -31,4 +34,7 @@ public interface PatientWardDao {
 
     @Query("SELECT count(*) FROM PatientWard WHERE visitId=:visitId")
     int existsByVisitId(String visitId);
+
+    @Query("SELECT * FROM PatientWard WHERE visitId=:visitId")
+    PatientWard findByVisitId(String visitId);
 }

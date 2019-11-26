@@ -14,10 +14,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class VisitService {
 
@@ -48,10 +48,17 @@ public class VisitService {
         return ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
     }
 
+    public PatientWard getPatientWard(String personId) {
+        Visit visit = getVisit(personId);
+        if (visit == null) {
+            return null;
+        }
+        return ehrMobileDatabase.patientWardDao().findByVisitId(visit.getId());
+    }
+
     public Visit getVisit(String personId) {
 
-        return ehrMobileDatabase.visitDao().findByPersonIdAndTypeAndDischargedIsNull(
-                personId, PatientType.OUTPATIENT);
+        return ehrMobileDatabase.visitDao().findByPersonIdAndDischargedIsNull(personId);
     }
 
     public String getCurrentVisit(String personId) {
@@ -106,109 +113,76 @@ public class VisitService {
         Log.d(TAG, "Visit after visit has been constructed : " + visit);
 
         ehrMobileDatabase.visitDao().insert(visit);
+        // add patient to queue
+        Log.d(TAG, "Adding current patient to queue");
+        PatientQueue patientQueue = new PatientQueue(UUID.randomUUID().toString(), visit.getId(), dto.getQueue());
+        ehrMobileDatabase.patientQueueDao().saveOne(patientQueue);
+        Log.d(TAG, "Patient queue record saved");
         return visit.getId();
     }
 
-    /*@EventHandler
-    public void onInPatientAdmitted(InPatientAdmitted event) {
+    @Transaction
+    public String onInPatientAdmitted(InPatientDTO dto) {
+        Log.d(TAG, "Admitted in patient");
 
-        if (event.getOutPatientId() != null) {
-            dischargePatient(event.getOutPatientId().toString(), event.getTime().toLocalDate());
+        Visit outPatientRecord = ehrMobileDatabase.visitDao().findByPersonIdAndTypeAndDischargedIsNull(
+                dto.getPersonId(), PatientType.OUTPATIENT);
+
+        Log.d(TAG, "In patient record retrieved : " + outPatientRecord);
+
+        if (outPatientRecord != null) {
+            dischargePatient(outPatientRecord.getId(), new Date());
         }
 
-        Patient patient = patientMapper.inPatientAdmittedToEntity(event);
+        Visit visit = new Visit(UUID.randomUUID().toString(), dto.getPersonId(), PatientType.INPATIENT, new Date());
 
-        patient.setType(PatientType.INPATIENT);
+        visit.setFacility(siteService.getFacilityDetails());
 
-        Facility facility = null;
-
-        if (event.getFacilityId() != null) {
-            facility = facilityRepository.findOne(event.getFacilityId());
-        }
-
-        if (facility != null) {
-            patient.setFacility(new Identifiable(facility.getFacilityId(), facility.getName()));
-        } else {
-            patient.setFacility(null);
-        }
-
-        patientRepository.save(patient);
-
+        ehrMobileDatabase.visitDao().insert(visit);
+        // add patient to queue
+        Log.d(TAG, "Adding current patient to ward");
+        PatientWard patientWard = new PatientWard(UUID.randomUUID().toString(), visit.getId(), dto.getWard());
+        ehrMobileDatabase.patientWardDao().saveOne(patientWard);
+        Log.d(TAG, "Patient ward record saved");
+        return visit.getId();
     }
 
-    @EventHandler
-    public void onOutPatientRegistered(OutPatientRegistered event) {
-        Patient patient = patientRepository.findOne(event.getPatientId().toString());
+    public String onPatientQueueChanged(OutPatientDTO dto) {
 
-        if (patient != null) {
-            patient.setHospitalNumber(event.getHospitalNumber());
-
-            patientRepository.save(patient);
-
+        Log.d(TAG, "Changing patient queue " + dto);
+        // just go ahead and update current patient queue
+        Visit visit = getVisit(dto.getPersonId());
+        if (visit == null) {
+            Log.d(TAG, "Patient must have an active visit at this stage");
+            throw new IllegalStateException("Patient is expected to have an active visit at this stage : " + visit);
         }
+        PatientQueue patientQueue = ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
+        Log.d(TAG, "Retrieved patient queue record : " + patientQueue);
+        patientQueue.setQueue(dto.getQueue());
+
+        ehrMobileDatabase.patientQueueDao().update(patientQueue);
+        Log.d(TAG, "Patient queue successifuly changed");
+
+        return patientQueue.getId();
     }
 
 
+    public String onPatientWardChanged(InPatientDTO dto) {
 
-@EventHandler
-    @Transactional
-    public void onPatientDischarged(PatientDischarged event, @MetaDataValue("time") String timestamp) {
-        log.debug("Discharge patient");
-
-        LocalDateTime time = Utils.toLocalDateTime(timestamp);
-
-        Patient patient = patientRepository.findOne(event.getPatientId().toString());
-
-        if (patient == null) {
-            return;
+        Log.d(TAG, "Changing patient ward " + dto);
+        // just go ahead and update current patient ward
+        Visit visit = getVisit(dto.getPersonId());
+        if (visit == null) {
+            Log.d(TAG, "Patient must have an active visit at this stage");
+            throw new IllegalStateException("Patient is expected to have an active visit at this stage : " + visit);
         }
+        PatientWard patientWard = ehrMobileDatabase.patientWardDao().findByVisitId(visit.getId());
+        Log.d(TAG, "Retrieved patient ward record : " + patientWard);
+        patientWard.setWard(dto.getWard());
 
-        if (patient != null && patient.getDischarged() != null) {
-            if (patientQueueRepository.existsByPatientPatientId(event.getPatientId().toString())) {
-                patientQueueRepository.delete(event.getPatientId().toString());
-            }
-            if (patientWardRepository.existsByPatientPatientId(event.getPatientId().toString())) {
-                patientWardRepository.delete(event.getPatientId().toString());
-            }
-        }
+        ehrMobileDatabase.patientWardDao().update(patientWard);
+        Log.d(TAG, "Patient ward successifuly changed");
 
-        dischargePatient(event.getPatientId().toString(),
-                time != null ? time.toLocalDate() : patient.getTime().toLocalDate());
-
+        return patientWard.getId();
     }
-
-    @EventHandler
-    @Transactional
-    public void onPatientQueueChanged(PatientQueueChanged event) {
-
-        String queue = queueRepository.findOne(event.getQueueId()).getName();
-
-        if (!patientRepository.exists(event.getPatientId().toString())) {
-            return;
-        }
-
-        PatientQueue patientQueue = new PatientQueue(event.getPatientId().toString(),
-                new Patient(event.getPatientId().toString()), new Identifiable(event.getQueueId(), queue));
-
-        patientQueueRepository.save(patientQueue);
-
-    }
-
-    @EventHandler
-    @Transactional
-    public void onPatientWardChanged(PatientWardChanged event) {
-
-        String ward = wardRepository.findOne(event.getWardId()).getName();
-
-        if (!patientRepository.exists(event.getPatientId().toString())) {
-            return;
-        }
-
-        PatientWard patientWard = new PatientWard(event.getPatientId().toString(),
-                new Patient(event.getPatientId().toString()), new Identifiable(event.getWardId(), ward));
-
-        patientWardRepository.save(patientWard);
-
-    }
-     */
 }

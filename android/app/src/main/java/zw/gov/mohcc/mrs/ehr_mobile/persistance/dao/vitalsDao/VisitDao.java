@@ -25,6 +25,9 @@ public interface VisitDao {
     @Query("SELECT * FROM Visit WHERE personId = :personId AND patientType=:patientType And discharged is null")
     Visit findByPersonIdAndTypeAndDischargedIsNull(String personId, PatientType patientType);
 
+    @Query("SELECT * FROM Visit WHERE personId = :personId And discharged is null")
+    Visit findByPersonIdAndDischargedIsNull(String personId);
+
     @Query("SELECT * FROM Visit")
     List<Visit> getAll();
 
