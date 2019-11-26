@@ -89,7 +89,7 @@ class _PatientPretest extends State<PatientPretest> {
     String pretestjson;
     try {
         pretestjson =  await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
-        print('LLLLLLLLLLLLLLLL'+ pretestjson);
+        print('LLLLLLLLLLLLLLLL PRETEST TO JSON ON SAVING'+ pretestjson);
         setState(() {
           patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
           print('LLLLLLLLLLLLLLLLLLLLL'+ patient_preTest.toString());

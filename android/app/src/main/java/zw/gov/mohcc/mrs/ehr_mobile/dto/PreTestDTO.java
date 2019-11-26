@@ -15,7 +15,7 @@ public class PreTestDTO {
     boolean coupleCounselling;
     boolean optOutOfTest;
     boolean preTestInfoGiven;
-    String HtsModel_id;
+    String htsModelId;
     String purpose_of_test_id;
 
     public PreTestDTO(String hts_id, String htsApproach,
@@ -30,7 +30,7 @@ public class PreTestDTO {
         this.coupleCounselling = coupleCounselling;
         this.optOutOfTest = optOutOfTest;
         this.preTestInfoGiven = preTestInfoGiven;
-        this.HtsModel_id = htsModel_id;
+        this.htsModelId = htsModel_id;
         this.purpose_of_test_id = purpose_of_test_id;
     }
 
@@ -83,11 +83,11 @@ public class PreTestDTO {
     }
 
     public String getHtsModel_id() {
-        return HtsModel_id;
+        return htsModelId;
     }
 
     public void setHtsModel_id(String htsModel_id) {
-        HtsModel_id = htsModel_id;
+        htsModelId = htsModel_id;
     }
 
     public String getPurpose_of_test_id() {

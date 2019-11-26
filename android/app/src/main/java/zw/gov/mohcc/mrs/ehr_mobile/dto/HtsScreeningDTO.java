@@ -1,10 +1,8 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 import androidx.annotation.NonNull;
 import androidx.room.TypeConverters;
-
 import java.util.Date;
 import java.util.UUID;
-
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;

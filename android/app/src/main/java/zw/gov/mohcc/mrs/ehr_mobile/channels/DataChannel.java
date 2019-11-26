@@ -17,6 +17,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
@@ -167,6 +168,15 @@ public class DataChannel {
                                 result1.success(list);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
+
+                            }
+                        }
+                        if(methodCall1.method.equals("getReasonForNotIssueingReasons")){
+                            try{
+                                List<ReasonForNotIssuingResult>reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().findAll();
+                                String reasonslist = gson.toJson(reasonForNotIssuingResults);
+                                result1.success(reasonslist);
+                            }catch (Exception e){
 
                             }
                         }

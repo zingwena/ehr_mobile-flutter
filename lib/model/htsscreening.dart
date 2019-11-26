@@ -20,36 +20,8 @@ class HtsScreening{
   DateTime  viralLoadDate;
   DateTime  cd4CountDate;
 
-/*  private String personId;
-
-  private boolean testedBefore;
-
-  private Boolean art;
-
-  private String result;
-
-  private Date dateLastTested;
-
-  private String artNumber;
-
-  private Date dateLastNegative;
-
-  private Integer viralLoad;
-
-  private Date viralLoadDate;
-
-  private Integer cd4Count;
-
-  private Date cd4CountDate;
-
-  private Date dateEnrolled;
-
-  private ActivityStatus viralLoadDone;
-
-  private ActivityStatus cd4Done;*/
-
-  HtsScreening(String personId, String visitId, bool testedBefore, bool art, String result,  DateTime dateLastTested, DateTime dateEnrolled, String artNumber, bool beenOnPrep,
-      String prepOption, String viralLoadDone, DateTime viralLoadDate,  String cd4Done, DateTime cd4countDate){
+  HtsScreening(String personId, String visitId, bool testedBefore, bool art, String result, /*DateTime dateLastNeg,*/   /*DateTime dateLastTested,*/ /*DateTime dateEnrolled, */String artNumber, bool beenOnPrep,
+      String prepOption, String viralLoadDone,/* DateTime viralLoadDate*/ String cd4Done, /*DateTime cd4countDate*/){
     this.personId = personId;
     this.visitId = visitId;
     this.testedBefore = testedBefore;
@@ -57,13 +29,14 @@ class HtsScreening{
     this.result = result;
     this.artNumber = artNumber;
     this.beenOnPrep = beenOnPrep;
-    this.dateLastTested = dateLastTested;
-    this.dateEnrolled = dateEnrolled;
+   // this.dateLastNegative = dateLastNeg;
+   // this.dateLastTested = dateLastTested;
+    //this.dateEnrolled = dateEnrolled;
     this.prepOption = prepOption;
     this.viralLoadDone = viralLoadDone;
-    this.viralLoadDate = viralLoadDate;
+   // this.viralLoadDate = viralLoadDate;
     this.cd4Done = cd4Done;
-    this.cd4CountDate = cd4countDate;
+   // this.cd4CountDate = cd4countDate;
   }
 
 

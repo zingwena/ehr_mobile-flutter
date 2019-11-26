@@ -6,6 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 
@@ -28,4 +29,6 @@ public interface ReasonForNotIssuingResultDao {
     @Query("SELECT * FROM ReasonForNotIssuingResult WHERE code=:id")
     EntryPoint findReasonForNotIssuingResultById(String id);
 
+    @Query("SELECT * FROM ReasonForNotIssuingResult ORDER BY name DESC")
+    List<ReasonForNotIssuingResult> findAll();
 }

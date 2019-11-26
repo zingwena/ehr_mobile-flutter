@@ -34,6 +34,8 @@ class PatientPostTest extends StatefulWidget {
 class _PatientPostTest extends State<PatientPostTest> {
   static const platform = MethodChannel('example.channel.dev/people');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel =
+  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   final _formKey = GlobalKey<FormState>();
   var selectedDate;
   DateTime date;
@@ -101,10 +103,26 @@ class _PatientPostTest extends State<PatientPostTest> {
       print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
     });
-
-
   }
-
+  /*Future<void> getReasonsForNotIssueingResult() async {
+    String response;
+    try {
+      response = await dataChannel.invokeMethod('getEntryPointsOptions');
+      setState(() {
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = EntryPoint.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+        _dropDownMenuItemsEntryPoint =
+            getDropDownMenuItemsIdentifiedEntryPoint();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+*/
   List<DropdownMenuItem<String>>
   getDropDownMenuItemsReasonForNotIssuingResult() {
     List<DropdownMenuItem<String>> items = new List();
@@ -142,6 +160,46 @@ class _PatientPostTest extends State<PatientPostTest> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                "Final Result:",
+                                style: TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            width: 100,
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                (widget.result),
+                                style: TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            width: 100,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -189,7 +247,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                     height: 10.0,
                   ),
 
-                  Row(
+                  postTestCounselled == "YES" ? Row(
                     children: <Widget>[
                       Expanded(
                         child: SizedBox(
@@ -219,6 +277,8 @@ class _PatientPostTest extends State<PatientPostTest> {
                             _selectDate(context);
                           })
                     ],
+                  ): SizedBox(
+                    height: 0.0,
                   ),
                   SizedBox(
                     height: 10.0,

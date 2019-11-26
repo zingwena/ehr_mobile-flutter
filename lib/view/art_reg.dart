@@ -14,9 +14,6 @@ import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
-
-
-
 import 'edit_demographics.dart';
 
 class ArtReg extends StatefulWidget {
@@ -54,30 +51,29 @@ class _ArtReg extends State<ArtReg> {
   }
 
   Future<Null> _selectDateOfHivTest(BuildContext context) async {
-    print('KKKKKKKKKKKKKKKKKKKK dat of hiv test picked');
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(1900, 8),
+        firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
-        dateOfTest = picked;
-        displayDate = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfTest = DateFormat("yyyy/MM/dd").format(picked);
+        test_date = DateFormat("yyyy/MM/dd").parse(dateOfTest);
       });
   }
-  Future<Null> _selectDateOfEnrollment(BuildContext context) async {
-    print('KKKKKKKKKKKKKKKKKKKK dat of enrollment picked');
 
+
+  Future<Null> _selectDateOfEnrollment(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(1900, 8),
+        firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != dateOfEnrollment)
+    if (picked != null && picked != dateOfTest)
       setState(() {
-        dateOfEnrollment = picked;
-        displayDate = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
+        enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
       });
   }
 
@@ -217,7 +213,7 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    displayDate),
+                                                                    dateOfTest),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -270,7 +266,7 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    displayDate),
+                                                                    dateOfEnrollment),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -328,7 +324,7 @@ class _ArtReg extends State<ArtReg> {
                                                               .currentState
                                                               .save();
                                                           setState(() {
-                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, dateOfEnrollment, dateOfTest, oi_art_number);
+                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
                                                             artRegistration(artRegistrationDetails);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
 

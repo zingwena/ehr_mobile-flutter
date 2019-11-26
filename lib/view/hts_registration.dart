@@ -56,14 +56,11 @@ class _Registration extends State<Registration> {
   List _dropDownListEntryPoints = List();
   String hts_id;
   HtsRegistration htsRegistration;
-
   bool showInput = true;
   bool showInputTabOptions = true;
-
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<EntryPoint> _entryPointList = List();
   HtsRegistration _htsRegistration;
-
   String _currentEntryPoint;
 
   @override
@@ -483,9 +480,6 @@ class _Registration extends State<Registration> {
     } catch (e) {
       print("channel failure: '$e'");
     }
-
-
-
   }
 
   void changedDropDownItemEntryPoint(String selectedEntryPoint) {
