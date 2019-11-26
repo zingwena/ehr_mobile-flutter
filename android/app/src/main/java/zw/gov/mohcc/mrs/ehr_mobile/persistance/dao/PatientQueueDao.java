@@ -31,4 +31,7 @@ public interface PatientQueueDao {
 
     @Query("SELECT count(*) FROM PatientQueue WHERE visitId=:visitId")
     int existsByVisitId(String visitId);
+
+    @Query("SELECT * FROM PatientQueue WHERE visitId=:visitId")
+    PatientQueue findByVisitId(String visitId);
 }

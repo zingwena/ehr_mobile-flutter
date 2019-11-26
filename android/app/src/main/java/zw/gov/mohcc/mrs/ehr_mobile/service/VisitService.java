@@ -6,11 +6,15 @@ import android.util.Log;
 import androidx.room.Transaction;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
+import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
@@ -23,6 +27,25 @@ public class VisitService {
 
     public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+        this.siteService = siteService;
+    }
+
+    public List<FacilityQueue> getFacilityQueues() {
+
+        return ehrMobileDatabase.facilityQueueDao().findAll();
+    }
+
+    public List<FacilityWard> getFacilityWards() {
+
+        return ehrMobileDatabase.facilityWardDao().findAll();
+    }
+
+    public PatientQueue getPatientQueue(String personId) {
+        Visit visit = getVisit(personId);
+        if (visit == null) {
+            return null;
+        }
+        return ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
     }
 
     public Visit getVisit(String personId) {
@@ -77,7 +100,6 @@ public class VisitService {
             dischargePatient(inPatientRecord.getId(), new Date());
         }
 
-        // @NonNull String id, @NonNull String personId, @NonNull PatientType patientType, @NonNull Date time
         Visit visit = new Visit(UUID.randomUUID().toString(), dto.getPersonId(), PatientType.OUTPATIENT, new Date());
 
         visit.setFacility(siteService.getFacilityDetails());
