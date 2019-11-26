@@ -905,7 +905,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result,/*dateLastTest,*/ /*dateOfLastNeg,*//* dateOfEnrollmentIntoCare,*/ artNumber, beenOnPrep, prepOption, viralLoadDone,/* dateOfViralLoad, */cd4Done, /*dateOfCd4Count*/);
+                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result,dateLastTest, dateOfLastNeg, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, dateOfViralLoad, cd4Done, dateOfCd4Count);
                                                           savehtsscreening(htsscreening);
                                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningOverview(widget.person, htsscreening, widget.htsid, widget.visitId, widget.personId)));
 

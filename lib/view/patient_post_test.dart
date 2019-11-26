@@ -47,6 +47,13 @@ class _PatientPostTest extends State<PatientPostTest> {
   bool _consenttoindex = false;
   String consenttoindex = "NO";
   HtsRegistration htsRegistration;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
+  List<ReasonForNotIssuingResult> _entryPointList = List();
+  String _currentEntryPoint;
+  String _entryPoint;
+  List entryPoints = List();
+  List _dropDownListEntryPoints = List();
+
 
   @override
   void initState() {
@@ -78,10 +85,7 @@ class _PatientPostTest extends State<PatientPostTest> {
   }
 
   Future<void> insertPostTest(PostTest postTest) async {
-
-
     try {
-
           await htsChannel.invokeMethod('savePostTest',  jsonEncode(postTest));
     } catch (e) {
       print("channel failure: '$e'");
@@ -104,25 +108,24 @@ class _PatientPostTest extends State<PatientPostTest> {
 
     });
   }
-  /*Future<void> getReasonsForNotIssueingResult() async {
+  Future<void> getReasonsForNotIssueingResult() async {
     String response;
     try {
       response = await dataChannel.invokeMethod('getEntryPointsOptions');
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = EntryPoint.mapFromJson(entryPoints);
+        _dropDownListEntryPoints = ReasonForNotIssuingResult.mapFromJson(entryPoints);
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        _dropDownMenuItemsEntryPoint =
-            getDropDownMenuItemsIdentifiedEntryPoint();
+        _dropDownMenuItemsEntryPoint = getDropDownMenuItemsReasonForNotIssuingResult();
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
   }
-*/
+
   List<DropdownMenuItem<String>>
   getDropDownMenuItemsReasonForNotIssuingResult() {
     List<DropdownMenuItem<String>> items = new List();
@@ -223,6 +226,40 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 10.0,
                   ),
+                  Row(children: <Widget>[
+                    Container(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                      width: double.infinity,
+                      child: OutlineButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(0.0),
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 30.0),
+                          child: DropdownButton(
+                            hint: Text('Select Entry Point'),
+                            icon: Icon(Icons.keyboard_arrow_down),
+                            iconEnabledColor: Colors.black,
+                            value: _currentEntryPoint,
+                            items: _dropDownMenuItemsEntryPoint,
+                            onChanged: changedDropDownItemEntryPoint,
+                          ),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.blue, //Color of the border
+                          style: BorderStyle.solid, //Style of the border
+                          width: 2.0, //width of the border
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+
+                  ],),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -343,6 +380,13 @@ class _PatientPostTest extends State<PatientPostTest> {
       );
     }
 
+  }
+  void changedDropDownItemEntryPoint(String selectedEntryPoint) {
+    setState(() {
+      _currentEntryPoint = selectedEntryPoint;
+     /* _entryPointError = null;
+      _entryPointIsValid = !_entryPointIsValid;*/
+    });
   }
 
 }
