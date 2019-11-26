@@ -159,7 +159,7 @@ public class MainActivity extends FlutterActivity {
                     Token token = new Token(tokenString);
 
 
-                    //clearTables();
+                    clearTables();
                     pullData(token, url);
 
                 }
@@ -361,7 +361,7 @@ public class MainActivity extends FlutterActivity {
 
     private void pullData(Token token, String url) {
 
-        /*getSample(token, url + "/api/");
+        getSample(token, url + "/api/");
         getDiagnosis(token, url + "/api/");
         getLaboratoryTest(token, url + "/api/");
         getNationalities(token, url + "/api/");
@@ -389,7 +389,7 @@ public class MainActivity extends FlutterActivity {
         getTestingPlan(token, url + "/api/");
         getFacilityQueues(url);
         getFacilityWards(url);
-        getSiteDetails(url);*/
+        getSiteDetails(url);
         getPatients(url);
     }
 
