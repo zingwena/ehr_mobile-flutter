@@ -84,6 +84,9 @@ public interface DataSyncService {
     @GET("samples")
     Call<TerminologyModel> getSamples(@Header("Authorization") String token, @Query("size") int size);
 
+    @GET("diagnoses")
+    Call<TerminologyModel> getDiagnosis(@Header("Authorization") String token, @Query("size") int size);
+
     @GET("investigations")
     Call<InvestigationModel> getInvestigations(@Header("Authorization") String token, @Query("size") int size);
 
