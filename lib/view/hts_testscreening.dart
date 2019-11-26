@@ -163,7 +163,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     }
   }
 
-
   Future<void> getResults(String personId) async {
     String response;
     try {
@@ -290,7 +289,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
         }
       });
-
 
     });
 

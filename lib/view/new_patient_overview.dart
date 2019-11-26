@@ -21,10 +21,10 @@ import 'hts_testscreening.dart';
 import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
-class Overview extends StatefulWidget {
+class PatientOverview extends StatefulWidget {
   final Person patient;
 
-  Overview(this.patient);
+  PatientOverview(this.patient);
 
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +33,7 @@ class Overview extends StatefulWidget {
   }
 }
 
-class OverviewState extends State<Overview> {
+class OverviewState extends State<PatientOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
@@ -481,15 +481,6 @@ class OverviewState extends State<Overview> {
       ),
     );
   }
-Widget _sidemenu(){
-    return new Drawer(
-      child: ListView(
-        children: <Widget>[
-
-        ],
-      ),
-    );
-}
 
   Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
     String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;
@@ -510,7 +501,6 @@ Widget _sidemenu(){
         _address = address;
         _phonenumber = patientphonenumber;
       });
-      print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
 
 
       print('ADDRESS ADDRESS'+ address);

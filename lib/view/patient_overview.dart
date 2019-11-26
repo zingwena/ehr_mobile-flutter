@@ -10,6 +10,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_screening.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/view/visit_initiation.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -364,6 +365,64 @@ class OverviewState extends State<Overview> {
                                                     ],
                                                   ),
                                                 ),
+
+                                              ),
+
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0),
+                                                      child: RaisedButton(
+                                                       onPressed: () {
+                                                         Navigator.push(context,MaterialPageRoute(
+                                                             builder: (context)=>  VisitInitiation(widget.patient)
+                                                         ));
+
+                                                       },
+                                                        color: Colors.blue,
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Icon(Icons.person_add, color: Colors.white,),
+                                                              Spacer(),
+                                                              Text('Admit Out Patient', style: TextStyle(color: Colors.white,),),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0),
+                                                      child: RaisedButton(
+                                                         onPressed: () {},
+                                                        color: Colors.blue,
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Icon(Icons.person_add, color: Colors.white, ),
+                                                              Spacer(),
+                                                              Text('Admit In Patient', style: TextStyle(color: Colors.white),),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                               Expanded(child: Container()),
                                             ],
@@ -470,10 +529,8 @@ Widget _sidemenu(){
         _address = address;
         _phonenumber = patientphonenumber;
       });
-      print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
 
 
-      print('ADDRESS ADDRESS'+ address);
 
     }
     catch (e) {

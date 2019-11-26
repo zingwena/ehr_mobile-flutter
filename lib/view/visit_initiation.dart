@@ -1,8 +1,17 @@
+import 'dart:convert';
+
+import 'package:ehr_mobile/model/facility_queue.dart';
+import 'package:ehr_mobile/model/patient_admission.dart';
+import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/queue.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class VisitInitiation extends StatefulWidget {
+  final Person person;
 
+  VisitInitiation(this.person);
   @override
   State<StatefulWidget> createState() {
 
@@ -15,36 +24,55 @@ class VisitInitiationState extends State<VisitInitiation>
     with TickerProviderStateMixin {
 
   TabController controller;
+  static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChanne');
+  String queue_string;
+  List json_queue_list = List();
+  List _queues = List();
+  List<FacilityQueue> _queuesList = List();
+  Queue queue = Queue('', '');
+
 
   @override
   void initState() {
+    getFacilityQueues();
     super.initState();
     controller = new TabController(length: 3, vsync: this);
 
   }
 
-  int _queue = 0;
-  String queue = "";
-
+  int _queue = -1;
   void _handleQueueChange(int value) {
     setState(() {
       _queue = value;
+      _queuesList.forEach((e){
+        if(value == _queuesList.indexOf(e)){
+          queue.code = e.queue.code;
+          queue.name = e.queue.name;
 
-      switch (_queue) {
-        case 1:
-          queue = "General";
-          break;
-        case 2:
-          queue = "HTS";
-          break;
-        case 3:
-          queue = "OI Clinic";
-          break;
-        case 4:
-          queue = "FCH";
-          break;
-      }
+        }
+      });
+
     });
+  }
+
+  Future<void>getFacilityQueues() async{
+    String queue_response ;
+    try{
+      queue_response = await visitChannel.invokeMethod('getFacilityQueues');
+          setState(() {
+            queue_string = queue_response;
+            json_queue_list = jsonDecode(queue_string);
+            _queues = FacilityQueue.mapFromJson(json_queue_list);
+            print("HHHHHHHHHHHHHHHHHHH results from android"+ _queues.toString());
+            _queues.forEach((e) {
+              _queuesList.add(e);
+            });
+          });
+
+
+    }catch(e){
+
+    }
   }
 
   @override
@@ -161,30 +189,7 @@ class VisitInitiationState extends State<VisitInitiation>
                                                       width: 250,
                                                     ),
                                                   ),
-                                                  Text('General'),
-                                                  Radio(
-                                                      value: 1,
-                                                      groupValue: _queue,
-                                                      activeColor: Colors.blue,
-                                                      onChanged: _handleQueueChange),
-                                                  Text('HTS'),
-                                                  Radio(
-                                                      value: 2,
-                                                      groupValue: _queue,
-                                                      activeColor: Colors.blue,
-                                                      onChanged: _handleQueueChange),
-                                                  Text('OI Clinic'),
-                                                  Radio(
-                                                      value: 2,
-                                                      groupValue: _queue,
-                                                      activeColor: Colors.blue,
-                                                      onChanged: _handleQueueChange),
-                                                  Text('FCH'),
-                                                  Radio(
-                                                      value: 2,
-                                                      groupValue: _queue,
-                                                      activeColor: Colors.blue,
-                                                      onChanged: _handleQueueChange)
+                                                  getQueues(_queuesList)
                                                 ],
                                               ),
                                             ),
@@ -214,7 +219,10 @@ class VisitInitiationState extends State<VisitInitiation>
                                                   ],
                                                 ),
 
-                                                  onPressed: () {}
+                                                  onPressed: () {
+                                                  PatientAdmission patientadmission = PatientAdmission(widget.person.id, queue);
+                                                  admitPatient(patientadmission);
+                                                  }
 
                                               ),
                                             ),
@@ -247,6 +255,29 @@ class VisitInitiationState extends State<VisitInitiation>
         ],
       ),
     );
+  }
+
+  Widget getQueues(List<FacilityQueue> facilityqueues) {
+    return new Column(children: facilityqueues.map((item) =>
+        Row(
+          children: <Widget>[
+            Text(item.queue.name),
+            Radio(value: facilityqueues.indexOf(item),
+            groupValue: _queue ,
+            activeColor: Colors.blue,
+            onChanged: _handleQueueChange,)
+          ],
+        )
+   ,).toList());
+  }
+
+  Future<void>admitPatient(PatientAdmission patientAdmission) async{
+    try{
+
+
+    }catch(e){
+
+    }
   }
 
 }

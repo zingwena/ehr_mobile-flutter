@@ -21,6 +21,7 @@ import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+import io.flutter.view.FlutterView;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +31,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.DataChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.DataSyncChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.HtsChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
+import zw.gov.mohcc.mrs.ehr_mobile.channels.VisitChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
@@ -102,6 +104,7 @@ public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+    final static String VISITCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/visitChannel";
     final static String HTSCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/htsChannel";
     final static String ADD_PATIENT_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
     final static String DATA_SYNC_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataSyncChannel";
@@ -183,6 +186,8 @@ public class MainActivity extends FlutterActivity {
         });
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase);
+
+        new VisitChannel(getFlutterView(),VISITCHANNEL, ehrMobileDatabase, visitService );
 
         new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
 

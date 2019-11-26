@@ -24,8 +24,6 @@ LaboratoryInvestigationTest _$LaboratoryInvestigationTestFromJson(
     json['endTime'] as String,
     json['personId'] as String,
 
-
-
   );
 }
 
