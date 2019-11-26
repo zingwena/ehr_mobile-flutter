@@ -20,12 +20,14 @@ import java.util.Locale;
 import okhttp3.OkHttpClient;
 import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.QueueQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.SiteQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.WardQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
-import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.SiteSetting;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
@@ -213,6 +215,39 @@ public class PatientsApolloClient {
 
                                 System.out.println("e = " + e.getLocalizedMessage());
                             }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        System.out.println("Error =========" + e.toString());
+                    }
+                }
+        );
+    }
+
+    public static void getSiteDetail(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
+        System.out.println("baseUrl = " + baseUrl);
+        PatientsApolloClient.getApolloClient(baseUrl).query(
+
+
+                SiteQuery.builder()
+                        .build()).enqueue(
+                new ApolloCall.Callback<SiteQuery.Data>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onResponse(@NotNull Response<SiteQuery.Data> response) throws IndexOutOfBoundsException {
+                        SiteQuery.Data site = response.data();
+                        try {
+
+                            SiteSetting siteSetting = new SiteSetting(site.site().siteId(), site.site().name());
+                            ehrMobileDatabase.siteSettingDao().saveOne(siteSetting);
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                            System.out.println("e = " + e.getLocalizedMessage());
+                        }
                     }
 
                     @Override

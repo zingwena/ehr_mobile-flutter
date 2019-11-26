@@ -50,6 +50,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Diagnosis;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
@@ -91,6 +92,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.RelationshipService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.SiteService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
@@ -116,6 +118,7 @@ public class MainActivity extends FlutterActivity {
     private HistoryService historyService;
     private IndexTestingService indexTestingService;
     private RelationshipService relationshipService;
+    private SiteService siteService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +129,13 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        visitService = new VisitService(ehrMobileDatabase);
+        siteService = new SiteService(ehrMobileDatabase);
+        visitService = new VisitService(ehrMobileDatabase, siteService);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);
         relationshipService = new RelationshipService(ehrMobileDatabase);
+
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
@@ -352,6 +357,7 @@ public class MainActivity extends FlutterActivity {
     private void pullData(Token token, String url) {
 
         getSample(token, url + "/api/");
+        getDiagnosis(token, url + "/api/");
         getLaboratoryTest(token, url + "/api/");
         getNationalities(token, url + "/api/");
         getFacilities(token, url + "/api/");
@@ -378,12 +384,18 @@ public class MainActivity extends FlutterActivity {
         getTestingPlan(token, url + "/api/");
         getFacilityQueues(url);
         getFacilityWards(url);
+        getSiteDetails(url);
         getPatients(url);
     }
 
     private void getPatients(String baseUrl) {
         ehrMobileDatabase.personDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
+    }
+
+    private void getSiteDetails(String baseUrl) {
+        ehrMobileDatabase.siteSettingDao().deleteAll();
+        PatientsApolloClient.getSiteDetail(ehrMobileDatabase, baseUrl);
     }
 
     private void getFacilityQueues(String baseUrl) {
@@ -1009,6 +1021,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.artStatusDao().deleteAll();
         ehrMobileDatabase.laboratoryInvestigationDao().deleteAll();
         ehrMobileDatabase.sampleDao().deleteSamples();
+        ehrMobileDatabase.diagnosisDao().deleteAll();
         ehrMobileDatabase.labInvestTestdao().deleteLaboratoryInvestTests();
     }
 
@@ -1036,6 +1049,27 @@ public class MainActivity extends FlutterActivity {
                 if (sampleList != null && !sampleList.isEmpty()) {
                     terminologyService.saveSample(sampleList);
                 }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void getDiagnosis(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getSamples("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Diagnosis> diagnosisList = new ArrayList<>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    diagnosisList.add(new Diagnosis(item.getCode(), item.getName()));
+                }
+                    terminologyService.saveDiagnosis(diagnosisList);
             }
 
             @Override

@@ -8,6 +8,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Diagnosis;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
@@ -43,6 +44,12 @@ public class TerminologyService {
 
         ehrMobileDatabase.sampleDao().insertSamples(samples);
         Log.d(TAG, "Saved samples : " + ehrMobileDatabase.sampleDao().getSamples());
+    }
+
+    public void saveDiagnosis(List<Diagnosis> diagnoses) {
+
+        ehrMobileDatabase.diagnosisDao().saveAll(diagnoses);
+        Log.d(TAG, "Saved samples : " + ehrMobileDatabase.diagnosisDao().findAll());
     }
 
     public void saveLaboratoryTests(List<LaboratoryTest> tests) {
