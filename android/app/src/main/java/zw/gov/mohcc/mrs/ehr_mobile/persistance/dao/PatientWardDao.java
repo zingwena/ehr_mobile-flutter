@@ -35,6 +35,6 @@ public interface PatientWardDao {
     @Query("SELECT count(*) FROM PatientWard WHERE visitId=:visitId")
     int existsByVisitId(String visitId);
 
-    @Query("SELECT count(*) FROM PatientWard WHERE visitId=:visitId")
+    @Query("SELECT * FROM PatientWard WHERE visitId=:visitId")
     PatientWard findByVisitId(String visitId);
 }
