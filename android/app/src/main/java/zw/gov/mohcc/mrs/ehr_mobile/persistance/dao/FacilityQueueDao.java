@@ -6,7 +6,6 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 
 @Dao
@@ -17,7 +16,7 @@ public interface FacilityQueueDao {
     @Insert
     void saveOne(FacilityQueue facilityQueue);
 
-    @Query("SELECT * FROM FacilityQueue")
+    @Query("SELECT * FROM FacilityQueue Order by queue_name ASC")
     List<FacilityQueue> findAll();
 
     @Query("DELETE FROM FacilityQueue")

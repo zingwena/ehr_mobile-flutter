@@ -17,7 +17,7 @@ public interface FacilityWardDao {
     @Insert
     void saveOne(FacilityWard facilityWard);
 
-    @Query("SELECT * FROM FacilityWard")
+    @Query("SELECT * FROM FacilityWard Order By ward_name ASC")
     List<FacilityWard> findAll();
 
     @Query("DELETE FROM FacilityWard")

@@ -15,16 +15,11 @@ public class SiteSetting extends BaseEntity {
 
     @NonNull
     private String name;
-    @NonNull
     private String userName;
-    @NonNull
     private String password;
-    @NonNull
     private String ipAddress;
-    @NonNull
     @TypeConverters(DateConverter.class)
     private Date lastEhrPull;
-    @NonNull
     @TypeConverters(DateConverter.class)
     private Date lastEhrPush;
 
@@ -46,48 +41,43 @@ public class SiteSetting extends BaseEntity {
         this.name = name;
     }
 
-    @NonNull
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(@NonNull String userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    @NonNull
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(@NonNull String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    @NonNull
     public String getIpAddress() {
         return ipAddress;
     }
 
-    public void setIpAddress(@NonNull String ipAddress) {
+    public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
-    @NonNull
     public Date getLastEhrPull() {
         return lastEhrPull;
     }
 
-    public void setLastEhrPull(@NonNull Date lastEhrPull) {
+    public void setLastEhrPull(Date lastEhrPull) {
         this.lastEhrPull = lastEhrPull;
     }
 
-    @NonNull
     public Date getLastEhrPush() {
         return lastEhrPush;
     }
 
-    public void setLastEhrPush(@NonNull Date lastEhrPush) {
+    public void setLastEhrPush(Date lastEhrPush) {
         this.lastEhrPush = lastEhrPush;
     }
 
