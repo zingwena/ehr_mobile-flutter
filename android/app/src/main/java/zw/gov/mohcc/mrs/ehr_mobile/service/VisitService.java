@@ -119,29 +119,23 @@ public class VisitService {
 
     @Transaction
     public String onInPatientAdmitted(InPatientDTO dto) {
+        Log.d(TAG, "Admitted in patient");
 
-        if (event.getOutPatientId() != null) {
-            dischargePatient(event.getOutPatientId().toString(), event.getTime().toLocalDate());
+        Visit outPatientRecord = ehrMobileDatabase.visitDao().findByPersonIdAndTypeAndDischargedIsNull(
+                dto.getPersonId(), PatientType.OUTPATIENT);
+
+        Log.d(TAG, "In patient record retrieved : " + outPatientRecord);
+
+        if (outPatientRecord != null) {
+            dischargePatient(outPatientRecord.getId(), new Date());
         }
 
-        Patient patient = patientMapper.inPatientAdmittedToEntity(event);
+        Visit visit = new Visit(UUID.randomUUID().toString(), dto.getPersonId(), PatientType.INPATIENT, new Date());
 
-        patient.setType(PatientType.INPATIENT);
+        visit.setFacility(siteService.getFacilityDetails());
 
-        Facility facility = null;
-
-        if (event.getFacilityId() != null) {
-            facility = facilityRepository.findOne(event.getFacilityId());
-        }
-
-        if (facility != null) {
-            patient.setFacility(new Identifiable(facility.getFacilityId(), facility.getName()));
-        } else {
-            patient.setFacility(null);
-        }
-
-        patientRepository.save(patient);
-
+        ehrMobileDatabase.visitDao().insert(visit);
+        return visit.getId();
     }
 
     /*@EventHandler
