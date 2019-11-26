@@ -1,66 +1,106 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
 import androidx.annotation.NonNull;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.PatientTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
+import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
 @Entity
 public class Visit extends BaseEntity {
 
+    @NonNull
     private String personId;
+    @TypeConverters(PatientTypeConverter.class)
+    @NonNull
+    private PatientType patientType;
     @TypeConverters(DateConverter.class)
-    private Date visitStartDate = new Date();
+    private Date time;
     @TypeConverters(DateConverter.class)
-    private Date visitEndDate = DateUtil.getEndOfDay(new Date());
+    private Date discharged;
+    private String hospitalNumber;
+    @Embedded
+    @NonNull
+    private NameCode facility;
 
     public Visit() {
     }
 
     @Ignore
-    public Visit(@NonNull String id, String personId, Date visitStartDate, Date visitEndDate) {
+    public Visit(@NonNull String id, @NonNull String personId, @NonNull PatientType patientType, @NonNull Date time) {
         super(id);
         this.personId = personId;
-        this.visitStartDate = visitStartDate;
-        this.visitEndDate = visitEndDate;
+        this.patientType = patientType;
+        this.time = time;
     }
 
+    @NonNull
     public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(String personId) {
+    public void setPersonId(@NonNull String personId) {
         this.personId = personId;
     }
 
-    public Date getVisitStartDate() {
-        return visitStartDate;
+    @NonNull
+    public PatientType getPatientType() {
+        return patientType;
     }
 
-    public void setVisitStartDate(Date visitStartDate) {
-        this.visitStartDate = visitStartDate;
+    public void setPatientType(@NonNull PatientType patientType) {
+        this.patientType = patientType;
     }
 
-    public Date getVisitEndDate() {
-        return visitEndDate;
+    public Date getTime() {
+        return time;
     }
 
-    public void setVisitEndDate(Date visitEndDate) {
-        this.visitEndDate = visitEndDate;
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public Date getDischarged() {
+        return discharged;
+    }
+
+    public void setDischarged(Date discharged) {
+        this.discharged = discharged;
+    }
+
+    public String getHospitalNumber() {
+        return hospitalNumber;
+    }
+
+    public void setHospitalNumber(String hospitalNumber) {
+        this.hospitalNumber = hospitalNumber;
+    }
+
+    public NameCode getFacility() {
+        return facility;
+    }
+
+    public void setFacility(NameCode facility) {
+        this.facility = facility;
     }
 
     @Override
     public String toString() {
         return super.toString().concat("Visit{" +
                 "personId='" + personId + '\'' +
-                ", visitStartDate=" + visitStartDate +
-                ", visitEndDate=" + visitEndDate +
+                ", patientType=" + patientType +
+                ", time=" + time +
+                ", discharged=" + discharged +
+                ", hospitalNumber='" + hospitalNumber + '\'' +
+                ", facility=" + facility +
                 '}');
     }
 }

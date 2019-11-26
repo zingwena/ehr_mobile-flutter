@@ -184,7 +184,8 @@ public class HtsScreeningDTO {
     @Override
     public String toString() {
         return "HtsScreeningDTO{" +
-                "testedBefore=" + testedBefore +
+                "personId='" + personId + '\'' +
+                ", testedBefore=" + testedBefore +
                 ", art=" + art +
                 ", result='" + result + '\'' +
                 ", dateLastTested=" + dateLastTested +
