@@ -24,12 +24,13 @@ class VisitInitiationState extends State<VisitInitiation>
     with TickerProviderStateMixin {
 
   TabController controller;
-  static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChanne');
+  static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
   String queue_string;
   List json_queue_list = List();
   List _queues = List();
   List<FacilityQueue> _queuesList = List();
   Queue queue = Queue('', '');
+  String visitId;
 
 
   @override
@@ -53,26 +54,6 @@ class VisitInitiationState extends State<VisitInitiation>
       });
 
     });
-  }
-
-  Future<void>getFacilityQueues() async{
-    String queue_response ;
-    try{
-      queue_response = await visitChannel.invokeMethod('getFacilityQueues');
-          setState(() {
-            queue_string = queue_response;
-            json_queue_list = jsonDecode(queue_string);
-            _queues = FacilityQueue.mapFromJson(json_queue_list);
-            print("HHHHHHHHHHHHHHHHHHH results from android"+ _queues.toString());
-            _queues.forEach((e) {
-              _queuesList.add(e);
-            });
-          });
-
-
-    }catch(e){
-
-    }
   }
 
   @override
@@ -271,11 +252,34 @@ class VisitInitiationState extends State<VisitInitiation>
    ,).toList());
   }
 
-  Future<void>admitPatient(PatientAdmission patientAdmission) async{
+  Future<void>getFacilityQueues() async{
+    String queue_response ;
     try{
-
-
+      queue_response = await visitChannel.invokeMethod('getFacilityQueues');
+      setState(() {
+        queue_string = queue_response;
+        json_queue_list = jsonDecode(queue_string);
+        _queues = FacilityQueue.mapFromJson(json_queue_list);
+        print("HHHHHHHHHHHHHHHHHHH Facility queues  from android"+ _queues.toString());
+        _queues.forEach((e) {
+          _queuesList.add(e);
+        });
+      });
     }catch(e){
+      debugPrint('Exception thrown in getFacilityQueues method'+e);
+
+    }
+  }
+
+  Future<void>admitPatient(PatientAdmission patientAdmission) async{
+    String response ;
+    try{
+      response = await visitChannel.invokeMethod('admitPatient', jsonEncode(patientAdmission));
+     setState(() {
+       visitId = response;
+     });
+    }catch(e){
+      debugPrint('Exception thrown in admit patient method'+e);
 
     }
   }
