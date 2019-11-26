@@ -4,6 +4,8 @@ import 'package:ehr_mobile/model/facility_queue.dart';
 import 'package:ehr_mobile/model/patient_admission.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/queue.dart';
+import 'package:ehr_mobile/view/summary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -31,6 +33,8 @@ class VisitInitiationState extends State<VisitInitiation>
   List<FacilityQueue> _queuesList = List();
   Queue queue = Queue('', '');
   String visitId;
+  int _queue = -1;
+
 
 
   @override
@@ -39,21 +43,6 @@ class VisitInitiationState extends State<VisitInitiation>
     super.initState();
     controller = new TabController(length: 3, vsync: this);
 
-  }
-
-  int _queue = -1;
-  void _handleQueueChange(int value) {
-    setState(() {
-      _queue = value;
-      _queuesList.forEach((e){
-        if(value == _queuesList.indexOf(e)){
-          queue.code = e.queue.code;
-          queue.name = e.queue.name;
-
-        }
-      });
-
-    });
   }
 
   @override
@@ -203,6 +192,8 @@ class VisitInitiationState extends State<VisitInitiation>
                                                   onPressed: () {
                                                   PatientAdmission patientadmission = PatientAdmission(widget.person.id, queue);
                                                   admitPatient(patientadmission);
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SummaryOverview()));
+
                                                   }
 
                                               ),
@@ -250,6 +241,20 @@ class VisitInitiationState extends State<VisitInitiation>
           ],
         )
    ,).toList());
+  }
+
+  void _handleQueueChange(int value) {
+    setState(() {
+      _queue = value;
+      _queuesList.forEach((e){
+        if(value == _queuesList.indexOf(e)){
+          queue.code = e.queue.code;
+          queue.name = e.queue.name;
+
+        }
+      });
+
+    });
   }
 
   Future<void>getFacilityQueues() async{

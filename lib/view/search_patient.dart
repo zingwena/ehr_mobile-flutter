@@ -140,43 +140,6 @@ class _SearchPatientState extends State<SearchPatient> {
                           //selected: true,
                         ),
 
-//                        RaisedButton(
-//                          child: Text(
-//                            "Sync",
-//                            style: TextStyle(
-//                                color: Colors.blue,
-//                                fontWeight: FontWeight.w500,
-//                                fontSize: 16),
-//                          ),
-//                          onPressed: () {
-//                            authenticate().then((value){
-//                              syncPatients(value);
-//                            });
-//                          },
-//                          elevation: 1.0,
-//                          color: Colors.white,
-//                        ),
-//                        new InkWell(
-//                          onTap: (){
-//                              retrieveString(AUTH_TOKEN).then((value){
-//                                syncPatients(value);
-//                              });
-//                          },
-//                          child: new Container(
-//                            height: 36.0,
-//                            decoration: new BoxDecoration(
-//                              color: Colors.white,
-//                              border: new Border.all(color: Colors.white, width: 1.0),
-//                              borderRadius: new BorderRadius.circular(10.0),
-//                            ),
-//                            child: new Center(
-//                              child: new Text(
-//                                "Sync",
-//                                style: new TextStyle(color: Colors.blue),
-//                              ),
-//                            ),
-//                          ),
-//                        ),
                       ],
                     ),
                   ),

@@ -51,8 +51,6 @@ class FacilityQueue{
         facilityqueueList.add(facilityQueue);
       });
     }
-
-
     return facilityqueueList;
   }
 
