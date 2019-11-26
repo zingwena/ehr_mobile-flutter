@@ -4,12 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-
-import java.io.Serializable;
+import androidx.room.Index;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
+@Entity(indices = {@Index(value = "visitId", unique = true)})
 public class PatientQueue extends BaseEntity {
 
     @NonNull

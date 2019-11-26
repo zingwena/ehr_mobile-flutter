@@ -18,7 +18,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class VisitService {
 
@@ -114,6 +113,11 @@ public class VisitService {
         Log.d(TAG, "Visit after visit has been constructed : " + visit);
 
         ehrMobileDatabase.visitDao().insert(visit);
+        // add patient to queue
+        Log.d(TAG, "Adding current patient to queue");
+        PatientQueue patientQueue = new PatientQueue(UUID.randomUUID().toString(), visit.getId(), dto.getQueue());
+        ehrMobileDatabase.patientQueueDao().saveOne(patientQueue);
+        Log.d(TAG, "Patient queue record saved");
         return visit.getId();
     }
 
@@ -135,41 +139,50 @@ public class VisitService {
         visit.setFacility(siteService.getFacilityDetails());
 
         ehrMobileDatabase.visitDao().insert(visit);
+        // add patient to queue
+        Log.d(TAG, "Adding current patient to ward");
+        PatientWard patientWard = new PatientWard(UUID.randomUUID().toString(), visit.getId(), dto.getWard());
+        ehrMobileDatabase.patientWardDao().saveOne(patientWard);
+        Log.d(TAG, "Patient ward record saved");
         return visit.getId();
     }
 
-    /*@EventHandler
-    @Transactional
-    public void onPatientQueueChanged(PatientQueueChanged event) {
+    public String onPatientQueueChanged(OutPatientDTO dto) {
 
-        String queue = queueRepository.findOne(event.getQueueId()).getName();
-
-        if (!patientRepository.exists(event.getPatientId().toString())) {
-            return;
+        Log.d(TAG, "Changing patient queue " + dto);
+        // just go ahead and update current patient queue
+        Visit visit = getVisit(dto.getPersonId());
+        if (visit == null) {
+            Log.d(TAG, "Patient must have an active visit at this stage");
+            throw new IllegalStateException("Patient is expected to have an active visit at this stage : " + visit);
         }
+        PatientQueue patientQueue = ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
+        Log.d(TAG, "Retrieved patient queue record : " + patientQueue);
+        patientQueue.setQueue(dto.getQueue());
 
-        PatientQueue patientQueue = new PatientQueue(event.getPatientId().toString(),
-                new Patient(event.getPatientId().toString()), new Identifiable(event.getQueueId(), queue));
+        ehrMobileDatabase.patientQueueDao().update(patientQueue);
+        Log.d(TAG, "Patient queue successifuly changed");
 
-        patientQueueRepository.save(patientQueue);
-
+        return patientQueue.getId();
     }
 
-    @EventHandler
-    @Transactional
-    public void onPatientWardChanged(PatientWardChanged event) {
 
-        String ward = wardRepository.findOne(event.getWardId()).getName();
+    public String onPatientWardChanged(InPatientDTO dto) {
 
-        if (!patientRepository.exists(event.getPatientId().toString())) {
-            return;
+        Log.d(TAG, "Changing patient ward " + dto);
+        // just go ahead and update current patient ward
+        Visit visit = getVisit(dto.getPersonId());
+        if (visit == null) {
+            Log.d(TAG, "Patient must have an active visit at this stage");
+            throw new IllegalStateException("Patient is expected to have an active visit at this stage : " + visit);
         }
+        PatientWard patientWard = ehrMobileDatabase.patientWardDao().findByVisitId(visit.getId());
+        Log.d(TAG, "Retrieved patient ward record : " + patientWard);
+        patientWard.setWard(dto.getWard());
 
-        PatientWard patientWard = new PatientWard(event.getPatientId().toString(),
-                new Patient(event.getPatientId().toString()), new Identifiable(event.getWardId(), ward));
+        ehrMobileDatabase.patientWardDao().update(patientWard);
+        Log.d(TAG, "Patient ward successifuly changed");
 
-        patientWardRepository.save(patientWard);
-
+        return patientWard.getId();
     }
-     */
 }

@@ -4,10 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
+@Entity(indices = {@Index(value = "visitId", unique = true)})
 public class PatientWard extends BaseEntity {
 
     @NonNull

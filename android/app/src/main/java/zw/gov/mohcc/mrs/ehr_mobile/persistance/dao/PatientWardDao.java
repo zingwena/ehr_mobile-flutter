@@ -17,6 +17,9 @@ public interface PatientWardDao {
     @Insert
     void saveOne(PatientWard patientWard);
 
+    @Insert
+    void update(PatientWard patientWard);
+
     @Query("SELECT * FROM PatientWard")
     List<PatientWard> findAll();
 
