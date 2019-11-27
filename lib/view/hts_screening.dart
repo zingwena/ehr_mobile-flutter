@@ -359,7 +359,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                         BorderRadius
                                                                             .circular(
                                                                             0.0)),
-                                                                    labelText: "Date Last Tested"),
+                                                                    labelText: "Date of last HIV test"),
                                                               ),
                                                             ),
                                                             width: 100,

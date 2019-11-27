@@ -21,7 +21,6 @@ import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
-import io.flutter.view.FlutterView;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +30,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.DataChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.DataSyncChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.HtsChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
+import zw.gov.mohcc.mrs.ehr_mobile.channels.SiteChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.VisitChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
@@ -105,12 +105,14 @@ public class MainActivity extends FlutterActivity {
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
     final static String VISITCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/visitChannel";
+    final static String SITECHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/siteChannel";
     final static String HTSCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/htsChannel";
     final static String ADD_PATIENT_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
     final static String DATA_SYNC_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataSyncChannel";
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
     private final static String VITALS_CHANNEL = "ehr_mobile.channel/vitals";
     private final static String ART_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile.channel/art";
+
     private final static String TAG = "Main Activity";
     public Token token;
     public String url, username, password;
@@ -189,6 +191,7 @@ public class MainActivity extends FlutterActivity {
 
         new VisitChannel(getFlutterView(),VISITCHANNEL, ehrMobileDatabase, visitService );
 
+        new SiteChannel(getFlutterView(), SITECHANNEL, ehrMobileDatabase, siteService);
         new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
 
         new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {

@@ -3,7 +3,9 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patient_queue.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/relationship_listPage.dart';
@@ -55,6 +57,7 @@ class OverviewState extends State<Overview> {
   bool showInputTabOptions = true;
   String visitId;
   PatientQueue patientQueue;
+  String facility_name;
   @override
   void initState() {
     _patient = widget.patient;
@@ -63,7 +66,23 @@ class OverviewState extends State<Overview> {
     getHtsScreeningRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     getQueueName(widget.patient.id);
+    getFacilityName();
+
     super.initState();
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<void> getVisit(String patientId) async {
@@ -164,7 +183,7 @@ class OverviewState extends State<Overview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title: new Text(facility_name,   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(
