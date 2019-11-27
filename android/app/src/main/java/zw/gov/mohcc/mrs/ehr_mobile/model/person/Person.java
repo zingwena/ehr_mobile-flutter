@@ -10,6 +10,8 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
@@ -70,6 +72,10 @@ public class Person extends BaseEntity {
     private String countryId;
     @Embedded
     private Address address;
+    @Ignore
+    private Age age;
+    @Ignore
+    private AgeGroup ageGroup;
 
     public Person() {
     }
@@ -190,6 +196,16 @@ public class Person extends BaseEntity {
         this.birthDate = birthDate;
     }
 
+    @Ignore
+    public Age getAge() {
+        return Age.getInstance(this);
+    }
+
+    @Ignore
+    private AgeGroup getAgeGroup () {
+        return AgeGroup.getPersonAgeGroup(getAge().getYears());
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -206,6 +222,7 @@ public class Person extends BaseEntity {
                 ", countryId='" + countryId + '\'' +
                 ", address=" + address +
                 ", selfIdentifiedGender=" + selfIdentifiedGender +
+                ", age=" + age +
                 ", sex=" + sex +
                 '}';
     }

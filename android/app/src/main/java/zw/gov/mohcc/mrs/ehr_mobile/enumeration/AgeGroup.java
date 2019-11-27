@@ -21,6 +21,13 @@ public enum AgeGroup {
         }
     }
 
+    public static AgeGroup getPersonAgeGroup(int age) {
+        if (age <= 15) {
+            return PEADS;
+        }
+        return ADULT;
+    }
+
     public Integer getAgeGroup() {
         return ageGroup;
     }
