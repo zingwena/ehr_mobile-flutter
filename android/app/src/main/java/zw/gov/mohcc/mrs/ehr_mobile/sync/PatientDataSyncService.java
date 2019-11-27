@@ -38,7 +38,7 @@ public class PatientDataSyncService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void syncPatient() {
+    public String syncPatient() {
         List<Person> fetch = ehrMobileDatabase.personDao().getPatients();
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
         for (Person person : fetch) {
@@ -50,6 +50,7 @@ public class PatientDataSyncService {
                 PatientSyncDto patientSyncDto =new PatientSyncDto();
             }
         }
+        return "Done";
 
     }
 
@@ -62,6 +63,9 @@ public class PatientDataSyncService {
         VitalSyncHelper vitalSyncHelper =new VitalSyncHelper(ehrMobileDatabase);
         List<VitalDto> vitals = vitalSyncHelper.getVitalsByPersonId(person.getId());
         dto.setVitalDtos(vitals);
+
+        IndexTestSyncHelper indexTestSyncHelper=new IndexTestSyncHelper(ehrMobileDatabase);
+        dto.setIndexTestDto(indexTestSyncHelper.getIndexTest(person.getId()));
         return dto;
     }
 

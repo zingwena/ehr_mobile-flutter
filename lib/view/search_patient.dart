@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/sync/data_sync.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,9 @@ import 'package:intl/intl.dart';
 
 import 'add_patient.dart';
 import 'patient_overview.dart';
-import 'package:http/http.dart' as http;
 
 class SearchPatient extends StatefulWidget {
+  @override
   _SearchPatientState createState() => _SearchPatientState();
 }
 
@@ -23,6 +24,18 @@ class _SearchPatientState extends State<SearchPatient> {
   final _searchFormKey = GlobalKey<FormState>();
   List<Person> _patientList;
 
+  String token='';
+  String url='';
+  @override
+  initState(){
+    retrieveString(AUTH_TOKEN).then((value){
+      token=value;
+    });
+    retrieveString(SERVER_IP).then((value){
+      url=value;
+    });
+    super.initState();
+  }
 
   Future<void> searchPatient(String searchItem) async {
     List<dynamic> list;
@@ -40,24 +53,24 @@ class _SearchPatientState extends State<SearchPatient> {
     print("=====================searched$_patientList");
   }
 
-  Future<void>syncPatients() async {
-    String token =await retrieveString(AUTH_TOKEN);
-    String url=await retrieveString(SERVER_IP);
-    await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']).then((value){
-      print("sync method called----->$value");
+  syncPatients() async {
+//     var result = await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']);
+//     print(result);
+   await syncPatient(token,'$url/api');
+    setState(() {
+      isLoading=false;
     });
   }
 
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
+  bool isLoading=false;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-    /*  appBar: AppBar(
-        title: Text('Search Patient'),
-      ),*/
       backgroundColor: Colors.white,
 
       body: Column(
@@ -127,56 +140,26 @@ class _SearchPatientState extends State<SearchPatient> {
                               color: Colors.white,
                               fontSize: 30),
                         ),
-
                         Expanded(
                           flex: 1,
                           child: Container(),
                         ),
+                        //syncWidget,
+                        isLoading ?
+                        CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          semanticsLabel: 'Loading ...',
+                        ):
                         RoundedButton(
                           onTap: (){
-                                syncPatients();
+                            setState(() {
+                              isLoading=true;
+                            });
+                            syncPatients();
                           },
                           text: 'Sync',
                           //selected: true,
                         ),
-
-//                        RaisedButton(
-//                          child: Text(
-//                            "Sync",
-//                            style: TextStyle(
-//                                color: Colors.blue,
-//                                fontWeight: FontWeight.w500,
-//                                fontSize: 16),
-//                          ),
-//                          onPressed: () {
-//                            authenticate().then((value){
-//                              syncPatients(value);
-//                            });
-//                          },
-//                          elevation: 1.0,
-//                          color: Colors.white,
-//                        ),
-//                        new InkWell(
-//                          onTap: (){
-//                              retrieveString(AUTH_TOKEN).then((value){
-//                                syncPatients(value);
-//                              });
-//                          },
-//                          child: new Container(
-//                            height: 36.0,
-//                            decoration: new BoxDecoration(
-//                              color: Colors.white,
-//                              border: new Border.all(color: Colors.white, width: 1.0),
-//                              borderRadius: new BorderRadius.circular(10.0),
-//                            ),
-//                            child: new Center(
-//                              child: new Text(
-//                                "Sync",
-//                                style: new TextStyle(color: Colors.blue),
-//                              ),
-//                            ),
-//                          ),
-//                        ),
                       ],
                     ),
                   ),
@@ -351,14 +334,11 @@ class _SearchPatientState extends State<SearchPatient> {
             ),
           )
               :   SizedBox( ),
-
           SizedBox(
             height: 125,
           ),
-
+          //progressBar,
         ],
-
-
       ),
 
     );

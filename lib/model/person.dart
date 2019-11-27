@@ -1,13 +1,15 @@
 import 'package:ehr_mobile/model/address.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
+import 'package:ehr_mobile/util/custom_convertor.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'person.g.dart';
 
 @JsonSerializable()
 @CustomDateTimeConverter()
-class Person {
+class Person{
   String id;
+  String status;
   String firstName;
   String lastName;
   String sex;
@@ -52,11 +54,15 @@ class Person {
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
+  factory Person.fromMap(Map<String, dynamic> map)=>_$PersonFromMap(map);
+
   Map<String, dynamic> toJson() => _$PersonToJson(this);
+
+  Map<String, dynamic> toEhrJson()=>_$PersonToEhrJson(this);
 
   @override
   String toString() {
-    return 'Person{id: $id, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religionId: $religionId, occupationId: $occupationId, maritalStatusId: $maritalStatusId, educationLevelId: $educationLevelId, nationalityId: $nationalityId, countryId: $countryId, address: $address}';
+    return 'Person{id: $id, status: $status, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religionId: $religionId, occupationId: $occupationId, maritalStatusId: $maritalStatusId, educationLevelId: $educationLevelId, nationalityId: $nationalityId, countryId: $countryId, address: $address}';
   }
 
   static List<Person> fromJsonDecodedMap(List dynamicList) {
@@ -82,4 +88,8 @@ class Person {
     }
     return religionList;
   }
+
+//  static Person fromMap(Map map) {
+//    var person = Person
+//  }
 }
