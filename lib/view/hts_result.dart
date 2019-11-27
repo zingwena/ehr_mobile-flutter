@@ -64,9 +64,9 @@ class _Hts_Result  extends State<Hts_Result > {
   DateTime date;
   int _htsType = 0;
   String htsType = "";
-  String _entryPoint;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
+  String _labinvestigation_string;
+  List labinvestigationlist = List();
+  List _labinvestigations = List();
   String hts_id;
   String testkit;
   String startTime;
@@ -75,7 +75,7 @@ class _Hts_Result  extends State<Hts_Result > {
   bool showInputTabOptions = true;
   String final_result = 'Pending';
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
-  List<LaboratoryInvestigationTest> _entryPointList = List();
+  List<LaboratoryInvestigationTest> _labinvestList = List();
   String test_name;
   String _currentEntryPoint;
 
@@ -107,11 +107,11 @@ class _Hts_Result  extends State<Hts_Result > {
       response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
       setState(() {
         {
-          _entryPoint = response;
-          entryPoints = jsonDecode(_entryPoint);
-          _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
-          _dropDownListEntryPoints.forEach((e) {
-            _entryPointList.add(e);
+          _labinvestigation_string = response;
+          labinvestigationlist = jsonDecode(_labinvestigation_string);
+          _labinvestigations = LaboratoryInvestigationTest.mapFromJson(labinvestigationlist);
+          _labinvestigations.forEach((e) {
+            _labinvestList.add(e);
           });
         }
       });
@@ -393,10 +393,10 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           DataColumn(label: Text("Result")),
                                                           DataColumn(label: Text("Start Time")),
                                                           DataColumn(label: Text("End Time"))],
-                                                      rows: _entryPointList.map((labinvesttest)=>
+                                                      rows: _labinvestList.map((labinvesttest)=>
                                                        DataRow(
                                                            cells: [
-                                                       DataCell(Text(labinvesttest.testKit.name)),
+                                                       DataCell(Text(labinvesttest.testkit.name)),
                                                        DataCell(Text(labinvesttest.result.name)),
                                                        DataCell(Text(labinvesttest.startTime)),
                                                        DataCell(Text(labinvesttest.endTime))])
@@ -459,7 +459,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text("Proceed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
+                                                        child: getNextTestButton(),
                                                           onPressed: ()  {
                                                             if (final_result == 'Pending' || final_result == '') {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId, widget.htsRegistration)));
@@ -546,7 +546,7 @@ class _Hts_Result  extends State<Hts_Result > {
   Widget buildlistview(BuildContext context) {
     return ListView.builder(
       itemBuilder: _buildProductItem,
-      itemCount: _entryPointList.length,
+      itemCount: _labinvestList.length,
     );
   }
 

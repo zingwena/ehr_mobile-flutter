@@ -34,6 +34,8 @@ class PatientPostTest extends StatefulWidget {
 class _PatientPostTest extends State<PatientPostTest> {
   static const platform = MethodChannel('example.channel.dev/people');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel =
+  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   final _formKey = GlobalKey<FormState>();
   var selectedDate;
   DateTime date;
@@ -45,6 +47,13 @@ class _PatientPostTest extends State<PatientPostTest> {
   bool _consenttoindex = false;
   String consenttoindex = "NO";
   HtsRegistration htsRegistration;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
+  List<ReasonForNotIssuingResult> _reasonsList = List();
+  String _currentEntryPoint;
+  String _reasonstring;
+  List reasons = List();
+  List _dropDownListReasons = List();
+
 
   @override
   void initState() {
@@ -52,6 +61,7 @@ class _PatientPostTest extends State<PatientPostTest> {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
   getHtsRecord(widget.patientId);
+  getReasonsForNotIssueingResult();
 
   print('reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
 
@@ -76,10 +86,7 @@ class _PatientPostTest extends State<PatientPostTest> {
   }
 
   Future<void> insertPostTest(PostTest postTest) async {
-
-
     try {
-
           await htsChannel.invokeMethod('savePostTest',  jsonEncode(postTest));
     } catch (e) {
       print("channel failure: '$e'");
@@ -101,14 +108,30 @@ class _PatientPostTest extends State<PatientPostTest> {
       print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
     });
+  }
+  Future<void> getReasonsForNotIssueingResult() async {
+    String response;
+    try {
+      response = await dataChannel.invokeMethod('getReasonForNotIssueingReasons');
+      setState(() {
+        _reasonstring = response;
+        reasons = jsonDecode(_reasonstring);
+        _dropDownListReasons = ReasonForNotIssuingResult.mapFromJson(reasons);
+        _dropDownListReasons.forEach((e) {
+          _reasonsList.add(e);
+        });
+        print("Reasons list here "+ _reasonsList.toString());
+        _dropDownMenuItemsReasons = getDropDownMenuItemsReasonForNotIssuingResult();
 
-
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
   }
 
-  List<DropdownMenuItem<String>>
-  getDropDownMenuItemsReasonForNotIssuingResult() {
+  List<DropdownMenuItem<String>> getDropDownMenuItemsReasonForNotIssuingResult() {
     List<DropdownMenuItem<String>> items = new List();
-    for (ReasonForNotIssuingResult reasonForNotIssuingResult in _reasonForNotIssuingResultList) {
+    for (ReasonForNotIssuingResult reasonForNotIssuingResult in _reasonsList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
@@ -142,6 +165,45 @@ class _PatientPostTest extends State<PatientPostTest> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                "Final Result:",
+                                style: TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            width: 100,
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                (widget.result),
+                                style: TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            width: 100,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -165,6 +227,38 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 10.0,
                   ),
+
+                  resultReceived == 'NO' ?Container(
+               width: double.infinity,
+                    child: OutlineButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      color: Colors.white,
+                      child: Container(
+                        width: double.infinity,
+                        child: DropdownButton(
+                          isExpanded: true,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          iconEnabledColor: Colors.black,
+                          hint: Text("Select reason for not issuing results"),
+                          value: _currentEntryPoint,
+                          items: _dropDownMenuItemsReasons,
+                          onChanged: changedDropDownItemEntryPoint,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.blue, //Color of the border
+                        style: BorderStyle.solid, //Style of the border
+                        width: 2.0, //width of the border
+                      ),
+                      onPressed: () {},
+                    ),
+                  ): SizedBox(height: 0.0),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -189,7 +283,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                     height: 10.0,
                   ),
 
-                  Row(
+                  postTestCounselled == "YES" ? Row(
                     children: <Widget>[
                       Expanded(
                         child: SizedBox(
@@ -219,6 +313,8 @@ class _PatientPostTest extends State<PatientPostTest> {
                             _selectDate(context);
                           })
                     ],
+                  ): SizedBox(
+                    height: 0.0,
                   ),
                   SizedBox(
                     height: 10.0,
@@ -283,6 +379,13 @@ class _PatientPostTest extends State<PatientPostTest> {
       );
     }
 
+  }
+  void changedDropDownItemEntryPoint(String selectedEntryPoint) {
+    setState(() {
+      _currentEntryPoint = selectedEntryPoint;
+     /* _entryPointError = null;
+      _entryPointIsValid = !_entryPointIsValid;*/
+    });
   }
 
 }

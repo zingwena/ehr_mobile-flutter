@@ -23,11 +23,13 @@ class _SearchPatientState extends State<SearchPatient> {
   String searchItem;
   final _searchFormKey = GlobalKey<FormState>();
   List<Person> _patientList;
+  String facility_name;
 
   String token='';
   String url='';
   @override
   initState(){
+    getSiteName();
     retrieveString(AUTH_TOKEN).then((value){
       token=value;
     });
@@ -53,10 +55,22 @@ class _SearchPatientState extends State<SearchPatient> {
     print("=====================searched$_patientList");
   }
 
+  Future<void> getSiteName() async {
+   String response;
+    try {
+       response = await retrieveString(FACILITY_NAME);
+       setState(() {
+         facility_name = response;
+       });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  }
+
   syncPatients() async {
 //     var result = await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']);
 //     print(result);
-   await syncPatient(token,'$url/api');
+    await syncPatient(token,'$url/api');
     setState(() {
       isLoading=false;
     });
@@ -73,7 +87,8 @@ class _SearchPatientState extends State<SearchPatient> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: <Widget>[
           Stack(
             children: <Widget>[
@@ -134,7 +149,7 @@ class _SearchPatientState extends State<SearchPatient> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Impilo Mobile",
+                          facility_name,
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               color: Colors.white,
@@ -337,9 +352,10 @@ class _SearchPatientState extends State<SearchPatient> {
           SizedBox(
             height: 125,
           ),
-          //progressBar,
+
         ],
       ),
+    ),
 
     );
   }

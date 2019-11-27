@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
+import androidx.room.RoomWarnings;
 import androidx.room.Update;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
@@ -30,6 +31,7 @@ public interface RelationshipDao {
     @Insert
     void saveOne(Relationship relationship);
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT p.id, p.firstName, p.lastName, r.relation  FROM Relationship r inner join Person p on p.id=r.memberId WHERE personId=:personId")
     List<RelationshipViewDTO> findByPersonId(String personId);
 

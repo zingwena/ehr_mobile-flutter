@@ -53,53 +53,34 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   String labId;
   List<Result>results = List ();
   String testKit = "";
-  //Result result = Result.screen();
   DateTime date1;
   DateTime date2;
   DateTime date3;
   Result result = Result('', '');
-  bool _entryPointIsValid = false;
-  bool _formIsValid = true;
-  bool _showError = false;
   String labInvestId ;
   String labInvestTestId;
-  String _identifier;
   String test;
   String sample_name;
-  List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
-  String _entryPoint;
+  String _result_string;
   String _testkit_string_response;
   String test_name;
   TestKit testKitobj  = TestKit('', '', '', '');
   List test_kits = List();
   List _dropDownListtestkits = List();
   List<TestKit>_testkitslist = List();
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
-  List<Result> _entryPointList = List();
+  List json_result_list = List();
+  List _results = List();
+  List<Result> _resultsList = List();
   int testkitcount = 0 ;
-  List _identifierList = [
-    "Select Identifier",
-    "Passport",
-    "Birth Certificate",
-    "National Id",
-    "Driver's Licence"
-  ];
-  String __result;
-  List __results = List();
-  List _radiobuttonResults = List();
-  List<Result> _resultList = List();
-
-
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
   void initState()   {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-     getPersonInvestigation(widget.personId);
+      getPersonInvestigation(widget.personId);
       getLabInvestigation(widget.personId);
-     getLabTest(widget.personId);
+      getLabTest(widget.personId);
       getResults(widget.personId);
       getTestName();
       getLabId();
@@ -182,18 +163,17 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     }
   }
 
-
   Future<void> getResults(String personId) async {
     String response;
     try {
       response = await htsChannel.invokeMethod('getTestResults', personId);
       setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = Result.mapFromJson(entryPoints);
-        print("HHHHHHHHHHHHHHHHHHH results from android"+ _dropDownListEntryPoints.toString());
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
+        _result_string = response;
+        json_result_list = jsonDecode(_result_string);
+        _results = Result.mapFromJson(json_result_list);
+        print("HHHHHHHHHHHHHHHHHHH results from android"+ _results.toString());
+        _results.forEach((e) {
+          _resultsList.add(e);
         });
       });
     } catch (e) {
@@ -310,7 +290,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
         }
       });
 
-
     });
 
   }
@@ -341,7 +320,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       switch (_result) {
         case 1:
-          _entryPointList.forEach((e) {
+          _resultsList.forEach((e) {
             if (e.name == "negative " || e.name == "Negative" || e.name == "NEGATIVE"){
               result.code = e.code;
               result.name = e.name;
@@ -350,7 +329,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
           break;
         
         case 2:
-          _entryPointList.forEach((e){
+          _resultsList.forEach((e){
         if(e.name == "positive " || e.name == "Positive" || e.name == "POSITIVE"){
           result.code = e.code;
           result.name = e.name;
@@ -359,7 +338,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       break;
         case 3:
 
-          _entryPointList.forEach((e){
+          _resultsList.forEach((e){
             if(e.name == "Inconclusive " || e.name == "Indeterminate" || e.name == "INDERTERMINATE"){
               result.code = e.code;
               result.name = e.name;
@@ -374,17 +353,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
     });
 
   }
-
-  List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String identifier in _identifierList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: identifier, child: Text(identifier)));
-    }
-    return items;
-  }
-
 
   Widget _body(List <dynamic> list) {
     return ListView(

@@ -77,6 +77,7 @@ public class HtsChannel {
                             try {
                                 Hts hts = htsService.getCurrentHts(arguments);
                                 String htsjson = gson.toJson(hts);
+                                Log.i(TAG, "HTS SCREENING MODEL"+ htsjson);
                                 result.success(htsjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -194,7 +195,6 @@ public class HtsChannel {
                                 hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
                                 hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
                                 hts.setPreTestInformationGiven(preTestDTO.getPreTestInfoGiven());
-                                System.out.println("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ  ISPREFINFO GIVEN" + hts.isPreTestInformationGiven());
                                 hts.setHtsModelId(preTestDTO.getHtsModel_id());
                                 ehrMobileDatabase.htsDao().updateHts(hts);
                                 Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(hts.getId());
@@ -228,7 +228,6 @@ public class HtsChannel {
                         if (methodCall.method.equals("saveLabInvestTest")) {
 
                             try {
-                                System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH LAB INVEST TEST SAVED" + arguments);
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
                                 String labInvestigationTestId = htsService.processTestResults(labInvestTest);
                                 result.success(labInvestigationTestId);
@@ -241,7 +240,7 @@ public class HtsChannel {
                                 Log.d(TAG, "Calling laboratory investigations with : &&&&&&&&&&&&&&&& : " + arguments);
                                 List<LaboratoryInvestigationTest> laboratoryInvestigationTests = ehrMobileDatabase.labInvestTestdao().findAllByVisitId(arguments);
                                 String list = gson.toJson(laboratoryInvestigationTests);
-                                System.out.println(" SIZE OF LAB INVEST TEST LIST :::::::::::::::::::" + laboratoryInvestigationTests.size());
+                                Log.d(TAG, "Laboratory investigations retrieved from sqlite : " + list);
                                 result.success(list);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -403,7 +402,7 @@ public class HtsChannel {
                         }
                         if(methodCall.method.equals("saveRecency")){
                             try{
-                                Log.d(TAG, "Arguments passed from flutter in save recency: " + arguments);
+                                Log.d(TAG, "Agi " + arguments);
                                 LaboratoryInvestigationTestDTO laboratoryInvestigationTestDTO = gson.fromJson(arguments, LaboratoryInvestigationTestDTO.class);
                                 String labinvestTestId = htsService.processOtherInvestigationResults(laboratoryInvestigationTestDTO);
                                 result.success(labinvestTestId);
@@ -506,7 +505,7 @@ public class HtsChannel {
                             }
                         }
                         if(methodCall.method.equals("getIndexContactList")){
-                            System.out.println("UUUUUUUUUUUUUUUUUUUUUUU index id in get contactlist"+ arguments);
+
                             try{
                                 List<IndexContact> indexContactList = indexTestingService.findIndexContactsByIndexTestId(arguments);
                                 List<Person>contactlist = new ArrayList<>();
@@ -515,7 +514,7 @@ public class HtsChannel {
                                     contactlist.add(person);
                                 }
                                 String indexContacts = gson.toJson(contactlist);
-                                System.out.println("DDDDDDDDDDDDDDDDDDDD INDEX CONTACTS"+ indexContacts);
+
                                 result.success(indexContacts);
 
                             }catch (Exception e){
@@ -523,10 +522,9 @@ public class HtsChannel {
                             }
                         }
                         if(methodCall.method.equals("saveIndexContact")){
-                            System.out.println("JJJJJJJJJJJJJJJJJJ INDEX CONTACT FROM FLUTTER "+ arguments );
+
                             try{
                                 IndexContact indexContact = gson.fromJson(arguments, IndexContact.class);
-                                System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKK index contact dto"+ indexContact.toString());
                                /* IndexContact indexContact = new IndexContact();
                                 indexContact.setPersonId(indexContactDto.getPersonId());
                                 indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());

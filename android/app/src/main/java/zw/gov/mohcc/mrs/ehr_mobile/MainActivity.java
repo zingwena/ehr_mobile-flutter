@@ -30,6 +30,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.DataChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.DataSyncChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.HtsChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
+import zw.gov.mohcc.mrs.ehr_mobile.channels.SiteChannel;
+import zw.gov.mohcc.mrs.ehr_mobile.channels.VisitChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
@@ -50,6 +52,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Diagnosis;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
@@ -91,6 +94,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.RelationshipService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.SiteService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
@@ -100,12 +104,15 @@ public class MainActivity extends FlutterActivity {
 
     final static String CHANNEL = "Authentication";
     final static String DATACHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataChannel";
+    final static String VISITCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/visitChannel";
+    final static String SITECHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/siteChannel";
     final static String HTSCHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/htsChannel";
     final static String ADD_PATIENT_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/addPatient";
     final static String DATA_SYNC_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile/dataSyncChannel";
     private final static String PATIENT_CHANNEL = "ehr_mobile.channel/patient";
     private final static String VITALS_CHANNEL = "ehr_mobile.channel/vitals";
     private final static String ART_CHANNEL = "zw.gov.mohcc.mrs.ehr_mobile.channel/art";
+
     private final static String TAG = "Main Activity";
     public Token token;
     public String url, username, password;
@@ -116,6 +123,7 @@ public class MainActivity extends FlutterActivity {
     private HistoryService historyService;
     private IndexTestingService indexTestingService;
     private RelationshipService relationshipService;
+    private SiteService siteService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +134,13 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        visitService = new VisitService(ehrMobileDatabase);
+        siteService = new SiteService(ehrMobileDatabase);
+        visitService = new VisitService(ehrMobileDatabase, siteService);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);
         relationshipService = new RelationshipService(ehrMobileDatabase);
+
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
@@ -179,6 +189,9 @@ public class MainActivity extends FlutterActivity {
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase);
 
+        new VisitChannel(getFlutterView(),VISITCHANNEL, ehrMobileDatabase, visitService );
+
+        new SiteChannel(getFlutterView(), SITECHANNEL, ehrMobileDatabase, siteService);
         new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
 
         new MethodChannel(getFlutterView(), VITALS_CHANNEL).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -352,6 +365,7 @@ public class MainActivity extends FlutterActivity {
     private void pullData(Token token, String url) {
 
         getSample(token, url + "/api/");
+        getDiagnosis(token, url + "/api/");
         getLaboratoryTest(token, url + "/api/");
         getNationalities(token, url + "/api/");
         getFacilities(token, url + "/api/");
@@ -376,12 +390,30 @@ public class MainActivity extends FlutterActivity {
         getArvCombinationRegimens(token, url + "/api/");
         getDisclosureMethods(token, url + "/api/");
         getTestingPlan(token, url + "/api/");
+        getFacilityQueues(url);
+        getFacilityWards(url);
+        getSiteDetails(url);
         getPatients(url);
     }
 
     private void getPatients(String baseUrl) {
         ehrMobileDatabase.personDao().deleteAll();
         PatientsApolloClient.getPatientsFromEhr(ehrMobileDatabase, baseUrl);
+    }
+
+    private void getSiteDetails(String baseUrl) {
+        ehrMobileDatabase.siteSettingDao().deleteAll();
+        PatientsApolloClient.getSiteDetail(ehrMobileDatabase, baseUrl);
+    }
+
+    private void getFacilityQueues(String baseUrl) {
+        ehrMobileDatabase.facilityQueueDao().deleteAll();
+        PatientsApolloClient.getFacilityQueuesFromEhr(ehrMobileDatabase, baseUrl);
+    }
+
+    private void getFacilityWards(String baseUrl) {
+        ehrMobileDatabase.facilityWardDao().deleteAll();
+        PatientsApolloClient.getFacilityWardsFromEhr(ehrMobileDatabase, baseUrl);
     }
 
     public void getMaritalStates(Token token, String baseUrl) {
@@ -997,6 +1029,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.artStatusDao().deleteAll();
         ehrMobileDatabase.laboratoryInvestigationDao().deleteAll();
         ehrMobileDatabase.sampleDao().deleteSamples();
+        ehrMobileDatabase.diagnosisDao().deleteAll();
         ehrMobileDatabase.labInvestTestdao().deleteLaboratoryInvestTests();
     }
 
@@ -1024,6 +1057,27 @@ public class MainActivity extends FlutterActivity {
                 if (sampleList != null && !sampleList.isEmpty()) {
                     terminologyService.saveSample(sampleList);
                 }
+            }
+
+            @Override
+            public void onFailure(Call<TerminologyModel> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void getDiagnosis(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<TerminologyModel> call = service.getSamples("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<TerminologyModel>() {
+            @Override
+            public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
+                List<Diagnosis> diagnosisList = new ArrayList<>();
+                for (BaseNameModel item : response.body().getContent()) {
+                    diagnosisList.add(new Diagnosis(item.getCode(), item.getName()));
+                }
+                    terminologyService.saveDiagnosis(diagnosisList);
             }
 
             @Override

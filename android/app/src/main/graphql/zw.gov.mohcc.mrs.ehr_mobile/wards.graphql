@@ -1,0 +1,22 @@
+query WardQuery{
+
+    wards(text: "", page: 0, sort: "", size: 10000) {
+        content {
+            wardId
+            ward {
+                id
+                name
+            }
+            type
+            #beds
+            department {
+                id
+                name
+            }
+            patients(text: "", page: 0, size: 1, sort: "") {
+                totalElements
+            }
+        }
+    }
+}
+

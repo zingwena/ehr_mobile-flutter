@@ -137,13 +137,14 @@ class PretestOverviewState extends State<PretestOverview> {
     try {
       htsModel = await htsChannel.invokeMethod('getHtsModel', htsModelId);
       print('KKKKKKKKKKKKKKKK' + htsModel);
+      setState(() {
+        _htsModelId = htsModel;
+      });
 
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      _htsModelId = htsModel;
-    });
+
 
 
   }

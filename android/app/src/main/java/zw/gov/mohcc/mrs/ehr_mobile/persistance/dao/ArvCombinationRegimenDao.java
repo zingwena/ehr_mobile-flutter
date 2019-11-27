@@ -6,6 +6,8 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 
 
@@ -29,7 +31,7 @@ public interface ArvCombinationRegimenDao {
 
     @Query("SELECT * FROM ArvCombinationRegimen WHERE name=:name")
     ArvCombinationRegimen findByName(String name);
-/*
-    @Query("SELECT * FROM ArvCombinationRegimen WHERE regimen_type =:line")
-    List<ArvCombinationRegimen>findByLine(int line);*/
+
+    @Query("SELECT * FROM ArvCombinationRegimen WHERE regimenType =:regimenType and ageGroup=:ageGroup")
+    List<ArvCombinationRegimen>findByLineAndAgeGroup(RegimenType regimenType, AgeGroup ageGroup);
 }

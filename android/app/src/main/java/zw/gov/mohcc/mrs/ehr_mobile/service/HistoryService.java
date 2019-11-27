@@ -75,6 +75,7 @@ public class HistoryService {
         if (testingCompletedInCurrentRun) {
             dto = new HtsScreeningDTO();
             dto.setTestedBefore(true);
+            dto.setPersonId(personId);
             // retrieve last HTS record
             Hts hts = ehrMobileDatabase.htsDao().findLatestHts(personId);
             dto.setDateLastTested(hts.getDateOfHivTest());
@@ -92,6 +93,7 @@ public class HistoryService {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
             }
+            dto.setPersonId(personId);
             dto.setArt(htsScreening.getArt());
             dto.setArtNumber(htsScreening.getArtNumber());
             dto.setDateLastTested(htsScreening.getDateLastTested());
@@ -108,6 +110,7 @@ public class HistoryService {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
             }
+            dto.setPersonId(personId);
             dto.setArt(true);
             dto.setArtNumber(art.getOiArtNumber());
             dto.setDateEnrolled(art.getDateOfEnrolmentIntoCare());
@@ -123,6 +126,7 @@ public class HistoryService {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
             }
+            dto.setPersonId(personId);
             dto.setViralLoadDone(ActivityStatus.DONE);
             dto.setViralLoad(StringUtils.isNoneBlank(viralLoadInvestigation.getResultId())
                     ? Integer.valueOf(viralLoadInvestigation.getResultId())
@@ -140,6 +144,7 @@ public class HistoryService {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
             }
+            dto.setPersonId(personId);
             dto.setCd4Done(ActivityStatus.DONE);
             dto.setCd4Count(StringUtils.isNoneBlank(cd4CountInvestigation.getResultId())
                     ? Integer.valueOf(cd4CountInvestigation.getResultId())
@@ -150,6 +155,7 @@ public class HistoryService {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
             }
+            dto.setPersonId(personId);
             dto.setDateLastNegative(personInvestigation.getDate());
         }
 

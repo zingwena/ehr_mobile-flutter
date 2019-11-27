@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/relation_view_dto.dart';
 import 'package:ehr_mobile/model/relationship.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/relationship_searchpage.dart';
@@ -42,12 +43,13 @@ class PelationshipListState extends State<RelationshipListPage>
   static const htsChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const patient_channel = MethodChannel('ehr_mobile.channel/patient');
   String person_string;
+  Person __person;
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
   List _religions= List();
   List<Person>_religionList = List();
   List<Person> _religionListDropdown= List();
-  List<Person> _entryPointList = List();
+  List<RelationshipViewDto> _entryPointList = List();
 
   String _entryPoint;
 
@@ -70,20 +72,37 @@ class PelationshipListState extends State<RelationshipListPage>
   }
   Future<void>getRelationContactList(String personId)async{
     var response ;
+    var person_string;
     try{
       response = await patient_channel.invokeMethod('getRelationshipList', personId);
       setState(() {
         _entryPoint = response;
         entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = Person.mapFromJson(entryPoints);
+        _dropDownListEntryPoints = RelationshipViewDto.mapFromJson(entryPoints);
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
-        });
+        }
+        );
+
         print('TTTTTTTTTTTTTTTTTTTTTTTTT  list of people added'+ _entryPointList.toString());
       });
 
     }catch(e){
 
+    }
+  }
+
+  Future<void>getPersonById(String personId) async{
+    String person_string;
+    try{
+      person_string = await patient_channel.invokeMethod('getPersonById', personId);
+      setState(() {
+        __person = Person.fromJson(jsonDecode(person_string));
+        
+      });
+      
+    }catch(e){
+      
     }
   }
 
@@ -304,21 +323,22 @@ class PelationshipListState extends State<RelationshipListPage>
             columns: [
               DataColumn(label: Text("First Name")),
               DataColumn(label: Text("Last Name")),
-              DataColumn(label: Text("")),
-
+              DataColumn(label: Text("Relationship")),
             ],
-            rows:_entryPointList.map((person)=>
+            rows:_entryPointList.map((relationship)=>
                 DataRow(
                     cells: [
-                      DataCell(Text(person.firstName)),
-                      DataCell(Text(person.lastName)),
-                      DataCell(    Padding(
+                      DataCell(Text(relationship.firstName)),
+                      DataCell(Text(relationship.lastName)),
+                      DataCell(Text(relationship.relation)),
+                /*      DataCell(    Padding(
                           padding: const EdgeInsets.only(right: 0),
                           child: RaisedButton(
-                            onPressed: () {
-                              Navigator.push(
+                            onPressed: () async {
+                              getPersonById(relationship.personId);
+                               Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => Overview(person)));
+                                  MaterialPageRoute(builder: (context) => Overview(__person)));
 
                             },
                             color: Colors.blue,
@@ -333,7 +353,7 @@ class PelationshipListState extends State<RelationshipListPage>
                               ),
                             ),
                           )),
-                      ),
+                      ),*/
                     ])
 
             ).toList()

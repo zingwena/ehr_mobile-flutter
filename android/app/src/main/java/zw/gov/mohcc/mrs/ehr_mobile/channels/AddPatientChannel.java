@@ -98,9 +98,9 @@ public class AddPatientChannel {
                     if(address!=null){
                         patient_address.append(address.getStreet())
                                 .append(' ')
-                                .append(address.getTown())
+                                .append(address.getCity())
                                 .append(' ')
-                                .append(address.getCity());
+                                .append(address.getTown());
                         System.out.println("ADDRESSS " + "street: " + address.getStreet() + " town:" + address.getTown() + " city:" + address.getCity());
                     }
                     result.success(patient_address.toString());

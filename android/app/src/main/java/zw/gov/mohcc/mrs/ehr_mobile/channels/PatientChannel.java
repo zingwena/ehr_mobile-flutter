@@ -60,6 +60,12 @@ public class PatientChannel {
                     String contact_list = gson.toJson(person_relationships);
                     result1.success(contact_list);
                 }
+                if(call.method.equals("getPersonById")){
+                    Gson gson = new Gson();
+                    Person person = ehrMobileDatabase.personDao().findPatientById(arguments);
+                    String person_string = gson.toJson(person);
+                    result1.success(person_string);
+                }
             }
 
         });

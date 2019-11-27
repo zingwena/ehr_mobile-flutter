@@ -34,6 +34,9 @@ public class HtsScreening extends BaseEntity {
     @TypeConverters(DateConverter.class)
     private Date dateLastTested;
 
+    @TypeConverters(DateConverter.class)
+    private Date dateLastNegative;
+
     private String artNumber;
 
     @TypeConverters(ActivityStatusConverter.class)
@@ -109,6 +112,14 @@ public class HtsScreening extends BaseEntity {
 
     public void setCd4Done(ActivityStatus cd4Done) {
         this.cd4Done = cd4Done;
+    }
+
+    public Date getDateLastNegative() {
+        return dateLastNegative;
+    }
+
+    public void setDateLastNegative(Date dateLastNegative) {
+        this.dateLastNegative = dateLastNegative;
     }
 
     @Override

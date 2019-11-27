@@ -89,7 +89,7 @@ class _PatientPretest extends State<PatientPretest> {
     String pretestjson;
     try {
         pretestjson =  await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
-        print('LLLLLLLLLLLLLLLL'+ pretestjson);
+        print('LLLLLLLLLLLLLLLL PRETEST TO JSON ON SAVING'+ pretestjson);
         setState(() {
           patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
           print('LLLLLLLLLLLLLLLLLLLLL'+ patient_preTest.toString());
@@ -172,8 +172,6 @@ class _PatientPretest extends State<PatientPretest> {
       _dropDownMenuItemsPurposeOfTest =
           getDropDownMenuItemsPurposeOfTest();
 
-      _currentHtsModel = _dropDownMenuItemsHtsModel[0].value;
-      _currentPurposeOfTest = _dropDownMenuItemsPurposeOfTest[0].value;
     });
   }
   Future<void> getHtsRecord(String patientId) async {
@@ -378,6 +376,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                           child: DropdownButton(
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             iconEnabledColor: Colors.black,
+                                                            hint: Text('Select Hts model'),
                                                             value: _currentHtsModel,
                                                             items: _dropDownMenuItemsHtsModel,
                                                             onChanged: changedDropDownItemHtsModel,

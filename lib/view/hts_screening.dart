@@ -65,22 +65,25 @@ class _HtsScreening extends State<Hts_Screening> {
   int _viralload = 0;
   int _cd4done = 0;
   var birthDate, displayDate;
-  var selectedDate, selectedDateOfEnrollment, selectedDateOfViralLoad, selectedDateOfCd4Count;
-  DateTime date, dateOfEnrollmentIntoCare, dateOfViralLoad, dateOfCd4Count;
+  var selectedLastNegDate, selectedDateOfEnrollment, selectedDateOfViralLoad, selectedDateOfCd4Count, selectedDateOfLastTest;
+  DateTime dateOfLastNeg, dateOfEnrollmentIntoCare, dateOfViralLoad, dateOfCd4Count, dateLastTest;
   HtsScreening htsScreening;
 
 
   @override
   void initState() {
     //getHtsRecord(widget.personId);
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    selectedLastNegDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     selectedDateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
     selectedDateOfViralLoad =  DateFormat("yyyy/MM/dd").format(DateTime.now());
     selectedDateOfCd4Count = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
+    selectedDateOfLastTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
+
+    dateOfLastNeg = DateTime.now();
     dateOfViralLoad = DateTime.now();
     dateOfEnrollmentIntoCare = DateTime.now();
     dateOfCd4Count = DateTime.now();
+    dateLastTest = DateTime.now();
     super.initState();
   }
 
@@ -88,36 +91,50 @@ class _HtsScreening extends State<Hts_Screening> {
     var response;
     try {
       response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
+      setState(() {
+        gethtsscreening(widget.personId);
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      gethtsscreening(widget.personId);
 
-    });
   }
   Future<void> gethtsscreening(String personId) async {
     var response;
     try {
       response = await htsChannel.invokeMethod('getHtsScreening', widget.personId);
+      setState(() {
+        htsScreening = HtsScreening.fromJson(jsonDecode(response));
+      });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure getting hts screen record: '$e'");
     }
-    setState(() {
-      htsScreening = HtsScreening.fromJson(jsonDecode(response));
-    });
+
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<Null> _selectNegTestDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedLastNegDate)
       setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
+        selectedLastNegDate = DateFormat("yyyy/MM/dd").format(picked);
+        dateOfLastNeg = DateFormat("yyyy/MM/dd").parse(selectedLastNegDate);
+      });
+  }
+  Future<Null> _selectDateLastTest(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDateOfLastTest)
+      setState(() {
+        selectedDateOfLastTest = DateFormat("yyyy/MM/dd").format(picked);
+        dateLastTest = DateFormat("yyyy/MM/dd").parse(selectedDateOfLastTest);
       });
   }
   Future<Null> _selectDateOfEnrollment(BuildContext context) async {
@@ -308,6 +325,58 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ),
+                                                  _testedbefore == true ? Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(
+                                                                  0.0),
+                                                              child:
+                                                              TextFormField(
+                                                                controller:
+                                                                TextEditingController(
+                                                                    text:
+                                                                    selectedDateOfLastTest),
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter some text'
+                                                                      : null;
+                                                                },
+                                                                decoration: InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                            0.0)),
+                                                                    labelText: "Date of last HIV test"),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                            icon: Icon(Icons
+                                                                .calendar_today),
+                                                            color:
+                                                            Colors.blue,
+                                                            onPressed: () {
+                                                              _selectDateLastTest(
+                                                                  context);
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ): SizedBox(height: 0.0,),
                                                   SizedBox(height: 10.0,),
                                                   _testedbefore == true? Container(
                                                     width: double.infinity,
@@ -366,7 +435,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    selectedDate),
+                                                                    selectedLastNegDate),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -392,7 +461,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
-                                                              _selectDate(
+                                                              _selectNegTestDate(
                                                                   context);
                                                             })
                                                       ],
@@ -836,7 +905,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, _patientonart, result, date, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
+                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result,dateLastTest, dateOfLastNeg, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, dateOfViralLoad, cd4Done, dateOfCd4Count);
                                                           savehtsscreening(htsscreening);
                                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningOverview(widget.person, htsscreening, widget.htsid, widget.visitId, widget.personId)));
 
