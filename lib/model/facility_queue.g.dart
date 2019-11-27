@@ -18,7 +18,7 @@ FacilityQueue _$FacilityQueueFromJson(
   );
 }
 
-Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
+Map<String, dynamic> _$FacilityQueueToJson(
     FacilityQueue instance) =>
     <String, dynamic>{
       'queue': instance.queue,

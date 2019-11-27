@@ -22,7 +22,7 @@ class FacilityQueue{
   factory FacilityQueue.fromJson(Map<String, dynamic> json) => _$FacilityQueueFromJson(json);
 
 
-  Map<String, dynamic> toJson() => _$LaboratoryInvestigationTestToJson(this);
+  Map<String, dynamic> toJson() => _$FacilityQueueToJson(this);
 
   static mapFromJson(List dynamicList){
     List<FacilityQueue> facilityquequeList=[];

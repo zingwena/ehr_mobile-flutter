@@ -12,8 +12,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class VisitInitiation extends StatefulWidget {
   final Person person;
+  final bool queue_change;
 
-  VisitInitiation(this.person);
+  VisitInitiation(this.person, this.queue_change);
   @override
   State<StatefulWidget> createState() {
 
@@ -33,6 +34,7 @@ class VisitInitiationState extends State<VisitInitiation>
   List<FacilityQueue> _queuesList = List();
   Queue queue = Queue('', '');
   String visitId;
+  String nextQueueId;
   int _queue = -1;
 
 
@@ -64,7 +66,7 @@ class VisitInitiationState extends State<VisitInitiation>
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title: new Text("Gwindigwi Hospital",   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ),
 
             ),
@@ -105,6 +107,54 @@ class VisitInitiationState extends State<VisitInitiation>
               child: Text("Visit Initiation", style: TextStyle(
                   fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
             ),
+
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Tom Wilson", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age - 25", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex : Male", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
+                            ),
+                          ])
+                  ),
+
+                  SizedBox(
+                    height: 3.0,
+                  ),
                  // _buildButtonsRow(),
                   Expanded(
                     child: new Card(
@@ -135,38 +185,37 @@ class VisitInitiationState extends State<VisitInitiation>
                                           children: <Widget>[
 
                                             SizedBox(
-                                              height: 10.0,
-                                            ),
-
-                                            Container(
-                                              width: double.infinity,
-                                              padding:
-                                              EdgeInsets.symmetric(
-                                                  vertical: 16.0,
-                                                  horizontal: 60.0),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    child: SizedBox(
-                                                      child: Padding(
-                                                        padding:
-                                                        const EdgeInsets
-                                                            .all(
-                                                            8.0),
-                                                        child:
-                                                        Text('Select Queue'),
-                                                      ),
-                                                      width: 250,
-                                                    ),
-                                                  ),
-                                                  getQueues(_queuesList)
-                                                ],
-                                              ),
-                                            ),
-
-                                            SizedBox(
                                               height: 20.0,
                                             ),
+
+                                            Row(
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  height: 20.0,
+                                                ),
+
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
+                                                    child: Text('Select Queue',
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w500,
+                                                          color: Colors.black,
+                                                          fontSize: 16),),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                              SizedBox(
+                                                height: 10.0,
+                                                ),
+
+                                                getQueues(_queuesList),
+
+                                                SizedBox(
+                                                     height: 15.0,
+                                                       ),
 
                                             Container(
                                               width: double.infinity,
@@ -191,11 +240,14 @@ class VisitInitiationState extends State<VisitInitiation>
 
                                                   onPressed: () {
                                                   PatientAdmission patientadmission = PatientAdmission(widget.person.id, queue);
-                                                  admitPatient(patientadmission);
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SummaryOverview()));
+                                                  if(widget.queue_change){
+                                                    changeQueue(patientadmission);
 
+                                                  }else{
+                                                    admitPatient(patientadmission);
                                                   }
-
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SummaryOverview()));
+                                                  }
                                               ),
                                             ),
                                           ],
@@ -233,14 +285,26 @@ class VisitInitiationState extends State<VisitInitiation>
     return new Column(children: facilityqueues.map((item) =>
         Row(
           children: <Widget>[
-            Text(item.queue.name),
-            Radio(value: facilityqueues.indexOf(item),
-            groupValue: _queue ,
-            activeColor: Colors.blue,
-            onChanged: _handleQueueChange,)
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
+                child: Text(item.queue.name),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child:   Radio(value: facilityqueues.indexOf(item),
+                    groupValue: _queue ,
+                    activeColor: Colors.blue,
+                    onChanged: _handleQueueChange,)
+              ),
+            ),
+
           ],
-        )
-   ,).toList());
+        ),
+   )
+        .toList());
   }
 
   void _handleQueueChange(int value) {
@@ -279,12 +343,26 @@ class VisitInitiationState extends State<VisitInitiation>
   Future<void>admitPatient(PatientAdmission patientAdmission) async{
     String response ;
     try{
-      response = await visitChannel.invokeMethod('admitPatient', jsonEncode(patientAdmission));
+
+        response = await visitChannel.invokeMethod('admitPatient', jsonEncode(patientAdmission));
+
      setState(() {
        visitId = response;
      });
     }catch(e){
       debugPrint('Exception thrown in admit patient method'+e);
+
+    }
+  }
+  Future<void>changeQueue(PatientAdmission patientAdmission) async{
+    String response;
+    try{
+      response  = await visitChannel.invokeMethod('changePatientQueue', jsonEncode(patientAdmission));
+      setState(() {
+        nextQueueId = response;
+      });
+    }catch(e){
+      debugPrint('Exception thrown in changequeue method'+ e);
 
     }
   }

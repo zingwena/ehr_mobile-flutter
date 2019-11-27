@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
+import 'package:ehr_mobile/model/patient_queue.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -40,10 +41,9 @@ class Overview extends StatefulWidget {
 
 class OverviewState extends State<Overview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
-  static final MethodChannel patientChannel = MethodChannel(
-      'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
+  static final MethodChannel patientChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-
+  static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
   Person _patient;
   Visit _visit;
   Map<String, dynamic> details;
@@ -54,6 +54,7 @@ class OverviewState extends State<Overview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   String visitId;
+  PatientQueue patientQueue;
   @override
   void initState() {
     _patient = widget.patient;
@@ -61,7 +62,7 @@ class OverviewState extends State<Overview> {
     getHtsRecord(_patient.id);
     getHtsScreeningRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
-
+    getQueueName(widget.patient.id);
     super.initState();
   }
 
@@ -103,18 +104,13 @@ class OverviewState extends State<Overview> {
     var  hts_screening;
     try {
       hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
-      debugPrint("JJJJJJJJJJJJJJJJJJJJJJ HERE IS THE HTS SCREENIN RECORD RETURNED "+ hts_screening);
       setState(() {
-        debugPrint("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IN SET STATE METHOD OF HTSSCREENING");
         htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
-        debugPrint("HERE IS THE HTSSCREENING AFTER ASSIGNMENT >>>>>>>>>> $htsScreening");
       });
 
     } catch (e) {
       print("channel failure: '$e'");
     }
-
-
   }
   Future<void> getHtsId(String patientId) async {
     var hts;
@@ -127,6 +123,21 @@ class OverviewState extends State<Overview> {
     } catch (e) {
       print("channel failure: '$e'");
     }
+     }
+
+     Future<void>getQueueName(String patientId) async {
+     String queue_response;
+     try{
+       queue_response = await visitChannel.invokeMethod('getPatientQueue', patientId);
+       setState(() {
+         patientQueue = PatientQueue.fromJson(jsonDecode(queue_response));
+         debugPrint("Patient queue after assignment " + patientQueue.toString());
+
+       });
+     }catch(e){
+       debugPrint("Exception was thrown in the get queueName method $e");
+
+     }
      }
 
   String nullHandler(String value) {
@@ -168,6 +179,15 @@ class OverviewState extends State<Overview> {
                   Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Text("Patient OverView", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
+                  patientQueue.queue.name != null ?Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text(patientQueue.queue.name, style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ):  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   _buildButtonsRow(),
@@ -374,10 +394,10 @@ class OverviewState extends State<Overview> {
                                                   Expanded(
                                                     child: Padding(
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0),
-                                                      child: RaisedButton(
+                                                      child: patientQueue == null ?RaisedButton(
                                                        onPressed: () {
                                                          Navigator.push(context,MaterialPageRoute(
-                                                             builder: (context)=>  VisitInitiation(widget.patient)
+                                                             builder: (context)=>  VisitInitiation(widget.patient, false)
                                                          ));
 
                                                        },
@@ -396,7 +416,29 @@ class OverviewState extends State<Overview> {
                                                             ],
                                                           ),
                                                         ),
-                                                      ),
+                                                      ):RaisedButton(
+                                                        onPressed: () {
+                                                          Navigator.push(context,MaterialPageRoute(
+                                                              builder: (context)=>  VisitInitiation(widget.patient, true)
+                                                          ));
+
+                                                        },
+                                                        color: Colors.blue,
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Icon(Icons.person_add, color: Colors.white,),
+                                                              Spacer(),
+                                                              Text('Change Queue', style: TextStyle(color: Colors.white,),),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ) ,
                                                     ),
                                                   ),
 
