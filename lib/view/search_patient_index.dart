@@ -66,7 +66,8 @@ class _SearchPatientState extends State<SearchPatientIndex> {
       ),*/
       backgroundColor: Colors.white,
 
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
 
         children: <Widget>[
 
@@ -342,6 +343,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
 
 
       ),
+    ),
 
     );
   }

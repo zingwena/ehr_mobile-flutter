@@ -67,7 +67,6 @@ class OverviewState extends State<Overview> {
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     getQueueName(widget.patient.id);
     getFacilityName();
-
     super.initState();
   }
 
@@ -209,7 +208,8 @@ class OverviewState extends State<Overview> {
                     child: Text("", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                  _buildButtonsRow(),
+                  patientQueue!=null?_buildButtonsRow():SizedBox(height: 0.0,
+                  ),
                   Expanded(child: WillPopScope(
                     onWillPop: () {
                       if (!showInput) {

@@ -47,12 +47,12 @@ class _PatientPostTest extends State<PatientPostTest> {
   bool _consenttoindex = false;
   String consenttoindex = "NO";
   HtsRegistration htsRegistration;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
-  List<ReasonForNotIssuingResult> _entryPointList = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
+  List<ReasonForNotIssuingResult> _reasonsList = List();
   String _currentEntryPoint;
-  String _entryPoint;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
+  String _reasonstring;
+  List reasons = List();
+  List _dropDownListReasons = List();
 
 
   @override
@@ -61,6 +61,7 @@ class _PatientPostTest extends State<PatientPostTest> {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
   getHtsRecord(widget.patientId);
+  getReasonsForNotIssueingResult();
 
   print('reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
 
@@ -111,25 +112,26 @@ class _PatientPostTest extends State<PatientPostTest> {
   Future<void> getReasonsForNotIssueingResult() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getEntryPointsOptions');
+      response = await dataChannel.invokeMethod('getReasonForNotIssueingReasons');
       setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = ReasonForNotIssuingResult.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
+        _reasonstring = response;
+        reasons = jsonDecode(_reasonstring);
+        _dropDownListReasons = ReasonForNotIssuingResult.mapFromJson(reasons);
+        _dropDownListReasons.forEach((e) {
+          _reasonsList.add(e);
         });
-        _dropDownMenuItemsEntryPoint = getDropDownMenuItemsReasonForNotIssuingResult();
+        print("Reasons list here "+ _reasonsList.toString());
+        _dropDownMenuItemsReasons = getDropDownMenuItemsReasonForNotIssuingResult();
+
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
   }
 
-  List<DropdownMenuItem<String>>
-  getDropDownMenuItemsReasonForNotIssuingResult() {
+  List<DropdownMenuItem<String>> getDropDownMenuItemsReasonForNotIssuingResult() {
     List<DropdownMenuItem<String>> items = new List();
-    for (ReasonForNotIssuingResult reasonForNotIssuingResult in _reasonForNotIssuingResultList) {
+    for (ReasonForNotIssuingResult reasonForNotIssuingResult in _reasonsList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(
@@ -165,7 +167,6 @@ class _PatientPostTest extends State<PatientPostTest> {
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -226,39 +227,37 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 10.0,
                   ),
-              /*    Row(children: <Widget>[
-                    Container(
-                      padding:
-                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                      width: double.infinity,
-                      child: OutlineButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(0.0),
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 30.0),
-                          child: DropdownButton(
-                            hint: Text('Select Entry Point'),
-                            icon: Icon(Icons.keyboard_arrow_down),
-                            iconEnabledColor: Colors.black,
-                            value: _currentEntryPoint,
-                            items: _dropDownMenuItemsEntryPoint,
-                            onChanged: changedDropDownItemEntryPoint,
+
+                  resultReceived == 'NO' ?Container(
+               width: double.infinity,
+                    child: OutlineButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      color: Colors.white,
+                      child: Container(
+                        width: double.infinity,
+                        child: DropdownButton(
+                          isExpanded: true,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          iconEnabledColor: Colors.black,
+                          hint: Text("Select reason for not issuing results"),
+                          value: _currentEntryPoint,
+                          items: _dropDownMenuItemsReasons,
+                          onChanged: changedDropDownItemEntryPoint,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
                           ),
                         ),
-                        borderSide: BorderSide(
-                          color: Colors.blue, //Color of the border
-                          style: BorderStyle.solid, //Style of the border
-                          width: 2.0, //width of the border
-                        ),
-                        onPressed: () {},
                       ),
+                      borderSide: BorderSide(
+                        color: Colors.blue, //Color of the border
+                        style: BorderStyle.solid, //Style of the border
+                        width: 2.0, //width of the border
+                      ),
+                      onPressed: () {},
                     ),
-
-                  ],),*/
+                  ): SizedBox(height: 0.0),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
