@@ -226,7 +226,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  Row(children: <Widget>[
+              /*    Row(children: <Widget>[
                     Container(
                       padding:
                       EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
@@ -258,7 +258,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                       ),
                     ),
 
-                  ],),
+                  ],),*/
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,

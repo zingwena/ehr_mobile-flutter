@@ -181,7 +181,7 @@ class OverviewState extends State<Overview> {
                     child: Text("Patient OverView", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                  patientQueue.queue.name != null ?Padding(
+                  patientQueue != null ?Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Text(patientQueue.queue.name, style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),

@@ -172,8 +172,6 @@ class _PatientPretest extends State<PatientPretest> {
       _dropDownMenuItemsPurposeOfTest =
           getDropDownMenuItemsPurposeOfTest();
 
-      _currentHtsModel = _dropDownMenuItemsHtsModel[0].value;
-      _currentPurposeOfTest = _dropDownMenuItemsPurposeOfTest[0].value;
     });
   }
   Future<void> getHtsRecord(String patientId) async {
@@ -378,6 +376,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                           child: DropdownButton(
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             iconEnabledColor: Colors.black,
+                                                            hint: Text('Select Hts model'),
                                                             value: _currentHtsModel,
                                                             items: _dropDownMenuItemsHtsModel,
                                                             onChanged: changedDropDownItemHtsModel,
