@@ -69,6 +69,7 @@ public class HistoryService {
         }*/
         Log.d(TAG, "Retrieving all sexual history questions in system ");
         List<Question> sexualHistoryQuestions = ehrMobileDatabase.questionDao().findByWorkArea(WorkArea.SEXUAL_HISTORY);
+        //Log.d(TAG, )
         List<SexualHistoryQuestionView> views = new ArrayList<>();
         for (Question question : sexualHistoryQuestions) {
 
