@@ -37,6 +37,7 @@ public class PatientChannel {
                         SimpleSQLiteQuery sqLiteQuery1= personQuery.searchPersonBySurnameAndName(searchItem);
                         _list = ehrMobileDatabase.personDao().searchPatient(sqLiteQuery1);
                     }
+                    Log.d(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ : " + _list);
                     Gson gson = new Gson();
                     result1.success(gson.toJson(_list));
                 }

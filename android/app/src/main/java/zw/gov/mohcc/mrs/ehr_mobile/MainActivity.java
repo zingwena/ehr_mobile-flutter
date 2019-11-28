@@ -21,7 +21,6 @@ import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
-import io.flutter.view.FlutterView;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +36,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClie
 import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.QuestionType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
@@ -72,6 +73,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdSynchModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionCategory;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionCategoryEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionCategoryModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
@@ -187,7 +194,7 @@ public class MainActivity extends FlutterActivity {
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase);
 
-        new VisitChannel(getFlutterView(),VISITCHANNEL, ehrMobileDatabase, visitService );
+        new VisitChannel(getFlutterView(), VISITCHANNEL, ehrMobileDatabase, visitService);
 
         new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
 
@@ -363,6 +370,8 @@ public class MainActivity extends FlutterActivity {
 
         getSample(token, url + "/api/");
         getDiagnosis(token, url + "/api/");
+        getQuestionCategories(token, url + "/api/");
+        getQuestions(token, url + "/api/");
         getLaboratoryTest(token, url + "/api/");
         getNationalities(token, url + "/api/");
         getFacilities(token, url + "/api/");
@@ -1027,6 +1036,8 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.laboratoryInvestigationDao().deleteAll();
         ehrMobileDatabase.sampleDao().deleteSamples();
         ehrMobileDatabase.diagnosisDao().deleteAll();
+        ehrMobileDatabase.questionDao().deleteAll();
+        ehrMobileDatabase.questionCategoryDao().deleteAll();
         ehrMobileDatabase.labInvestTestdao().deleteLaboratoryInvestTests();
     }
 
@@ -1066,7 +1077,7 @@ public class MainActivity extends FlutterActivity {
     public void getDiagnosis(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getSamples("Bearer " + token.getId_token(), new Page().size);
+        Call<TerminologyModel> call = service.getDiagnosis("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
@@ -1074,7 +1085,7 @@ public class MainActivity extends FlutterActivity {
                 for (BaseNameModel item : response.body().getContent()) {
                     diagnosisList.add(new Diagnosis(item.getCode(), item.getName()));
                 }
-                    terminologyService.saveDiagnosis(diagnosisList);
+                terminologyService.saveDiagnosis(diagnosisList);
             }
 
             @Override
@@ -1128,6 +1139,52 @@ public class MainActivity extends FlutterActivity {
 
             @Override
             public void onFailure(Call<InvestigationModel> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void getQuestionCategories(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<QuestionCategoryModel> call = service.getQuestionCategories("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<QuestionCategoryModel>() {
+            @Override
+            public void onResponse(Call<QuestionCategoryModel> call, Response<QuestionCategoryModel> response) {
+                List<QuestionCategory> questionCategories = new ArrayList<>();
+                for (QuestionCategoryEhr item : response.body().getContent()) {
+                    questionCategories.add(new QuestionCategory(
+                            item.getQuestionCategoryId(), item.getName(), item.getSortOrder(), WorkArea.get(item.getWorkArea())
+                    ));
+                }
+                terminologyService.saveQuestionCategory(questionCategories);
+            }
+
+            @Override
+            public void onFailure(Call<QuestionCategoryModel> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void getQuestions(Token token, String baseUrl) {
+
+        DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
+        Call<QuestionModel> call = service.getQuestions("Bearer " + token.getId_token(), new Page().size);
+        call.enqueue(new Callback<QuestionModel>() {
+            @Override
+            public void onResponse(Call<QuestionModel> call, Response<QuestionModel> response) {
+                List<Question> questions = new ArrayList<>();
+                for (QuestionEhr item : response.body().getContent()) {
+                    questions.add(new Question(
+                            item.getQuestionId(), item.getName(), item.getCategoryId(), QuestionType.get(item.getType()), WorkArea.get(item.getWorkArea())
+                    ));
+                }
+                terminologyService.saveQuestions(questions);
+            }
+
+            @Override
+            public void onFailure(Call<QuestionModel> call, Throwable t) {
                 Log.i(TAG, t.getMessage());
             }
         });

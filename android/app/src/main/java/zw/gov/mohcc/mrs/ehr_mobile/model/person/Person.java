@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.person;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -198,7 +200,18 @@ public class Person extends BaseEntity {
 
     @Ignore
     public Age getAge() {
+
+        //return Age.getInstance(this);
+        Log.d("Person Class ", this.toString());
         return Age.getInstance(this);
+    }
+
+    public void setAge(Age age) {
+        this.age = age;
+    }
+
+    public void setAgeGroup(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
     }
 
     @Ignore

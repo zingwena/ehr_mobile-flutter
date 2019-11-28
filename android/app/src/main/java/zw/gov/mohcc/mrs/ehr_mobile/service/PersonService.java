@@ -11,6 +11,4 @@ public class PersonService {
     public PersonService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
     }
-
-    
 }
