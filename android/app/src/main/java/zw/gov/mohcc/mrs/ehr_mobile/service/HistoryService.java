@@ -64,9 +64,9 @@ public class HistoryService {
 
     public List<SexualHistoryQuestionView> getPatientSexualHistQuestions(String personId) {
         SexualHistory sexualHistory = getSexualHistory(personId);
-        if (sexualHistory == null) {
+        /*if (sexualHistory == null) {
             return null;
-        }
+        }*/
         Log.d(TAG, "Retrieving all sexual history questions in system ");
         List<Question> sexualHistoryQuestions = ehrMobileDatabase.questionDao().findByWorkArea(WorkArea.SEXUAL_HISTORY);
         List<SexualHistoryQuestionView> views = new ArrayList<>();
@@ -74,14 +74,14 @@ public class HistoryService {
 
             NameCodeResponse nameCode = new NameCodeResponse(question.getCode(), question.getName());
 
-            SexualHistoryQuestion sexualHistoryQuestion =
+            /*SexualHistoryQuestion sexualHistoryQuestion =
                     ehrMobileDatabase.sexualHistoryQuestionDao().findBySexualHistoryIdAndQuestionId(sexualHistory.getId(), question.getCode());
-            Log.d(TAG, "Retrieved sexual history question object : " + sexualHistoryQuestion);
+            Log.d(TAG, "Retrieved sexual history question object : " + sexualHistoryQuestion);*/
             String sexualHistoryQuestionId = null;
-            if (sexualHistoryQuestion != null) {
+            /*if (sexualHistoryQuestion != null) {
                 nameCode.setResponseType(sexualHistoryQuestion.getQuestion().getResponseType());
                 sexualHistoryQuestionId = sexualHistoryQuestion != null ? sexualHistoryQuestion.getId() : null;
-            }
+            }*/
 
             SexualHistoryQuestionView view = new SexualHistoryQuestionView(sexualHistoryQuestionId, nameCode);
             views.add(view);
