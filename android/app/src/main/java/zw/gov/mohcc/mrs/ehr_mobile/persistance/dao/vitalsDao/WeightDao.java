@@ -18,4 +18,7 @@ public interface WeightDao {
 
     @Query("Delete From Weight")
     void deleteAll();
+
+    @Query("SELECT * From Weight Where personId=:personId")
+    List<Weight> findByPersonId(String personId);
 }

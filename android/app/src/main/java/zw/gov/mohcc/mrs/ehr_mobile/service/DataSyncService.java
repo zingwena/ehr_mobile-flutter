@@ -20,12 +20,17 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdSynchModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionCategoryModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
+import zw.gov.mohcc.mrs.ehr_mobile.model.User;
+import zw.gov.mohcc.mrs.sync.adapter.dto.HtsDto;
+import zw.gov.mohcc.mrs.sync.adapter.dto.HtsResponseDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKitModel;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PatientSyncDto;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PersonResponseDto;
@@ -127,4 +132,7 @@ public interface DataSyncService {
 
     @POST("data-sync/patient")
     Call<PersonResponseDto> syncPatient(@Header("Authorization") String token, @Body PatientSyncDto patientSyncDto);
+
+    @POST("data-sync/hts")
+    Call<HtsResponseDto> syncHts(@Header("Authorization") String token, @Body HtsDto htsDto);
 }

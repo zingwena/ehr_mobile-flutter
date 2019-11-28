@@ -16,19 +16,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.builder.HtsDtoMapper;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.builder.PersonDtoBuilder;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.sync.adapter.dto.HtsDto;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PatientSyncDto;
 import zw.gov.mohcc.mrs.sync.adapter.dto.PersonResponseDto;
+import zw.gov.mohcc.mrs.sync.adapter.dto.VitalDto;
 import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class PatientDataSyncService {
     private EhrMobileDatabase ehrMobileDatabase;
     private String baseUrl;
     private String token;
-    final String TAG="PatientDataSyncService";
+    final String TAG="PatientSyncService----";
     public PatientDataSyncService(EhrMobileDatabase ehrMobileDatabase,String baseUrl,String token){
         this.ehrMobileDatabase=ehrMobileDatabase;
         this.baseUrl=baseUrl;
@@ -36,29 +38,38 @@ public class PatientDataSyncService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void synchPatient() {
+    public String syncPatient() {
         List<Person> fetch = ehrMobileDatabase.personDao().getPatients();
-
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
         for (Person person : fetch) {
-
             if(person.getStatus()== RecordStatus.NEW){
                 PatientSyncDto dto=createSyncDto(person);
                 Call<PersonResponseDto> call = service.syncPatient("Bearer " + token,dto);
-                syncPersonDto(call,person,ehrMobileDatabase);
+                syncPersonDto(call,person,ehrMobileDatabase,service);
             } else if(person.getStatus()== RecordStatus.CHANGED){
                 PatientSyncDto patientSyncDto =new PatientSyncDto();
             }
         }
+        return "Done";
+
     }
 
     private PatientSyncDto createSyncDto(Person person){
         PatientSyncDto dto=new PatientSyncDto();
         dto.setPersonDto(new PersonDtoBuilder().fromPerson(person).build());
+        HtsDto htsDto = createHtsDto(person);
+        dto.setHtsDto(htsDto);
+
+        VitalSyncHelper vitalSyncHelper =new VitalSyncHelper(ehrMobileDatabase);
+        List<VitalDto> vitals = vitalSyncHelper.getVitalsByPersonId(person.getId());
+        dto.setVitalDtos(vitals);
+
+        IndexTestSyncHelper indexTestSyncHelper=new IndexTestSyncHelper(ehrMobileDatabase);
+        dto.setIndexTestDto(indexTestSyncHelper.getIndexTest(person.getId()));
         return dto;
     }
 
-    private void syncPersonDto(Call<PersonResponseDto> call,Person person,EhrMobileDatabase ehrMobileDatabase){
+    private void syncPersonDto(Call<PersonResponseDto> call, Person person, EhrMobileDatabase ehrMobileDatabase, DataSyncService service){
         call.enqueue(new Callback<PersonResponseDto>() {
             @Override
             public void onResponse(Call<PersonResponseDto> call, Response<PersonResponseDto> response) {
@@ -84,7 +95,17 @@ public class PatientDataSyncService {
         if(hts!=null){
             htsDto= mapper.htsToHtsDto(hts);
             Log.i(TAG,"HtsDto---"+htsDto.getDateOfHivTest());
+            Log.i(TAG,"HtsDto---"+htsDto.getId());
+            Log.i(TAG,"HtsDto---"+htsDto.getLaboratoryInvestigationId());
         }
         return htsDto;
     }
+
+    private void createHtsScreenDto(Person person){
+        List<HtsScreening> htsScreenings=ehrMobileDatabase.htsScreeningDao().findByPersonId(person.getId());
+        for (HtsScreening htsScreening:htsScreenings) {
+            Log.i("HTS SCREENING===",htsScreening.getVisitId());
+        }
+    }
+
 }

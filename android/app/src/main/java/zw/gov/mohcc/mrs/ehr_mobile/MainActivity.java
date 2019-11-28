@@ -1227,6 +1227,9 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<ArvCombinationRegimenModel> call, Response<ArvCombinationRegimenModel> response) {
 
+                if(response.body()==null || response.body().getContent()==null){
+                    return;
+                }
                 Log.d(TAG, "Arv combination regmines : " + response.body().getContent());
 
                 terminologyService.saveArvCombinationRegimen(ArvCombinationRegimenEhr.getInstance(response.body().getContent()));
