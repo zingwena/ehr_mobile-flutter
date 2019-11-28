@@ -1,8 +1,13 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.UUID;
+
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistoryQuestion;
 
 public class SexualHistoryQuestionDTO implements Serializable {
 
@@ -47,5 +52,21 @@ public class SexualHistoryQuestionDTO implements Serializable {
 
     public void setQuestion(@NonNull NameCodeResponse question) {
         this.question = question;
+    }
+
+    public SexualHistoryQuestion getInstance (SexualHistoryQuestionDTO dto) {
+
+        Log.d("Sexual History DTO", "State of DTO : " + dto);
+        return new SexualHistoryQuestion(UUID.randomUUID().toString(), dto.getSexualHistoryId(),
+                dto.getQuestion());
+    }
+
+    @Override
+    public String toString() {
+        return "SexualHistoryQuestionDTO{" +
+                "personId='" + personId + '\'' +
+                ", sexualHistoryId='" + sexualHistoryId + '\'' +
+                ", question=" + question +
+                '}';
     }
 }

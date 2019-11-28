@@ -8,10 +8,16 @@ import androidx.room.Transaction;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
@@ -19,9 +25,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistoryQuestion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistory;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -43,6 +51,44 @@ public class HistoryService {
 
     public boolean existsByPersonId(String personId) {
         return ehrMobileDatabase.htsDao().countByPersonId(personId) >=1;
+    }
+
+    public String createSexualHistoryQuestion(SexualHistoryQuestionDTO dto) {
+
+        SexualHistoryQuestion item = dto.getInstance(dto);
+        Log.d(TAG, "State of sexual history question : " + item);
+
+        ehrMobileDatabase.sexualHistoryQuestionDao().save(item);
+        return item.getId();
+    }
+
+    public List<SexualHistoryQuestionView> getPatientSexualHistQuestions(String personId) {
+        SexualHistory sexualHistory = getSexualHistory(personId);
+        if (sexualHistory == null) {
+            return null;
+        }
+        Log.d(TAG, "Retrieving all sexual history questions in system ");
+        List<Question> sexualHistoryQuestions = ehrMobileDatabase.questionDao().findByWorkArea(WorkArea.SEXUAL_HISTORY);
+        List<SexualHistoryQuestionView> views = new ArrayList<>();
+        for (Question question : sexualHistoryQuestions) {
+
+            NameCodeResponse nameCode = new NameCodeResponse(question.getCode(), question.getName());
+
+            SexualHistoryQuestion sexualHistoryQuestion =
+                    ehrMobileDatabase.sexualHistoryQuestionDao().findBySexualHistoryIdAndQuestionId(sexualHistory.getId(), question.getCode());
+            Log.d(TAG, "Retrieved sexual history question object : " + sexualHistoryQuestion);
+            String sexualHistoryQuestionId = null;
+            if (sexualHistoryQuestion != null) {
+                nameCode.setResponseType(sexualHistoryQuestion.getQuestion().getResponseType());
+                sexualHistoryQuestionId = sexualHistoryQuestion != null ? sexualHistoryQuestion.getId() : null;
+            }
+
+            SexualHistoryQuestionView view = new SexualHistoryQuestionView(sexualHistoryQuestionId, nameCode);
+            views.add(view);
+        }
+
+        Log.d(TAG, "Retrieved sexual history questions and their states : " + views);
+        return views;
     }
 
     public HtsScreeningDTO getHtsScreening(String currentVisitId) {
