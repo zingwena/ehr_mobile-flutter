@@ -8,7 +8,6 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistoryQuestion;
 
 
@@ -35,5 +34,8 @@ public interface SexualHistoryQuestionDao {
     void deleteById(String id);
 
     @Query("SELECT * FROM SexualHistoryQuestion WHERE sexualHistoryId =:sexualHistoryId")
-    SexualHistoryQuestion findBySexualHistoryId(String sexualHistoryId);
+    List<SexualHistoryQuestion> findBySexualHistoryId(String sexualHistoryId);
+
+    @Query("SELECT * FROM SexualHistoryQuestion WHERE sexualHistoryId=:sexualHistoryId and code=:questionId")
+    SexualHistoryQuestion findBySexualHistoryIdAndQuestionId(String sexualHistoryId, String questionId);
 }
