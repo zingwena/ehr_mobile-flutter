@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
+import 'package:ehr_mobile/model/sexualhistoryview.dart';
 import 'package:ehr_mobile/view/sexual_history_overview.dart';
 
 
@@ -57,7 +58,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
   String _newTest = " " ;
   String _htsApproach="" ;
   HtsRegistration htsRegistration;
-
   int _exchangedsexformoney = 0;
   int _injecteddrugs = 0;
   int  incarcetadintojail = 0;
@@ -70,7 +70,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
   String numberofsexualpartners;
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
-
   PreTest patient_preTest;
   String injectedrecreationaldrugs = "NO";
   String beenincarcetadintojail = "NO";
@@ -78,16 +77,17 @@ class _CbsQuestion extends State<CbsQuestions2> {
   String  medicalinjections= "NO";
   String receivedbloodtransfusion = "NO";
   String unsterilisedinstruments = "NO";
-
-
-
-
-
+  String _entryPoint;
+  List entryPoints = List();
+  List _dropDownListEntryPoints = List();
   String purposeOfTestId;
+  List<SexualHistoryView> _entryPointList = List();
+
   @override
   void initState() {
     //getDropDrowns();
     getHtsRecord(widget.personId);
+    getSexualHistoryViews(widget.personId);
     super.initState();
   }
 
@@ -109,7 +109,9 @@ class _CbsQuestion extends State<CbsQuestions2> {
     var model_response;
     try{
       model_response = await htsChannel.invokeMethod('getHtsModel', htsmodelstring);
-      htsModel = HtsModel.mapFromJson(model_response);
+      setState(() {
+        htsModel = HtsModel.mapFromJson(model_response);
+      });
 
     }catch (e){
       print("channel failure: '$e'");
@@ -120,11 +122,32 @@ class _CbsQuestion extends State<CbsQuestions2> {
     var model_response;
     try{
       model_response = await htsChannel.invokeMethod('getPurposeofTest', purposemodelstring);
-      purposeOfTest = PurposeOfTest.mapFromJson(model_response);
+      setState(() {
+        purposeOfTest = PurposeOfTest.mapFromJson(model_response);
+
+      });
 
     }catch (e){
       print("channel failure: '$e'");
 
+    }
+  }
+  Future<void>getSexualHistoryViews(String patientId)async{
+    String response;
+    try{
+      response = await htsChannel.invokeMethod('getSexualHistoryViews', patientId);
+      setState(() {
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = SexualHistoryView.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+        print("Sexual hitsory list returned @@@@@@@@@@@"+ _entryPointList.toString());
+      });
+    }catch(e){
+      print("Exception thrown in getsexualhistory view method"+e);
+      
     }
   }
 
@@ -158,20 +181,18 @@ class _CbsQuestion extends State<CbsQuestions2> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+      });
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
-
 
   }
-
 
   List<DropdownMenuItem<String>>
   _dropDownMenuItemsHtsModel,
@@ -289,7 +310,7 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                       child: new IntrinsicHeight(
                                         child: Column(
                                           children: <Widget>[
-                                            Form(
+                                      /*      Form(
                                               key: _formKey,
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -641,7 +662,7 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                   ),
                                                 ],
                                               ),
-                                            ),
+                                            ),*/
                                           ],
                                         ),
                                       ),

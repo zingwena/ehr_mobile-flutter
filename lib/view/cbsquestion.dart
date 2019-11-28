@@ -680,7 +680,6 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       },
                                                     ),
                                                   ),
-
                                                   SizedBox(
                                                     height: 30.0,
                                                   ),
