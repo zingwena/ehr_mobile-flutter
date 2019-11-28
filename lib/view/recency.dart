@@ -532,6 +532,7 @@ class _Recency extends State<RecencyTest> {
                                 ),
                                 Row(children: <Widget>[
                                   Text("Results"),
+                                  SizedBox(width: 10.0),
                                   getRecencyResults(_entryPointList),
 
                                 ],),

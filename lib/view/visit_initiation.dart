@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/facility_queue.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patient_admission.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/queue.dart';
@@ -13,8 +14,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class VisitInitiation extends StatefulWidget {
   final Person person;
   final bool queue_change;
+  final String htsId;
+  final HtsRegistration htsRegistration;
 
-  VisitInitiation(this.person, this.queue_change);
+  VisitInitiation(this.person, this.queue_change, this.htsId, this.htsRegistration);
   @override
   State<StatefulWidget> createState() {
 
@@ -121,7 +124,7 @@ class VisitInitiationState extends State<VisitInitiation>
                             ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Tom Wilson", style: TextStyle(
+                              child: Text(widget.person.firstName + " "+ widget.person.lastName, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
                             Padding(
@@ -141,7 +144,7 @@ class VisitInitiationState extends State<VisitInitiation>
                             ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Sex : Male", style: TextStyle(
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
                             Padding(
@@ -246,7 +249,8 @@ class VisitInitiationState extends State<VisitInitiation>
                                                   }else{
                                                     admitPatient(patientadmission);
                                                   }
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SummaryOverview()));
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SummaryOverview(widget.person, this.visitId, widget.htsRegistration, widget.htsId)));
+
                                                   }
                                               ),
                                             ),

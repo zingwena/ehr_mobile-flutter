@@ -227,10 +227,16 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                onPressed: () => Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(builder: (context) => SearchPatientIndex(widget.indexTestId, widget.visitId, widget.personId)),
-                                                                ),
+                                                                onPressed: () {
+/*
+                                                                  print('THIS IS THE INDEXTESTID IN HIV SERVICES CONTACT PAGE >>>>>>>>>'+ widget.indexTestId);
+*/
+                                                                  Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(builder: (context) => SearchPatientIndex(widget.indexTestId, widget.visitId, widget.personId)),
+                                                                  );
+
+                                                                }
                                                               ),
                                                             ),
                                                           ),

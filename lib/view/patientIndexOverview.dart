@@ -74,13 +74,13 @@ class OverviewState extends State<PatientIndexOverview> {
     try {
       visit =
       await platform.invokeMethod('visit', patientId);
+      setState(() {
+        visitId = visit;
+      });
 
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      visitId = visit;
-    });
 
 
   }
@@ -88,16 +88,16 @@ class OverviewState extends State<PatientIndexOverview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+      });
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -106,12 +106,13 @@ class OverviewState extends State<PatientIndexOverview> {
 
     try {
       hts = await htsChannel.invokeMethod('getHtsId', patientId);
+      setState(() {
+        htsId = hts;
+      });
+
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      htsId = hts;
-    });
 
 
   }
@@ -444,6 +445,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                     style: TextStyle(color: Colors.white),
                                                   ),
                                                   onPressed: () {
+                                                    print("INDEX TEST ID IN INDEX PATIENT OVERVIEW"+ widget.indexTestId);
 
                                                     Navigator.push(context,MaterialPageRoute(
                                                         builder: (context)=> HivInformation(widget.indexTestId, widget.patient, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)

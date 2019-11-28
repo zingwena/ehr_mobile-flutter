@@ -125,8 +125,7 @@ class _SearchPatientState extends State<SearchPatient> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      body: SingleChildScrollView(
-        child: Column(
+      body: Column(
         children: <Widget>[
           Stack(
             children: <Widget>[
@@ -186,9 +185,15 @@ class _SearchPatientState extends State<SearchPatient> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text(
-                          facility_name!=null?facility_name:'Impilo Mobile',
+                        facility_name!= null?Text(
+                          facility_name,
                           style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white,
+                              fontSize: 30),
+                        ):Text(
+                          "Impilo Mobile",
+                          style:  TextStyle(
                               fontWeight: FontWeight.w300,
                               color: Colors.white,
                               fontSize: 30),
@@ -424,7 +429,6 @@ class _SearchPatientState extends State<SearchPatient> {
           ),
         ],
       ),
-    ),
 
     );
   }

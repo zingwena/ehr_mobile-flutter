@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class NameCode implements Serializable {
 
-    private final String code;
-    private final String name;
+    private String code;
+    private String name;
 
     public NameCode(String code, String name) {
         this.code = code;
@@ -18,6 +18,14 @@ public class NameCode implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

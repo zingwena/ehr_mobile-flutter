@@ -23,6 +23,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResultModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Login;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkitModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameIdSynchModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionCategoryModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TerminologyModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
@@ -94,6 +96,12 @@ public interface DataSyncService {
 
     @GET("investigations")
     Call<InvestigationModel> getInvestigations(@Header("Authorization") String token, @Query("size") int size);
+
+    @GET("question-categories-other-clients")
+    Call<QuestionCategoryModel> getQuestionCategories(@Header("Authorization") String token, @Query("size") int size);
+
+    @GET("questions")
+    Call<QuestionModel> getQuestions(@Header("Authorization") String token, @Query("size") int size);
 
     @GET("investigations/get-all-test-kits")
     Call<InvestigationTestkitModel> getInvestigationTestKits(@Header("Authorization") String token, @Query("size") int size);

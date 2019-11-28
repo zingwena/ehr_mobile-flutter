@@ -525,6 +525,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                   ),
                                                                   //onPressed: () {}
                                                                   onPressed: () {
+                                                                  print("INDEX TEST ID IN HIV INFORMATION PAGE"+ widget.indexId);
                                                                 IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person.id, _currentRelation, result, date, null, null, null, null, null);
                                                                     Navigator.push(
                                                                       context,
