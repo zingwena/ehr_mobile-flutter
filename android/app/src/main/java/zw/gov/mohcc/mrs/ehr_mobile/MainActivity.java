@@ -1153,6 +1153,7 @@ public class MainActivity extends FlutterActivity {
             public void onResponse(Call<QuestionCategoryModel> call, Response<QuestionCategoryModel> response) {
                 List<QuestionCategory> questionCategories = new ArrayList<>();
                 for (QuestionCategoryEhr item : response.body().getContent()) {
+                    //
                     questionCategories.add(new QuestionCategory(
                             item.getQuestionCategoryId(), item.getName(), item.getSortOrder(), WorkArea.get(item.getWorkArea())
                     ));
@@ -1177,7 +1178,7 @@ public class MainActivity extends FlutterActivity {
                 List<Question> questions = new ArrayList<>();
                 for (QuestionEhr item : response.body().getContent()) {
                     questions.add(new Question(
-                            item.getQuestionId(), item.getName(), item.getCategoryId(), QuestionType.get(item.getType()), WorkArea.get(item.getWorkArea())
+                            item.getQuestionId(), item.getName(), item.getCategoryId(), QuestionType.get(item.getType())
                     ));
                 }
                 terminologyService.saveQuestions(questions);

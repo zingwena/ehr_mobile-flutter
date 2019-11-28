@@ -57,4 +57,15 @@ public class QuestionEhr implements Serializable {
     public void setWorkArea(String workArea) {
         this.workArea = workArea;
     }
+
+    @Override
+    public String toString() {
+        return "QuestionEhr{" +
+                "questionId='" + questionId + '\'' +
+                ", name='" + name + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", type='" + type + '\'' +
+                ", workArea='" + workArea + '\'' +
+                '}';
+    }
 }

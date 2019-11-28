@@ -21,7 +21,7 @@ public class ResponseTypeConverter {
     }
 
     @TypeConverter
-    public static int toInt(HtsType htsType) {
-        return htsType.getHtsType();
+    public static int toInt(ResponseType responseType) {
+        return responseType.getResponseType();
     }
 }

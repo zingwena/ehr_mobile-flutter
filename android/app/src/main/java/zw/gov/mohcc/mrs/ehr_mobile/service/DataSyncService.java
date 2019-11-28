@@ -92,7 +92,7 @@ public interface DataSyncService {
     @GET("investigations")
     Call<InvestigationModel> getInvestigations(@Header("Authorization") String token, @Query("size") int size);
 
-    @GET("question-categories")
+    @GET("question-categories-other-clients")
     Call<QuestionCategoryModel> getQuestionCategories(@Header("Authorization") String token, @Query("size") int size);
 
     @GET("questions")
