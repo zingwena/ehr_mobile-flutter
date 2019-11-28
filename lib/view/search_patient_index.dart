@@ -66,8 +66,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
       ),*/
       backgroundColor: Colors.white,
 
-      body: SingleChildScrollView(
-        child: Column(
+      body: Column(
 
         children: <Widget>[
 
@@ -291,6 +290,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     ),
                   ),
                   onTap: (){
+                    print("INDEX TEST ID IN SEARCH PATIENT"+ widget.indexTestId);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -343,7 +343,6 @@ class _SearchPatientState extends State<SearchPatientIndex> {
 
 
       ),
-    ),
 
     );
   }

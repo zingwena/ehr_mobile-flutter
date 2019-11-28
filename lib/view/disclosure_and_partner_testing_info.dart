@@ -664,7 +664,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
 
 
   Future<void> saveIndexContact(IndexContact indexcontact) async{
-    print("HHHHHHHHHHHHHHHHHHH  HERE IS THE ID OF THE INDEXCONTACT SAVED "+ indexcontact.personId);
+    print("HHHHHHHHHHHHHHHHHHH  HERE IS THE ID OF THE INDEXCONTACT SAVED "+ indexcontact.toString());
     var response;
     try{
       response = await htsChannel.invokeMethod('saveIndexContact', jsonEncode(indexcontact));

@@ -31,16 +31,13 @@ import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 class Overview extends StatefulWidget {
   final Person patient;
-
   Overview(this.patient);
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return OverviewState();
   }
 }
-
 class OverviewState extends State<Overview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
@@ -416,10 +413,10 @@ class OverviewState extends State<Overview> {
                                                       child: patientQueue == null ?RaisedButton(
                                                        onPressed: () {
                                                          Navigator.push(context,MaterialPageRoute(
-                                                             builder: (context)=>  VisitInitiation(widget.patient, false)
+                                                             builder: (context)=>  VisitInitiation(widget.patient, false, this.htsId, this.htsRegistration)
                                                          ));
-
                                                        },
+
                                                         color: Colors.blue,
                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                                                         child: Padding(
@@ -438,8 +435,9 @@ class OverviewState extends State<Overview> {
                                                       ):RaisedButton(
                                                         onPressed: () {
                                                           Navigator.push(context,MaterialPageRoute(
-                                                              builder: (context)=>  VisitInitiation(widget.patient, true)
+                                                              builder: (context)=>  VisitInitiation(widget.patient, true, this.htsId, this.htsRegistration)
                                                           ));
+
 
                                                         },
                                                         color: Colors.blue,
