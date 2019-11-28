@@ -2,9 +2,10 @@
 import 'package:ehr_mobile/model/person.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
-class PersonDao {
+import 'base_dao.dart';
 
-  var id = new StrField('id');
+class PersonDao extends BaseDao{
+
   var firstName = new StrField('firstName');
   var lastName = new StrField('lastName');
 
@@ -20,7 +21,6 @@ class PersonDao {
   var educationLevelId = new StrField('educationLevelId');
   var nationalityId = new StrField('nationalityId');
   var countryId = new StrField('countryId');
-  var status=new IntField('status');
   SqfliteAdapter _adapter;
 
   /// Table name for the model this bean manages
