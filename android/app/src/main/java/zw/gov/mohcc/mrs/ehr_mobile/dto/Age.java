@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import android.util.Log;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,6 +29,7 @@ public class Age {
 
     public static Age getInstance(Person person) {
 
+        Log.d("Age Calculator", "This is person object : " + person);
         return AgeCalculator.calculateAge(person.getBirthDate());
     }
 
@@ -96,5 +99,14 @@ public class Age {
             return new Age(days, months, years);
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "Age{" +
+                "years=" + years +
+                ", months=" + months +
+                ", days=" + days +
+                '}';
     }
 }

@@ -22,6 +22,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.QuestionCategory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
@@ -196,5 +198,17 @@ public class TerminologyService {
 
         ehrMobileDatabase.testKitTestLevelDao().saveAll(testKitTestLevels);
         Log.d(TAG, "Saved testkit test levels : " + ehrMobileDatabase.testKitTestLevelDao().findAll());
+    }
+
+    public void saveQuestionCategory(List<QuestionCategory> questionCategories) {
+
+        ehrMobileDatabase.questionCategoryDao().saveAll(questionCategories);
+        Log.d(TAG, "Saved question categories : " + ehrMobileDatabase.questionCategoryDao().findAll());
+    }
+
+    public void saveQuestions(List<Question> questions) {
+
+        ehrMobileDatabase.questionDao().saveAll(questions);
+        Log.d(TAG, "Saved questions : " + ehrMobileDatabase.questionDao().findAll());
     }
 }
