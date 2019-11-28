@@ -301,11 +301,6 @@ class _Registration extends State<Registration> {
                                                               width: 250,
                                                             ),
                                                           ),
-                                                          Text('Self'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: _htsType,
-                                                              onChanged: _handleHtsTypeChange),
                                                           Text('Rapid'),
                                                           Radio(
                                                               value: 2,

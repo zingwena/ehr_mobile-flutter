@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,14 +14,31 @@ class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => new _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
-
   static const MethodChannel platform= MethodChannel('Authentication');
-
+  static const  siteChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/siteChannel');
   String url,username,password;
-
+  String facility_name ;
   final _key=GlobalKey<FormState>();
+  @override
+  void initState() {
+    getFacilityName();
+
+  }
+  Future<void>getFacilityName()async{
+    print("GET FACILITY CALLED IN FLUTTER");
+    String response ;
+    try{
+      response = await siteChannel.invokeMethod('getSiteName');
+      setState(() {
+        facility_name = response;
+      });
+      await storeString(FACILITY_NAME, facility_name);
+    }catch(e){
+      debugPrint('Exception caught in getfacility name '+ e);
+
+    }
+  }
   @override
   Widget build(BuildContext context) {
   

@@ -45,8 +45,10 @@ class _ArtReg extends State<ArtReg> {
   @override
   void initState() {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfEnrollment = DateTime.now();
-    dateOfTest = DateTime.now();
+    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    dateOfTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    test_date = DateTime.now();
+    enrollment_date = DateTime.now();
     super.initState();
   }
 

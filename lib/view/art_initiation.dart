@@ -147,20 +147,25 @@ class _Art_Initiation extends State<Art_Initiation> {
 
       switch (_line) {
         case 1:
-          line = "FIRST LINE";
-          print("line value : $line");
-
+          setState(() {
+            line = "FIRST LINE";
+            print("line value : $line");
+          });
           break;
         case 2:
-          line = "SECOND LINE";
-          print("line value : $line");
+          setState(() {
+            line = "SECOND LINE";
+            print("line value : $line");
 
+          });
           break;
 
         case 3:
-          line = "THIRD LINE";
-          print("line value : $line");
+          setState(() {
+            line = "THIRD LINE";
+            print("line value : $line");
 
+          });
           break;
       }
     });
@@ -405,7 +410,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
                                                             await artInitiation(artInitiationDetails);
 
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(initiation, widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId)));
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(artInitiationDetails, widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId)));
 
                                                           },
 
