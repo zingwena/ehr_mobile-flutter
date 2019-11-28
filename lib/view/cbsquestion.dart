@@ -112,7 +112,9 @@ class _CbsQuestion extends State<CbsQuestions> {
     var model_response;
     try{
       model_response = await htsChannel.invokeMethod('getHtsModel', htsmodelstring);
-      htsModel = HtsModel.mapFromJson(model_response);
+      setState(() {
+        htsModel = HtsModel.mapFromJson(model_response);
+      });
 
     }catch (e){
       print("channel failure: '$e'");
@@ -123,7 +125,11 @@ class _CbsQuestion extends State<CbsQuestions> {
     var model_response;
     try{
       model_response = await htsChannel.invokeMethod('getPurposeofTest', purposemodelstring);
-      purposeOfTest = PurposeOfTest.mapFromJson(model_response);
+      setState(() {
+        purposeOfTest = PurposeOfTest.mapFromJson(model_response);
+
+
+      });
 
     }catch (e){
       print("channel failure: '$e'");
@@ -156,22 +162,18 @@ class _CbsQuestion extends State<CbsQuestions> {
     return items;
   }
 
-
   Future<void> getHtsRecord(String patientId) async {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+      });
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
-
 
   }
 
@@ -427,6 +429,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       ],
                                                     ),
                                                   ),
+/*
 
                                                   Container(
                                                     width: double.infinity,
@@ -473,8 +476,9 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       ],
                                                     ),
                                                   ),
+*/
 
-                                                  Container(
+                                               /*   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child:            Row(
@@ -517,8 +521,8 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             _handleSexWithMaleChange)
                                                       ],
                                                     ),
-                                                  ),
-
+                                                  ),*/
+/*
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
@@ -562,8 +566,8 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             _handleSExWithFemaleChange)
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ),*/
+                                       /*           Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child:            Row(
@@ -606,8 +610,8 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             _handleUnprotectedSExChange)
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ),*/
+                                       /*           Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child:            Row(
@@ -650,7 +654,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             _handleSexWithSexWorker)
                                                       ],
                                                     ),
-                                                  ),
+                                                  ),*/
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
