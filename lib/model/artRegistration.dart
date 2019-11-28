@@ -12,11 +12,6 @@ class ArtRegistration {
    DateTime dateOfEnrolmentIntoCare;
    DateTime dateOfHivTest;
    String oiArtNumber;
-
-
-
-
-
   ArtRegistration(this.personId, this.dateOfEnrolmentIntoCare, this.dateOfHivTest,this.oiArtNumber);
 
 

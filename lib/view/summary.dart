@@ -55,7 +55,7 @@ class SummaryOverviewState extends State<SummaryOverview>
       });
 
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure at hts screening: '$e'");
     }
   }
   @override

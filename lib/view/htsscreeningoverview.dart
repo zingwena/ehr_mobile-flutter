@@ -455,28 +455,21 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                             style: TextStyle(color: Colors.white),
                                                           ),
                                                           onPressed: () {
+                                                            if(htsRegistration == null ){
+                                                              print('bbbbbbbbbbbbbb htsreg null ');
+                                                              Navigator.push(context,MaterialPageRoute(
+                                                                  builder: (context)=>  Registration(visitId, _patient.id, _patient)
+                                                              ));
+                                                            } else {
+                                                              print('bbbbbbbbbbbbbb htsreg  not null ');
 
-                                                            Navigator.push(context,MaterialPageRoute(
-                                                                builder: (context)=> Registration(visitId, _patient.id, _patient)
-                                                            ));
+                                                              Navigator.push(context,MaterialPageRoute(
+                                                                  builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
+                                                              ));
+                                                            }
                                                           },
                                                         ),
                                                       ),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 
