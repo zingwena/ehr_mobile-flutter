@@ -36,12 +36,16 @@ syncPatient(String token, String url) async {
     dto.personDto=person;
     log.i(person);
     dto = await setHts(adapter,dto);
+    dto = await setVitals(adapter, dto);
     if(person.status=='0'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
-        log.i(value);
+        log.i(value.statusCode);
+        log.i(json.decode(value.body));
         if(value.statusCode==200){
           personDao.setSyncd(person.id);
           //htsDao.setSyncd(person.id);
+        } else{
+
         }
       }).catchError((error){
         log.i(error);
