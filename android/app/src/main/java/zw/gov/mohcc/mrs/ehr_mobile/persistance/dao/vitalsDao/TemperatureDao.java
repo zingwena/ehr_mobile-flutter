@@ -22,4 +22,7 @@ public interface TemperatureDao {
 
     @Query("SELECT * From Temperature Where personId=:personId")
     List<Temperature>findByPersonId(String personId);
+
+    @Query("SELECT * From Temperature Where personId=:personId Order By dateTime DESC limit 1")
+    Temperature findLatestRecordByPersonId(String personId);
 }

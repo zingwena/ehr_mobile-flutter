@@ -48,4 +48,7 @@ public interface PersonInvestigationDao {
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId in (:investigations) order by date Desc limit 1,0")
     PersonInvestigation findTopByPersonIdAndInvestigationIdInOrderByDateDesc(
             String personId, Set<String> investigations);
+
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId order by date Desc limit 3, 0")
+    List<PersonInvestigation> findLatestThreeTestsByPersonId(String personId);
 }

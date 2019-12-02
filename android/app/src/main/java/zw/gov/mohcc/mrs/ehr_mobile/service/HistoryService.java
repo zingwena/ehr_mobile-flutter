@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;

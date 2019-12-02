@@ -11,12 +11,20 @@ import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSummaryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class VisitService {
@@ -24,10 +32,14 @@ public class VisitService {
     private final String TAG = "Visit Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private SiteService siteService;
+    private HistoryService historyService;
+    private ArtService artService;
 
-    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService) {
+    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, HistoryService historyService, ArtService artService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.siteService = siteService;
+        this.historyService = historyService;
+        this.artService = artService;
     }
 
     public List<FacilityQueue> getFacilityQueues() {
@@ -184,5 +196,44 @@ public class VisitService {
         Log.d(TAG, "Patient ward successifuly changed");
 
         return patientWard.getId();
+    }
+
+    public PatientSummaryDTO getPatientSummary(String personId) {
+
+        Log.d(TAG, "Creating patient summary object");
+        PatientSummaryDTO summary = new PatientSummaryDTO();
+        Temperature temperature = ehrMobileDatabase.temperatureDao().findLatestRecordByPersonId(personId);
+        Log.d(TAG, "Retrieved latest patient temperature record : " + temperature);
+        if (temperature != null) {
+            summary.setTemperature(new PatientSummaryDTO.ValueDate(temperature.getValue(), temperature.getDateTime()));
+        }
+        Pulse pulse = ehrMobileDatabase.pulseDao().findLatestRecordByPersonId(personId);
+        Log.d(TAG, "Retrieved latest patient pulse record : " + pulse);
+        if (pulse != null) {
+            summary.setPulse(new PatientSummaryDTO.ValueDate(pulse.getValue(), pulse.getDateTime()));
+        }
+        BloodPressure bloodPressure = ehrMobileDatabase.bloodPressureDao().findLatestRecordByPersonId(personId);
+        Log.d(TAG, "Retrieved latest patient bloodPressure record : " + bloodPressure);
+        if (bloodPressure != null) {
+            summary.setBloodPressure(new PatientSummaryDTO.ValueDate(
+                    bloodPressure.getSystolic() + "/" + bloodPressure.getDiastolic(), bloodPressure.getDateTime()));
+        }
+        Weight weight = ehrMobileDatabase.weightDao().findLatestRecordByPersonId(personId);
+        Log.d(TAG, "Retrieved latest patient weight record : " + weight);
+        if (weight != null) {
+            summary.setWeight(new PatientSummaryDTO.ValueDate(weight.getValue(), weight.getDateTime()));
+        }
+        Height height = ehrMobileDatabase.heightDao().findLatestRecordByPersonId(personId);
+        Log.d(TAG, "Retrieved latest patient height record : " + height);
+        if (height != null) {
+            summary.setHeight(new PatientSummaryDTO.ValueDate(height.getValue(), height.getDateTime()));
+        }
+        RespiratoryRate respiratoryRate = ehrMobileDatabase.respiratoryRateDao().findLatestRecordByPersonId(personId);
+        Log.d(TAG, "Retrieved latest patient respiratoryRate record : " + respiratoryRate);
+        if (respiratoryRate != null) {
+            summary.setRespiratoryRate(new PatientSummaryDTO.ValueDate(respiratoryRate.getValue(), respiratoryRate.getDateTime()));
+        }
+        Art art = artService.getArt(personId);
+        return summary;
     }
 }

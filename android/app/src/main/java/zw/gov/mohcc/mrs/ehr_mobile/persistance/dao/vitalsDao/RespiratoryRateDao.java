@@ -21,4 +21,7 @@ public interface RespiratoryRateDao {
 
     @Query("SELECT * From RespiratoryRate where personId=:personId")
     List<RespiratoryRate> findByPersonId(String personId);
+
+    @Query("SELECT * From RespiratoryRate Where personId=:personId Order By dateTime DESC limit 1")
+    RespiratoryRate findLatestRecordByPersonId(String personId);
 }

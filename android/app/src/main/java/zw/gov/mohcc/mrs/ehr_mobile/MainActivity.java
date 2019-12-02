@@ -97,6 +97,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
@@ -132,6 +133,7 @@ public class MainActivity extends FlutterActivity {
     private IndexTestingService indexTestingService;
     private RelationshipService relationshipService;
     private SiteService siteService;
+    private ArtService artService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +146,8 @@ public class MainActivity extends FlutterActivity {
 
         siteService = new SiteService(ehrMobileDatabase);
         historyService = new HistoryService(ehrMobileDatabase, htsService);
-        visitService = new VisitService(ehrMobileDatabase, siteService);
+        artService = new ArtService(ehrMobileDatabase);
+        visitService = new VisitService(ehrMobileDatabase, siteService, historyService, artService);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);

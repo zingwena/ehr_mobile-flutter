@@ -30,6 +30,12 @@ public class ArtService {
         return art.getId();
     }
 
+    public Art getArt(String personId) {
+
+        Log.d(TAG, "Retrieving patient art record");
+        return ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+    }
+
     public Hts getLatestHivPositiveRecord(String personId) {
 
         return null;
