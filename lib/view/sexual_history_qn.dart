@@ -13,7 +13,8 @@ class SexualHistoryQuestionView extends StatefulWidget{
   String sexualHistoryId;
   Response question;
   String personId;
-  SexualHistoryQuestionView(this.sexualHistoryView, this.sexualHistoryId, this.personId);
+  bool isQuestion;
+  SexualHistoryQuestionView(this.sexualHistoryView, this.sexualHistoryId, this.personId, this.isQuestion);
 
   @override
   State createState() {
@@ -42,14 +43,13 @@ class SexulahistoryState extends State<SexualHistoryQuestionView>{
               width: 250,
             ),
           ),
-          RadioButtonGroup(
+          widget.isQuestion == true ?RadioButtonGroup(
             orientation: GroupedButtonsOrientation.HORIZONTAL,
             margin: const EdgeInsets.only(left: 12.0),
             onSelected: (String selected) => setState(() {
               _picked = selected;
-              print(">>>>>>>" + _picked);
               widget.sexualHistoryView.question.responseType = _picked;
-              Response _response = Response('', '', widget.sexualHistoryView.question.responseType);
+              Response _response = Response('', widget.sexualHistoryView.question.name, widget.sexualHistoryView.question.responseType);
               SexualHistoryDto sexualHistorydto = SexualHistoryDto(widget.personId, widget.sexualHistoryId, _response);
               saveSexualHistoryDto(sexualHistorydto);
             }),
@@ -67,7 +67,7 @@ class SexulahistoryState extends State<SexualHistoryQuestionView>{
                 ],
               );
             },
-          )
+          ): Text('widget.sexualHistoryView.question.responseType')
         ],
       ),
     );
@@ -80,7 +80,6 @@ class SexulahistoryState extends State<SexualHistoryQuestionView>{
     response = htsChannel.invokeMethod('saveSexualHistoryDto', jsonEncode(sexualHistoryview));
     setState(() {
       sexualHistoryDtoId = response;
-      print(">>>>>>>>>>>> sexual history id returned" + sexualHistoryDtoId);
     });
     }catch(e){
       print("Exception thrown in save sexualhistory dto method");

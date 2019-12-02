@@ -77,7 +77,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
   @override
   void initState()   {
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+      selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
       getPersonInvestigation(widget.personId);
       getLabInvestigation(widget.personId);
       getLabTest(widget.personId);
@@ -152,17 +152,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
   }
 
-  Future<dynamic>loaddetails() async{
-
-    try{
-
-
-    }catch(e){
-      print("Exception thrown :'$e");
-
-    }
-  }
-
   Future<void> getResults(String personId) async {
     String response;
     try {
@@ -171,7 +160,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         _result_string = response;
         json_result_list = jsonDecode(_result_string);
         _results = Result.mapFromJson(json_result_list);
-        print("HHHHHHHHHHHHHHHHHHH results from android"+ _results.toString());
         _results.forEach((e) {
           _resultsList.add(e);
         });
@@ -274,8 +262,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
     } catch (e) {
       print("channel failure: '$e'");
     }
-
-
 
   }
 

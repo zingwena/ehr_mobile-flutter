@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/sexualhistoryview.dart';
+import 'package:ehr_mobile/view/sexual_history_overview.dart';
 import 'package:ehr_mobile/view/sexual_history_qn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,6 @@ import '../sidebar.dart';
 
 class CbsQuestions2 extends StatefulWidget {
   final String htsid;
-
   final String personId;
   final HtsRegistration htsRegistration;
   final String visitId;
@@ -57,7 +57,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
   int medicaltrans = 0;
   int _medicalinjections = 0;
   int _response = 0;
-
   String exchangedsexformoney = "";
   String agewhenfirsthadsex;
   String numberofsexualpartners;
@@ -76,7 +75,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
 
   @override
   void initState() {
-    //getDropDrowns();
     getHtsRecord(widget.personId);
     getSexualHistoryViews(widget.personId);
     super.initState();
@@ -87,10 +85,8 @@ class _CbsQuestion extends State<CbsQuestions2> {
     try {
       pretestjson =
           await htsChannel.invokeMethod('savePreTest', jsonEncode(preTest));
-      print('LLLLLLLLLLLLLLLL' + pretestjson);
       setState(() {
         patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
-        print('LLLLLLLLLLLLLLLLLLLLL' + patient_preTest.toString());
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -146,8 +142,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
   List<DropdownMenuItem<String>> getDropDownMenuItemsHtsModel() {
     List<DropdownMenuItem<String>> items = new List();
     for (HtsModel htsModel in _htsModelList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
       items.add(
           DropdownMenuItem(value: htsModel.code, child: Text(htsModel.name)));
     }
@@ -157,8 +151,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
   List<DropdownMenuItem<String>> getDropDownMenuItemsPurposeOfTest() {
     List<DropdownMenuItem<String>> items = new List();
     for (PurposeOfTest purposeOfTest in _purposeOfTestList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
           value: purposeOfTest.code, child: Text(purposeOfTest.name)));
     }
@@ -316,7 +308,45 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                       child: new IntrinsicHeight(
                                         child: Column(
                                           children: <Widget>[
-                                            getQuestions(_entryPointList, widget.sexualHistoryId, widget.personId)
+                                            getQuestions(_entryPointList, widget.sexualHistoryId, widget.personId),
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: SizedBox(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: RaisedButton(
+                                                          elevation: 4.0,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius.circular(5.0)),
+                                                          color: Colors.blue,
+                                                          padding: const EdgeInsets.all(
+                                                              20.0),
+                                                          child: Text(
+                                                            "Save",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight
+                                                                    .w500),
+                                                          ),
+                                                          onPressed: ()  {
+                                                                  Navigator.push(context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (
+                                                                          context) =>
+                                                                          SexualHistoryOverview(widget.person, null, widget.htsid, widget.visitId, widget.personId)
+                                                                  ));
+                                                          }
+
+                                                      ),
+                                                    ),
+                                                    width: 100,
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -340,25 +370,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
     );
   }
 
-  void _handleEXchangedSExForMoney(int value) {
-    setState(() {
-      _exchangedsexformoney = value;
-
-      switch (_exchangedsexformoney) {
-        case 1:
-          exchangedsexformoney = "YES";
-          break;
-        case 2:
-          exchangedsexformoney = "NO";
-          break;
-        case 3:
-          exchangedsexformoney = "REFUSE";
-
-          break;
-      }
-    });
-  }
-
   }
 
   Widget getQuestions(List<SexualHistoryView> sexualhistoryviews, String sexualHistoryId, String personId) {
@@ -366,7 +377,7 @@ class _CbsQuestion extends State<CbsQuestions2> {
     return new Column(
         children: sexualhistoryviews
             .map(
-              (item) => SexualHistoryQuestionView(item, sexualHistoryId, personId)
+              (item) => SexualHistoryQuestionView(item, sexualHistoryId, personId, true)
     )
             .toList());
   }

@@ -1,7 +1,7 @@
 import 'package:ehr_mobile/landing_screen.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
-import 'package:ehr_mobile/view/cbsquestion.dart';
+import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';

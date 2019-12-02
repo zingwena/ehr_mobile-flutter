@@ -34,7 +34,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class HistoryService {
-
     private final String TAG = "History Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private HtsService htsService;

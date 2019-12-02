@@ -10,7 +10,7 @@ import 'package:ehr_mobile/model/sexualhistory.dart';
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
-import 'package:ehr_mobile/view/cbsquestion2.dart';
+import 'package:ehr_mobile/view/sexualhistoryform2.dart';
 
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -68,13 +68,6 @@ class _CbsQuestion extends State<CbsQuestions> {
   var selectedDateOfSexWithMale, selectedDateOfSexWithFemale;
   DateTime dateOfSexWithMale , dateOfSexWithFemale;
   String sexualHistoryId;
-
-
-  //int _optOutTest = 0;
-  PreTest patient_preTest;
-
-
-
   String purposeOfTestId;
   @override
   void initState() {
@@ -82,63 +75,6 @@ class _CbsQuestion extends State<CbsQuestions> {
     getHtsRecord(widget.personId);
     super.initState();
   }
-
-  Future<void> insertPreTest(PreTest preTest) async {
-    String pretestjson;
-    try {
-      pretestjson =  await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
-      print('LLLLLLLLLLLLLLLL'+ pretestjson);
-      setState(() {
-        patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
-        print('LLLLLLLLLLLLLLLLLLLLL'+ patient_preTest.toString());
-      });
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-  }
-
-  Future <void> getHtsModelByName(String htsmodelstring) async{
-    var model_response;
-    try{
-      model_response = await htsChannel.invokeMethod('getHtsModel', htsmodelstring);
-      setState(() {
-        htsModel = HtsModel.mapFromJson(model_response);
-      });
-
-    }catch (e){
-      print("channel failure: '$e'");
-
-    }
-  }
-  Future <void> getPurposeByName(String purposemodelstring) async{
-    var model_response;
-    try{
-      model_response = await htsChannel.invokeMethod('getPurposeofTest', purposemodelstring);
-      setState(() {
-        purposeOfTest = PurposeOfTest.mapFromJson(model_response);
-
-
-      });
-
-    }catch (e){
-      print("channel failure: '$e'");
-
-    }
-  }
-
-
-  List<DropdownMenuItem<String>>
-  getDropDownMenuItemsHtsModel() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (HtsModel htsModel in _htsModelList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(
-          DropdownMenuItem(value: htsModel.code, child: Text(htsModel.name)));
-    }
-    return items;
-  }
-
   List<DropdownMenuItem<String>>
   getDropDownMenuItemsPurposeOfTest() {
     List<DropdownMenuItem<String>> items = new List();
@@ -189,17 +125,6 @@ class _CbsQuestion extends State<CbsQuestions> {
         dateOfSexWithFemale = DateFormat("yyyy/MM/dd").parse(selectedDateOfSexWithFemale);
       });
   }
-
-
-
-
-  List<DropdownMenuItem<String>>
-  _dropDownMenuItemsHtsModel,
-      _dropDownMenuItemsPurposeOfTest;
-
-  String  _currentHtsModel;
-  String _currentPurposeOfTest;
-
   bool showInput = true;
   bool showInputTabOptions = true;
 
@@ -579,19 +504,7 @@ class _CbsQuestion extends State<CbsQuestions> {
 
     }
   }
-  void changedDropDownItemHtsModel(String value) {
-    setState(() {
-      _currentHtsModel = value;
 
-    });
-  }
-
-  void changedDropDownItemPurposeOfTest(String value) {
-    setState(() {
-      _currentPurposeOfTest = value;
-
-    });
-  }
   void _handleSexuallyActiveChange(int value) {
     setState(() {
       _sexuallyActive = value;

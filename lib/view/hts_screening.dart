@@ -944,35 +944,6 @@ class _HtsScreening extends State<Hts_Screening> {
     );
   }
 
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(
-            text: "HTS Registration", onTap: () =>
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        HtsRegOverview(widget.htsRegistration, widget.personId,
-                            widget.htsid, widget.visitId, widget.person
-                        )),
-              ),
-          ),
-          //HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
-
-          new RoundedButton(
-            text: "HTS Pre-Testing", selected: true,
-
-          ),
-          new RoundedButton(text: "Testing",
-          ),
-        ],
-      ),
-    );
-  }
-
   void _handleHtsChange(int value) {
     setState(() {
       _hts = value;

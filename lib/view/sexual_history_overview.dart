@@ -3,11 +3,13 @@ import 'package:ehr_mobile/model/CbsQuestions.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/sexualhistory.dart';
+import 'package:ehr_mobile/model/sexualhistoryview.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/view/sexual_history_qn.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
 import 'package:flutter/material.dart';
@@ -25,14 +27,14 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/address.dart';
 
-class CbsOverview extends StatefulWidget {
+class SexualHistoryOverview extends StatefulWidget {
   final Person patient;
   final CbsQuestion cbsQuestion;
   final String htsId;
   final String visitId;
   final String personId;
 
-  CbsOverview(this.patient, this.cbsQuestion, this.htsId, this.visitId, this.personId);
+  SexualHistoryOverview(this.patient, this.cbsQuestion, this.htsId, this.visitId, this.personId);
 
   @override
   State<StatefulWidget> createState() {
@@ -41,7 +43,7 @@ class CbsOverview extends StatefulWidget {
   }
 }
 
-class _CbsOverview extends State<CbsOverview> {
+class _CbsOverview extends State<SexualHistoryOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static final MethodChannel patientChannel = MethodChannel(
       'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
@@ -68,11 +70,17 @@ class _CbsOverview extends State<CbsOverview> {
   String historyofsti;
   String receivedbloodtrans;
   String unsterilisedinstruments;
+
+  String _entryPoint;
+  List entryPoints = List();
+  List _dropDownListEntryPoints = List();
+  List<SexualHistoryView> _entryPointList = List();
   @override
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
+    getSexualHistoryViews(widget.personId);
     print(_patient.toString());
     //getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     super.initState();
@@ -98,16 +106,17 @@ class _CbsOverview extends State<CbsOverview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+      });
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
 
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -125,6 +134,26 @@ class _CbsOverview extends State<CbsOverview> {
     }
 
 
+  }
+
+  Future<void> getSexualHistoryViews(String patientId) async {
+    String response;
+    try {
+      response =
+      await htsChannel.invokeMethod('getSexualHistoryViews', patientId);
+      setState(() {
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = SexualHistoryView.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+        print("Sexual hitsory list returned in Overview ######################^^^^^^^^^^^^^.>>>>>>>>>>>>>>>>>>>" +
+            _entryPointList.toString());
+      });
+    } catch (e) {
+      print("Exception thrown in getsexualhistory view method" + e);
+    }
   }
 
   String nullHandler(String value) {
@@ -255,266 +284,13 @@ class _CbsOverview extends State<CbsOverview> {
                                                   padding: const EdgeInsets.all(16.0),
                                                   child: Column(
                                                     children: <Widget>[
+                                                      getQuestions(_entryPointList, '', widget.personId)
 
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text:
-                                                                        widget.cbsQuestion.sexuallyactive),
-                                                                decoration: InputDecoration(
-                                                                    icon: Icon(Icons.person, color: Colors.blue),
-                                                                    labelText: "Sexually active ?",
-                                                                    hintText: "Sexually active ?"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.age_whenclienthadfirstsexualintercourse)),
-                                                                decoration: InputDecoration(
-                                                                    icon: new Icon(MdiIcons.humanMaleFemale, color: Colors.blue),
-                                                                    labelText: "Age fwhen client had first intercourse ",
-                                                                    hintText: "Age fwhen client had first intercourse"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.numberofsexualpartners)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Number of sexual partners in the last 12 months',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(victimofsexualause)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Victim of sexual abuse ?',
-                                                                  icon: Icon(Icons.person, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.hadsexwithmale)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Had sex with male ?',
-                                                                  icon: new Icon(MdiIcons.humanMale, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.hadsexwithfemale)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Had sex with female ?',
-                                                                  icon: Icon(MdiIcons.humanFemale, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.unprotectedsex)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Had unprotected sex ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: widget.cbsQuestion.hadsexwithsexworker),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Had sex with sex worker ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.injectedrecreationaldrugs)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Ever injected recreational drugs ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: widget.cbsQuestion.historyofansti),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Has history of an STI ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.unprotectedsex)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Had unprotected sex ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: widget.cbsQuestion.beenincerceratedintojail),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Been in jail  ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.cbsQuestion.tatooedwithunsterilisedinstruments)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Tatooed with unsterilised instruments ?',
-                                                                  icon: Icon(Icons.flag, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      Padding(
-                                                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 64.0, 8.0),
-                                                        child: TextFormField(
-                                                          controller: TextEditingController(
-                                                              text: widget.cbsQuestion.receivedbloodtransfusions),
-                                                          decoration: InputDecoration(
-                                                            labelText: 'Received blood transfusions ?',
-                                                            icon: Icon(Icons.home, color: Colors.blue),
-                                                          ),
-
-                                                        ),
-                                                      ),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 
@@ -541,97 +317,15 @@ class _CbsOverview extends State<CbsOverview> {
     );
   }
 
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(text: "VITALS", onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ReceptionVitals(
-                        _patient.id, visitId, _patient, htsId)),
-          ),
-          ),
-          new RoundedButton(text: "HTS",  onTap: () {
-            if(htsRegistration == null ){
-              print('bbbbbbbbbbbbbb htsreg null ');
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  Registration(visitId, _patient.id, _patient)
-              ));
-            } else {
-              print('bbbbbbbbbbbbbb htsreg  not null ');
+  Widget getQuestions(List<SexualHistoryView> sexualhistoryviews, String sexualHistoryId, String personId) {
 
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-              ));
-            }
-          }
-          ),
-
-
-          new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
-          ),),
-
-
-          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
-          ),
-        ],
-      ),
-    );
+    return new Column(
+        children: sexualhistoryviews
+            .map(
+                (item) => SexualHistoryQuestionView(item, sexualHistoryId, personId, false)
+        )
+            .toList());
   }
-  Widget _sidemenu(){
-    return new Drawer(
-      child: ListView(
-        children: <Widget>[
-
-        ],
-      ),
-    );
-  }
-
-  Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
-    String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;
-    try{
-
-      maritalStatus = await patientChannel.invokeMethod('getPatientMaritalStatus',maritalStatusId);
-      educationLevel = await patientChannel.invokeMethod('getEducationLevel',educationLevelId);
-      occupation = await patientChannel.invokeMethod('getOccupation',occupationId);
-      nationality = await patientChannel.invokeMethod('getNationality',nationalityId);
-      address = await patientChannel.invokeMethod('getAddress', patientId);
-      patientphonenumber = await patientChannel.invokeMethod('getPhonenumber', patientId);
-
-
-      print('ADDRESS ADDRESS'+ address);
-
-    }
-    catch (e) {
-      print(
-          'Something went wrong during getting marital status........cause $e');
-    }
-
-    setState(() {
-      _maritalStatus = maritalStatus;
-      _educationLevel = educationLevel;
-      _occupation = occupation;
-      _nationality = nationality;
-      _address = address;
-      _phonenumber = patientphonenumber;
-    });
-    print('9999999999999999999999999999999999999999999999999999 $_phonenumber');
-
-  }
-
 
 }
 

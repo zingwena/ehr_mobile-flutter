@@ -4,7 +4,7 @@ import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
-import 'package:ehr_mobile/view/cbsquestion.dart';
+import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/recency.dart';

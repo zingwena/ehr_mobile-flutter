@@ -19,7 +19,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'cbsquestion.dart';
+import 'sexualhistoryform.dart';
 import 'rounded_button.dart';
 
 class Registration extends StatefulWidget {
