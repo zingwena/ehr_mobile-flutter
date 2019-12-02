@@ -16,6 +16,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
@@ -232,6 +233,7 @@ public class VisitService {
         if (respiratoryRate != null) {
             summary.setRespiratoryRate(new PatientSummaryDTO.ValueDate(respiratoryRate.getValue(), respiratoryRate.getDateTime()));
         }
+        Art art = artService.getArt(personId);
         return summary;
     }
 }

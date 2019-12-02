@@ -19,6 +19,6 @@ public interface HeightDao {
     @Query("Delete From Height")
     void deleteAll();
 
-    @Query("SELECT * From Height Where personId=:personId Order By dateTime DESC limit 0,1")
+    @Query("SELECT * From Height Where personId=:personId Order By dateTime DESC limit 1")
     Height findLatestRecordByPersonId(String personId);
 }

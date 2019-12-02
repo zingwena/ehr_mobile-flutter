@@ -34,4 +34,12 @@ public class SexualHistoryQuestionView implements Serializable {
     public void setQuestion(NameCodeResponse question) {
         this.question = question;
     }
+
+    @Override
+    public String toString() {
+        return "SexualHistoryQuestionView{" +
+                "question=" + question +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

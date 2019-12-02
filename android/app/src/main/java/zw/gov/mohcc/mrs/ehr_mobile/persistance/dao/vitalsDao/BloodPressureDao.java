@@ -25,6 +25,6 @@ public interface BloodPressureDao {
     @Query("SELECT * FROM BloodPressure WHERE personId =:personId")
     List<BloodPressure>findByPersonId(String personId);
 
-    @Query("SELECT * From BloodPressure Where personId=:personId Order By dateTime DESC limit 0,1")
+    @Query("SELECT * From BloodPressure Where personId=:personId Order By dateTime DESC limit 1")
     BloodPressure findLatestRecordByPersonId(String personId);
 }

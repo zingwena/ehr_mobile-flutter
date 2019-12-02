@@ -22,6 +22,6 @@ public interface PulseDao {
     @Query("SELECT * From Pulse where personId=:personId")
     List<Pulse> findByPersonId(String personId);
 
-    @Query("SELECT * From Pulse Where personId=:personId Order By dateTime DESC limit 0,1")
+    @Query("SELECT * From Pulse Where personId=:personId Order By dateTime DESC limit 1")
     Pulse findLatestRecordByPersonId(String personId);
 }

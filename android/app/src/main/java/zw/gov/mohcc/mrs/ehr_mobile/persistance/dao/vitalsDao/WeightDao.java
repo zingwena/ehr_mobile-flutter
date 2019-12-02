@@ -22,6 +22,6 @@ public interface WeightDao {
     @Query("SELECT * From Weight Where personId=:personId")
     List<Weight> findByPersonId(String personId);
 
-    @Query("SELECT * From Weight Where personId=:personId Order By dateTime DESC limit 0,1")
+    @Query("SELECT * From Weight Where personId=:personId Order By dateTime DESC limit 1")
     Weight findLatestRecordByPersonId(String personId);
 }
