@@ -24,10 +24,12 @@ public class VisitService {
     private final String TAG = "Visit Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private SiteService siteService;
+    private HistoryService historyService;
 
-    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService) {
+    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, HistoryService historyService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.siteService = siteService;
+        this.historyService = historyService;
     }
 
     public List<FacilityQueue> getFacilityQueues() {
