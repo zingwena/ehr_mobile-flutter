@@ -21,6 +21,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
@@ -476,10 +478,11 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("saveSexualHistory")) {
                             try {
+                                Log.i(TAG, "Sexual history dto from flutter"+ arguments);
                                 SexualHistoryDTO sexualHistoryDTO = gson.fromJson(arguments, SexualHistoryDTO.class);
-                                historyService.saveSexualHistory(sexualHistoryDTO);
+                                String sexualHistoryId =  historyService.saveSexualHistory(sexualHistoryDTO);
                                 // SexualHistory sexualHistory = historyService.getSexualHistory(sexualHistoryDTO.getPersonId());
-                                result.success(1);
+                                result.success(sexualHistoryId);
 
                             } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
@@ -492,6 +495,17 @@ public class HtsChannel {
 
                             } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("getSexualHistoryViews")){
+                            Log.i(TAG, "HERE ARE THE ARGUMENTS TO RETRIEVE SEXUAL HISTORY VIEWS ////////////"+ arguments);
+                            try{
+                                List<SexualHistoryQuestionView>sexualHistoryQuestionViews = historyService.getPatientSexualHistQuestions(arguments);
+                                Log.i(TAG, "List of sexual history view returned"+ sexualHistoryQuestionViews);
+                                result.success(gson.toJson(sexualHistoryQuestionViews));
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred :" + e.getMessage());
+
                             }
                         }
                         if(methodCall.method.equals("saveIndexTest")){
@@ -519,6 +533,18 @@ public class HtsChannel {
 
                             }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if(methodCall.method.equals("saveSexualHistoryDto")){
+                            Log.i(TAG, " SEXUAL HISTORY DTO FROM FLUTTER"+ arguments);
+                            try{
+                                SexualHistoryQuestionDTO sexualHistoryDTO = gson.fromJson(arguments, SexualHistoryQuestionDTO.class);
+                                String sexualHistoryId = historyService.createSexualHistoryQuestion(sexualHistoryDTO);
+                                result.success(sexualHistoryId);
+
+                            }catch (Exception e){
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+
                             }
                         }
                         if(methodCall.method.equals("saveIndexContact")){

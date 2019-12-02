@@ -1,7 +1,10 @@
 import 'package:ehr_mobile/model/address.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:ehr_mobile/util/custom_convertor.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'person.g.dart';
