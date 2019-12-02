@@ -5,13 +5,13 @@ part 'sexualhistory.g.dart';
 class SexualHistory{
 
  String personId;
- String sexuallyActive;
+ bool sexuallyActive;
  DateTime sexWithMaleDate;
  DateTime sexWithFemaleDate;
  int numberOfSexualPartners;
  int numberOfSexualPartnersLastTwelveMonths;
 
- SexualHistory(String personId, String sexuallyActive, DateTime sexwithMaleDate, DateTime sexwithFemale,  int numberofsexualpartners,
+ SexualHistory(String personId, bool sexuallyActive, DateTime sexwithMaleDate, DateTime sexwithFemale,  int numberofsexualpartners,
      int numberofsexualpartnerslasttwelveMonths){
    this.personId = personId;
    this.sexuallyActive = sexuallyActive;

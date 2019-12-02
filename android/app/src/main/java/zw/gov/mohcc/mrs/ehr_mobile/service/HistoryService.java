@@ -59,14 +59,15 @@ public class HistoryService {
         Log.d(TAG, "State of sexual history question : " + item);
 
         ehrMobileDatabase.sexualHistoryQuestionDao().save(item);
+        Log.i(TAG, "Sexual history dto saved");
         return item.getId();
     }
 
     public List<SexualHistoryQuestionView> getPatientSexualHistQuestions(String personId) {
         SexualHistory sexualHistory = getSexualHistory(personId);
-        /*if (sexualHistory == null) {
+        if (sexualHistory == null) {
             return null;
-        }*/
+        }
         Log.d(TAG, "Retrieving all sexual history questions in system ");
         List<Question> sexualHistoryQuestions = ehrMobileDatabase.questionDao().findByWorkArea(WorkArea.SEXUAL_HISTORY);
         List<SexualHistoryQuestionView> views = new ArrayList<>();
@@ -74,14 +75,14 @@ public class HistoryService {
 
             NameCodeResponse nameCode = new NameCodeResponse(question.getCode(), question.getName());
 
-            /*SexualHistoryQuestion sexualHistoryQuestion =
+            SexualHistoryQuestion sexualHistoryQuestion =
                     ehrMobileDatabase.sexualHistoryQuestionDao().findBySexualHistoryIdAndQuestionId(sexualHistory.getId(), question.getCode());
-            Log.d(TAG, "Retrieved sexual history question object : " + sexualHistoryQuestion);*/
+            Log.d(TAG, "Retrieved sexual history question object : " + sexualHistoryQuestion);
             String sexualHistoryQuestionId = null;
-            /*if (sexualHistoryQuestion != null) {
+            if (sexualHistoryQuestion != null) {
                 nameCode.setResponseType(sexualHistoryQuestion.getQuestion().getResponseType());
                 sexualHistoryQuestionId = sexualHistoryQuestion != null ? sexualHistoryQuestion.getId() : null;
-            }*/
+            }
 
             SexualHistoryQuestionView view = new SexualHistoryQuestionView(sexualHistoryQuestionId, nameCode);
             views.add(view);
@@ -209,10 +210,12 @@ public class HistoryService {
     }
 
     @Transaction
-    public void saveSexualHistory(SexualHistoryDTO dto) {
+    public String saveSexualHistory(SexualHistoryDTO dto) {
         Log.i(TAG, "Saving sexual history object : " + dto);
         ehrMobileDatabase.sexualHistoryDao().save(dto.getInstance(dto));
+        SexualHistory sexualHistory = getSexualHistory(dto.getPersonId());
         Log.i(TAG, "Sexual history record saved for : "+ dto.getPersonId() + " " + ehrMobileDatabase.sexualHistoryDao().findByPersonId(dto.getPersonId()));
+         return  sexualHistory.getId();
     }
 
     @Transaction
