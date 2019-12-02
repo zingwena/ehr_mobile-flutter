@@ -11,6 +11,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 @Entity(indices = {@Index(value = "code", unique = true)})
 public class Question extends BaseNameModel {
 
+    @NonNull
     private String categoryId;
 
     private QuestionType type;
@@ -19,17 +20,18 @@ public class Question extends BaseNameModel {
     }
 
     @Ignore
-    public Question(@NonNull String code, @NonNull String name, String categoryId, QuestionType type) {
+    public Question(@NonNull String code, @NonNull String name, @NonNull String categoryId, QuestionType type) {
         super(code, name);
         this.categoryId = categoryId;
         this.type = type;
     }
 
+    @NonNull
     public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(@NonNull String categoryId) {
         this.categoryId = categoryId;
     }
 

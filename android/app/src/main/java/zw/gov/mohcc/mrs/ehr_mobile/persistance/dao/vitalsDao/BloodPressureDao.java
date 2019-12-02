@@ -21,4 +21,7 @@ public interface BloodPressureDao {
 
     @Query("SELECT * FROM BloodPressure WHERE visitId =:visitId")
     BloodPressure findByVisitId(String visitId);
+
+    @Query("SELECT * FROM BloodPressure WHERE personId =:personId")
+    List<BloodPressure>findByPersonId(String personId);
 }

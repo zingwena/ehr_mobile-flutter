@@ -18,4 +18,7 @@ public interface PulseDao {
 
     @Query("Delete From Pulse")
     void deleteAll();
+
+    @Query("SELECT * From Pulse where personId=:personId")
+    List<Pulse> findByPersonId(String personId);
 }

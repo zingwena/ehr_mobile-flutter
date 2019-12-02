@@ -1,18 +1,20 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/sync/data_sync.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'add_patient.dart';
 import 'patient_overview.dart';
-import 'package:http/http.dart' as http;
 
 class SearchPatient extends StatefulWidget {
+  @override
   _SearchPatientState createState() => _SearchPatientState();
 }
 
@@ -24,10 +26,36 @@ class _SearchPatientState extends State<SearchPatient> {
   List<Person> _patientList;
   String facility_name;
 
+  String token='';
+  String url='';
+  var alertStyle = AlertStyle(
+    overlayColor: Colors.blue[400],
+    animationType: AnimationType.fromTop,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    descStyle: TextStyle(fontWeight: FontWeight.bold),
+    animationDuration: Duration(milliseconds: 400),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50.0),
+      side: BorderSide(
+        color: Colors.grey,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: Colors.blue,
+    ),
+  );
 
   @override
-  void initState() {
+  initState(){
     getSiteName();
+    retrieveString(AUTH_TOKEN).then((value){
+      token=value;
+    });
+    retrieveString(SERVER_IP).then((value){
+      url=value;
+    });
+    super.initState();
   }
 
   Future<void> searchPatient(String searchItem) async {
@@ -58,26 +86,43 @@ class _SearchPatientState extends State<SearchPatient> {
     }
   }
 
-
-
-  Future<void>syncPatients() async {
-    String token =await retrieveString(AUTH_TOKEN);
-    String url=await retrieveString(SERVER_IP);
-    await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']).then((value){
-      print("sync method called----->$value");
+  syncPatients() async {
+//     var result = await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']);
+//     print(result);
+    await syncPatient(token,'$url/api');
+    setState(() {
+      isLoading=false;
     });
+    Alert(
+      context: context,
+      style: alertStyle,
+      title: 'Sync Successfull',
+      type: AlertType.success,
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: Colors.blue,
+          radius: BorderRadius.circular(10.0),
+        ),
+      ],
+    ).show();
   }
 
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
+  bool isLoading=false;
+
+  String uploadingInfo='';
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-    /*  appBar: AppBar(
-        title: Text('Search Patient'),
-      ),*/
       backgroundColor: Colors.white,
 
       body: Column(
@@ -153,19 +198,58 @@ class _SearchPatientState extends State<SearchPatient> {
                               color: Colors.white,
                               fontSize: 30),
                         ),
-
                         Expanded(
                           flex: 1,
                           child: Container(),
                         ),
+                        //syncWidget,
+                        isLoading ?
+                        CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          semanticsLabel: 'Loading ...',
+                        ):
                         RoundedButton(
                           onTap: (){
-                                syncPatients();
+//                            setState(() {
+//                              isLoading=true;
+//                            });
+                            Alert(
+                              context: context,
+                              style: alertStyle,
+                              title: 'Sync with EHR?',
+                              type: AlertType.info,
+                              buttons: [
+                                DialogButton(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                  color: Colors.red,
+                                  radius: BorderRadius.circular(10.0),
+                                ),
+                                DialogButton(
+                                  child: Text(
+                                    "Yes",
+                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                  ),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                    setState(() {
+                                      isLoading=true;
+                                    });
+                                    syncPatients();
+                                  },
+                                  color: Colors.blue,
+                                  radius: BorderRadius.circular(10.0),
+                                ),
+                              ],
+                            ).show();
+                            //syncPatients();
                           },
                           text: 'Sync',
                           //selected: true,
                         ),
-
                       ],
                     ),
                   ),
@@ -340,14 +424,10 @@ class _SearchPatientState extends State<SearchPatient> {
             ),
           )
               :   SizedBox( ),
-
           SizedBox(
             height: 125,
           ),
-
         ],
-
-
       ),
 
     );

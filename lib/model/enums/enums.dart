@@ -1,0 +1,5 @@
+
+
+enum RecordStatus{
+  NEW,IMPORTED,SYNCED,DELETED,CHANGED
+}

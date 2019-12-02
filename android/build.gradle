@@ -22,6 +22,9 @@ allprojects {
         maven{
             url='https://apps.mohcc.gov.zw/nexus/repository/maven-releases/'
         }
+        maven{
+            url='https://apps.mohcc.gov.zw/nexus/repository/maven-snapshots/'
+        }
     }
 }
 

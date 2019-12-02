@@ -143,6 +143,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
         siteService = new SiteService(ehrMobileDatabase);
+        historyService = new HistoryService(ehrMobileDatabase, htsService);
         visitService = new VisitService(ehrMobileDatabase, siteService);
         htsService = new HtsService(ehrMobileDatabase, visitService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
@@ -153,7 +154,6 @@ public class MainActivity extends FlutterActivity {
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
-        historyService = new HistoryService(ehrMobileDatabase, htsService);
 
         new AddPatientChannel(getFlutterView(), ADD_PATIENT_CHANNEL, ehrMobileDatabase);
 
@@ -1180,6 +1180,7 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<QuestionModel> call, Response<QuestionModel> response) {
                 List<Question> questions = new ArrayList<>();
+                Log.d(TAG, "&&&&&&&&&&&&&&&&&&&&&&&&&& : " + response.body().getContent());
                 for (QuestionEhr item : response.body().getContent()) {
                     questions.add(new Question(
                             item.getQuestionId(), item.getName(), item.getCategoryId(), QuestionType.get(item.getType())
@@ -1226,6 +1227,9 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<ArvCombinationRegimenModel> call, Response<ArvCombinationRegimenModel> response) {
 
+                if(response.body()==null || response.body().getContent()==null){
+                    return;
+                }
                 Log.d(TAG, "Arv combination regmines : " + response.body().getContent());
 
                 terminologyService.saveArvCombinationRegimen(ArvCombinationRegimenEhr.getInstance(response.body().getContent()));
