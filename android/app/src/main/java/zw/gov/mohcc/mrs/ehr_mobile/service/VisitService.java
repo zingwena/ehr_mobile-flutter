@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +18,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
@@ -234,6 +237,31 @@ public class VisitService {
             summary.setRespiratoryRate(new PatientSummaryDTO.ValueDate(respiratoryRate.getValue(), respiratoryRate.getDateTime()));
         }
         Art art = artService.getArt(personId);
+        Log.d(TAG, "Retrieved patient art record : " + art);
+        if (art != null) {
+            //Date dateRegistered, String artNumber, String whoStage, String arvRegimen
+            summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getOiArtNumber(), null, null));
+        }
+        List<PersonInvestigation> investigations = ehrMobileDatabase.personInvestigationDao().findLatestThreeTestsByPersonId(personId);
+        if (investigations != null && !investigations.isEmpty()) {
+            Log.d(TAG, "Retrieved person investigations : " + investigations);
+
+            List<PatientSummaryDTO.InvestigationSummaryDTO> investigationSummaryDTOS = new ArrayList<>();
+            for (PersonInvestigation personInvestigation : investigations) {
+
+                // String testName, Date testDate, String result
+                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
+
+                PatientSummaryDTO.InvestigationSummaryDTO investigationSummaryDTO =
+                        new PatientSummaryDTO.InvestigationSummaryDTO(
+                                ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId()).getName(),
+                                personInvestigation.getDate(),
+                                ehrMobileDatabase.resultDao().findByResultId(personInvestigation.getResultId()).getName());
+                investigationSummaryDTOS.add(investigationSummaryDTO);
+            }
+            summary.setInvestigations(investigationSummaryDTOS);
+        }
+
         return summary;
     }
 }
