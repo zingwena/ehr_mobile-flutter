@@ -375,6 +375,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                           padding: EdgeInsets.symmetric(
                                                               vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             iconEnabledColor: Colors.black,
                                                             hint: Text('Select Hts model'),
@@ -392,7 +393,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                   SizedBox(
-                                                    height: 20.0,
+                                                    height: 30.0,
                                                   ),
 
                                                     Container(
@@ -409,6 +410,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                           padding: EdgeInsets.symmetric(
                                                               vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             iconEnabledColor: Colors.black,
                                                             hint: Text('Select Purpose of Test'),
@@ -591,13 +593,12 @@ class _PatientPretest extends State<PatientPretest> {
                                                               ));
                                                             }
 
-
                                                           }
                                                         },
                                                       ),
                                                     ),
 
-                              SizedBox(
+                                              SizedBox(
                                                       height: 30.0,
                                                     ),
                                                   ],

@@ -17,7 +17,7 @@ PreTest _$PreTestFromJson(Map<String, dynamic> json) {
     json['preTestInformationGiven'] as bool,
     json['optOutOfTest'] as bool,
     json['newTestPregLact'] as bool,
-    json['purposeOfTestId'] as String,
+    json['reasonForHivTestingId'] as String,
   );
 }
 
@@ -31,5 +31,5 @@ Map<String, dynamic> _$PreTestToJson(PreTest instance) => <String, dynamic>{
       'preTestInformationGiven': instance.preTestInformationGiven,
       'optOutOfTest': instance.optOutOfTest,
       'newTestPregLact': instance.newTestPregLact,
-      'purposeOfTestId': instance.purposeOfTestId,
+      'purposeOfTestId': instance.reasonForHivTestingId,
     };

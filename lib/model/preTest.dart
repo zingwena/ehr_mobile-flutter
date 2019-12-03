@@ -16,7 +16,7 @@ class PreTest {
   bool preTestInformationGiven;
   bool optOutOfTest;
   bool newTestPregLact;
-  String purposeOfTestId;
+  String reasonForHivTestingId;
   PreTest(
       this.personId,
       this.htsId,
@@ -27,7 +27,7 @@ class PreTest {
       this.preTestInformationGiven,
       this.optOutOfTest,
       this.newTestPregLact,
-      this.purposeOfTestId);
+      this.reasonForHivTestingId);
 
   factory PreTest.fromJson(Map<String, dynamic> json) =>
       _$PreTestFromJson(json);

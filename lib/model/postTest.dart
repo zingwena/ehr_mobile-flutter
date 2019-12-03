@@ -10,11 +10,12 @@ class PostTest {
   String htsId;
   DateTime datePostTestCounselled;
   bool resultReceived;
-  ReasonForNotIssuingResult reasonForNotIssuingResult;
+  String reasonForNotIssuingResultId;
   String finalResult;
   bool consentToIndexTesting;
+  bool postTestCounselled;
 
-  PostTest(this.htsId, this.datePostTestCounselled,this.resultReceived,this.reasonForNotIssuingResult, this.finalResult, this.consentToIndexTesting);
+  PostTest(this.htsId, this.datePostTestCounselled,this.resultReceived,this.reasonForNotIssuingResultId, this.finalResult, this.consentToIndexTesting, this.postTestCounselled);
 
   factory PostTest.fromJson(Map<String, dynamic> json) => _$PostTestFromJson(json);
 

@@ -366,11 +366,12 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
+                                                                keyboardType: TextInputType.number,
                                                                 validator:
                                                                     (value) {
                                                                   return value
                                                                       .isEmpty
-                                                                      ? 'Enter Age'
+                                                                      ? 'Enter Number of sexual partners'
                                                                       : null;
                                                                 },
                                                                 onSaved:
@@ -407,11 +408,12 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   60.0),
                                                               child:
                                                               TextFormField(
+                                                                keyboardType: TextInputType.number,
                                                                 validator:
                                                                     (value) {
                                                                   return value
                                                                       .isEmpty
-                                                                      ? 'Enter Art Number'
+                                                                      ? 'Enter  Number of sexual partners'
                                                                       : null;
                                                                 },
                                                                 onSaved:

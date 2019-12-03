@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/postTest.dart';
@@ -44,15 +43,22 @@ class _PatientPostTest extends State<PatientPostTest> {
   String resultReceived="NO";
   bool _postTestCounselled = false;
   String postTestCounselled = "NO";
+  bool awareofstatus;
+  bool patientOnArt;
   bool _consenttoindex = false;
   String consenttoindex = "NO";
   HtsRegistration htsRegistration;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
   List<ReasonForNotIssuingResult> _reasonsList = List();
-  String _currentEntryPoint;
+  String _currentReasonfornotissuing;
   String _reasonstring;
   List reasons = List();
   List _dropDownListReasons = List();
+  int _resultsreceived = 0;
+  int _posttestcounselled = 0;
+  int _patientawareofstatus = 0;
+  int _patientonart = 0;
+  int _consentToIndex = 0;
 
 
   @override
@@ -205,30 +211,31 @@ class _PatientPostTest extends State<PatientPostTest> {
                     ),
                   ),
 
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text("Results Recieved"),
-                      Checkbox(
-                        value:_resultReceived,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _resultReceived=value;
-                          });
-                          if(value) {
-                            setState(() {
-                              resultReceived="YES";
-                            });
-                          }
-                        },
+                      SizedBox(
+                        width: 200.0,
                       ),
+                      Text('YES'),
+                      Radio(
+                          value: 1,
+                          groupValue: _resultsreceived,
+                          onChanged: _handleResultReceived),
+                      Text('NO'),
+                      Radio(
+                          value: 2,
+                          groupValue: _resultsreceived,
+                          onChanged: _handleResultReceived),
                     ],
                   ),
                   SizedBox(
                     height: 10.0,
                   ),
 
-                  resultReceived == 'NO' ?Container(
+                  _resultReceived == false ?Container(
                width: double.infinity,
                     child: OutlineButton(
                       shape: RoundedRectangleBorder(
@@ -241,9 +248,9 @@ class _PatientPostTest extends State<PatientPostTest> {
                           icon: Icon(Icons.keyboard_arrow_down),
                           iconEnabledColor: Colors.black,
                           hint: Text("Select reason for not issuing results"),
-                          value: _currentEntryPoint,
+                          value: _currentReasonfornotissuing,
                           items: _dropDownMenuItemsReasons,
-                          onChanged: changedDropDownItemEntryPoint,
+                          onChanged: changedDropDownItemReasons,
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -263,27 +270,25 @@ class _PatientPostTest extends State<PatientPostTest> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text("Post Test Counselled"),
-                      Checkbox(
-                        value:_postTestCounselled,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _postTestCounselled=value;
-                          });
-                          if(value) {
-                            setState(() {
-                              postTestCounselled="YES";
-                            });
-                          }
-                        },
+                      SizedBox(
+                        width: 200.0,
                       ),
+                      Text('YES'),
+                      Radio(
+                          value: 1,
+                          groupValue: _posttestcounselled,
+                          onChanged: _handlePostTestCounselled),
+                      Text('NO'),
+                      Radio(
+                          value: 2,
+                          groupValue: _posttestcounselled,
+                          onChanged: _handlePostTestCounselled),
                     ],
                   ),
-
                   SizedBox(
                     height: 10.0,
                   ),
-
-                  postTestCounselled == "YES" ? Row(
+                  _postTestCounselled == true ? Row(
                     children: <Widget>[
                       Expanded(
                         child: SizedBox(
@@ -319,7 +324,65 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  getIndexQuestion(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Patient aware of their status "),
+                      SizedBox(
+                        width: 200.0,
+                      ),
+                      Text('YES'),
+                      Radio(
+                          value: 1,
+                          groupValue: _patientawareofstatus,
+                          onChanged: _handlePatientAwareOfStatus),
+                      Text('NO'),
+                      Radio(
+                          value: 2,
+                          groupValue: _patientawareofstatus,
+                          onChanged: _handlePatientAwareOfStatus),
+                    ],
+                  ),
+                  widget.result == 'POSITIVE'?Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Is patient on ART ? "),
+                      SizedBox(
+                        width: 200.0,
+                      ),
+                      Text('YES'),
+                      Radio(
+                          value: 1,
+                          groupValue: _patientonart,
+                          onChanged: _handlePatientOnArt),
+                      Text('NO'),
+                      Radio(
+                          value: 2,
+                          groupValue: _patientonart,
+                          onChanged: _handlePatientOnArt),
+                    ],
+                  ): SizedBox(
+                    height: 10.0,
+                  ),
+                  widget.result == 'POSITIVE' ?Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Consent to Index testing"),
+                      SizedBox(
+                        width: 200.0,
+                      ),
+                      Text('YES'),
+                      Radio(
+                          value: 1,
+                          groupValue: _consentToIndex,
+                          onChanged: _handleConsentForIndex),
+                      Text('NO'),
+                      Radio(
+                          value: 2,
+                          groupValue: _consentToIndex,
+                          onChanged: _handleConsentForIndex),
+                    ],
+                  ):SizedBox(height: 0.0,),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -336,7 +399,9 @@ class _PatientPostTest extends State<PatientPostTest> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        PostTest postTest = new PostTest(widget.htsId, date, true, null, widget.result, false);
+                        PostTest postTest = new PostTest(widget.htsId, date, _resultReceived, _currentReasonfornotissuing, widget.result, this._consenttoindex, _postTestCounselled);
+
+                        //PostTest(this.htsId, this.datePostTestCounselled,this.resultReceived,this.reasonForNotIssuingResult, this.finalResult, this.consentToIndexTesting, this.postTestCounselled);
                         insertPostTest(postTest);
                         Navigator.push(context,MaterialPageRoute(
                             builder: (context)=> PostTestOverview(postTest, widget.patientId, widget.visitId, widget.person, widget.htsId, _consenttoindex, widget.result, htsRegistration)
@@ -352,39 +417,85 @@ class _PatientPostTest extends State<PatientPostTest> {
 
   }
 
-  Widget getIndexQuestion(){
-    if(widget.result == 'POSITIVE' || widget.result == 'Positive' || widget.result == 'positive'){
-      return  Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Text("Consent to Index testing"),
-          Checkbox(
-            value:_consenttoindex,
-            onChanged: (bool value) {
-              setState(() {
-                _consenttoindex=value;
-              });
-              if(value) {
-                setState(() {
-                  consenttoindex="YES";
-                });
-              }
-            },
-          ),
-        ],
-      );
-    } else {
-      return SizedBox(
-        height: 10.0,
-      );
-    }
-
-  }
-  void changedDropDownItemEntryPoint(String selectedEntryPoint) {
+  void _handleResultReceived(int value) {
     setState(() {
-      _currentEntryPoint = selectedEntryPoint;
-     /* _entryPointError = null;
-      _entryPointIsValid = !_entryPointIsValid;*/
+      _resultsreceived = value;
+
+      switch (_resultsreceived) {
+        case 1:
+          _resultReceived = true;
+          break;
+        case 2:
+          _resultReceived = false;
+          break;
+      }
+    });
+  }
+
+  void _handleConsentForIndex(int value) {
+    setState(() {
+      _resultsreceived = value;
+
+      switch (_resultsreceived) {
+        case 1:
+          _resultReceived = true;
+          break;
+        case 2:
+          _resultReceived = false;
+          break;
+      }
+    });
+  }
+  void _handlePostTestCounselled(int value) {
+    setState(() {
+      _posttestcounselled = value;
+
+      switch (_posttestcounselled) {
+        case 1:
+          _postTestCounselled = true;
+          break;
+        case 2:
+          _postTestCounselled = false;
+          break;
+      }
+    });
+  }
+  void _handlePatientAwareOfStatus(int value) {
+    setState(() {
+      _patientawareofstatus = value;
+
+      switch (_patientawareofstatus) {
+        case 1:
+          awareofstatus = true;
+          break;
+        case 2:
+          awareofstatus = false;
+          break;
+      }
+    });
+  }
+
+  void _handlePatientOnArt(int value) {
+    setState(() {
+      _patientonart = value;
+
+      switch (_patientonart) {
+        case 1:
+          patientOnArt = true;
+          break;
+        case 2:
+          patientOnArt = false;
+          break;
+      }
+    });
+  }
+
+
+
+  void changedDropDownItemReasons(String value) {
+    setState(() {
+      _currentReasonfornotissuing = value;
+
     });
   }
 
