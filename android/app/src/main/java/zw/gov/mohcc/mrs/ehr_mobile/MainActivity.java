@@ -863,7 +863,7 @@ public class MainActivity extends FlutterActivity {
     public void getPurpose_Of_Tests(Token token, String baseUrl) {
 
         DataSyncService service = RetrofitClient.getRetrofitInstance(baseUrl).create(DataSyncService.class);
-        Call<TerminologyModel> call = service.getHtsModels("Bearer " + token.getId_token(), new Page().size);
+        Call<TerminologyModel> call = service.getPurpose_Of_Tests("Bearer " + token.getId_token(), new Page().size);
         call.enqueue(new Callback<TerminologyModel>() {
             @Override
             public void onResponse(Call<TerminologyModel> call, Response<TerminologyModel> response) {
