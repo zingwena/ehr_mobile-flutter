@@ -12,7 +12,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index(value = "sexualHistoryId", unique = true)},
+@Entity(indices = {@Index(value = "sexualHistoryId")},
         foreignKeys = {@ForeignKey(entity = SexualHistory.class, onDelete = CASCADE,
                 parentColumns = "id",
                 childColumns = "sexualHistoryId")})
