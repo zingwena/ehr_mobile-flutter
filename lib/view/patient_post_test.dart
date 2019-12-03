@@ -210,31 +210,38 @@ class _PatientPostTest extends State<PatientPostTest> {
                       ],
                     ),
                   ),
-
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Results Recieved"),
-                      SizedBox(
-                        width: 200.0,
-                      ),
-                      Text('YES'),
-                      Radio(
-                          value: 1,
-                          groupValue: _resultsreceived,
-                          onChanged: _handleResultReceived),
-                      Text('NO'),
-                      Radio(
-                          value: 2,
-                          groupValue: _resultsreceived,
-                          onChanged: _handleResultReceived),
-                    ],
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets
+                                  .all(8.0),
+                              child: Text(
+                                  'Results Recieved'),
+                            ),
+                            width: 250,
+                          ),
+                        ),
+                        Text('YES'),
+                        Radio(
+                            value: 1,
+                            groupValue: _resultsreceived,
+                            onChanged: _handleResultReceived),
+                        Text('NO'),
+                        Radio(
+                            value: 2,
+                            groupValue: _resultsreceived,
+                            onChanged: _handleResultReceived)
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-
                   _resultReceived == false ?Container(
                width: double.infinity,
                     child: OutlineButton(
@@ -265,25 +272,37 @@ class _PatientPostTest extends State<PatientPostTest> {
                       onPressed: () {},
                     ),
                   ): SizedBox(height: 0.0),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Post Test Counselled"),
-                      SizedBox(
-                        width: 200.0,
-                      ),
-                      Text('YES'),
-                      Radio(
-                          value: 1,
-                          groupValue: _posttestcounselled,
-                          onChanged: _handlePostTestCounselled),
-                      Text('NO'),
-                      Radio(
-                          value: 2,
-                          groupValue: _posttestcounselled,
-                          onChanged: _handlePostTestCounselled),
-                    ],
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets
+                                  .all(8.0),
+                              child: Text(
+                                  'Post Test Counselled'),
+                            ),
+                            width: 250,
+                          ),
+                        ),
+                        Text('YES'),
+                        Radio(
+                            value: 1,
+                            groupValue: _posttestcounselled,
+                            onChanged: _handlePostTestCounselled),
+                        Text('NO'),
+                        Radio(
+                            value: 2,
+                            groupValue: _posttestcounselled,
+                            onChanged: _handlePostTestCounselled)
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 10.0,
@@ -324,65 +343,103 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Patient aware of their status "),
-                      SizedBox(
-                        width: 200.0,
-                      ),
-                      Text('YES'),
-                      Radio(
-                          value: 1,
-                          groupValue: _patientawareofstatus,
-                          onChanged: _handlePatientAwareOfStatus),
-                      Text('NO'),
-                      Radio(
-                          value: 2,
-                          groupValue: _patientawareofstatus,
-                          onChanged: _handlePatientAwareOfStatus),
-                    ],
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets
+                                  .all(8.0),
+                              child: Text(
+                                  'Patient aware of their status'),
+                            ),
+                            width: 250,
+                          ),
+                        ),
+                        Text('YES'),
+                        Radio(
+                            value: 1,
+                            groupValue: _patientawareofstatus,
+                            onChanged: _handlePatientAwareOfStatus),
+                        Text('NO'),
+                        Radio(
+                            value: 2,
+                            groupValue: _patientawareofstatus,
+                            onChanged: _handlePatientAwareOfStatus)
+                      ],
+                    ),
                   ),
-                  widget.result == 'POSITIVE'?Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Is patient on ART ? "),
-                      SizedBox(
-                        width: 200.0,
-                      ),
-                      Text('YES'),
-                      Radio(
-                          value: 1,
-                          groupValue: _patientonart,
-                          onChanged: _handlePatientOnArt),
-                      Text('NO'),
-                      Radio(
-                          value: 2,
-                          groupValue: _patientonart,
-                          onChanged: _handlePatientOnArt),
-                    ],
-                  ): SizedBox(
-                    height: 10.0,
-                  ),
-                  widget.result == 'POSITIVE' ?Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Consent to Index testing"),
-                      SizedBox(
-                        width: 200.0,
-                      ),
-                      Text('YES'),
-                      Radio(
-                          value: 1,
-                          groupValue: _consentToIndex,
-                          onChanged: _handleConsentForIndex),
-                      Text('NO'),
-                      Radio(
-                          value: 2,
-                          groupValue: _consentToIndex,
-                          onChanged: _handleConsentForIndex),
-                    ],
-                  ):SizedBox(height: 0.0,),
+
+                  widget.result == 'POSITIVE'?Container(
+                    width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets
+                                  .all(8.0),
+                              child: Text(
+                                  'Is patient on ART ? '),
+                            ),
+                            width: 250,
+                          ),
+                        ),
+                        Text('YES'),
+                        Radio(
+                            value: 1,
+                            groupValue: _patientonart,
+                            onChanged: _handlePatientOnArt),
+                        Text('NO'),
+                        Radio(
+                            value: 2,
+                            groupValue: _patientonart,
+                            onChanged: _handlePatientOnArt)
+                      ],
+                    ),
+                  ): SizedBox(height: 0.0,),
+                  widget.result == 'POSITIVE'?Container(
+                    width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets
+                                  .all(8.0),
+                              child: Text(
+                                  'Consent to Index testing'),
+                            ),
+                            width: 250,
+                          ),
+                        ),
+                        Text('YES'),
+                        Radio(
+                            value: 1,
+                            groupValue: _consentToIndex,
+                            onChanged: _handleConsentForIndex),
+                        Text('NO'),
+                        Radio(
+                            value: 2,
+                            groupValue: _consentToIndex,
+                            onChanged: _handleConsentForIndex)
+                      ],
+                    ),
+                  ): SizedBox(height: 0.0,),
                   SizedBox(
                     height: 20.0,
                   ),
