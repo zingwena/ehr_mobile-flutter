@@ -173,40 +173,25 @@ class _PatientPostTest extends State<PatientPostTest> {
                 children: <Widget>[
                   Container(
                     width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
                     child: Row(
                       children: <Widget>[
                         Expanded(
                           child: SizedBox(
                             child: Padding(
-                              padding: const EdgeInsets.all(0.0),
+                              padding: const EdgeInsets
+                                  .all(8.0),
                               child: Text(
-                                "Final Result:",
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                                  'Final Result'),
                             ),
-                            width: 100,
+                            width: 250,
                           ),
                         ),
-                        Expanded(
-                          child: SizedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(
-                                (widget.result),
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            width: 100,
-                          ),
-                        ),
+                        Text(widget.result),
+
                       ],
                     ),
                   ),
@@ -243,8 +228,12 @@ class _PatientPostTest extends State<PatientPostTest> {
                     ),
                   ),
                   _resultReceived == false ?Container(
-               width: double.infinity,
-                    child: OutlineButton(
+                    width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
+                    child:  OutlineButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0)),
                       color: Colors.white,
@@ -270,8 +259,8 @@ class _PatientPostTest extends State<PatientPostTest> {
                         width: 2.0, //width of the border
                       ),
                       onPressed: () {},
-                    ),
-                  ): SizedBox(height: 0.0),
+                    )
+                  ):SizedBox(height: 0.0),
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets
