@@ -49,7 +49,7 @@ class SexulahistoryState extends State<SexualHistoryQuestionView>{
             onSelected: (String selected) => setState(() {
               _picked = selected;
               widget.sexualHistoryView.question.responseType = _picked;
-              Response _response = Response('', widget.sexualHistoryView.question.name, widget.sexualHistoryView.question.responseType);
+              Response _response = Response(widget.sexualHistoryView.question.code, widget.sexualHistoryView.question.name, widget.sexualHistoryView.question.responseType);
               SexualHistoryDto sexualHistorydto = SexualHistoryDto(widget.personId, widget.sexualHistoryId, _response);
               saveSexualHistoryDto(sexualHistorydto);
             }),
@@ -67,7 +67,7 @@ class SexulahistoryState extends State<SexualHistoryQuestionView>{
                 ],
               );
             },
-          ): Text('widget.sexualHistoryView.question.responseType')
+          ): Text(widget.sexualHistoryView.question.responseType)
         ],
       ),
     );

@@ -156,6 +156,7 @@ class _PatientPretest extends State<PatientPretest> {
       htsModelList= jsonDecode(await htsChannel.invokeMethod('htsModelOptions'));
 
       purposeOfTestList= jsonDecode(await htsChannel.invokeMethod('purposeOfTestsOptions'));
+      print('PURPOSE OF TEST LIST >>>>>>>>>>>>>>>>>>>>>' + purposeOfTestList.toString());
 
        } catch (e) {
       print("channel failure: '$e'");
@@ -374,6 +375,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                           padding: EdgeInsets.symmetric(
                                                               vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             iconEnabledColor: Colors.black,
                                                             hint: Text('Select Hts model'),
@@ -390,6 +392,42 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
+                                                  SizedBox(
+                                                    height: 30.0,
+                                                  ),
+
+                                                    Container(
+                                                      padding:
+                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      width: double.infinity,
+                                                      child: OutlineButton(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0)),
+                                                        color: Colors.white,
+                                                        padding: const EdgeInsets.all(0.0),
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical: 8.0, horizontal: 30.0),
+                                                          child: DropdownButton(
+                                                            isExpanded:true,
+                                                            icon: Icon(Icons.keyboard_arrow_down),
+                                                            iconEnabledColor: Colors.black,
+                                                            hint: Text('Select Purpose of Test'),
+                                                            value: _currentPurposeOfTest,
+                                                            items: _dropDownMenuItemsPurposeOfTest,
+                                                            onChanged: changedDropDownItemPurposeOfTest,
+                                                          ),
+                                                        ),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.blue, //Color of the border
+                                                          style: BorderStyle.solid, //Style of the border
+                                                          width: 2.0, //width of the border
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+
 
 
                                                     Container(
@@ -555,13 +593,12 @@ class _PatientPretest extends State<PatientPretest> {
                                                               ));
                                                             }
 
-
                                                           }
                                                         },
                                                       ),
                                                     ),
 
-                              SizedBox(
+                                              SizedBox(
                                                       height: 30.0,
                                                     ),
                                                   ],

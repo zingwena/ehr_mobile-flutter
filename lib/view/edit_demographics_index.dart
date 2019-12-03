@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-
 import 'package:ehr_mobile/model/country.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -286,7 +284,6 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
                               BoxConstraints viewportConstraints) {
                             return Column(
                               children: <Widget>[
-                                _buildLinkBar(),
                                 Container(
                                   height: 2.0,
                                   color: Colors.blue,
@@ -687,27 +684,6 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
         ],
       ),
     );
-  }
-
-  Widget _buildLinkBar({bool showFirstOption}) {
-    return
-      Row(
-        children: <Widget>[
-          new LinkBarItems(
-            text: "Home Page",
-          ),
-          new LinkBarItems(
-            text: "Add Patient",
-          ),
-          new LinkBarItems(
-            text: "Demographics",
-            selected: true,
-          ),
-          new LinkBarItems(
-            text: "Contact Details",
-          ),
-        ],
-      );
   }
 
 

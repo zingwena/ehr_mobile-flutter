@@ -13,21 +13,21 @@ PostTest _$PostTestFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['datePostTestCounselled'] as String),
     json['resultReceived'] as bool,
-    json['reasonForNotIssuingResult'] == null
-        ? null
-        : ReasonForNotIssuingResult.fromJson(
-            json['reasonForNotIssuingResult'] as Map<String, dynamic>),
+    json['reasonForNotIssuingResult'] as String,
     json['finalResult'] as String,
     json['consentToIndexTesting'] as bool,
+    json['postTestCounselled'] as bool,
+
   );
 }
 
 Map<String, dynamic> _$PostTestToJson(PostTest instance) => <String, dynamic>{
       'htsId': instance.htsId,
       'datePostTestCounselled':
-          instance.datePostTestCounselled?.toIso8601String(),
+          instance.datePostTestCounselled,
       'resultReceived': instance.resultReceived,
-      'reasonForNotIssuingResult': instance.reasonForNotIssuingResult?.toJson(),
+      'reasonForNotIssuingResult': instance.reasonForNotIssuingResultId,
       'finalResult': instance.finalResult,
       'consentToIndexTesting': instance.consentToIndexTesting,
+      'postTestCounselled': instance.postTestCounselled
     };
