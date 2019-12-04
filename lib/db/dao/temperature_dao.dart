@@ -1,6 +1,7 @@
 
 
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'vital_base_dao.dart';
@@ -25,11 +26,13 @@ class TemperatureDao extends VitalBaseDao{
 
   /// Finds by [personId]
   Future<List<TemperatureTable>> findByPersonId(String personId) async {
+    log.i('-------------------$personId');
     Find param = new Find(tableName);
     param.where(this.personId.eq(personId));
     var values=List<TemperatureTable>();
     List<Map> maps = await _adapter.find(param);
     for(Map map in maps){
+      log.i(map);
       values.add(TemperatureTable.fromJson(map));
     }
     return values;

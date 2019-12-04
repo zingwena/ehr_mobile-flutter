@@ -34,13 +34,11 @@ class PersonDao extends BaseDao{
     updater.where(this.id.eq(id));
     updater.set(this.status, '2');
     var result=await _adapter.update(updater);
-    //await _adapter.close();
     return result;
   }
 
   /// Finds one person by [id]
   Future<Person> findOne(String id) async {
-    //await _adapter.connect();
     Find param = new Find(tableName);
 
     param.where(this.id.eq(id));
@@ -48,13 +46,11 @@ class PersonDao extends BaseDao{
     Map map = await _adapter.findOne(param);
 
     var person = Person.fromJson(map);
-    //await _adapter.close();
     return person;
   }
 
   /// Finds all persons
   Future<List<Person>> findAll() async {
-    //await _adapter.connect();
     Find finder = new Find(tableName);
 
     List<Map> maps = await (await _adapter.find(finder)).toList();
@@ -65,7 +61,6 @@ class PersonDao extends BaseDao{
       var person = Person.fromMap(map);
       persons.add(person);
     }
-    //await _adapter.close();
     return persons;
   }
 

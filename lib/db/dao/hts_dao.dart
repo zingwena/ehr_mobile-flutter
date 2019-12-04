@@ -58,7 +58,6 @@ class HtsDao {
     Find param = new Find(tableName);
     param.where(this.personId.eq(personId));
     Map map = await _adapter.findOne(param);
-    log.i(map);
     var hts;
     if(map!=null){
        hts= HtsTable.fromJson(map);
