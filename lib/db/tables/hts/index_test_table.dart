@@ -7,6 +7,7 @@ class IndexTestTable extends BaseTable {
 
   String personId;
   String date;
+  String visitId;
 
   static IndexTestTable fromJson(Map map) {
     var itable = IndexTestTable();
@@ -22,5 +23,6 @@ class IndexTestTable extends BaseTable {
     'personId': personId,
     'date': date,
     'status': status,
+    'visitId': visitId,
   };
 }

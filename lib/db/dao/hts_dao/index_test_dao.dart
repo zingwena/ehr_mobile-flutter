@@ -32,9 +32,11 @@ class IndexTestDao extends BaseDao{
     param.where(this.personId.eq(personId));
 
     Map map = await _adapter.findOne(param);
-
-    var indexTest = IndexTestTable.fromJson(map);
-    return indexTest;
+    if(map!=null && map.isNotEmpty){
+      var indexTest = IndexTestTable.fromJson(map);
+      return indexTest;
+    }
+    return null;
   }
 
   /// Finds all persons

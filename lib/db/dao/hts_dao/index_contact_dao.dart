@@ -34,16 +34,18 @@ class IndexContactDao extends BaseDao{
     return result;
   }
 
-  /// Finds one indexContact by [id]
-  Future<IndexContactTable> findOne(String id) async {
+  /// Finds one indexContact by [indexTestId]
+  Future<List<IndexContactTable>> findByIndexTestId(String indexTestId) async {
     Find param = new Find(tableName);
+    param.where(this.indexTestId.eq(indexTestId));
 
-    param.where(this.id.eq(id));
+    List<Map> contacts = await _adapter.find(param);
 
-    Map map = await _adapter.findOne(param);
-
-    var indexContact = IndexContactTable.fromJson(map);
-    return indexContact;
+    List<IndexContactTable> indexes=[];
+    for(Map map in contacts){
+      indexes.add(IndexContactTable.fromJson(map));
+    }
+    return indexes;
   }
 
   /// Finds all indexContacts
