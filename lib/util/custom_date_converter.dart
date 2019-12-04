@@ -12,7 +12,10 @@ class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
   DateTime fromInt(int time) =>DateTime.fromMillisecondsSinceEpoch(time);
 
   String fromIntToSqlDate(int time) {
-    return toSqlDate(DateTime.fromMillisecondsSinceEpoch(time));
+    if(time!=null){
+      return toSqlDate(DateTime.fromMillisecondsSinceEpoch(time));
+    }
+    return toSqlDate(DateTime.now());
   }
 
   String toSqlDate(DateTime dateTime){

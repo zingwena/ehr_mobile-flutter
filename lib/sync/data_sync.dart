@@ -9,7 +9,7 @@ import 'package:ehr_mobile/db/dao/hts_dao.dart';
 import 'package:ehr_mobile/db/dao/person_dao.dart';
 import 'package:ehr_mobile/db/dao/pulse_dao.dart';
 import 'package:ehr_mobile/db/dao/respiratory_rate_dao.dart';
-import 'package:ehr_mobile/db/dao/temprature_dao.dart';
+import 'package:ehr_mobile/db/dao/temperature_dao.dart';
 import 'package:ehr_mobile/db/dao/weight_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
 import 'package:ehr_mobile/db/tables/blood_pressure_table.dart';
@@ -43,7 +43,6 @@ syncPatient(String token, String url) async {
         log.i(json.decode(value.body));
         if(value.statusCode==200){
           personDao.setSyncd(person.id);
-          //htsDao.setSyncd(person.id);
         } else{
 
         }
@@ -61,9 +60,7 @@ Future<PatientDto> setVitals(SqfliteAdapter adapter,PatientDto dto) async {
   for(BloodPressureTable bp in bps){
     var jsonBp=bp.toJson();
     jsonBp['vitalName']='BLOOD_PRESSURE';
-
     vitals.add(jsonBp);
-    //dto.vitalDtos.add(jsonBp);
   }
 
   var respRateDao=RespiratoryRateDao(adapter);
@@ -72,7 +69,6 @@ Future<PatientDto> setVitals(SqfliteAdapter adapter,PatientDto dto) async {
     var jsonBp=rate.toJson();
     jsonBp['vitalName']='RESPIRATORY_RATE';
     vitals.add(jsonBp);
-    //dto.vitalDtos.add(jsonBp);
   }
 
   var heightDao = HeightDao(adapter);
@@ -81,7 +77,6 @@ Future<PatientDto> setVitals(SqfliteAdapter adapter,PatientDto dto) async {
     var jsonBp=height.toJson();
     jsonBp['vitalName']='HEIGHT';
     vitals.add(jsonBp);
-    //dto.vitalDtos.add(jsonBp);
   }
 
   var pulseDao = PulseDao(adapter);
@@ -90,7 +85,6 @@ Future<PatientDto> setVitals(SqfliteAdapter adapter,PatientDto dto) async {
     var jsonBp=pulse.toJson();
     jsonBp['vitalName']='PULSE';
     vitals.add(jsonBp);
-    //dto.vitalDtos.add(jsonBp);
   }
 
   var weightDao = WeightDao(adapter);
@@ -99,7 +93,6 @@ Future<PatientDto> setVitals(SqfliteAdapter adapter,PatientDto dto) async {
     var jsonBp=weight.toJson();
     jsonBp['vitalName']='WEIGHT';
     vitals.add(jsonBp);
-    //dto.vitalDtos.add(jsonBp);
   }
 
   var tempDao = TemperatureDao(adapter);
@@ -108,7 +101,6 @@ Future<PatientDto> setVitals(SqfliteAdapter adapter,PatientDto dto) async {
     var jsonBp=temp.toJson();
     jsonBp['vitalName']='TEMPERATURE';
     vitals.add(jsonBp);
-    //dto.vitalDtos.add(jsonBp);
   }
 
   log.i(vitals);
