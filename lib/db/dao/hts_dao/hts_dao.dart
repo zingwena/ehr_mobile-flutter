@@ -1,5 +1,5 @@
 
-import 'package:ehr_mobile/db/tables/hts_table.dart';
+import 'package:ehr_mobile/db/tables/hts/hts_table.dart';
 import 'package:ehr_mobile/util/logger.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
