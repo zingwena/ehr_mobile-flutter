@@ -296,39 +296,45 @@ class _PatientPostTest extends State<PatientPostTest> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  _postTestCounselled == true ? Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: TextFormField(
-                              controller:
+                  _postTestCounselled == true ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets
+                        .symmetric(
+                        vertical: 16.0,
+                        horizontal: 60.0),
+                    child:  Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: TextFormField(
+                                controller:
 
-                              TextEditingController(text: selectedDate),
+                                TextEditingController(text: selectedDate),
 
-                              validator: (value) {
-                                return value.isEmpty ? 'Enter some text' : null;
-                              },
-                              decoration: InputDecoration(
-                                  labelText: 'Date Post Test Counselled',
-                                  border: OutlineInputBorder()),
+                                validator: (value) {
+                                  return value.isEmpty ? 'Enter some text' : null;
+                                },
+                                decoration: InputDecoration(
+                                    labelText: 'Date Post Test Counselled',
+                                    border: OutlineInputBorder(
 
+                                    )),
+                              ),
                             ),
+                            width: 100,
                           ),
-                          width: 100,
                         ),
-                      ),
-                      IconButton(
-                          icon: Icon(Icons.calendar_today),
-                          color: Colors.blue,
-                          onPressed: () {
-                            _selectDate(context);
-                          })
-                    ],
-                  ): SizedBox(
-                    height: 0.0,
-                  ),
+                        IconButton(
+                            icon: Icon(Icons.calendar_today),
+                            color: Colors.blue,
+                            onPressed: () {
+                              _selectDate(context);
+                            })
+                      ],
+                    )
+                  ): SizedBox(height: 0.0,),
                   SizedBox(
                     height: 10.0,
                   ),
@@ -480,14 +486,14 @@ class _PatientPostTest extends State<PatientPostTest> {
 
   void _handleConsentForIndex(int value) {
     setState(() {
-      _resultsreceived = value;
+      _consentToIndex = value;
 
-      switch (_resultsreceived) {
+      switch (_consentToIndex) {
         case 1:
-          _resultReceived = true;
+          _consenttoindex = true;
           break;
         case 2:
-          _resultReceived = false;
+          _consenttoindex = false;
           break;
       }
     });
