@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
+import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -35,12 +36,16 @@ class SummaryOverviewState extends State<SummaryOverview>
 
   TabController controller;
   HtsScreening htsScreening;
+  PatientSummaryDto patientSummaryDto;
   String queue = "";
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
+
 
   @override
   void initState() {
     getHtsScreeningRecord(widget.person.id);
+    getPatientSummary(widget.person.id);
     super.initState();
     controller = new TabController(length: 3, vsync: this);
 
@@ -52,6 +57,20 @@ class SummaryOverviewState extends State<SummaryOverview>
       hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
       setState(() {
         htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
+      });
+
+    } catch (e) {
+      print("channel failure at hts screening: '$e'");
+    }
+  }
+
+  Future<void> getPatientSummary(String patientId) async {
+    var  patient_summary;
+    try {
+      patient_summary = await visitChannel.invokeMethod('getPatientSummary', patientId);
+      debugPrint("BBBBBBBBBBBBBBBBBB patient summary returned"+ patient_summary);
+      setState(() {
+        patientSummaryDto = PatientSummaryDto.fromJson(jsonDecode(patient_summary));
       });
 
     } catch (e) {
@@ -230,15 +249,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                       Container(
                                                         margin: EdgeInsets.only(top: 3.0),
                                                       ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: Text(
-                                                          'Recorded :' +
-                                                              '15/10/2019',
-                                                          style: TextStyle(
-                                                              fontSize: 13.0, color: Colors.black54),
-                                                        ),
-                                                      ),
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
@@ -268,12 +278,21 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                   Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '43-38',
+                                                                      '44',
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
                                                                     ),
-                                                                  )
+                                                                  ),
+                                                                  Container(
+                                                                    alignment: Alignment.topLeft,
+                                                                    child: Text(
+                                                                      'Recorded :' +
+                                                                          '15/10/2019',
+                                                                      style: TextStyle(
+                                                                          fontSize: 13.0, color: Colors.black54),
+                                                                    ),
+                                                                  ),
                                                                 ],
                                                               )),
                                                           Container(
@@ -295,6 +314,15 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    alignment: Alignment.topLeft,
+                                                                    child: Text(
+                                                                      'Recorded :' +
+                                                                          '15/10/2019',
+                                                                      style: TextStyle(
+                                                                          fontSize: 13.0, color: Colors.black54),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -319,10 +347,32 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
                                                                     ),
-                                                                  )
+                                                                  ),
+                                                                  Container(
+                                                                    alignment: Alignment.topLeft,
+                                                                    child: Text(
+                                                                      'Recorded :' +
+                                                                          '15/10/2019',
+                                                                      style: TextStyle(
+                                                                          fontSize: 13.0, color: Colors.black54),
+                                                                    ),
+                                                                  ),
                                                                 ],
                                                               )
                                                           ),
+                                                        ],
+                                                      ),
+                                                      Divider(
+                                                        height: 10.0,
+                                                        color: Colors.blue.shade500,
+                                                      ),
+
+                                                      Row(
+                                                        mainAxisSize: MainAxisSize.max,
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.spaceBetween,
+                                                        children: <Widget>[
+
                                                           Container(
                                                               padding: EdgeInsets.all(3.0),
                                                               child: Column(
@@ -372,32 +422,13 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                               )
                                                           ),
 
-                                                         /* Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: RaisedButton(
-                                                              onPressed: () => Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => AddPatient()), ),
-                                                              color: Colors.blue,
-                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                                                                child: Text('View',
-                                                                  style: TextStyle(
-                                                                      fontSize: 13.0,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      color: Colors.white),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ) */
                                                         ],
                                                       ),
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
                                                       ),
+
                                                       Container(
                                                         height: 2.0,
                                                         color: Colors.blue,
@@ -874,26 +905,5 @@ class SummaryOverviewState extends State<SummaryOverview>
       ),
     );
   }
-
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(text: "General",
-          ),
-          new RoundedButton(text: "HTS", selected: true,
-          ),
-          new RoundedButton(text: "OI Clinic",
-          ),
-          new RoundedButton(text: "FCH",
-          ),
-
-        ],
-      ),
-    );
-  }
-
-
 
 }
