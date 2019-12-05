@@ -31,5 +31,5 @@ Map<String, dynamic> _$PreTestToJson(PreTest instance) => <String, dynamic>{
       'preTestInformationGiven': instance.preTestInformationGiven,
       'optOutOfTest': instance.optOutOfTest,
       'newTestPregLact': instance.newTestPregLact,
-      'purposeOfTestId': instance.reasonForHivTestingId,
+      'reasonForHivTestingId': instance.reasonForHivTestingId,
     };

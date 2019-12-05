@@ -1,5 +1,6 @@
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'valudate.g.dart';
+part 'valuedate.g.dart';
 @JsonSerializable()
 class ValueDate{
   String value;

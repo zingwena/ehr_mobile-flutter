@@ -1,6 +1,9 @@
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 
 import '../base_table.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable(explicitToJson: true)
 
 class HtsTable extends BaseTable{
   String personId;

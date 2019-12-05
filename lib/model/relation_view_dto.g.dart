@@ -6,19 +6,20 @@ part of 'relation_view_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RelationshipViewDto _$RelationshipFromJson(Map<String, dynamic> json) {
+RelationshipViewDto _$RelationshipViewDtoFromJson(Map<String, dynamic> json) {
   return RelationshipViewDto(
     json['personId'] as String,
     json['firstName'] as String,
     json['lastName'] as String,
     json['relation'] as String,
-
   );
 }
 
-Map<String, dynamic> _$ReligionToJson(RelationshipViewDto instance) => <String, dynamic>{
-  'personId': instance.personId,
-  'memberId': instance.firstName,
-  'relation': instance.lastName,
-  'typeOfContact': instance.relation,
-};
+Map<String, dynamic> _$RelationshipViewDtoToJson(
+        RelationshipViewDto instance) =>
+    <String, dynamic>{
+      'personId': instance.personId,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'relation': instance.relation,
+    };

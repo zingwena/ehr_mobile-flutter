@@ -18,7 +18,7 @@ class PatientSummaryDto{
    List<InvestigationSummaryDto> investigations = List();
 
   PatientSummaryDto(String personId, ValueDate temperature, ValueDate bloodPressure, ValueDate pulse,
-      ValueDate respiratoryRate, ValueDate height, ValueDate weight, ArtDetailsDto artDetailsDto,  List<InvestigationSummaryDto> investigations){
+      ValueDate respiratoryRate, ValueDate height, ValueDate weight, ArtDetailsDto artDetails,  List<InvestigationSummaryDto> investigations){
 
     this.personId = personId;
     this.temperature = temperature;

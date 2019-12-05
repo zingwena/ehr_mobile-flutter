@@ -11,13 +11,11 @@ Response _$ResponseFromJson(Map<String, dynamic> json) {
     json['code'] as String,
     json['name'] as String,
     json['responseType'] as String,
-
-
   );
 }
 
 Map<String, dynamic> _$ResponseToJson(Response instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-  'responseType': instance.responseType
-};
+      'code': instance.code,
+      'name': instance.name,
+      'responseType': instance.responseType,
+    };

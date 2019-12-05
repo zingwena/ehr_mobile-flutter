@@ -12,11 +12,15 @@ PatientAdmission _$PatientAdmissionFromJson(Map<String, dynamic> json) {
     json['queue'] == null
         ? null
         : Queue.fromJson(json['queue'] as Map<String, dynamic>),
-
-  );
+  )
+    ..code = json['code'] as String
+    ..name = json['name'] as String;
 }
 
-Map<String, dynamic> _$PatientAdmissionToJson(PatientAdmission instance) => <String, dynamic>{
-  'personId': instance.personId,
-  'queue': instance.queue,
-};
+Map<String, dynamic> _$PatientAdmissionToJson(PatientAdmission instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+      'personId': instance.personId,
+      'queue': instance.queue,
+    };

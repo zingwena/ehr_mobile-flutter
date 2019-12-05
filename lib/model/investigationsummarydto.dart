@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'investigationsummarydto.g.dart';

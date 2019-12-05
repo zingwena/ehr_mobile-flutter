@@ -7,16 +7,16 @@ class ArtDetailsDto{
     String whoStage;
     String arvRegimen;
 
-    ArtDetailsDto(DateTime dateRegistered, String artNUmber, String whoStage, String arvRegimen){
+    ArtDetailsDto(DateTime dateRegistered, String artNumber, String whoStage, String arvRegimen){
       this.dateRegistered = dateRegistered;
-      this.artNumber = artNUmber;
+      this.artNumber = artNumber;
       this.whoStage = whoStage;
       this.arvRegimen = arvRegimen;
     }
 
     factory ArtDetailsDto.fromJson(Map<String, dynamic> json) =>_$ArtDetailsDtoFromJson(json);
 
-    Map<String, dynamic> toJson() => _$ArtDetailsToJson(this);
+    Map<String, dynamic> toJson() => _$ArtDetailsDtoToJson(this);
 
     static List<ArtDetailsDto> mapFromJson(List dynamicList){
       List<ArtDetailsDto> list=[];

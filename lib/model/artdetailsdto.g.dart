@@ -8,19 +8,19 @@ part of 'artdetailsdto.dart';
 
 ArtDetailsDto _$ArtDetailsDtoFromJson(Map<String, dynamic> json) {
   return ArtDetailsDto(
-    json['dateRegistered'] == null ? null : DateTime.parse(json['date'] as String),
+    json['dateRegistered'] == null
+        ? null
+        : DateTime.parse(json['dateRegistered'] as String),
     json['artNumber'] as String,
     json['whoStage'] as String,
     json['arvRegimen'] as String,
-
-
   );
 }
 
-Map<String, dynamic> _$ArtDetailsToJson(ArtDetailsDto instance) => <String, dynamic>{
-  'dateRegistered': instance.dateRegistered,
-  'artNumber': instance.artNumber,
-  'whoStage': instance.whoStage,
-  'arvRegimen': instance.arvRegimen,
-
-};
+Map<String, dynamic> _$ArtDetailsDtoToJson(ArtDetailsDto instance) =>
+    <String, dynamic>{
+      'dateRegistered': instance.dateRegistered?.toIso8601String(),
+      'artNumber': instance.artNumber,
+      'whoStage': instance.whoStage,
+      'arvRegimen': instance.arvRegimen,
+    };
