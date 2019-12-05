@@ -3,6 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.persistance.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface PatientQueueDao {
     @Insert
     void saveOne(PatientQueue patientQueue);
 
-    @Insert
+    @Update
     void update(PatientQueue patientQueue);
 
     @Query("SELECT * FROM PatientQueue")
