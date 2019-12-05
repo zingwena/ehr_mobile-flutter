@@ -67,8 +67,7 @@ class _RelationSearchState extends State<RelationshipSearch> {
       ),*/
       backgroundColor: Colors.white,
 
-      body: SingleChildScrollView(
-        child: Column(
+      body: Column(
 
         children: <Widget>[
 
@@ -329,7 +328,6 @@ class _RelationSearchState extends State<RelationshipSearch> {
 
 
       ),
-    ),
 
     );
   }

@@ -1,6 +1,7 @@
 import 'package:ehr_mobile/model/artdetailsdto.dart';
 import 'package:ehr_mobile/model/investigationsummarydto.dart';
 import 'package:ehr_mobile/model/valuedate.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 part'patientsummarydto.g.dart';
 

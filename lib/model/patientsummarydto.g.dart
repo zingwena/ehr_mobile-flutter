@@ -27,7 +27,7 @@ investigations.add(investigationSummaryDto);
 });
 patientSummaryDtoObj.investigations = investigations;
 }
-
+debugPrint("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG patient summary in g.dart"+ patientSummaryDtoObj.toString());
 return patientSummaryDtoObj;
 }
 Map<String, dynamic> _$PatientSummaryDtoToJson(

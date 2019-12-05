@@ -68,13 +68,14 @@ class SummaryOverviewState extends State<SummaryOverview>
     var  patient_summary;
     try {
       patient_summary = await visitChannel.invokeMethod('getPatientSummary', patientId);
-      debugPrint("BBBBBBBBBBBBBBBBBB patient summary returned"+ patient_summary);
       setState(() {
         patientSummaryDto = PatientSummaryDto.fromJson(jsonDecode(patient_summary));
+        debugPrint("BBBBBBBBBBBBBBBBBB patient summary after assignment"+ patientSummaryDto.toString());
+
       });
 
     } catch (e) {
-      print("channel failure at hts screening: '$e'");
+      print("channel failure at Patient summary dto method: '$e'");
     }
   }
   @override
@@ -258,7 +259,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         color: Colors.blue,
                                                       ),
 
-                                                      Row(
+                                                      patientSummaryDto!= null?Row(
                                                         mainAxisSize: MainAxisSize.max,
                                                         mainAxisAlignment:
                                                         MainAxisAlignment.spaceBetween,
@@ -361,18 +362,19 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                               )
                                                           ),
                                                         ],
+                                                      ): Center(
+                                                        child: Text('No Records'),
                                                       ),
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
                                                       ),
 
-                                                      Row(
+                                                      patientSummaryDto != null?Row(
                                                         mainAxisSize: MainAxisSize.max,
                                                         mainAxisAlignment:
                                                         MainAxisAlignment.spaceBetween,
                                                         children: <Widget>[
-
                                                           Container(
                                                               padding: EdgeInsets.all(3.0),
                                                               child: Column(
@@ -380,23 +382,39 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                 MainAxisAlignment.center,
                                                                 children: <Widget>[
                                                                   Text(
-                                                                    'Resp',
+                                                                    'Respiratory Rate',
                                                                     style: TextStyle(
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.respiratoryRate != null?Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '22',
+                                                                      '44',
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
                                                                     ),
-                                                                  )
+                                                                  ):Container(
+                                                                    margin: EdgeInsets.only(top: 3.0),
+                                                                    child: Text(
+                                                                      'No record',
+                                                                      style: TextStyle(
+                                                                          fontSize: 15.0,
+                                                                          color: Colors.black87),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    alignment: Alignment.topLeft,
+                                                                    child: Text(
+                                                                      'Date :' +
+                                                                          '15/10/2019',
+                                                                      style: TextStyle(
+                                                                          fontSize: 13.0, color: Colors.black54),
+                                                                    ),
+                                                                  ),
                                                                 ],
-                                                              )
-                                                          ),
+                                                              )),
                                                           Container(
                                                               padding: EdgeInsets.all(3.0),
                                                               child: Column(
@@ -412,17 +430,59 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                   Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '32',
+                                                                      '44',
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
                                                                     ),
-                                                                  )
+                                                                  ),
+                                                                  Container(
+                                                                    alignment: Alignment.topLeft,
+                                                                    child: Text(
+                                                                      'Date :' +
+                                                                          '15/10/2019',
+                                                                      style: TextStyle(
+                                                                          fontSize: 13.0, color: Colors.black54),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )),
+                                                          Container(
+                                                              padding: EdgeInsets.all(3.0),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                MainAxisAlignment.center,
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    'Weight ',
+                                                                    style: TextStyle(
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
+                                                                  ),
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(top: 3.0),
+                                                                    child: Text(
+                                                                      '45',
+                                                                      style: TextStyle(
+                                                                          fontSize: 15.0,
+                                                                          color: Colors.black87),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    alignment: Alignment.topLeft,
+                                                                    child: Text(
+                                                                      ' Date' +
+                                                                          '15/09/2019',
+                                                                      style: TextStyle(
+                                                                          fontSize: 13.0, color: Colors.black54),
+                                                                    ),
+                                                                  ),
                                                                 ],
                                                               )
                                                           ),
-
                                                         ],
+                                                      ):Center(
+                                                        child: Text('No Records'),
                                                       ),
                                                       Divider(
                                                         height: 10.0,
