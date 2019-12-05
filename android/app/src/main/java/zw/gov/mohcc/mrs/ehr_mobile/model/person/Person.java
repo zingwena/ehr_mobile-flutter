@@ -74,8 +74,7 @@ public class Person extends BaseEntity {
     private String countryId;
     @Embedded
     private Address address;
-    @Ignore
-    private Age age;
+    private transient Age age;
     @Ignore
     private AgeGroup ageGroup;
 
@@ -198,11 +197,10 @@ public class Person extends BaseEntity {
         this.birthDate = birthDate;
     }
 
-    @Ignore
     public Age getAge() {
 
         //return Age.getInstance(this);
-        Log.d("Person Class ", this.toString());
+        Log.d("Person Class ^^^", this.toString());
         return Age.getInstance(this);
     }
 

@@ -106,6 +106,14 @@ public class PatientSummaryDTO implements Serializable {
         public Date getDate() {
             return date;
         }
+
+        @Override
+        public String toString() {
+            return "ValueDate{" +
+                    "value='" + value + '\'' +
+                    ", date=" + date +
+                    '}';
+        }
     }
 
     public static class InvestigationSummaryDTO {
@@ -130,6 +138,15 @@ public class PatientSummaryDTO implements Serializable {
 
         public String getResult() {
             return result;
+        }
+
+        @Override
+        public String toString() {
+            return "InvestigationSummaryDTO{" +
+                    "testName='" + testName + '\'' +
+                    ", testDate=" + testDate +
+                    ", result='" + result + '\'' +
+                    '}';
         }
     }
 
@@ -162,5 +179,30 @@ public class PatientSummaryDTO implements Serializable {
         public String getArvRegimen() {
             return arvRegimen;
         }
+
+        @Override
+        public String toString() {
+            return "ArtDetailsDTO{" +
+                    "dateRegistered=" + dateRegistered +
+                    ", artNumber='" + artNumber + '\'' +
+                    ", whoStage='" + whoStage + '\'' +
+                    ", arvRegimen='" + arvRegimen + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "PatientSummaryDTO{" +
+                "personId='" + personId + '\'' +
+                ", temperature=" + temperature +
+                ", bloodPressure=" + bloodPressure +
+                ", pulse=" + pulse +
+                ", respiratoryRate=" + respiratoryRate +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", artDetails=" + artDetails +
+                ", investigations=" + investigations +
+                '}';
     }
 }

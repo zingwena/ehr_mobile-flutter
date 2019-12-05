@@ -5,7 +5,9 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/db/dao/blood_pressure_dao.dart';
 import 'package:ehr_mobile/db/dao/height_dao.dart';
-import 'package:ehr_mobile/db/dao/hts_dao.dart';
+import 'package:ehr_mobile/db/dao/hts_dao/hts_dao.dart';
+import 'package:ehr_mobile/db/dao/hts_dao/index_contact_dao.dart';
+import 'package:ehr_mobile/db/dao/hts_dao/index_test_dao.dart';
 import 'package:ehr_mobile/db/dao/person_dao.dart';
 import 'package:ehr_mobile/db/dao/pulse_dao.dart';
 import 'package:ehr_mobile/db/dao/respiratory_rate_dao.dart';
@@ -14,7 +16,8 @@ import 'package:ehr_mobile/db/dao/weight_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
 import 'package:ehr_mobile/db/tables/blood_pressure_table.dart';
 import 'package:ehr_mobile/db/tables/height_table.dart';
-import 'package:ehr_mobile/db/tables/hts_table.dart';
+import 'package:ehr_mobile/db/tables/hts/index_contact_table.dart';
+import 'package:ehr_mobile/db/tables/hts/index_test_table.dart';
 import 'package:ehr_mobile/db/tables/pulse_table.dart';
 import 'package:ehr_mobile/db/tables/respiratory_rate_table.dart';
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
@@ -37,11 +40,13 @@ syncPatient(String token, String url) async {
     log.i(person);
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
+    dto = await setIndexTest(adapter,dto);
+    dto = await setIndexContacts(adapter,dto);
     if(person.status=='0'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
-        if(value.statusCode==200){
+        if(value.statusCode==201){
           personDao.setSyncd(person.id);
         } else{
 
@@ -113,6 +118,29 @@ Future <PatientDto> setHts(SqfliteAdapter adapter,PatientDto dto) async{
   var hts = await htsDao.findByPersonId(dto.personDto.id);
   if(hts!=null){
     dto.htsDto=hts;
+  }
+  return dto;
+}
+
+Future <PatientDto> setIndexTest(SqfliteAdapter adapter,PatientDto dto) async {
+  var indexTestDao=IndexTestDao(adapter);
+  var indexTest=await indexTestDao.findByPersonId(dto.personDto.id);
+  if(indexTest!=null){
+    indexTest.visitId=dto.htsDto.visitId;
+    dto.indexTestDto=indexTest;
+  }
+  return dto;
+}
+
+Future <PatientDto> setIndexContacts(SqfliteAdapter adapter,PatientDto dto) async {
+  IndexTestTable indexTestDto= dto.indexTestDto;
+  if(indexTestDto==null){
+    return dto;
+  }
+  var indexContactDao=IndexContactDao(adapter);
+  var indexContacts=await indexContactDao.findByIndexTestId(indexTestDto.id);
+  for(IndexContactTable contact in indexContacts){
+
   }
   return dto;
 }
