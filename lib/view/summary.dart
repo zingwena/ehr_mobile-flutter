@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
+import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -504,10 +505,10 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                 onPressed: () => Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) => SearchPatient()), ),
+                                                      builder: (context) => ReceptionVitals(widget.person.id, widget.visitId, widget.person, widget.htsId)), ),
                                               ),
                                             ),
-                                            SizedBox(
+                                        SizedBox(
                                               height: 10.0,
                                             ),
 

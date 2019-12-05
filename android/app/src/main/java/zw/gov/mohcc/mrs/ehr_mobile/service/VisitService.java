@@ -181,7 +181,6 @@ public class VisitService {
         return patientQueue.getId();
     }
 
-
     public String onPatientWardChanged(InPatientDTO dto) {
 
         Log.d(TAG, "Changing patient ward " + dto);
