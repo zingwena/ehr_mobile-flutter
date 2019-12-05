@@ -91,7 +91,7 @@ public class RelationshipService {
                     relationship.getMemberId(), relationship.getRelation(), relationship.getTypeOfContact());
 
             member = new Relationship(UUID.randomUUID().toString(), relationship.getMemberId(),
-                    relationship.getMemberId(), memberType, null);
+                    relationship.getPersonId(), memberType, null);
         }
         Relationship [] items = {person, member};
         ehrMobileDatabase.relationshipDao().saveAll(new ArrayList<>(Arrays.asList(items)));
