@@ -1,6 +1,6 @@
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 
-import 'base_table.dart';
+import '../base_table.dart';
 
 class HtsTable extends BaseTable{
   String personId;

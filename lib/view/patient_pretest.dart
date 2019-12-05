@@ -55,10 +55,13 @@ class _PatientPretest extends State<PatientPretest> {
   String _newTest = " " ;
   String _htsApproach="" ;
   HtsRegistration htsRegistration;
-  bool _newTestInPreg = false;
 
-  bool _newTestInLife = false;
-  String newTestInLife = "";
+  int _newTestInPreg = 0;
+  bool newTestInPreg = false;
+
+  int _newTestInLife = 0;
+  bool newTestInLife = false;
+
   HtsModel htsModel;
   PurposeOfTest purposeOfTest;
 
@@ -67,14 +70,14 @@ class _PatientPretest extends State<PatientPretest> {
   PreTest patient_preTest;
 
 
-  bool _preTestInfoGiven=false ;
-  String preTestInfoGiven = "NO";
+  int _preTestInfoGiven=0 ;
+  bool preTestInfoGiven = false;
 
-  bool _optOutOfTest=false ;
-  String optOutOfTest = "NO";
+  int _optOutOfTest= 0 ;
+  bool optOutOfTest = false;
 
-  bool _coupleCounselling=false;
-  String coupleCounselling="NO";
+  int _coupleCounselling= 0;
+  bool coupleCounselling=false;
 
 
   String purposeOfTestId;
@@ -444,20 +447,17 @@ class _PatientPretest extends State<PatientPretest> {
                                                               width: 250,
                                                             ),
                                                           ),
+                                                          Text('YES'),
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: _newTestInLife,
+                                                              onChanged: _handleNewTestInLife),
+                                                          Text('NO'),
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: _newTestInLife,
+                                                              onChanged: _handleNewTestInLife)
 
-                                                          Checkbox(
-                                                            value:_newTestInLife,
-                                                            onChanged: (bool value) {
-                                                              setState(() {
-                                                                _newTestInLife=value;
-                                                              });
-                                                              if(value) {
-                                                                setState(() {
-                                                                  _newTestInLife=true;
-                                                                });
-                                                              }
-                                                            },
-                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -476,20 +476,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                               width: 250,
                                                             ),
                                                           ),
-
-                                                          Checkbox(
-                                                            value:_coupleCounselling,
-                                                            onChanged: (bool value) {
-                                                              setState(() {
-                                                                _coupleCounselling=value;
-                                                              });
-                                                              if(value) {
-                                                                setState(() {
-                                                                  _coupleCounselling=true;
-                                                                });
-                                                              }
-                                                            },
-                                                          ),
+                                                          Text('YES'),
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: _coupleCounselling,
+                                                              onChanged: _handleCoupleCounselling),
+                                                          Text('NO'),
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: _coupleCounselling,
+                                                              onChanged: _handleCoupleCounselling)
                                                         ],
                                                       ),
                                                     ),
@@ -508,26 +504,22 @@ class _PatientPretest extends State<PatientPretest> {
                                                               width: 250,
                                                             ),
                                                           ),
+                                                          Text('YES'),
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: _preTestInfoGiven,
+                                                              onChanged: _handlePretestInfoGiven),
+                                                          Text('NO'),
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: _preTestInfoGiven,
+                                                              onChanged: _handlePretestInfoGiven)
 
-                                                          Checkbox(
-                                                            value:_preTestInfoGiven,
-                                                            onChanged: (bool value) {
-                                                              setState(() {
-                                                                _preTestInfoGiven=value;
-                                                              });
-                                                              if(value) {
-                                                                setState(() {
-                                                                  _preTestInfoGiven = true;
-                                                                });
-                                                              }
-                                                            },
-                                                          ),
                                                         ],
                                                       ),
                                                     ),
                                                     pregnatandlactatingqstn(),
-
-                                                    Container(
+                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                       child:            Row(
@@ -541,19 +533,17 @@ class _PatientPretest extends State<PatientPretest> {
                                                               width: 250,
                                                             ),
                                                           ),
-                                                          Checkbox(
-                                                            value:_optOutOfTest,
-                                                            onChanged: (bool value) {
-                                                              setState(() {
-                                                                _optOutOfTest=value;
-                                                              });
-                                                              if(value) {
-                                                                setState(() {
-                                                                  optOutOfTest="YES";
-                                                                });
-                                                              }
-                                                            },
-                                                          ),
+                                                          Text('YES'),
+                                                          Radio(
+                                                              value: 1,
+                                                              groupValue: _optOutOfTest,
+                                                              onChanged: _handleOptOutOfTest),
+                                                          Text('NO'),
+                                                          Radio(
+                                                              value: 2,
+                                                              groupValue: _optOutOfTest,
+                                                              onChanged: _handleOptOutOfTest)
+
                                                         ],
                                                       ),
                                                     ),
@@ -580,8 +570,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                             _formKey.currentState.save();
                                                             getPurposeByName(_currentPurposeOfTest);
                                                             getHtsModelByName(_currentHtsModel);
-                                                            PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, _newTestInLife,
-                                                                _coupleCounselling,_preTestInfoGiven,_optOutOfTest,_newTestInPreg,_currentPurposeOfTest);
+                                                            PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, newTestInLife,
+                                                                coupleCounselling,preTestInfoGiven,optOutOfTest,newTestInPreg,_currentPurposeOfTest);
                                                             insertPreTest(patient_pretest);
                                                             if(patient_pretest.optOutOfTest ){
                                                               Navigator.push(context,MaterialPageRoute(
@@ -671,19 +661,16 @@ Widget pregnatandlactatingqstn(){
                 width: 250,
               ),
             ),
-            Checkbox(
-              value:_newTestInPreg,
-              onChanged: (bool value) {
-                setState(() {
-                  _newTestInPreg=value;
-                });
-                if(value) {
-                  setState(() {
-                    _newTestInPreg=true;
-                  });
-                }
-              },
-            ),
+            Text('YES'),
+            Radio(
+                value: 1,
+                groupValue: _newTestInPreg,
+                onChanged: _handleNewTestInPreg),
+            Text('NO'),
+            Radio(
+                value: 2,
+                groupValue: _newTestInPreg,
+                onChanged: _handleNewTestInPreg)
           ],
         ),
       );
@@ -705,6 +692,78 @@ Widget pregnatandlactatingqstn(){
     setState(() {
       _currentPurposeOfTest = value;
 
+    });
+  }
+  void _handleOptOutOfTest(int value) {
+    setState(() {
+      _optOutOfTest = value;
+
+      switch (_optOutOfTest) {
+        case 1:
+          optOutOfTest = true;
+          break;
+        case 2:
+          optOutOfTest = false;
+          break;
+      }
+    });
+  }
+  void _handleNewTestInPreg(int value) {
+    setState(() {
+      _newTestInPreg = value;
+
+      switch (_newTestInPreg) {
+        case 1:
+          newTestInPreg = true;
+          break;
+        case 2:
+          newTestInPreg = false;
+          break;
+      }
+    });
+  }
+  void _handleCoupleCounselling(int value) {
+    setState(() {
+      _coupleCounselling = value;
+
+      switch (_coupleCounselling) {
+        case 1:
+          coupleCounselling = true;
+          break;
+        case 2:
+          coupleCounselling = false;
+          break;
+      }
+    });
+  }
+  void _handleNewTestInLife(int value) {
+    setState(() {
+      _newTestInLife = value;
+
+      switch (_newTestInLife) {
+        case 1:
+          newTestInLife = true;
+          break;
+        case 2:
+          newTestInLife = false;
+          break;
+      }
+    });
+  }
+
+
+  void _handlePretestInfoGiven(int value) {
+    setState(() {
+      _preTestInfoGiven = value;
+
+      switch (_preTestInfoGiven) {
+        case 1:
+          preTestInfoGiven = true;
+          break;
+        case 2:
+          preTestInfoGiven = false;
+          break;
+      }
     });
   }
 

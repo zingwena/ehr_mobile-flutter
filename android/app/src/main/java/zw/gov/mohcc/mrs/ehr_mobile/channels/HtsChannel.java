@@ -70,7 +70,7 @@ public class HtsChannel {
                                 String labINvestId = laboratoryInvestigation.getId();
                                 result.success(labINvestId);
                             } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
+                                System.out.println("Failed to get LaboratoryInvestigation" + e.getMessage());
                             }
 
                         }
