@@ -48,7 +48,7 @@ public class VisitChannel {
                 if(call.method.equals("getPatientSummary")){
                     Log.i(TAG, "Here is the person Id sent from flutter "+ arguments);
                     PatientSummaryDTO patientSummaryDTO = visitService.getPatientSummary(arguments);
-                    Log.i(TAG, " Patient summary  invetstigations  returned in android" + patientSummaryDTO.getInvestigations().toString());
+                    Log.i(TAG, " Patient summary  art details  returned in android" + patientSummaryDTO.getArtDetails().toString());
                     String patientsummary_string = gson.toJson(patientSummaryDTO);
                     result1.success(patientsummary_string);
                 }
