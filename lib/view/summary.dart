@@ -12,6 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
+import 'package:intl/intl.dart';
+
 
 import 'art_reg.dart';
 import 'hts_screening.dart';
@@ -39,6 +41,12 @@ class SummaryOverviewState extends State<SummaryOverview>
   HtsScreening htsScreening;
   PatientSummaryDto patientSummaryDto;
   String queue = "";
+  String Bp_date;
+  String Respiratoryrate_date;
+  String pulse_date;
+  String weight_date;
+  String height_date;
+  String temp_date;
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
 
@@ -72,6 +80,12 @@ class SummaryOverviewState extends State<SummaryOverview>
       setState(() {
         patientSummaryDto = PatientSummaryDto.fromJson(jsonDecode(patient_summary));
         debugPrint("BBBBBBBBBBBBBBBBBB patient summary after assignment"+ patientSummaryDto.toString());
+        Bp_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.bloodPressure.date);
+        temp_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.temperature.date);
+        Respiratoryrate_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.respiratoryRate.date);
+        pulse_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.pulse.date);
+        weight_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.weight.date);
+        height_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.height.date);
 
       });
 
@@ -187,7 +201,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                   SizedBox(
                     height: 3.0,
                   ),
-                //  _buildButtonsRow(),
+
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -277,23 +291,33 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.bloodPressure != null?Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '44',
+                                                                      patientSummaryDto.bloodPressure.value,
+                                                                      style: TextStyle(
+                                                                          fontSize: 15.0,
+                                                                          color: Colors.black87),
+                                                                    ),
+                                                                  ):Container(
+                                                                    margin: EdgeInsets.only(top: 3.0),
+                                                                    child: Text(
+                                                                      'No Record',
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
                                                                     ),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.bloodPressure.date != null?Container(
                                                                     alignment: Alignment.topLeft,
                                                                     child: Text(
                                                                       'Recorded :' +
-                                                                          '15/10/2019',
+                                                                          Bp_date,
                                                                       style: TextStyle(
                                                                           fontSize: 13.0, color: Colors.black54),
                                                                     ),
+                                                                  ): SizedBox(
+                                                                    height: 0.0,
                                                                   ),
                                                                 ],
                                                               )),
@@ -309,24 +333,32 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.temperature != null?Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '44',
+                                                                      patientSummaryDto.temperature.value,
+                                                                      style: TextStyle(
+                                                                          fontSize: 15.0,
+                                                                          color: Colors.black87),
+                                                                    ),
+                                                                  ):Container(
+                                                                    margin: EdgeInsets.only(top: 3.0),
+                                                                    child: Text(
+                                                                            'No Record',
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
                                                                     ),
                                                                   ),
-                                                                  Container(
+                                                                 patientSummaryDto.temperature.date != null? Container(
                                                                     alignment: Alignment.topLeft,
                                                                     child: Text(
                                                                       'Recorded :' +
-                                                                          '15/10/2019',
+                                                                          temp_date,
                                                                       style: TextStyle(
                                                                           fontSize: 13.0, color: Colors.black54),
                                                                     ),
-                                                                  ),
+                                                                  ): SizedBox(height: 0.0,),
                                                                 ],
                                                               )),
                                                           Container(
@@ -341,24 +373,32 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.pulse != null ?Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '22',
+                                                                      patientSummaryDto.pulse.value,
+                                                                      style: TextStyle(
+                                                                          fontSize: 15.0,
+                                                                          color: Colors.black87),
+                                                                    ),
+                                                                  ): Container(
+                                                                    margin: EdgeInsets.only(top: 3.0),
+                                                                    child: Text(
+                                                                      'No Record',
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
                                                                     ),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.pulse.date !=null ?Container(
                                                                     alignment: Alignment.topLeft,
                                                                     child: Text(
                                                                       'Recorded :' +
-                                                                          '15/10/2019',
+                                                                          pulse_date,
                                                                       style: TextStyle(
                                                                           fontSize: 13.0, color: Colors.black54),
                                                                     ),
-                                                                  ),
+                                                                  ): SizedBox(height: 0.0,),
                                                                 ],
                                                               )
                                                           ),
@@ -391,7 +431,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                   patientSummaryDto.respiratoryRate != null?Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '44',
+                                                                      patientSummaryDto.respiratoryRate.value,
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
@@ -405,15 +445,15 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                           color: Colors.black87),
                                                                     ),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.respiratoryRate!= null ?Container(
                                                                     alignment: Alignment.topLeft,
                                                                     child: Text(
                                                                       'Date :' +
-                                                                          '15/10/2019',
+                                                                          Respiratoryrate_date,
                                                                       style: TextStyle(
                                                                           fontSize: 13.0, color: Colors.black54),
                                                                     ),
-                                                                  ),
+                                                                  ): SizedBox(height: 0.0,),
                                                                 ],
                                                               )),
                                                           Container(
@@ -428,10 +468,18 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
                                                                   ),
-                                                                  Container(
+                                                                  patientSummaryDto.height != null ?Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '44',
+                                                                      patientSummaryDto.height.value,
+                                                                      style: TextStyle(
+                                                                          fontSize: 15.0,
+                                                                          color: Colors.black87),
+                                                                    ),
+                                                                  ):Container(
+                                                                    margin: EdgeInsets.only(top: 3.0),
+                                                                    child: Text(
+                                                                      'No Record',
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
@@ -441,7 +489,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                     alignment: Alignment.topLeft,
                                                                     child: Text(
                                                                       'Date :' +
-                                                                          '15/10/2019',
+                                                                          height_date,
                                                                       style: TextStyle(
                                                                           fontSize: 13.0, color: Colors.black54),
                                                                     ),
@@ -463,7 +511,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                   Container(
                                                                     margin: EdgeInsets.only(top: 3.0),
                                                                     child: Text(
-                                                                      '45',
+                                                                      patientSummaryDto.weight.value,
                                                                       style: TextStyle(
                                                                           fontSize: 15.0,
                                                                           color: Colors.black87),
@@ -473,7 +521,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                     alignment: Alignment.topLeft,
                                                                     child: Text(
                                                                       ' Date' +
-                                                                          '15/09/2019',
+                                                                          weight_date,
                                                                       style: TextStyle(
                                                                           fontSize: 13.0, color: Colors.black54),
                                                                     ),
@@ -604,12 +652,10 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                               ),
                                                               onPressed: (){
                                                                 if(htsScreening == null ){
-                                                                  debugPrint("The htsscreening record was null ######");
                                                                   Navigator.push(context,MaterialPageRoute(
                                                                       builder: (context)=>  Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
                                                                   ));
                                                                 } else {
-                                                                  debugPrint("The htsscreening record wasn't null #######");
                                                                   Navigator.push(context,MaterialPageRoute(
                                                                       builder: (context)=> HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId,  widget.person.id)
                                                                   ));
@@ -665,12 +711,10 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                 ),
                                                 onPressed: () {
                                                   if(htsScreening == null ){
-                                                    debugPrint("The htsscreening record was null ######");
                                                     Navigator.push(context,MaterialPageRoute(
                                                         builder: (context)=>  Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
                                                     ));
                                                   } else {
-                                                    debugPrint("The htsscreening record wasn't null #######");
                                                     Navigator.push(context,MaterialPageRoute(
                                                         builder: (context)=> HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId,  widget.person.id)
                                                     ));
@@ -740,7 +784,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextFormField(
-                                                                initialValue: '546373BV',
+                                                                initialValue: patientSummaryDto.artDetails.artNumber,
                                                                 decoration: InputDecoration(
                                                                   icon: Icon(Icons.confirmation_number, color: Colors.blue),
                                                                   labelText: "Art Number",
@@ -771,7 +815,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextFormField(
-                                                                initialValue: 'Regimen 1',
+                                                                initialValue: patientSummaryDto.artDetails.arvRegimen,
 
                                                                 decoration: InputDecoration(
                                                                   icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
