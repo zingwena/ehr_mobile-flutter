@@ -784,7 +784,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextFormField(
-                                                                initialValue: patientSummaryDto.artDetails.artNumber,
+                                                                initialValue: 'T45G45',
                                                                 decoration: InputDecoration(
                                                                   icon: Icon(Icons.confirmation_number, color: Colors.blue),
                                                                   labelText: "Art Number",
