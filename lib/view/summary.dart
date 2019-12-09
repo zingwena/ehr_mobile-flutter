@@ -273,7 +273,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         height: 2.0,
                                                         color: Colors.blue,
                                                       ),
-
                                                       patientSummaryDto!= null?Row(
                                                         mainAxisSize: MainAxisSize.max,
                                                         mainAxisAlignment:
@@ -784,7 +783,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextFormField(
-                                                                initialValue: patientSummaryDto.artDetails.artNumber,
+                                                                initialValue: 't4546g45',
                                                                 decoration: InputDecoration(
                                                                   icon: Icon(Icons.confirmation_number, color: Colors.blue),
                                                                   labelText: "Art Number",
@@ -815,7 +814,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextFormField(
-                                                                initialValue: patientSummaryDto.artDetails.arvRegimen,
+                                                                initialValue: 'Regimen',
 
                                                                 decoration: InputDecoration(
                                                                   icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
