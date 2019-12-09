@@ -778,7 +778,14 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         color: Colors.blue,
                                                       ),
 
-                                                   Row(
+                                                   patientSummaryDto == null ?Container(
+                                                     alignment: Alignment.topLeft,
+                                                     child: Text(
+                                                       'No Record',
+                                                       style: TextStyle(
+                                                           fontSize: 13.0, color: Colors.black54),
+                                                     ),
+                                                   ):Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: Padding(
@@ -894,7 +901,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                           ),
                                                         ),
                                                       ),
-
                                                       Container(
                                                         margin: EdgeInsets.only(top: 3.0),
                                                       ),
@@ -902,34 +908,40 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
                                                       ),
-                                                     patientSummaryDto.investigations != null? Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: DataTable(
-                                                            columns: [
-                                                              DataColumn(label: Text("Date")),
-                                                              DataColumn(label: Text("Test Name")),
-                                                              DataColumn(label: Text("Result")),
-                                                            ],
-                                                            rows: patientSummaryDto.investigations.map((investigation)=>
-                                                                DataRow(
-                                                                    cells: [
-                                                                      DataCell(Text(DateFormat("yyyy/MM/dd").format(investigation.testDate))),
-                                                                      DataCell(Text(investigation.testName)),
-                                                                      DataCell(Text(investigation.result)),
-                                                                      ])
+                                                       Row(
+                                                         children: <Widget>[
+                                                           patientSummaryDto.artDetails== null?Container(
+                                                             alignment: Alignment.topLeft,
+                                                             child: Text(
+                                                               'No Record',
+                                                               style: TextStyle(
+                                                                   fontSize: 13.0, color: Colors.black54),
+                                                             ),
+                                                           ) :Container(
+                                                             width: double.infinity,
+                                                             padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                             child: DataTable(
+                                                                 columns: [
+                                                                   DataColumn(label: Text("Date")),
+                                                                   DataColumn(label: Text("Test Name")),
+                                                                   DataColumn(label: Text("Result")),
+                                                                 ],
+                                                                 rows: patientSummaryDto.investigations.map((investigation)=>
+                                                                     DataRow(
+                                                                         cells: [
+                                                                           DataCell(Text(DateFormat("yyyy/MM/dd").format(investigation.testDate))),
+                                                                           DataCell(Text(investigation.testName)),
+                                                                           DataCell(Text(investigation.result)),
+                                                                         ])
 
-                                                            ).toList()
+                                                                 ).toList()
 
-                                                        ),
-                                                      ): Container(
-                                                       alignment: Alignment.topLeft,
-                                                       child: Text(
-                                                         'No Record',
-                                                         style: TextStyle(
-                                                             fontSize: 13.0, color: Colors.black54),
-                                                       ),
-                                                     ),
+                                                             ),
+                                                           ),
+                                                         ],
+                                                       )
+                                                     ,
+
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
