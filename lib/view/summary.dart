@@ -778,7 +778,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         color: Colors.blue,
                                                       ),
 
-                                                      patientSummaryDto.artDetails != null ?Row(
+                                                   Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: Padding(
@@ -794,14 +794,14 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             ),
                                                           ),
                                                         ],
-                                                      ):  Container(
+                                                      )/*:  Container(
                                                         alignment: Alignment.topLeft,
                                                         child: Text(
                                                           'No Record',
                                                           style: TextStyle(
                                                               fontSize: 13.0, color: Colors.black54),
                                                         ),
-                                                      ),
+                                                      )*/,
 
                                                       Row(
                                                         children: <Widget>[
