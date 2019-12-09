@@ -589,7 +589,7 @@ class SummaryOverviewState extends State<SummaryOverview>
 
                                                       Container(
                                                         margin: EdgeInsets.only(top: 3.0),
-                                                      ),
+                                                      ),/*
                                                       Container(
                                                         alignment: Alignment.topLeft,
                                                         child: Text(
@@ -598,7 +598,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                           style: TextStyle(
                                                               fontSize: 13.0, color: Colors.black54),
                                                         ),
-                                                      ),
+                                                      ),*/
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
@@ -608,7 +608,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         color: Colors.blue,
                                                       ),
 
-                                                      Row(
+                                               /*       Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: Padding(
@@ -623,7 +623,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             ),
                                                           ),
                                                         ],
-                                                      ),
+                                                      ),*/
 
                                                        Row(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -783,7 +783,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextFormField(
-                                                                initialValue: 't4546g45',
+                                                                initialValue: 'T4567G5',
                                                                 decoration: InputDecoration(
                                                                   icon: Icon(Icons.confirmation_number, color: Colors.blue),
                                                                   labelText: "Art Number",
