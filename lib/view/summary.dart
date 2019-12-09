@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/relationship_listPage.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -198,7 +199,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                             ),
                           ])
                   ),
-
+                  _buildButtonsRow(),
                   SizedBox(
                     height: 3.0,
                   ),
@@ -984,6 +985,55 @@ class SummaryOverviewState extends State<SummaryOverview>
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(text: "VITALS", onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ReceptionVitals(
+                        widget.person.id, widget.visitId, widget.person,widget.htsId)),
+          ),
+          ),
+
+          new RoundedButton(text: "HTS", onTap: () {
+            if(htsScreening == null ){
+              debugPrint("The htsscreening record was null ######");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
+              ));
+            } else {
+              debugPrint("The htsscreening record wasn't null #######");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId,  widget.person.id)
+              ));
+            }
+          }
+          ),
+
+          new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ArtReg(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
+          ),),
+          new RoundedButton(text: "RELATIONS", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    RelationshipListPage(widget.person, widget.visitId, widget.htsId, widget.htsRegistration, widget.person.id)
+            ),
+          ),
+          ),
+
+
         ],
       ),
     );
