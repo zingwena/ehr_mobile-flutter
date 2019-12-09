@@ -591,16 +591,7 @@ class SummaryOverviewState extends State<SummaryOverview>
 
                                                       Container(
                                                         margin: EdgeInsets.only(top: 3.0),
-                                                      ),/*
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: Text(
-                                                          'Recorded :' +
-                                                              '',
-                                                          style: TextStyle(
-                                                              fontSize: 13.0, color: Colors.black54),
-                                                        ),
-                                                      ),*/
+                                                      ),
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
@@ -609,23 +600,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         height: 2.0,
                                                         color: Colors.blue,
                                                       ),
-
-                                               /*       Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal:5.0),
-                                                              child: Text("Last HIV Result"),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                              child: Text("Positive"),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),*/
 
                                                        Row(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -760,15 +734,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                       Container(
                                                         margin: EdgeInsets.only(top: 3.0),
                                                       ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: Text(
-                                                          'Recorded :' +
-                                                              '',
-                                                          style: TextStyle(
-                                                              fontSize: 13.0, color: Colors.black54),
-                                                        ),
-                                                      ),
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
@@ -777,8 +742,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         height: 2.0,
                                                         color: Colors.blue,
                                                       ),
-
-                                                   patientSummaryDto == null ?Container(
+                                                   patientSummaryDto.artDetails == null ?Container(
                                                      alignment: Alignment.topLeft,
                                                      child: Text(
                                                        'No Record',
@@ -801,14 +765,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             ),
                                                           ),
                                                         ],
-                                                      )/*:  Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: Text(
-                                                          'No Record',
-                                                          style: TextStyle(
-                                                              fontSize: 13.0, color: Colors.black54),
-                                                        ),
-                                                      )*/,
+                                                      ),
 
                                                       Row(
                                                         children: <Widget>[
