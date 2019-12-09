@@ -54,6 +54,7 @@ public class HistoryService {
     public String createSexualHistoryQuestion(SexualHistoryQuestionDTO dto) {
 
         SexualHistoryQuestion item = dto.getInstance(dto);
+        item.setSexualHistoryId(getSexualHistory(dto.getPersonId()).getId());
         Log.d(TAG, "State of sexual history question : " + item);
 
         ehrMobileDatabase.sexualHistoryQuestionDao().save(item);
