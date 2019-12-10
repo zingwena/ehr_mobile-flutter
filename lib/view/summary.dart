@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/view/relationship_listPage.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,9 +78,10 @@ class SummaryOverviewState extends State<SummaryOverview>
     var  patient_summary;
     try {
       patient_summary = await visitChannel.invokeMethod('getPatientSummary', patientId);
+      debugPrint("BBBBBBBBBBBBBBBBBB patient summary from android"+ patient_summary);
+
       setState(() {
         patientSummaryDto = PatientSummaryDto.fromJson(jsonDecode(patient_summary));
-        debugPrint("BBBBBBBBBBBBBBBBBB patient summary after assignment"+ patientSummaryDto.toString());
         Bp_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.bloodPressure.date);
         temp_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.temperature.date);
         Respiratoryrate_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.respiratoryRate.date);
@@ -197,7 +199,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                             ),
                           ])
                   ),
-
+                  _buildButtonsRow(),
                   SizedBox(
                     height: 3.0,
                   ),
@@ -776,14 +778,20 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         color: Colors.blue,
                                                       ),
 
-                                                      Row(
+                                                   patientSummaryDto == null || patientSummaryDto.artDetails ==null ?Container(
+                                                     alignment: Alignment.topLeft,
+                                                     child: Text(
+                                                       'No Record',
+                                                       style: TextStyle(
+                                                           fontSize: 13.0, color: Colors.black54),
+                                                     ),
+                                                   ):Row(
                                                         children: <Widget>[
-
                                                           Expanded(
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextFormField(
-                                                                initialValue: 'T4567G5',
+                                                                initialValue: 'T45G45',
                                                                 decoration: InputDecoration(
                                                                   icon: Icon(Icons.confirmation_number, color: Colors.blue),
                                                                   labelText: "Art Number",
@@ -793,7 +801,14 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             ),
                                                           ),
                                                         ],
-                                                      ),
+                                                      )/*:  Container(
+                                                        alignment: Alignment.topLeft,
+                                                        child: Text(
+                                                          'No Record',
+                                                          style: TextStyle(
+                                                              fontSize: 13.0, color: Colors.black54),
+                                                        ),
+                                                      )*/,
 
                                                       Row(
                                                         children: <Widget>[
@@ -878,7 +893,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                       Container(
                                                         alignment: Alignment.topLeft,
                                                         child: Text(
-                                                          'Investigations',
+                                                          'Investigations Overview',
                                                           style: TextStyle(
                                                             fontSize: 16.0,
                                                             fontStyle: FontStyle.normal,
@@ -886,19 +901,47 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                           ),
                                                         ),
                                                       ),
-
                                                       Container(
                                                         margin: EdgeInsets.only(top: 3.0),
                                                       ),
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: Text(
-                                                          'Recorded :' +
-                                                              '',
-                                                          style: TextStyle(
-                                                              fontSize: 13.0, color: Colors.black54),
-                                                        ),
+                                                      Divider(
+                                                        height: 10.0,
+                                                        color: Colors.blue.shade500,
                                                       ),
+                                                       Row(
+                                                         children: <Widget>[
+                                                           patientSummaryDto == null || patientSummaryDto.investigations== null?Container(
+                                                             alignment: Alignment.topLeft,
+                                                             child: Text(
+                                                               'No Record',
+                                                               style: TextStyle(
+                                                                   fontSize: 13.0, color: Colors.black54),
+                                                             ),
+                                                           ) :Container(
+                                                             width: double.infinity,
+                                                             padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                             child: DataTable(
+                                                                 columns: [
+                                                                   DataColumn(label: Text("Date")),
+                                                                   DataColumn(label: Text("Test Name")),
+                                                                   DataColumn(label: Text("Result")),
+                                                                 ],
+                                                                 rows: patientSummaryDto.investigations.map((investigation)=>
+                                                                     DataRow(
+                                                                         cells: [
+                                                                           DataCell(Text(DateFormat("yyyy/MM/dd").format(investigation.testDate))),
+                                                                           DataCell(Text(investigation.testName)),
+                                                                           DataCell(Text(investigation.result)),
+                                                                         ])
+
+                                                                 ).toList()
+
+                                                             ),
+                                                           ),
+                                                         ],
+                                                       )
+                                                     ,
+
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
@@ -906,57 +949,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                       Container(
                                                         height: 2.0,
                                                         color: Colors.blue,
-                                                      ),
-
-                                                      Row(
-                                                        children: <Widget>[
-
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextFormField(
-                                                                initialValue: 'Done',
-                                                                decoration: InputDecoration(
-                                                                  icon: Icon(Icons.radio_button_checked, color: Colors.blue),
-                                                                  labelText: "Recency",
-                                                                  // hintText: "Sex"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextFormField(
-                                                                initialValue: '25/01/2019',
-                                                                decoration: InputDecoration(
-                                                                  icon: Icon(Icons.date_range, color: Colors.blue),
-                                                                  labelText: "HIV Testing Date",
-                                                                  // hintText: "Sex"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextFormField(
-                                                                initialValue: 'Positive',
-                                                                decoration: InputDecoration(
-                                                                  icon: Icon(Icons.assignment, color: Colors.blue),
-                                                                  labelText: "HIV Result",
-                                                                  //hintText: "National ID"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                        ],
                                                       ),
                                                       Divider(
                                                         height: 10.0,
@@ -1005,6 +997,55 @@ class SummaryOverviewState extends State<SummaryOverview>
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(text: "VITALS", onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ReceptionVitals(
+                        widget.person.id, widget.visitId, widget.person,widget.htsId)),
+          ),
+          ),
+
+          new RoundedButton(text: "HTS", onTap: () {
+            if(htsScreening == null ){
+              debugPrint("The htsscreening record was null ######");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
+              ));
+            } else {
+              debugPrint("The htsscreening record wasn't null #######");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId,  widget.person.id)
+              ));
+            }
+          }
+          ),
+
+          new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ArtReg(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
+          ),),
+          new RoundedButton(text: "RELATIONS", onTap: () =>     Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    RelationshipListPage(widget.person, widget.visitId, widget.htsId, widget.htsRegistration, widget.person.id)
+            ),
+          ),
+          ),
+
+
         ],
       ),
     );

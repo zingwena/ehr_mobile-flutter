@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
@@ -101,7 +100,6 @@ class _Hts_Result  extends State<Hts_Result > {
   }
 
   Future<void> getLabInvestigationTests() async {
-    print("KKKKKKKKKKKKKKKKKKKKKKKK getLabInvestigationTests ");
     String response;
     try {
       response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
@@ -135,18 +133,6 @@ class _Hts_Result  extends State<Hts_Result > {
     }
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
-      });
-  }
   Future<void> getHtsRecord(String patientId) async {
     var  hts;
     try {
@@ -161,26 +147,6 @@ class _Hts_Result  extends State<Hts_Result > {
     }
 
   }
-  void _handleHtsTypeChange(int value) {
-    print("hts value : $value");
-    setState(() {
-      _htsType = value;
-
-      switch (_htsType) {
-        case 1:
-          htsType = "Self";
-          print("hts value : $htsType");
-
-          break;
-        case 2:
-          htsType = "Rapid";
-          print("hts value : $htsType");
-
-          break;
-      }
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
