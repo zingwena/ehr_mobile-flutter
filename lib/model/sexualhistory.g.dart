@@ -10,21 +10,24 @@ SexualHistory _$SexualHistoryFromJson(Map<String, dynamic> json) {
   return SexualHistory(
     json['personId'] as String,
     json['sexuallyActive'] as bool,
-    const CustomDateTimeConverter().fromJson(json['sexWithMaleDate'] as String),
-    const CustomDateTimeConverter().fromJson(json['sexWithFemaleDate'] as String),
+    json['sexWithMaleDate'] == null
+        ? null
+        : DateTime.parse(json['sexWithMaleDate'] as String),
+    json['sexWithFemaleDate'] == null
+        ? null
+        : DateTime.parse(json['sexWithFemaleDate'] as String),
     json['numberOfSexualPartners'] as int,
     json['numberOfSexualPartnersLastTwelveMonths'] as int,
-
   );
-
 }
 
-Map<String, dynamic> _$SexualHistoryToJson(SexualHistory instance) => <String, dynamic>{
-  'personId': instance.personId,
-  'sexuallyActive': instance.sexuallyActive,
-  'sexWithMaleDate': const CustomDateTimeConverter().toJson(instance.sexWithMaleDate),
-  'sexWithFemaleDate': const CustomDateTimeConverter().toJson(instance.sexWithFemaleDate),
-  'numberOfSexualPartners': instance.numberOfSexualPartners,
-  'numberOfSexualPartnersLastTwelveMonths': instance.numberOfSexualPartnersLastTwelveMonths,
-
-};
+Map<String, dynamic> _$SexualHistoryToJson(SexualHistory instance) =>
+    <String, dynamic>{
+      'personId': instance.personId,
+      'sexuallyActive': instance.sexuallyActive,
+      'sexWithMaleDate': instance.sexWithMaleDate?.toIso8601String(),
+      'sexWithFemaleDate': instance.sexWithFemaleDate?.toIso8601String(),
+      'numberOfSexualPartners': instance.numberOfSexualPartners,
+      'numberOfSexualPartnersLastTwelveMonths':
+          instance.numberOfSexualPartnersLastTwelveMonths,
+    };

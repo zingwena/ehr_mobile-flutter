@@ -13,7 +13,8 @@ DisclosureMethod _$DisclosureMethodFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$DisclosureMethodToJson(DisclosureMethod instance) => <String, dynamic>{
-  'id': instance.id,
-  'name': instance.name,
-};
+Map<String, dynamic> _$DisclosureMethodToJson(DisclosureMethod instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+    };

@@ -1,7 +1,9 @@
 
 import 'package:ehr_mobile/util/custom_date_converter.dart';
-
+import 'package:json_annotation/json_annotation.dart';
 import '../base_table.dart';
+@JsonSerializable(explicitToJson: true)
+
 
 class IndexContactTable extends BaseTable{
 

@@ -39,6 +39,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
@@ -310,6 +311,31 @@ public class HtsChannel {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("getRecencySample")) {
+
+                            try {
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("ee7d91fc-b27f-11e8-b121-c48e8faf035b");
+                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                String sample_name = sample.getName();
+                                Log.i(TAG, "Recency sample name from android");
+                                result.success(sample_name);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getRecencyInvestigation")) {
+
+                            try {
+                                System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
+                                Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("ee7d91fc-b27f-11e8-b121-c48e8faf035b");
+                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
+                                Log.i(TAG, "Laboratory test from android"+ laboratoryTest.getName());
+                                String investigation_name = laboratoryTest.getName();
+                                result.success(investigation_name);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
 
                         if (methodCall.method.equals("getTestResults")) {
 
@@ -383,6 +409,28 @@ public class HtsChannel {
                         if(methodCall.method.equals("getRecencyTestkits")){
                             try{
                                 Log.d(TAG, "Arguments passed to get  Recency testkit : " + arguments);
+                                String testkitlist = gson.toJson(htsService.getInvestigationTestKit("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
+                                Log.d(TAG, "Testkits returned : " + testkitlist);
+                                result.success(testkitlist);
+                            }catch (Exception e){
+                                Log.d(TAG, "Exception thrown in getRecencyTestkits method");
+
+                            }
+                        }
+                        if(methodCall.method.equals("getRecencySampleName")){
+                            try{
+                                Log.d(TAG, "Arguments passed to get  Recency testkit : " + arguments);
+                                String testkitlist = gson.toJson(htsService.getInvestigationTestKit("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
+                                Log.d(TAG, "Testkits returned : " + testkitlist);
+                                result.success(testkitlist);
+                            }catch (Exception e){
+                                Log.d(TAG, "Exception thrown in getRecencyTestkits method");
+
+                            }
+                        }
+                        if(methodCall.method.equals("getRecencyInvestigation")){
+                            try{
+                                Log.d(TAG, "Arguments passed to get  Recency name : " + arguments);
                                 String testkitlist = gson.toJson(htsService.getInvestigationTestKit("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
                                 Log.d(TAG, "Testkits returned : " + testkitlist);
                                 result.success(testkitlist);

@@ -69,6 +69,7 @@ class _Recency extends State<RecencyTest> {
   String _identifier;
   String test;
   String sample_name;
+  String investigation_name;
   List<DropdownMenuItem<String>> _identifierDropdownMenuItem;
   String _entryPoint;
   String _testkit_string_response;
@@ -102,7 +103,8 @@ class _Recency extends State<RecencyTest> {
     date = DateTime.now();
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
-    getPersonInvestigation(widget.personId);
+    getSampleName();
+    getInvestigationName();
     getLabInvestigation(widget.personId);
     getLabTest(widget.personId);
     getResults(investigationId);
@@ -112,68 +114,37 @@ class _Recency extends State<RecencyTest> {
 
     super.initState();
   }
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
-        date = DateFormat("yyyy/MM/dd").parse(selectedDate);
-      });
-  }
-
-  Future<Null> _selectedStarttime(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedStarttime)
-      setState(() {
-        selectedStarttime = DateFormat("yyyy/MM/dd").format(picked);
-        startTime = DateFormat("yyyy/MM/dd").parse(selectedStarttime);
-      });
-  }
-  Future<Null> _selectedReadingtime(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedReadingtime)
-      setState(() {
-        selectedReadingtime = DateFormat("yyyy/MM/dd").format(picked);
-        readingTime = DateFormat("yyyy/MM/dd").parse(selectedReadingtime);
-      });
-  }
-  Future<Null> _selectedReadingDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedReadingDate)
-      setState(() {
-        selectedReadingDate = DateFormat("yyyy/MM/dd").format(picked);
-        readingDate = DateFormat("yyyy/MM/dd").parse(selectedReadingDate);
-      });
-  }
-  Future<dynamic> getPersonInvestigation(String personId) async {
+   Future<dynamic> getSampleName() async {
 
     var sample_name;
     try {
-      sample_name = await htsChannel.invokeMethod('getSample', personId);
+      sample_name = await htsChannel.invokeMethod('getRecencySample');
       setState(() {
         this.sample_name=sample_name;
+        print('THIs is the sample name returned'+ this.sample_name);
       });
     } catch (e) {
       print("channel failure: '$e'");
     }
 
   }
+  Future<dynamic> getInvestigationName() async {
+
+    var _investigation_name;
+
+    try {
+      _investigation_name = await htsChannel.invokeMethod('getRecencyInvestigation');
+      setState(() {
+        this.investigation_name=_investigation_name;
+        print('THIs is the investigation name returned'+ this.investigation_name);
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+  }
+
+
 
 
   Future<void> getResults(String investigationId) async {
@@ -218,6 +189,7 @@ class _Recency extends State<RecencyTest> {
 
   }
 
+
   Future<void> getTestKitsByInvestigationId(String investigationId) async {
 
     try {
@@ -242,7 +214,6 @@ class _Recency extends State<RecencyTest> {
       String response = await htsChannel.invokeMethod('getTestName', labInvestId);
       setState(() {
         test_name = response;
-        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH TEST NAME TEST NAME"+ test_name);
 
       });
 
@@ -387,7 +358,7 @@ class _Recency extends State<RecencyTest> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('Blood'),
+                                              (sample_name),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -428,7 +399,7 @@ class _Recency extends State<RecencyTest> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              ('HIV'),
+                                              (investigation_name),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -469,66 +440,6 @@ class _Recency extends State<RecencyTest> {
                                 ),
                                 SizedBox(
                                   height: 20,
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: DateTimePickerFormField(
-                                            inputType: InputType.both,
-                                            format: DateFormat(
-                                                "EEEE, MMMM d, yyyy 'at' h:mma"),
-                                            editable: false,
-                                            decoration: InputDecoration(
-                                                labelText: 'Start Date and Time',
-                                                hasFloatingPlaceholder: false
-                                            ),
-                                            onChanged: (dt) {
-                                              setState(() => date1 = dt);
-                                              print('Selected date: $date1');
-                                            },
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 28,
-                                ),
-                                Row(
-                                  children: <Widget>[
-
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: DateTimePickerFormField(
-                                            inputType: InputType.both,
-                                            format: DateFormat(
-                                                "EEEE, MMMM d, yyyy 'at' h:mma"),
-                                            editable: false,
-                                            decoration: InputDecoration(
-                                                labelText: 'End Date and Time',
-                                                hasFloatingPlaceholder: false
-                                            ),
-                                            onChanged: (dt) {
-                                              setState(() => date2 = dt);
-                                              print('Selected date: $date2');
-                                            },
-                                          ),
-                                        ),
-                                        width: 100,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 24,
                                 ),
                                 Row(children: <Widget>[
                                   Text("Results"),

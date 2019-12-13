@@ -26,6 +26,9 @@ public class VitalsBaseEntityId extends BaseEntity {
     }
 
     public Date getDateTime() {
+        if (dateTime == null) {
+            return new Date();
+        }
         return dateTime;
     }
 

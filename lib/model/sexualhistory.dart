@@ -11,14 +11,14 @@ class SexualHistory{
  int numberOfSexualPartners;
  int numberOfSexualPartnersLastTwelveMonths;
 
- SexualHistory(String personId, bool sexuallyActive, DateTime sexwithMaleDate, DateTime sexwithFemale,  int numberofsexualpartners,
-     int numberofsexualpartnerslasttwelveMonths){
+ SexualHistory(String personId, bool sexuallyActive, DateTime sexWithMaleDate, DateTime sexWithFemaleDate,  int numberOfSexualPartners,
+     int numberOfSexualPartnersLastTwelveMonths){
    this.personId = personId;
    this.sexuallyActive = sexuallyActive;
-   this.sexWithMaleDate = sexwithMaleDate;
-   this.sexWithFemaleDate = sexwithFemale;
-   this.numberOfSexualPartners = numberofsexualpartners;
-   this.numberOfSexualPartnersLastTwelveMonths = numberofsexualpartnerslasttwelveMonths;
+   this.sexWithMaleDate = sexWithMaleDate;
+   this.sexWithFemaleDate = sexWithFemaleDate;
+   this.numberOfSexualPartners = numberOfSexualPartners;
+   this.numberOfSexualPartnersLastTwelveMonths = numberOfSexualPartnersLastTwelveMonths;
  }
 
  factory SexualHistory.fromJson(Map<String, dynamic> json) => _$SexualHistoryFromJson(json);

@@ -16,9 +16,9 @@ class RelationshipViewDto{
     this.relation = relation;
   }
 
-  factory RelationshipViewDto.fromJson(Map<String, dynamic> json) =>_$RelationshipFromJson(json);
+  factory RelationshipViewDto.fromJson(Map<String, dynamic> json) =>_$RelationshipViewDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ReligionToJson(this);
+  Map<String, dynamic> toJson() => _$RelationshipViewDtoToJson(this);
 
   static List<RelationshipViewDto> mapFromJson(List dynamicList){
     List<RelationshipViewDto> relationshipList=[];

@@ -20,8 +20,8 @@ class HtsScreening{
   DateTime  viralLoadDate;
   DateTime  cd4CountDate;
 
-  HtsScreening(String personId, String visitId, bool testedBefore, bool art, String result, DateTime dateLastNeg,   DateTime dateLastTested, DateTime dateEnrolled, String artNumber, bool beenOnPrep,
-      String prepOption, String viralLoadDone, DateTime viralLoadDate, String cd4Done, DateTime cd4countDate){
+  HtsScreening(String personId, String visitId, bool testedBefore, bool art, String result, DateTime dateLastNegative,   DateTime dateLastTested, DateTime dateEnrolled, String artNumber, bool beenOnPrep,
+      String prepOption, String viralLoadDone, DateTime viralLoadDate, String cd4Done, DateTime cd4CountDate){
     this.personId = personId;
     this.visitId = visitId;
     this.testedBefore = testedBefore;
@@ -29,14 +29,14 @@ class HtsScreening{
     this.result = result;
     this.artNumber = artNumber;
     this.beenOnPrep = beenOnPrep;
-    this.dateLastNegative = dateLastNeg;
+    this.dateLastNegative = dateLastNegative;
     this.dateLastTested = dateLastTested;
     this.dateEnrolled = dateEnrolled;
     this.prepOption = prepOption;
     this.viralLoadDone = viralLoadDone;
     this.viralLoadDate = viralLoadDate;
     this.cd4Done = cd4Done;
-    this.cd4CountDate = cd4countDate;
+    this.cd4CountDate = cd4CountDate;
   }
 
 

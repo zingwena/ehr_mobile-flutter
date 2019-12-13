@@ -359,14 +359,14 @@ class VisitInitiationState extends State<VisitInitiation>
     }
   }
   Future<void>changeQueue(PatientAdmission patientAdmission) async{
-    String response;
+    var response;
     try{
       response  = await visitChannel.invokeMethod('changePatientQueue', jsonEncode(patientAdmission));
       setState(() {
         nextQueueId = response;
       });
     }catch(e){
-      debugPrint('Exception thrown in changequeue method'+ e);
+      debugPrint('Exception thrown in change queue method'+ e);
 
     }
   }

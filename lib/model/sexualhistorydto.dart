@@ -1,6 +1,7 @@
 import 'package:ehr_mobile/model/response.dart';
+import 'package:json_annotation/json_annotation.dart';
 part 'sexualhistorydto.g.dart';
-
+@JsonSerializable()
 class SexualHistoryDto{
   String personId;
   String sexualHistoryId;

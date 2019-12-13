@@ -19,20 +19,21 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     json['occupationId'] as String,
     json['maritalStatusId'] as String,
     json['educationLevelId'] as String,
-    json['age'] == null ? null: Age.fromJson(json['age'] as Map<String, dynamic>),
-
+    json['age'] == null
+        ? null
+        : Age.fromJson(json['age'] as Map<String, dynamic>),
     json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>),
   )
+    ..status = json['status'] as String
     ..nationalityId = json['nationalityId'] as String
-    ..countryId = json['countryId'] as String
-    ..status=json['status'] as String;
+    ..countryId = json['countryId'] as String;
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
-      'personId':instance.id,
       'id': instance.id,
+      'status': instance.status,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'sex': instance.sex,
@@ -44,12 +45,10 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'maritalStatusId': instance.maritalStatusId,
       'educationLevelId': instance.educationLevelId,
       'nationalityId': instance.nationalityId,
-      'age': instance.age,
       'countryId': instance.countryId,
       'address': instance.address,
-      'gender':instance.sex,
+      'age': instance.age,
     };
-
 Person _$PersonFromMap(Map<String, dynamic> json) {
   var person=Person(
     json['id'] as String,

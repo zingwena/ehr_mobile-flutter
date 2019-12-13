@@ -12,14 +12,13 @@ Relationship _$RelationshipFromJson(Map<String, dynamic> json) {
     json['memberId'] as String,
     json['relation'] as String,
     json['typeOfContact'] as String,
-
   );
 }
 
-
-Map<String, dynamic> _$ReligionToJson(Relationship instance) => <String, dynamic>{
-  'personId': instance.personId,
-  'memberId': instance.memberId,
-  'relation': instance.relation,
-  'typeOfContact': instance.typeOfContact,
-};
+Map<String, dynamic> _$RelationshipToJson(Relationship instance) =>
+    <String, dynamic>{
+      'personId': instance.personId,
+      'memberId': instance.memberId,
+      'relation': instance.relation,
+      'typeOfContact': instance.typeOfContact,
+    };

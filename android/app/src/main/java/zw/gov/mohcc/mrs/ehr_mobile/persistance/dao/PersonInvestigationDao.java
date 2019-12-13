@@ -41,14 +41,14 @@ public interface PersonInvestigationDao {
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId=:investigationId and resultId=:resultId")
     PersonInvestigation findByPersonIdAndInvestigationIdAndResultId(String personId, String investigationId, String resultId);
 
-    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and resultId=:negativeHivResult and investigationId in (:hivTests) order by date Desc limit 1,0")
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and resultId=:negativeHivResult and investigationId in (:hivTests) order by date Desc limit 1")
     PersonInvestigation findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(
             String personId, String negativeHivResult, Set<String> hivTests);
 
-    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId in (:investigations) order by date Desc limit 1,0")
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId in (:investigations) order by date Desc limit 1")
     PersonInvestigation findTopByPersonIdAndInvestigationIdInOrderByDateDesc(
             String personId, Set<String> investigations);
 
-    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId order by date Desc limit 3, 0")
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId order by date Desc limit 3")
     List<PersonInvestigation> findLatestThreeTestsByPersonId(String personId);
 }

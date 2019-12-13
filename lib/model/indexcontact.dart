@@ -17,13 +17,13 @@ class IndexContact{
   bool  disclosureStatus;
   String disclosureMethodId;
 
-  IndexContact(String id, String indexTestId, String personId, String relation, String hivStatus, DateTime dateofHivstatus,
+  IndexContact(String id, String indexTestId, String personId, String relation, String hivStatus, DateTime dateOfHivStatus,
       bool fearOfIpv, String disclosureMethodPlanId, String testingPlanId, bool disclosureStatus, String disclosureMethodId){
     this.indexTestId = indexTestId;
     this.personId = personId;
     this.relation = relation;
     this.hivStatus = hivStatus;
-    this.dateOfHivStatus = dateofHivstatus;
+    this.dateOfHivStatus = dateOfHivStatus;
     this.fearOfIpv = fearOfIpv;
     this.disclosureMethodPlanId = disclosureMethodPlanId;
     this.testingPlanId = testingPlanId;

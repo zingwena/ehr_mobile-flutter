@@ -13,10 +13,7 @@ IndexTest _$IndexTestFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$IndexTestToJson(IndexTest instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$IndexTestToJson(IndexTest instance) => <String, dynamic>{
       'personId': instance.personId,
-      'date':
-      const CustomDateTimeConverter().toJson(instance.date),
-
+      'date': const CustomDateTimeConverter().toJson(instance.date),
     };
