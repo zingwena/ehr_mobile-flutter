@@ -41,7 +41,7 @@ syncPatient(String token, String url) async {
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
     dto = await setIndexTest(adapter,dto);
-    dto = await setIndexContacts(adapter,dto);
+    //dto = await setIndexContacts(adapter,dto);
     if(person.status=='0'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
@@ -107,8 +107,6 @@ Future<PatientDto> setVitals(SqfliteAdapter adapter,PatientDto dto) async {
     jsonBp['vitalName']='TEMPERATURE';
     vitals.add(jsonBp);
   }
-
-  log.i(vitals);
   dto.vitalDtos=vitals;
   return dto;
 }
@@ -117,6 +115,7 @@ Future <PatientDto> setHts(SqfliteAdapter adapter,PatientDto dto) async{
   var htsDao=HtsDao(adapter);
   var hts = await htsDao.findByPersonId(dto.personDto.id);
   if(hts!=null){
+    log.i(hts.htsApproach);
     dto.htsDto=hts;
   }
   return dto;
@@ -126,21 +125,19 @@ Future <PatientDto> setIndexTest(SqfliteAdapter adapter,PatientDto dto) async {
   var indexTestDao=IndexTestDao(adapter);
   var indexTest=await indexTestDao.findByPersonId(dto.personDto.id);
   if(indexTest!=null){
+    log.i('------->${indexTest.personId}');
     indexTest.visitId=dto.htsDto.visitId;
     dto.indexTestDto=indexTest;
+    setIndexContacts(adapter,indexTest.id,dto);
   }
   return dto;
 }
 
-Future <PatientDto> setIndexContacts(SqfliteAdapter adapter,PatientDto dto) async {
-  IndexTestTable indexTestDto= dto.indexTestDto;
-  if(indexTestDto==null){
-    return dto;
-  }
+Future <PatientDto> setIndexContacts(SqfliteAdapter adapter,String indexTestId,PatientDto dto) async {
   var indexContactDao=IndexContactDao(adapter);
-  var indexContacts=await indexContactDao.findByIndexTestId(indexTestDto.id);
+  var indexContacts=await indexContactDao.findByIndexTestId(indexTestId);
   for(IndexContactTable contact in indexContacts){
-
+        log.i('------->$contact');
   }
   return dto;
 }
