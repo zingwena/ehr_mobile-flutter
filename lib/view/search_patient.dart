@@ -268,9 +268,7 @@ class _SearchPatientState extends State<SearchPatient> {
                   Padding(
                     padding: EdgeInsets.only(left: 15.0, right: 15.0),
                     child: Container(
-
                       width: MediaQuery.of(context).size.width,
-
                       child: Form(
                         key: _searchFormKey,
                         child: Padding(
@@ -291,7 +289,6 @@ class _SearchPatientState extends State<SearchPatient> {
                                           await searchPatient(searchItem);
                                         }
                                       }),
-
                                   contentPadding: EdgeInsets.all(15.0),
                                   hintText: 'Search',
                                   hintStyle: TextStyle(
@@ -324,7 +321,7 @@ class _SearchPatientState extends State<SearchPatient> {
               : _patientList != null && _patientList.isNotEmpty
               ? Expanded(
             child: ListView(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(0.0),
               children: _patientList.map((patient) {
                 return ListTile(
                   leading: Container(
@@ -410,12 +407,12 @@ class _SearchPatientState extends State<SearchPatient> {
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.blue,
-                    fontWeight: FontWeight.w500),
+                    fontWeight: FontWeight.w400),
               ),
               borderSide: BorderSide(
                 color: Colors.blue, //Color of the border
                 style: BorderStyle.solid, //Style of the border
-                width: 4.0, //width of the border
+                width: 2.0, //width of the border
               ),
               onPressed: () => Navigator.push(
                 context,
