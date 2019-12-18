@@ -407,12 +407,12 @@ class _SearchPatientState extends State<SearchPatient> {
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.blue,
-                    fontWeight: FontWeight.w400),
+                    fontWeight: FontWeight.w500),
               ),
               borderSide: BorderSide(
                 color: Colors.blue, //Color of the border
                 style: BorderStyle.solid, //Style of the border
-                width: 2.0, //width of the border
+                width: 3.0, //width of the border
               ),
               onPressed: () => Navigator.push(
                 context,
