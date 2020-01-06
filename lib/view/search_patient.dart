@@ -268,9 +268,7 @@ class _SearchPatientState extends State<SearchPatient> {
                   Padding(
                     padding: EdgeInsets.only(left: 15.0, right: 15.0),
                     child: Container(
-
                       width: MediaQuery.of(context).size.width,
-
                       child: Form(
                         key: _searchFormKey,
                         child: Padding(
@@ -291,7 +289,6 @@ class _SearchPatientState extends State<SearchPatient> {
                                           await searchPatient(searchItem);
                                         }
                                       }),
-
                                   contentPadding: EdgeInsets.all(15.0),
                                   hintText: 'Search',
                                   hintStyle: TextStyle(
@@ -309,23 +306,22 @@ class _SearchPatientState extends State<SearchPatient> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15.0),
+                  SizedBox(height: 0),
                 ],
               ),
             ],
           ),
-       /*   SizedBox(
-            height: 15.0,
-          ), */
 
-
+          SizedBox(
+            height: 5,
+          ),
 
           _patientList == null
               ? SizedBox()
               : _patientList != null && _patientList.isNotEmpty
               ? Expanded(
             child: ListView(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(0.0),
               children: _patientList.map((patient) {
                 return ListTile(
                   leading: Container(
@@ -392,41 +388,44 @@ class _SearchPatientState extends State<SearchPatient> {
           )
 
               : Center (
-            child: Text("No Patients Found"),
+                child: Text("No Patients Found"),
+              ),
+          
+          SizedBox(
+            height: 5,
+          ),
+
+          Center (
+            child: _patientList != null
+                ? OutlineButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+              color: Colors.white,
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                "Add Patient",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500),
+              ),
+              borderSide: BorderSide(
+                color: Colors.blue, //Color of the border
+                style: BorderStyle.solid, //Style of the border
+                width: 3.0, //width of the border
+              ),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddPatient()),
+              ),
+            )
+                : SizedBox(height: 5,),
           ),
 
           SizedBox(
             height: 15,
           ),
 
-          _patientList != null
-              ? OutlineButton(
-
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
-            color: Colors.white,
-            padding: const EdgeInsets.all(10.0),
-            child: Text(
-              "Add Patient",
-              style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            ),
-            borderSide: BorderSide(
-              color: Colors.blue, //Color of the border
-              style: BorderStyle.solid, //Style of the border
-              width: 3.0, //width of the border
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddPatient()),
-            ),
-          )
-              :   SizedBox( ),
-          SizedBox(
-            height: 125,
-          ),
         ],
       ),
 
