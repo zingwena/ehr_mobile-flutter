@@ -742,7 +742,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         height: 2.0,
                                                         color: Colors.blue,
                                                       ),
-                                                   patientSummaryDto.artDetails == null ?Container(
+                                                   patientSummaryDto == null || patientSummaryDto.artDetails ==null ?Container(
                                                      alignment: Alignment.topLeft,
                                                      child: Text(
                                                        'No Record',
@@ -867,7 +867,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                       ),
                                                        Row(
                                                          children: <Widget>[
-                                                           patientSummaryDto.artDetails== null?Container(
+                                                           patientSummaryDto == null || patientSummaryDto.investigations== null?Container(
                                                              alignment: Alignment.topLeft,
                                                              child: Text(
                                                                'No Record',
