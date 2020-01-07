@@ -89,6 +89,8 @@ class SummaryOverviewState extends State<SummaryOverview>
         weight_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.weight.date);
         height_date =  DateFormat("yyyy/MM/dd").format(patientSummaryDto.height.date);
 
+        debugPrint("NNNNNNNNNNNNNNN patient summary investigations here"+ patientSummaryDto.investigations.toString());
+
       });
 
     } catch (e) {
@@ -730,7 +732,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                           ),
                                                         ),
                                                       ),
-
                                                       Container(
                                                         margin: EdgeInsets.only(top: 3.0),
                                                       ),
@@ -865,9 +866,14 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
                                                       ),
+                                                      Container(
+                                                        height: 2.0,
+                                                        color: Colors.blue,
+                                                      ),
                                                        Row(
                                                          children: <Widget>[
-                                                           patientSummaryDto == null || patientSummaryDto.investigations== null?Container(
+                                                           SizedBox(
+                                                           child: patientSummaryDto == null || patientSummaryDto.investigations== null?Container(
                                                              alignment: Alignment.topLeft,
                                                              child: Text(
                                                                'No Record',
@@ -890,15 +896,13 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                            DataCell(Text(investigation.testName)),
                                                                            DataCell(Text(investigation.result)),
                                                                          ])
-
                                                                  ).toList()
 
                                                              ),
-                                                           ),
-                                                         ],
-                                                       )
-                                                     ,
+                                                           ) ,)
 
+                                                         ],
+                                                       ),
                                                       Divider(
                                                         height: 10.0,
                                                         color: Colors.blue.shade500,
@@ -907,14 +911,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         height: 2.0,
                                                         color: Colors.blue,
                                                       ),
-                                                      Divider(
-                                                        height: 10.0,
-                                                        color: Colors.blue.shade500,
-                                                      ),
-                                                      Container(
-                                                        height: 2.0,
-                                                        color: Colors.blue,
-                                                      ),
+
                                                     ],
                                                   ),
                                                 ),
