@@ -7,9 +7,11 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Batch;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.BinTypeIdName;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
