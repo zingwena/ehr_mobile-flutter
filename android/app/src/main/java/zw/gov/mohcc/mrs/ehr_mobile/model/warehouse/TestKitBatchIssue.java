@@ -18,8 +18,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 @Entity
 public class TestKitBatchIssue extends BaseEntity {
 
-    @NonNull
-    private String binType;
     private Double remaining;
     private Boolean statusAccepted;
     private Boolean expiredStatus;
@@ -33,15 +31,6 @@ public class TestKitBatchIssue extends BaseEntity {
     private Date date;
 
     public TestKitBatchIssue() {
-    }
-
-    @NonNull
-    public String getBinType() {
-        return binType;
-    }
-
-    public void setBinType(@NonNull String binType) {
-        this.binType = binType;
     }
 
     public Double getRemaining() {
@@ -103,8 +92,7 @@ public class TestKitBatchIssue extends BaseEntity {
     @Override
     public String toString() {
         return "TestKitBatchIssue{" +
-                "binType='" + binType + '\'' +
-                ", remaining=" + remaining +
+                "remaining=" + remaining +
                 ", statusAccepted=" + statusAccepted +
                 ", expiredStatus=" + expiredStatus +
                 ", batch=" + batch +

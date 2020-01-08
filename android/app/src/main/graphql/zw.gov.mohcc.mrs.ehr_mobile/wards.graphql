@@ -31,6 +31,10 @@ query WardQuery{
                     batch {
                         batchNumber
                         expiryDate
+                        testKit{
+                            id
+                            name
+                        }
                     }
                 }
             }
