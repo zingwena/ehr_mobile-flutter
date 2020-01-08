@@ -289,10 +289,10 @@ public class HtsService {
         return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndInvestigationIdAndResultId(personId, hivBloodInvestigationId, hivPositiveResultId) != null;
     }
 
-    public List<TestKitBatchIssue> getQueueOrWardTestKits(BinType binType, String testKitId) {
+    public List<TestKitBatchIssue> getQueueOrWardTestKits(BinType binType, String binId, String testKitId) {
 
         Log.d(TAG, "Retrieving testkit batches for : " + binType + "with testkit id : " + testKitId);
-        return ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, testKitId);
+        return ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
     }
 
 }
