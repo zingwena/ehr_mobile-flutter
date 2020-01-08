@@ -27,7 +27,6 @@ public interface RelationshipDao {
     @Query("DELETE FROM Relationship")
     void deleteAll();
 
-
     @Insert
     void saveOne(Relationship relationship);
 

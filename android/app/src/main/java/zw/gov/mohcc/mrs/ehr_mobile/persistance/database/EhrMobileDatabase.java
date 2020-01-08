@@ -9,6 +9,7 @@ import androidx.room.TypeConverters;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.ActivityStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.AgeGroupConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.CoupleCounsellingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsApproachConverter;
@@ -80,6 +81,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
+import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatch;
+import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtInitiationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
@@ -124,6 +127,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SampleDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryQuestionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SiteSettingDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitBatchDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitBatchIssueDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitTestLevelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestingPlanDao;
@@ -157,13 +162,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
         IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
-        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class}, version = 27, exportSchema = false)
+        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
+        TestKitBatch.class}, version = 28, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
         HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
         TypeOfContactConverter.class, TestLevelConverter.class, RegimenTypeConverter.class, AgeGroupConverter.class,
-        PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class})
+        PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -295,4 +301,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract QuestionDao questionDao();
 
     public abstract SexualHistoryQuestionDao sexualHistoryQuestionDao();
+
+    public abstract TestKitBatchDao testKitBatchDao();
+
+    public abstract TestKitBatchIssueDao testKitBatchIssueDao();
 }
