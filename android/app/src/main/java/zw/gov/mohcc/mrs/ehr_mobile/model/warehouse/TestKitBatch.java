@@ -2,9 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.warehouse;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
@@ -13,11 +15,13 @@ public class TestKitBatch extends BaseEntity {
 
     private String batchNumber;
 
+    @TypeConverters(DateConverter.class)
     private Date expiryDate;
 
     @Embedded(prefix = "testKit_")
     private NameCode testKit;
 
+    @TypeConverters(DateConverter.class)
     private Date dateReceived;
 
     @Embedded(prefix = "supplier_")
