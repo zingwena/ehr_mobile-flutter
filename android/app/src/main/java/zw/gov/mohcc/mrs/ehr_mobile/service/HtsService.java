@@ -16,6 +16,7 @@ import java.util.UUID;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
@@ -25,6 +26,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
@@ -285,6 +287,12 @@ public class HtsService {
         String hivBloodInvestigationId = "36069471-adee-11e7-b30f-3372a2d8551e";
         String hivPositiveResultId = "41d3c228-fd7d-11e6-9840-000c29c7ff5e";
         return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndInvestigationIdAndResultId(personId, hivBloodInvestigationId, hivPositiveResultId) != null;
+    }
+
+    public List<TestKitBatchIssue> getQueueOrWardTestKits(BinType binType, String testKitId) {
+
+        Log.d(TAG, "Retrieving testkit batches for : " + binType + "with testkit id : " + testKitId);
+        return ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, testKitId);
     }
 
 }
