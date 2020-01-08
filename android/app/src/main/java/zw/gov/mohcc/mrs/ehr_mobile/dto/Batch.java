@@ -38,4 +38,12 @@ public class Batch implements Serializable {
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
+
+    @Override
+    public String toString() {
+        return "Batch{" +
+                "batchNumber='" + batchNumber + '\'' +
+                ", expiryDate=" + expiryDate +
+                '}';
+    }
 }

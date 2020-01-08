@@ -17,6 +17,9 @@ public interface TestKitBatchIssueDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void save(TestKitBatchIssue testKitBatchIssue);
 
+    @Insert
+    void saveAll(List<TestKitBatchIssue> testKitBatchIssues);
+
     @Query("DELETE from TestKitBatchIssue")
     void deleteAll();
 

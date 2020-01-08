@@ -1,6 +1,6 @@
 query GetPatientsQuery{
 
-people(text: "", page: 0, sort: "", size: 500) {
+people(text: "", page: 0, sort: "", size: 15) {
         content {
             personId
             firstname

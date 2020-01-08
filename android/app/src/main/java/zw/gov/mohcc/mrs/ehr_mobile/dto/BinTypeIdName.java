@@ -48,4 +48,13 @@ public class BinTypeIdName implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "BinTypeIdName{" +
+                "binType=" + binType +
+                ", name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

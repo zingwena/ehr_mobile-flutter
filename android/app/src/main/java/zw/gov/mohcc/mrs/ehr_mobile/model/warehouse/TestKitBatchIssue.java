@@ -97,4 +97,18 @@ public class TestKitBatchIssue extends BaseEntity {
     public void setDetail(BinTypeIdName detail) {
         this.detail = detail;
     }
+
+    @Override
+    public String toString() {
+        return "TestKitBatchIssue{" +
+                "binType='" + binType + '\'' +
+                ", remaining=" + remaining +
+                ", statusAccepted=" + statusAccepted +
+                ", expiredStatus=" + expiredStatus +
+                ", batch=" + batch +
+                ", detail=" + detail +
+                ", quantity=" + quantity +
+                ", date=" + date +
+                '}';
+    }
 }
