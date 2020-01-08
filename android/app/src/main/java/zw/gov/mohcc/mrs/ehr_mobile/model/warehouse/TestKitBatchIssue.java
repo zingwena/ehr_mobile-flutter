@@ -7,8 +7,9 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.Batch;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.BinTypeIdName;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
@@ -16,57 +17,61 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 public class TestKitBatchIssue extends BaseEntity {
 
     @NonNull
-    private String testKitBatchId;
-
-    @Embedded(prefix = "bin_")
-    private NameCode bin;
-
-    @NonNull
-    @TypeConverters(BinTypeConverter.class)
-    private BinType binType;
-
-    @Embedded(prefix = "packSize_")
-    private NameCode packSize;
-
+    private String binType;
+    private Double remaining;
+    private Boolean statusAccepted;
+    private Boolean expiredStatus;
+    @Embedded(prefix = "batch_")
+    private Batch batch;
+    @Embedded(prefix = "detail_")
+    private BinTypeIdName detail;
     private Double quantity;
 
+    @TypeConverters(DateConverter.class)
     private Date date;
 
     public TestKitBatchIssue() {
     }
 
     @NonNull
-    public String getTestKitBatchId() {
-        return testKitBatchId;
-    }
-
-    public void setTestKitBatchId(@NonNull String testKitBatchId) {
-        this.testKitBatchId = testKitBatchId;
-    }
-
-    public NameCode getBin() {
-        return bin;
-    }
-
-    public void setBin(NameCode bin) {
-        this.bin = bin;
-    }
-
-    @NonNull
-    public BinType getBinType() {
+    public String getBinType() {
         return binType;
     }
 
-    public void setBinType(@NonNull BinType binType) {
+    public void setBinType(@NonNull String binType) {
         this.binType = binType;
     }
 
-    public NameCode getPackSize() {
-        return packSize;
+    public Double getRemaining() {
+        return remaining;
     }
 
-    public void setPackSize(NameCode packSize) {
-        this.packSize = packSize;
+    public void setRemaining(Double remaining) {
+        this.remaining = remaining;
+    }
+
+    public Boolean getStatusAccepted() {
+        return statusAccepted;
+    }
+
+    public void setStatusAccepted(Boolean statusAccepted) {
+        this.statusAccepted = statusAccepted;
+    }
+
+    public Boolean getExpiredStatus() {
+        return expiredStatus;
+    }
+
+    public void setExpiredStatus(Boolean expiredStatus) {
+        this.expiredStatus = expiredStatus;
+    }
+
+    public Batch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(Batch batch) {
+        this.batch = batch;
     }
 
     public Double getQuantity() {
@@ -83,5 +88,13 @@ public class TestKitBatchIssue extends BaseEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public BinTypeIdName getDetail() {
+        return detail;
+    }
+
+    public void setDetail(BinTypeIdName detail) {
+        this.detail = detail;
     }
 }

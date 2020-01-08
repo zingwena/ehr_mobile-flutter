@@ -81,7 +81,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
-import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatch;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtInitiationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
@@ -127,7 +126,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SampleDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryQuestionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SiteSettingDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitBatchDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitBatchIssueDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitTestLevelDao;
@@ -162,8 +160,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
         IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
-        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
-        TestKitBatch.class}, version = 28, exportSchema = false)
+        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class}, version = 30, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -180,7 +177,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "impiloMobile")
+                            EhrMobileDatabase.class, "impiloMobileDB")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
@@ -301,8 +298,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract QuestionDao questionDao();
 
     public abstract SexualHistoryQuestionDao sexualHistoryQuestionDao();
-
-    public abstract TestKitBatchDao testKitBatchDao();
 
     public abstract TestKitBatchIssueDao testKitBatchIssueDao();
 }

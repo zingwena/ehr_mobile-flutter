@@ -16,7 +16,24 @@ query QueueQuery{
             patients(text: "", page: 0, size: 1, sort: "") {
                 totalElements
             }
-
+            currentTestKits(text: "", page: 0, sort: "", size: 10000) {
+                content {
+                    batchIssueId
+                    binType
+                    quantity
+                    date
+                    remaining
+                    statusAccepted
+                    expiredStatus
+                    daysToExpiry
+                    totalQuantityReceived
+                    nearExpiry
+                    batch {
+                        batchNumber
+                        expiryDate
+                    }
+                }
+            }
         }
     }
 }
