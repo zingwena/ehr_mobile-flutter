@@ -1,8 +1,10 @@
 import 'dart:async' as prefix0;
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/dto/testkitbatchdto.dart';
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/model/testkitbatchissue.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
@@ -72,6 +74,11 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   List _results = List();
   List<Result> _resultsList = List();
   int testkitcount = 0 ;
+  String _testkitbatch_string;
+  List testkitbatches = List();
+  List _dropDownListTestKitBatches = List();
+  List<TestKitBatchIssue> _TestkitbatchesList = List();
+  String patientBinId;
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
@@ -82,10 +89,11 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       getLabInvestigation(widget.personId);
       getLabTest(widget.personId);
       getResults(widget.personId);
+      getPersonQueueOrWard(widget.personId);
       getTestName();
       getLabId();
       getHtsRecord(widget.personId);
-    date = DateTime.now();
+      date = DateTime.now();
 
     super.initState();
   }
@@ -151,6 +159,22 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     }
 
   }
+  Future<dynamic> getPersonQueueOrWard(String personId) async {
+
+    var binId_response;
+    try {
+      binId_response = await htsChannel.invokeMethod('getPatientQueueOrWard', personId);
+      debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE'+ binId_response);
+      setState(() {
+        this.patientBinId=binId_response;
+        debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE AFTER ASSIGNMENT'+ binId_response);
+
+      });
+    } catch (e) {
+      print("channel failure in getPerson queue or ward: '$e'");
+    }
+
+  }
 
   Future<void> getResults(String personId) async {
     String response;
@@ -193,6 +217,28 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   
   }
 
+  Future<dynamic>getTestKitBatches(String binType, String binId , String testKitId)async{
+    String testkitsresponse;
+    try{
+      TestKitBatchDto testKitBatchDto = new TestKitBatchDto(binType, binId, testKitId);
+      testkitsresponse = await htsChannel.invokeMethod('getTestKitBatches', jsonEncode(testKitBatchDto));
+      debugPrint('ggggggggggggggggg testkit batches returned'+ testkitsresponse);
+      setState(() {
+        _testkitbatch_string = testkitsresponse;
+        testkitbatches = jsonDecode(_testkitbatch_string);
+        _dropDownListTestKitBatches = TestKitBatchIssue.mapFromJson(testkitbatches);
+        _dropDownListTestKitBatches.forEach((e){
+          _TestkitbatchesList.add(e);
+        });
+        debugPrint('ggggggggggggggggg testkit batches after assignment'+ _TestkitbatchesList.toString());
+      });
+
+    }catch(e){
+      print("Exception thrown in getTestKitBatches method in flutter: '$e'");
+
+
+    }
+  }
 Future<dynamic> getTestKitsByCount(int count) async {
 
   try {
@@ -274,6 +320,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
           testKitobj.name = e.name;
 
         }
+        getTestKitBatches('QUEUE',patientBinId, testKitobj.code);
       });
 
     });
