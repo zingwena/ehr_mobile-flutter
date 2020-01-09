@@ -184,11 +184,7 @@ public class PatientsApolloClient {
                                     List<QueueQuery.Content1> batches = queueData.currentTestKits().content();
                                     Log.d("QUEUE QUERY", "Queue Data here " + batches);
                                     Log.d("QUEUE QUERY", "Facility details here " + facilityQueue);
-                                    int count = 0;
                                     for (QueueQuery.Content1 batch : batches) {
-                                        if (batch.binType().equalsIgnoreCase("WARD")) {
-                                            continue;
-                                        }
                                         TestKitBatchIssue testKitBatchIssue = new TestKitBatchIssue();
                                         testKitBatchIssue.setBatch(
                                                 new Batch(batch.batch().batchNumber(), getDateFromString(batch.batch().expiryDate()),
@@ -247,22 +243,20 @@ public class PatientsApolloClient {
 
                                 );
 
-                                /*List<TestKitBatchIssue> batchIssues = new ArrayList<>();
+                                List<TestKitBatchIssue> batchIssues = new ArrayList<>();
                                 if (wardData.currentTestKits() != null || (wardData.currentTestKits().content() != null
                                         || !wardData.currentTestKits().content().isEmpty())) {
 
                                     List<WardQuery.Content1> batches = wardData.currentTestKits().content();
                                     Log.d("JUDGE", "The message here " + batches);
                                     for (WardQuery.Content1 batch : batches) {
-                                        if (batch.binType().equalsIgnoreCase("QUEUE")) {
-                                            continue;
-                                        }
                                         TestKitBatchIssue testKitBatchIssue = new TestKitBatchIssue();
-                                        testKitBatchIssue.setBatch(new Batch(batch.batch().batchNumber(), getDateFromString(batch.batch().expiryDate())));
-                                        testKitBatchIssue.setBinType(batch.binType());
+                                        testKitBatchIssue.setBatch(
+                                                new Batch(batch.batch().batchNumber(), getDateFromString(batch.batch().expiryDate()),
+                                                        batch.batch().testKit().id(), batch.batch().testKit().name()));
                                         testKitBatchIssue.setDate(getDateFromString(batch.date()));
-                                        testKitBatchIssue.setDetail(new BinTypeIdName(BinType.WARD,
-                                                facilityWard.getFacility().getName(), facilityWard.getFacility().getCode()));
+                                        testKitBatchIssue.setDetail(new BinTypeIdName(BinType.QUEUE,
+                                                facilityWard.getWard().getName(), facilityWard.getWard().getCode()));
                                         testKitBatchIssue.setExpiredStatus(batch.expiredStatus());
                                         testKitBatchIssue.setQuantity(batch.quantity());
                                         testKitBatchIssue.setRemaining(batch.remaining());
@@ -270,9 +264,9 @@ public class PatientsApolloClient {
                                         testKitBatchIssue.setId(batch.batchIssueId());
                                         batchIssues.add(testKitBatchIssue);
                                     }
-                                }*/
+                                }
 
-                                siteService.saveFacilityWard(facilityWard, null);
+                                siteService.saveFacilityWard(facilityWard, batchIssues);
 
 
                             } catch (Exception e) {

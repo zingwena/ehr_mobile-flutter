@@ -37,7 +37,7 @@ public class SiteService {
         Log.d(TAG, "Facility Queue State : " + facilityQueue);
         Log.d(TAG, "Testkit Batch Issue State : " + testKitBatchIssues);
         ehrMobileDatabase.facilityQueueDao().saveOne(facilityQueue);
-        ehrMobileDatabase.testKitBatchIssueDao().save(testKitBatchIssues.get(0));
+        ehrMobileDatabase.testKitBatchIssueDao().saveAll(testKitBatchIssues);
         Log.d(TAG,"Facility queue and testkit batch saved successifully");
     }
 
@@ -48,7 +48,7 @@ public class SiteService {
         Log.d(TAG, "Facility Ward State : " + facilityWard);
         Log.d(TAG, "Testkit Batch Issue State : " + testKitBatchIssues);
         ehrMobileDatabase.facilityWardDao().saveOne(facilityWard);
-        //ehrMobileDatabase.testKitBatchIssueDao().saveAll(testKitBatchIssues);
+        ehrMobileDatabase.testKitBatchIssueDao().saveAll(testKitBatchIssues);
         Log.d(TAG,"Facility ward and testkit batch saved successifully");
     }
 }
