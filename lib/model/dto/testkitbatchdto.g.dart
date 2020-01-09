@@ -14,8 +14,9 @@ TestKitBatchDto _$TestKitBatchDtoFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TestKitBatchDtoToJson(TestKitBatchDto instance) => <String, dynamic>{
-  'binType': instance.binType,
-  'binId': instance.binId,
-  'testKitId': instance.testKitId,
-};
+Map<String, dynamic> _$TestKitBatchDtoToJson(TestKitBatchDto instance) =>
+    <String, dynamic>{
+      'binType': instance.binType,
+      'binId': instance.binId,
+      'testKitId': instance.testKitId,
+    };

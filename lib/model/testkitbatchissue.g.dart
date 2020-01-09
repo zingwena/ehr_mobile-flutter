@@ -9,7 +9,7 @@ part of 'testkitbatchissue.dart';
 TestKitBatchIssue _$TestKitBatchIssueFromJson(Map<String, dynamic> json) {
   return TestKitBatchIssue(
     json['id'] as String,
-    json['remaining'] as double,
+    (json['remaining'] as num)?.toDouble(),
     json['statusAccepted'] as bool,
     json['expiredStatus'] as bool,
     json['batch'] == null
@@ -18,7 +18,7 @@ TestKitBatchIssue _$TestKitBatchIssueFromJson(Map<String, dynamic> json) {
     json['detail'] == null
         ? null
         : BinTypeIdName.fromJson(json['detail'] as Map<String, dynamic>),
-      json['quantity'] as double,
+    (json['quantity'] as num)?.toDouble(),
     const CustomDateTimeConverter().fromJson(json['date'] as String),
 
   );
@@ -29,10 +29,10 @@ Map<String, dynamic> _$TestKitBatchIssueToJson(TestKitBatchIssue instance) =>
       'id': instance.id,
       'remaining': instance.remaining,
       'statusAccepted': instance.statusAccepted,
-       'expiredStatus': instance.expiredStatus,
-      'batch': instance.batch,
-      'detail': instance.detail,
+      'expiredStatus': instance.expiredStatus,
+      'batch': instance.batch?.toJson(),
+      'detail': instance.detail?.toJson(),
       'quantity': instance.quantity,
-      'dateOfHivTest': const CustomDateTimeConverter().toJson(instance.date),
+      'date': const CustomDateTimeConverter().toJson(instance.date),
 
     };

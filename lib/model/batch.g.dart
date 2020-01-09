@@ -22,7 +22,7 @@ Map<String, dynamic> _$BatchToJson(
     Batch instance) =>
     <String, dynamic>{
       'batchNumber': instance.batchNumber,
-      'expiryDate': instance.expiryDate,
+      'expiryDate': const CustomDateTimeConverter().toJson(instance.expiryDate),
       'textKitId': instance.textKitId,
       'testKitName': instance.testKitName,
     };
