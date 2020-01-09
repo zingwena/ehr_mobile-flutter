@@ -38,6 +38,8 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     @Embedded(prefix = "testkit_")
     @NonNull
     private NameCode testkit;
+    @NonNull
+    private String batchIssueId;
 
     public String getVisitId() {
         return visitId;
@@ -87,6 +89,15 @@ public class LaboratoryInvestigationTest extends BaseEntity {
         this.testkit = testkit;
     }
 
+    @NonNull
+    public String getBatchIssueId() {
+        return batchIssueId;
+    }
+
+    public void setBatchIssueId(@NonNull String batchIssueId) {
+        this.batchIssueId = batchIssueId;
+    }
+
     @Override
     public String toString() {
         return "LaboratoryInvestigationTest{" +
@@ -96,6 +107,7 @@ public class LaboratoryInvestigationTest extends BaseEntity {
                 ", visitId='" + visitId + '\'' +
                 ", result='" + result.toString() + '\'' +
                 ", testkitId='" + testkit + '\'' +
+                ", batchIssueId='" + batchIssueId + '\'' +
                 '}';
     }
 }

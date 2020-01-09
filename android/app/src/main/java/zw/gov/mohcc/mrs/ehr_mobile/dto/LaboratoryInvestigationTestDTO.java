@@ -19,13 +19,16 @@ public class LaboratoryInvestigationTestDTO implements Serializable {
     private NameCode testkit;
     @NonNull
     private String investigationId;
+    @NonNull
+    private String batchIssueId;
 
-    public LaboratoryInvestigationTestDTO(@NonNull String personId, @NonNull String visitId, @NonNull NameCode result, @NonNull NameCode testkit, @NonNull String investigationId) {
+    public LaboratoryInvestigationTestDTO(@NonNull String personId, @NonNull String visitId, @NonNull NameCode result, @NonNull NameCode testkit, @NonNull String investigationId, @NonNull String batchIssueId) {
         this.personId = personId;
         this.visitId = visitId;
         this.result = result;
         this.testkit = testkit;
         this.investigationId = investigationId;
+        this.batchIssueId = batchIssueId;
     }
 
     @NonNull
@@ -71,6 +74,15 @@ public class LaboratoryInvestigationTestDTO implements Serializable {
 
     public void setInvestigationId(@NonNull String investigationId) {
         this.investigationId = investigationId;
+    }
+
+    @NonNull
+    public String getBatchIssueId() {
+        return batchIssueId;
+    }
+
+    public void setBatchIssueId(@NonNull String batchIssueId) {
+        this.batchIssueId = batchIssueId;
     }
 
     public InvestigationDTO get(LaboratoryInvestigationTestDTO dto) {
