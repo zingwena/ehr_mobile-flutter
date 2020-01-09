@@ -16,10 +16,11 @@ class LaboratoryInvestigationTest{
    String visitId;
    TestKit testkit;
    String personId;
+   String batchIssueId;
 
 
    LaboratoryInvestigationTest(this.id, this.laboratoryInvestigationId,
-       this.startDate, this.endDate, this.result, this.visitId, this.testkit, this.startTime, this.endTime, this.personId);
+       this.startDate, this.endDate, this.result, this.visitId, this.testkit, this.startTime, this.endTime, this.personId, this.batchIssueId);
 
    factory LaboratoryInvestigationTest.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestFromJson(json);
 

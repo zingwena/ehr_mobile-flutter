@@ -80,6 +80,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   List _dropDownListTestKitBatches = List();
   List<TestKitBatchIssue> _TestkitbatchesList = List();
   String patientBinId;
+  String batchIssueId;
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
@@ -332,6 +333,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       _testKitBatch = value;
       _TestkitbatchesList.forEach((e){
         if(value == _TestkitbatchesList.indexOf(e)){
+          batchIssueId = e.id;
 
 
         }
@@ -712,7 +714,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                       widget.visitId,
                                                       labInvestId,
                                                       null, null,
-                                                      result, widget.visitId, testKitobj, null, null, widget.personId);
+                                                      result, widget.visitId, testKitobj, null, null, widget.personId, batchIssueId);
 
                                                   saveLabInvestigationTest(
                                                       labInvestTest);

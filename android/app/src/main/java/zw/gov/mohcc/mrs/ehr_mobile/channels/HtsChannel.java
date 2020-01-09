@@ -235,6 +235,7 @@ public class HtsChannel {
 
                             try {
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
+                                Log.d(TAG, "Lab invest test passed to android #########"+ labInvestTest.toString());
                                 String labInvestigationTestId = htsService.processTestResults(labInvestTest);
                                 result.success(labInvestigationTestId);
                             } catch (Exception e) {
