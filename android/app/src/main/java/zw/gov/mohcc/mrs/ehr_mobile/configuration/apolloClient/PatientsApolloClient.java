@@ -147,7 +147,7 @@ public class PatientsApolloClient {
 
     private static Date getDateFromString(String date) {
         try {
-            Date dateOfBirth = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
+            return new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
         } catch (Exception e) {
             Log.d("Apollo Client", "Error occurred converting string to date :" + e.getMessage());
         }
