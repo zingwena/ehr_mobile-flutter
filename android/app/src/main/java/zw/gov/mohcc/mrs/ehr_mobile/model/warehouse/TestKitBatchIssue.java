@@ -9,6 +9,8 @@ import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.Batch;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.BinTypeIdName;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
@@ -16,19 +18,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 @Entity
 public class TestKitBatchIssue extends BaseEntity {
 
-    @NonNull
-    private String testKitBatchId;
-
-    @Embedded(prefix = "bin_")
-    private NameCode bin;
-
-    @NonNull
-    @TypeConverters(BinTypeConverter.class)
-    private BinType binType;
-
-    @Embedded(prefix = "packSize_")
-    private NameCode packSize;
-
+    private Double remaining;
+    private Boolean statusAccepted;
+    private Boolean expiredStatus;
+    @Embedded(prefix = "batch_")
+    private Batch batch;
+    @Embedded(prefix = "detail_")
+    private BinTypeIdName detail;
     private Double quantity;
 
     @TypeConverters(DateConverter.class)
@@ -37,38 +33,36 @@ public class TestKitBatchIssue extends BaseEntity {
     public TestKitBatchIssue() {
     }
 
-    @NonNull
-    public String getTestKitBatchId() {
-        return testKitBatchId;
+    public Double getRemaining() {
+        return remaining;
     }
 
-    public void setTestKitBatchId(@NonNull String testKitBatchId) {
-        this.testKitBatchId = testKitBatchId;
+    public void setRemaining(Double remaining) {
+        this.remaining = remaining;
     }
 
-    public NameCode getBin() {
-        return bin;
+    public Boolean getStatusAccepted() {
+        return statusAccepted;
     }
 
-    public void setBin(NameCode bin) {
-        this.bin = bin;
+    public void setStatusAccepted(Boolean statusAccepted) {
+        this.statusAccepted = statusAccepted;
     }
 
-    @NonNull
-    public BinType getBinType() {
-        return binType;
+    public Boolean getExpiredStatus() {
+        return expiredStatus;
     }
 
-    public void setBinType(@NonNull BinType binType) {
-        this.binType = binType;
+    public void setExpiredStatus(Boolean expiredStatus) {
+        this.expiredStatus = expiredStatus;
     }
 
-    public NameCode getPackSize() {
-        return packSize;
+    public Batch getBatch() {
+        return batch;
     }
 
-    public void setPackSize(NameCode packSize) {
-        this.packSize = packSize;
+    public void setBatch(Batch batch) {
+        this.batch = batch;
     }
 
     public Double getQuantity() {
@@ -85,5 +79,26 @@ public class TestKitBatchIssue extends BaseEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public BinTypeIdName getDetail() {
+        return detail;
+    }
+
+    public void setDetail(BinTypeIdName detail) {
+        this.detail = detail;
+    }
+
+    @Override
+    public String toString() {
+        return "TestKitBatchIssue{" +
+                "remaining=" + remaining +
+                ", statusAccepted=" + statusAccepted +
+                ", expiredStatus=" + expiredStatus +
+                ", batch=" + batch +
+                ", detail=" + detail +
+                ", quantity=" + quantity +
+                ", date=" + date +
+                '}';
     }
 }

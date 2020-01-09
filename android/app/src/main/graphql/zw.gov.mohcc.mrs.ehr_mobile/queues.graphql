@@ -1,6 +1,6 @@
 query QueueQuery{
 
-    queues(text: "", page: 0, sort: "", size: 10000) {
+    queues(text: "", page: 0, sort: "", size: 100) {
         content {
             queueId
             queue {
@@ -16,7 +16,28 @@ query QueueQuery{
             patients(text: "", page: 0, size: 1, sort: "") {
                 totalElements
             }
-
+            currentTestKits(text: "", page: 0, sort: "", size: 100) {
+                content {
+                    batchIssueId
+                    binType
+                    quantity
+                    date
+                    remaining
+                    statusAccepted
+                    expiredStatus
+                    daysToExpiry
+                    totalQuantityReceived
+                    nearExpiry
+                    batch {
+                        batchNumber
+                        expiryDate
+                        testKit{
+                            id
+                            name
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +24,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.GetPatientsQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.QueueQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.SiteQuery;
 import zw.gov.mohcc.mrs.ehr_mobile.WardQuery;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.Batch;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.BinTypeIdName;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
@@ -29,7 +34,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.SiteSetting;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.SiteService;
 import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 
@@ -96,12 +103,7 @@ public class PatientsApolloClient {
                                 //person.setNationalityId(null);
                                 person.setOccupationId(patientData.occupation() != null && StringUtils.isNoneBlank(patientData.occupation().id())
                                         ? patientData.occupation().id() : null);
-                                try {
-                                    Date dateOfBirth = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(patientData.birthdate());
-                                    person.setBirthDate(dateOfBirth);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                person.setBirthDate(getDateFromString(patientData.birthdate()));
 
 
                                 if (numberOfIdentifications > 0) {
@@ -143,8 +145,18 @@ public class PatientsApolloClient {
         );
     }
 
+    private static Date getDateFromString(String date) {
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
+        } catch (Exception e) {
+            Log.d("Apollo Client", "Error occurred converting string to date :" + e.getMessage());
+        }
+        return null;
+    }
+
     public static void getFacilityQueuesFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
         System.out.println("baseUrl = " + baseUrl);
+        SiteService siteService = new SiteService(ehrMobileDatabase);
         PatientsApolloClient.getApolloClient(baseUrl).query(
 
 
@@ -165,8 +177,31 @@ public class PatientsApolloClient {
                                         new NameCode(queueData.department().id(), queueData.department().name())
 
                                 );
+                                List<TestKitBatchIssue> batchIssues = new ArrayList<>();
+                                if (queueData.currentTestKits() != null || (queueData.currentTestKits().content() != null
+                                        || !queueData.currentTestKits().content().isEmpty())) {
 
-                                ehrMobileDatabase.facilityQueueDao().saveOne(facilityQueue);
+                                    List<QueueQuery.Content1> batches = queueData.currentTestKits().content();
+                                    Log.d("QUEUE QUERY", "Queue Data here " + batches);
+                                    Log.d("QUEUE QUERY", "Facility details here " + facilityQueue);
+                                    for (QueueQuery.Content1 batch : batches) {
+                                        TestKitBatchIssue testKitBatchIssue = new TestKitBatchIssue();
+                                        testKitBatchIssue.setBatch(
+                                                new Batch(batch.batch().batchNumber(), getDateFromString(batch.batch().expiryDate()),
+                                                        batch.batch().testKit().id(), batch.batch().testKit().name()));
+                                        testKitBatchIssue.setDate(getDateFromString(batch.date()));
+                                        testKitBatchIssue.setDetail(new BinTypeIdName(BinType.QUEUE,
+                                                facilityQueue.getQueue().getName(), facilityQueue.getQueue().getCode()));
+                                        testKitBatchIssue.setExpiredStatus(batch.expiredStatus());
+                                        testKitBatchIssue.setQuantity(batch.quantity());
+                                        testKitBatchIssue.setRemaining(batch.remaining());
+                                        testKitBatchIssue.setStatusAccepted(batch.statusAccepted());
+                                        testKitBatchIssue.setId(batch.batchIssueId());
+                                        batchIssues.add(testKitBatchIssue);
+                                    }
+                                }
+
+                                siteService.saveFacilityQueue(facilityQueue, batchIssues);
 
 
                             } catch (Exception e) {
@@ -186,6 +221,7 @@ public class PatientsApolloClient {
 
     public static void getFacilityWardsFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
         System.out.println("baseUrl = " + baseUrl);
+        SiteService siteService = new SiteService(ehrMobileDatabase);
         PatientsApolloClient.getApolloClient(baseUrl).query(
 
 
@@ -207,7 +243,30 @@ public class PatientsApolloClient {
 
                                 );
 
-                                ehrMobileDatabase.facilityWardDao().saveOne(facilityWard);
+                                List<TestKitBatchIssue> batchIssues = new ArrayList<>();
+                                if (wardData.currentTestKits() != null || (wardData.currentTestKits().content() != null
+                                        || !wardData.currentTestKits().content().isEmpty())) {
+
+                                    List<WardQuery.Content1> batches = wardData.currentTestKits().content();
+                                    Log.d("JUDGE", "The message here " + batches);
+                                    for (WardQuery.Content1 batch : batches) {
+                                        TestKitBatchIssue testKitBatchIssue = new TestKitBatchIssue();
+                                        testKitBatchIssue.setBatch(
+                                                new Batch(batch.batch().batchNumber(), getDateFromString(batch.batch().expiryDate()),
+                                                        batch.batch().testKit().id(), batch.batch().testKit().name()));
+                                        testKitBatchIssue.setDate(getDateFromString(batch.date()));
+                                        testKitBatchIssue.setDetail(new BinTypeIdName(BinType.QUEUE,
+                                                facilityWard.getWard().getName(), facilityWard.getWard().getCode()));
+                                        testKitBatchIssue.setExpiredStatus(batch.expiredStatus());
+                                        testKitBatchIssue.setQuantity(batch.quantity());
+                                        testKitBatchIssue.setRemaining(batch.remaining());
+                                        testKitBatchIssue.setStatusAccepted(batch.statusAccepted());
+                                        testKitBatchIssue.setId(batch.batchIssueId());
+                                        batchIssues.add(testKitBatchIssue);
+                                    }
+                                }
+
+                                siteService.saveFacilityWard(facilityWard, batchIssues);
 
 
                             } catch (Exception e) {

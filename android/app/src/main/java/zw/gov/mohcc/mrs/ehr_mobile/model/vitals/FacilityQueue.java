@@ -65,4 +65,14 @@ public class FacilityQueue extends BaseEntity {
     public void setDepartment(NameCode department) {
         this.department = department;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("FacilityQueue{" +
+                "queue=" + queue +
+                ", facility=" + facility +
+                ", beds=" + beds +
+                ", department=" + department +
+                '}');
+    }
 }

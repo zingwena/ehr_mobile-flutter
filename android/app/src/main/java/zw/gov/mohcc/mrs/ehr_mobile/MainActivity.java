@@ -421,11 +421,13 @@ public class MainActivity extends FlutterActivity {
 
     private void getFacilityQueues(String baseUrl) {
         ehrMobileDatabase.facilityQueueDao().deleteAll();
+        ehrMobileDatabase.testKitBatchIssueDao().deleteAll();
         PatientsApolloClient.getFacilityQueuesFromEhr(ehrMobileDatabase, baseUrl);
     }
 
     private void getFacilityWards(String baseUrl) {
         ehrMobileDatabase.facilityWardDao().deleteAll();
+        ehrMobileDatabase.testKitBatchIssueDao().deleteAll();
         PatientsApolloClient.getFacilityWardsFromEhr(ehrMobileDatabase, baseUrl);
     }
 
