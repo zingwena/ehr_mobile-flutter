@@ -49,6 +49,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   HtsRegistration htsRegistration;
   int _result = 0;
   int _testKit = -1;
+  int _testKitBatch = -1;
   int testCount=0;
   String id ="1";
   String result_string;
@@ -326,6 +327,19 @@ Future<dynamic> getTestKitsByCount(int count) async {
     });
 
   }
+  void _handleTestKitBatchChange(int value) {
+    setState(() {
+      _testKitBatch = value;
+      _TestkitbatchesList.forEach((e){
+        if(value == _TestkitbatchesList.indexOf(e)){
+
+
+        }
+      });
+
+    });
+
+  }
 
   Widget getTestKIts(List<TestKit> testkits)
   {
@@ -345,6 +359,29 @@ Future<dynamic> getTestKitsByCount(int count) async {
       ],
        ),).toList());
   }
+
+  Widget getTestKitsBatchesLabels(List<TestKitBatchIssue> testkitbatchissues)
+  {
+    return new Row(children: testkitbatchissues.map((item) =>
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+               new FlatButton(
+                   color: Colors.blue,
+                   onPressed: (){}, child:Column(children: <Widget>[Row(children: <Widget>[ Text(DateFormat("yyyy/MM/dd").format(item.batch.expiryDate), style: TextStyle(color: Colors.white, fontSize: 10),)],),
+                 Row(children: <Widget>[ Text(item.remaining.toString(), style: TextStyle(color: Colors.white, fontSize: 10),)],)],)) ,
+                 Radio(
+                    value: testkitbatchissues.indexOf(item),
+                    groupValue: _testKitBatch,
+                    activeColor: Colors.blue,
+                    onChanged: _handleTestKitBatchChange)
+
+              ],),
+          ],
+        ),).toList());
+  }
+
 
   void _handleResultChange(int value)  {
 
@@ -516,6 +553,30 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                       ),
                                     ),
                                     getTestKIts(_testkitslist),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                             Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Test Kit Batches',
+                                            style: TextStyle(
+                                              color: Colors.grey.shade600,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        width: 250,
+                                      ),
+                                    ),
+                                    getTestKitsBatchesLabels(_TestkitbatchesList),
                                   ],
                                 ),
                                 SizedBox(
