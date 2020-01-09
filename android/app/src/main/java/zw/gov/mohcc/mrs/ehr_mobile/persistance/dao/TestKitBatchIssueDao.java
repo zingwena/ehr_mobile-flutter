@@ -39,7 +39,7 @@ public interface TestKitBatchIssueDao {
     @Query("SELECT * FROM TestKitBatchIssue WHERE detail_binType=:binType and detail_id=:binId")
     List<TestKitBatchIssue> findByQueueOrWard(BinType binType, String binId);
 
-    @Query("SELECT * FROM TestKitBatchIssue WHERE (detail_binType=:binType and detail_id=:binId) and batch_textKitId=:testKitId")
+    @Query("SELECT * FROM TestKitBatchIssue WHERE (detail_binType=:binType and detail_id=:binId) and batch_textKitId=:testKitId order by batch_expiryDate ASC limit 3")
     List<TestKitBatchIssue> findByQueueOrWardAndTestKit(BinType binType, String binId, String testKitId);
 
     @Query("DELETE FROM TestKitBatchIssue where id=:id")
