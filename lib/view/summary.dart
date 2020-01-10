@@ -703,16 +703,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                   .only(
                                                                       top: 3.0),
                                                             ),
-                                                            /*
-                                                      Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: Text(
-                                                          'Recorded :' +
-                                                              '',
-                                                          style: TextStyle(
-                                                              fontSize: 13.0, color: Colors.black54),
-                                                        ),
-                                                      ),*/
+
                                                             Divider(
                                                               height: 10.0,
                                                               color: Colors.blue
@@ -723,23 +714,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                               color:
                                                                   Colors.blue,
                                                             ),
-
-                                                            /*       Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal:5.0),
-                                                              child: Text("Last HIV Result"),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                              child: Text("Positive"),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),*/
 
                                                             Row(
                                                               crossAxisAlignment:
@@ -960,20 +934,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                   .only(
                                                                       top: 3.0),
                                                             ),
-                                                            Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .topLeft,
-                                                              child: Text(
-                                                                'Recorded :' +
-                                                                    '',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13.0,
-                                                                    color: Colors
-                                                                        .black54),
-                                                              ),
-                                                            ),
+
                                                             Divider(
                                                               height: 10.0,
                                                               color: Colors.blue
@@ -1014,7 +975,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                           child:
                                                                               TextFormField(
                                                                             initialValue:
-                                                                                'T45G45',
+                                                                                patientSummaryDto.artDetails.artNumber,
                                                                             decoration:
                                                                                 InputDecoration(
                                                                               icon: Icon(Icons.confirmation_number, color: Colors.blue),
@@ -1024,19 +985,44 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                           ),
                                                                         ),
                                                                       ),
+                                                                      Expanded(
+                                                                        child:
+                                                                        Padding(
+                                                                          padding:
+                                                                          const EdgeInsets.only(right: 16.0),
+                                                                          child:
+                                                                          TextFormField(
+                                                                            initialValue:
+                                                                            DateFormat("yyyy/MM/dd").format( patientSummaryDto.artDetails.dateRegistered),
+                                                                            decoration:
+                                                                            InputDecoration(
+                                                                              icon: Icon(Icons.calendar_today, color: Colors.blue),
+                                                                              labelText: "Registration Date",
+                                                                              // hintText: "Sex"
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
                                                                     ],
-                                                                  ) /*:  Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: Text(
-                                                          'No Record',
-                                                          style: TextStyle(
-                                                              fontSize: 13.0, color: Colors.black54),
-                                                        ),
-                                                      )*/
+                                                                  )
                                                             ,
+                                                            patientSummaryDto ==
+                                                                null ||
+                                                                patientSummaryDto
+                                                                    .artDetails ==
+                                                                    null
+                                                                ?Center(
 
-
-                                                            Row(
+                                                              child: Text(
+                                                                'No Record',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                    13.0,
+                                                                    color:
+                                                                    Colors.black54),
+                                                              ),
+                                                            )
+                                                                :  Row(
                                                               children: <
                                                                   Widget>[
                                                                 Expanded(
@@ -1160,77 +1146,77 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                     30.0),
                                                         child: Column(
                                                           mainAxisSize:
-                                                              MainAxisSize.max,
+                                                          MainAxisSize.max,
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           children: <Widget>[
                                                             // three line description
                                                             Container(
                                                               alignment:
-                                                                  Alignment
-                                                                      .topLeft,
+                                                              Alignment
+                                                                  .topLeft,
                                                               child: Text(
                                                                 'Investigations Overview',
                                                                 style:
-                                                                    TextStyle(
+                                                                TextStyle(
                                                                   fontSize:
-                                                                      16.0,
+                                                                  16.0,
                                                                   fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
+                                                                  FontStyle
+                                                                      .normal,
                                                                   color: Colors
                                                                       .black87,
                                                                 ),
                                                               ),
-                                                            ),
-                                                            Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 3.0),
                                                             ),
                                                             Divider(
                                                               height: 10.0,
                                                               color: Colors.blue
                                                                   .shade500,
                                                             ),
+                                                            Container(
+                                                              height: 2.0,
+                                                              color:
+                                                              Colors.blue,
+                                                            ),
                                                             Row(
-                                                              children: <
-                                                                  Widget>[
-                                                                patientSummaryDto == null || patientSummaryDto.investigations.isEmpty
-                                                                    ? Container(
-                                                                        alignment:
-                                                                            Alignment.topLeft,
-                                                                        child:
-                                                                            Text(
-                                                                          'No Record',
-                                                                          style: TextStyle(
-                                                                              fontSize: 13.0,
-                                                                              color: Colors.black54),
-                                                                        ),
-                                                                      )
-                                                                    : Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        padding: EdgeInsets.symmetric(
-                                                                            vertical:
-                                                                                0.0,
-                                                                            horizontal:
-                                                                                30.0),
-                                                                        child: DataTable(
-                                                                            columns: [
-                                                                              DataColumn(label: Text("Date")),
-                                                                              DataColumn(label: Text("Test Name")),
-                                                                              DataColumn(label: Text("Result")),
-                                                                            ],
-                                                                            rows: patientSummaryDto.investigations
-                                                                                .map((investigation) => DataRow(cells: [
-                                                                                      DataCell(Text(DateFormat("yyyy/MM/dd").format(investigation.testDate))),
-                                                                                      DataCell(Text(investigation.testName)),
-                                                                                      DataCell(Text(investigation.result)),
-                                                                                    ]))
-                                                                                .toList()),
-                                                                      ),
+                                                              children: <Widget>[
+                                                               Expanded(
+                                                                 child: patientSummaryDto == null || patientSummaryDto.investigations.isEmpty
+                                                                   ? Container(
+                                                                   alignment:
+                                                                   Alignment.topLeft,
+                                                                   child:
+                                                                   Center(child: Text(
+                                                                     'No Record',
+                                                                     style: TextStyle(
+                                                                         fontSize: 13.0,
+                                                                         color: Colors.black54),
+                                                                   ),)
+                                                               )
+                                                                   : Container(
+                                                                 width: double
+                                                                     .infinity,
+                                                                 padding: EdgeInsets.symmetric(
+                                                                     vertical:
+                                                                     0.0,
+                                                                     horizontal:
+                                                                     30.0),
+                                                                 child: DataTable(
+                                                                     columns: [
+                                                                       DataColumn(label: Text("Date")),
+                                                                       DataColumn(label: Text("Test Name")),
+                                                                       DataColumn(label: Text("Result")),
+                                                                     ],
+                                                                     rows: patientSummaryDto.investigations
+                                                                         .map((investigation) => DataRow(cells: [
+                                                                       DataCell(Text(DateFormat("yyyy/MM/dd").format(investigation.testDate))),
+                                                                       DataCell(Text(investigation.testName)),
+                                                                       DataCell(Text(investigation.result)),
+                                                                     ]))
+                                                                         .toList()),
+                                                               ),)
                                                               ],
                                                             ),
 
@@ -1242,18 +1228,9 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             Container(
                                                               height: 2.0,
                                                               color:
-                                                                  Colors.blue,
+                                                              Colors.blue,
                                                             ),
-                                                            Divider(
-                                                              height: 10.0,
-                                                              color: Colors.blue
-                                                                  .shade500,
-                                                            ),
-                                                            Container(
-                                                              height: 2.0,
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
+
                                                           ],
                                                         ),
                                                       ),

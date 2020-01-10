@@ -21,6 +21,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.TestKitBatchDto;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
@@ -37,6 +39,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
+import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
@@ -229,6 +233,7 @@ public class HtsChannel {
 
                             try {
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
+                                Log.d(TAG, "Lab invest test passed to android #########"+ labInvestTest.toString());
                                 String labInvestigationTestId = htsService.processTestResults(labInvestTest);
                                 result.success(labInvestigationTestId);
                             } catch (Exception e) {
@@ -363,6 +368,35 @@ public class HtsChannel {
                             }
 
                         }
+                        if (methodCall.method.equals("getPatientQueueOrWard")) {
+
+                            try {
+                                PatientQueue patientQueue = visitService.getPatientQueue(arguments);
+                                String binId = patientQueue.getQueue().getCode();
+                                result.success(binId);
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+
+                        }
+                        if (methodCall.method.equals("getTestKitBatches")) {
+
+                            try {
+                                TestKitBatchDto testKitBatchDto = gson.fromJson(arguments, TestKitBatchDto.class);
+                                Log.d(TAG, "TestkitBatchDto from flutter"+testKitBatchDto.getBinType()+">>>>>>>"+ testKitBatchDto.getBinId()+">>>>>>>>>>>>"+ testKitBatchDto.getTestKitId());
+                                List<TestKitBatchIssue>testKitBatchIssueList = htsService.getQueueOrWardTestKits(testKitBatchDto.getBinType(), testKitBatchDto.getBinId(), testKitBatchDto.getTestKitId());
+                                Log.d(TAG, "Testkit batches retrieved from htsservice %%%%%%%%%%%%%%%%%%%%%%%% in android"+testKitBatchIssueList);
+                                String testkitsbatchissues_string = gson.toJson(testKitBatchIssueList);
+                                result.success(testkitsbatchissues_string);
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+
+                        }
+
+
                         if (methodCall.method.equals("getLabInvestigation")) {
 
                             try {

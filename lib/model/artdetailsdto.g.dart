@@ -17,7 +17,7 @@ ArtDetailsDto _$ArtDetailsDtoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ArtDetailsDtoToJson(ArtDetailsDto instance) =>
     <String, dynamic>{
-      'dateRegistered': instance.dateRegistered?.toIso8601String(),
+      'dateRegistered': instance.dateRegistered,
       'artNumber': instance.artNumber,
       'whoStage': instance.whoStage,
       'arvRegimen': instance.arvRegimen,

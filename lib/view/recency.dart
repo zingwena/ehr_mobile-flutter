@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/dto/testkitbatchdto.dart';
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/model/testkitbatchissue.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
@@ -51,6 +53,7 @@ class _Recency extends State<RecencyTest> {
   int _result = -1;
   int _testKit = -1;
   int testCount=0;
+  int _testKitBatch = -1;
   String id ="1";
   String result_string;
   String labId;
@@ -95,6 +98,12 @@ class _Recency extends State<RecencyTest> {
   List __results = List();
   List _radiobuttonResults = List();
   List<Result> _resultList = List();
+  String _testkitbatch_string;
+  List testkitbatches = List();
+  List _dropDownListTestKitBatches = List();
+  List<TestKitBatchIssue> _TestkitbatchesList = List();
+  String patientBinId;
+  String batchIssueId;
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
   @override
@@ -264,6 +273,28 @@ class _Recency extends State<RecencyTest> {
 
 
   }
+  Future<dynamic>getTestKitBatches(String binType, String binId , String testKitId)async{
+    String testkitsresponse;
+    try{
+      TestKitBatchDto testKitBatchDto = new TestKitBatchDto(binType, binId, testKitId);
+      testkitsresponse = await htsChannel.invokeMethod('getTestKitBatches', jsonEncode(testKitBatchDto));
+      debugPrint('ggggggggggggggggg testkit batches returned'+ testkitsresponse);
+      setState(() {
+        _testkitbatch_string = testkitsresponse;
+        testkitbatches = jsonDecode(_testkitbatch_string);
+        _dropDownListTestKitBatches = TestKitBatchIssue.mapFromJson(testkitbatches);
+        _dropDownListTestKitBatches.forEach((e){
+          _TestkitbatchesList.add(e);
+        });
+        debugPrint('ggggggggggggggggg testkit batches after assignment'+ _TestkitbatchesList.toString());
+      });
+
+    }catch(e){
+      print("Exception thrown in getTestKitBatches method in flutter: '$e'");
+
+
+    }
+  }
 
   void _handleTestKitChange(int value) {
     setState(() {
@@ -274,9 +305,25 @@ class _Recency extends State<RecencyTest> {
           testKitobj.name = e.name;
 
         }
+        getTestKitBatches('QUEUE',patientBinId, testKitobj.code);
+
       });
     });
 
+
+  }
+  void _handleTestKitBatchChange(int value) {
+    setState(() {
+      _testKitBatch = value;
+      _TestkitbatchesList.forEach((e){
+        if(value == _TestkitbatchesList.indexOf(e)){
+          batchIssueId = e.id;
+
+
+        }
+      });
+
+    });
 
   }
 
@@ -441,6 +488,30 @@ class _Recency extends State<RecencyTest> {
                                 SizedBox(
                                   height: 20,
                                 ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Test Kit Batches',
+                                            style: TextStyle(
+                                              color: Colors.grey.shade600,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        width: 250,
+                                      ),
+                                    ),
+                                    getTestKitsBatchesLabels(_TestkitbatchesList),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 Row(children: <Widget>[
                                   Text("Results"),
                                   SizedBox(width: 10.0),
@@ -482,7 +553,7 @@ class _Recency extends State<RecencyTest> {
                                                         widget.visitId,
                                                         labInvestId,
                                                         null, null,
-                                                        result, widget.visitId, testKitobj, null, null, widget.personId);
+                                                        result, widget.visitId, testKitobj, null, null, widget.personId, batchIssueId);
                                                     saveLabInvestigationTest(labInvestTest);
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
@@ -602,6 +673,30 @@ class _Recency extends State<RecencyTest> {
           ],
         ),).toList());
   }
+
+  Widget getTestKitsBatchesLabels(List<TestKitBatchIssue> testkitbatchissues)
+
+  {
+    return new Row(children: testkitbatchissues.map((item) =>
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                new FlatButton(
+                    color: Colors.blue,
+                    onPressed: (){}, child:Column(children: <Widget>[Row(children: <Widget>[ Text(DateFormat("yyyy/MM/dd").format(item.batch.expiryDate), style: TextStyle(color: Colors.white, fontSize: 10),)],),
+                  Row(children: <Widget>[ Text(item.remaining.toString(), style: TextStyle(color: Colors.white, fontSize: 10),)],)],)) ,
+                Radio(
+                    value: testkitbatchissues.indexOf(item),
+                    groupValue: _testKitBatch,
+                    activeColor: Colors.blue,
+                    onChanged: _handleTestKitBatchChange)
+
+              ],),
+          ],
+        ),).toList());
+  }
+
 
 
 
