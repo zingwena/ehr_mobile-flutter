@@ -17,6 +17,7 @@ class LaboratoryInvestigationTestTable extends BaseTable{
   String resultName;
   String testKitCode;
   String testKitName;
+  String batchIssueId;
 
   static LaboratoryInvestigationTestTable fromJson(Map map) {
     var labInvestigation = LaboratoryInvestigationTestTable();
@@ -33,6 +34,7 @@ class LaboratoryInvestigationTestTable extends BaseTable{
 
     labInvestigation.testKitCode=map['testKitCode'];
     labInvestigation.testKitCode=map['testKitCode'];
+    labInvestigation.batchIssueId=map['batchIssueId'];
 
     return labInvestigation;
   }
@@ -49,5 +51,6 @@ class LaboratoryInvestigationTestTable extends BaseTable{
   'resultName': resultName,
   'testKitCode': testKitCode,
   'testKitName': testKitName,
+    'batchIssueId':batchIssueId
   };
 }
