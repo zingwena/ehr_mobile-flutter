@@ -294,40 +294,6 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ],
                                                       ),
 
-                                                  /*    Container(
-                                                        padding:
-                                                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        width: double.infinity,
-                                                        child: OutlineButton(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.white,
-                                                          padding: const EdgeInsets.all(0.0),
-                                                          child: Container(
-                                                            width: double.infinity,
-                                                            padding: EdgeInsets.symmetric(
-                                                                vertical: 8.0, horizontal: 30.0),
-                                                            child: DropdownButton(
-                                                              isExpanded: true,
-                                                              hint: Text('Select Art Combination Regimen', style: TextStyle( fontSize: 15,
-                                                                color: Colors.black,
-                                                              ),),
-                                                              icon: Icon(Icons.keyboard_arrow_down),
-                                                              iconEnabledColor: Colors.black,
-                                                              value: _currentArvCombinationRegimen,
-                                                              items: _dropDownMenuItemsArvCombinationRegimen,
-                                                              onChanged: changedDropDownItemArvCombinationRegimen,
-                                                            ),
-                                                          ),
-                                                          borderSide: BorderSide(
-                                                            color: Colors.blue, //Color of the border
-                                                            style: BorderStyle.solid, //Style of the border
-                                                            width: 2.0, //width of the border
-                                                          ),
-                                                          onPressed: () {},
-                                                        ),
-                                                      ), */
-
                                                       Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                         width: double.infinity,
@@ -376,42 +342,6 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
-
-                                                    /*  Container(
-                                                        padding:
-                                                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        width: double.infinity,
-                                                        child: OutlineButton(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.white,
-                                                          padding: const EdgeInsets.all(0.0),
-                                                          child: Container(
-                                                            width: double.infinity,
-                                                            padding: EdgeInsets.symmetric(
-                                                                vertical: 8.0, horizontal: 30.0),
-                                                            child: DropdownButton(
-                                                              isExpanded: true,
-                                                              hint: Text('Reason',style: TextStyle( fontSize: 15,
-                                                                color: Colors.black,
-                                                              ),),
-                                                              icon: Icon(Icons.keyboard_arrow_down),
-                                                              iconEnabledColor: Colors.black,
-                                                              value: _currentArtReason,
-                                                              items: _dropDownMenuItemsArtReason,
-                                                              onChanged: changedDropDownItemArtReason,
-
-
-                                                            ),
-                                                          ),
-                                                          borderSide: BorderSide(
-                                                            color: Colors.blue, //Color of the border
-                                                            style: BorderStyle.solid, //Style of the border
-                                                            width: 2.0, //width of the border
-                                                          ),
-                                                          onPressed: () {},
-                                                        ),
-                                                      ), */
 
                                                      Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
