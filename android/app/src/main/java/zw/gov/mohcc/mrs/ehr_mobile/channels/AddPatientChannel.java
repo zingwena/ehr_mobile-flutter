@@ -71,7 +71,7 @@ public class AddPatientChannel {
                 }
                 if (methodCall.method.equals("getPatientMaritalStatus")) {
                     String code = methodCall.arguments();
-                    String name = ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
+                    String name = ehrMobileDatabase.maritalStateDao().findById(code).getName();
                     result.success(name);
                 }
 
@@ -82,12 +82,12 @@ public class AddPatientChannel {
                 }
                 if (methodCall.method.equals("getOccupation")) {
                     String code = methodCall.arguments();
-                    String name = ehrMobileDatabase.occupationDao().findById(code);
+                    String name = ehrMobileDatabase.occupationDao().findById(code).getName();
                     result.success(name);
                 }
                 if (methodCall.method.equals("getNationality")) {
                     String code = methodCall.arguments();
-                    String name = ehrMobileDatabase.nationalityDao().findById(code);
+                    String name = ehrMobileDatabase.nationalityDao().findById(code).getName();
                     result.success(name);
                 }
                 if (methodCall.method.equals("getAddress")) {
@@ -127,7 +127,7 @@ public class AddPatientChannel {
                 if (methodCall.method.equals("getPhonenumber")) {
                     String args = methodCall.arguments();
                     Log.i(TAG, "PATIENT ID FROM FLUTTER " + args);
-                    PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPatientId(args);
+                    PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPersonId(args);
 
                     String phoneNumber = "";
                     if (patientPhoneNumber != null) {

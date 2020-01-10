@@ -24,7 +24,7 @@ public interface OccupationDao {
     @Query("SELECT * FROM occupation ORDER BY name ASC")
     List<Occupation> findAll();
 
-    @Query("SELECT name FROM Occupation WHERE code=:id")
+    @Query("SELECT * FROM Occupation WHERE code=:id")
     Occupation findById(String id);
 
 }

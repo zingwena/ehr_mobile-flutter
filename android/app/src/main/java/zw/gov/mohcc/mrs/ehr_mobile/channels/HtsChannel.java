@@ -175,7 +175,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("reasonForNotIssuingResultOptions")) {
 
                             try {
-                                List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
+                                List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().findAll();
                                 String reasonForNotIssuingResultList = gson.toJson(reasonForNotIssuingResults);
                                 result.success(reasonForNotIssuingResultList);
                             } catch (Exception e) {

@@ -86,7 +86,7 @@ public class HtsService {
      * @return list of results
      */
     public List<Result> getInvestigationResults(String investigationId) {
-        return ehrMobileDatabase.resultDao().findById(
+        return ehrMobileDatabase.resultDao().findByIdsIn(
                 ehrMobileDatabase.investigationResultDao().findByInvestigationId(investigationId)
         );
     }

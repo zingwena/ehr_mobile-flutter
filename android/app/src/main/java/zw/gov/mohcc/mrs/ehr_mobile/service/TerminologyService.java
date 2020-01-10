@@ -57,7 +57,7 @@ public class TerminologyService {
     public void saveLaboratoryTests(List<LaboratoryTest> tests) {
 
         ehrMobileDatabase.laboratoryTestDao().saveAll(tests);
-        Log.d(TAG, "Saved laboratory tests : " + ehrMobileDatabase.laboratoryTestDao().getLaboratoryTests());
+        Log.d(TAG, "Saved laboratory tests : " + ehrMobileDatabase.laboratoryTestDao().findAll());
     }
 
     public void saveInvestigations(List<Investigation> investigations) {
@@ -128,7 +128,7 @@ public class TerminologyService {
     public void saveReasonForNotIssuingResultToDB(List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
 
         ehrMobileDatabase.reasonForNotIssuingResultDao().saveAll(reasonForNotIssuingResults);
-        Log.d(TAG, "Saved reason for not issuing results : " + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
+        Log.d(TAG, "Saved reason for not issuing results : " + ehrMobileDatabase.reasonForNotIssuingResultDao().findAll());
     }
 
     public void saveInvestigationResultsToDB(List<InvestigationResult> investigationResults) {

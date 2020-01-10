@@ -25,6 +25,6 @@ public interface NationalityDao {
     List<Nationality> findAll();
 
 
-    @Query("SELECT name FROM nationality WHERE code=:id")
+    @Query("SELECT * FROM nationality WHERE code=:id")
     Nationality findById(String id);
 }
