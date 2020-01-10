@@ -13,18 +13,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
 public interface OccupationDao {
 
     @Insert
-    void insertOccupations(List<Occupation> occupations);
+    void saveAll(List<Occupation> occupations);
 
     @Query("DELETE FROM occupation")
-    void deleteOccupations();
+    void deleteAll();
 
     @Insert
-    void insertOccupation(Occupation occupation);
+    void saveOne(Occupation occupation);
 
     @Query("SELECT * FROM occupation ORDER BY name ASC")
-    List<Occupation> getAllOccupations();
+    List<Occupation> findAll();
 
     @Query("SELECT name FROM Occupation WHERE code=:id")
-    String findOccupationsById(String id);
+    Occupation findById(String id);
 
 }

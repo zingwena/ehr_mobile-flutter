@@ -12,21 +12,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 public interface LaboratoryTestDao {
 
     @Insert
-    void insertLaboratoryTests(List<LaboratoryTest> laboratoryTests);
+    void saveAll(List<LaboratoryTest> laboratoryTests);
 
     @Query("DELETE FROM LaboratoryTest")
-    void deleteLaboratoryTests();
+    void deleteAll();
 
     @Insert
-    void insertLaboratoryTest(LaboratoryTest laboratoryTest);
-
-    @Query("SELECT * FROM LaboratoryTest")
-    List<LaboratoryTest> getLaboratoryTests();
+    void saveOne(LaboratoryTest laboratoryTest);
 
     @Query("SELECT * FROM LaboratoryTest WHERE code=:id")
-    LaboratoryTest findByLaboratoryTestId(String id);
+    LaboratoryTest findById(String id);
 
-    @Query("SELECT * FROM LaboratoryTest ")
+    @Query("SELECT * FROM LaboratoryTest Order By name ASC")
     List<LaboratoryTest>  findAll();
 
 }

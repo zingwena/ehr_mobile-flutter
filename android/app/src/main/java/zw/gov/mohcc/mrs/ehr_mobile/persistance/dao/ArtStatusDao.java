@@ -21,7 +21,7 @@ public interface ArtStatusDao {
     @Query("DELETE FROM ArtStatus")
     void deleteAll();
 
-    @Query("SELECT * FROM ArtStatus")
+    @Query("SELECT * FROM ArtStatus Order By name ASC")
     List<ArtStatus> findAll();
 
     @Query("SELECT * FROM ArtStatus WHERE code=:id")

@@ -13,21 +13,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 public interface HtsModelDao {
 
     @Insert
-    void insertHtsModels(List<HtsModel> htsModels);
+    void saveAll(List<HtsModel> htsModels);
 
     @Query("DELETE FROM HtsModel")
-    void deleteHtsModels();
+    void deleteAll();
 
     @Insert
-    void insertHtsModel(HtsModel htsModel);
+    void saveOne(HtsModel htsModel);
 
     @Query("SELECT * FROM HtsModel ORDER BY name ASC")
-    List<HtsModel> getAllHtsModels();
+    List<HtsModel> findAll();
 
     @Query("SELECT * FROM HtsModel WHERE code=:code")
-    HtsModel findHtsModelById(String code);
+    HtsModel findById(String code);
 
     @Query("SELECT * FROM HtsModel where name=:name")
-    HtsModel findHtsModelByName(String name);
+    HtsModel findByname(String name);
 
 }

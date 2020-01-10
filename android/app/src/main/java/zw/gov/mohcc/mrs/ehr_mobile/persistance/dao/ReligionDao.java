@@ -12,18 +12,17 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
 public interface ReligionDao {
 
     @Insert
-    void insertReligions(List<Religion> religions);
+    void saveAll(List<Religion> religions);
 
     @Query("DELETE FROM religion")
-    void deleteReligions();
-
+    void deleteAll();
 
     @Insert
-    void insertReligion(Religion religion);
+    void saveOne(Religion religion);
 
-    @Query("SELECT * FROM Religion ORDER BY  name ASC")
+    @Query("SELECT * FROM Religion ORDER BY name ASC")
     List<Religion> getAllReligions();
 
     @Query("SELECT * FROM Religion WHERE code=:id")
-    Religion findReligionById(String id);
+    Religion findById(String id);
 }

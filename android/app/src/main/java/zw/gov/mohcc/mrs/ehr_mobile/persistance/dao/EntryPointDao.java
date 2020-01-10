@@ -13,18 +13,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 public interface EntryPointDao {
 
     @Insert
-    void insertEntryPoints(List<EntryPoint> entryPoints);
+    void saveAll(List<EntryPoint> entryPoints);
 
     @Query("DELETE FROM entryPoint")
-    void deleteEntryPoints();
+    void deleteAll();
 
     @Insert
-    void insertEntryPoint(EntryPoint entryPoint);
+    void saveOne(EntryPoint entryPoint);
 
     @Query("SELECT * FROM EntryPoint ORDER BY name ASC")
-    List<EntryPoint> getAllEntryPoints();
+    List<EntryPoint> findAll();
 
     @Query("SELECT * FROM EntryPoint WHERE code=:code")
-    EntryPoint findEntryPointById(String code);
+    EntryPoint findById(String code);
 
 }

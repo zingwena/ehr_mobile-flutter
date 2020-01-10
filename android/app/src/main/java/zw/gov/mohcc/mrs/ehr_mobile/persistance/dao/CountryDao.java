@@ -12,14 +12,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
 public interface CountryDao {
 
     @Insert
-    void insertCountry(Country country);
+    void saveOne(Country country);
 
     @Query("DELETE FROM country")
-    void deleteCountries();
+    void deleteAll();
 
     @Insert
-    void insertCountries(List<Country> countries);
+    void saveAll(List<Country> countries);
 
     @Query("SELECT * FROM country ORDER BY name DESC")
-    List<Country> getAllCountries();
+    List<Country> findAll();
 }

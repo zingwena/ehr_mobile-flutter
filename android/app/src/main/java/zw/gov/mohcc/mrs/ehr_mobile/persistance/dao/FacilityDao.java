@@ -10,17 +10,17 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 @Dao
 public interface FacilityDao {
     @Insert
-    void insertFacilities(List<Facility> facilities);
+    void saveAll(List<Facility> facilities);
 
     @Insert
-    void insertFacility(Facility facility);
+    void saveOne(Facility facility);
 
-    @Query("SELECT * FROM Facility")
-    List<Facility> getAllFacilities();
+    @Query("SELECT * FROM Facility Order By name ASC")
+    List<Facility> findAll();
 
     @Query("DELETE FROM facility")
-    void deleteAllFacilities();
+    void deleteAll();
 
     @Query("SELECT * FROM Facility WHERE code=:code")
-    Facility findFacilityById(String code);
+    Facility findById(String code);
 }

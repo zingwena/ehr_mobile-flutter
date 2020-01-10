@@ -26,7 +26,7 @@ public interface QuestionCategoryDao {
     List<QuestionCategory> findAll();
 
     @Query("SELECT * FROM QuestionCategory WHERE code=:code")
-    QuestionCategory findByid(String code);
+    QuestionCategory findById(String code);
 
     @Query("SELECT * FROM QuestionCategory where name=:name")
     QuestionCategory findByName(String name);

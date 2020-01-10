@@ -13,11 +13,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 public interface TownsDao {
 
     @Insert
-    void createTowns(List<Town> towns);
+    void saveAll(List<Town> towns);
 
     @Query("SELECT * FROM town order by name asc")
-    List<Town> getAllTowns();
+    List<Town> findAll();
 
     @Query("DELETE FROM town")
-    void deleteAllTowns();
+    void deleteAll();
 }

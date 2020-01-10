@@ -16,8 +16,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
@@ -39,7 +37,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
@@ -97,7 +94,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("htsModelOptions")) {
                             try {
-                                List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
+                                List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().findAll();
 
                                 String htsModelList = gson.toJson(htsModels);
                                 result.success(htsModelList);
@@ -107,7 +104,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("entrypointOptions")) {
                             try {
-                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().findAll();
                                 String entrypointList = gson.toJson(entryPoints);
                                 result.success(entrypointList);
                             } catch (Exception e) {
@@ -140,7 +137,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getEntrypoint")) {
                             try {
-                                EntryPoint entryPoint = ehrMobileDatabase.entryPointDao().findEntryPointById(arguments);
+                                EntryPoint entryPoint = ehrMobileDatabase.entryPointDao().findById(arguments);
                                 String entrypoint_name = entryPoint.getName();
                                 result.success(entrypoint_name);
 
@@ -153,7 +150,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
                                 System.out.println("HTS MODEL ID HERE HERE HERE" + arguments);
-                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelById(arguments);
+                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findById(arguments);
                                 String htsModelName = htsModel.getName();
                                 result.success(htsModelName);
 
@@ -167,7 +164,7 @@ public class HtsChannel {
 
                         if (methodCall.method.equals("purposeOfTestsOptions")) {
                             try {
-                                List<PurposeOfTest> purpose_of_tests = ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest();
+                                List<PurposeOfTest> purpose_of_tests = ehrMobileDatabase.purposeOfTestDao().findAll();
                                 String purposeOfTestsList = gson.toJson(purpose_of_tests);
                                 result.success(purposeOfTestsList);
                             } catch (Exception e) {
@@ -212,7 +209,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
-                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelByName(arguments);
+                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findByname(arguments);
 
                                 result.success(htsModel);
                             } catch (Exception e) {
@@ -222,7 +219,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getPurposeofTest")) {
                             try {
-                                PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findPurposeOfTestByName(arguments);
+                                PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findByName(arguments);
                                 result.success(purposeOfTest);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -269,7 +266,7 @@ public class HtsChannel {
                             try {
                                 Log.i(TAG, "*************************** reching this point");
                                 String resultId = htsService.getFinalResult(arguments);
-                                Result result1 = ehrMobileDatabase.resultDao().findByResultId(resultId);
+                                Result result1 = ehrMobileDatabase.resultDao().findById(resultId);
                                 Log.i(TAG, "*************************** after first call : " + result1);
                                 String result_name = result1 != null ? result1.getName() : "";
                                 Log.d(TAG, "GGGGGGGGGGGGGGGGGGGGGGG FINAL RESULT + " + result_name);
@@ -303,7 +300,7 @@ public class HtsChannel {
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
-                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String sample_name = sample.getName();
 
                                 result.success(sample_name);
@@ -315,7 +312,7 @@ public class HtsChannel {
 
                             try {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("ee7d91fc-b27f-11e8-b121-c48e8faf035b");
-                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String sample_name = sample.getName();
                                 Log.i(TAG, "Recency sample name from android");
                                 result.success(sample_name);
@@ -328,7 +325,7 @@ public class HtsChannel {
                             try {
                                 System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("ee7d91fc-b27f-11e8-b121-c48e8faf035b");
-                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
+                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findById(investigation.getLaboratoryTestId());
                                 Log.i(TAG, "Laboratory test from android"+ laboratoryTest.getName());
                                 String investigation_name = laboratoryTest.getName();
                                 result.success(investigation_name);
@@ -358,7 +355,7 @@ public class HtsChannel {
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
-                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
+                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findById(investigation.getLaboratoryTestId());
                                 String labtest_name = laboratoryTest.getName();
                                 result.success(labtest_name);
                             } catch (Exception e) {
@@ -465,7 +462,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getTestkitbycode")) {
 
                             try {
-                                String testkit_name = ehrMobileDatabase.testKitDao().findTestKitById(arguments).getName();
+                                String testkit_name = ehrMobileDatabase.testKitDao().findById(arguments).getName();
                                 result.success(testkit_name);
 
                             } catch (Exception e) {
@@ -487,7 +484,7 @@ public class HtsChannel {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
                                 System.out.println("arguments = " + arguments);
                                 InvestigationEhr investigationEhr = new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e", "Blood", "HIV");
-                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String investigationString = gson.toJson(investigationEhr);
                                 result.success(investigationString);
                             } catch (Exception e) {

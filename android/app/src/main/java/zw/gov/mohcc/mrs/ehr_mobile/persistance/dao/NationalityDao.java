@@ -13,18 +13,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
 public interface NationalityDao {
 
     @Insert
-    void insertNationalities(List<Nationality> nationalityList);
+    void saveAll(List<Nationality> nationalityList);
 
     @Query("DELETE FROM nationality")
-    void deleteNationalities();
+    void deleteAll();
 
     @Insert
-    void insertNationality(Nationality nationality);
+    void saveOne(Nationality nationality);
 
     @Query("SELECT * FROM nationality ORDER BY name DESC")
-    List<Nationality> selectAllNationalities();
+    List<Nationality> findAll();
 
 
-    @Query("SELECT name FROM nationality WHERE code=:code")
-    String selectNationality(String code);
+    @Query("SELECT name FROM nationality WHERE code=:id")
+    Nationality findById(String id);
 }

@@ -253,9 +253,9 @@ public class VisitService {
 
                 PatientSummaryDTO.InvestigationSummaryDTO investigationSummaryDTO =
                         new PatientSummaryDTO.InvestigationSummaryDTO(
-                                ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId()).getName(),
+                                ehrMobileDatabase.laboratoryTestDao().findById(investigation.getLaboratoryTestId()).getName(),
                                 personInvestigation.getDate(),
-                                ehrMobileDatabase.resultDao().findByResultId(personInvestigation.getResultId()).getName());
+                                ehrMobileDatabase.resultDao().findById(personInvestigation.getResultId()).getName());
                 investigationSummaryDTOS.add(investigationSummaryDTO);
             }
             summary.setInvestigations(investigationSummaryDTOS);

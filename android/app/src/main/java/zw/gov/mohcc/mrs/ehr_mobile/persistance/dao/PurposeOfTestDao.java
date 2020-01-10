@@ -13,21 +13,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
 public interface PurposeOfTestDao {
 
     @Insert
-    void insertPurposeOfTest(List<PurposeOfTest> purposeOfTests);
+    void saveAll(List<PurposeOfTest> purposeOfTests);
 
     @Insert
-    void insertPurposeOfTests(PurposeOfTest purposeOfTest);
+    void saveOne(PurposeOfTest purposeOfTest);
 
     @Query("DELETE FROM PurposeOfTest")
-    void deletePurposeOfTests();
+    void deleteAll();
 
-    @Query("SELECT * FROM PurposeOfTest")
-    List<PurposeOfTest> getAllPurposeOfTest();
+    @Query("SELECT * FROM PurposeOfTest Order By name ASC")
+    List<PurposeOfTest> findAll();
 
     @Query("SELECT * FROM PurposeOfTest WHERE code=:id")
-    PurposeOfTest findPurposeOfTestsById(String id);
+    PurposeOfTest findById(String id);
 
     @Query("SELECT * FROM PurposeOfTest WHERE name=:name")
-    PurposeOfTest findPurposeOfTestByName(String name);
+    PurposeOfTest findByName(String name);
 
 }

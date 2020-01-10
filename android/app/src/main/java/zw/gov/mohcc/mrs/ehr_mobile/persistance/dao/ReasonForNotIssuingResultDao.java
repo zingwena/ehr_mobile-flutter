@@ -15,19 +15,16 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 public interface ReasonForNotIssuingResultDao {
 
     @Insert
-    void insertReasonForNotIssuingResults(List<ReasonForNotIssuingResult> reasonForNotIssuingResults);
+    void saveAll(List<ReasonForNotIssuingResult> reasonForNotIssuingResults);
 
     @Query("DELETE FROM reasonForNotIssuingResult")
-    void deleteReasonForNotIssuingResults();
+    void deleteAll();
 
     @Insert
-    void insertReasonForNotIssuingResult(ReasonForNotIssuingResult reasonForNotIssuingResult);
-
-    @Query("SELECT * FROM ReasonForNotIssuingResult ORDER BY name ASC")
-    List<ReasonForNotIssuingResult> getAllReasonForNotIssuingResults();
+    void saveOne(ReasonForNotIssuingResult reasonForNotIssuingResult);
 
     @Query("SELECT * FROM ReasonForNotIssuingResult WHERE code=:id")
-    EntryPoint findReasonForNotIssuingResultById(String id);
+    EntryPoint findById(String id);
 
     @Query("SELECT * FROM ReasonForNotIssuingResult ORDER BY name DESC")
     List<ReasonForNotIssuingResult> findAll();

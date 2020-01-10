@@ -12,20 +12,19 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
 public interface SampleDao {
 
     @Insert
-    void insertSamples(List<Sample> samples);
+    void saveAll(List<Sample> samples);
 
     @Query("DELETE FROM Sample")
-    void deleteSamples();
+    void deleteAll();
 
     @Insert
-    void insertSample(Sample sample);
+    void saveOne(Sample sample);
 
-    @Query("SELECT * FROM Sample")
-    List<Sample> getSamples();
-
+    @Query("SELECT * FROM Sample Order By name ASC")
+    List<Sample> findAll();
 
     @Query("SELECT * FROM Sample WHERE code=:id")
-    Sample findBySampleId(String id);
+    Sample findById(String id);
 
 
 }
