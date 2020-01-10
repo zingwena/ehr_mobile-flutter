@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class PatientAddress extends StatefulWidget {
   final Person patient;
@@ -262,7 +263,6 @@ class _PatientAddressState extends State<PatientAddress> {
                                                       height: 10.0,
                                                     ),
 
-
                                                     Container(
                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                       width: double.infinity,
@@ -272,19 +272,24 @@ class _PatientAddressState extends State<PatientAddress> {
                                                         color: Colors.white,
                                                         padding: const EdgeInsets.all(0.0),
                                                         child: Container(
-                                                          width: double.infinity,
-                                                          padding:
-                                                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                          child: DropdownButton(
-                                                            isExpanded:true,
-                                                            icon: Icon(Icons.keyboard_arrow_down),
-                                                            hint: Text("Town"),
-                                                            iconEnabledColor: Colors.black,
-                                                            value: _currentTown,
-                                                            items: _dropDownMenuItemsTown,
-                                                            onChanged: changedDropDownItemTown,
-                                                          ),
-
+                                                            width: double.infinity,
+                                                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            child: SearchableDropdown(
+                                                              icon: Icon(Icons.keyboard_arrow_down),
+                                                              isExpanded:true,
+                                                              items: _dropDownMenuItemsTown,
+                                                              value: _currentTown,
+                                                              hint: new Text(
+                                                                  'Town'
+                                                              ),
+                                                              searchHint: new Text(
+                                                                'Select Town',
+                                                                style: new TextStyle(
+                                                                    fontSize: 20
+                                                                ),
+                                                              ),
+                                                              onChanged: changedDropDownItemTown,
+                                                            )
                                                         ),
                                                         borderSide: BorderSide(
                                                           color: Colors.blue, //Color of the border
