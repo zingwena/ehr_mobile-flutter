@@ -14,16 +14,16 @@ class PersonInvestigationTable extends BaseTable{
   String id;
 
   static PersonInvestigationTable fromJson(Map map) {
-    var personId = PersonInvestigationTable();
+    var person = PersonInvestigationTable();
 
-    personId.id = map['id'];
-    personId.personId=map['personId'];
-    personId.status=map['status'];
-    personId.investigationId=map['investigationId'];
-    personId.resultId = map['resultId'];
-    personId.date = const CustomDateTimeConverter().fromIntToSqlDate(map['date']);
+    person.id = map['id'];
+    person.personId=map['personId'];
+    person.status=map['status'];
+    person.investigationId=map['investigationId'];
+    person.resultId = map['resultId'];
+    person.date = const CustomDateTimeConverter().fromIntToSqlDate(map['date']);
 
-    return personId;
+    return person;
   }
 
   Map<String, dynamic> toJson() => {

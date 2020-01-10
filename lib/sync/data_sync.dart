@@ -43,7 +43,7 @@ syncPatient(String token, String url) async {
   for(Person person in persons){
     var dto=PatientDto();
     dto.personDto=person;
-    //log.i(person);
+    log.i(person);
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
     dto = await setIndexTest(adapter,dto);
@@ -157,9 +157,9 @@ Future <PatientDto> setIndexContacts(SqfliteAdapter adapter,String indexTestId,P
 
 Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dto) async {
   var personInvestigationDao=PersonInvestigationDao(adapter);
-  var personInvestigations=await personInvestigationDao.findByPersonId(dto.personDto.id);
-  for(PersonInvestigationTable personInvestigation in personInvestigations){
-    dto.personInvestigationDtos.add(personInvestigation);
+  var personInvestigation=await personInvestigationDao.findByPersonId(dto.personDto.id);
+  if(personInvestigation!=null){
+    dto.personInvestigationDto=personInvestigation;
     dto=await setLabInvestigations(adapter,personInvestigation.id,dto);
   }
   return dto;
@@ -180,7 +180,8 @@ Future <List<LaboratoryInvestigationTestTable>> getLabInvestigationTests(Sqflite
   var labInvestigations=await labInvestigationTestDao.findByLaboratoryInvestigationId(laboratoryInvestigationId);
   List<LaboratoryInvestigationTestTable> labTests=List();
   for(LaboratoryInvestigationTestTable labInvestigationTest in labInvestigations){
-    log.i('======>${labInvestigationTest.id}');
+    log.i('======>StartTime--${labInvestigationTest.startTime}');
+    log.i('======>EndTime--${labInvestigationTest.endTime}');
     labTests.add(labInvestigationTest);
   }
   return labTests;
