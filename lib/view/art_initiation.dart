@@ -10,6 +10,7 @@ import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/art_initiationoverview.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
@@ -177,7 +178,7 @@ class _Art_Initiation extends State<Art_Initiation> {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: artReason.code, child: Text(artReason.name)));
+          value: artReason.name, child: Text(artReason.name)));
     }
     return items;
   }
@@ -189,7 +190,7 @@ class _Art_Initiation extends State<Art_Initiation> {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: arvCombinationRegimen.code, child: Text(arvCombinationRegimen.name)));
+          value: arvCombinationRegimen.name, child: Text(arvCombinationRegimen.name)));
     }
     return items;
   }
@@ -293,7 +294,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ],
                                                       ),
 
-                                                      Container(
+                                                  /*    Container(
                                                         padding:
                                                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         width: double.infinity,
@@ -317,6 +318,43 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                               items: _dropDownMenuItemsArvCombinationRegimen,
                                                               onChanged: changedDropDownItemArvCombinationRegimen,
                                                             ),
+                                                          ),
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
+                                                        ),
+                                                      ), */
+
+                                                      Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                              child: SearchableDropdown(
+                                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                                isExpanded:true,
+                                                                items: _dropDownMenuItemsArvCombinationRegimen,
+                                                                value: _currentArvCombinationRegimen,
+                                                                hint: new Text(
+                                                                    'Art Combination Regimen'
+                                                                ),
+                                                                searchHint: new Text(
+                                                                  'Select Art Combination Regimen',
+                                                                  style: new TextStyle(
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),
+                                                                onChanged: changedDropDownItemArvCombinationRegimen,
+                                                              )
                                                           ),
                                                           borderSide: BorderSide(
                                                             color: Colors.blue, //Color of the border
@@ -374,6 +412,44 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           onPressed: () {},
                                                         ),
                                                       ),
+
+                                                    /*  Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                              child: SearchableDropdown(
+                                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                                isExpanded:true,
+                                                                items: _dropDownMenuItemsArtReason,
+                                                                value: _currentArtReason,
+                                                                hint: new Text(
+                                                                    'Reason'
+                                                                ),
+                                                                searchHint: new Text(
+                                                                  'Select Reason',
+                                                                  style: new TextStyle(
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),
+                                                                onChanged: changedDropDownItemArtReason,
+                                                              )
+                                                          ),
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
+                                                        ),
+                                                      ), */
+
                                                       SizedBox(
                                                         height: 10.0,
                                                       ),

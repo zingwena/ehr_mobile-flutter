@@ -3,6 +3,8 @@ import 'package:ehr_mobile/util/custom_date_converter.dart';
 import '../base_table.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../person_investigation_table.dart';
+
 @JsonSerializable(explicitToJson: true)
 
 class HtsTable extends BaseTable{
@@ -28,6 +30,8 @@ class HtsTable extends BaseTable{
   String datePostTestCounselled;
 
   int consentToIndexTesting;
+
+  List<PersonInvestigationTable> personInvestigationDtos;
 
   static HtsTable fromJson(Map map) {
     var htsTable = HtsTable();
@@ -80,5 +84,6 @@ class HtsTable extends BaseTable{
         'datePostTestCounselled': datePostTestCounselled,
         'status': status,
         'consentToIndexTesting': consentToIndexTesting
+
       };
 }
