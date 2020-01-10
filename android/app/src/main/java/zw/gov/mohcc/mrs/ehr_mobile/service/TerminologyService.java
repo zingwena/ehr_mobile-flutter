@@ -2,7 +2,10 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
@@ -151,7 +154,13 @@ public class TerminologyService {
 
     public void saveArtReason(List<ArtReason> artReasons) {
 
-        ehrMobileDatabase.artReasonDao().insertAll(artReasons);
+        Log.d(TAG, "Before ::::::: " + artReasons.size());
+
+        Set<ArtReason> dummy = new HashSet<>(artReasons);
+
+        Log.d(TAG, "After ::::::: " + dummy.size());
+
+        ehrMobileDatabase.artReasonDao().saveAll(new ArrayList<>(dummy));
         Log.d(TAG, "Saved art reasons : " + ehrMobileDatabase.artReasonDao().findAll());
     }
 

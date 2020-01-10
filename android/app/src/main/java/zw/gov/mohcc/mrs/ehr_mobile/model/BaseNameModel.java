@@ -54,13 +54,13 @@ public class BaseNameModel implements Serializable {
         if (!(obj instanceof BaseNameModel)) {
             return false;
         }
-        return this.getCode().equals(((BaseNameModel) obj).getCode());
+        return this.getName().equals(((BaseNameModel) obj).getName());
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 19 * hash + (this.code != null ? this.code.hashCode() : 0);
+        hash = 19 * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
     }
 

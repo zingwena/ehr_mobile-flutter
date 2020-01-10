@@ -1,5 +1,8 @@
 package zw.gov.mohcc.mrs.ehr_mobile.channels;
 
+import android.nfc.Tag;
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -24,6 +27,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class DataChannel {
+
+    private final String TAG = "Data Channel";
 
     public DataChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase){
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
@@ -123,6 +128,7 @@ public class DataChannel {
                             try {
                                 List<ArtReason> artReasons = ehrMobileDatabase.artReasonDao().findAll();
                                 String list = gson.toJson(artReasons);
+                                Log.d(TAG, "**************************** TIKI TAKA : " + artReasons);
                                 result1.success(list);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
