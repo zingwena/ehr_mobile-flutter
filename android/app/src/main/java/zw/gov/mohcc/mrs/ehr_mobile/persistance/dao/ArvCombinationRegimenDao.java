@@ -33,5 +33,5 @@ public interface ArvCombinationRegimenDao {
     ArvCombinationRegimen findByName(String name);
 
     @Query("SELECT * FROM ArvCombinationRegimen WHERE regimenType =:regimenType and ageGroup=:ageGroup Order By name ASC")
-    List<ArvCombinationRegimen> findByLineAndAgeGrouprion(RegimenType regimenType, AgeGroup ageGroup);
+    List<ArvCombinationRegimen> findByLineAndAgeGroup(RegimenType regimenType, AgeGroup ageGroup);
 }

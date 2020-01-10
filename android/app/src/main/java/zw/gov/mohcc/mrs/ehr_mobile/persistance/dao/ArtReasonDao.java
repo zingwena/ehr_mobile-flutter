@@ -13,15 +13,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 public interface ArtReasonDao {
 
     @Insert
-    void insertAll(List<ArtReason> artReasons);
+    void saveAll(List<ArtReason> artReasons);
 
     @Insert
-    void insertOne(ArtReason artReason);
+    void saveOne(ArtReason artReason);
 
     @Query("DELETE FROM ArtReason")
     void deleteAll();
 
-    @Query("SELECT Distinct a.name, a.code, a.artStatusId FROM ArtReason a Order By a.name ASC")
+    @Query("SELECT * FROM ArtReason a Order By a.name ASC")
     List<ArtReason> findAll();
 
     @Query("SELECT * FROM ArtReason WHERE code=:id")
