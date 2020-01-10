@@ -377,7 +377,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         height: 20.0,
                                                       ),
 
-                                                      Container(
+                                                    /*  Container(
                                                         padding:
                                                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         width: double.infinity,
@@ -411,9 +411,9 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                           onPressed: () {},
                                                         ),
-                                                      ),
+                                                      ), */
 
-                                                    /*  Container(
+                                                     Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
@@ -448,7 +448,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                           onPressed: () {},
                                                         ),
-                                                      ), */
+                                                      ),
 
                                                       SizedBox(
                                                         height: 10.0,
