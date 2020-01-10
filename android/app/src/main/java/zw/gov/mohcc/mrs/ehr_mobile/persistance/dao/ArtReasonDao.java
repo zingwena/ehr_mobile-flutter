@@ -21,7 +21,7 @@ public interface ArtReasonDao {
     @Query("DELETE FROM ArtReason")
     void deleteAll();
 
-    @Query("SELECT * FROM ArtReason")
+    @Query("SELECT Distinct a.name FROM ArtReason a Order By a.name ASC")
     List<ArtReason> findAll();
 
     @Query("SELECT * FROM ArtReason WHERE code=:id")
