@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/model/art_reason.dart';
+import 'package:ehr_mobile/model/artregmendto.dart';
 import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
@@ -52,7 +53,8 @@ class _Art_Initiation extends State<Art_Initiation> {
   String _artReasonError = "Select Art Reason";
   String artRegimenId;
   ArtInitiation initiation;
-
+  ArtRegimenDto artRegimenDto;
+  bool regimen_selected;
 
   int _line = 0;
   String line="";
@@ -123,7 +125,6 @@ class _Art_Initiation extends State<Art_Initiation> {
         _arvCombinationRegimen=response;
         arvCombinationRegimens = jsonDecode(_arvCombinationRegimen);
         _dropDownListArvCombinationRegimens = ArvCombinationRegimen.mapFromJson(arvCombinationRegimens);
-
         _dropDownListArvCombinationRegimens.forEach((e) {
           _arvCombinationRegimenList.add(e);
 
@@ -149,13 +150,14 @@ class _Art_Initiation extends State<Art_Initiation> {
       switch (_line) {
         case 1:
           setState(() {
-            line = "FIRST LINE";
-            print("line value : $line");
+            line = "FIRST_LINE";
+
+              print("line value : $line");
           });
           break;
         case 2:
           setState(() {
-            line = "SECOND LINE";
+            line = "SECOND_LINE";
             print("line value : $line");
 
           });
@@ -163,7 +165,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
         case 3:
           setState(() {
-            line = "THIRD LINE";
+            line = "THIRD_LINE";
             print("line value : $line");
 
           });
@@ -294,40 +296,6 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ],
                                                       ),
 
-                                                  /*    Container(
-                                                        padding:
-                                                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        width: double.infinity,
-                                                        child: OutlineButton(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.white,
-                                                          padding: const EdgeInsets.all(0.0),
-                                                          child: Container(
-                                                            width: double.infinity,
-                                                            padding: EdgeInsets.symmetric(
-                                                                vertical: 8.0, horizontal: 30.0),
-                                                            child: DropdownButton(
-                                                              isExpanded: true,
-                                                              hint: Text('Select Art Combination Regimen', style: TextStyle( fontSize: 15,
-                                                                color: Colors.black,
-                                                              ),),
-                                                              icon: Icon(Icons.keyboard_arrow_down),
-                                                              iconEnabledColor: Colors.black,
-                                                              value: _currentArvCombinationRegimen,
-                                                              items: _dropDownMenuItemsArvCombinationRegimen,
-                                                              onChanged: changedDropDownItemArvCombinationRegimen,
-                                                            ),
-                                                          ),
-                                                          borderSide: BorderSide(
-                                                            color: Colors.blue, //Color of the border
-                                                            style: BorderStyle.solid, //Style of the border
-                                                            width: 2.0, //width of the border
-                                                          ),
-                                                          onPressed: () {},
-                                                        ),
-                                                      ), */
-
                                                       Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                         width: double.infinity,
@@ -376,10 +344,8 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
-
-                                                      Container(
-                                                        padding:
-                                                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                     Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
                                                           shape: RoundedRectangleBorder(
@@ -387,22 +353,25 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           color: Colors.white,
                                                           padding: const EdgeInsets.all(0.0),
                                                           child: Container(
-                                                            width: double.infinity,
-                                                            padding: EdgeInsets.symmetric(
-                                                                vertical: 8.0, horizontal: 30.0),
-                                                            child: DropdownButton(
-                                                              isExpanded: true,
-                                                              hint: Text('Reason',style: TextStyle( fontSize: 15,
-                                                                color: Colors.black,
-                                                              ),),
-                                                              icon: Icon(Icons.keyboard_arrow_down),
-                                                              iconEnabledColor: Colors.black,
-                                                              value: _currentArtReason,
-                                                              items: _dropDownMenuItemsArtReason,
-                                                              onChanged: changedDropDownItemArtReason,
 
-
-                                                            ),
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                              child: SearchableDropdown(
+                                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                                isExpanded:true,
+                                                                items: _dropDownMenuItemsArtReason,
+                                                                value: _currentArtReason,
+                                                                hint: new Text(
+                                                                    'Reason'
+                                                                ),
+                                                                searchHint: new Text(
+                                                                  'Select Reason',
+                                                                  style: new TextStyle(
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),
+                                                                onChanged: changedDropDownItemArtReason,
+                                                              )
                                                           ),
                                                           borderSide: BorderSide(
                                                             color: Colors.blue, //Color of the border

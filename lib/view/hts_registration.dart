@@ -326,6 +326,7 @@ class _Registration extends State<Registration> {
                                                           padding: EdgeInsets.symmetric(
                                                               vertical: 8.0, horizontal: 30.0),
                                                           child: DropdownButton(
+                                                            isExpanded:true,
                                                             hint: Text('Select Entry Point'),
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             iconEnabledColor: Colors.black,

@@ -288,7 +288,7 @@ public class MainActivity extends FlutterActivity {
 
         });
 
-        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, visitService);
+        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, visitService, artService);
 
         /*   ===============================================ART REGISTRATION AND INITIATION  =============================================================== */
         new MethodChannel(getFlutterView(), ART_CHANNEL).setMethodCallHandler(
@@ -557,7 +557,7 @@ public class MainActivity extends FlutterActivity {
                         testKits.add(new TestKit(item.getCode(), item.getName(), item.getDescription()));
                     }
                     int count = saveTestKitsToDB(testKits);
-                    Log.i(TAG, "Saved testkits : " + ehrMobileDatabase.testKitDao().getAllTestKits());
+                    Log.i(TAG, "Saved testkits : " + ehrMobileDatabase.testKitDao().findAll());
 
                     for (TestLevel testLevel : TestLevel.getEhrTestLevels()) {
                         Log.d(TAG, "Entering loop at this point : " + testLevel);
@@ -1021,32 +1021,32 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.relationshipDao().deleteAll();
         ehrMobileDatabase.personDao().deleteAll();
         ehrMobileDatabase.investigationResultDao().delete();
-        ehrMobileDatabase.countryDao().deleteCountries();
-        ehrMobileDatabase.maritalStateDao().deleteMaritalStatuses();
-        ehrMobileDatabase.facilityDao().deleteAllFacilities();
-        ehrMobileDatabase.townsDao().deleteAllTowns();
-        ehrMobileDatabase.religionDao().deleteReligions();
-        ehrMobileDatabase.occupationDao().deleteOccupations();
+        ehrMobileDatabase.countryDao().deleteAll();
+        ehrMobileDatabase.maritalStateDao().deleteALl();
+        ehrMobileDatabase.facilityDao().deleteAll();
+        ehrMobileDatabase.townsDao().deleteAll();
+        ehrMobileDatabase.religionDao().deleteAll();
+        ehrMobileDatabase.occupationDao().deleteAll();
         ehrMobileDatabase.disclosureMethodDao().deleteALl();
         ehrMobileDatabase.testingPlanDao().deleteALl();
-        ehrMobileDatabase.nationalityDao().deleteNationalities();
-        ehrMobileDatabase.educationLevelDao().deleteEducationLevels();
-        ehrMobileDatabase.entryPointDao().deleteEntryPoints();
-        ehrMobileDatabase.htsModelDao().deleteHtsModels();
-        ehrMobileDatabase.purposeOfTestDao().deletePurposeOfTests();
-        ehrMobileDatabase.reasonForNotIssuingResultDao().deleteReasonForNotIssuingResults();
+        ehrMobileDatabase.nationalityDao().deleteAll();
+        ehrMobileDatabase.educationLevelDao().deleteAll();
+        ehrMobileDatabase.entryPointDao().deleteAll();
+        ehrMobileDatabase.htsModelDao().deleteAll();
+        ehrMobileDatabase.purposeOfTestDao().deleteAll();
+        ehrMobileDatabase.reasonForNotIssuingResultDao().deleteAll();
         ehrMobileDatabase.userDao().deleteUsers();
         ehrMobileDatabase.testKitTestLevelDao().deleteAll();
-        ehrMobileDatabase.testKitDao().deleteTestKits();
+        ehrMobileDatabase.testKitDao().deleteAll();
         ehrMobileDatabase.investigationTestkitDao().deleteAll();
         ehrMobileDatabase.investigationDao().deleteInvestigations();
-        ehrMobileDatabase.resultDao().deleteResults();
-        ehrMobileDatabase.laboratoryTestDao().deleteLaboratoryTests();
+        ehrMobileDatabase.resultDao().deleteAll();
+        ehrMobileDatabase.laboratoryTestDao().deleteAll();
         ehrMobileDatabase.arvCombinationRegimenDao().deleteAll();
         ehrMobileDatabase.artReasonDao().deleteAll();
         ehrMobileDatabase.artStatusDao().deleteAll();
         ehrMobileDatabase.laboratoryInvestigationDao().deleteAll();
-        ehrMobileDatabase.sampleDao().deleteSamples();
+        ehrMobileDatabase.sampleDao().deleteAll();
         ehrMobileDatabase.diagnosisDao().deleteAll();
         ehrMobileDatabase.questionDao().deleteAll();
         ehrMobileDatabase.questionCategoryDao().deleteAll();
@@ -1056,9 +1056,9 @@ public class MainActivity extends FlutterActivity {
 
     private int saveTestKitsToDB
             (List<TestKit> testKits) {
-        ehrMobileDatabase.testKitDao().insertTestKits(testKits);
+        ehrMobileDatabase.testKitDao().saveAll(testKits);
         Log.d(TAG, "^^&&&&&&& " + testKits);
-        int testKitsCount = ehrMobileDatabase.testKitDao().getAllTestKits().size();
+        int testKitsCount = ehrMobileDatabase.testKitDao().findAll().size();
 
         return testKitsCount;
     }

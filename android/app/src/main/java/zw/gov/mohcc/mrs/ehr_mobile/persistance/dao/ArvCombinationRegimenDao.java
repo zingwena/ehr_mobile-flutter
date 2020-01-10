@@ -23,7 +23,7 @@ public interface ArvCombinationRegimenDao {
     @Query("DELETE FROM ArvCombinationRegimen")
     void deleteAll();
 
-    @Query("SELECT * FROM ArvCombinationRegimen")
+    @Query("SELECT * FROM ArvCombinationRegimen Order By name ASC")
     List<ArvCombinationRegimen> findAll();
 
     @Query("SELECT * FROM ArvCombinationRegimen WHERE code=:id")
@@ -32,6 +32,6 @@ public interface ArvCombinationRegimenDao {
     @Query("SELECT * FROM ArvCombinationRegimen WHERE name=:name")
     ArvCombinationRegimen findByName(String name);
 
-    @Query("SELECT * FROM ArvCombinationRegimen WHERE regimenType =:regimenType and ageGroup=:ageGroup")
-    List<ArvCombinationRegimen> findByLineAndAgeGrouprion(RegimenType regimenType, AgeGroup ageGroup);
+    @Query("SELECT * FROM ArvCombinationRegimen WHERE regimenType =:regimenType and ageGroup=:ageGroup Order By name ASC")
+    List<ArvCombinationRegimen> findByLineAndAgeGroup(RegimenType regimenType, AgeGroup ageGroup);
 }

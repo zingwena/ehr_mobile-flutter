@@ -71,23 +71,23 @@ public class AddPatientChannel {
                 }
                 if (methodCall.method.equals("getPatientMaritalStatus")) {
                     String code = methodCall.arguments();
-                    String name = ehrMobileDatabase.maritalStateDao().getMaritalStatusNameByCode(code);
+                    String name = ehrMobileDatabase.maritalStateDao().findById(code).getName();
                     result.success(name);
                 }
 
                 if (methodCall.method.equals("getEducationLevel")) {
                     String code = methodCall.arguments();
-                    String name = ehrMobileDatabase.educationLevelDao().findByEducationLevelId(code);
+                    String name = ehrMobileDatabase.educationLevelDao().findbyId(code);
                     result.success(name);
                 }
                 if (methodCall.method.equals("getOccupation")) {
                     String code = methodCall.arguments();
-                    String name = ehrMobileDatabase.occupationDao().findOccupationsById(code);
+                    String name = ehrMobileDatabase.occupationDao().findById(code).getName();
                     result.success(name);
                 }
                 if (methodCall.method.equals("getNationality")) {
                     String code = methodCall.arguments();
-                    String name = ehrMobileDatabase.nationalityDao().selectNationality(code);
+                    String name = ehrMobileDatabase.nationalityDao().findById(code).getName();
                     result.success(name);
                 }
                 if (methodCall.method.equals("getAddress")) {
@@ -113,7 +113,7 @@ public class AddPatientChannel {
                     System.out.println("PATIENT DTO" + patientPhoneDto);
                     String phoneNumberId = UUID.randomUUID().toString();
                     PatientPhoneNumber patientPhoneNumber = new PatientPhoneNumber(phoneNumberId, patientPhoneDto.getPersonId(), patientPhoneDto.getPhoneNumber1(), patientPhoneDto.getPhoneNumber2());
-                    ehrMobileDatabase.patientPhoneDao().insertpatientphonenumber(patientPhoneNumber).intValue();
+                    ehrMobileDatabase.patientPhoneDao().saveOne(patientPhoneNumber).intValue();
                     System.out.println("PATIENT NUMBER SAVED HERE ");
                   /*  PatientPhoneNumber patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(phonenumber_id);
                     System.out.println("NUMBER 1" + patient_PhoneNumber.getPhonenumber_1());*/
@@ -127,7 +127,7 @@ public class AddPatientChannel {
                 if (methodCall.method.equals("getPhonenumber")) {
                     String args = methodCall.arguments();
                     Log.i(TAG, "PATIENT ID FROM FLUTTER " + args);
-                    PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPatientId(args);
+                    PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPersonId(args);
 
                     String phoneNumber = "";
                     if (patientPhoneNumber != null) {

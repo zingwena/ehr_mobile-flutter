@@ -2,7 +2,10 @@ package zw.gov.mohcc.mrs.ehr_mobile.service;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
@@ -44,8 +47,8 @@ public class TerminologyService {
 
     public void saveSample(List<Sample> samples) {
 
-        ehrMobileDatabase.sampleDao().insertSamples(samples);
-        Log.d(TAG, "Saved samples : " + ehrMobileDatabase.sampleDao().getSamples());
+        ehrMobileDatabase.sampleDao().saveAll(samples);
+        Log.d(TAG, "Saved samples : " + ehrMobileDatabase.sampleDao().findAll());
     }
 
     public void saveDiagnosis(List<Diagnosis> diagnoses) {
@@ -56,8 +59,8 @@ public class TerminologyService {
 
     public void saveLaboratoryTests(List<LaboratoryTest> tests) {
 
-        ehrMobileDatabase.laboratoryTestDao().insertLaboratoryTests(tests);
-        Log.d(TAG, "Saved laboratory tests : " + ehrMobileDatabase.laboratoryTestDao().getLaboratoryTests());
+        ehrMobileDatabase.laboratoryTestDao().saveAll(tests);
+        Log.d(TAG, "Saved laboratory tests : " + ehrMobileDatabase.laboratoryTestDao().findAll());
     }
 
     public void saveInvestigations(List<Investigation> investigations) {
@@ -74,21 +77,21 @@ public class TerminologyService {
 
     public void saveTownToDB(List<Town> towns) {
 
-        ehrMobileDatabase.townsDao().createTowns(towns);
-        Log.d(TAG, "Saved towns : " + ehrMobileDatabase.townsDao().getAllTowns());
+        ehrMobileDatabase.townsDao().saveAll(towns);
+        Log.d(TAG, "Saved towns : " + ehrMobileDatabase.townsDao().findAll());
     }
 
     public void saveReligionToDB(List<Religion> religions) {
 
-        ehrMobileDatabase.religionDao().insertReligions(religions);
+        ehrMobileDatabase.religionDao().saveAll(religions);
         Log.d(TAG, "Saved religions : " + ehrMobileDatabase.religionDao().getAllReligions());
     }
 
 
     public void saveOccupationsToDB(List<Occupation> occupations) {
 
-        ehrMobileDatabase.occupationDao().insertOccupations(occupations);
-        Log.d(TAG, "Saved occupations : " + ehrMobileDatabase.occupationDao().getAllOccupations());
+        ehrMobileDatabase.occupationDao().saveAll(occupations);
+        Log.d(TAG, "Saved occupations : " + ehrMobileDatabase.occupationDao().findAll());
     }
 
     public void saveNationalityToDB(List<Nationality> nationalityList) {
@@ -96,39 +99,39 @@ public class TerminologyService {
         Log.d(TAG, "########################################################");
         Log.d(TAG, nationalityList.toString());
 
-        ehrMobileDatabase.nationalityDao().insertNationalities(nationalityList);
-        Log.d(TAG, "Saved nationalities : " + ehrMobileDatabase.nationalityDao().selectAllNationalities());
+        ehrMobileDatabase.nationalityDao().saveAll(nationalityList);
+        Log.d(TAG, "Saved nationalities : " + ehrMobileDatabase.nationalityDao().findAll());
     }
 
 
     public void saveEducationLevelToDB(List<EducationLevel> educationLevels) {
 
-        ehrMobileDatabase.educationLevelDao().insertEducationLevels(educationLevels);
-        Log.d(TAG, "Saved education levels : " + ehrMobileDatabase.educationLevelDao().getEducationLevels());
+        ehrMobileDatabase.educationLevelDao().saveAll(educationLevels);
+        Log.d(TAG, "Saved education levels : " + ehrMobileDatabase.educationLevelDao().findAll());
     }
 
     public void saveEntryPointsToDB(List<EntryPoint> entryPoints) {
 
-        ehrMobileDatabase.entryPointDao().insertEntryPoints(entryPoints);
-        Log.d(TAG, "Saved entry points : " + ehrMobileDatabase.entryPointDao().getAllEntryPoints());
+        ehrMobileDatabase.entryPointDao().saveAll(entryPoints);
+        Log.d(TAG, "Saved entry points : " + ehrMobileDatabase.entryPointDao().findAll());
     }
 
     public void saveHtsModelToDB(List<HtsModel> htsModels) {
 
-        ehrMobileDatabase.htsModelDao().insertHtsModels(htsModels);
-        Log.d(TAG, "Saved hts models : " + ehrMobileDatabase.htsModelDao().getAllHtsModels());
+        ehrMobileDatabase.htsModelDao().saveAll(htsModels);
+        Log.d(TAG, "Saved hts models : " + ehrMobileDatabase.htsModelDao().findAll());
     }
 
     public void savePurposeOfTestToDB(List<PurposeOfTest> purposeOfTestList) {
 
-        ehrMobileDatabase.purposeOfTestDao().insertPurposeOfTest(purposeOfTestList);
-        Log.d(TAG, "Saved purpose of test : " + ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest());
+        ehrMobileDatabase.purposeOfTestDao().saveAll(purposeOfTestList);
+        Log.d(TAG, "Saved purpose of test : " + ehrMobileDatabase.purposeOfTestDao().findAll());
     }
 
     public void saveReasonForNotIssuingResultToDB(List<ReasonForNotIssuingResult> reasonForNotIssuingResults) {
 
-        ehrMobileDatabase.reasonForNotIssuingResultDao().insertReasonForNotIssuingResults(reasonForNotIssuingResults);
-        Log.d(TAG, "Saved reason for not issuing results : " + ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults());
+        ehrMobileDatabase.reasonForNotIssuingResultDao().saveAll(reasonForNotIssuingResults);
+        Log.d(TAG, "Saved reason for not issuing results : " + ehrMobileDatabase.reasonForNotIssuingResultDao().findAll());
     }
 
     public void saveInvestigationResultsToDB(List<InvestigationResult> investigationResults) {
@@ -139,8 +142,8 @@ public class TerminologyService {
 
     public void saveLaboratoryResults(List<Result> results) {
 
-        ehrMobileDatabase.resultDao().insertResult(results);
-        Log.d(TAG, "Saved laboratory results : " + ehrMobileDatabase.resultDao().getAllResults());
+        ehrMobileDatabase.resultDao().saveAll(results);
+        Log.d(TAG, "Saved laboratory results : " + ehrMobileDatabase.resultDao().findAll());
     }
 
     public void saveArtStatus(List<ArtStatus> artStatuses) {
@@ -151,7 +154,13 @@ public class TerminologyService {
 
     public void saveArtReason(List<ArtReason> artReasons) {
 
-        ehrMobileDatabase.artReasonDao().insertAll(artReasons);
+        Log.d(TAG, "Before ::::::: " + artReasons.size());
+
+        Set<ArtReason> dummy = new HashSet<>(artReasons);
+
+        Log.d(TAG, "After ::::::: " + dummy.size());
+
+        ehrMobileDatabase.artReasonDao().saveAll(new ArrayList<>(dummy));
         Log.d(TAG, "Saved art reasons : " + ehrMobileDatabase.artReasonDao().findAll());
     }
 
@@ -177,20 +186,20 @@ public class TerminologyService {
 
         Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!! " + countries.size());
         Log.d(TAG, "########################### : " + countries);
-        ehrMobileDatabase.countryDao().insertCountries(countries);
+        ehrMobileDatabase.countryDao().saveAll(countries);
         Log.d(TAG, "Saved countries : " + ehrMobileDatabase.testingPlanDao().findAll());
     }
 
     public void saveMaritalStatesToDB(List<MaritalStatus> maritalStatuses) {
 
 
-        ehrMobileDatabase.maritalStateDao().insertMaritalStates(maritalStatuses);
+        ehrMobileDatabase.maritalStateDao().saveAll(maritalStatuses);
         Log.d(TAG, "Saved marital state : " + ehrMobileDatabase.testingPlanDao().findAll());
     }
 
     public void saveFacilityToDB(List<Facility> facilities) {
 
-        ehrMobileDatabase.facilityDao().insertFacilities(facilities);
+        ehrMobileDatabase.facilityDao().saveAll(facilities);
         Log.d(TAG, "Saved facility : " + ehrMobileDatabase.testingPlanDao().findAll());
     }
 

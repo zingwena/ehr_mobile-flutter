@@ -12,22 +12,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 public interface ResultDao {
 
     @Insert
-    void insertResult(List<Result> results);
+    void saveAll(List<Result> results);
 
     @Query("DELETE FROM Result")
-    void deleteResults();
-
+    void deleteAll();
 
     @Insert
-    void insertResults(Result result);
+    void saveOne(Result result);
 
-    @Query("SELECT * FROM Result ORDER BY  name ASC")
-    List<Result> getAllResults();
+    @Query("SELECT * FROM Result ORDER BY name ASC")
+    List<Result> findAll();
 
     @Query("SELECT * FROM Result WHERE code=:id")
-    Result findByResultId(String id);
+    Result findById(String id);
 
     @Query("SELECT * FROM Result WHERE code in (:resultIds)")
-    List<Result> findByResultId(List<String> resultIds);
+    List<Result> findByIdsIn(List<String> resultIds);
 }
 

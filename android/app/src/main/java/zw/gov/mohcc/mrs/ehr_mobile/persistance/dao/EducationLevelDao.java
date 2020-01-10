@@ -12,18 +12,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
 public interface EducationLevelDao {
 
     @Insert
-    void insertEducationLevels(List<EducationLevel> educationLevels);
+    void saveAll(List<EducationLevel> educationLevels);
 
     @Query("DELETE FROM educationlevel")
-    void deleteEducationLevels();
+    void deleteAll();
 
     @Insert
-    void insertEducation(EducationLevel EducationLevel);
+    void saveOne(EducationLevel EducationLevel);
 
-    @Query("SELECT * FROM EducationLevel ")
-    List<EducationLevel> getEducationLevels();
+    @Query("SELECT * FROM EducationLevel Order By name ASC")
+    List<EducationLevel> findAll();
 
     @Query("SELECT name FROM EducationLevel WHERE code=:code")
-    String findByEducationLevelId(String code);
+    String findbyId(String code);
 
 }

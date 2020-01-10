@@ -86,7 +86,7 @@ public class HtsService {
      * @return list of results
      */
     public List<Result> getInvestigationResults(String investigationId) {
-        return ehrMobileDatabase.resultDao().findByResultId(
+        return ehrMobileDatabase.resultDao().findByIdsIn(
                 ehrMobileDatabase.investigationResultDao().findByInvestigationId(investigationId)
         );
     }
@@ -220,7 +220,13 @@ public class HtsService {
         test.setLaboratoryInvestigationId(laboratoryInvestigationId);
         test.setStartTime(DateUtil.getDateDiff(true));
         test.setEndTime(DateUtil.getDateDiff(false));
+        test.setBatchIssueId(testDTO.getBatchIssueId());
         ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
+        TestKitBatchIssue testKitBatchIssue = ehrMobileDatabase.testKitBatchIssueDao().findById(testDTO.getBatchIssueId());
+        Log.d(TAG, "Removing item from batchIssue : " + testKitBatchIssue);
+        testKitBatchIssue.setRemaining(testKitBatchIssue.getRemaining() - 1);
+        ehrMobileDatabase.testKitBatchIssueDao().update(testKitBatchIssue);
+        Log.d(TAG, "Testkit batch issue updated : " + ehrMobileDatabase.testKitBatchIssueDao().findById(testDTO.getBatchIssueId()));
         setFinalResult(test);
         return labInvestigationTestId;
     }
@@ -262,6 +268,12 @@ public class HtsService {
             setFinalResult(test);
         }
         ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
+        Log.d(TAG, "batch Issue ID : " + test.getBatchIssueId());
+        TestKitBatchIssue testKitBatchIssue = ehrMobileDatabase.testKitBatchIssueDao().findById(test.getBatchIssueId());
+        Log.d(TAG, "Removing item from batchIssue : " + testKitBatchIssue);
+        testKitBatchIssue.setRemaining(testKitBatchIssue.getRemaining() - 1);
+        ehrMobileDatabase.testKitBatchIssueDao().update(testKitBatchIssue);
+        Log.d(TAG, "Testkit batch issue updated : " + ehrMobileDatabase.testKitBatchIssueDao().findById(test.getBatchIssueId()));
         return labInvestigationTestId;
     }
 

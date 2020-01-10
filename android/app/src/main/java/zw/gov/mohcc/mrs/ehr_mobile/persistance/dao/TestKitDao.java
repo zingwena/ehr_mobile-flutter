@@ -15,23 +15,19 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
 @Dao
 public interface TestKitDao {
     @Insert
-    void insertTestKits(List<TestKit> testKits);
+    void saveAll(List<TestKit> testKits);
 
     @Query("DELETE FROM TestKit")
-    void deleteTestKits();
-
+    void deleteAll();
 
     @Insert
-    void insertTestKit(TestKit testKit);
+    void saveOne(TestKit testKit);
 
-    @Query("SELECT * FROM TestKit ORDER BY  name ASC")
-    List<TestKit> getAllTestKits();
+    @Query("SELECT * FROM TestKit ORDER BY name ASC")
+    List<TestKit> findAll();
 
     @Query("SELECT * FROM TestKit WHERE code=:id")
-    TestKit findTestKitById(String id);
-
-    @Query("SELECT * FROM TestKit WHERE name=:name")
-    TestKit findTestKitByName(String name);
+    TestKit findById(String id);
 
     @Query("SELECT t.* FROM TestKit t inner join TestKitTestLevel l on l.testKitId=t.code WHERE l.testLevel=:level")
     List<TestKit> findTestKitsByLevel(TestLevel level);

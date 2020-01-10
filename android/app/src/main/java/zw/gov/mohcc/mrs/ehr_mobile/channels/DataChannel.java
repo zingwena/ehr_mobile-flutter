@@ -1,5 +1,8 @@
 package zw.gov.mohcc.mrs.ehr_mobile.channels;
 
+import android.nfc.Tag;
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -25,6 +28,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class DataChannel {
 
+    private final String TAG = "Data Channel";
+
     public DataChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase){
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
@@ -36,7 +41,7 @@ public class DataChannel {
                         if (methodCall1.method.equals("townOptions")) {
                             try {
                                 System.out.println("----------==-=-=" + "here");
-                                List<Town> towns = ehrMobileDatabase.townsDao().getAllTowns();
+                                List<Town> towns = ehrMobileDatabase.townsDao().findAll();
                                 String townList = gson.toJson(towns);
                                 result1.success(townList);
                             } catch (Exception e) {
@@ -56,7 +61,7 @@ public class DataChannel {
                         }
                         if (methodCall1.method.equals("countryOptions")) {
                             try {
-                                List<Country> countries = ehrMobileDatabase.countryDao().getAllCountries();
+                                List<Country> countries = ehrMobileDatabase.countryDao().findAll();
                                 System.out.println("*************************** native" + countries);
                                 String countryList = gson.toJson(countries);
                                 result1.success(countryList);
@@ -66,7 +71,7 @@ public class DataChannel {
                         }
                         if (methodCall1.method.equals("occupationOptions")) {
                             try {
-                                List<Occupation> occupations = ehrMobileDatabase.occupationDao().getAllOccupations();
+                                List<Occupation> occupations = ehrMobileDatabase.occupationDao().findAll();
                                 String occupationList = gson.toJson(occupations);
                                 result1.success(occupationList);
                             } catch (Exception e) {
@@ -75,7 +80,7 @@ public class DataChannel {
                         }
                         if (methodCall1.method.equals("educationLevelOptions")) {
                             try {
-                                List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().getEducationLevels();
+                                List<EducationLevel> educationLevels = ehrMobileDatabase.educationLevelDao().findAll();
                                 String educationLevelList = gson.toJson(educationLevels);
                                 result1.success(educationLevelList);
 
@@ -87,7 +92,7 @@ public class DataChannel {
 
                         if (methodCall1.method.equals("nationalityOptions")) {
                             try {
-                                List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().selectAllNationalities();
+                                List<Nationality> nationalities = ehrMobileDatabase.nationalityDao().findAll();
                                 String nationalityList = gson.toJson(nationalities);
                                 result1.success(nationalityList);
                             } catch (Exception e) {
@@ -98,7 +103,7 @@ public class DataChannel {
 
                         if (methodCall1.method.equals("maritalStatusOptions")) {
                             try {
-                                List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().getAllMaritalStates();
+                                List<MaritalStatus> maritalStatuses = ehrMobileDatabase.maritalStateDao().findAll();
                                 String maritalStatusList = gson.toJson(maritalStatuses);
                                 result1.success(maritalStatusList);
 
@@ -110,7 +115,7 @@ public class DataChannel {
 
                         if (methodCall1.method.equals("getEntryPointsOptions")) {
                             try {
-                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().findAll();
                                 String list = gson.toJson(entryPoints);
                                 result1.success(list);
                             } catch (Exception e) {
@@ -123,6 +128,7 @@ public class DataChannel {
                             try {
                                 List<ArtReason> artReasons = ehrMobileDatabase.artReasonDao().findAll();
                                 String list = gson.toJson(artReasons);
+                                Log.d(TAG, "**************************** TIKI TAKA : " + artReasons);
                                 result1.success(list);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

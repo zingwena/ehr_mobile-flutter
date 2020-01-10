@@ -12,20 +12,17 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 public interface MaritalStatusDao {
 
     @Insert
-    void insertMaritalStates(List<MaritalStatus> maritalStatuses);
+    void saveAll(List<MaritalStatus> maritalStatuses);
 
     @Query("DELETE FROM maritalstatus")
-    void deleteMaritalStatuses();
+    void deleteALl();
 
     @Insert
-    void insertMAritalState(MaritalStatus maritalStatus);
+    void saveOne(MaritalStatus maritalStatus);
 
-    @Query("SELECT * FROM MaritalStatus ")
-    List<MaritalStatus> getAllMaritalStates();
+    @Query("SELECT * FROM MaritalStatus Order By name ASC")
+    List<MaritalStatus> findAll();
 
     @Query("SELECT * FROM MaritalStatus WHERE code=:id")
-    MaritalStatus findMaritalStateById(String id);
-
-    @Query("SELECT name FROM maritalstatus WHERE code=:code")
-    String getMaritalStatusNameByCode(String code);
+    MaritalStatus findById(String id);
 }

@@ -13,21 +13,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.person.PatientPhoneNumber;
 public interface PatientPhoneDao {
 
     @Insert
-    void insertpatientphonenumbers(List<PatientPhoneNumber> patientPhoneNumbers);
+    void saveAll(List<PatientPhoneNumber> patientPhoneNumbers);
 
     @Query("DELETE FROM patientphonenumber")
-    void deletepatientphonenumber();
+    void deleteAll();
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long insertpatientphonenumber(PatientPhoneNumber patientPhoneNumber);
-
-
-    @Query("SELECT * FROM PatientPhoneNumber ORDER BY  phoneNumber1 ASC")
-    List<PatientPhoneNumber> getAllPhonenumbers();
-
-    @Query("SELECT * FROM PatientPhoneNumber WHERE personId=:id")
-    PatientPhoneNumber findByPatientId(String id);
+    Long saveOne(PatientPhoneNumber patientPhoneNumber);
 
 
     @Query("SELECT * FROM PatientPhoneNumber WHERE id=:id")

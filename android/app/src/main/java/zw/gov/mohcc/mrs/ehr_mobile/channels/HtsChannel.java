@@ -14,37 +14,39 @@ import java.util.Map;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtRegimenDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.TestKitBatchDto;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
@@ -59,15 +61,15 @@ public class HtsChannel {
 
     public HtsChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase, HtsService htsService,
                       LaboratoryInvestigation laboratoryInvestigation, HistoryService historyService,
-                      IndexTestingService indexTestingService, VisitService visitService) {
-        final String index_id ;
+                      IndexTestingService indexTestingService, VisitService visitService, ArtService artService) {
+        final String index_id;
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
                         String arguments = methodCall.arguments();
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
-                        String indexTest_Id ;
+                        String indexTest_Id;
 
                         if (methodCall.method.equals("getLabInvestigation")) {
                             try {
@@ -84,7 +86,7 @@ public class HtsChannel {
                             try {
                                 Hts hts = htsService.getCurrentHts(arguments);
                                 String htsjson = gson.toJson(hts);
-                                Log.i(TAG, "HTS SCREENING MODEL"+ htsjson);
+                                Log.i(TAG, "HTS SCREENING MODEL" + htsjson);
                                 result.success(htsjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -101,7 +103,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("htsModelOptions")) {
                             try {
-                                List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().getAllHtsModels();
+                                List<HtsModel> htsModels = ehrMobileDatabase.htsModelDao().findAll();
 
                                 String htsModelList = gson.toJson(htsModels);
                                 result.success(htsModelList);
@@ -111,7 +113,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("entrypointOptions")) {
                             try {
-                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().getAllEntryPoints();
+                                List<EntryPoint> entryPoints = ehrMobileDatabase.entryPointDao().findAll();
                                 String entrypointList = gson.toJson(entryPoints);
                                 result.success(entrypointList);
                             } catch (Exception e) {
@@ -144,7 +146,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getEntrypoint")) {
                             try {
-                                EntryPoint entryPoint = ehrMobileDatabase.entryPointDao().findEntryPointById(arguments);
+                                EntryPoint entryPoint = ehrMobileDatabase.entryPointDao().findById(arguments);
                                 String entrypoint_name = entryPoint.getName();
                                 result.success(entrypoint_name);
 
@@ -157,7 +159,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
                                 System.out.println("HTS MODEL ID HERE HERE HERE" + arguments);
-                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelById(arguments);
+                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findById(arguments);
                                 String htsModelName = htsModel.getName();
                                 result.success(htsModelName);
 
@@ -171,7 +173,7 @@ public class HtsChannel {
 
                         if (methodCall.method.equals("purposeOfTestsOptions")) {
                             try {
-                                List<PurposeOfTest> purpose_of_tests = ehrMobileDatabase.purposeOfTestDao().getAllPurposeOfTest();
+                                List<PurposeOfTest> purpose_of_tests = ehrMobileDatabase.purposeOfTestDao().findAll();
                                 String purposeOfTestsList = gson.toJson(purpose_of_tests);
                                 result.success(purposeOfTestsList);
                             } catch (Exception e) {
@@ -182,7 +184,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("reasonForNotIssuingResultOptions")) {
 
                             try {
-                                List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().getAllReasonForNotIssuingResults();
+                                List<ReasonForNotIssuingResult> reasonForNotIssuingResults = ehrMobileDatabase.reasonForNotIssuingResultDao().findAll();
                                 String reasonForNotIssuingResultList = gson.toJson(reasonForNotIssuingResults);
                                 result.success(reasonForNotIssuingResultList);
                             } catch (Exception e) {
@@ -216,7 +218,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
-                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findHtsModelByName(arguments);
+                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findByname(arguments);
 
                                 result.success(htsModel);
                             } catch (Exception e) {
@@ -226,7 +228,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getPurposeofTest")) {
                             try {
-                                PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findPurposeOfTestByName(arguments);
+                                PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findByName(arguments);
                                 result.success(purposeOfTest);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -236,7 +238,7 @@ public class HtsChannel {
 
                             try {
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
-                                Log.d(TAG, "Lab invest test passed to android #########"+ labInvestTest.toString());
+                                Log.d(TAG, "Lab invest test passed to android #########" + labInvestTest.toString());
                                 String labInvestigationTestId = htsService.processTestResults(labInvestTest);
                                 result.success(labInvestigationTestId);
                             } catch (Exception e) {
@@ -274,7 +276,7 @@ public class HtsChannel {
                             try {
                                 Log.i(TAG, "*************************** reching this point");
                                 String resultId = htsService.getFinalResult(arguments);
-                                Result result1 = ehrMobileDatabase.resultDao().findByResultId(resultId);
+                                Result result1 = ehrMobileDatabase.resultDao().findById(resultId);
                                 Log.i(TAG, "*************************** after first call : " + result1);
                                 String result_name = result1 != null ? result1.getName() : "";
                                 Log.d(TAG, "GGGGGGGGGGGGGGGGGGGGGGG FINAL RESULT + " + result_name);
@@ -308,7 +310,7 @@ public class HtsChannel {
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
-                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String sample_name = sample.getName();
 
                                 result.success(sample_name);
@@ -320,7 +322,7 @@ public class HtsChannel {
 
                             try {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("ee7d91fc-b27f-11e8-b121-c48e8faf035b");
-                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String sample_name = sample.getName();
                                 Log.i(TAG, "Recency sample name from android");
                                 result.success(sample_name);
@@ -333,8 +335,8 @@ public class HtsChannel {
                             try {
                                 System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("ee7d91fc-b27f-11e8-b121-c48e8faf035b");
-                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
-                                Log.i(TAG, "Laboratory test from android"+ laboratoryTest.getName());
+                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findById(investigation.getLaboratoryTestId());
+                                Log.i(TAG, "Laboratory test from android" + laboratoryTest.getName());
                                 String investigation_name = laboratoryTest.getName();
                                 result.success(investigation_name);
                             } catch (Exception e) {
@@ -363,7 +365,7 @@ public class HtsChannel {
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
-                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findByLaboratoryTestId(investigation.getLaboratoryTestId());
+                                LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findById(investigation.getLaboratoryTestId());
                                 String labtest_name = laboratoryTest.getName();
                                 result.success(labtest_name);
                             } catch (Exception e) {
@@ -387,9 +389,9 @@ public class HtsChannel {
 
                             try {
                                 TestKitBatchDto testKitBatchDto = gson.fromJson(arguments, TestKitBatchDto.class);
-                                Log.d(TAG, "TestkitBatchDto from flutter"+testKitBatchDto.getBinType()+">>>>>>>"+ testKitBatchDto.getBinId()+">>>>>>>>>>>>"+ testKitBatchDto.getTestKitId());
-                                List<TestKitBatchIssue>testKitBatchIssueList = htsService.getQueueOrWardTestKits(testKitBatchDto.getBinType(), testKitBatchDto.getBinId(), testKitBatchDto.getTestKitId());
-                                Log.d(TAG, "Testkit batches retrieved from htsservice %%%%%%%%%%%%%%%%%%%%%%%% in android"+testKitBatchIssueList);
+                                Log.d(TAG, "TestkitBatchDto from flutter" + testKitBatchDto.getBinType() + ">>>>>>>" + testKitBatchDto.getBinId() + ">>>>>>>>>>>>" + testKitBatchDto.getTestKitId());
+                                List<TestKitBatchIssue> testKitBatchIssueList = htsService.getQueueOrWardTestKits(testKitBatchDto.getBinType(), testKitBatchDto.getBinId(), testKitBatchDto.getTestKitId());
+                                Log.d(TAG, "Testkit batches retrieved from htsservice %%%%%%%%%%%%%%%%%%%%%%%% in android" + testKitBatchIssueList);
                                 String testkitsbatchissues_string = gson.toJson(testKitBatchIssueList);
                                 result.success(testkitsbatchissues_string);
 
@@ -440,58 +442,58 @@ public class HtsChannel {
                             }
 
                         }
-                        if(methodCall.method.equals("getRecencyTestkits")){
-                            try{
+                        if (methodCall.method.equals("getRecencyTestkits")) {
+                            try {
                                 Log.d(TAG, "Arguments passed to get  Recency testkit : " + arguments);
                                 String testkitlist = gson.toJson(htsService.getInvestigationTestKit("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
                                 Log.d(TAG, "Testkits returned : " + testkitlist);
                                 result.success(testkitlist);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.d(TAG, "Exception thrown in getRecencyTestkits method");
 
                             }
                         }
-                        if(methodCall.method.equals("getRecencySampleName")){
-                            try{
+                        if (methodCall.method.equals("getRecencySampleName")) {
+                            try {
                                 Log.d(TAG, "Arguments passed to get  Recency testkit : " + arguments);
                                 String testkitlist = gson.toJson(htsService.getInvestigationTestKit("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
                                 Log.d(TAG, "Testkits returned : " + testkitlist);
                                 result.success(testkitlist);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.d(TAG, "Exception thrown in getRecencyTestkits method");
 
                             }
                         }
-                        if(methodCall.method.equals("getRecencyInvestigation")){
-                            try{
+                        if (methodCall.method.equals("getRecencyInvestigation")) {
+                            try {
                                 Log.d(TAG, "Arguments passed to get  Recency name : " + arguments);
                                 String testkitlist = gson.toJson(htsService.getInvestigationTestKit("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
                                 Log.d(TAG, "Testkits returned : " + testkitlist);
                                 result.success(testkitlist);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.d(TAG, "Exception thrown in getRecencyTestkits method");
 
                             }
                         }
-                        if(methodCall.method.equals("getRecencyResults")){
-                            try{
+                        if (methodCall.method.equals("getRecencyResults")) {
+                            try {
                                 Log.d(TAG, "Arguments passed to get testkit : " + arguments);
                                 String resultsList = gson.toJson(htsService.getInvestigationResults("ee7d91fc-b27f-11e8-b121-c48e8faf035b"));
                                 Log.d(TAG, "Results from recency returned : " + resultsList);
                                 result.success(resultsList);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.d(TAG, "Exception thrown in getRecencyResults method");
 
                             }
                         }
-                        if(methodCall.method.equals("saveRecency")){
-                            try{
+                        if (methodCall.method.equals("saveRecency")) {
+                            try {
                                 Log.d(TAG, "Agi " + arguments);
                                 LaboratoryInvestigationTestDTO laboratoryInvestigationTestDTO = gson.fromJson(arguments, LaboratoryInvestigationTestDTO.class);
                                 String labinvestTestId = htsService.processOtherInvestigationResults(laboratoryInvestigationTestDTO);
                                 result.success(labinvestTestId);
 
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.d(TAG, "Exception thrown in getRecencyResults method");
 
                             }
@@ -499,7 +501,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getTestkitbycode")) {
 
                             try {
-                                String testkit_name = ehrMobileDatabase.testKitDao().findTestKitById(arguments).getName();
+                                String testkit_name = ehrMobileDatabase.testKitDao().findById(arguments).getName();
                                 result.success(testkit_name);
 
                             } catch (Exception e) {
@@ -521,7 +523,7 @@ public class HtsChannel {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId("36069471-adee-11e7-b30f-3372a2d8551e");
                                 System.out.println("arguments = " + arguments);
                                 InvestigationEhr investigationEhr = new InvestigationEhr("36069471-adee-11e7-b30f-3372a2d8551e", "Blood", "HIV");
-                                Sample sample = ehrMobileDatabase.sampleDao().findBySampleId(investigation.getSampleId());
+                                Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String investigationString = gson.toJson(investigationEhr);
                                 result.success(investigationString);
                             } catch (Exception e) {
@@ -560,9 +562,9 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("saveSexualHistory")) {
                             try {
-                                Log.i(TAG, "Sexual history dto from flutter"+ arguments);
+                                Log.i(TAG, "Sexual history dto from flutter" + arguments);
                                 SexualHistoryDTO sexualHistoryDTO = gson.fromJson(arguments, SexualHistoryDTO.class);
-                                String sexualHistoryId =  historyService.saveSexualHistory(sexualHistoryDTO);
+                                String sexualHistoryId = historyService.saveSexualHistory(sexualHistoryDTO);
                                 // SexualHistory sexualHistory = historyService.getSexualHistory(sexualHistoryDTO.getPersonId());
                                 result.success(sexualHistoryId);
 
@@ -579,33 +581,33 @@ public class HtsChannel {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
-                        if(methodCall.method.equals("getSexualHistoryViews")){
-                            Log.i(TAG, "HERE ARE THE ARGUMENTS TO RETRIEVE SEXUAL HISTORY VIEWS ////////////"+ arguments);
-                            try{
-                                List<SexualHistoryQuestionView>sexualHistoryQuestionViews = historyService.getPatientSexualHistQuestions(arguments);
-                                Log.i(TAG, "List of sexual history view returned"+ sexualHistoryQuestionViews);
+                        if (methodCall.method.equals("getSexualHistoryViews")) {
+                            Log.i(TAG, "HERE ARE THE ARGUMENTS TO RETRIEVE SEXUAL HISTORY VIEWS ////////////" + arguments);
+                            try {
+                                List<SexualHistoryQuestionView> sexualHistoryQuestionViews = historyService.getPatientSexualHistQuestions(arguments);
+                                Log.i(TAG, "List of sexual history view returned" + sexualHistoryQuestionViews);
                                 result.success(gson.toJson(sexualHistoryQuestionViews));
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.i(TAG, "Error occurred :" + e.getMessage());
 
                             }
                         }
-                        if(methodCall.method.equals("saveIndexTest")){
-                            try{
+                        if (methodCall.method.equals("saveIndexTest")) {
+                            try {
                                 IndexTest indexTest = gson.fromJson(arguments, IndexTest.class);
-                                String indexTestId =  indexTestingService.createIndexTest(indexTest);
+                                String indexTestId = indexTestingService.createIndexTest(indexTest);
                                 result.success(indexTestId);
 
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
-                        if(methodCall.method.equals("getIndexContactList")){
+                        if (methodCall.method.equals("getIndexContactList")) {
 
-                            try{
+                            try {
                                 List<IndexContact> indexContactList = indexTestingService.findIndexContactsByIndexTestId(arguments);
-                                List<Person>contactlist = new ArrayList<>();
-                                for( IndexContact indexContact : indexContactList){
+                                List<Person> contactlist = new ArrayList<>();
+                                for (IndexContact indexContact : indexContactList) {
                                     Person person = ehrMobileDatabase.personDao().findPatientById(indexContact.getPersonId());
                                     contactlist.add(person);
                                 }
@@ -613,25 +615,25 @@ public class HtsChannel {
 
                                 result.success(indexContacts);
 
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
-                        if(methodCall.method.equals("saveSexualHistoryDto")){
-                            Log.i(TAG, " SEXUAL HISTORY DTO FROM FLUTTER"+ arguments);
-                            try{
+                        if (methodCall.method.equals("saveSexualHistoryDto")) {
+                            Log.i(TAG, " SEXUAL HISTORY DTO FROM FLUTTER" + arguments);
+                            try {
                                 SexualHistoryQuestionDTO sexualHistoryDTO = gson.fromJson(arguments, SexualHistoryQuestionDTO.class);
                                 String sexualHistoryId = historyService.createSexualHistoryQuestion(sexualHistoryDTO);
                                 result.success(sexualHistoryId);
 
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
 
                             }
                         }
-                        if(methodCall.method.equals("saveIndexContact")){
+                        if (methodCall.method.equals("saveIndexContact")) {
 
-                            try{
+                            try {
                                 IndexContact indexContact = gson.fromJson(arguments, IndexContact.class);
                                /* IndexContact indexContact = new IndexContact();
                                 indexContact.setPersonId(indexContactDto.getPersonId());
@@ -644,9 +646,9 @@ public class HtsChannel {
                                 indexContact.setRelation(indexContactDto.getRelation());
                                 indexContact.setHivStatus(indexContactDto.getHivStatus());
                                 System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + indexContact.toString());*/
-                                String indexTestId =  indexTestingService.createIndexContact(indexContact);
+                                String indexTestId = indexTestingService.createIndexContact(indexContact);
                                 result.success(indexTestId);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
                             }
                         }
@@ -657,6 +659,20 @@ public class HtsChannel {
                                 Log.i(TAG, "ART MODEL RETURNED FROM ANDROID"+ art);
                                 String artjson = gson.toJson(art);
                                 Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>"+ artjson);
+                                result.success(artjson);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getPersonArvCombinationRegimens")) {
+
+                            try {
+                                ArtRegimenDto artRegimenDto = gson.fromJson(arguments, ArtRegimenDto.class);
+                                String personId = artRegimenDto.getPersonId();
+                                RegimenType regimenType = artRegimenDto.getLine();
+                                List<ArvCombinationRegimen> arvCombinationRegimenList = artService.getPersonArvCombinationRegimens(personId, regimenType);
+                                Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID"+ arvCombinationRegimenList);
+                                String artjson = gson.toJson(arvCombinationRegimenList);
                                 result.success(artjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
