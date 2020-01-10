@@ -52,7 +52,7 @@ syncPatient(String token, String url) async {
 
     //log.i(dto.personInvestigationDtos);
     var encoded=json.encode(dto);
-    log.i(encoded.contains('laboratoryInvestigationDtos'));
+    //log.i(encoded.contains('laboratoryInvestigationDtos'));
     //print(encoded);
     if(person.status=='0'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
@@ -127,6 +127,7 @@ Future <PatientDto> setHts(SqfliteAdapter adapter,PatientDto dto) async{
   var htsDao=HtsDao(adapter);
   var hts = await htsDao.findByPersonId(dto.personDto.id);
   if(hts!=null){
+    log.i('===================================HTS====${hts.id}');
     dto.htsDto=hts;
   }
   return dto;
@@ -166,14 +167,11 @@ Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dt
 
 Future <PatientDto> setLabInvestigations(SqfliteAdapter adapter,String personInvestigationId,PatientDto dto) async {
   var labInvestigationDao=LaboratoryInvestigationDao(adapter);
-  var labInvestigations=await labInvestigationDao.findByPersonInvestigationId(personInvestigationId);
-  for(LaboratoryInvestigationTable labInvestigation in labInvestigations){
+  var labInvestigation=await labInvestigationDao.findPersonInvestigationId(personInvestigationId);
     log.i('======>${labInvestigation.facilityId}');
-    dto.laboratoryInvestigationDtos.add(labInvestigation);
+    dto.laboratoryInvestigationDto=labInvestigation;
     var labTests=await getLabInvestigationTests(adapter,labInvestigation.id);
-    log.i('${labTests.length}');
     labInvestigation.laboratoryInvestigationTestDtos=labTests;
-  }
   return dto;
 }
 

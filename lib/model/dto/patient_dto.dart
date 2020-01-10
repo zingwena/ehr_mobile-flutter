@@ -18,7 +18,7 @@ class PatientDto{
   List<IndexContactTable> indexContactDtos;
   List vitalDtos;
   List<PersonInvestigationTable> personInvestigationDtos=List();
-  List<LaboratoryInvestigationTable>laboratoryInvestigationDtos=List();
+  LaboratoryInvestigationTable laboratoryInvestigationDto;
   //List<>
   Map<String, dynamic> toJson() {
     Map<String,dynamic>map=Map();
@@ -28,7 +28,7 @@ class PatientDto{
       htsDto.personInvestigationDtos=personInvestigationDtos;
       map['htsDto']= htsDto.toJson();
       map['htsDto']['personInvestigationDtos']=personInvestigationDtos;
-      map['htsDto']['laboratoryInvestigationDtos']=laboratoryInvestigationDtos;
+      map['htsDto']['laboratoryInvestigationDto']=laboratoryInvestigationDto;
     }
 
     if(indexTestDto!=null){
