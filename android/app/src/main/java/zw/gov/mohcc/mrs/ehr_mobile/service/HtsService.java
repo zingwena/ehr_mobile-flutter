@@ -268,6 +268,7 @@ public class HtsService {
             setFinalResult(test);
         }
         ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
+        Log.d(TAG, "batch Issue ID : " + test.getBatchIssueId());
         TestKitBatchIssue testKitBatchIssue = ehrMobileDatabase.testKitBatchIssueDao().findById(test.getBatchIssueId());
         Log.d(TAG, "Removing item from batchIssue : " + testKitBatchIssue);
         testKitBatchIssue.setRemaining(testKitBatchIssue.getRemaining() - 1);
