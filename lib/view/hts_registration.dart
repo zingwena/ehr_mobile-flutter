@@ -314,7 +314,7 @@ class _Registration extends State<Registration> {
                                                     ),
                                                     Container(
                                                       padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
+                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                       width: double.infinity,
                                                       child: OutlineButton(
                                                         shape: RoundedRectangleBorder(
