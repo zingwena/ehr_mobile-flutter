@@ -25,6 +25,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.TestKitBatchDto;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
@@ -647,6 +648,18 @@ public class HtsChannel {
                                 result.success(indexTestId);
                             }catch (Exception e){
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getArtRecord")) {
+
+                            try {
+                                Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(arguments);
+                                Log.i(TAG, "ART MODEL RETURNED FROM ANDROID"+ art);
+                                String artjson = gson.toJson(art);
+                                Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>"+ artjson);
+                                result.success(artjson);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
                             }
                         }
 

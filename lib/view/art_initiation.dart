@@ -413,43 +413,6 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ),
                                                       ),
 
-                                                    /*  Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-                                                        width: double.infinity,
-                                                        child: OutlineButton(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.white,
-                                                          padding: const EdgeInsets.all(0.0),
-                                                          child: Container(
-                                                              width: double.infinity,
-                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                              child: SearchableDropdown(
-                                                                icon: Icon(Icons.keyboard_arrow_down),
-                                                                isExpanded:true,
-                                                                items: _dropDownMenuItemsArtReason,
-                                                                value: _currentArtReason,
-                                                                hint: new Text(
-                                                                    'Reason'
-                                                                ),
-                                                                searchHint: new Text(
-                                                                  'Select Reason',
-                                                                  style: new TextStyle(
-                                                                      fontSize: 20
-                                                                  ),
-                                                                ),
-                                                                onChanged: changedDropDownItemArtReason,
-                                                              )
-                                                          ),
-                                                          borderSide: BorderSide(
-                                                            color: Colors.blue, //Color of the border
-                                                            style: BorderStyle.solid, //Style of the border
-                                                            width: 2.0, //width of the border
-                                                          ),
-                                                          onPressed: () {},
-                                                        ),
-                                                      ), */
-
                                                       SizedBox(
                                                         height: 10.0,
                                                       ),
@@ -536,11 +499,11 @@ class _Art_Initiation extends State<Art_Initiation> {
           ),
           ),
           new RoundedButton(text: "Art Initiation", selected: true),
-          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
+          new RoundedButton(text: "Close", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HomePage()),
+                    SearchPatient()),
           ),
           ),
         ],
