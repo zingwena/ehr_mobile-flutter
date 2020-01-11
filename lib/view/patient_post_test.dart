@@ -655,7 +655,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                               ),
                                                             )
                                                           : SizedBox(
-                                                              height: 0.0,
+                                                              height: 10.0,
                                                             ),
 
                                                       Container(
