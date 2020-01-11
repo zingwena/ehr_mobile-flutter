@@ -182,6 +182,8 @@ Future <List<LaboratoryInvestigationTestTable>> getLabInvestigationTests(Sqflite
   for(LaboratoryInvestigationTestTable labInvestigationTest in labInvestigations){
     log.i('======>StartTime--${labInvestigationTest.startTime}');
     log.i('======>EndTime--${labInvestigationTest.endTime}');
+    log.i('======>resultCode--${labInvestigationTest.resultCode}');
+    log.i('======>resultName--${labInvestigationTest.resultName}');
     labTests.add(labInvestigationTest);
   }
   return labTests;

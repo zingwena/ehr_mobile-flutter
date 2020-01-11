@@ -13,10 +13,10 @@ class LaboratoryInvestigationTestDao extends BaseDao{
   var endTime = new DateTimeField('resultDate');
 
   final visitId = new StrField('visitId');
-  final resultCode = new StrField('resultCode');
-  final resultName = new StrField('resultName');
-  final testKitCode = new StrField('testKitCode');
-  final testKitName = new StrField('testKitName');
+  final resultCode = new StrField('result_code');
+  final resultName = new StrField('result_name');
+  final testKitCode = new StrField('testkit_code');
+  final testKitName = new StrField('testkit_name');
   final batchIssueId = new StrField('batchIssueId');
 
   final status = new IntField('status');

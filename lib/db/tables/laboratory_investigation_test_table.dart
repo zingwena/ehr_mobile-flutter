@@ -29,11 +29,11 @@ class LaboratoryInvestigationTestTable extends BaseTable{
     labInvestigation.endTime = const CustomDateTimeConverter().fromIntToSqlDateTime(map['endTime']);
 
     labInvestigation.visitId=map['visitId'];
-    labInvestigation.resultCode=map['resultCode'];
-    labInvestigation.resultName=map['resultName'];
+    labInvestigation.resultCode=map['result_code'];
+    labInvestigation.resultName=map['result_name'];
 
-    labInvestigation.testKitCode=map['testKitCode'];
-    labInvestigation.testKitCode=map['testKitCode'];
+    labInvestigation.testKitCode=map['testkit_code'];
+    labInvestigation.testKitName=map['testkit_name'];
     labInvestigation.batchIssueId=map['batchIssueId'];
 
     return labInvestigation;
