@@ -43,7 +43,7 @@ syncPatient(String token, String url) async {
   for(Person person in persons){
     var dto=PatientDto();
     dto.personDto=person;
-    //log.i(person);
+    log.i(person);
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
     dto = await setIndexTest(adapter,dto);
@@ -52,7 +52,7 @@ syncPatient(String token, String url) async {
 
     //log.i(dto.personInvestigationDtos);
     var encoded=json.encode(dto);
-    log.i(encoded.contains('laboratoryInvestigationDtos'));
+    //log.i(encoded.contains('laboratoryInvestigationDtos'));
     //print(encoded);
     if(person.status=='0'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
@@ -127,6 +127,7 @@ Future <PatientDto> setHts(SqfliteAdapter adapter,PatientDto dto) async{
   var htsDao=HtsDao(adapter);
   var hts = await htsDao.findByPersonId(dto.personDto.id);
   if(hts!=null){
+    log.i('===================================HTS====${hts.id}');
     dto.htsDto=hts;
   }
   return dto;
@@ -156,9 +157,9 @@ Future <PatientDto> setIndexContacts(SqfliteAdapter adapter,String indexTestId,P
 
 Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dto) async {
   var personInvestigationDao=PersonInvestigationDao(adapter);
-  var personInvestigations=await personInvestigationDao.findByPersonId(dto.personDto.id);
-  for(PersonInvestigationTable personInvestigation in personInvestigations){
-    dto.personInvestigationDtos.add(personInvestigation);
+  var personInvestigation=await personInvestigationDao.findByPersonId(dto.personDto.id);
+  if(personInvestigation!=null){
+    dto.personInvestigationDto=personInvestigation;
     dto=await setLabInvestigations(adapter,personInvestigation.id,dto);
   }
   return dto;
@@ -166,14 +167,11 @@ Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dt
 
 Future <PatientDto> setLabInvestigations(SqfliteAdapter adapter,String personInvestigationId,PatientDto dto) async {
   var labInvestigationDao=LaboratoryInvestigationDao(adapter);
-  var labInvestigations=await labInvestigationDao.findByPersonInvestigationId(personInvestigationId);
-  for(LaboratoryInvestigationTable labInvestigation in labInvestigations){
+  var labInvestigation=await labInvestigationDao.findPersonInvestigationId(personInvestigationId);
     log.i('======>${labInvestigation.facilityId}');
-    dto.laboratoryInvestigationDtos.add(labInvestigation);
+    dto.laboratoryInvestigationDto=labInvestigation;
     var labTests=await getLabInvestigationTests(adapter,labInvestigation.id);
-    log.i('${labTests.length}');
     labInvestigation.laboratoryInvestigationTestDtos=labTests;
-  }
   return dto;
 }
 
@@ -182,7 +180,8 @@ Future <List<LaboratoryInvestigationTestTable>> getLabInvestigationTests(Sqflite
   var labInvestigations=await labInvestigationTestDao.findByLaboratoryInvestigationId(laboratoryInvestigationId);
   List<LaboratoryInvestigationTestTable> labTests=List();
   for(LaboratoryInvestigationTestTable labInvestigationTest in labInvestigations){
-    log.i('======>${labInvestigationTest.id}');
+    log.i('======>StartTime--${labInvestigationTest.startTime}');
+    log.i('======>EndTime--${labInvestigationTest.endTime}');
     labTests.add(labInvestigationTest);
   }
   return labTests;

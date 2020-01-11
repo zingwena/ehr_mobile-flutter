@@ -42,18 +42,32 @@ class PersonInvestigationDao extends BaseDao{
     return personInvestigation;
   }
 
-  /// Finds one personInvestigation by [personId]
-  Future<List<PersonInvestigationTable>> findByPersonId(String personId) async {
-    Find finder = new Find(tableName);
-    finder.where(this.personId.eq(personId));
-    List<Map> maps = await (await _adapter.find(finder)).toList();
-    List<PersonInvestigationTable> personInvestigations = new List<PersonInvestigationTable>();
-    for (Map map in maps) {
+  Future<PersonInvestigationTable> findByPersonId(String personId) async {
+    log.i(personId);
+    Find param = new Find(tableName);
+
+    param.where(this.personId.eq(personId));
+
+    Map map = await _adapter.findOne(param);
+    if(map!=null){
       var personInvestigation = PersonInvestigationTable.fromJson(map);
-      personInvestigations.add(personInvestigation);
+      return personInvestigation;
     }
-    return personInvestigations;
+    return null;
   }
+
+//  /// Finds one personInvestigation by [personId]
+//  Future<PersonInvestigationTable> findByPersonId(String personId) async {
+//    Find finder = new Find(tableName);
+//    finder.where(this.personId.eq(personId));
+//    List<Map> maps = await (await _adapter.find(finder)).toList();
+//    List<PersonInvestigationTable> personInvestigations = new List<PersonInvestigationTable>();
+//    for (Map map in maps) {
+//      var personInvestigation = PersonInvestigationTable.fromJson(map);
+//      personInvestigations.add(personInvestigation);
+//    }
+//    return personInvestigations;
+//  }
 
   /// Finds all personInvestigations
   Future<List<PersonInvestigationTable>> findAll() async {

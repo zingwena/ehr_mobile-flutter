@@ -17,6 +17,7 @@ class LaboratoryInvestigationTestTable extends BaseTable{
   String resultName;
   String testKitCode;
   String testKitName;
+  String batchIssueId;
 
   static LaboratoryInvestigationTestTable fromJson(Map map) {
     var labInvestigation = LaboratoryInvestigationTestTable();
@@ -24,8 +25,8 @@ class LaboratoryInvestigationTestTable extends BaseTable{
     labInvestigation.status=map['status'];
     labInvestigation.laboratoryInvestigationId=map['laboratoryInvestigationId'];
 
-    labInvestigation.startTime = const CustomDateTimeConverter().fromIntToSqlDate(map['startTime']);
-    labInvestigation.endTime = const CustomDateTimeConverter().fromIntToSqlDate(map['endTime']);
+    labInvestigation.startTime = const CustomDateTimeConverter().fromIntToSqlDateTime(map['startTime']);
+    labInvestigation.endTime = const CustomDateTimeConverter().fromIntToSqlDateTime(map['endTime']);
 
     labInvestigation.visitId=map['visitId'];
     labInvestigation.resultCode=map['resultCode'];
@@ -33,21 +34,23 @@ class LaboratoryInvestigationTestTable extends BaseTable{
 
     labInvestigation.testKitCode=map['testKitCode'];
     labInvestigation.testKitCode=map['testKitCode'];
+    labInvestigation.batchIssueId=map['batchIssueId'];
 
     return labInvestigation;
   }
 
   Map<String, dynamic> toJson() => {
-  'id': id,
-  'laboratoryInvestigationId': laboratoryInvestigationId,
-  'startTime': startTime,
-  'endTime': endTime,
+    'id': id,
+    'laboratoryInvestigationId': laboratoryInvestigationId,
+    'startTime': startTime,
+    'endTime': endTime,
 
-  'status':status,
-  'visitId': visitId,
-  'resultCode': resultCode,
-  'resultName': resultName,
-  'testKitCode': testKitCode,
-  'testKitName': testKitName,
+    'status':status,
+    'visitId': visitId,
+    'resultCode': resultCode,
+    'resultName': resultName,
+    'testKitCode': testKitCode,
+    'testKitName': testKitName,
+    'batchIssueId':batchIssueId
   };
 }

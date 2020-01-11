@@ -23,6 +23,18 @@ class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
     return df.format(dateTime);
   }
 
+  String fromIntToSqlDateTime(int time) {
+    if(time!=null){
+      return toSqlDateTime(DateTime.fromMillisecondsSinceEpoch(time));
+    }
+    return toSqlDateTime(DateTime.now());
+  }
+
+  String toSqlDateTime(DateTime dateTime){
+    var df=DateFormat('yyyy-MM-dd HH:mm');
+    return df.format(dateTime);
+  }
+
   @override
   String toJson(DateTime json) => json.toIso8601String();
 }

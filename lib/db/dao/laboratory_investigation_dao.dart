@@ -39,17 +39,16 @@ class LaboratoryInvestigationDao extends BaseDao{
     return labInvestigation;
   }
 
-  /// Finds labInvestigations by [personInvestigationId]
-  Future<List<LaboratoryInvestigationTable>> findByPersonInvestigationId(String personInvestigationId) async {
-    Find finder = new Find(tableName);
-    finder.where(this.personInvestigationId.eq(personInvestigationId));
-    List<Map> maps = await (await _adapter.find(finder)).toList();
-    List<LaboratoryInvestigationTable> labInvestigations = new List<LaboratoryInvestigationTable>();
-    for (Map map in maps) {
-      var labInvestigation = LaboratoryInvestigationTable.fromJson(map);
-      labInvestigations.add(labInvestigation);
-    }
-    return labInvestigations;
+
+  Future<LaboratoryInvestigationTable> findPersonInvestigationId(String personInvestigationId) async {
+    Find param = new Find(tableName);
+
+    param.where(this.personInvestigationId.eq(personInvestigationId));
+
+    Map map = await _adapter.findOne(param);
+
+    var labInvestigation = LaboratoryInvestigationTable.fromJson(map);
+    return labInvestigation;
   }
 
   /// Finds all labInvestigations

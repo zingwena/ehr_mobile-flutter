@@ -17,6 +17,7 @@ class LaboratoryInvestigationTestDao extends BaseDao{
   final resultName = new StrField('resultName');
   final testKitCode = new StrField('testKitCode');
   final testKitName = new StrField('testKitName');
+  final batchIssueId = new StrField('batchIssueId');
 
   final status = new IntField('status');
 
