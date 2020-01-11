@@ -879,6 +879,10 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
