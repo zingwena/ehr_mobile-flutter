@@ -608,7 +608,7 @@ class _Recency extends State<RecencyTest> {
                         ),
                       ),
                       SizedBox(
-                        height: 30.0,
+                        height: 0.0,
                       ),
                     ],
                   ),
