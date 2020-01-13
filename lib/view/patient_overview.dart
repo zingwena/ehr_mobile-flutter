@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patient_queue.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/relationship_listPage.dart';
@@ -47,6 +49,7 @@ class OverviewState extends State<Overview> {
   Map<String, dynamic> details;
   String _maritalStatus,_educationLevel,_occupation,_nationality, _address, _phonenumber;
   HtsRegistration htsRegistration;
+  ArtRegistration artReg;
   HtsScreening htsScreening;
   String htsId;
   bool showInput = true;
@@ -60,6 +63,7 @@ class OverviewState extends State<Overview> {
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     getHtsScreeningRecord(_patient.id);
+    getArtRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     getQueueName(widget.patient.id);
     getFacilityName();
@@ -108,6 +112,23 @@ class OverviewState extends State<Overview> {
       });
 
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+
+  }
+  Future<void> getArtRecord(String patientId) async {
+    var  art;
+    try {
+      art = await htsChannel.invokeMethod('getArtRecord', patientId);
+      setState(() {
+        artReg = ArtRegistration.fromJson(jsonDecode(art));
+        print("HERE IS THE ART REGISTRATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artReg.toString());
+
+      });
+
+      print('ART IN THE FLUTTER THE RETURNED ONE '+ artReg.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -172,7 +193,7 @@ class OverviewState extends State<Overview> {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
-            height: 210.0,
+            height: 230.0,
           ),
           new AppBar(
             backgroundColor: Colors.transparent,
@@ -539,12 +560,22 @@ class OverviewState extends State<Overview> {
           }
           ),
 
-      new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) =>
-        ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
-    ),),
+      new RoundedButton(text: "ART", onTap: () {
+        if(artReg == null ){
+          print('nnnnnn artreg null ');
+          Navigator.push(context,MaterialPageRoute(
+              builder: (context)=>  ArtReg(widget.patient.id, visitId, widget.patient, htsRegistration, htsId)
+          ));
+        } else {
+          print('nnnnn artreg  not null ');
+
+          Navigator.push(context,MaterialPageRoute(
+              builder: (context)=> ArtRegOverview(artReg, _patient.id, visitId, _patient, htsRegistration, htsId)
+          ));
+        }
+      //    ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
+
+      }),
           new RoundedButton(text: "RELATIONS", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(

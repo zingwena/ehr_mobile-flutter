@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:ehr_mobile/landing_screen.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
+import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/summary.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'model/person.dart';
 
@@ -29,6 +35,32 @@ class Sidebar extends StatefulWidget{
 }
 
 class sidebarstate extends State<Sidebar>{
+
+  ArtRegistration artReg;
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  @override
+  void initState() {
+    getArtRecord(widget.patientId);
+
+  }
+
+  Future<void> getArtRecord(String patientId) async {
+    var  art;
+    try {
+      art = await htsChannel.invokeMethod('getArtRecord', patientId);
+      setState(() {
+        artReg = ArtRegistration.fromJson(jsonDecode(art));
+        print("HERE IS THE ART REGISTRATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artReg.toString());
+
+      });
+
+      print('ART IN THE FLUTTER THE RETURNED ONE '+ artReg.toString());
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +108,10 @@ class sidebarstate extends State<Sidebar>{
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    Overview(widget.person)),
+                    SummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),
+
+           //   SummaryOverview(this.person, this.visitId, this.htsRegistration, this.htsId);
+
           )),
           Divider(
             height: 10.0,
@@ -113,12 +148,19 @@ class sidebarstate extends State<Sidebar>{
             color: Colors.blue.shade500,
           ),
           new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
-              color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
-          )),
+              color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: (){
+            if(artReg == null ){
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+              ));
+            } else {
+
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> ArtRegOverview(artReg, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+              ));
+            }
+          }),
           Divider(
             height: 10.0,
             color: Colors.blue.shade500,
@@ -150,4 +192,6 @@ class sidebarstate extends State<Sidebar>{
       ),
     );
   }
+
+
 }

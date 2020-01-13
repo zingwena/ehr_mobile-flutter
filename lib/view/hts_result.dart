@@ -163,7 +163,7 @@ class _Hts_Result  extends State<Hts_Result > {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
-            height: 210.0,
+            height: 240.0,
           ),
           new AppBar(
             backgroundColor: Colors.transparent,
@@ -347,7 +347,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                     ),
 
                                                     SizedBox(
-                                                      height: 20.0,
+                                                      height: 10.0,
                                                     ),
 
                                                     Container(
@@ -372,6 +372,11 @@ class _Hts_Result  extends State<Hts_Result > {
 
                                                       ),
                                                     ),
+
+                                                    SizedBox(
+                                                      height: 10.0,
+                                                    ),
+
 
                                                     Container(
                                                       width: double.infinity,
@@ -413,9 +418,11 @@ class _Hts_Result  extends State<Hts_Result > {
                                                         ],
                                                       ),
                                                     ),
+
                                                     SizedBox(
                                                       height: 30.0,
                                                     ),
+
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),

@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/model/artInitiation.dart';
+import 'package:ehr_mobile/view/art_initiationoverview.dart';
+
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -50,9 +53,9 @@ class ArtOverviewState extends State<ArtRegOverview> {
   Visit _visit;
   Map<String, dynamic> details;
   String _entrypoint;
-
   bool showInput = true;
   bool showInputTabOptions = true;
+  ArtInitiation artInitiation;
   var dateOfEnrollment, dateOfHivTest;
 
   @override
@@ -79,6 +82,24 @@ class ArtOverviewState extends State<ArtRegOverview> {
     setState(() {
       _entrypoint = entrypoint;
     });
+
+
+  }
+
+  Future<void> getArtInitiation(String patientId) async {
+    var  art_initiation;
+    try {
+      art_initiation = await htsChannel.invokeMethod('getArtInitiationRecord', patientId);
+      setState(() {
+        artInitiation = ArtInitiation.fromJson(jsonDecode(art_initiation));
+        print("HERE IS THE ART INITIATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artInitiation.toString());
+
+      });
+
+      print('ART INITIATION IN THE FLUTTER THE RETURNED ONE '+ artInitiation.toString());
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
 
 
   }
@@ -276,13 +297,21 @@ class ArtOverviewState extends State<ArtRegOverview> {
                 builder: (context) =>
                     Registration(_patient.id)),
           ),*/),
-          new RoundedButton(text: "ART Initiation", onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Art_Initiation(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId
-                    )),
-          ),
+          new RoundedButton(text: "ART Initiation", onTap: (){
+            if(artInitiation == null ){
+              debugPrint("GGGGGGGGGGGGG art initiation is null");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  Art_Initiation(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+              ));
+            } else {
+              debugPrint("GGGGGGGGGGGGG art initiation is not null");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> ArtInitiationOverview(artInitiation, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+
+              ));
+
+            }
+          }
           ),
           new RoundedButton(text: "Close",)
         ],

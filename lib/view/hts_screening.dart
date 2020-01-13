@@ -262,7 +262,7 @@ class _HtsScreening extends State<Hts_Screening> {
                             ),
                           ])
                   ),
-               //   _buildButtonsRow(),
+                //  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -878,6 +878,10 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             onChanged: _handleArtChange)
                                                       ],
                                                     ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,

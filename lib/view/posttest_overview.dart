@@ -40,7 +40,8 @@ class PostTestOverview extends StatefulWidget {
   final String result;
   final HtsRegistration htsRegistration;
 
-  PostTestOverview(this.postTest, this.personId, this.visitId, this.person, this.htsId, this.consenttoIndex, this.result, this.htsRegistration);
+  PostTestOverview(this.postTest, this.personId, this.visitId, this.person,
+      this.htsId, this.consenttoIndex, this.result, this.htsRegistration);
 
   @override
   State<StatefulWidget> createState() {
@@ -51,9 +52,10 @@ class PostTestOverview extends StatefulWidget {
 
 class PostTestOverviewState extends State<PostTestOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
-  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
-
+  static const htsChannel =
+      MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const artChannel =
+      MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
 
   Person _patient;
   Visit _visit;
@@ -67,29 +69,24 @@ class PostTestOverviewState extends State<PostTestOverview> {
 
   @override
   void initState() {
-    dateOfTest = DateFormat("yyyy/MM/dd").format(widget.postTest.datePostTestCounselled);
+    dateOfTest =
+        DateFormat("yyyy/MM/dd").format(widget.postTest.datePostTestCounselled);
     print(_patient.toString());
     //  getEntryPoint(widget.htsRegistration.entryPointId);
     super.initState();
   }
 
-
   Future<void> getEntryPoint(String entrypointId) async {
     String entrypoint;
 
     try {
-      entrypoint =
-      await htsChannel.invokeMethod('getEntrypoint', entrypointId);
-
-
+      entrypoint = await htsChannel.invokeMethod('getEntrypoint', entrypointId);
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
       _entrypoint = entrypoint;
     });
-
-
   }
 
   String nullHandler(String value) {
@@ -99,7 +96,8 @@ class PostTestOverviewState extends State<PostTestOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:   Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId,
+          widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -110,159 +108,200 @@ class PostTestOverviewState extends State<PostTestOverview> {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
-            height: 210.0,
+            height: 220.0,
           ),
           new AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
+            title: new Text(
+              "Impilo Mobile",
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 25.0,
+              ),
             ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Icon(
-                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                            Icons.person_pin,
+                            size: 25.0,
+                            color: Colors.white,
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: Text("admin", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                          child: Text(
+                            "admin",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.0,
+                                color: Colors.white),
+                          ),
                         ),
-                      ])
-              ),
+                      ])),
             ],
           ),
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
-                  top: MediaQuery
-                      .of(context)
-                      .padding
-                      .top + 40.0),
+                  top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
-
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("Post Test Overview", style: TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                    child: Text(
+                      "Post Test Overview",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.0,
+                          color: Colors.white),
+                    ),
                   ),
 
                   Container(
                       child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_outline, size: 25.0, color: Colors.white,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.verified_user, size: 25.0, color: Colors.white,),
-                            ),
-                          ])
-                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_outline,
+                            size: 25.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text(
+                            widget.person.firstName +
+                                " " +
+                                widget.person.lastName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14.0,
+                                color: Colors.white),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.verified_user,
+                            size: 25.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ])),
                   //_buildButtonsRow(),
-                  Expanded(child: WillPopScope(
-                    onWillPop: () {
-                      if (!showInput) {
-                        setState(() {
-                          showInput = true;
-                          showInputTabOptions = true;
-                        });
-                        return Future(() => false);
-                      } else {
-                        return Future(() => true);
-                      }
-                    },
-                    child: new Card(
-                      elevation: 4.0,
-                      margin: const EdgeInsets.all(8.0),
-                      child: DefaultTabController(
-                        child: new LayoutBuilder(
-                          builder:
-                              (BuildContext context,
-                              BoxConstraints viewportConstraints) {
-                            return Column(
-                              children: <Widget>[
-                                //  _buildTabBar(),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: new ConstrainedBox(
-                                      constraints: new BoxConstraints(
-                                        minHeight: viewportConstraints
-                                            .maxHeight - 48.0,
-                                      ),
-                                      child: new IntrinsicHeight(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Form(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0),
-                                                  child: Column(
-                                                    children: <Widget>[
-
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: dateOfTest),
-                                                                decoration: InputDecoration(
-                                                                    icon: Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Date Post Counselled",
-                                                                    hintText: "Date Post Counselled"
-                                                                ),
-                                                              ),
+                  Expanded(
+                    child: WillPopScope(
+                      onWillPop: () {
+                        if (!showInput) {
+                          setState(() {
+                            showInput = true;
+                            showInputTabOptions = true;
+                          });
+                          return Future(() => false);
+                        } else {
+                          return Future(() => true);
+                        }
+                      },
+                      child: new Card(
+                        elevation: 4.0,
+                        margin: const EdgeInsets.all(8.0),
+                        child: DefaultTabController(
+                          child: new LayoutBuilder(
+                            builder: (BuildContext context,
+                                BoxConstraints viewportConstraints) {
+                              return Column(
+                                children: <Widget>[
+                                  //  _buildTabBar(),
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: new ConstrainedBox(
+                                        constraints: new BoxConstraints(
+                                          minHeight:
+                                              viewportConstraints.maxHeight -
+                                                  48.0,
+                                        ),
+                                        child: new IntrinsicHeight(
+                                            child: Column(
+                                          children: <Widget>[
+                                            Form(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right:
+                                                                        16.0),
+                                                            child: TextField(
+                                                              controller:
+                                                                  TextEditingController(
+                                                                      text:
+                                                                          dateOfTest),
+                                                              decoration: InputDecoration(
+                                                                  icon: Icon(
+                                                                      Icons
+                                                                          .date_range,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  labelText:
+                                                                      "Date Post Counselled",
+                                                                  hintText:
+                                                                      "Date Post Counselled"),
                                                             ),
                                                           ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.postTest.finalResult)),
-                                                                decoration: InputDecoration(
-                                                                    icon: new Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Final Result",
-                                                                    hintText: "Final Result"
-                                                                ),
-                                                              ),
+                                                        ),
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right:
+                                                                        16.0),
+                                                            child: TextField(
+                                                              controller: TextEditingController(
+                                                                  text: nullHandler(widget
+                                                                      .postTest
+                                                                      .finalResult)),
+                                                              decoration: InputDecoration(
+                                                                  icon: new Icon(
+                                                                      Icons
+                                                                          .date_range,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  labelText:
+                                                                      "Final Result",
+                                                                  hintText:
+                                                                      "Final Result"),
                                                             ),
                                                           ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 25.0,
-                                                      ),
-
-                                                      SizedBox(
-                                                        height: 25.0,
-                                                      ),
-                                                   /*   Container(
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
+                                                    /*   Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         child: RaisedButton(
@@ -283,10 +322,10 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                           },
                                                         ),
                                                       ),*/
-                                                      SizedBox(
-                                                        height: 25.0,
-                                                      ),
-                                                     /* Container(
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
+                                                    /* Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                                         child: RaisedButton(
@@ -307,31 +346,25 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                           },
                                                         ),
                                                       ),*/
-                                                      SizedBox(
-                                                        height: 25.0,
-                                                      ),
-                                                      _recencyTesting(),
-                                      ],
-                                                  ),
+
+                                                    _recencyTesting(),
+                                                  ],
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
-                                            ],
-                                          )
-
+                                            ),
+                                          ],
+                                        )),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ]
-                              ,
-                            );
-                          },
+                                  )
+                                ],
+                              );
+                            },
+                          ),
+                          length: 3,
                         ),
-                        length: 3,
                       ),
                     ),
-                  ),
                   ),
                 ],
               ),
@@ -341,38 +374,44 @@ class PostTestOverviewState extends State<PostTestOverview> {
       ),
     );
   }
-  Widget _recencyTesting(){
-    if(widget.result == 'POSITIVE' || widget.result == 'Positive'){
-      return   Container(                                      width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Recency Testing",
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          onPressed: () {
 
-                                                                Navigator.push(context,MaterialPageRoute(
-                                                                    builder: (context)=> RecencyTest(widget.personId, widget.visitId, widget.person, widget.htsId , indexTestId, widget.htsRegistration)
-                                                                ));
-
-                                                          },
-                                                        ),
-                                                      );
-    }
-    else{
-
-      return Container(                                      width: double.infinity,
+  Widget _recencyTesting() {
+    if (widget.result == 'POSITIVE' || widget.result == 'Positive') {
+      return Container(
+        width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
         child: RaisedButton(
           elevation: 4.0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          color: Colors.blue,
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "Recency Testing",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RecencyTest(
+                        widget.personId,
+                        widget.visitId,
+                        widget.person,
+                        widget.htsId,
+                        indexTestId,
+                        widget.htsRegistration)));
+          },
+        ),
+      );
+    } else {
+      return Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+        child: RaisedButton(
+          elevation: 4.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           color: Colors.blue,
           padding: const EdgeInsets.all(20.0),
           child: Text(
@@ -380,28 +419,25 @@ class PostTestOverviewState extends State<PostTestOverview> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context)=> Overview( widget.person)
-            ));
-
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Overview(widget.person)));
           },
         ),
       );
-
     }
   }
 
   Widget _IndexButton() {
-
-    if(widget.consenttoIndex == true){
-      return   Container(
+    if (widget.consenttoIndex == true) {
+      return Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
         child: RaisedButton(
           elevation: 4.0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           color: Colors.blue,
           padding: const EdgeInsets.all(20.0),
           child: Text(
@@ -409,43 +445,40 @@ class PostTestOverviewState extends State<PostTestOverview> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            IndexTest indexTest = IndexTest(widget.personId, widget.postTest.datePostTestCounselled);
+            IndexTest indexTest = IndexTest(
+                widget.personId, widget.postTest.datePostTestCounselled);
             saveIndexTest(indexTest);
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.personId, indexTestId)
-            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HIVServicesIndexContactList(
+                        widget.person,
+                        widget.visitId,
+                        widget.htsId,
+                        null,
+                        widget.personId,
+                        indexTestId)));
           },
         ),
       );
-
-    }else{
+    } else {
       return SizedBox(
         height: 10.0,
       );
     }
-
   }
 
-  Future<void>saveIndexTest(IndexTest indexTest)async{
-    var response ;
-    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX '+ indexTest.toString());
-    try{
-      response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
-      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
+  Future<void> saveIndexTest(IndexTest indexTest) async {
+    var response;
+    print(
+        'GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX ' + indexTest.toString());
+    try {
+      response =
+          await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
+      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id' + response);
       setState(() {
         indexTestId = response;
       });
-
-    }catch(e){
-
-    }
-
+    } catch (e) {}
   }
-
 }
-
-
-
-
-
-

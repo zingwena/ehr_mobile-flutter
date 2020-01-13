@@ -10,6 +10,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
 
 
@@ -41,6 +42,9 @@ public interface ArtInitiationDao {
 
     @RawQuery
     List<ArtInitiation> searchArtInitiation(SimpleSQLiteQuery query);
+
+    @Query("SELECT * FROM ArtInitiation WHERE personId =:personId")
+    ArtInitiation findByPersonId(String personId);
 
 
 

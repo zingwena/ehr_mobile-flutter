@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/relationship_listPage.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
@@ -951,10 +952,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                     patientSummaryDto
                                                                             .artDetails ==
                                                                         null
-                                                                ? Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .topLeft,
+                                                                ? Center(
                                                                     child: Text(
                                                                       'No Record',
                                                                       style: TextStyle(
@@ -1035,7 +1033,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                     child:
                                                                         TextFormField(
                                                                       initialValue:
-                                                                          'Level 1',
+                                                                          patientSummaryDto.artDetails.whoStage,
                                                                       decoration:
                                                                           InputDecoration(
                                                                         icon: Icon(
@@ -1060,7 +1058,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                     child:
                                                                         TextFormField(
                                                                       initialValue:
-                                                                          'Regimen',
+                                                                          patientSummaryDto.artDetails.arvRegimen,
                                                                       decoration:
                                                                           InputDecoration(
                                                                         icon: Icon(
@@ -1279,6 +1277,14 @@ class SummaryOverviewState extends State<SummaryOverview>
       child: Row(
         children: <Widget>[
           new RoundedButton(
+            text: "DEMOGRAPHICS",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Overview(widget.person)),
+            ),
+          ),
+          new RoundedButton(
             text: "VITALS",
             onTap: () => Navigator.push(
               context,
@@ -1323,7 +1329,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                       widget.person, widget.htsRegistration, widget.htsId)),
             ),
           ),
-          new RoundedButton(
+      /*    new RoundedButton(
             text: "RELATIONS",
             onTap: () => Navigator.push(
               context,
@@ -1335,7 +1341,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                       widget.htsRegistration,
                       widget.person.id)),
             ),
-          ),
+          ),*/
         ],
       ),
     );

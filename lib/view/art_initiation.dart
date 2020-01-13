@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/model/art_reason.dart';
+import 'package:ehr_mobile/model/artregmendto.dart';
 import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
@@ -52,7 +53,8 @@ class _Art_Initiation extends State<Art_Initiation> {
   String _artReasonError = "Select Art Reason";
   String artRegimenId;
   ArtInitiation initiation;
-
+  ArtRegimenDto artRegimenDto;
+  bool regimen_selected;
 
   int _line = 0;
   String line="";
@@ -117,13 +119,12 @@ class _Art_Initiation extends State<Art_Initiation> {
   Future<void> getArvCombinationregimens() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getArvCombinationRegimenOptions');
+      response = await dataChannel.invokeMethod('getPersonArvCombinationRegimens', );
       setState(() {
 
         _arvCombinationRegimen=response;
         arvCombinationRegimens = jsonDecode(_arvCombinationRegimen);
         _dropDownListArvCombinationRegimens = ArvCombinationRegimen.mapFromJson(arvCombinationRegimens);
-
         _dropDownListArvCombinationRegimens.forEach((e) {
           _arvCombinationRegimenList.add(e);
 
@@ -149,13 +150,14 @@ class _Art_Initiation extends State<Art_Initiation> {
       switch (_line) {
         case 1:
           setState(() {
-            line = "FIRST LINE";
-            print("line value : $line");
+            line = "FIRST_LINE";
+
+              print("line value : $line");
           });
           break;
         case 2:
           setState(() {
-            line = "SECOND LINE";
+            line = "SECOND_LINE";
             print("line value : $line");
 
           });
@@ -163,7 +165,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
         case 3:
           setState(() {
-            line = "THIRD LINE";
+            line = "THIRD_LINE";
             print("line value : $line");
 
           });
@@ -342,7 +344,6 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
-
                                                      Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                         width: double.infinity,
@@ -352,6 +353,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           color: Colors.white,
                                                           padding: const EdgeInsets.all(0.0),
                                                           child: Container(
+
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                               child: SearchableDropdown(
@@ -409,12 +411,10 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                                 fontWeight: FontWeight.w500),
                                                           ),
 
-
-                                                          onPressed: () async {
+                                                          onPressed: () {
                                                             ArtInitiation artInitiationDetails = ArtInitiation(widget.patientId, line, _currentArvCombinationRegimen, _currentArtReason);
                                                             print('*************************artReg number ${artInitiationDetails.line}');
-
-                                                            await artInitiation(artInitiationDetails);
+                                                            artInitiation(artInitiationDetails);
 
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(artInitiationDetails, widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId)));
 
@@ -466,11 +466,11 @@ class _Art_Initiation extends State<Art_Initiation> {
           ),
           ),
           new RoundedButton(text: "Art Initiation", selected: true),
-          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
+          new RoundedButton(text: "Close", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HomePage()),
+                    SearchPatient()),
           ),
           ),
         ],
