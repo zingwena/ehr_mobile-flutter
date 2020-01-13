@@ -26,6 +26,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.TestKitBatchDto;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
@@ -659,6 +660,18 @@ public class HtsChannel {
                                 Log.i(TAG, "ART MODEL RETURNED FROM ANDROID"+ art);
                                 String artjson = gson.toJson(art);
                                 Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>"+ artjson);
+                                result.success(artjson);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getArtInitiationRecord")) {
+
+                            try {
+                                ArtInitiation artInitiation = ehrMobileDatabase.artInitiationDao().findByPersonId(arguments);
+                                Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID"+ artInitiation);
+                                String artjson = gson.toJson(artInitiation);
+                                Log.i(TAG, "ART INITIATION MODEL #################"+ artjson);
                                 result.success(artjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

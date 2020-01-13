@@ -119,7 +119,7 @@ class _Art_Initiation extends State<Art_Initiation> {
   Future<void> getArvCombinationregimens() async {
     String response;
     try {
-      response = await dataChannel.invokeMethod('getArvCombinationRegimenOptions');
+      response = await dataChannel.invokeMethod('getPersonArvCombinationRegimens', );
       setState(() {
 
         _arvCombinationRegimen=response;
@@ -411,12 +411,10 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                                 fontWeight: FontWeight.w500),
                                                           ),
 
-
-                                                          onPressed: () async {
+                                                          onPressed: () {
                                                             ArtInitiation artInitiationDetails = ArtInitiation(widget.patientId, line, _currentArvCombinationRegimen, _currentArtReason);
                                                             print('*************************artReg number ${artInitiationDetails.line}');
-
-                                                            await artInitiation(artInitiationDetails);
+                                                            artInitiation(artInitiationDetails);
 
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(artInitiationDetails, widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId)));
 

@@ -150,24 +150,17 @@ class sidebarstate extends State<Sidebar>{
           new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: (){
             if(artReg == null ){
-              print('nnnnnn artreg null ');
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=>  ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
               ));
             } else {
-              print('nnnnn artreg  not null ');
 
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=> ArtRegOverview(artReg, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
 
               ));
             }
-          } /*=> Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
-          )*/),
+          }),
           Divider(
             height: 10.0,
             color: Colors.blue.shade500,
