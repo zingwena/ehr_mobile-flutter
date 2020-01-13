@@ -108,7 +108,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
-            height: 210.0,
+            height: 220.0,
           ),
           new AppBar(
             backgroundColor: Colors.transparent,

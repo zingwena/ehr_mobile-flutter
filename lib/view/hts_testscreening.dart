@@ -369,8 +369,12 @@ Future<dynamic> getTestKitsByCount(int count) async {
           children: <Widget>[
             Row(
               children: <Widget>[
-               new FlatButton(
+               new RaisedButton(
+                   elevation: 0.0,
+                   shape: RoundedRectangleBorder(
+                     borderRadius: new BorderRadius.circular(30.0),),
                    color: Colors.blue,
+                   padding: const EdgeInsets.all(4.0),
                    onPressed: (){}, child:Column(children: <Widget>[Row(children: <Widget>[ Text(DateFormat("yyyy/MM/dd").format(item.batch.expiryDate), style: TextStyle(color: Colors.white, fontSize: 10),)],),
                  Row(children: <Widget>[ Text(item.remaining.toString(), style: TextStyle(color: Colors.white, fontSize: 10),)],)],)) ,
                  Radio(
@@ -442,7 +446,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
-            height: 220.0,
+            height: 250.0,
           ),
           new AppBar(
             backgroundColor: Colors.transparent,
@@ -693,6 +697,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 SizedBox(
                                   height: 20,
                                 ),
+
                                 Row(
                                   children: <Widget>[
                                     Expanded(
