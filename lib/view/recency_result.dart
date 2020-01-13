@@ -213,15 +213,36 @@ class _Recency_Result  extends State<Recency_Result > {
             ),
             height: 210.0,
           ),
-          new AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              centerTitle: true,
-              title: new Column(children: <Widget>[
-                new Text("Recency Test Results"),
-                new Text("Patient Name : " + " "+ widget.person.firstName + " " + widget.person.lastName)
 
-              ],)
+          new AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            centerTitle: true,
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ),
+
+            ),
+            actions: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -229,7 +250,38 @@ class _Recency_Result  extends State<Recency_Result > {
                   top: MediaQuery.of(context).padding.top + 40.0),
               child: new Column(
                 children: <Widget>[
-                  //_buildButtonsRow(),
+
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("Recency Test Results", style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
+
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
+                            ),
+                          ])
+                  ),
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -365,6 +417,10 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     ),
                                                   ),
 
+                                                  SizedBox(
+                                                    height: 20.0,
+                                                  ),
+
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
@@ -464,16 +520,16 @@ class _Recency_Result  extends State<Recency_Result > {
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "HTS Registration",
+            text: "Post Test",
           ),
           new RoundedButton(
-            text: "HTS Pre-Testing",
+            text: "Recency Testing",
             /*    onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PatientPretest(widget.patientId, hts_id)),
             ),*/
           ),
-          new RoundedButton(text: "Hts Result", selected: true,
+          new RoundedButton(text: "Recency Result", selected: true,
           ),
         ],
       ),

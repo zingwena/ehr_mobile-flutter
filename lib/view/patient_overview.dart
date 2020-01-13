@@ -193,7 +193,7 @@ class OverviewState extends State<Overview> {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
-            height: 210.0,
+            height: 230.0,
           ),
           new AppBar(
             backgroundColor: Colors.transparent,

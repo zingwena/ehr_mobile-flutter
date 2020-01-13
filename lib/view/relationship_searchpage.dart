@@ -74,7 +74,7 @@ class _RelationSearchState extends State<RelationshipSearch> {
           Stack(
             children: <Widget>[
               Container(
-                height: 200.0,
+                height: 180.0,
                 width: double.infinity,
                 color: Colors.blue,
               ),
