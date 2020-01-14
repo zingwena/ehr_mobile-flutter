@@ -16,6 +16,7 @@ import java.util.UUID;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
@@ -317,11 +318,13 @@ public class HtsService {
         return ehrMobileDatabase.htsDao().findHtsById(hts.getId());
     }
 
-    public String savePostTestCounselling() {
+    public Hts savePostTestCounselling(PostTestDTO postTestDTO) {
 
-        Log.d(TAG, "Saving post counselling record");
+        Log.d(TAG, "Saving posttest counselling record");
+        Hts hts = ehrMobileDatabase.htsDao().findHtsById(postTestDTO.getHtsId());
+        ehrMobileDatabase.htsDao().updateHts(postTestDTO.getInstance(postTestDTO, hts));
 
-        return null;
+        return ehrMobileDatabase.htsDao().findHtsById(hts.getId());
     }
 
 }

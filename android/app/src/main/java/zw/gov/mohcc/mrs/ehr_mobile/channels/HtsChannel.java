@@ -18,6 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtRegimenDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
@@ -280,15 +281,15 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("savePostTest")) {
-                            // TODO judge to add post test counselling code here
-                            /*try {
-                                PostTest postTest = gson.fromJson(arguments, PostTest.class);
 
-                                ehrMobileDatabase.postTestDao().createPostTest(postTest);
-                                System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
+                            try {
+                                PostTestDTO postTest = gson.fromJson(arguments, PostTestDTO.class);
+                                Hts hts = htsService.savePostTestCounselling(postTest);
+
+                                result.success(gson.toJson(hts));
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
-                            }*/
+                            }
                         }
 
 

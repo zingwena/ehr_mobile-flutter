@@ -1,105 +1,93 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
-import androidx.room.TypeConverters;
+import android.util.Log;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
 public class PostTestDTO {
 
-    private int id;
+    private final String TAG = "Purpose of test DTO";
+    private String htsId;
+    private Date datePostTestCounselled;
+    private boolean resultReceived;
+    private String reasonForNotIssuingResultId;
+    private boolean consentToIndexTesting;
+    private boolean postTestCounselled;
 
-    Hts hts;
+    public PostTestDTO() {
+    }
 
-    @TypeConverters(DateConverter.class)
-    private Date dateOfPostTestCounsel;
-
-    private String resultReceived;
-
-    private String finalResult;
-
-    private String postTestCounselled;
-
-    private String ReasonForNotIssuingResult_id;
-
-    public PostTestDTO(int id, Hts hts, Date dateOfPostTestCounsel, String resultReceived, String finalResult, String postTestCounselled, String reasonForNotIssuingResult_id) {
-        this.id = id;
-        this.hts = hts;
-        this.dateOfPostTestCounsel = dateOfPostTestCounsel;
+    public PostTestDTO(String htsId, Date datePostTestCounselled, boolean resultReceived, String reasonForNotIssuingResultId, boolean consentToIndexTesting, boolean postTestCounselled) {
+        this.htsId = htsId;
+        this.datePostTestCounselled = datePostTestCounselled;
         this.resultReceived = resultReceived;
-        this.finalResult = finalResult;
+        this.reasonForNotIssuingResultId = reasonForNotIssuingResultId;
+        this.consentToIndexTesting = consentToIndexTesting;
         this.postTestCounselled = postTestCounselled;
-        ReasonForNotIssuingResult_id = reasonForNotIssuingResult_id;
     }
 
-    public int getId() {
-        return id;
+    public String getHtsId() {
+        return htsId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setHtsId(String htsId) {
+        this.htsId = htsId;
     }
 
-    public Hts getHts() {
-        return hts;
+    public Date getDatePostTestCounselled() {
+        return datePostTestCounselled;
     }
 
-    public void setHts(Hts hts) {
-        this.hts = hts;
+    public void setDatePostTestCounselled(Date datePostTestCounselled) {
+        this.datePostTestCounselled = datePostTestCounselled;
     }
 
-    public Date getDateOfPostTestCounsel() {
-        return dateOfPostTestCounsel;
-    }
-
-    public void setDateOfPostTestCounsel(Date dateOfPostTestCounsel) {
-        this.dateOfPostTestCounsel = dateOfPostTestCounsel;
-    }
-
-    public String getResultReceived() {
+    public boolean isResultReceived() {
         return resultReceived;
     }
 
-    public void setResultReceived(String resultReceived) {
+    public void setResultReceived(boolean resultReceived) {
         this.resultReceived = resultReceived;
     }
 
-    public String getFinalResult() {
-        return finalResult;
+    public String getReasonForNotIssuingResultId() {
+        return reasonForNotIssuingResultId;
     }
 
-    public void setFinalResult(String finalResult) {
-        this.finalResult = finalResult;
+    public void setReasonForNotIssuingResultId(String reasonForNotIssuingResultId) {
+        this.reasonForNotIssuingResultId = reasonForNotIssuingResultId;
     }
 
-    public String getPostTestCounselled() {
+    public boolean isConsentToIndexTesting() {
+        return consentToIndexTesting;
+    }
+
+    public void setConsentToIndexTesting(boolean consentToIndexTesting) {
+        this.consentToIndexTesting = consentToIndexTesting;
+    }
+
+    public boolean isPostTestCounselled() {
         return postTestCounselled;
     }
 
-    public void setPostTestCounselled(String postTestCounselled) {
+    public void setPostTestCounselled(boolean postTestCounselled) {
         this.postTestCounselled = postTestCounselled;
     }
 
-    public String getReasonForNotIssuingResult_id() {
-        return ReasonForNotIssuingResult_id;
+    public Hts getInstance(PostTestDTO dto, Hts hts) {
+
+        Log.d(TAG, "State of PostTest DTO : " + dto);
+
+        hts.setDatePostTestCounselled(dto.getDatePostTestCounselled());
+        hts.setResultReceived(dto.isResultReceived());
+        hts.setReasonForNotIssuingResultId(dto.getReasonForNotIssuingResultId());
+        hts.setConsentToIndexTesting(dto.isConsentToIndexTesting());
+        hts.setDatePostTestCounselled(dto.getDatePostTestCounselled());
+        Log.d(TAG, "State of HTS after updating posttest fields : " + hts);
+        return hts;
     }
 
-    public void setReasonForNotIssuingResult_id(String reasonForNotIssuingResult_id) {
-        ReasonForNotIssuingResult_id = reasonForNotIssuingResult_id;
-    }
 
-    @Override
-    public String toString() {
-        return "PostTestDTO{" +
-                "id=" + id +
-                ", hts=" + hts +
-                ", dateOfPostTestCounsel=" + dateOfPostTestCounsel +
-                ", resultReceived='" + resultReceived + '\'' +
-                ", finalResult='" + finalResult + '\'' +
-                ", postTestCounselled='" + postTestCounselled + '\'' +
-                ", ReasonForNotIssuingResult_id='" + ReasonForNotIssuingResult_id + '\'' +
-                '}';
-    }
 }
