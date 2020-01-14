@@ -18,6 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtRegimenDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
@@ -198,18 +199,10 @@ public class HtsChannel {
                             try {
 
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
-                                Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
-                                hts.setHtsApproach(preTestDTO.getHtsApproach());
-                                hts.setNewTestInClientLife(preTestDTO.getNewTest());
-                                hts.setNewTestPregLact(preTestDTO.getNewTestPregLact());
-                                hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
-                                hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
-                                hts.setPreTestInformationGiven(preTestDTO.getPreTestInfoGiven());
-                                hts.setHtsModelId(preTestDTO.getHtsModel_id());
-                                ehrMobileDatabase.htsDao().updateHts(hts);
-                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(hts.getId());
-                                String htsjson = gson.toJson(hts1);
-                                result.success(htsjson);
+
+                                Hts hts = htsService.savePreTestCounselling(preTestDTO);
+
+                                result.success(gson.toJson(hts));
 
 
                             } catch (Exception e) {
@@ -288,15 +281,15 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("savePostTest")) {
-                            // TODO judge to add post test counselling code here
-                            /*try {
-                                PostTest postTest = gson.fromJson(arguments, PostTest.class);
 
-                                ehrMobileDatabase.postTestDao().createPostTest(postTest);
-                                System.out.println("List of postTest" + ehrMobileDatabase.postTestDao().listPostTest());
+                            try {
+                                PostTestDTO postTest = gson.fromJson(arguments, PostTestDTO.class);
+                                Hts hts = htsService.savePostTestCounselling(postTest);
+
+                                result.success(gson.toJson(hts));
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
-                            }*/
+                            }
                         }
 
 

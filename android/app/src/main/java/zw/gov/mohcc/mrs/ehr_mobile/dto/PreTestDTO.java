@@ -1,37 +1,47 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import android.util.Log;
+
 import androidx.room.TypeConverters;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 
 public class PreTestDTO {
 
-    public String htsId;
-    public String htsApproach;
-    public boolean newTest;
+    private final String TAG = "Purpose of test DTO";
+    private String htsId;
+    private String htsApproach;
+    private boolean newTest;
     @TypeConverters(GenderConverter.class)
-    public boolean newTestPregLact;
+    private Boolean newTestPregLact;
+    private boolean coupleCounselling;
+    private boolean optOutOfTest;
+    private boolean preTestInformationGiven;
+    private String htsModelId;
+    private String reasonForHivTestingId;
 
-    boolean coupleCounselling;
-    boolean optOutOfTest;
-    boolean preTestInfoGiven;
-    String htsModelId;
-    String purpose_of_test_id;
+    public PreTestDTO() {
+    }
 
-    public PreTestDTO(String hts_id, String htsApproach,
-                      boolean newTest, boolean newTestPregLact,
-                      boolean coupleCounselling, boolean optOutOfTest,
-                      boolean preTestInfoGiven, String htsModel_id,
-                      String purpose_of_test_id) {
-        this.htsId = hts_id;
+    public PreTestDTO(String htsId, String htsApproach, boolean newTest, Boolean newTestPregLact, boolean coupleCounselling, boolean optOutOfTest, boolean preTestInformationGiven, String htsModelId, String reasonForHivTestingId) {
+        this.htsId = htsId;
         this.htsApproach = htsApproach;
         this.newTest = newTest;
         this.newTestPregLact = newTestPregLact;
         this.coupleCounselling = coupleCounselling;
         this.optOutOfTest = optOutOfTest;
-        this.preTestInfoGiven = preTestInfoGiven;
-        this.htsModelId = htsModel_id;
-        this.purpose_of_test_id = purpose_of_test_id;
+        this.preTestInformationGiven = preTestInformationGiven;
+        this.htsModelId = htsModelId;
+        this.reasonForHivTestingId = reasonForHivTestingId;
+    }
+
+    public String getHtsId() {
+        return htsId;
+    }
+
+    public void setHtsId(String htsId) {
+        this.htsId = htsId;
     }
 
     public String getHtsApproach() {
@@ -42,7 +52,7 @@ public class PreTestDTO {
         this.htsApproach = htsApproach;
     }
 
-    public boolean getNewTest() {
+    public boolean isNewTest() {
         return newTest;
     }
 
@@ -50,15 +60,15 @@ public class PreTestDTO {
         this.newTest = newTest;
     }
 
-    public boolean getNewTestPregLact() {
+    public Boolean getNewTestPregLact() {
         return newTestPregLact;
     }
 
-    public void setNewTestPregLact(boolean newTestPregLact) {
+    public void setNewTestPregLact(Boolean newTestPregLact) {
         this.newTestPregLact = newTestPregLact;
     }
 
-    public boolean getCoupleCounselling() {
+    public boolean isCoupleCounselling() {
         return coupleCounselling;
     }
 
@@ -66,7 +76,7 @@ public class PreTestDTO {
         this.coupleCounselling = coupleCounselling;
     }
 
-    public boolean getOptOutOfTest() {
+    public boolean isOptOutOfTest() {
         return optOutOfTest;
     }
 
@@ -74,43 +84,58 @@ public class PreTestDTO {
         this.optOutOfTest = optOutOfTest;
     }
 
-    public boolean getPreTestInfoGiven() {
-        return preTestInfoGiven;
+    public boolean isPreTestInformationGiven() {
+        return preTestInformationGiven;
     }
 
-    public void setPreTestInfoGiven(boolean preTestInfoGiven) {
-        this.preTestInfoGiven = preTestInfoGiven;
+    public void setPreTestInformationGiven(boolean preTestInformationGiven) {
+        this.preTestInformationGiven = preTestInformationGiven;
     }
 
-    public String getHtsModel_id() {
+    public String getHtsModelId() {
         return htsModelId;
     }
 
-    public void setHtsModel_id(String htsModel_id) {
-        htsModelId = htsModel_id;
+    public void setHtsModelId(String htsModelId) {
+        this.htsModelId = htsModelId;
     }
 
-    public String getPurpose_of_test_id() {
-        return purpose_of_test_id;
+    public String getReasonForHivTestingId() {
+        return reasonForHivTestingId;
     }
 
-    public void setPurpose_of_test_id(String purpose_of_test_id) {
-        this.purpose_of_test_id = purpose_of_test_id;
+    public void setReasonForHivTestingId(String reasonForHivTestingId) {
+        this.reasonForHivTestingId = reasonForHivTestingId;
     }
 
-    public String getHts_id() {
-        return htsId;
+    public Hts getInstance(PreTestDTO dto, Hts hts) {
+
+        Log.d(TAG, "State of PreTest DTO : " + dto);
+        hts.setHtsApproach(dto.getHtsApproach());
+        hts.setNewTestInClientLife(dto.isNewTest());
+        hts.setNewTestPregLact(dto.getNewTestPregLact());
+        hts.setCoupleCounselling(dto.isCoupleCounselling());
+        hts.setOptOutOfTest(dto.isOptOutOfTest());
+        hts.setPreTestInformationGiven(dto.isPreTestInformationGiven());
+        hts.setHtsModelId(dto.getHtsModelId());
+        hts.setReasonForHivTestingId(dto.getReasonForHivTestingId());
+
+        Log.d(TAG, "State of HTS after updating pretest fields : " + hts);
+        return hts;
     }
 
-    public void setHts_id(String hts_id) {
-        this.htsId = hts_id;
-    }
-
-    public boolean isNewTest() {
-        return newTest;
-    }
-
-    public boolean isNewTestPregLact() {
-        return newTestPregLact;
+    @Override
+    public String toString() {
+        return "PreTestDTO{" +
+                "htsId='" + htsId + '\'' +
+                ", htsApproach='" + htsApproach + '\'' +
+                ", newTest=" + newTest +
+                ", newTestPregLact=" + newTestPregLact +
+                ", coupleCounselling=" + coupleCounselling +
+                ", optOutOfTest=" + optOutOfTest +
+                ", preTestInformationGiven=" + preTestInformationGiven +
+                ", htsModelId='" + htsModelId + '\'' +
+                ", reasonForHivTestingId='" + reasonForHivTestingId + '\'' +
+                '}';
     }
 }
