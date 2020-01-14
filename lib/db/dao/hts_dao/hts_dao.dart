@@ -23,8 +23,8 @@ class HtsDao {
   var resultReceived= new IntField('resultReceived');
 
   var reasonForNotIssuingResultId= new StrField('reasonForNotIssuingResultId');
-  var postTestCounselled= new StrField('reasonForHivTestingId');
-  var datePostTestCounselled= new StrField('datePostTestCounselled');
+  var postTestCounselled= new StrField('postTestCounselled');
+  var datePostTestCounselled= new DateTimeField('datePostTestCounselled');
   var status = new IntField('status');
 
   var consentToIndexTesting= new IntField('consentToIndexTesting');
