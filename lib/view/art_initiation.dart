@@ -39,8 +39,9 @@ class Art_Initiation extends StatefulWidget {
 
 class _Art_Initiation extends State<Art_Initiation> {
   final _formKey = GlobalKey<FormState>();
-  static const dataChannel =
-  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+
 
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   String personId;
@@ -79,13 +80,14 @@ class _Art_Initiation extends State<Art_Initiation> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsArtReason;
   List<ArtReason> _artReasonList = List();
   String _currentArtReason;
+  ArtRegimenDto _artRegimenDto;
 
   @override
   void initState() {
 
 
     getArtReasons();
-    getArvCombinationregimens();
+    getArvCombinationregimens(widget.patientId, "FIRST_LINE");
 
   //  patientId = patient.id;
     /*selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -116,12 +118,13 @@ class _Art_Initiation extends State<Art_Initiation> {
   }
 
 
-  Future<void> getArvCombinationregimens() async {
+  Future<void> getArvCombinationregimens(String personId, String regimenType) async {
     String response;
+    ArtRegimenDto artRegimenDto = ArtRegimenDto(personId, regimenType);
     try {
-      response = await dataChannel.invokeMethod('getPersonArvCombinationRegimens', );
+      response = await htsChannel.invokeMethod('getPersonArvCombinationRegimens',jsonEncode(artRegimenDto) );
       setState(() {
-
+      debugPrint("@@@@@@@@@@@@@@@@@@@@@@@ list of ARV regimens returned in flutter"+ response);
         _arvCombinationRegimen=response;
         arvCombinationRegimens = jsonDecode(_arvCombinationRegimen);
         _dropDownListArvCombinationRegimens = ArvCombinationRegimen.mapFromJson(arvCombinationRegimens);
@@ -129,6 +132,7 @@ class _Art_Initiation extends State<Art_Initiation> {
           _arvCombinationRegimenList.add(e);
 
         });
+        _currentArvCombinationRegimen = _arvCombinationRegimenList[0].name;
 
         _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
 
@@ -151,13 +155,16 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 1:
           setState(() {
             line = "FIRST_LINE";
-
+            _arvCombinationRegimenList.clear();
+            getArvCombinationregimens(widget.patientId,"FIRST_LINE" );
               print("line value : $line");
           });
           break;
         case 2:
           setState(() {
             line = "SECOND_LINE";
+            _arvCombinationRegimenList.clear();
+            getArvCombinationregimens(widget.patientId,"SECOND_LINE" );
             print("line value : $line");
 
           });
@@ -166,6 +173,8 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 3:
           setState(() {
             line = "THIRD_LINE";
+            _arvCombinationRegimenList.clear();
+            getArvCombinationregimens(widget.patientId,"THIRD_LINE" );
             print("line value : $line");
 
           });
@@ -507,8 +516,8 @@ class _Art_Initiation extends State<Art_Initiation> {
   }
 
   void changedDropDownItemArvCombinationRegimen(String selectedArvCombinationRegimen) {
-    setState(() {
 
+    setState(() {
       _currentArvCombinationRegimen = selectedArvCombinationRegimen;
       _arvCombinationRegimenError = null;
 
