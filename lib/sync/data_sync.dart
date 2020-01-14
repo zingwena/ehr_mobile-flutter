@@ -14,7 +14,10 @@ import 'package:ehr_mobile/db/dao/person_dao.dart';
 import 'package:ehr_mobile/db/dao/person_investigation_dao.dart';
 import 'package:ehr_mobile/db/dao/pulse_dao.dart';
 import 'package:ehr_mobile/db/dao/respiratory_rate_dao.dart';
+import 'package:ehr_mobile/db/dao/sexual_history_dao.dart';
+import 'package:ehr_mobile/db/dao/sexual_history_question_dao.dart';
 import 'package:ehr_mobile/db/dao/temperature_dao.dart';
+import 'package:ehr_mobile/db/dao/visit_dao.dart';
 import 'package:ehr_mobile/db/dao/weight_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
 import 'package:ehr_mobile/db/tables/blood_pressure_table.dart';
@@ -26,7 +29,9 @@ import 'package:ehr_mobile/db/tables/laboratory_investigation_test_table.dart';
 import 'package:ehr_mobile/db/tables/person_investigation_table.dart';
 import 'package:ehr_mobile/db/tables/pulse_table.dart';
 import 'package:ehr_mobile/db/tables/respiratory_rate_table.dart';
+import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
+import 'package:ehr_mobile/db/tables/visit_table.dart';
 import 'package:ehr_mobile/db/tables/weight_table.dart';
 import 'package:ehr_mobile/model/dto/patient_dto.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -44,23 +49,24 @@ syncPatient(String token, String url) async {
     var dto=PatientDto();
     dto.personDto=person;
     log.i(person);
+    dto=await setVisit(adapter,dto);
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
     dto = await setIndexTest(adapter,dto);
     //dto = await setIndexContacts(adapter,dto);
     dto=await setPersonInvestigations(adapter,dto);
+    dto = await setSexualHistory(adapter,dto);
 
-    //log.i(dto.personInvestigationDtos);
     var encoded=json.encode(dto);
     //log.i(encoded.contains('laboratoryInvestigationDtos'));
-    //print(encoded);
-    if(person.status=='0' || person.status=='0'){
+    log.i(encoded);
+    if(person.status=='0' || person.status=='1'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
         if(value.statusCode==201){
           personDao.setSyncd(person.id);
-        } else{
+        } else {
           log.i(value);
         }
       }).catchError((error){
@@ -140,19 +146,20 @@ Future <PatientDto> setIndexTest(SqfliteAdapter adapter,PatientDto dto) async {
     log.i('------->${indexTest.personId}');
     indexTest.visitId=dto.htsDto.visitId;
     dto.indexTestDto=indexTest;
-    setIndexContacts(adapter,indexTest.id,dto);
+    dto.indexTestDto.indexContactDtos=await setIndexContacts(adapter,indexTest.id);
   }
   return dto;
 }
 
-Future <PatientDto> setIndexContacts(SqfliteAdapter adapter,String indexTestId,PatientDto dto) async {
+Future <List<IndexContactTable>> setIndexContacts(SqfliteAdapter adapter,String indexTestId) async {
   var indexContactDao=IndexContactDao(adapter);
   var indexContacts=await indexContactDao.findByIndexTestId(indexTestId);
+  List<IndexContactTable>indexes=List();
   for(IndexContactTable contact in indexContacts){
-    dto.indexContactDtos.add(contact);
-    log.i('------->$contact');
+    indexes.add(contact);
+    log.i('-------CONTACT----->$contact');
   }
-  return dto;
+  return indexes;
 }
 
 Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dto) async {
@@ -189,3 +196,34 @@ Future <List<LaboratoryInvestigationTestTable>> getLabInvestigationTests(Sqflite
   return labTests;
 }
 
+Future <PatientDto> setSexualHistory(SqfliteAdapter adapter,PatientDto dto) async {
+  var sexualHistoryDao=SexualHistoryDao(adapter);
+  var sexualHistory=await sexualHistoryDao.findByPersonId(dto.personDto.id);
+  if(sexualHistory!=null){
+    dto.sexualHistoryDto=sexualHistory;
+    var sexualHistoryQns=await setSexualHistoryQuestions(adapter,sexualHistory.id);
+    sexualHistory.sexualHistoryQuestionDtos=sexualHistoryQns;
+  }
+  return dto;
+}
+
+Future <List<SexualHistoryQuestionTable>> setSexualHistoryQuestions(SqfliteAdapter adapter,String sexualHistoryId) async {
+  var sexualHistoryQuestionDao=SexualHistoryQuestionDao(adapter);
+  var sexualHistoryQuestions=await sexualHistoryQuestionDao.findBySexualHistoryId(sexualHistoryId);
+  List<SexualHistoryQuestionTable> sexualHistoryQuestionsList=List();
+  for(SexualHistoryQuestionTable sexualHistoryQuestion in sexualHistoryQuestions){
+    log.i('======>sexualHistoryQuestion--${sexualHistoryQuestion.id}');
+    sexualHistoryQuestionsList.add(sexualHistoryQuestion);
+  }
+  return sexualHistoryQuestionsList;
+}
+
+Future <PatientDto> setVisit(SqfliteAdapter adapter,PatientDto dto) async {
+  var visitDao=VisitDao(adapter);
+  var visit = await visitDao.findByPersonId(dto.personDto.id);
+  if(visit!=null){
+    log.i('===================================Visit====${visit.id}');
+    dto.visitDto=visit;
+  }
+  return dto;
+}

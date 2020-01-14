@@ -3,6 +3,7 @@ import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../base_table.dart';
+import 'index_contact_table.dart';
 @JsonSerializable(explicitToJson: true)
 
 
@@ -11,6 +12,7 @@ class IndexTestTable extends BaseTable {
   String personId;
   String date;
   String visitId;
+  List<IndexContactTable> indexContactDtos=new List();
 
   static IndexTestTable fromJson(Map map) {
     var itable = IndexTestTable();
@@ -27,5 +29,6 @@ class IndexTestTable extends BaseTable {
     'date': date,
     'status': status,
     'visitId': visitId,
+    'indexContactDtos':indexContactDtos
   };
 }
