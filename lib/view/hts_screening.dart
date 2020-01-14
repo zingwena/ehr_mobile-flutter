@@ -262,7 +262,7 @@ class _HtsScreening extends State<Hts_Screening> {
                             ),
                           ])
                   ),
-               //   _buildButtonsRow(),
+                //  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,

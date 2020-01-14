@@ -14,6 +14,7 @@ import java.util.Map;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtRegimenDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
@@ -22,7 +23,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.TestKitBatchDto;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexTest;
@@ -41,6 +47,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
@@ -55,7 +62,7 @@ public class HtsChannel {
 
     public HtsChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase, HtsService htsService,
                       LaboratoryInvestigation laboratoryInvestigation, HistoryService historyService,
-                      IndexTestingService indexTestingService, VisitService visitService) {
+                      IndexTestingService indexTestingService, VisitService visitService, ArtService artService) {
         final String index_id;
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
@@ -644,6 +651,44 @@ public class HtsChannel {
                                 result.success(indexTestId);
                             } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getArtRecord")) {
+
+                            try {
+                                Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(arguments);
+                                Log.i(TAG, "ART MODEL RETURNED FROM ANDROID"+ art);
+                                String artjson = gson.toJson(art);
+                                Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>"+ artjson);
+                                result.success(artjson);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getArtInitiationRecord")) {
+
+                            try {
+                                ArtInitiation artInitiation = ehrMobileDatabase.artInitiationDao().findByPersonId(arguments);
+                                Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID"+ artInitiation);
+                                String artjson = gson.toJson(artInitiation);
+                                Log.i(TAG, "ART INITIATION MODEL #################"+ artjson);
+                                result.success(artjson);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getPersonArvCombinationRegimens")) {
+
+                            try {
+                                ArtRegimenDto artRegimenDto = gson.fromJson(arguments, ArtRegimenDto.class);
+                                String personId = artRegimenDto.getPersonId();
+                                RegimenType regimenType = artRegimenDto.getLine();
+                                List<ArvCombinationRegimen> arvCombinationRegimenList = artService.getPersonArvCombinationRegimens(personId, regimenType);
+                                Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID"+ arvCombinationRegimenList);
+                                String artjson = gson.toJson(arvCombinationRegimenList);
+                                result.success(artjson);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
                             }
                         }
 

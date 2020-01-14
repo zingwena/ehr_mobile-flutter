@@ -54,7 +54,7 @@ syncPatient(String token, String url) async {
     var encoded=json.encode(dto);
     //log.i(encoded.contains('laboratoryInvestigationDtos'));
     //print(encoded);
-    if(person.status=='0'){
+    if(person.status=='0' || person.status=='0'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
@@ -182,6 +182,8 @@ Future <List<LaboratoryInvestigationTestTable>> getLabInvestigationTests(Sqflite
   for(LaboratoryInvestigationTestTable labInvestigationTest in labInvestigations){
     log.i('======>StartTime--${labInvestigationTest.startTime}');
     log.i('======>EndTime--${labInvestigationTest.endTime}');
+    log.i('======>resultCode--${labInvestigationTest.resultCode}');
+    log.i('======>resultName--${labInvestigationTest.resultName}');
     labTests.add(labInvestigationTest);
   }
   return labTests;

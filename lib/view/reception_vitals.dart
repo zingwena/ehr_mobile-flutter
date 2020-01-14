@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/summary.dart';
 import 'package:ehr_mobile/vitals/blood_pressure.dart';
 import 'package:ehr_mobile/vitals/height.dart';
 import 'package:ehr_mobile/vitals/pulse.dart';
@@ -672,7 +673,38 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                             ],
                                                           ),
                                                         ),
+                                                       SizedBox(height: 100,),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 0.0,
+                                                              horizontal: 30.0),
+                                                          child: RaisedButton(
+                                                            elevation: 8.0,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(5.0)),
+                                                            color: Colors.blue,
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: <Widget>[
+                                                                Text('Save', style: TextStyle(color: Colors.white),),
+                                                                Icon(Icons.navigate_next, color: Colors.white, ),
+                                                              ],
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          SummaryOverview(widget.person, widget.visitId, this.htsRegistration, widget.htsId)));
 
+
+                                                            },
+                                                          ),
+                                                        ),
 
                                                       ],
                                                     )
@@ -685,6 +717,8 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                     ),
                                   ),
                                 ),
+
+
                               ]
                               ,
                             );

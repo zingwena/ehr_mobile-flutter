@@ -288,7 +288,7 @@ public class MainActivity extends FlutterActivity {
 
         });
 
-        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, visitService);
+        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, visitService, artService);
 
         /*   ===============================================ART REGISTRATION AND INITIATION  =============================================================== */
         new MethodChannel(getFlutterView(), ART_CHANNEL).setMethodCallHandler(
