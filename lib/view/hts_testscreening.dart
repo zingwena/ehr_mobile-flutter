@@ -364,7 +364,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   Widget getTestKitsBatchesLabels(List<TestKitBatchIssue> testkitbatchissues)
   {
-    return new Row(children: testkitbatchissues.map((item) =>
+    return new Column(children: testkitbatchissues.map((item) =>
         Column(
           children: <Widget>[
             Row(

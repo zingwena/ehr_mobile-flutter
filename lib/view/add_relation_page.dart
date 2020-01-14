@@ -230,7 +230,7 @@ class _AddRelationsState extends State<AddRelationshipPage> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
-                                                    height: 20.0,
+                                                    height: 40.0,
                                                   ),
                                                   Container(
                                                     padding:
@@ -246,6 +246,7 @@ class _AddRelationsState extends State<AddRelationshipPage> {
                                                         padding: EdgeInsets.symmetric(
                                                             vertical: 8.0, horizontal: 30.0),
                                                         child: DropdownButton(
+                                                          isExpanded:true,
                                                           hint: Text('Relation'),
                                                           icon: Icon(Icons.keyboard_arrow_down),
                                                           iconEnabledColor: Colors.black,
@@ -298,7 +299,7 @@ class _AddRelationsState extends State<AddRelationshipPage> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: 30.0,
+                                                    height: 20.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
