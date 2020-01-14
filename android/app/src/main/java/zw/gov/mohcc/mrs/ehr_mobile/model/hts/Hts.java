@@ -60,7 +60,7 @@ public class Hts extends BaseEntity {
     private String htsModelId;
     private boolean preTestInformationGiven;
     private boolean newTestInClientLife;
-    private boolean newTestPregLact;
+    private Boolean newTestPregLact;
     private boolean coupleCounselling;
     private boolean optOutOfTest;
     private boolean resultReceived;
@@ -102,11 +102,11 @@ public class Hts extends BaseEntity {
         this.personId = personId;
     }
 
-    public boolean isNewTestPregLact() {
+    public Boolean isNewTestPregLact() {
         return newTestPregLact;
     }
 
-    public void setNewTestPregLact(boolean newTestPregLact) {
+    public void setNewTestPregLact(Boolean newTestPregLact) {
         this.newTestPregLact = newTestPregLact;
     }
 

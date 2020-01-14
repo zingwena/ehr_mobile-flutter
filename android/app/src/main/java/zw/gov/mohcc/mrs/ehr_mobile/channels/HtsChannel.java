@@ -198,18 +198,10 @@ public class HtsChannel {
                             try {
 
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
-                                Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHts_id());
-                                hts.setHtsApproach(preTestDTO.getHtsApproach());
-                                hts.setNewTestInClientLife(preTestDTO.getNewTest());
-                                hts.setNewTestPregLact(preTestDTO.getNewTestPregLact());
-                                hts.setCoupleCounselling(preTestDTO.getCoupleCounselling());
-                                hts.setOptOutOfTest(preTestDTO.getOptOutOfTest());
-                                hts.setPreTestInformationGiven(preTestDTO.getPreTestInfoGiven());
-                                hts.setHtsModelId(preTestDTO.getHtsModel_id());
-                                ehrMobileDatabase.htsDao().updateHts(hts);
-                                Hts hts1 = ehrMobileDatabase.htsDao().findHtsById(hts.getId());
-                                String htsjson = gson.toJson(hts1);
-                                result.success(htsjson);
+
+                                Hts hts = htsService.savePreTestCounselling(preTestDTO);
+
+                                result.success(gson.toJson(hts));
 
 
                             } catch (Exception e) {
