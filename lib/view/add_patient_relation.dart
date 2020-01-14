@@ -115,8 +115,10 @@ class _AddPatient extends State<AddPatientRelation> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Add New Patient Relation"),
+            title: new Text("Impilo Mobile",   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ),
 
+            ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
