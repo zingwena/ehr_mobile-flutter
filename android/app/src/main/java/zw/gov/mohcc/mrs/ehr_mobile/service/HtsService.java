@@ -306,7 +306,12 @@ public class HtsService {
     public List<TestKitBatchIssue> getQueueOrWardTestKits(BinType binType, String binId, String testKitId) {
 
         Log.d(TAG, "Retrieving testkit batches for : " + binType + "with testkit id : " + testKitId);
-        return ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
+
+        List<TestKitBatchIssue> binTestKitBatches = ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
+
+        Log.d(TAG, "BIN Testkits HHHH : " + binTestKitBatches);
+
+        return binTestKitBatches;
     }
 
     public Hts savePreTestCounselling(PreTestDTO preTestDTO) {
