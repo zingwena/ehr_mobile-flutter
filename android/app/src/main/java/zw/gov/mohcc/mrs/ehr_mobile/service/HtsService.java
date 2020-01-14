@@ -16,6 +16,8 @@ import java.util.UUID;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
@@ -305,6 +307,24 @@ public class HtsService {
 
         Log.d(TAG, "Retrieving testkit batches for : " + binType + "with testkit id : " + testKitId);
         return ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
+    }
+
+    public Hts savePreTestCounselling(PreTestDTO preTestDTO) {
+
+        Log.d(TAG, "Saving pretest counselling record");
+        Hts hts = ehrMobileDatabase.htsDao().findHtsById(preTestDTO.getHtsId());
+        ehrMobileDatabase.htsDao().updateHts(preTestDTO.getInstance(preTestDTO, hts));
+
+        return ehrMobileDatabase.htsDao().findHtsById(hts.getId());
+    }
+
+    public Hts savePostTestCounselling(PostTestDTO postTestDTO) {
+
+        Log.d(TAG, "Saving posttest counselling record");
+        Hts hts = ehrMobileDatabase.htsDao().findHtsById(postTestDTO.getHtsId());
+        ehrMobileDatabase.htsDao().updateHts(postTestDTO.getInstance(postTestDTO, hts));
+
+        return ehrMobileDatabase.htsDao().findHtsById(hts.getId());
     }
 
 }

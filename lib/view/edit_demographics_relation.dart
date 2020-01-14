@@ -312,7 +312,7 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
                                                     SizedBox(
-                                                      height: 15.0,
+                                                      height: 20.0,
                                                     ),
                                                     Container(
                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
