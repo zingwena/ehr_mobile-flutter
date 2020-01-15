@@ -383,9 +383,7 @@ public class HtsChannel {
 
                             try {
                                 TestKitBatchDto testKitBatchDto = gson.fromJson(arguments, TestKitBatchDto.class);
-                                Log.d(TAG, "TestkitBatchDto from flutter" + testKitBatchDto.getBinType() + ">>>>>>>" + testKitBatchDto.getBinId() + ">>>>>>>>>>>>" + testKitBatchDto.getTestKitId());
                                 List<TestKitBatchIssue> testKitBatchIssueList = htsService.getQueueOrWardTestKits(testKitBatchDto.getBinType(), testKitBatchDto.getBinId(), testKitBatchDto.getTestKitId());
-                                Log.d(TAG, "Testkit batches retrieved from htsservice %%%%%%%%%%%%%%%%%%%%%%%% in android" + testKitBatchIssueList);
                                 String testkitsbatchissues_string = gson.toJson(testKitBatchIssueList);
                                 result.success(testkitsbatchissues_string);
 
@@ -394,8 +392,6 @@ public class HtsChannel {
                             }
 
                         }
-
-
                         if (methodCall.method.equals("getLabInvestigation")) {
 
                             try {

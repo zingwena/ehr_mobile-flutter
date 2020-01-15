@@ -320,9 +320,10 @@ Future<dynamic> getTestKitsByCount(int count) async {
         if(value == _testkitslist.indexOf(e)){
           testKitobj.code = e.code;
           testKitobj.name = e.name;
+          _TestkitbatchesList.clear();
+          getTestKitBatches('QUEUE',patientBinId, testKitobj.code);
 
         }
-        getTestKitBatches('QUEUE',patientBinId, testKitobj.code);
       });
 
     });
