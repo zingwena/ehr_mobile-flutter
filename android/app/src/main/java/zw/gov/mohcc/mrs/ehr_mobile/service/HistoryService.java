@@ -278,7 +278,7 @@ public class HistoryService {
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getCd4CountDate(), visitId,
                         "36069a11-adee-11e7-b30f-3372a2d8551e", dto.getCd4Count().toString());
                 Log.i(TAG, "Saved cd4 count investigation record");
-            };
+            }
 
         }
         // patient has already been screened in this visit so @return

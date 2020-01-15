@@ -1,7 +1,9 @@
 
+import 'package:ehr_mobile/db/tables/art_table.dart';
 import 'package:ehr_mobile/db/tables/hts/hts_table.dart';
 import 'package:ehr_mobile/db/tables/hts/index_contact_table.dart';
 import 'package:ehr_mobile/db/tables/hts/index_test_table.dart';
+import 'package:ehr_mobile/db/tables/hts_screening_table.dart';
 import 'package:ehr_mobile/db/tables/laboratory_investigation_table.dart';
 import 'package:ehr_mobile/db/tables/person_investigation_table.dart';
 import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
@@ -24,7 +26,7 @@ class PatientDto{
   PersonInvestigationTable personInvestigationDto;
   LaboratoryInvestigationTable laboratoryInvestigationDto;
   SexualHistoryTable sexualHistoryDto;
-  //VisitTable visitDto;
+  HtsScreeningTable htsScreeningDto;
 
   String personId;
   int patientType;
@@ -34,6 +36,8 @@ class PatientDto{
   String code;
   String name;
   String patientId;
+
+  ArtTable artDto;
 
   Map<String, dynamic> toJson() {
     Map<String,dynamic>map=Map();
@@ -61,7 +65,12 @@ class PatientDto{
     if(sexualHistoryDto!=null){
       map['sexualHistoryDto']=sexualHistoryDto;
     }
-
+    if(htsScreeningDto!=null){
+      map['htsScreeningDto']=htsScreeningDto;
+    }
+    if(artDto!=null){
+      map['artDto']=artDto.toJson();
+    }
     map['vitalDtos']=vitalDtos;
 
     return map;

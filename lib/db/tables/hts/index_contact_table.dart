@@ -1,4 +1,5 @@
 
+import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../base_table.dart';
@@ -17,6 +18,7 @@ class IndexContactTable extends BaseTable{
   String testingPlanId;
   String disclosureStatus;
   String disclosureMethodId;
+  Person personDto;
 
   static IndexContactTable fromJson(Map map) {
     var icTable = IndexContactTable();
@@ -55,5 +57,6 @@ class IndexContactTable extends BaseTable{
     'disclosureStatus': disclosureStatus,
     'disclosureMethodId': disclosureMethodId,
     'status': status,
+    'personDto':personDto.toEhrJson(),
   };
 }
