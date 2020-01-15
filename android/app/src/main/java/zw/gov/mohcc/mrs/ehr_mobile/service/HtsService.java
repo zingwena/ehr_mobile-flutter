@@ -37,10 +37,12 @@ public class HtsService {
     private final String TAG = "Hts Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private VisitService visitService;
+    private SiteService siteService;
 
-    public HtsService(EhrMobileDatabase ehrMobileDatabase, VisitService visitService) {
+    public HtsService(EhrMobileDatabase ehrMobileDatabase, VisitService visitService, SiteService siteService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.visitService = visitService;
+        this.siteService = siteService;
     }
 
     @Transaction
@@ -77,7 +79,7 @@ public class HtsService {
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         Log.i(TAG, "Creating laboratory investigation record");
         String laboratoryInvestigationId = UUID.randomUUID().toString();
-        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, "ZW000A01", personInvestigationId);
+        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, siteService.getFacilityDetails().getCode(), personInvestigationId);
         ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
         Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
         return laboratoryInvestigationId;
@@ -306,7 +308,12 @@ public class HtsService {
     public List<TestKitBatchIssue> getQueueOrWardTestKits(BinType binType, String binId, String testKitId) {
 
         Log.d(TAG, "Retrieving testkit batches for : " + binType + "with testkit id : " + testKitId);
-        return ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
+
+        List<TestKitBatchIssue> binTestKitBatches = ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
+
+        Log.d(TAG, "BIN Testkits HHHH : " + binTestKitBatches);
+
+        return binTestKitBatches;
     }
 
     public Hts savePreTestCounselling(PreTestDTO preTestDTO) {
