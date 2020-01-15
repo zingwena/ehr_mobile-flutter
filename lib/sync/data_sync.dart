@@ -58,8 +58,8 @@ syncPatient(String token, String url) async {
     dto = await setSexualHistory(adapter,dto);
 
     var encoded=json.encode(dto);
-    //log.i(encoded.contains('laboratoryInvestigationDtos'));
-    log.i(encoded);
+    log.i(encoded.contains('sexualHistoryQuestion'));
+    //log.i(encoded);
     if(person.status=='0' || person.status=='1'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
@@ -215,6 +215,7 @@ Future <List<SexualHistoryQuestionTable>> setSexualHistoryQuestions(SqfliteAdapt
     log.i('======>sexualHistoryQuestion--${sexualHistoryQuestion.id}');
     sexualHistoryQuestionsList.add(sexualHistoryQuestion);
   }
+  log.i(sexualHistoryQuestionsList);
   return sexualHistoryQuestionsList;
 }
 
@@ -223,7 +224,13 @@ Future <PatientDto> setVisit(SqfliteAdapter adapter,PatientDto dto) async {
   var visit = await visitDao.findByPersonId(dto.personDto.id);
   if(visit!=null){
     log.i('===================================Visit====${visit.id}');
-    dto.visitDto=visit;
+    dto.patientId=visit.id;
+    dto.personId=visit.personId;
+    dto.patientType=visit.patientType;
+    dto.hospitalNumber=visit.hospitalNumber;
+    dto.time=visit.time;
+    dto.name=visit.name;
+    dto.code=visit.code;
   }
   return dto;
 }

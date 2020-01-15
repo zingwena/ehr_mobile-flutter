@@ -51,7 +51,9 @@ class SexualHistoryDao extends BaseDao{
     param.where(this.personId.eq(personId));
 
     Map map = await _adapter.findOne(param);
-
+    if(map==null || map.isEmpty){
+      return null;
+    }
     var sexualHistory = SexualHistoryTable.fromJson(map);
     return sexualHistory;
   }

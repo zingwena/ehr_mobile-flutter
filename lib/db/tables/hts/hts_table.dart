@@ -55,7 +55,7 @@ class HtsTable extends BaseTable{
 
     htsTable.reasonForNotIssuingResultId = map['reasonForNotIssuingResultId'];
     htsTable.postTestCounselled = map['postTestCounselled'];
-    htsTable.datePostTestCounselled = map['datePostTestCounselled'];
+    htsTable.datePostTestCounselled = const CustomDateTimeConverter().fromIntToSqlDate(map['datePostTestCounselled']);
 
     htsTable.status = map['status'];
     htsTable.consentToIndexTesting = map['consentToIndexTesting'];

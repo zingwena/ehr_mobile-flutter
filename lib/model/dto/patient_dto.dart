@@ -24,19 +24,27 @@ class PatientDto{
   PersonInvestigationTable personInvestigationDto;
   LaboratoryInvestigationTable laboratoryInvestigationDto;
   SexualHistoryTable sexualHistoryDto;
-  VisitTable visitDto;
+  //VisitTable visitDto;
 
+  String personId;
+  int patientType;
+  String time;
+  String discharged;
+  String hospitalNumber;
+  String code;
+  String name;
+  String patientId;
 
   Map<String, dynamic> toJson() {
     Map<String,dynamic>map=Map();
-    map['personId']=visitDto.personId;
-    map['patientType']=visitDto.patientType;
-    map['time']=visitDto.time;
-    map['discharged']=visitDto.discharged;
-    map['hospitalNumber']=visitDto.hospitalNumber;
-    map['code']=visitDto.code;
-    map['name']=visitDto.name;
-    map['patientId']=visitDto.id;
+    map['personId']=personId;
+    map['patientType']=patientType;
+    map['time']=time;
+    map['discharged']=discharged;
+    map['hospitalNumber']=hospitalNumber;
+    map['code']=code;
+    map['name']=name;
+    map['patientId']=patientId;
 
     map['personDto']=personDto.toEhrJson();
 
