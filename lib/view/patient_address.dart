@@ -56,7 +56,7 @@ class _PatientAddressState extends State<PatientAddress> {
     for (Town town in _townList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: town.name, child: Text(town.name)));
+      items.add(DropdownMenuItem(value: town.code, child: Text(town.name)));
     }
     return items;
   }

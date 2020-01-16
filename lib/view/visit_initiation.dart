@@ -5,10 +5,12 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patient_admission.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/queue.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/summary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class VisitInitiation extends StatefulWidget {
@@ -40,11 +42,14 @@ class VisitInitiationState extends State<VisitInitiation>
   String nextQueueId;
   int _queue = -1;
 
+  var facility_name;
+
 
 
   @override
   void initState() {
     getFacilityQueues();
+    getFacilityName();
     super.initState();
     controller = new TabController(length: 3, vsync: this);
 
@@ -69,10 +74,9 @@ class VisitInitiationState extends State<VisitInitiation>
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Gwindigwi Hospital",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:new Text(
+            facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+            fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -324,6 +328,20 @@ class VisitInitiationState extends State<VisitInitiation>
 
     });
   }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
   Future<void>getFacilityQueues() async{
     String queue_response ;

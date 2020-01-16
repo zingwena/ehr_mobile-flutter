@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
+import 'package:ehr_mobile/view/hts_screening.dart';
 import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -130,7 +131,10 @@ class sidebarstate extends State<Sidebar>{
           ),
           new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
-            if(widget.htsRegistration == null ){
+
+            Hts_Screening(widget.patientId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person);
+
+            /*  if(widget.htsRegistration == null ){
               print('bbbbbbbbbbbbbb htsreg null in side bar  ');
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=>  Registration(widget.visitId, widget.patientId, widget.person)
@@ -141,7 +145,7 @@ class sidebarstate extends State<Sidebar>{
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=> HtsRegOverview(widget.htsRegistration, widget.patientId, widget.htsId, widget.visitId, widget.person)
               ));
-            }
+            }*/
           }),
           Divider(
             height: 10.0,

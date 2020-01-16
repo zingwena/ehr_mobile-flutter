@@ -6,6 +6,8 @@ import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
@@ -69,6 +71,8 @@ class _HtsScreening extends State<Hts_Screening> {
   DateTime dateOfLastNeg, dateOfEnrollmentIntoCare, dateOfViralLoad, dateOfCd4Count, dateLastTest;
   HtsScreening htsScreening;
 
+  var facility_name;
+
 
   @override
   void initState() {
@@ -84,6 +88,7 @@ class _HtsScreening extends State<Hts_Screening> {
     dateOfEnrollmentIntoCare = DateTime.now();
     dateOfCd4Count = DateTime.now();
     dateLastTest = DateTime.now();
+    getFacilityName();
     super.initState();
   }
 
@@ -100,6 +105,20 @@ class _HtsScreening extends State<Hts_Screening> {
     }
 
   }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
   Future<void> gethtsscreening(String personId) async {
     var response;
     try {
@@ -196,10 +215,9 @@ class _HtsScreening extends State<Hts_Screening> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
