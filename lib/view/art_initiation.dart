@@ -71,9 +71,6 @@ class _Art_Initiation extends State<Art_Initiation> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsArvCombinationRegimen;
   List<ArvCombinationRegimen> _arvCombinationRegimenList = List();
   String _currentArvCombinationRegimen;
-
-
-
   String _artReason;
   List artReasons = List();
   List _dropDownListArtReasons = List();

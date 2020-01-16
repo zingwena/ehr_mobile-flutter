@@ -279,6 +279,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
       setState(() {
         labInvestId = response;
+        debugPrint("HERE IS THE LAB INVESTIGATION ID RETURNED FROM FLUTTER" + response);
         getTestName();
         getTestKitsByCount(testCount);
       });

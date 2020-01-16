@@ -3,6 +3,7 @@ import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/model/laboratoryInvestigationTestDto.dart';
 import 'package:ehr_mobile/model/laboratory_investigation.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
@@ -36,7 +37,7 @@ class Recency_Result extends StatefulWidget {
   Person person;
   String htsId;
   String indexTestId;
-  LaboratoryInvestigationTest laboratoryInvestigation;
+  LaboratoryInvestigationTestDto laboratoryInvestigation;
 
   Recency_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId, this.laboratoryInvestigation, this.indexTestId);
 

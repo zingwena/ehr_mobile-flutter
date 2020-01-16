@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/dto/testkitbatchdto.dart';
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
+import 'package:ehr_mobile/model/laboratoryInvestigationTestDto.dart';
 import 'package:ehr_mobile/model/testkitbatchissue.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -237,7 +238,6 @@ class _Recency extends State<RecencyTest> {
       String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
       setState(() {
         labInvestId = response;
-
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -590,12 +590,12 @@ class _Recency extends State<RecencyTest> {
                                                     .validate()) {
                                                   _formKey.currentState.save();
                                                   if (_formIsValid) {
-                                                    print('HERE IS THE TESTKIT OBJECT USED >>>>>>>>>> NAME' + testKitobj.name+ ">>>>>>>>>>>>>>>>>>> CODE"+ testKitobj.code);
-                                                    LaboratoryInvestigationTest labInvestTest = LaboratoryInvestigationTest(
-                                                        widget.visitId,
-                                                        labInvestId,
+                                                    LaboratoryInvestigationTestDto labInvestTest = LaboratoryInvestigationTestDto(
+                                                        '',
+                                                        "ee7d91fc-b27f-11e8-b121-c48e8faf035b ",
                                                         null, null,
                                                         result, widget.visitId, testKitobj, null, null, widget.personId, batchIssueId);
+
                                                     saveLabInvestigationTest(labInvestTest);
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
@@ -768,7 +768,7 @@ class _Recency extends State<RecencyTest> {
   }
 
 
-  Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
+  Future<void> saveLabInvestigationTest(LaboratoryInvestigationTestDto laboratoryInvestTest)async{
     int response;
     print(">>>>>>>>>>>>>>>>>> SAVE LAB INVESTIGATION TEST"+ laboratoryInvestTest.toString());
     var labInvestTestResponse;
