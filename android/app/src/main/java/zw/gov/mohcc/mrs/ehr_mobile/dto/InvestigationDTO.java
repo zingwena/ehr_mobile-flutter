@@ -57,4 +57,15 @@ public class InvestigationDTO {
     public void setResult(String result) {
         this.result = result;
     }
+
+    @Override
+    public String toString() {
+        return "InvestigationDTO{" +
+                "personId='" + personId + '\'' +
+                ", dateOfTest=" + dateOfTest +
+                ", visitId='" + visitId + '\'' +
+                ", investigationId='" + investigationId + '\'' +
+                ", result='" + result + '\'' +
+                '}';
+    }
 }

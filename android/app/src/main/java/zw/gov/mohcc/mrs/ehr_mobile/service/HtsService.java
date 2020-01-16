@@ -69,13 +69,17 @@ public class HtsService {
             Log.i(TAG, "Retrieving or creating current visit : "+ visitId);
         }
 
-        Log.i(TAG, "Creating Person Investigation record");
+        Log.i(TAG, "Creating Person Investigation record from Investigation DTO : " + dto);
         String personInvestigationId = UUID.randomUUID().toString();
-        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(), dto.getInvestigationId(), dto.getDateOfTest());
-        if (StringUtils.isNoneBlank(dto.getResult())) {
-            personInvestigation.setResultId(dto.getResult());
+        try {
+            PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(), dto.getInvestigationId().trim(), dto.getDateOfTest());
+            if (StringUtils.isNoneBlank(dto.getResult())) {
+                personInvestigation.setResultId(dto.getResult());
+            }
+            ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
+        } catch (Exception e) {
+            Log.e(TAG, "Judge " + e.getMessage());
         }
-        ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         Log.i(TAG, "Creating laboratory investigation record");
         String laboratoryInvestigationId = UUID.randomUUID().toString();
@@ -217,6 +221,7 @@ public class HtsService {
 
     @Transaction
     public String processOtherInvestigationResults(LaboratoryInvestigationTestDTO testDTO) {
+        Log.d(TAG, "%%%%%%%%%%%%%%% " + testDTO);
         String laboratoryInvestigationId = createInvestigation(testDTO.get(testDTO), false);
         LaboratoryInvestigationTest test = new LaboratoryInvestigationTest();
         String labInvestigationTestId = UUID.randomUUID().toString();
