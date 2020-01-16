@@ -19,6 +19,7 @@ class LaboratoryInvestigationTable extends BaseTable{
     labInvestigation.id = map['id'];
     labInvestigation.status=map['status'];
     labInvestigation.facilityId=map['facilityId'];
+    labInvestigation.personInvestigationId=map['personInvestigationId'];
     labInvestigation.resultDate = const CustomDateTimeConverter().fromIntToSqlDate(map['resultDate']);
     return labInvestigation;
   }

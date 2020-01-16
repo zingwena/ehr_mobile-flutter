@@ -2,6 +2,7 @@
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'base_table.dart';
+import 'laboratory_investigation_table.dart';
 @JsonSerializable(explicitToJson: true)
 
 
@@ -11,7 +12,7 @@ class PersonInvestigationTable extends BaseTable{
   String investigationId;
   String date;
   String resultId;
-  String id;
+  LaboratoryInvestigationTable laboratoryInvestigationDto;
 
   static PersonInvestigationTable fromJson(Map map) {
     var person = PersonInvestigationTable();
@@ -31,6 +32,7 @@ class PersonInvestigationTable extends BaseTable{
     'investigationId':investigationId,
     'date':date,
     'resultId':resultId,
-    'id':id
+    'id':id,
+    'laboratoryInvestigationDto':laboratoryInvestigationDto
   };
 }

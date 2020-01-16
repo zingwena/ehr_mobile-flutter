@@ -42,17 +42,19 @@ class PersonInvestigationDao extends BaseDao{
     return personInvestigation;
   }
 
-  Future<PersonInvestigationTable> findByPersonId(String personId) async {
-    Find param = new Find(tableName);
+  Future<List<PersonInvestigationTable>> findByPersonId(String personId) async {
+    Find finder = new Find(tableName);
+    finder.where(this.personId.eq(personId));
 
-    param.where(this.personId.eq(personId));
+    List<Map> maps = await (await _adapter.find(finder)).toList();
 
-    Map map = await _adapter.findOne(param);
-    if(map!=null){
+    List<PersonInvestigationTable> personInvestigations = new List<PersonInvestigationTable>();
+
+    for (Map map in maps) {
       var personInvestigation = PersonInvestigationTable.fromJson(map);
-      return personInvestigation;
+      personInvestigations.add(personInvestigation);
     }
-    return null;
+    return personInvestigations;
   }
 
 //  /// Finds one personInvestigation by [personId]

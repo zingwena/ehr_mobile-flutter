@@ -27,13 +27,13 @@ import 'package:ehr_mobile/db/tables/art_initiation_table.dart';
 import 'package:ehr_mobile/db/tables/blood_pressure_table.dart';
 import 'package:ehr_mobile/db/tables/height_table.dart';
 import 'package:ehr_mobile/db/tables/hts/index_contact_table.dart';
+import 'package:ehr_mobile/db/tables/laboratory_investigation_table.dart';
 import 'package:ehr_mobile/db/tables/laboratory_investigation_test_table.dart';
 import 'package:ehr_mobile/db/tables/pulse_table.dart';
 import 'package:ehr_mobile/db/tables/respiratory_rate_table.dart';
 import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
 import 'package:ehr_mobile/db/tables/weight_table.dart';
-import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/model/dto/patient_dto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/logger.dart';
@@ -62,7 +62,7 @@ syncPatient(String token, String url) async {
     var encoded=json.encode(dto);
     log.i(encoded.contains('artInitiationDto'));
     //log.i(encoded);
-    if(person.status=='0'){
+    if(person.status=='1'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
@@ -166,21 +166,21 @@ Future <List<IndexContactTable>> setIndexContacts(SqfliteAdapter adapter,String 
 
 Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dto) async {
   var personInvestigationDao=PersonInvestigationDao(adapter);
-  var personInvestigation=await personInvestigationDao.findByPersonId(dto.personDto.id);
-  if(personInvestigation!=null){
-    dto.personInvestigationDto=personInvestigation;
-    dto=await setLabInvestigations(adapter,personInvestigation.id,dto);
+  var personInvestigationList=await personInvestigationDao.findByPersonId(dto.personDto.id);
+  for(var personInvestigation in personInvestigationList){
+    personInvestigation.laboratoryInvestigationDto=await getLabInvestigation(adapter,personInvestigation.id);
+    log.i(personInvestigation.laboratoryInvestigationDto.toJson());
+    dto.personInvestigationDtos.add(personInvestigation);
   }
   return dto;
 }
 
-Future <PatientDto> setLabInvestigations(SqfliteAdapter adapter,String personInvestigationId,PatientDto dto) async {
+Future <LaboratoryInvestigationTable> getLabInvestigation(SqfliteAdapter adapter,String personInvestigationId) async {
   var labInvestigationDao=LaboratoryInvestigationDao(adapter);
   var labInvestigation=await labInvestigationDao.findPersonInvestigationId(personInvestigationId);
-    dto.laboratoryInvestigationDto=labInvestigation;
     var labTests=await getLabInvestigationTests(adapter,labInvestigation.id);
     labInvestigation.laboratoryInvestigationTestDtos=labTests;
-  return dto;
+  return labInvestigation;
 }
 
 Future <List<LaboratoryInvestigationTestTable>> getLabInvestigationTests(SqfliteAdapter adapter,String laboratoryInvestigationId) async {
