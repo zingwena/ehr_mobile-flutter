@@ -541,6 +541,7 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("getHtsScreening")) {
+                            Log.i(TAG, "Get hts screening method called in android");
                             try {
                                 String personId = arguments;
                                 String htsscreeningdto = gson.toJson(historyService.getHtsScreening(visitService.getVisit(personId).getId()));

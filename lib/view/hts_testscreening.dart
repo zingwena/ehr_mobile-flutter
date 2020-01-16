@@ -81,6 +81,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   List<TestKitBatchIssue> _TestkitbatchesList = List();
   String patientBinId;
   String batchIssueId;
+  bool _batch_selected = false;
+  bool show_batch_error_msg = false;
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
@@ -335,7 +337,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       _TestkitbatchesList.forEach((e){
         if(value == _TestkitbatchesList.indexOf(e)){
           batchIssueId = e.id;
-
+          _batch_selected = true;
 
         }
       });
@@ -437,7 +439,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
     print("+++++++++++  $list");
     return Scaffold(
       drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
-      body: Stack(
+      body:
+      Stack(
         children: <Widget>[
           Container(
             decoration: new BoxDecoration(
@@ -686,6 +689,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                               color: Colors.grey.shade600,
                                               fontSize: 18,
                                               fontWeight: FontWeight.w500,
+
                                             ),
                                           ),
                                         ),
@@ -695,6 +699,9 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                     getTestKitsBatchesLabels(_TestkitbatchesList),
                                   ],
                                 ),
+                                show_batch_error_msg == true ? SizedBox(
+                                height: 20.0, width: 300.0, child: Text("Select textkit batch", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                ):SizedBox(height: 0.0, width: 0.0,),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -830,16 +837,26 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                       labInvestId,
                                                       null, null,
                                                       result, widget.visitId, testKitobj, null, null, widget.personId, batchIssueId);
+                                                  if(_batch_selected == true){
+                                                    saveLabInvestigationTest(
+                                                        labInvestTest);
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (
+                                                                context) =>
+                                                                Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, widget.htsRegistration)
+                                                        ));
 
-                                                  saveLabInvestigationTest(
-                                                      labInvestTest);
+                                                  }else{
+                                                    setState(() {
+                                                      show_batch_error_msg = true;
 
-                                                  Navigator.push(context,
-                                                      MaterialPageRoute(
-                                                          builder: (
-                                                              context) =>
-                                                              Hts_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, widget.htsRegistration)
-                                                      ));
+
+                                                    });
+
+                                                  }
+
+
                                                 }
                                               }
 
@@ -882,21 +899,26 @@ Future<dynamic> getTestKitsByCount(int count) async {
       ),
     );
   }
+Future<void>validateInputs() async{
+    try{
 
+
+    }catch(e){
+
+    }
+
+}
 
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
     int response;
     var labInvestTestResponse;
     try {
-
       String jsonLabInvestTest = jsonEncode(laboratoryInvestTest);
       labInvestTestResponse= await htsChannel.invokeMethod('saveLabInvestTest',jsonLabInvestTest);
       setState(() {
         labInvestTestId = labInvestTestResponse;
-
       });
-
     }
     catch(e){
       print('Something went wrong...... cause $e');

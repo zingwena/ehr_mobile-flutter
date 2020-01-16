@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/summary.dart';
 import 'package:ehr_mobile/vitals/blood_pressure.dart';
@@ -58,10 +60,13 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
   bool isPressed4 = false;
   bool isPressed5 = false;
 
+  String facility_name;
+
   @override
   void initState() {
     setVisit();
     getHtsRecord(widget.personId);
+    getFacilityName();
     super.initState();
   }
   Future<void> getHtsRecord(String patientId) async {
@@ -80,6 +85,21 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
 
 
   }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
   Future<void> saveVitals(var object, String method) async {
     try {
@@ -121,10 +141,9 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
@@ -12,7 +13,7 @@ import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'art_reg.dart';
 import 'hts_screening.dart';
 
@@ -48,6 +49,8 @@ class SummaryOverviewState extends State<SummaryOverview>
   static const visitChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
 
+  String facility_name;
+
   @override
   void initState() {
     getHtsScreeningRecord(widget.person.id);
@@ -58,14 +61,30 @@ class SummaryOverviewState extends State<SummaryOverview>
 
   Future<void> getHtsScreeningRecord(String patientId) async {
     var hts_screening;
+    print("get screening method called here");
     try {
-      hts_screening =
-          await htsChannel.invokeMethod('getHtsScreening', patientId);
+      hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
+      debugPrint("TTTTTTTTTTTTTTTTTTTTTTTTTT Screening record from android"+ hts_screening);
+
       setState(() {
         htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
+        debugPrint("TTTTTTTTTTTTTTTTTTTTTTTT screening record from android after assignment in flutter"+ htsScreening.toString());
       });
     } catch (e) {
       print("channel failure at hts screening: '$e'");
+    }
+  }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
     }
   }
 
@@ -74,8 +93,6 @@ class SummaryOverviewState extends State<SummaryOverview>
     try {
       patient_summary =
           await visitChannel.invokeMethod('getPatientSummary', patientId);
-      debugPrint(
-          "BBBBBBBBBBBBBBBBBB patient summary from android" + patient_summary);
 
       setState(() {
 
@@ -119,12 +136,8 @@ class SummaryOverviewState extends State<SummaryOverview>
             elevation: 0.0,
             centerTitle: true,
             title: new Text(
-              "Impilo Mobile",
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 25.0,
-              ),
-            ),
+             facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -524,7 +537,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                                   ? Container(
                                                                                       alignment: Alignment.topLeft,
                                                                                       child: Text(
-                                                                                        'Date :' + Respiratoryrate_date,
+                                                                                        'Recorded :' + Respiratoryrate_date,
                                                                                         style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                                       ),
                                                                                     )
@@ -563,7 +576,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                               Container(
                                                                                 alignment: Alignment.topLeft,
                                                                                 child: Text(
-                                                                                  'Date :' + height_date,
+                                                                                  'Recorded:' + height_date,
                                                                                   style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                                 ),
                                                                               ),
@@ -591,7 +604,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                               Container(
                                                                                 alignment: Alignment.topLeft,
                                                                                 child: Text(
-                                                                                  ' Date' + weight_date,
+                                                                                  ' Recorded' + weight_date,
                                                                                   style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                                 ),
                                                                               ),

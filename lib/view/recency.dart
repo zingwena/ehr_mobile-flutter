@@ -120,6 +120,7 @@ class _Recency extends State<RecencyTest> {
     getLabId();
     getTestKitsByInvestigationId(investigationId);
     getHtsRecord(widget.personId);
+    getPersonQueueOrWard(widget.personId);
 
     super.initState();
   }
@@ -295,6 +296,23 @@ class _Recency extends State<RecencyTest> {
 
     }
   }
+  Future<dynamic> getPersonQueueOrWard(String personId) async {
+
+    var binId_response;
+    try {
+      binId_response = await htsChannel.invokeMethod('getPatientQueueOrWard', personId);
+      debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE'+ binId_response);
+      setState(() {
+        this.patientBinId=binId_response;
+        debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE AFTER ASSIGNMENT'+ binId_response);
+
+      });
+    } catch (e) {
+      print("channel failure in getPerson queue or ward: '$e'");
+    }
+
+  }
+
 
   void _handleTestKitChange(int value) {
     setState(() {

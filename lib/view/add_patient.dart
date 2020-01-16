@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+
 
 import 'edit_demographics.dart';
 
@@ -38,6 +41,8 @@ class _AddPatient extends State<AddPatient> {
   ];
   String _nationalIdError = "National Id number is invalid";
 
+  String facility_name;
+
   @override
   void initState() {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -59,6 +64,20 @@ class _AddPatient extends State<AddPatient> {
         birthDate = picked;
         displayDate = DateFormat("yyyy/MM/dd").format(picked);
       });
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   void _handleGenderChange(int value) {
@@ -106,10 +125,9 @@ class _AddPatient extends State<AddPatient> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+            facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+            fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

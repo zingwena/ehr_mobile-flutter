@@ -705,6 +705,8 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                         widget
                                                                             .htsId,
                                                                         _consenttoindex,
+                                                                        awareofstatus,
+                                                                        patientOnArt,
                                                                         widget
                                                                             .result,
                                                                         htsRegistration)));

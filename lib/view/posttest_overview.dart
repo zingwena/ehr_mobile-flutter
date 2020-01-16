@@ -37,11 +37,13 @@ class PostTestOverview extends StatefulWidget {
   final Person person;
   final String htsId;
   final bool consenttoIndex;
+  final bool patient_aware_of_status;
+  final bool patient_on_art;
   final String result;
   final HtsRegistration htsRegistration;
 
   PostTestOverview(this.postTest, this.personId, this.visitId, this.person,
-      this.htsId, this.consenttoIndex, this.result, this.htsRegistration);
+      this.htsId, this.consenttoIndex, this.patient_aware_of_status, this.patient_on_art, this.result, this.htsRegistration);
 
   @override
   State<StatefulWidget> createState() {
@@ -66,15 +68,52 @@ class PostTestOverviewState extends State<PostTestOverview> {
   bool showInputTabOptions = true;
   var dateOfTest;
   String indexTestId;
+  String results_received;
+  String post_test_counselled;
+  String patient_aware_of_status;
+  String patient_on_art_string;
+  String consent_to_index_testing;
 
   @override
   void initState() {
     dateOfTest =
         DateFormat("yyyy/MM/dd").format(widget.postTest.datePostTestCounselled);
     print(_patient.toString());
-    //  getEntryPoint(widget.htsRegistration.entryPointId);
+
+    if(widget.postTest.postTestCounselled == true){
+      post_test_counselled = 'YES';
+    }else{
+      post_test_counselled = 'NO';
+    }
+    if(widget.postTest.resultReceived == true){
+      results_received = "YES";
+
+    }else{
+      results_received = "NO";
+    }
+    if(widget.patient_aware_of_status == true){
+      patient_aware_of_status = "YES";
+    }else{
+      patient_aware_of_status = "NO";
+    }
+    if(widget.patient_on_art == true){
+      patient_on_art_string = "YES";
+
+    }else{
+      patient_on_art_string = "NO";
+
+    }
+
+    if(widget.consenttoIndex == true){
+      consent_to_index_testing = "YES";
+
+    }else{
+      consent_to_index_testing = "NO";
+    }
+
     super.initState();
   }
+
 
   Future<void> getEntryPoint(String entrypointId) async {
     String entrypoint;
@@ -295,57 +334,149 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                         ),
                                                       ],
                                                     ),
-                                                    SizedBox(
-                                                      height: 25.0,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 25.0,
-                                                    ),
-                                                    /*   Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Sexual History",
-                                                            style: TextStyle(color: Colors.white),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right:
+                                                                16.0),
+                                                            child: TextField(
+                                                              controller:
+                                                              TextEditingController(
+                                                                  text:
+                                                                  results_received),
+                                                              decoration: InputDecoration(
+                                                                  icon: Icon(
+                                                                      Icons
+                                                                          .date_range,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  labelText:
+                                                                  "Results Received ?",
+                                                                  hintText:
+                                                                  "Results Received ?"),
+                                                            ),
                                                           ),
-                                                          onPressed: () {
-
-                                                            Navigator.push(context,MaterialPageRoute(
-                                                                builder: (context)=> CbsQuestions(widget.personId, widget.htsId, null, widget.visitId, widget.person)
-                                                            ));
-                                                          },
                                                         ),
-                                                      ),*/
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right:
+                                                                16.0),
+                                                            child: TextField(
+                                                              controller: TextEditingController(
+                                                                  text: nullHandler(post_test_counselled)),
+                                                              decoration: InputDecoration(
+                                                                  icon: new Icon(
+                                                                      Icons
+                                                                          .date_range,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  labelText:
+                                                                  "Post Test Counselled ?",
+                                                                  hintText:
+                                                                  "Post Test Counselled ?"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right:
+                                                                16.0),
+                                                            child: TextField(
+                                                              controller:
+                                                              TextEditingController(
+                                                                  text:
+                                                                  patient_aware_of_status),
+                                                              decoration: InputDecoration(
+                                                                  icon: Icon(
+                                                                      Icons
+                                                                          .date_range,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  labelText:
+                                                                  "Patient aware of their status ? ",
+                                                                  hintText:
+                                                                  "Patient aware of their status ?"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        widget.postTest.finalResult == 'POSITIVE' ?Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right:
+                                                                16.0),
+                                                            child: TextField(
+                                                              controller: TextEditingController(
+                                                                  text: nullHandler(patient_on_art_string)),
+                                                              decoration: InputDecoration(
+                                                                  icon: new Icon(
+                                                                      Icons
+                                                                          .date_range,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  labelText:
+                                                                  "Is patient on ART ?",
+                                                                  hintText:
+                                                                  "Is patient on ART ? "),
+                                                            ),
+                                                          ),
+                                                        ): SizedBox(height: 0.0, width: 0.0),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                       widget.consenttoIndex == true ? Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right:
+                                                                16.0),
+                                                            child: TextField(
+                                                              controller:
+                                                              TextEditingController(
+                                                                  text:
+                                                                  consent_to_index_testing),
+                                                              decoration: InputDecoration(
+                                                                  icon: Icon(
+                                                                      Icons
+                                                                          .date_range,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  labelText:
+                                                                  "Consent to index testing ? ",
+                                                                  hintText:
+                                                                  "Consent to index testing ? "),
+                                                            ),
+                                                          ),
+                                                        ): SizedBox(height: 0.0, width: 0.0),
+
+                                                      ],
+                                                    ),
                                                     SizedBox(
                                                       height: 25.0,
                                                     ),
-                                                    /* Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                        child: RaisedButton(
-                                                          elevation: 4.0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
-                                                          color: Colors.blue,
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Hts screening",
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          onPressed: () {
-
-                                                            Navigator.push(context,MaterialPageRoute(
-                                                                builder: (context)=> Hts_Screening(widget.personId, widget.htsId, null, widget.visitId, widget.person)
-                                                            ));
-                                                          },
-                                                        ),
-                                                      ),*/
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
 
                                                     _recencyTesting(),
                                                   ],
