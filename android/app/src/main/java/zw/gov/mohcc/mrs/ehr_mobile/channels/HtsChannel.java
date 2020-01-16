@@ -478,13 +478,14 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("saveRecency")) {
                             try {
-                                Log.d(TAG, "Agi " + arguments);
+                                Log.d(TAG, "Agi HERE IS THE RECENCY LAB INVESTIGATION $$$$$$$$$$$$$$$$$ >>>>>>" + arguments);
                                 LaboratoryInvestigationTestDTO laboratoryInvestigationTestDTO = gson.fromJson(arguments, LaboratoryInvestigationTestDTO.class);
+                                Log.d(TAG, " RECENCY OBJECT AFTER ASSIGNMENT $$$$$$$$$$$$$$$$$ >>>>>> VISIT ID AND INVESTIGATION ID >>>>>>>>>>" + laboratoryInvestigationTestDTO.getInvestigationId()+">>>>>>>>>>> VISIT ID >>>" + laboratoryInvestigationTestDTO.getVisitId());
                                 String labinvestTestId = htsService.processOtherInvestigationResults(laboratoryInvestigationTestDTO);
                                 result.success(labinvestTestId);
 
                             } catch (Exception e) {
-                                Log.d(TAG, "Exception thrown in getRecencyResults method");
+                                Log.d(TAG, "Exception thrown in saveRecencyResults method " + e.getMessage());
 
                             }
                         }
