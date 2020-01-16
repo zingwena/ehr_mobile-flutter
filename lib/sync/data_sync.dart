@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:ehr_mobile/db/dao/art_dao.dart';
+import 'package:ehr_mobile/db/dao/art_initiation_dao.dart';
 import 'package:ehr_mobile/db/dao/blood_pressure_dao.dart';
 import 'package:ehr_mobile/db/dao/height_dao.dart';
 import 'package:ehr_mobile/db/dao/hts_dao/hts_dao.dart';
@@ -22,6 +23,7 @@ import 'package:ehr_mobile/db/dao/temperature_dao.dart';
 import 'package:ehr_mobile/db/dao/visit_dao.dart';
 import 'package:ehr_mobile/db/dao/weight_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
+import 'package:ehr_mobile/db/tables/art_initiation_table.dart';
 import 'package:ehr_mobile/db/tables/blood_pressure_table.dart';
 import 'package:ehr_mobile/db/tables/height_table.dart';
 import 'package:ehr_mobile/db/tables/hts/index_contact_table.dart';
@@ -31,6 +33,7 @@ import 'package:ehr_mobile/db/tables/respiratory_rate_table.dart';
 import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
 import 'package:ehr_mobile/db/tables/weight_table.dart';
+import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/model/dto/patient_dto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/logger.dart';
@@ -46,20 +49,20 @@ syncPatient(String token, String url) async {
   for(Person person in persons){
     var dto=PatientDto();
     dto.personDto=person;
-    log.i(person);
+    //log.i(person);
     dto=await setVisit(adapter,dto);
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
     dto = await setIndexTest(adapter,dto,personDao);
-    //dto = await setIndexContacts(adapter,dto);
+
     dto=await setPersonInvestigations(adapter,dto);
     dto = await setSexualHistory(adapter,dto);
     dto=await setHtsScreening(adapter,dto);
     dto=await setArt(adapter, dto);
     var encoded=json.encode(dto);
-    log.i(encoded.contains('sexualHistoryQuestion'));
+    log.i(encoded.contains('artInitiationDto'));
     //log.i(encoded);
-    if(person.status=='0' || person.status=='1'){
+    if(person.status=='0'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
@@ -230,6 +233,7 @@ Future <PatientDto> setHtsScreening(SqfliteAdapter adapter,PatientDto dto) async
   var htsScreeningDao=HtsScreeningDao(adapter);
   var htsScreening=await htsScreeningDao.findByVisitId(dto.patientId);
   if(htsScreening!=null){
+    log.i('-----Date last tested for ${dto.personDto.firstName}----->${htsScreening.dateLastTested}');
     dto.htsScreeningDto=htsScreening;
   }
   return dto;
@@ -240,6 +244,21 @@ Future <PatientDto> setArt(SqfliteAdapter adapter,PatientDto dto) async {
   var art=await artDao.findByPersonId(dto.personId);
   if(art!=null){
     dto.artDto=art;
+    var artInit=await getArtInitiation(adapter,dto.personId);
+    if(artInit!=null){
+      dto.artDto.artInitiationDto=artInit;
+      log.i('========artRegimenId=======>${artInit.artRegimenId}');
+    }
+
   }
   return dto;
+}
+
+Future <ArtInitiationTable> getArtInitiation(SqfliteAdapter adapter,String personId) async {
+  var artInitDao=ArtInitiationDao(adapter);
+  var artInit=await artInitDao.findByPersonId(personId);
+  if(artInit!=null){
+    return artInit;
+  }
+  return null;
 }

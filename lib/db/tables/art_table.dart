@@ -1,4 +1,5 @@
 
+import 'package:ehr_mobile/db/tables/art_initiation_table.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'base_table.dart';
@@ -11,6 +12,7 @@ class ArtTable extends BaseTable{
   String dateOfEnrolmentIntoCare;
   String dateOfHivTest;
   String oiArtNumber;
+  ArtInitiationTable artInitiationDto;
 
   static ArtTable fromJson(Map map) {
     var art = ArtTable();
@@ -32,6 +34,7 @@ class ArtTable extends BaseTable{
     'personId':personId,
     'dateOfEnrolmentIntoCare':dateOfEnrolmentIntoCare,
     'dateOfHivTest':dateOfHivTest,
-    'oiArtNumber':oiArtNumber
+    'oiArtNumber':oiArtNumber,
+    'artInitiationDto':artInitiationDto
   };
 }
