@@ -22,7 +22,7 @@ class VisitTable extends BaseTable {
     visit.personId=map['personId'];
     visit.patientType=map['patientType'];
     visit.time = const CustomDateTimeConverter().fromIntToSqlDateTime(map['time']);
-    visit.discharged = map['discharged'];
+    visit.discharged = const CustomDateTimeConverter().fromIntToSqlDateTime(map['discharged']);
     visit.hospitalNumber= map['hospitalNumber'];
 
     visit.code = map['code'];

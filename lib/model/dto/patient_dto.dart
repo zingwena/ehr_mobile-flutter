@@ -69,7 +69,7 @@ class PatientDto{
       map['htsScreeningDto']=htsScreeningDto;
     }
     if(artDto!=null){
-      map['artDto']=artDto.toJson();
+      map['artDto']=artDto;
     }
     map['vitalDtos']=vitalDtos;
 

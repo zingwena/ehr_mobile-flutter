@@ -1,4 +1,5 @@
 
+import 'package:ehr_mobile/util/activity_status_convertor.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'base_table.dart';
@@ -14,8 +15,8 @@ class HtsScreeningTable extends BaseTable{
   String dateLastTested;
   String dateLastNegative;
   String artNumber;
-  int viralLoadDone;
-  int cd4Done;
+  String viralLoadDone;
+  String cd4Done;
 
   static HtsScreeningTable fromJson(Map map) {
     var htsScreening = HtsScreeningTable();
@@ -34,8 +35,8 @@ class HtsScreeningTable extends BaseTable{
 
     htsScreening.artNumber=map['artNumber'];
 
-    htsScreening.viralLoadDone=map['viralLoadDone'];
-    htsScreening.cd4Done=map['cd4Done'];
+    htsScreening.viralLoadDone=const ActivityStatusConvertor().fromInt(map['viralLoadDone']);
+    htsScreening.cd4Done=const ActivityStatusConvertor().fromInt(map['cd4Done']);
     return htsScreening;
   }
 

@@ -43,7 +43,6 @@ class PersonInvestigationDao extends BaseDao{
   }
 
   Future<PersonInvestigationTable> findByPersonId(String personId) async {
-    log.i(personId);
     Find param = new Find(tableName);
 
     param.where(this.personId.eq(personId));

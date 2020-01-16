@@ -341,11 +341,10 @@ public class MainActivity extends FlutterActivity {
 
                             }
 
-
                         }
                         if (methodCall.method.equals("getRegimenName")) {
                             try {
-                                ArvCombinationRegimen arvCombinationRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(arguments);
+                                ArvCombinationRegimen arvCombinationRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findByName(arguments);
                                 String regimenname = arvCombinationRegimen.getName();
                                 result.success(regimenname);
 
@@ -356,7 +355,7 @@ public class MainActivity extends FlutterActivity {
                         }
                         if (methodCall.method.equals("getReason")) {
                             try {
-                                ArtReason artReason = ehrMobileDatabase.artReasonDao().findById(arguments);
+                                ArtReason artReason = ehrMobileDatabase.artReasonDao().findByName(arguments);
                                 String reason = artReason.getName();
                                 result.success(reason);
 
