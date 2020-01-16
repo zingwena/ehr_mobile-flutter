@@ -85,7 +85,7 @@ public class VisitService {
         return null;
     }
 
-    private void dischargePatient(String visitId, Date dischargedDate) {
+    public void dischargePatient(String visitId, Date dischargedDate) {
 
         Log.d(TAG, "Discharging patient process");
         Visit visit = ehrMobileDatabase.visitDao().findById(visitId);

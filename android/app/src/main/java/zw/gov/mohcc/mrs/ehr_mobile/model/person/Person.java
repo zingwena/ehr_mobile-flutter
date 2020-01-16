@@ -27,7 +27,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
+@Entity/*(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
         @Index("nationalityId"), @Index("occupationId")},
         foreignKeys = {
                 @ForeignKey(entity = Country.class, onDelete = CASCADE,
@@ -52,7 +52,7 @@ import static androidx.room.ForeignKey.CASCADE;
                         parentColumns = "code",
                         childColumns = "occupationId")
         }
-)
+)*/
 public class Person extends BaseEntity {
 
     @TypeConverters(GenderConverter.class)

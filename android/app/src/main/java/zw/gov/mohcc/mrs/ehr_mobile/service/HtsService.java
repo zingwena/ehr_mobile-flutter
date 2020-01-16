@@ -39,10 +39,10 @@ public class HtsService {
     private VisitService visitService;
     private SiteService siteService;
 
-    public HtsService(EhrMobileDatabase ehrMobileDatabase, VisitService visitService, SiteService siteService) {
+    public HtsService(EhrMobileDatabase ehrMobileDatabase, VisitService visitService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.visitService = visitService;
-        this.siteService = siteService;
+        this.siteService = new SiteService(ehrMobileDatabase);
     }
 
     @Transaction
@@ -307,7 +307,7 @@ public class HtsService {
 
     public List<TestKitBatchIssue> getQueueOrWardTestKits(BinType binType, String binId, String testKitId) {
 
-        Log.d(TAG, "Retrieving testkit batches for : " + binType + "with testkit id : " + testKitId);
+        Log.d(TAG, "Retrieving testkit batches for : " + binType + "Bin ID : "+ binId + " with testkit id : " + testKitId);
 
         List<TestKitBatchIssue> binTestKitBatches = ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
 

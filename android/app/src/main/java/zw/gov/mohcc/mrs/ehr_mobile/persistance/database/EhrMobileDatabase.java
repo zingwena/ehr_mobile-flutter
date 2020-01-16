@@ -160,7 +160,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
         IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
-        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class}, version = 34, exportSchema = false)
+        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class}, version = 1, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -177,7 +177,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "impiloMobileDB")
+                            EhrMobileDatabase.class, "impilo")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
