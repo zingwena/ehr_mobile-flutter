@@ -23,8 +23,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
@@ -49,7 +49,7 @@ public class HtsService {
     public String createHts(HtsRegDTO dto) {
 
         String visitId = visitService.getCurrentVisit(dto.getPersonId());
-        Log.i(TAG, "Retrieving or creating current visit : "+ visitId);
+        Log.i(TAG, "Retrieving or creating current visit : " + visitId);
 
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
@@ -66,20 +66,16 @@ public class HtsService {
 
         if (StringUtils.isBlank(dto.getVisitId())) {
             String visitId = visitService.getCurrentVisit(dto.getPersonId());
-            Log.i(TAG, "Retrieving or creating current visit : "+ visitId);
+            Log.i(TAG, "Retrieving or creating current visit : " + visitId);
         }
 
         Log.i(TAG, "Creating Person Investigation record from Investigation DTO : " + dto);
         String personInvestigationId = UUID.randomUUID().toString();
-        try {
-            PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(), dto.getInvestigationId().trim(), dto.getDateOfTest());
-            if (StringUtils.isNoneBlank(dto.getResult())) {
-                personInvestigation.setResultId(dto.getResult());
-            }
-            ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
-        } catch (Exception e) {
-            Log.e(TAG, "Judge " + e.getMessage());
+        PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(), dto.getInvestigationId().trim(), dto.getDateOfTest());
+        if (StringUtils.isNoneBlank(dto.getResult())) {
+            personInvestigation.setResultId(dto.getResult());
         }
+        ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         Log.i(TAG, "Creating laboratory investigation record");
         String laboratoryInvestigationId = UUID.randomUUID().toString();
@@ -125,7 +121,7 @@ public class HtsService {
             case 4:
                 return TestLevel.get("THIRD");
             default:
-                throw new IllegalStateException("Illegal parameter passed to method : "+ count);
+                throw new IllegalStateException("Illegal parameter passed to method : " + count);
         }
     }
 
@@ -152,7 +148,7 @@ public class HtsService {
             testKitIds.remove(lastParallelTest);
             Log.i(TAG, "After removing : " + testKitIds);
         }
-        Log.i(TAG, "Retrieved test kit ids : %%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "+ testKitIds.toString());
+        Log.i(TAG, "Retrieved test kit ids : %%%%%%%%%%%%%%%%%%%%%%%%%%%%% : " + testKitIds.toString());
         return testKitIds;
     }
 
@@ -170,7 +166,7 @@ public class HtsService {
             case 4:
                 return "Third Test";
             default:
-                throw new IllegalStateException("Illegal parameter passed to method : "+ count);
+                throw new IllegalStateException("Illegal parameter passed to method : " + count);
         }
     }
 
@@ -195,14 +191,14 @@ public class HtsService {
         int count = getTestCount(laboratoryInvestigationId);
         TestLevel level = getTestLevel(count);
         Log.i(TAG, "Laboratory Investigation ID : " + laboratoryInvestigationId);
-        Log.i(TAG, "Retrieving test kits count is at : "+ count +" Using level : "+ level);
+        Log.i(TAG, "Retrieving test kits count is at : " + count + " Using level : " + level);
         if (count == 0 || count == 1 || count == 4) {
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitsByLevel(level));
         } else if (count == 2) {
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 2)));
         } else if (count == 3) {
             // remove test done on 2
-            Log.d(TAG, "We are now on second parallel test : "+ count);
+            Log.d(TAG, "We are now on second parallel test : " + count);
             return new HashSet<>(ehrMobileDatabase.testKitDao().findTestKitIdsIn(getFirstTwoTestKits(laboratoryInvestigationId, 3)));
         }
         return null;
@@ -216,20 +212,24 @@ public class HtsService {
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
 
-        return  personInvestigation.getResultId();
+        return personInvestigation.getResultId();
     }
 
     @Transaction
     public String processOtherInvestigationResults(LaboratoryInvestigationTestDTO testDTO) {
-        Log.d(TAG, "%%%%%%%%%%%%%%% " + testDTO);
         String laboratoryInvestigationId = createInvestigation(testDTO.get(testDTO), false);
+        Log.d(TAG, "Entering try method");
         LaboratoryInvestigationTest test = new LaboratoryInvestigationTest();
         String labInvestigationTestId = UUID.randomUUID().toString();
         test.setId(labInvestigationTestId);
         test.setLaboratoryInvestigationId(laboratoryInvestigationId);
+        test.setVisitId(testDTO.getVisitId());
+        test.setTestkit(testDTO.getTestkit());
+        test.setResult(testDTO.getResult());
         test.setStartTime(DateUtil.getDateDiff(true));
         test.setEndTime(DateUtil.getDateDiff(false));
         test.setBatchIssueId(testDTO.getBatchIssueId());
+        Log.d(TAG, "Saving laboratory investigation test item : " + test);
         ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
         TestKitBatchIssue testKitBatchIssue = ehrMobileDatabase.testKitBatchIssueDao().findById(testDTO.getBatchIssueId());
         Log.d(TAG, "Removing item from batchIssue : " + testKitBatchIssue);
@@ -239,6 +239,7 @@ public class HtsService {
         setFinalResult(test);
         return labInvestigationTestId;
     }
+
 
     @Transaction
     public String processTestResults(LaboratoryInvestigationTest test) {
@@ -260,12 +261,12 @@ public class HtsService {
                 setFinalResult(test);
             }
         } // coming to this point means we are now in a parallel test ignore first parallel test and jump to second parallel test
-        else if(count == 3) {
+        else if (count == 3) {
             // retrieve last test before this one
             LaboratoryInvestigationTest lastTest =
                     ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(2);
             if (lastTest.getResult().getName().equalsIgnoreCase(test.getResult().getName())) {
-                
+
                 setFinalResult(test);
             }
 
@@ -289,18 +290,19 @@ public class HtsService {
     @Transaction
     private void setFinalResult(LaboratoryInvestigationTest test) {
         // retrieve investigation and update
+        Log.d(TAG, "Laboratory Investigation Test Object : " + test);
         Log.d(TAG, "Retrieving laboratory investigation record");
         LaboratoryInvestigation laboratoryInvestigation =
                 ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(test.getLaboratoryInvestigationId());
-        Log.d(TAG, "Retrieved laboratory investigation record : "+ laboratoryInvestigation);
+        Log.d(TAG, "Retrieved laboratory investigation record : " + laboratoryInvestigation);
         laboratoryInvestigation.setResultDate(test.getEndTime());
         ehrMobileDatabase.laboratoryInvestigationDao().update(laboratoryInvestigation);
-        Log.d(TAG, "Updated laboratory investigation record : "+ laboratoryInvestigation);
+        Log.d(TAG, "Updated laboratory investigation record : " + laboratoryInvestigation);
         // retrieve person investigation and update
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(
                 laboratoryInvestigation.getPersonInvestigationId());
         personInvestigation.setResultId(test.getResult().getCode());
-        Log.d(TAG, "Retrieved person investigation record : "+ personInvestigation);
+        Log.d(TAG, "Retrieved person investigation record : " + personInvestigation);
         ehrMobileDatabase.personInvestigationDao().update(personInvestigation);
     }
 
@@ -312,7 +314,7 @@ public class HtsService {
 
     public List<TestKitBatchIssue> getQueueOrWardTestKits(BinType binType, String binId, String testKitId) {
 
-        Log.d(TAG, "Retrieving testkit batches for : " + binType + "Bin ID : "+ binId + " with testkit id : " + testKitId);
+        Log.d(TAG, "Retrieving testkit batches for : " + binType + "Bin ID : " + binId + " with testkit id : " + testKitId);
 
         List<TestKitBatchIssue> binTestKitBatches = ehrMobileDatabase.testKitBatchIssueDao().findByQueueOrWardAndTestKit(binType, binId, testKitId);
 
