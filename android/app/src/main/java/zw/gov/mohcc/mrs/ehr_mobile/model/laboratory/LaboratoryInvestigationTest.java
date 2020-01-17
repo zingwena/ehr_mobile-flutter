@@ -105,7 +105,7 @@ public class LaboratoryInvestigationTest extends BaseEntity {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", visitId='" + visitId + '\'' +
-                ", result='" + result.toString() + '\'' +
+                ", result='" + result + '\'' +
                 ", testkitId='" + testkit + '\'' +
                 ", batchIssueId='" + batchIssueId + '\'' +
                 '}';
