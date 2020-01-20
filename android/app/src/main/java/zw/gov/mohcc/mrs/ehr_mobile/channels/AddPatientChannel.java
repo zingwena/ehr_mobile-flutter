@@ -33,6 +33,7 @@ public class AddPatientChannel {
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
+                    Log.d(TAG, "$$$$$$$$$$$$$$$$$$ : " + patientDto);
                     Person person = new Person(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
                     String personId = UUID.randomUUID().toString();
                     person.setId(personId);

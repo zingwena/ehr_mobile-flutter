@@ -1047,6 +1047,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase.artReasonDao().deleteAll();
         ehrMobileDatabase.artStatusDao().deleteAll();
         ehrMobileDatabase.laboratoryInvestigationDao().deleteAll();
+        ehrMobileDatabase.testKitBatchIssueDao().deleteAll();
         ehrMobileDatabase.sampleDao().deleteAll();
         ehrMobileDatabase.diagnosisDao().deleteAll();
         ehrMobileDatabase.questionDao().deleteAll();

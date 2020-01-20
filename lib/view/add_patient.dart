@@ -209,13 +209,13 @@ class _AddPatient extends State<AddPatient> {
                                                                           60.0),
                                                               child:
                                                                   TextFormField(
-                                                                validator:
+                                                                /*validator:
                                                                     (value) {
                                                                   return value
                                                                           .isEmpty
                                                                       ? 'Enter National Id number'
                                                                       : null;
-                                                                },
+                                                                },*/
                                                                 onSaved:
                                                                     (value) =>
                                                                         setState(
@@ -462,7 +462,7 @@ class _AddPatient extends State<AddPatient> {
                                                               nationalIdNumber =
                                                                   nationalId.replaceAll(
                                                                       new RegExp(
-                                                                          r'[^\w\s]+'),
+                                                                          r'[^a-zA-Z0-9]'),
                                                                       '');
                                                             });
                                                             RegExp regex =
