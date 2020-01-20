@@ -15,5 +15,6 @@ ValueDate _$ValueDateFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ValueDateToJson(ValueDate instance) => <String, dynamic>{
       'value': instance.value,
-      'date': instance.date
+      'dateTime': instance.date,
+
     };
