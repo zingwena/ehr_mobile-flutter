@@ -51,12 +51,13 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   List _relations = [
     "CHILD",
     "SPOUSE",
-    "SEXUAL PARTNER",
+    "SEXUAL_PARTNER",
     "PARENT",
     "OTHER",
   ];
   String _currentRelation;
   List<DropdownMenuItem<String>>_dropDownMenuItemsRelations;
+  bool tested_for_hiv = false;
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedRelations() {
     List<DropdownMenuItem<String>> items = new List();
@@ -88,12 +89,15 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
       switch (_options) {
         case 1:
           options = "Yes";
+          tested_for_hiv = true;
           break;
         case 2:
           options = "No";
+          tested_for_hiv = false;
           break;
         case 3:
           options = "Not Known";
+          tested_for_hiv = false;
           break;
       }
     });
@@ -134,7 +138,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
           relations = "SIBLING";
           break;
         case 5:
-          relations = "SEXUAL PARTNER";
+          relations = "SEXUAL_PARTNER";
           break;
       }
     });
@@ -228,56 +232,6 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                     child: Text("HIV Information", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-               /*   Container(
-                      child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-
-                          children: <Widget>[
-
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_pin, size: 25.0, color: Colors.white,),
-
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Tom Wilson", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.view_agenda, size: 25.0, color: Colors.white,),
-
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person, size: 25.0, color: Colors.white,),
-
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Sex : Male", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.verified_user, size: 25.0, color: Colors.white,),
-
-                            ),
-                          ])
-                  ),*/
 
                   SizedBox(
                     height: 10.0,
@@ -417,7 +371,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                         ),
                                                       ),
 
-                                                      Container(
+                                                      tested_for_hiv ?Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                         child: Row(
@@ -454,9 +408,9 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                 })
                                                           ],
                                                         ),
-                                                      ),
+                                                      ): SizedBox(height: 0.0,),
 
-                                                      Container(
+                                                      tested_for_hiv ?Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                         child: Row(
@@ -501,7 +455,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                 onChanged: _handleResultChange)
                                                           ],
                                                         ),
-                                                      ),
+                                                      ): SizedBox(height: 0.0,),
 
                                                       Row(
                                                         children: <Widget>[

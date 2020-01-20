@@ -93,23 +93,27 @@ class SummaryOverviewState extends State<SummaryOverview>
     try {
       patient_summary =
           await visitChannel.invokeMethod('getPatientSummary', patientId);
-
       setState(() {
 
-        patientSummaryDto =
-            PatientSummaryDto.fromJson(jsonDecode(patient_summary));
-        Bp_date = DateFormat("yyyy/MM/dd")
-            .format(patientSummaryDto.bloodPressure.date);
-        temp_date =
-            DateFormat("yyyy/MM/dd").format(patientSummaryDto.temperature.date);
-        Respiratoryrate_date = DateFormat("yyyy/MM/dd")
-            .format(patientSummaryDto.respiratoryRate.date);
-        pulse_date =
-            DateFormat("yyyy/MM/dd").format(patientSummaryDto.pulse.date);
-        weight_date =
-            DateFormat("yyyy/MM/dd").format(patientSummaryDto.weight.date);
-        height_date =
-            DateFormat("yyyy/MM/dd").format(patientSummaryDto.height.date);
+        patientSummaryDto = PatientSummaryDto.fromJson(jsonDecode(patient_summary));
+        debugPrint("RRRRRRRRRRRRR Patient summary dto from android"+ patientSummaryDto.toString());
+        debugPrint("RRRRRRRRRRRRR Patient summary dto from android temperature"+ patientSummaryDto.temperature.toString() );
+
+        /* if(patientSummaryDto != null){
+          Bp_date = DateFormat("yyyy/MM/dd")
+              .format(patientSummaryDto.bloodPressure.date);
+          temp_date =
+              DateFormat("yyyy/MM/dd").format(patientSummaryDto.temperature.date);
+          Respiratoryrate_date = DateFormat("yyyy/MM/dd")
+              .format(patientSummaryDto.respiratoryRate.date);
+          pulse_date =
+              DateFormat("yyyy/MM/dd").format(patientSummaryDto.pulse.date);
+          weight_date =
+              DateFormat("yyyy/MM/dd").format(patientSummaryDto.weight.date);
+          height_date =
+              DateFormat("yyyy/MM/dd").format(patientSummaryDto.height.date);
+        }*/
+
       });
     } catch (e) {
       print("channel failure at Patient summary dto method: '$e'");
@@ -375,31 +379,27 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                                 'BP',
                                                                                 style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                               ),
-                                                                              patientSummaryDto.bloodPressure != null
-                                                                                  ? Container(
+                                                                              patientSummaryDto.bloodPressure == null
+                                                                                  ?
+                                                                              Container(
+                                                                                margin: EdgeInsets.only(top: 3.0),
+                                                                                child: Text(
+                                                                                  'No Record',
+                                                                                  style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                ),
+                                                                              ):Container(
                                                                                       margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
+                                                                                      child:Column(children: <Widget>[
+                                                                                         Text(
                                                                                         patientSummaryDto.bloodPressure.value,
                                                                                         style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                                       ),
-                                                                                    )
-                                                                                  : Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        'No Record',
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
-                                                                                    ),
-                                                                              patientSummaryDto.bloodPressure.date != null
-                                                                                  ? Container(
-                                                                                      alignment: Alignment.topLeft,
-                                                                                      child: Text(
-                                                                                        'Recorded :' + Bp_date,
-                                                                                        style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                                      ),
-                                                                                    )
-                                                                                  : SizedBox(
-                                                                                      height: 0.0,
+                                                                                        Text(
+                                                                                          'Recorded :' + DateFormat("yyyy/MM/dd")
+                                                                                              .format(patientSummaryDto.bloodPressure.date),
+                                                                                          style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                                                                                        )
+                                                                                      ],)
                                                                                     ),
                                                                             ],
                                                                           )),
@@ -407,80 +407,73 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                           padding: EdgeInsets.all(
                                                                               3.0),
                                                                           child:
-                                                                              Column(
+                                                                          Column(
                                                                             mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
+                                                                            MainAxisAlignment.center,
                                                                             children: <Widget>[
                                                                               Text(
                                                                                 'Temp',
                                                                                 style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                               ),
-                                                                              patientSummaryDto.temperature != null
-                                                                                  ? Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        patientSummaryDto.temperature.value,
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
-                                                                                    )
-                                                                                  : Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        'No Record',
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
+                                                                              patientSummaryDto.temperature == null
+                                                                                  ?
+                                                                              Container(
+                                                                                margin: EdgeInsets.only(top: 3.0),
+                                                                                child: Text(
+                                                                                  'No Record',
+                                                                                  style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                ),
+                                                                              ):Container(
+                                                                                  margin: EdgeInsets.only(top: 3.0),
+                                                                                  child:Column(children: <Widget>[
+                                                                                    Text(
+                                                                                      patientSummaryDto.temperature.value,
+                                                                                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                                     ),
-                                                                              patientSummaryDto.temperature.date != null
-                                                                                  ? Container(
-                                                                                      alignment: Alignment.topLeft,
-                                                                                      child: Text(
-                                                                                        'Recorded :' + temp_date,
-                                                                                        style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                                      ),
+                                                                                    Text(
+                                                                                      'Recorded :' + DateFormat("yyyy/MM/dd")
+                                                                                          .format(patientSummaryDto.temperature.date),
+                                                                                      style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                                     )
-                                                                                  : SizedBox(
-                                                                                      height: 0.0,
-                                                                                    ),
+                                                                                  ],)
+                                                                              ),
                                                                             ],
                                                                           )),
+
                                                                       Container(
                                                                           padding: EdgeInsets.all(
                                                                               3.0),
                                                                           child:
-                                                                              Column(
+                                                                          Column(
                                                                             mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
+                                                                            MainAxisAlignment.center,
                                                                             children: <Widget>[
                                                                               Text(
                                                                                 'Pulse',
                                                                                 style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                               ),
-                                                                              patientSummaryDto.pulse != null
-                                                                                  ? Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        patientSummaryDto.pulse.value,
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
-                                                                                    )
-                                                                                  : Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        'No Record',
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
+                                                                              patientSummaryDto.pulse == null
+                                                                                  ?
+                                                                              Container(
+                                                                                margin: EdgeInsets.only(top: 3.0),
+                                                                                child: Text(
+                                                                                  'No Record',
+                                                                                  style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                ),
+                                                                              ):Container(
+                                                                                  margin: EdgeInsets.only(top: 3.0),
+                                                                                  child:Column(children: <Widget>[
+                                                                                    Text(
+                                                                                      patientSummaryDto.pulse.value,
+                                                                                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                                     ),
-                                                                              patientSummaryDto.pulse.date != null
-                                                                                  ? Container(
-                                                                                      alignment: Alignment.topLeft,
-                                                                                      child: Text(
-                                                                                        'Recorded :' + pulse_date,
-                                                                                        style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                                      ),
+                                                                                    Text(
+                                                                                      'Recorded :' + DateFormat("yyyy/MM/dd")
+                                                                                          .format(patientSummaryDto.pulse.date),
+                                                                                      style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                                     )
-                                                                                  : SizedBox(
-                                                                                      height: 0.0,
-                                                                                    ),
+                                                                                  ],)
+                                                                              ),
                                                                             ],
                                                                           )),
                                                                     ],
@@ -510,106 +503,111 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                           padding: EdgeInsets.all(
                                                                               3.0),
                                                                           child:
-                                                                              Column(
+                                                                          Column(
                                                                             mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
+                                                                            MainAxisAlignment.center,
                                                                             children: <Widget>[
                                                                               Text(
                                                                                 'Respiratory Rate',
                                                                                 style: TextStyle(fontSize: 13.0, color: Colors.black54),
                                                                               ),
-                                                                              patientSummaryDto.respiratoryRate != null
-                                                                                  ? Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        patientSummaryDto.respiratoryRate.value,
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
-                                                                                    )
-                                                                                  : Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        'No record',
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
-                                                                                    ),
-                                                                              patientSummaryDto.respiratoryRate != null
-                                                                                  ? Container(
-                                                                                      alignment: Alignment.topLeft,
-                                                                                      child: Text(
-                                                                                        'Recorded :' + Respiratoryrate_date,
-                                                                                        style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                                      ),
-                                                                                    )
-                                                                                  : SizedBox(
-                                                                                      height: 0.0,
-                                                                                    ),
-                                                                            ],
-                                                                          )),
-                                                                      Container(
-                                                                          padding: EdgeInsets.all(
-                                                                              3.0),
-                                                                          child:
-                                                                              Column(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
-                                                                            children: <Widget>[
-                                                                              Text(
-                                                                                'Height',
-                                                                                style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                              ),
-                                                                              patientSummaryDto.height != null
-                                                                                  ? Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        patientSummaryDto.height.value,
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
-                                                                                    )
-                                                                                  : Container(
-                                                                                      margin: EdgeInsets.only(top: 3.0),
-                                                                                      child: Text(
-                                                                                        'No Record',
-                                                                                        style: TextStyle(fontSize: 15.0, color: Colors.black87),
-                                                                                      ),
-                                                                                    ),
-                                                                              Container(
-                                                                                alignment: Alignment.topLeft,
-                                                                                child: Text(
-                                                                                  'Recorded:' + height_date,
-                                                                                  style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          )),
-                                                                      Container(
-                                                                          padding: EdgeInsets.all(
-                                                                              3.0),
-                                                                          child:
-                                                                              Column(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
-                                                                            children: <Widget>[
-                                                                              Text(
-                                                                                'Weight ',
-                                                                                style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                              ),
+                                                                              patientSummaryDto.respiratoryRate == null
+                                                                                  ?
                                                                               Container(
                                                                                 margin: EdgeInsets.only(top: 3.0),
                                                                                 child: Text(
-                                                                                  patientSummaryDto.weight.value,
+                                                                                  'No Record',
                                                                                   style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                                 ),
-                                                                              ),
-                                                                              Container(
-                                                                                alignment: Alignment.topLeft,
-                                                                                child: Text(
-                                                                                  ' Recorded' + weight_date,
-                                                                                  style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                                ),
+                                                                              ):Container(
+                                                                                  margin: EdgeInsets.only(top: 3.0),
+                                                                                  child:Column(children: <Widget>[
+                                                                                    Text(
+                                                                                      patientSummaryDto.respiratoryRate.value,
+                                                                                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Recorded :' + DateFormat("yyyy/MM/dd")
+                                                                                          .format(patientSummaryDto.respiratoryRate.date),
+                                                                                      style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                                                                                    )
+                                                                                  ],)
                                                                               ),
                                                                             ],
                                                                           )),
+                                                                      Container(
+                                                                          padding: EdgeInsets.all(
+                                                                              3.0),
+                                                                          child:
+                                                                          Column(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                            children: <Widget>[
+                                                                              Text(
+                                                                                'Height ',
+                                                                                style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                                                                              ),
+                                                                              patientSummaryDto.height == null
+                                                                                  ?
+                                                                              Container(
+                                                                                margin: EdgeInsets.only(top: 3.0),
+                                                                                child: Text(
+                                                                                  'No Record',
+                                                                                  style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                ),
+                                                                              ):Container(
+                                                                                  margin: EdgeInsets.only(top: 3.0),
+                                                                                  child:Column(children: <Widget>[
+                                                                                    Text(
+                                                                                      patientSummaryDto.height.value,
+                                                                                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Recorded :' + DateFormat("yyyy/MM/dd")
+                                                                                          .format(patientSummaryDto.height.date),
+                                                                                      style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                                                                                    )
+                                                                                  ],)
+                                                                              ),
+                                                                            ],
+                                                                          )),
+                                                                      Container(
+                                                                          padding: EdgeInsets.all(
+                                                                              3.0),
+                                                                          child:
+                                                                          Column(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                            children: <Widget>[
+                                                                              Text(
+                                                                                'Weight',
+                                                                                style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                                                                              ),
+                                                                              patientSummaryDto.weight == null
+                                                                                  ?
+                                                                              Container(
+                                                                                margin: EdgeInsets.only(top: 3.0),
+                                                                                child: Text(
+                                                                                  'No Record',
+                                                                                  style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                ),
+                                                                              ):Container(
+                                                                                  margin: EdgeInsets.only(top: 3.0),
+                                                                                  child:Column(children: <Widget>[
+                                                                                    Text(
+                                                                                      patientSummaryDto.weight.value,
+                                                                                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Recorded :' + DateFormat("yyyy/MM/dd")
+                                                                                          .format(patientSummaryDto.weight.date),
+                                                                                      style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                                                                                    )
+                                                                                  ],)
+                                                                              ),
+                                                                            ],
+                                                                          )),
+
                                                                     ],
                                                                   )
                                                                 : Center(
@@ -968,11 +966,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                 ? Center(
                                                                     child: Text(
                                                                       'No Record',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              13.0,
-                                                                          color:
-                                                                              Colors.black54),
+                                                                      style:TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                     ),
                                                                   )
                                                                 : Row(
@@ -1028,9 +1022,9 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                 'No Record',
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                    13.0,
+                                                                    18.0,
                                                                     color:
-                                                                    Colors.black54),
+                                                                    Colors.black87),
                                                               ),
                                                             )
                                                                 :  Row(
@@ -1202,8 +1196,8 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                    Center(child: Text(
                                                                      'No Record',
                                                                      style: TextStyle(
-                                                                         fontSize: 13.0,
-                                                                         color: Colors.black54),
+                                                                         fontSize: 18.0,
+                                                                         color: Colors.black87),
                                                                    ),)
                                                                )
                                                                    : Container(

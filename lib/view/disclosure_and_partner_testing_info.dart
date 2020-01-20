@@ -271,57 +271,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                     child: Text("Disclosure And Partner Testing Information", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                /*  Container(
-                      child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-
-                          children: <Widget>[
-
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_pin, size: 25.0, color: Colors.white,),
-
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Tom Wilson", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.view_agenda, size: 25.0, color: Colors.white,),
-
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person, size: 25.0, color: Colors.white,),
-
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Sex : Male", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.verified_user, size: 25.0, color: Colors.white,),
-
-                            ),
-                          ])
-                  ),
-*/
                   SizedBox(
                     height: 15.0,
                   ),
@@ -439,7 +388,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                         ),
                                                       ),
 
-                                                      Container(
+                                                      disclosed_status? Container(
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
                                                         width: double.infinity,
                                                         child:      Text("Partner Disclosure Plan",
@@ -448,9 +397,9 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                              // fontWeight: FontWeight.w500
                                                           ),
                                                         ),
-                                                      ),
+                                                      ):SizedBox(height: 0.0,),
 
-                                                      Container(
+                                                      disclosed_status?Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
@@ -482,9 +431,9 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                           ),
                                                           onPressed: () {},
                                                         ),
-                                                      ),
+                                                      ):SizedBox(height: 0.0,),
 
-                                                      Container(
+                                                      disclosed_status?Container(
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
                                                         width: double.infinity,
                                                         child:      Text("Partner Testing Plan",
@@ -493,7 +442,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                             // fontWeight: FontWeight.w500
                                                           ),
                                                         ),
-                                                      ),
+                                                      ):SizedBox(height: 0.0,),
 
                                                       Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),

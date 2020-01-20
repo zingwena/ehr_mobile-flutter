@@ -78,7 +78,6 @@ Person _$PersonFromMap(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PersonToEhrJson(Person instance) => <String, dynamic>{
-  'personId':instance.id,
   'id': instance.id,
   'firstName': instance.firstName,
   'lastName': instance.lastName,

@@ -32,7 +32,6 @@ public class VisitChannel {
                     OutPatientDTO outPatientDTO = gson.fromJson(arguments, OutPatientDTO.class);
                     String visitId = visitService.onOutPatientAdmitted(outPatientDTO);
                     result1.success(visitId);
-
                 }
                 if(call.method.equals("changePatientQueue")){
                     OutPatientDTO outPatientDTO = gson.fromJson(arguments, OutPatientDTO.class);
@@ -43,11 +42,11 @@ public class VisitChannel {
                     PatientQueue patientQueue = visitService.getPatientQueue(arguments);
                     String queue_response = gson.toJson(patientQueue);
                     result1.success(queue_response);
-
                 }
                 if(call.method.equals("getPatientSummary")){
                     Log.i(TAG, "Here is the person Id sent from flutter "+ arguments);
                     PatientSummaryDTO patientSummaryDTO = visitService.getPatientSummary(arguments);
+                    System.out.println("HERE IS THE PATIENT SUMMARY DTO PASSED FROM FLUTTER");
                     result1.success(gson.toJson(patientSummaryDTO));
                 }
 

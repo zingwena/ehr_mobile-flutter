@@ -627,6 +627,7 @@ public class HtsChannel {
 
                             try {
                                 IndexContact indexContact = gson.fromJson(arguments, IndexContact.class);
+                                Log.d(TAG, "@@@@@@@@@@@@@ Index contact sent from flutter "+ arguments);
                                /* IndexContact indexContact = new IndexContact();
                                 indexContact.setPersonId(indexContactDto.getPersonId());
                                 indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());
