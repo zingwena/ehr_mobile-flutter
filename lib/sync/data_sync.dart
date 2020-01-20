@@ -15,6 +15,7 @@ import 'package:ehr_mobile/db/dao/laboratory_investigation_dao.dart';
 import 'package:ehr_mobile/db/dao/laboratory_investigation_test_dao.dart';
 import 'package:ehr_mobile/db/dao/person_dao.dart';
 import 'package:ehr_mobile/db/dao/person_investigation_dao.dart';
+import 'package:ehr_mobile/db/dao/phone_number_dao.dart';
 import 'package:ehr_mobile/db/dao/pulse_dao.dart';
 import 'package:ehr_mobile/db/dao/respiratory_rate_dao.dart';
 import 'package:ehr_mobile/db/dao/sexual_history_dao.dart';
@@ -49,7 +50,7 @@ syncPatient(String token, String url) async {
   for(Person person in persons){
     var dto=PatientDto();
     dto.personDto=person;
-    //log.i(person);
+    dto =await setPhoneNumbers(adapter,dto);
     dto=await setVisit(adapter,dto);
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
@@ -59,10 +60,10 @@ syncPatient(String token, String url) async {
     dto = await setSexualHistory(adapter,dto);
     dto=await setHtsScreening(adapter,dto);
     dto=await setArt(adapter, dto);
-    var encoded=json.encode(dto);
-    log.i(encoded.contains('artInitiationDto'));
+    //var encoded=json.encode(dto);
+    //log.i(encoded.contains('Eve'));
     //log.i(encoded);
-    if(person.status=='1'){
+    if(person.status!='2'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
@@ -135,7 +136,7 @@ Future <PatientDto> setHts(SqfliteAdapter adapter,PatientDto dto) async{
   var htsDao=HtsDao(adapter);
   var hts = await htsDao.findByPersonId(dto.personDto.id);
   if(hts!=null){
-    log.i('===================================HTS====${hts.id}');
+    //log.i('===================================HTS====${hts.id}');
     dto.htsDto=hts;
   }
   return dto;
@@ -159,6 +160,7 @@ Future <List<IndexContactTable>> setIndexContacts(SqfliteAdapter adapter,String 
   List<IndexContactTable>indexes=List();
   for(IndexContactTable contact in indexContacts){
     contact.personDto=await personDao.findOne(contact.personId);
+    log.i('------INDEX_CONTACT-------${contact.toJson()}');
     indexes.add(contact);
   }
   return indexes;
@@ -169,7 +171,7 @@ Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dt
   var personInvestigationList=await personInvestigationDao.findByPersonId(dto.personDto.id);
   for(var personInvestigation in personInvestigationList){
     personInvestigation.laboratoryInvestigationDto=await getLabInvestigation(adapter,personInvestigation.id);
-    log.i(personInvestigation.laboratoryInvestigationDto.toJson());
+    //log.i(personInvestigation.laboratoryInvestigationDto.toJson());
     dto.personInvestigationDtos.add(personInvestigation);
   }
   return dto;
@@ -233,7 +235,7 @@ Future <PatientDto> setHtsScreening(SqfliteAdapter adapter,PatientDto dto) async
   var htsScreeningDao=HtsScreeningDao(adapter);
   var htsScreening=await htsScreeningDao.findByVisitId(dto.patientId);
   if(htsScreening!=null){
-    log.i('-----Date last tested for ${dto.personDto.firstName}----->${htsScreening.dateLastTested}');
+    //log.i('-----Date last tested for ${dto.personDto.firstName}----->${htsScreening.dateLastTested}');
     dto.htsScreeningDto=htsScreening;
   }
   return dto;
@@ -247,7 +249,7 @@ Future <PatientDto> setArt(SqfliteAdapter adapter,PatientDto dto) async {
     var artInit=await getArtInitiation(adapter,dto.personId);
     if(artInit!=null){
       dto.artDto.artInitiationDto=artInit;
-      log.i('========artRegimenId=======>${artInit.artRegimenId}');
+      //log.i('========artRegimenId=======>${artInit.artRegimenId}');
     }
 
   }
@@ -261,4 +263,16 @@ Future <ArtInitiationTable> getArtInitiation(SqfliteAdapter adapter,String perso
     return artInit;
   }
   return null;
+}
+
+Future <PatientDto> setPhoneNumbers(SqfliteAdapter adapter, PatientDto dto) async {
+  var phoneDao=PhoneNumberDao(adapter);
+  var phone = await phoneDao.findByPersonId(dto.personDto.id);
+
+  if(phone!=null){
+    log.i('----PHONE NUMBER------${phone.phoneNumber1}');
+    dto.personDto.phoneNumber1=phone.phoneNumber1;
+    dto.personDto.phoneNumber2=phone.phoneNumber2;
+  }
+  return dto;
 }
