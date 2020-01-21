@@ -15,12 +15,12 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.PatientPhoneNumber;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
-import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class AddPatientChannel {
 
@@ -33,6 +33,7 @@ public class AddPatientChannel {
                 if (methodCall.method.equals("registerPatient")) {
                     String args = methodCall.arguments();
                     PatientDto patientDto = gson.fromJson(args, PatientDto.class);
+                    Log.d(TAG, "$$$$$$$$$$$$$$$$$$ : " + patientDto);
                     Person person = new Person(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getSex());
                     String personId = UUID.randomUUID().toString();
                     person.setId(personId);

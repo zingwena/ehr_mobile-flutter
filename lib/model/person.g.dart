@@ -91,6 +91,8 @@ Map<String, dynamic> _$PersonToEhrJson(Person instance) => <String, dynamic>{
   'educationLevelId': instance.educationLevelId,
   'nationalityId': instance.nationalityId,
   'countryId': instance.countryId,
-  'address': instance.address,
+  'addressDto': instance.address,
   'gender':instance.sex,
+  'phoneNumber1':instance.phoneNumber1,
+  'phoneNumber2':instance.phoneNumber2,
 };

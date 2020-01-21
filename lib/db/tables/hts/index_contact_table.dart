@@ -1,6 +1,7 @@
 
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
+import 'package:ehr_mobile/util/relationship_type_convertor.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../base_table.dart';
 @JsonSerializable(explicitToJson: true)
@@ -16,7 +17,7 @@ class IndexContactTable extends BaseTable{
   int fearOfIpv;
   String disclosureMethodPlanId;
   String testingPlanId;
-  String disclosureStatus;
+  int disclosureStatus;
   String disclosureMethodId;
   Person personDto;
 
@@ -28,7 +29,7 @@ class IndexContactTable extends BaseTable{
     icTable.status=map['status'];
     icTable.personId = map['personId'];
 
-    icTable.relation = map['relation'];
+    icTable.relation = const RelationTypeConvertor().fromInt(map['relation']);
     icTable.hivStatus = map['hivStatus'];
 
     icTable.dateOfHivStatus=const CustomDateTimeConverter().fromIntToSqlDate(map['dateOfHivTest']);
