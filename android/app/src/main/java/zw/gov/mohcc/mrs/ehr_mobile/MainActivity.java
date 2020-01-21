@@ -27,7 +27,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.AddPatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.DataChannel;
-import zw.gov.mohcc.mrs.ehr_mobile.channels.DataSyncChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.HtsChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.SiteChannel;
@@ -38,6 +37,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.QuestionType;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
@@ -107,7 +107,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.SiteService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
-import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 public class MainActivity extends FlutterActivity {
 
@@ -365,7 +364,6 @@ public class MainActivity extends FlutterActivity {
                         }
                     }
                 });
-        new DataSyncChannel(getFlutterView(), DATA_SYNC_CHANNEL, ehrMobileDatabase);
 
 
         Stetho.initializeWithDefaults(this);

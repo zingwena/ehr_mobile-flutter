@@ -28,6 +28,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.Batch;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.BinTypeIdName;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
@@ -37,7 +38,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.service.SiteService;
-import zw.gov.mohcc.mrs.sync.adapter.enums.RecordStatus;
 
 
 public class PatientsApolloClient {

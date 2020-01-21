@@ -78,11 +78,18 @@ public class HtsService {
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         Log.i(TAG, "Creating laboratory investigation record");
-        String laboratoryInvestigationId = UUID.randomUUID().toString();
-        LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, siteService.getFacilityDetails().getCode(), personInvestigationId);
-        ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
-        Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
-        return laboratoryInvestigationId;
+        try {
+            String laboratoryInvestigationId = UUID.randomUUID().toString();
+            LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, siteService.getFacilityDetails().getCode(), personInvestigationId);
+            ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
+            Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
+            return laboratoryInvestigationId;
+        } catch (Exception ex) {
+            Log.e(TAG, "^^^^^^^^^^^^^^^^^^^^^^^ : " + ex.getMessage());
+            ex.printStackTrace();
+            return null;
+        }
+        //return laboratoryInvestigationId;
     }
 
     /**

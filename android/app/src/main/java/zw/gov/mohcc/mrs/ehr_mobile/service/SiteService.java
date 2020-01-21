@@ -25,10 +25,8 @@ public class SiteService {
 
     public NameCode getFacilityDetails() {
 
-        SiteSetting siteSetting = ehrMobileDatabase.siteSettingDao().findSiteSetting();
-        if (siteSetting == null) {
-            return null;
-        }
+        SiteSetting siteSetting = ehrMobileDatabase.siteSettingDao().findAll().get(0);
+
         Log.d(TAG,"Site Setting retrieved : " + siteSetting);
         return new NameCode(siteSetting.getId(), siteSetting.getName());
     }
