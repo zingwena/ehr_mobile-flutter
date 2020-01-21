@@ -99,20 +99,7 @@ class SummaryOverviewState extends State<SummaryOverview>
         debugPrint("RRRRRRRRRRRRR Patient summary dto from android"+ patientSummaryDto.toString());
         debugPrint("RRRRRRRRRRRRR Patient summary dto from android temperature"+ patientSummaryDto.temperature.toString() );
 
-        /* if(patientSummaryDto != null){
-          Bp_date = DateFormat("yyyy/MM/dd")
-              .format(patientSummaryDto.bloodPressure.date);
-          temp_date =
-              DateFormat("yyyy/MM/dd").format(patientSummaryDto.temperature.date);
-          Respiratoryrate_date = DateFormat("yyyy/MM/dd")
-              .format(patientSummaryDto.respiratoryRate.date);
-          pulse_date =
-              DateFormat("yyyy/MM/dd").format(patientSummaryDto.pulse.date);
-          weight_date =
-              DateFormat("yyyy/MM/dd").format(patientSummaryDto.weight.date);
-          height_date =
-              DateFormat("yyyy/MM/dd").format(patientSummaryDto.height.date);
-        }*/
+
 
       });
     } catch (e) {
@@ -966,7 +953,11 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                 ? Center(
                                                                     child: Text(
                                                                       'No Record',
-                                                                      style:TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              13.0,
+                                                                          color:
+                                                                              Colors.black54),
                                                                     ),
                                                                   )
                                                                 : Row(
@@ -1022,9 +1013,9 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                 'No Record',
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                    18.0,
+                                                                    13.0,
                                                                     color:
-                                                                    Colors.black87),
+                                                                    Colors.black54),
                                                               ),
                                                             )
                                                                 :  Row(
@@ -1196,8 +1187,8 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                    Center(child: Text(
                                                                      'No Record',
                                                                      style: TextStyle(
-                                                                         fontSize: 18.0,
-                                                                         color: Colors.black87),
+                                                                         fontSize: 13.0,
+                                                                         color: Colors.black54),
                                                                    ),)
                                                                )
                                                                    : Container(

@@ -20,8 +20,9 @@ class AddPatientIndex extends StatefulWidget {
   final String visitId;
   final String htsId;
   final HtsRegistration htsRegistration;
+  final Person person_patient;
 
-  AddPatientIndex(this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  AddPatientIndex(this.person_patient,this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
   @override
   State createState() {
     return _AddPatient();
@@ -484,6 +485,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) => EditDemographicsIndex(
+                                                                      widget.person_patient,
                                                                         lastName,
                                                                         firstName,
                                                                         birthDate,

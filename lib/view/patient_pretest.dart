@@ -5,6 +5,8 @@ import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
@@ -81,10 +83,13 @@ class _PatientPretest extends State<PatientPretest> {
 
 
   String purposeOfTestId;
+
+  String facility_name;
   @override
   void initState() {
   getDropDrowns();
   getHtsRecord(widget.personId);
+  getFacilityName();
     super.initState();
   }
 
@@ -102,6 +107,19 @@ class _PatientPretest extends State<PatientPretest> {
     }
   }
 
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
   Future <void> getHtsModelByName(String htsmodelstring) async{
     var model_response;
     try{
@@ -242,10 +260,9 @@ class _PatientPretest extends State<PatientPretest> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

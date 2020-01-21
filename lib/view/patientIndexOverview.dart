@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/hiv_information.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import '../sidebar.dart';
 import 'art_reg.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
@@ -26,13 +29,14 @@ import 'package:ehr_mobile/model/address.dart';
 
 class PatientIndexOverview extends StatefulWidget {
   final Person patient;
+  final Person person_contact;
   final String indexTestId;
   final String personId;
   final String visitId;
   final String htsId;
   final HtsRegistration htsRegistration;
 
-  PatientIndexOverview(this.patient, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  PatientIndexOverview( this.patient,this.person_contact,this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
@@ -56,12 +60,16 @@ class OverviewState extends State<PatientIndexOverview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   String visitId;
+
+  var facility_name;
   @override
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
+    getFacilityName();
     print(_patient.toString());
+    print(">>>>>>>>> HERE IS THE PATIENT ADDED "+ widget.person_contact.firstName+">>>>>>>>>>and the patient we are dealing with"+ widget.patient.firstName);
 
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
 
@@ -82,7 +90,19 @@ class OverviewState extends State<PatientIndexOverview> {
       print("channel failure: '$e'");
     }
 
+  }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
 
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
   Future<void> getHtsRecord(String patientId) async {
     var  hts;
@@ -124,57 +144,7 @@ class OverviewState extends State<PatientIndexOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  new Drawer(
-        child: ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text("admin"), accountEmail: new Text("admin@gmail.com"), currentAccountPicture: new CircleAvatar(backgroundImage: new AssetImage('images/mhc.png'))),
-            new ListTile(leading: new Icon(Icons.home, color: Colors.blue), title: new Text("Home ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchPatient()),
-            )),
-            new ListTile(leading: new Icon(Icons.person, color: Colors.blue), title: new Text("Patient Overview ",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Overview(_patient)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("Vitals", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ReceptionVitals(_patient.id, visitId, _patient, htsId)),
-            )),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)),onTap: () {
-              if(htsRegistration == null ){
-                print('bbbbbbbbbbbbbb htsreg null in side bar  ');
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=>  Registration(visitId, _patient.id, _patient)
-                ));
-              } else {
-                print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
-
-                Navigator.push(context,MaterialPageRoute(
-                    builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-                ));
-              }
-            }),
-            new ListTile(leading: new Icon(Icons.book, color: Colors.blue), title: new Text("ART", style: new TextStyle(
-                color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtReg(_patient.id, visitId, _patient,htsRegistration, htsId)),
-            ))
-
-          ],
-        ),
-      ),
+      drawer:  Sidebar(widget.patient, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -191,10 +161,9 @@ class OverviewState extends State<PatientIndexOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+    facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+    fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -448,7 +417,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                     print("INDEX TEST ID IN INDEX PATIENT OVERVIEW"+ widget.indexTestId);
 
                                                     Navigator.push(context,MaterialPageRoute(
-                                                        builder: (context)=> HivInformation(widget.indexTestId, widget.patient, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                        builder: (context)=> HivInformation(widget.person_contact,widget.indexTestId, widget.patient, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
                                                     ));
                                                   },
                                                 ),

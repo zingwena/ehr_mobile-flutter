@@ -4,6 +4,8 @@ import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/reasonForNotIssuingResult.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/posttest_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -64,17 +66,34 @@ class _PatientPostTest extends State<PatientPostTest> {
   int _patientonart = 0;
   int _consentToIndex = 0;
 
+  var facility_name;
+
   @override
   void initState() {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     getHtsRecord(widget.patientId);
     getReasonsForNotIssueingResult();
+    getFacilityName();
 
     print(
         'reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
 
     super.initState();
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -166,13 +185,9 @@ class _PatientPostTest extends State<PatientPostTest> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-              "Impilo Mobile",
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 25.0,
-              ),
-            ),
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

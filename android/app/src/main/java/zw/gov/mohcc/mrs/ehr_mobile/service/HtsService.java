@@ -53,6 +53,7 @@ public class HtsService {
 
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
+        Log.i(TAG, "HTS RECORD CREATED HERE "+ hts);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
         String laboratoryInvestigationId = createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
                 visitId, "36069471-adee-11e7-b30f-3372a2d8551e", null), true);

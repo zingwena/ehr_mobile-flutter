@@ -132,20 +132,14 @@ class sidebarstate extends State<Sidebar>{
           new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
 
-            Hts_Screening(widget.patientId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person);
+            Navigator.push(context,MaterialPageRoute(
+                builder: (context)=> Hts_Screening(widget.patientId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
 
-            /*  if(widget.htsRegistration == null ){
-              print('bbbbbbbbbbbbbb htsreg null in side bar  ');
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  Registration(widget.visitId, widget.patientId, widget.person)
-              ));
-            } else {
-              print('bbbbbbbbbbbbbb htsreg  not null in side bar ');
+            ));
 
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=> HtsRegOverview(widget.htsRegistration, widget.patientId, widget.htsId, widget.visitId, widget.person)
-              ));
-            }*/
+
+
+
           }),
           Divider(
             height: 10.0,

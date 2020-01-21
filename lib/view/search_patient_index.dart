@@ -18,12 +18,12 @@ import 'reception_vitals.dart';
 
 class SearchPatientIndex extends StatefulWidget {
   String indexTestId;
-  String person;
+  Person person_patient;
   String visitId;
   String htsId;
   HtsRegistration htsRegistration;
   String personId;
-  SearchPatientIndex(this.indexTestId, this.visitId, this.personId);
+  SearchPatientIndex(this.person_patient,this.indexTestId, this.visitId, this.personId);
   _SearchPatientState createState() => _SearchPatientState();
 }
 
@@ -140,20 +140,6 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                           child: Container(),
                         ),
 
-                        /*  RaisedButton(
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
-                          ),
-                          onPressed: () {},
-                          elevation: 1.0,
-                          color: Colors.white,
-                        ), */
-
-
                       ],
                     ),
                   ),
@@ -235,19 +221,19 @@ class _SearchPatientState extends State<SearchPatientIndex> {
               ? Expanded(
             child: ListView(
               padding: EdgeInsets.all(10.0),
-              children: _patientList.map((patient) {
+              children: _patientList.map((patient_contact) {
                 return ListTile(
                   leading: Container(
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: IconButton(
                       // For this situation your icon name should be humanFemale
-                      icon: new Icon(patient.sex == "MALE" ? MdiIcons.humanMale : MdiIcons.humanFemale,
+                      icon: new Icon(patient_contact.sex == "MALE" ? MdiIcons.humanMale : MdiIcons.humanFemale,
                           color: Colors.blue, size: 35),
                       onPressed: () {},
                     ),
                   ),
                   title: Text(
-                    patient.firstName + " " + patient.lastName,
+                    patient_contact.firstName + " " + patient_contact.lastName,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
@@ -260,7 +246,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text(
-                          'ID Number : ' + nullHandler(patient.nationalId),
+                          'ID Number : ' + nullHandler(patient_contact.nationalId),
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 14,
@@ -271,7 +257,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                           height: 5,
                         ),
                         Text(
-                          'DOB : ' + nullHandler(DateFormat("yyyy/MM/dd").format(patient.birthDate)),
+                          'DOB : ' + nullHandler(DateFormat("yyyy/MM/dd").format(patient_contact.birthDate)),
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 14,
@@ -294,7 +280,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PatientIndexOverview(patient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
+                            builder: (context) => PatientIndexOverview(widget.person_patient, patient_contact, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
                   },
                 );
               }).toList(),
@@ -330,7 +316,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
             ),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddPatientIndex(widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)),
+              MaterialPageRoute(builder: (context) => AddPatientIndex(widget.person_patient,widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)),
             ),
           )
               :   SizedBox( ),

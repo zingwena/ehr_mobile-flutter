@@ -5,7 +5,9 @@ import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTestDto.dart';
 import 'package:ehr_mobile/model/testkitbatchissue.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
@@ -107,6 +109,8 @@ class _Recency extends State<RecencyTest> {
   String batchIssueId;
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
+  var facility_name;
+
   @override
   void initState()  {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -122,8 +126,22 @@ class _Recency extends State<RecencyTest> {
     getTestKitsByInvestigationId(investigationId);
     getHtsRecord(widget.personId);
     getPersonQueueOrWard(widget.personId);
+    getFacilityName();
 
     super.initState();
+  }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
    Future<dynamic> getSampleName() async {
 
@@ -321,6 +339,8 @@ class _Recency extends State<RecencyTest> {
         if(value == _testkitslist.indexOf(e)){
           testKitobj.code = e.code;
           testKitobj.name = e.name;
+          _TestkitbatchesList.clear();
+
 
         }
         getTestKitBatches('QUEUE',patientBinId, testKitobj.code);
@@ -661,10 +681,10 @@ class _Recency extends State<RecencyTest> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:new Text(
+    facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+    fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+            
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -833,8 +853,12 @@ class _Recency extends State<RecencyTest> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                new FlatButton(
+                new RaisedButton(
+                    elevation: 0.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),),
                     color: Colors.blue,
+                    padding: const EdgeInsets.all(4.0),
                     onPressed: (){}, child:Column(children: <Widget>[Row(children: <Widget>[ Text(DateFormat("yyyy/MM/dd").format(item.batch.expiryDate), style: TextStyle(color: Colors.white, fontSize: 10),)],),
                   Row(children: <Widget>[ Text(item.remaining.toString(), style: TextStyle(color: Colors.white, fontSize: 10),)],)],)) ,
                 Radio(

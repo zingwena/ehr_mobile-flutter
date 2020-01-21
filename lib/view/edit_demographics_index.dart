@@ -26,8 +26,9 @@ class EditDemographicsIndex extends StatefulWidget {
   final DateTime birthDate;
   final String htsId, visitId;
   final HtsRegistration htsRegistration;
+  final Person person_patient;
 
-  EditDemographicsIndex(this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  EditDemographicsIndex(this.person_patient,this.lastName, this.firstName, this.birthDate, this.sex, this.nationalId, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -603,28 +604,6 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
                                                           setState(() {
                                                             _formValid = true;
                                                           });
-                                                          /*   if (countryIsValid && maritalStatusIsValid && educationLevelIsValid
-                            && religionIsValid && selfIdentifiedGenderIsValid
-                            && nationalityIsValid && occupationIsValid ) {
-                          print('ALL FIELDS ARE VALID');
-                          setState(() {
-                            _formValid = true;
-                          });
-                        }
-                        else{
-                          print('9999999999999999999999999999999999999999999999999999 country $countryIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 marital $maritalStatusIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 education $educationLevelIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 religious $religionIsValid');
-                          print('9999999999999999999999999999999999999999999999999999  gender $selfIdentifiedGenderIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 nationality $nationalityIsValid');
-                          print('9999999999999999999999999999999999999999999999999999 occupation $occupationIsValid');
-
-
-                          setState(() {
-                            showError= true;
-                          });
-                        }*/
 
                                                           if (_formValid) {
                                                             _formKey.currentState.save();
@@ -647,7 +626,7 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        IndexPatientAddress(patient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
+                                                                        IndexPatientAddress(widget.person_patient,patient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
                                                           }
 
                                                         },

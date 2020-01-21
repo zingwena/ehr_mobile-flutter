@@ -20,8 +20,9 @@ class IndexPatientAddress extends StatefulWidget {
   final String visitId;
   final String htsId;
   final HtsRegistration htsRegistration;
+  final Person person_contact;
 
-  IndexPatientAddress(this.patient, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  IndexPatientAddress(this.person_contact,this.patient, this.indexTestId, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -341,7 +342,7 @@ class _PatientAddressState extends State<IndexPatientAddress> {
                                                                 Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
-                                                                        builder: (context) => PatientIndexOverview(registeredPatient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
+                                                                        builder: (context) => PatientIndexOverview(widget.person_contact,registeredPatient, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
                                                               });
                                                               SnackBar(
                                                                 content: Text("Patient saved"),

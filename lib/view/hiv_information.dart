@@ -1,6 +1,8 @@
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
@@ -23,11 +25,12 @@ import '../bloc/person_bloc.dart';*/
 class HivInformation extends StatefulWidget {
   String indexId;
   Person person;
+  Person person_contact;
   String personId;
   String visitId;
   String htsId;
   HtsRegistration htsRegistration;
-  HivInformation(this.indexId, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  HivInformation( this.person_contact, this.indexId, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State createState() {
@@ -59,6 +62,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   List<DropdownMenuItem<String>>_dropDownMenuItemsRelations;
   bool tested_for_hiv = false;
 
+  var facility_name;
+
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedRelations() {
     List<DropdownMenuItem<String>> items = new List();
     for (String relation in _relations) {
@@ -79,6 +84,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     _dropDownMenuItemsRelations = getDropDownMenuItemsIdentifiedRelations();
+    getFacilityName();
+    print('KKKKKKKKKKK here is the person to be added'+ widget.person.toString()+ "RRRRRRR Here is the person contact"+ widget.person_contact.toString());
     super.initState();
   }
 
@@ -174,7 +181,19 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
 
       });
   }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
 
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +215,8 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
@@ -236,6 +256,40 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                   SizedBox(
                     height: 10.0,
                   ),
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline,
+                                size: 25.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                widget.person.firstName +
+                                    " " +
+                                    widget.person.lastName,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.0,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user,
+                                size: 25.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ])),
 
                   //    _buildButtonsRow(),
                   Expanded(
@@ -480,10 +534,10 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                   //onPressed: () {}
                                                                   onPressed: () {
                                                                   print("INDEX TEST ID IN HIV INFORMATION PAGE"+ widget.indexId);
-                                                                IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person.id, _currentRelation, result, date, null, null, null, null, null);
+                                                                IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person_contact.id, _currentRelation, result, date, null, null, null, null, null);
                                                                     Navigator.push(
                                                                       context,
-                                                                      MaterialPageRoute(builder: (context) => PatientIndexHivInfo(indexcontact, widget.personId, widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),);
+                                                                      MaterialPageRoute(builder: (context) => PatientIndexHivInfo(widget.person_contact,indexcontact, widget.personId, widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),);
 
                                                                 }
                                                               ),

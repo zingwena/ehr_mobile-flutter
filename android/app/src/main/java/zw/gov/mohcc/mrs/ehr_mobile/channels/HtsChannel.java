@@ -124,8 +124,10 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("htsRegistration")) {
                             try {
+                                Log.i(TAG, "HTS RECORD FROM FLUTTER"+ arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
                                 result.success(htsService.createHts(htsRegDTO));
+                                Log.i(TAG, "HTS id to be sent back >>>>>>>>>"+ htsService.createHts(htsRegDTO));
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -306,7 +308,7 @@ public class HtsChannel {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String sample_name = sample.getName();
-
+                                Log.i(TAG, "Here is the sample name to be returned >>>>>>>>>>>>>"+ sample_name);
                                 result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

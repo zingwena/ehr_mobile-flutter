@@ -6,6 +6,8 @@ import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/testingplan.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 
@@ -39,8 +41,9 @@ class PatientIndexHivInfo extends StatefulWidget {
   final String htsId;
   final String visitId;
   final HtsRegistration htsRegistration;
+  final Person person_contact;
 
-  PatientIndexHivInfo(this.indexcontact, this.personId, this.person, this.visitId, this.htsRegistration, this.htsId);
+  PatientIndexHivInfo(this.person_contact,this.indexcontact, this.personId, this.person, this.visitId, this.htsRegistration, this.htsId);
   @override
   State createState() {
     return _PatientIndexHivInfo();
@@ -79,6 +82,8 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
 
   List<DropdownMenuItem<String>> _dropDownMenuItemsDisclosurePlanStatus;
   List<DropdownMenuItem<String>> _dropDownMenuItemsTesting_plans;
+
+  String facility_name;
 
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsReligion() {
@@ -125,17 +130,28 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
   List<DropdownMenuItem<String>> _dropDownMenuItemsReligion;
   List<DropdownMenuItem<String>>_dropDownMenuItemsTestingPlans;
 
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
   @override
   void initState() {
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     getDropdowninfo();
+    getFacilityName();
     _dropDownMenuItemsDisclosurePlanStatus = getDropDownMenuItemsReligion();
-   /* _currentDisclosurePlanStatus = _dropDownMenuItemsDisclosurePlanStatus[0].value;*/
-
     _dropDownMenuItemsTesting_plans = getDropDownMenuItemsIdentifiedTestingPlanStatus();
-  /*  _currentTestingPlanStatus = _dropDownMenuItemsTestingPlanStatus[0].value;*/
-
     super.initState();
   }
 
@@ -235,8 +251,9 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+            title: new Text(
+    facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+    fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -272,8 +289,43 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   SizedBox(
-                    height: 15.0,
+                    height: 10.0,
                   ),
+
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline,
+                                size: 25.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                widget.person.firstName +
+                                    " " +
+                                    widget.person.lastName,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.0,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user,
+                                size: 25.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ])),
                   //    _buildButtonsRow(),
                   Expanded(
                     child: WillPopScope(
@@ -549,7 +601,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                   print("TTTTTTTTTTTTTTTTTT HERE IS THE INDEX CONTACT PASSED TO BE SAVED"+ indexcontact.toString());
                                                                   saveIndexContact(indexcontact);
                                                                   Navigator.push(context,MaterialPageRoute(
-                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, null, null, null, widget.personId, widget.indexcontact.indexTestId)
+                                                                      builder: (context)=> HIVServicesIndexContactList(widget.person, widget.person_contact,null, null, null, widget.personId, widget.indexcontact.indexTestId)
                                                                   ));
                                                                   }
                                                               ),

@@ -383,7 +383,7 @@ class _Registration extends State<Registration> {
                                                               HtsRegistration htsDetails = HtsRegistration(widget.patientId,
                                                                   visitId, htsType, date, _currentEntryPoint);
                                                               await registration(htsDetails);
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id, visitId, widget.person)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(htsDetails, patientId, hts_id, visitId, widget.person)));
 
                                                             }
                                                           }

@@ -3,6 +3,8 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/postTest.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
@@ -74,6 +76,8 @@ class PostTestOverviewState extends State<PostTestOverview> {
   String patient_on_art_string;
   String consent_to_index_testing;
 
+  String facility_name;
+
   @override
   void initState() {
     dateOfTest =
@@ -111,6 +115,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
       consent_to_index_testing = "NO";
     }
 
+  getFacilityName();
     super.initState();
   }
 
@@ -126,6 +131,20 @@ class PostTestOverviewState extends State<PostTestOverview> {
     setState(() {
       _entrypoint = entrypoint;
     });
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   String nullHandler(String value) {
@@ -153,13 +172,9 @@ class PostTestOverviewState extends State<PostTestOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-              "Impilo Mobile",
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 25.0,
-              ),
-            ),
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -584,6 +599,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
                 MaterialPageRoute(
                     builder: (context) => HIVServicesIndexContactList(
                         widget.person,
+                        null,
                         widget.visitId,
                         widget.htsId,
                         null,

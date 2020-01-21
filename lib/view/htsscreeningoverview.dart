@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -58,11 +60,14 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
   String beenTestedBefore;
   String patientOnArt;
   String everbeenonprep;
+
+  String facility_name;
   @override
   void initState() {
     _patient = widget.person;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
+    getFacilityName();
     print(_patient.toString());
     if(widget.htsScreening.testedBefore == true){
       beenTestedBefore = 'YES';
@@ -99,6 +104,19 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
     });
 
 
+  }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
   Future<void> getHtsRecord(String patientId) async {
     var  hts;
@@ -158,10 +176,9 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

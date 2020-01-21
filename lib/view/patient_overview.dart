@@ -65,7 +65,7 @@ class OverviewState extends State<Overview> {
     getHtsScreeningRecord(_patient.id);
     getArtRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
-    getQueueName(widget.patient.id);
+   getQueueName(_patient.id);
     getFacilityName();
     super.initState();
   }
@@ -193,7 +193,7 @@ class OverviewState extends State<Overview> {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
-            height: 230.0,
+            height: 210.0,
           ),
           new AppBar(
             backgroundColor: Colors.transparent,

@@ -67,6 +67,7 @@ public class AddPatientChannel {
                     Person person = ehrMobileDatabase.personDao().findPatientById(ags);
 
                     String response = gson.toJson(person);
+                    System.out.println("HERE IS THE PERSON SENT FROM FLUTTER THROUGH GET BY ID >>>>>>>>>>>>> "+ response);
                     result.success(response);
                 }
                 if (methodCall.method.equals("getPatientMaritalStatus")) {
@@ -98,9 +99,9 @@ public class AddPatientChannel {
                     if(address!=null){
                         patient_address.append(address.getStreet())
                                 .append(' ')
-                                .append(address.getCity())
+                                .append(address.getTown())
                                 .append(' ')
-                                .append(address.getTown());
+                                .append(address.getCity());
                         System.out.println("ADDRESSS " + "street: " + address.getStreet() + " town:" + address.getTown() + " city:" + address.getCity());
                     }
                     result.success(patient_address.toString());

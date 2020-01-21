@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/address.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/town.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

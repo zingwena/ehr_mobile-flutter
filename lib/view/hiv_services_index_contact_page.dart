@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/search_patient_index.dart';
@@ -29,7 +31,8 @@ class HIVServicesIndexContactList extends StatefulWidget {
   final String visitId;
   final Person person;
   final String indexTestId;
-  HIVServicesIndexContactList(this.person, this.visitId, this.htsId, this.htsRegistration, this.personId, this.indexTestId);
+  final Person person_contact;
+  HIVServicesIndexContactList(this.person,this.person_contact, this.visitId, this.htsId, this.htsRegistration, this.personId, this.indexTestId);
   @override
   HIVServicesIndexContactListState createState() {
     return new HIVServicesIndexContactListState();
@@ -51,6 +54,8 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
   List<Person> _entryPointList = List();
 
   String _entryPoint;
+
+  String facility_name;
 
 
   @override
@@ -87,7 +92,19 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
 
     }
   }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
 
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
   bool showInput = true;
   bool showInputTabOptions = true;
 
@@ -111,7 +128,8 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
@@ -149,6 +167,41 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                     child: Text("HIV Services Index Contact Page", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
+                  SizedBox(height: 10.0,),
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline,
+                                size: 25.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                widget.person.firstName +
+                                    " " +
+                                    widget.person.lastName,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.0,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user,
+                                size: 25.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ])),
                   //_buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     child: new Card(
@@ -179,35 +232,6 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                     children: <Widget>[
                                                       Row(
                                                         children: <Widget>[
-                                                        /*  Expanded(
-                                                            child: Padding(
-                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0),
-                                                              child: RaisedButton(
-                                                                //onPressed: () {},
-                                                                color: Colors.blue,
-                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                child: Padding(
-                                                                  padding:
-                                                                  const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                                                                  child: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                                    children: <Widget>[
-                                                                      Icon(Icons.person_add, color: Colors.white,),
-                                                                      Text('Register Patient', style: TextStyle(color: Colors.white,),),
-                                                                    ],
-                                                                  ),
-
-                                                                ),
-                                                                onPressed: () => Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(builder: (context) => RegisterIndexPatient()),
-                                                                ),
-                                                              ),
-
-                                                            ),
-                                                          ),*/
-
                                                           Expanded(
                                                             child: Padding(
                                                               padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0),
@@ -228,12 +252,9 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                                   ),
                                                                 ),
                                                                 onPressed: () {
-/*
-                                                                  print('THIS IS THE INDEXTESTID IN HIV SERVICES CONTACT PAGE >>>>>>>>>'+ widget.indexTestId);
-*/
-                                                                  Navigator.push(
+                                                                Navigator.push(
                                                                     context,
-                                                                    MaterialPageRoute(builder: (context) => SearchPatientIndex(widget.indexTestId, widget.visitId, widget.personId)),
+                                                                    MaterialPageRoute(builder: (context) => SearchPatientIndex(widget.person,widget.indexTestId, widget.visitId, widget.personId)),
                                                                   );
 
                                                                 }
@@ -308,18 +329,18 @@ Widget getContactList(){
             DataColumn(label: Text("Last Name")),
             DataColumn(label: Text(""))
           ],
-          rows:_entryPointList.map((person)=>
+          rows:_entryPointList.map((index_person)=>
               DataRow(
                   cells: [
-                    DataCell(Text(person.firstName)),
-                    DataCell(Text(person.lastName)),
+                    DataCell(Text(index_person.firstName)),
+                    DataCell(Text(index_person.lastName)),
                     DataCell(    Padding(
                       padding: const EdgeInsets.only(right: 0),
                       child: RaisedButton(
                         onPressed: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Overview(person)));
+                              MaterialPageRoute(builder: (context) => Overview(index_person)));
 
                         },
                         color: Colors.blue,

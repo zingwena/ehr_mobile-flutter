@@ -5,6 +5,8 @@ import 'package:ehr_mobile/model/dto/testkitbatchdto.dart';
 import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/testkitbatchissue.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
@@ -86,6 +88,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
 
+  String facility_name;
+
   @override
   void initState()   {
       selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -97,7 +101,9 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       getTestName();
       getLabId();
       getHtsRecord(widget.personId);
+      getFacilityName();
       date = DateTime.now();
+      print("HERE IS THE VISITID IN HTS SCREENING>>>>>>>>>>>>>>>"+ widget.visitId);
 
     super.initState();
   }
@@ -112,6 +118,19 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
         date = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
+  }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<Null> _selectedStarttime(BuildContext context) async {
@@ -595,7 +614,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              (sample_name),
+                                              ('Blood'),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,
@@ -636,7 +655,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           child: Padding(
                                             padding: const EdgeInsets.all(0.0),
                                             child: Text(
-                                              (test),
+                                              ("HIV"),
                                               style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 18,

@@ -9,6 +9,8 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/postTest.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
@@ -86,6 +88,8 @@ class _Recency_Result  extends State<Recency_Result > {
 
   String _currentEntryPoint;
 
+  var facility_name;
+
   @override
   void initState() {
     _visitId = widget.visitId;
@@ -94,6 +98,7 @@ class _Recency_Result  extends State<Recency_Result > {
     labInvetsTestId = widget.labInvetsTestId;
     getFinalResult(widget.labInvestId);
     getFacilities();
+    getFacilityName();
     // getLabInvestigationTests();
     getTestKIt(widget.labInvetsTestId);
     getStartTime(widget.labInvetsTestId);
@@ -124,6 +129,20 @@ class _Recency_Result  extends State<Recency_Result > {
 
     } catch (e) {
       print('--------------------Something went wrong  $e');
+    }
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
     }
   }
 /*  Future<void> getResultName() async {
@@ -219,10 +238,9 @@ class _Recency_Result  extends State<Recency_Result > {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -483,7 +501,7 @@ class _Recency_Result  extends State<Recency_Result > {
                             IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
                             saveIndexTest(indexTest);
                             Navigator.push(context,MaterialPageRoute(
-                            builder: (context)=> HIVServicesIndexContactList(widget.person, widget.visitId, widget.htsId, null, widget.patientId, INDEXTEST)
+                            builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, INDEXTEST)
                             ));
                             },
                             ),
