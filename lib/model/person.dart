@@ -28,6 +28,8 @@ class Person{
   String countryId;
   Address address;
   Age age;
+  String phoneNumber1;
+  String phoneNumber2;
 
   Person.basic(
       this.firstName,

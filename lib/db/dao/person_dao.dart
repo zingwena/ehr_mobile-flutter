@@ -45,7 +45,7 @@ class PersonDao extends BaseDao{
 
     Map map = await _adapter.findOne(param);
 
-    var person = Person.fromJson(map);
+    var person = Person.fromMap(map);
     return person;
   }
 

@@ -1,16 +1,10 @@
 
 import 'package:ehr_mobile/db/tables/art_table.dart';
 import 'package:ehr_mobile/db/tables/hts/hts_table.dart';
-import 'package:ehr_mobile/db/tables/hts/index_contact_table.dart';
 import 'package:ehr_mobile/db/tables/hts/index_test_table.dart';
 import 'package:ehr_mobile/db/tables/hts_screening_table.dart';
-import 'package:ehr_mobile/db/tables/laboratory_investigation_table.dart';
 import 'package:ehr_mobile/db/tables/person_investigation_table.dart';
-import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
 import 'package:ehr_mobile/db/tables/sexual_history_table.dart';
-import 'package:ehr_mobile/db/tables/visit_table.dart';
-import 'package:ehr_mobile/model/laboratory_investigation.dart';
-import 'package:ehr_mobile/util/logger.dart';
 
 import '../person.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -23,8 +17,7 @@ class PatientDto{
   IndexTestTable indexTestDto;
 
   List vitalDtos;
-  PersonInvestigationTable personInvestigationDto;
-  LaboratoryInvestigationTable laboratoryInvestigationDto;
+  List<PersonInvestigationTable> personInvestigationDtos=List();
   SexualHistoryTable sexualHistoryDto;
   HtsScreeningTable htsScreeningDto;
 
@@ -54,8 +47,6 @@ class PatientDto{
 
     if(htsDto!=null){
       map['htsDto']= htsDto.toJson();
-      map['htsDto']['personInvestigationDto']=personInvestigationDto;
-      map['htsDto']['laboratoryInvestigationDto']=laboratoryInvestigationDto;
     }
 
     if(indexTestDto!=null){
@@ -70,6 +61,10 @@ class PatientDto{
     }
     if(artDto!=null){
       map['artDto']=artDto;
+    }
+
+    if(personInvestigationDtos!=null){
+      map['personInvestigationDtos']=personInvestigationDtos;
     }
     map['vitalDtos']=vitalDtos;
 
