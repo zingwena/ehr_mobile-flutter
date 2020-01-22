@@ -94,6 +94,8 @@ public class HistoryService {
 
     public HtsScreeningDTO getHtsScreening(String currentVisitId) {
 
+        Log.d(TAG, "Current visit ID : " + currentVisitId);
+
         // check in system if patient has ever been tested if yes return @false check in
         // screening
         boolean testingCompletedInCurrentRun = false;
@@ -205,7 +207,7 @@ public class HistoryService {
             dto.setPersonId(personId);
             dto.setDateLastNegative(personInvestigation.getDate());
         }
-
+        Log.d(TAG, "Hts Screening for current patient : " + dto);
         return dto;
     }
 

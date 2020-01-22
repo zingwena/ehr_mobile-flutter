@@ -547,11 +547,13 @@ public class HtsChannel {
                             Log.i(TAG, "Get hts screening method called in android");
                             try {
                                 String personId = arguments;
+                                Log.d(TAG, "Person ID : " + personId);
                                 String htsscreeningdto = gson.toJson(historyService.getHtsScreening(visitService.getVisit(personId).getId()));
                                 Log.i(TAG, "Retrieve Htsscreening from Android" + htsscreeningdto);
                                 result.success(htsscreeningdto);
                             } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
+                                e.printStackTrace();
                             }
                         }
                         if (methodCall.method.equals("saveSexualHistory")) {
