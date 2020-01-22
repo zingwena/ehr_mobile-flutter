@@ -28,7 +28,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
   )
     ..status = json['status'] as String
     ..nationalityId = json['nationalityId'] as String
-    ..countryId = json['countryId'] as String;
+    ..countryOfBirthId = json['countryOfBirthId'] as String;
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
@@ -45,7 +45,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'maritalStatusId': instance.maritalStatusId,
       'educationLevelId': instance.educationLevelId,
       'nationalityId': instance.nationalityId,
-      'countryId': instance.countryId,
+      'countryOfBirthId': instance.countryOfBirthId,
       'address': instance.address,
       'age': instance.age,
     };
@@ -73,7 +73,7 @@ Person _$PersonFromMap(Map<String, dynamic> json) {
   person.address=address;
 
   person.nationalityId=json['nationalityId'];
-  person.countryId = json['countryId'];
+  person.countryOfBirthId = json['countryOfBirthId'];
   return person;
 }
 
@@ -90,7 +90,7 @@ Map<String, dynamic> _$PersonToEhrJson(Person instance) => <String, dynamic>{
   'maritalStatusId': instance.maritalStatusId,
   'educationLevelId': instance.educationLevelId,
   'nationalityId': instance.nationalityId,
-  'countryId': instance.countryId,
+  'countryOfBirthId': instance.countryOfBirthId,
   'addressDto': instance.address,
   'gender':instance.sex,
   'phoneNumber1':instance.phoneNumber1,

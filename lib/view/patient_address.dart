@@ -343,13 +343,13 @@ class _PatientAddressState extends State<PatientAddress> {
                                                               Person patient = widget.patient;
 
                                                               patient.address = Address(schoolHouse, suburbVillage, _currentTown);
-                                                              await registerPatient(patient).then((value) {
+                                                              print("HERE IS THE PATIENT SENT TO ANDROID TO BE SAVED ##############################" + widget.patient.toString());
 
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => Overview(registeredPatient)));
-                                                              });
+                                                              await registerPatient(patient);
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => Overview(registeredPatient)));
                                                               SnackBar(
                                                                 content: Text("Patient saved"),
                                                               );
@@ -423,15 +423,15 @@ class _PatientAddressState extends State<PatientAddress> {
     String response;
     var patientResponse;
     try {
-      String jsonPatient = jsonEncode(patient.toJson());
+      String jsonPatient = jsonEncode(patient);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
-
+      print('HERE IS THE RESPONSE ID OF THE PERSON SAVED'+ response);
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
         registeredPatient = Person.fromJson(jsonDecode(patientResponse));
+        log.i("HERE IS THE REGISTERED PATIENT AFTER ASSIGNMENT"+ registeredPatient.toString());
         savephonenumber();
       });
-
 
     }
     catch(e){
