@@ -44,6 +44,7 @@ public class HtsService {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.visitService = visitService;
         this.siteService = new SiteService(ehrMobileDatabase);
+        this.historyService = new HistoryService(ehrMobileDatabase, this);
     }
 
     @Transaction
@@ -51,7 +52,7 @@ public class HtsService {
 
         String visitId = visitService.getCurrentVisit(dto.getPersonId());
         Log.i(TAG, "Retrieving or creating current visit : " + visitId);
-
+        Log.d(TAG, " 999999999999999999999999999 : " + historyService.getHtsScreening(visitId));
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         Log.i(TAG, "HTS RECORD CREATED HERE " + hts);
@@ -79,19 +80,15 @@ public class HtsService {
         }
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
-        Log.i(TAG, "Creating laboratory investigation record");
-        try {
+        if (hivInvestigation) {
+            Log.i(TAG, "Creating laboratory investigation record");
             String laboratoryInvestigationId = UUID.randomUUID().toString();
             LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, siteService.getFacilityDetails().getCode(), personInvestigationId);
             ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
             Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
             return laboratoryInvestigationId;
-        } catch (Exception ex) {
-            Log.e(TAG, "^^^^^^^^^^^^^^^^^^^^^^^ : " + ex.getMessage());
-            ex.printStackTrace();
-            return null;
         }
-        //return laboratoryInvestigationId;
+        return null;
     }
 
     /**
