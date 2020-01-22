@@ -544,7 +544,7 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("getHtsScreening")) {
-                            Log.i(TAG, "Get hts screening method called in android");
+                            Log.i(TAG, "Get hts screening method called in android with the arguments given >>>>>"+ arguments);
                             try {
                                 String personId = arguments;
                                 Log.d(TAG, "Person ID : " + personId);

@@ -204,6 +204,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsCountry() {
+    print("############### this is the list of countries"+ _countryList.toString());
     List<DropdownMenuItem<String>> items = new List();
     for (Country country in _countryList) {
       // here we are creating the drop down menu items, you can customize the item right here
@@ -787,35 +788,6 @@ class _EditDemographicsState extends State<EditDemographics> {
 //  }
 
 
-//
-//  Future<bool> confirmDialog(BuildContext context) async {
-//    return showDialog<bool>(
-//      context: context,
-//      barrierDismissible: false, // user must tap button!
-//      builder: (BuildContext context) {
-//        return AlertDialog(
-//          title: Text("Nationality List"),
-//          content: Container(
-//            child: SingleChildScrollView(
-//              child: Column(
-//                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                children: <Widget>[
-//                  table(),
-//                ],
-//              ),
-//            ),
-//          ),
-//          actions: <Widget>[
-//            FlatButton(
-//                onPressed: () {
-//                  Navigator.of(context).pop(true);
-//                },
-//                child: Text("Cancel"))
-//          ],
-//        );
-//      },
-//    );
-//  }
 
   void changedDropDownItem(String selectedGender) {
     setState(() {
@@ -862,7 +834,6 @@ class _EditDemographicsState extends State<EditDemographics> {
       _religionError=null;
     });
 
-    print('@@@@@@@@@@@@@@@@@@ $_currentReligion');
   }
 
   void changedDropDownItemNationality(String selectedNationality) {
@@ -874,13 +845,14 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   void changedDropDownItemCountry(String selectedCountry) {
-          if(selectedCountry!=null) {
-            setState(() {
+    print('@@@@@@@@@@@@@@@@@@ this is the selected country >>>>>>>>>> $selectedCountry');
+
+    setState(() {
               _currentCountry = selectedCountry;
               _dropdownError = null;
               countryIsValid = !countryIsValid;
             });
-          }
+
   }
 
   Future<void> registerPatient(Person person)async{

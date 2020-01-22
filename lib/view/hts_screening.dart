@@ -93,6 +93,7 @@ class _HtsScreening extends State<Hts_Screening> {
   }
 
   Future<void> savehtsscreening(HtsScreening htsScreening) async {
+    print("GGGGGGGGGGGG RRRRRRR TTTTTTT  THIS IS THE HTSSCREENING MODEL TO BE SAVED"+ htsScreening.toString());
     var response;
     try {
       response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
