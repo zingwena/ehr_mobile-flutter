@@ -27,6 +27,6 @@ public interface SiteSettingDao {
     @Query("SELECT * FROM SiteSetting WHERE id=:id")
     SiteSetting findById(String id);
 
-    @Query("SELECT * FROM SiteSetting limit 1,0")
+    @Query("SELECT * FROM SiteSetting limit 1")
     SiteSetting findSiteSetting();
 }
