@@ -20,9 +20,9 @@ HtsScreening _$HtsScreeningFromJson(Map<String, dynamic> json) {
     json['beenOnPrep'] as bool,
     json['prepOption'] as String,
     json['viralLoadDone'] as String,
-    const CustomDateTimeConverter().fromJson(json['viralLoadDate'] as String),
+   // const CustomDateTimeConverter().fromJson(json['viralLoadDate'] as String),
     json['cd4Done'] as String,
-    const CustomDateTimeConverter().fromJson(json['cd4CountDate'] as String),
+    //const CustomDateTimeConverter().fromJson(json['cd4CountDate'] as String),
   );
 }
 
@@ -41,7 +41,7 @@ Map<String, dynamic> _$HtsScreeningToJson(HtsScreening instance) =>
       'prepOption': instance.prepOption,
       'viralLoadDone': instance.viralLoadDone,
       'cd4Done': instance.cd4Done,
-      'viralLoadDate': const CustomDateTimeConverter().toJson(instance.viralLoadDate),
-      'cd4CountDate': const CustomDateTimeConverter().toJson(instance.cd4CountDate),
+      //'viralLoadDate': const CustomDateTimeConverter().toJson(instance.viralLoadDate),
+      //'cd4CountDate': const CustomDateTimeConverter().toJson(instance.cd4CountDate),
 
     };

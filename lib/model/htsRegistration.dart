@@ -9,8 +9,9 @@ class HtsRegistration {
   DateTime dateOfHivTest;
   String htsType;
   String entryPointId;
+  String laboratoryInvestigationId;
 
-  HtsRegistration(this.personId, this.visitId, this.htsType, this.dateOfHivTest,this.entryPointId);
+  HtsRegistration(this.personId, this.visitId, this.htsType, this.dateOfHivTest,this.entryPointId, this.laboratoryInvestigationId);
 
   factory HtsRegistration.fromJson(Map<String, dynamic> json) => _$HtsRegistrationFromJson(json);
 

@@ -163,7 +163,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
-                                System.out.println("HTS MODEL ID HERE HERE HERE" + arguments);
+                                Log.i(TAG, "HTS MODEL ID HERE HERE HERE" + arguments);
                                 HtsModel htsModel = ehrMobileDatabase.htsModelDao().findById(arguments);
                                 String htsModelName = htsModel.getName();
                                 result.success(htsModelName);
@@ -207,7 +207,6 @@ public class HtsChannel {
                                 Hts hts = htsService.savePreTestCounselling(preTestDTO);
 
                                 result.success(gson.toJson(hts));
-
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());

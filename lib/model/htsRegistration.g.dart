@@ -13,6 +13,8 @@ HtsRegistration _$HtsRegistrationFromJson(Map<String, dynamic> json) {
     json['htsType'] as String,
     const CustomDateTimeConverter().fromJson(json['dateOfHivTest'] as String),
     json['entryPointId'] as String,
+    json['laboratoryInvestigationId'] as String,
+
   );
 }
 
@@ -24,4 +26,5 @@ Map<String, dynamic> _$HtsRegistrationToJson(HtsRegistration instance) =>
           const CustomDateTimeConverter().toJson(instance.dateOfHivTest),
       'htsType': instance.htsType,
       'entryPointId': instance.entryPointId,
+      'laboratoryInvestigationId': instance.laboratoryInvestigationId
     };

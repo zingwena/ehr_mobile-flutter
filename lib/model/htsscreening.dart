@@ -21,7 +21,7 @@ class HtsScreening{
   DateTime  cd4CountDate;
 
   HtsScreening(String personId, String visitId, bool testedBefore, bool art, String result, DateTime dateLastNegative,   DateTime dateLastTested, DateTime dateEnrolled, String artNumber, bool beenOnPrep,
-      String prepOption, String viralLoadDone, DateTime viralLoadDate, String cd4Done, DateTime cd4CountDate){
+      String prepOption, String viralLoadDone,/* DateTime viralLoadDate*/ String cd4Done,/* DateTime cd4CountDate*/){
     this.personId = personId;
     this.visitId = visitId;
     this.testedBefore = testedBefore;
