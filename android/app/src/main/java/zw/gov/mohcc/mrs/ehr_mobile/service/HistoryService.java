@@ -151,6 +151,9 @@ public class HistoryService {
             dto.setResult(htsScreening.getResult());
             dto.setViralLoadDone(htsScreening.getViralLoadDone());
             dto.setCd4Done(htsScreening.getCd4Done());
+            Log.i(TAG, "Setting date last negative"+ htsScreening.getDateLastNegative());
+            dto.setDateLastNegative(htsScreening.getDateLastNegative());
+            Log.i(TAG, "Date last negative set successfully");
         }
 
         // check art details it must also work if patient is on art while not having

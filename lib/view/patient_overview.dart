@@ -62,7 +62,6 @@ class OverviewState extends State<Overview> {
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
-    //getHtsScreeningRecord(_patient.id);
     getArtRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     getQueueName(_patient.id);
@@ -105,8 +104,10 @@ class OverviewState extends State<Overview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print("THIS IS THE PATIENT HTS RECORD RETRIEVED"+ hts);
       setState(() {
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+
         print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
       });
@@ -135,18 +136,7 @@ class OverviewState extends State<Overview> {
 
 
   }
-  Future<void> getHtsScreeningRecord(String patientId) async {
-    var  hts_screening;
-    try {
-      hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
-      setState(() {
-        htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
-      });
 
-    } catch (e) {
-      print("channel failure get hts record: '$e'");
-    }
-  }
   Future<void> getHtsId(String patientId) async {
     var hts;
 

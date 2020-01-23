@@ -201,6 +201,7 @@ public class HtsChannel {
                             try {
 
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
+                                Log.i(TAG, "PRETEST SENT FROM FLUTTER" + arguments);
 
                                 Hts hts = htsService.savePreTestCounselling(preTestDTO);
 

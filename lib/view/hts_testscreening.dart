@@ -931,6 +931,7 @@ Future<void>validateInputs() async{
 
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
+    print("LAB INVESTIGATION TO BE SAVED"+ laboratoryInvestTest.toString());
     int response;
     var labInvestTestResponse;
     try {

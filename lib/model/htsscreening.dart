@@ -46,7 +46,7 @@ class HtsScreening{
   @override
   String toString() {
     return 'HtsScreening{visitId: $visitId, testedBefore: $testedBefore, art: $art, '
-        'result: $result, dateLastTested:$dateLastTested, artNumber:$artNumber,  beenOnPrep:$beenOnPrep, prepOption:$prepOption, viralLoadDone:$viralLoadDone, cd4Done:$cd4Done}';
+        'result: $result, dateLastNegative: $dateLastNegative,dateLastTested:$dateLastTested, artNumber:$artNumber,  beenOnPrep:$beenOnPrep, prepOption:$prepOption, viralLoadDone:$viralLoadDone, cd4Done:$cd4Done}';
   }
 
   static List<HtsScreening> fromJsonDecodedMap(List dynamicList) {
