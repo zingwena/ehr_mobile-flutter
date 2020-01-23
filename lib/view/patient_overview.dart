@@ -65,7 +65,7 @@ class OverviewState extends State<Overview> {
     //getHtsScreeningRecord(_patient.id);
     getArtRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
-   getQueueName(_patient.id);
+    getQueueName(_patient.id);
     getFacilityName();
     super.initState();
   }
@@ -96,7 +96,7 @@ class OverviewState extends State<Overview> {
 
 
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get visit method: '$e'");
     }
 
 
@@ -113,7 +113,7 @@ class OverviewState extends State<Overview> {
 
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get hts record: '$e'");
     }
 
 
@@ -130,7 +130,7 @@ class OverviewState extends State<Overview> {
 
       print('ART IN THE FLUTTER THE RETURNED ONE '+ artReg.toString());
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get art record method: '$e'");
     }
 
 
@@ -144,7 +144,7 @@ class OverviewState extends State<Overview> {
       });
 
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure get hts record: '$e'");
     }
   }
   Future<void> getHtsId(String patientId) async {
@@ -156,7 +156,7 @@ class OverviewState extends State<Overview> {
         htsId = hts;
       });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get htsId: '$e'");
     }
      }
 
@@ -619,8 +619,6 @@ Widget _sidemenu(){
         _address = address;
         _phonenumber = patientphonenumber;
       });
-
-
 
     }
     catch (e) {

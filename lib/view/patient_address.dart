@@ -346,7 +346,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                               print("HERE IS THE PATIENT SENT TO ANDROID TO BE SAVED ##############################" + widget.patient.toString());
 
                                                               await registerPatient(patient);
-                                                              Navigator.push(
+                                                              await Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
                                                                       builder: (context) => Overview(registeredPatient)));
@@ -429,9 +429,8 @@ class _PatientAddressState extends State<PatientAddress> {
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
         registeredPatient = Person.fromJson(jsonDecode(patientResponse));
-        log.i("HERE IS THE REGISTERED PATIENT AFTER ASSIGNMENT"+ registeredPatient.toString());
-        savephonenumber();
       });
+      await savephonenumber();
 
     }
     catch(e){
