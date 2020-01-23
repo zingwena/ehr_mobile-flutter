@@ -18,7 +18,7 @@ public interface LaboratoryInvestigationTestDao {
     void deleteLaboratoryInvestTests();
 
     @Insert
-    Long insertLaboratoryInvestTest(LaboratoryInvestigationTest laboratoryInvestTest);
+    Long save(LaboratoryInvestigationTest laboratoryInvestTest);
 
     @Query("SELECT * FROM LaboratoryInvestigationTest ")
     List<LaboratoryInvestigationTest> getLaboratoryInvestTests();
