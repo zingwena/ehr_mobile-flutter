@@ -13,21 +13,22 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
-import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
-import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
+
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistoryQuestion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistory;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -48,7 +49,7 @@ public class HistoryService {
     }
 
     public boolean existsByPersonId(String personId) {
-        return ehrMobileDatabase.htsDao().countByPersonId(personId) >=1;
+        return ehrMobileDatabase.htsDao().countByPersonId(personId) >= 1;
     }
 
     public String createSexualHistoryQuestion(SexualHistoryQuestionDTO dto) {
@@ -115,7 +116,7 @@ public class HistoryService {
         // outside it
         final String negativeHivResult = "41d3c273-fd7d-11e6-9840-000c29c7ff5e";
         final Set<String> hivTests = new HashSet<>(Arrays.asList(
-                new String[]{"36069471-adee-11e7-b30f-3372a2d8551e", "ee7d91fc-b27f-11e8-b121-c48e8faf029b"}));
+                "36069471-adee-11e7-b30f-3372a2d8551e", "ee7d91fc-b27f-11e8-b121-c48e8faf029b"));
 
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(personId, negativeHivResult, hivTests);
@@ -166,7 +167,7 @@ public class HistoryService {
         }
         // retrieve tests for viral load and cd4 count
         final Set<String> viralLoadTests = new HashSet<>(Arrays.asList(
-                new String[]{"36069624-adee-11e7-b30f-3372a2d8551e", "360696a5-adee-11e7-b30f-3372a2d8551e"}));
+                "36069624-adee-11e7-b30f-3372a2d8551e", "360696a5-adee-11e7-b30f-3372a2d8551e"));
 
         PersonInvestigation viralLoadInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndInvestigationIdInOrderByDateDesc(personId, viralLoadTests);
@@ -184,7 +185,7 @@ public class HistoryService {
         }
 
         final Set<String> cd4CountTests = new HashSet<>(
-                Arrays.asList(new String[]{"36069a11-adee-11e7-b30f-3372a2d8551e"}));
+                Arrays.asList("36069a11-adee-11e7-b30f-3372a2d8551e"));
 
         PersonInvestigation cd4CountInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndInvestigationIdInOrderByDateDesc(personId, cd4CountTests);
@@ -216,8 +217,8 @@ public class HistoryService {
         Log.i(TAG, "Saving sexual history object : " + dto);
         ehrMobileDatabase.sexualHistoryDao().save(dto.getInstance(dto));
         SexualHistory sexualHistory = getSexualHistory(dto.getPersonId());
-        Log.i(TAG, "Sexual history record saved for : "+ dto.getPersonId() + " " + ehrMobileDatabase.sexualHistoryDao().findByPersonId(dto.getPersonId()));
-         return  sexualHistory.getId();
+        Log.i(TAG, "Sexual history record saved for : " + dto.getPersonId() + " " + ehrMobileDatabase.sexualHistoryDao().findByPersonId(dto.getPersonId()));
+        return sexualHistory.getId();
     }
 
     @Transaction
@@ -252,19 +253,19 @@ public class HistoryService {
             final String personId = ehrMobileDatabase.visitDao().findById(visitId).getPersonId();
             // hiv
             if (dto.isTestedBefore()) {
-                Log.i(TAG, "Positive HIV tests");
-                //String personId, Date dateOfTest, String visitId, String investigationId, String result
+                Log.i(TAG, "Hiv results here");
+                Log.d(TAG, "Retrieve either positive or negative HIV results : " + dto.getResult());
+                String resultId = "";
+                if (dto.getResult().equalsIgnoreCase("POSITIVE")) {
+                    resultId = "41d3c228-fd7d-11e6-9840-000c29c7ff5e";
+                } else if (dto.getResult().equalsIgnoreCase("NEGATIVE")) {
+                    resultId = "41d3c273-fd7d-11e6-9840-000c29c7ff5e";
+                }
+
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getDateLastTested(), visitId,
-                        "36069471-adee-11e7-b30f-3372a2d8551e", dto.getResult());
+                        "36069471-adee-11e7-b30f-3372a2d8551e", resultId);
                 Log.i(TAG, "Saving investigation record ");
                 htsService.createInvestigation(investigationDTO, false);
-            }
-            // if date last negative is completed
-            if (dto.isTestedBefore() && dto.getDateLastNegative() != null) {
-                Log.i(TAG, "Negative HIV tests");
-                InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getDateLastTested(), visitId,
-                        "36069471-adee-11e7-b30f-3372a2d8551e", "41d3c273-fd7d-11e6-9840-000c29c7ff5e");
-                Log.i(TAG, "Saving negative hiv test investigation record ");
             }
             // viral load
             if (dto.getViralLoad() != null && dto.getViralLoadDate() != null) {
@@ -272,6 +273,7 @@ public class HistoryService {
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getViralLoadDate(), visitId,
                         "36069624-adee-11e7-b30f-3372a2d8551e", dto.getViralLoad().toString());
                 Log.i(TAG, "Saved viral load investigation record");
+                htsService.createInvestigation(investigationDTO, false);
             }
 
             // cd4 count
@@ -280,6 +282,7 @@ public class HistoryService {
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getCd4CountDate(), visitId,
                         "36069a11-adee-11e7-b30f-3372a2d8551e", dto.getCd4Count().toString());
                 Log.i(TAG, "Saved cd4 count investigation record");
+                htsService.createInvestigation(investigationDTO, false);
             }
 
         }

@@ -52,7 +52,6 @@ public class HtsService {
 
         String visitId = visitService.getCurrentVisit(dto.getPersonId());
         Log.i(TAG, "Retrieving or creating current visit : " + visitId);
-        Log.d(TAG, " 999999999999999999999999999 : " + historyService.getHtsScreening(visitId));
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         Log.i(TAG, "HTS RECORD CREATED HERE " + hts);
@@ -78,6 +77,9 @@ public class HtsService {
         if (StringUtils.isNoneBlank(dto.getResult())) {
             personInvestigation.setResultId(dto.getResult());
         }
+
+        Log.d(TAG, "Person investigation object : " + personInvestigation);
+
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         if (hivInvestigation) {

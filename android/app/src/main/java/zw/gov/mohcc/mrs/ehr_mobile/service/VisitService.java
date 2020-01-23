@@ -36,13 +36,11 @@ public class VisitService {
     private final String TAG = "Visit Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private SiteService siteService;
-    private HistoryService historyService;
     private ArtService artService;
 
-    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, HistoryService historyService, ArtService artService) {
+    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, ArtService artService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.siteService = siteService;
-        this.historyService = historyService;
         this.artService = artService;
     }
 
