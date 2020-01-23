@@ -144,10 +144,10 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
         siteService = new SiteService(ehrMobileDatabase);
-        historyService = new HistoryService(ehrMobileDatabase, htsService);
         artService = new ArtService(ehrMobileDatabase);
-        visitService = new VisitService(ehrMobileDatabase, siteService, historyService, artService);
+        visitService = new VisitService(ehrMobileDatabase, siteService, artService);
         htsService = new HtsService(ehrMobileDatabase, visitService);
+        historyService = new HistoryService(ehrMobileDatabase, htsService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);
         relationshipService = new RelationshipService(ehrMobileDatabase);
