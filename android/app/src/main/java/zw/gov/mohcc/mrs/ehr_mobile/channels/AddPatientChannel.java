@@ -65,6 +65,8 @@ public class AddPatientChannel {
                 }
                 if (methodCall.method.equals("getPatientById")) {
                     String ags = methodCall.arguments();
+                    Log.i(TAG, "HERE IS PATIENT ID TO RETRIEVE PATIENT"+ ags);
+
                     Person person = ehrMobileDatabase.personDao().findPatientById(ags);
 
                     String response = gson.toJson(person);

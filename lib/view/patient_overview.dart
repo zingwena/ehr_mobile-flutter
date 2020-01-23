@@ -62,7 +62,7 @@ class OverviewState extends State<Overview> {
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
-    getHtsScreeningRecord(_patient.id);
+    //getHtsScreeningRecord(_patient.id);
     getArtRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
    getQueueName(_patient.id);

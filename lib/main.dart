@@ -14,6 +14,6 @@ class EhrMobileApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LandingScreen(),
-    );git 
+    );
   }
 }
