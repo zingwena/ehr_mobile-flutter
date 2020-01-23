@@ -16,7 +16,7 @@ public interface HtsDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void createHts(Hts hts);
+    void save(Hts hts);
 
     @Query("DELETE from Hts")
     void deleteAll();
