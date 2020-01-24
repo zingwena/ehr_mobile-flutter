@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/htsRegistration.dart';
-import 'package:ehr_mobile/model/htsscreening.dart' ;
+import 'package:ehr_mobile/model/htsscreening.dart';
+import 'package:ehr_mobile/model/htsscreeningdto.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
@@ -69,7 +70,7 @@ class _HtsScreening extends State<Hts_Screening> {
   var birthDate, displayDate;
   var selectedLastNegDate, selectedDateOfEnrollment, selectedDateOfViralLoad, selectedDateOfCd4Count, selectedDateOfLastTest;
   DateTime dateOfLastNeg, dateOfEnrollmentIntoCare, dateOfViralLoad, dateOfCd4Count, dateLastTest;
-  HtsScreening htsScreening;
+  HtsScreeningdto htsScreening;
 
   var facility_name;
 
@@ -92,8 +93,8 @@ class _HtsScreening extends State<Hts_Screening> {
     super.initState();
   }
 
-  Future<void> savehtsscreening(HtsScreening htsScreening) async {
-    print("GGGGGGGGGGGG RRRRRRR TTTTTTT  THIS IS THE HTSSCREENING MODEL TO BE SAVED"+ htsScreening.toString());
+  Future<void> savehtsscreening(HtsScreeningdto htsScreening) async {
+    print("GGGGGGGGGGGG RRRRRRR TTTTTTT  THIS IS THE HTSSCREENINGDTO  MODEL TO BE SAVED"+ htsScreening.toString());
     var response;
     try {
       response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
@@ -125,7 +126,7 @@ class _HtsScreening extends State<Hts_Screening> {
     try {
       response = await htsChannel.invokeMethod('getHtsScreening', widget.personId);
       setState(() {
-        htsScreening = HtsScreening.fromJson(jsonDecode(response));
+        htsScreening = HtsScreeningdto.fromJson(jsonDecode(response));
       });
     } catch (e) {
       print("channel failure getting hts screen record: '$e'");
@@ -928,8 +929,9 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result,dateOfLastNeg,dateLastTest, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone,/* dateOfViralLoad,*/ cd4Done, /*dateOfCd4Count*/);
-                                                          savehtsscreening(htsscreening);
+                                                          HtsScreeningdto htsscreeningdto = new HtsScreeningdto(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result,dateOfLastNeg,dateLastTest, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, dateOfViralLoad, cd4Done, dateOfCd4Count);
+                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result, dateOfLastNeg, dateLastTest, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
+                                                          savehtsscreening(htsscreeningdto);
                                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningOverview(widget.person, htsscreening, widget.htsid, widget.visitId, widget.personId)));
 
                                                         }

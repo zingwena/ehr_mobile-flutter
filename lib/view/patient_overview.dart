@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
+import 'package:ehr_mobile/model/htsscreeningdto.dart';
 import 'package:ehr_mobile/model/patient_queue.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -59,6 +60,7 @@ class OverviewState extends State<Overview> {
   String facility_name;
   @override
   void initState() {
+    print("THIS IS THE PATIENT IN PATIENT OVERVIEW"+ widget.patient.toString());
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);

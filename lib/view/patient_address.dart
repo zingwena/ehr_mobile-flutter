@@ -429,6 +429,7 @@ class _PatientAddressState extends State<PatientAddress> {
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
         registeredPatient = Person.fromJson(jsonDecode(patientResponse));
+        print("THIS IS THE PATIENT AFTER ASSIGNMENT IN FLUTTER"+ registeredPatient.toString());
       });
       await savephonenumber();
 

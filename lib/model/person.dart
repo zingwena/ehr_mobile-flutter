@@ -25,7 +25,7 @@ class Person{
   String maritalStatusId;
   String educationLevelId;
   String nationalityId;
-  String countryOfBirthId;
+  String countryId;
   Address address;
   Age age;
   String phoneNumber1;
@@ -41,7 +41,7 @@ class Person{
       this.maritalStatusId,
       this.educationLevelId,
       this.nationalityId,
-      this.countryOfBirthId,
+      this.countryId,
       this.selfIdentifiedGender,
       this.occupationId);
 
@@ -70,7 +70,7 @@ class Person{
 
   @override
   String toString() {
-    return 'Person{id: $id, status: $status, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religionId: $religionId, occupationId: $occupationId, maritalStatusId: $maritalStatusId, educationLevelId: $educationLevelId, nationalityId: $nationalityId, countryOfBirthId: $countryOfBirthId, address: $address}';
+    return 'Person{id: $id, status: $status, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religionId: $religionId, occupationId: $occupationId, maritalStatusId: $maritalStatusId, educationLevelId: $educationLevelId, nationalityId: $nationalityId, countryId: $countryId, address: $address}';
   }
 
   static List<Person> fromJsonDecodedMap(List dynamicList) {

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'htsscreening.dart';
+part of 'htsscreeningdto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-HtsScreening _$HtsScreeningFromJson(Map<String, dynamic> json) {
-  return HtsScreening(
+HtsScreeningdto _$HtsScreeningFromJson(Map<String, dynamic> json) {
+  return HtsScreeningdto(
     json['personId'] as String,
     json['visitId'] as String,
     json['testedBefore'] as bool,
@@ -20,11 +20,13 @@ HtsScreening _$HtsScreeningFromJson(Map<String, dynamic> json) {
     json['beenOnPrep'] as bool,
     json['prepOption'] as String,
     json['viralLoadDone'] as String,
+    const CustomDateTimeConverter().fromJson(json['viralLoadDate'] as String),
     json['cd4Done'] as String,
+    const CustomDateTimeConverter().fromJson(json['cd4CountDate'] as String),
   );
 }
 
-Map<String, dynamic> _$HtsScreeningToJson(HtsScreening  instance) =>
+Map<String, dynamic> _$HtsScreeningToJson(HtsScreeningdto  instance) =>
     <String, dynamic>{
       'personId': instance.personId,
       'visitId': instance.visitId,
@@ -39,5 +41,7 @@ Map<String, dynamic> _$HtsScreeningToJson(HtsScreening  instance) =>
       'prepOption': instance.prepOption,
       'viralLoadDone': instance.viralLoadDone,
       'cd4Done': instance.cd4Done,
+      'viralLoadDate': const CustomDateTimeConverter().toJson(instance.viralLoadDate),
+      'cd4CountDate': const CustomDateTimeConverter().toJson(instance.cd4CountDate),
 
     };
