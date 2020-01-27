@@ -167,6 +167,7 @@ public class HtsScreeningDTO {
         item.setTestedBefore(dto.isTestedBefore());
         item.setViralLoadDone(dto.getViralLoadDone());
         item.setVisitId(visitId);
+        item.setDateLastNegative(dto.getDateLastNegative());
         item.setId(UUID.randomUUID().toString());
         return item;
     }

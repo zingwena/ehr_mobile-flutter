@@ -126,8 +126,9 @@ public class HtsChannel {
                             try {
                                 Log.i(TAG, "HTS RECORD FROM FLUTTER"+ arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
-                                result.success(htsService.createHts(htsRegDTO));
-                                Log.i(TAG, "HTS id to be sent back >>>>>>>>>"+ htsService.createHts(htsRegDTO));
+                                String htsId = htsService.createHts(htsRegDTO);
+                                result.success(htsId);
+                                Log.i(TAG, "HTS id to be sent back >>>>>>>>>"+ htsId);
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -162,7 +163,7 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
-                                System.out.println("HTS MODEL ID HERE HERE HERE" + arguments);
+                                Log.i(TAG, "HTS MODEL ID HERE HERE HERE" + arguments);
                                 HtsModel htsModel = ehrMobileDatabase.htsModelDao().findById(arguments);
                                 String htsModelName = htsModel.getName();
                                 result.success(htsModelName);
@@ -201,11 +202,11 @@ public class HtsChannel {
                             try {
 
                                 PreTestDTO preTestDTO = gson.fromJson(arguments, PreTestDTO.class);
+                                Log.i(TAG, "PRETEST SENT FROM FLUTTER" + arguments);
 
                                 Hts hts = htsService.savePreTestCounselling(preTestDTO);
 
                                 result.success(gson.toJson(hts));
-
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -234,7 +235,7 @@ public class HtsChannel {
 
                             try {
                                 LaboratoryInvestigationTest labInvestTest = gson.fromJson(arguments, LaboratoryInvestigationTest.class);
-                                Log.d(TAG, "Lab invest test passed to android #########" + labInvestTest.toString());
+                                Log.d(TAG, "Lab invest test passed to android ######### : " + labInvestTest.toString());
                                 String labInvestigationTestId = htsService.processTestResults(labInvestTest);
                                 result.success(labInvestigationTestId);
                             } catch (Exception e) {

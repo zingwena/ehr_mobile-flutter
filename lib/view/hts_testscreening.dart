@@ -94,12 +94,12 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   void initState()   {
       selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
       getPersonInvestigation(widget.personId);
-      getLabInvestigation(widget.personId);
+      //getLabInvestigation(widget.personId);
       getLabTest(widget.personId);
       getResults(widget.personId);
       getPersonQueueOrWard(widget.personId);
       getTestName();
-      getLabId();
+     // getLabId();
       getHtsRecord(widget.personId);
       getFacilityName();
       date = DateTime.now();
@@ -295,12 +295,11 @@ Future<dynamic> getTestKitsByCount(int count) async {
   Future<dynamic> getLabInvestigation(String personId) async {
 
     try {
-      String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
+      String response = await htsChannel.invokeMethod('getcurrenthts', personId);
       setState(() {
         labInvestId = response;
         debugPrint("HERE IS THE LAB INVESTIGATION ID RETURNED FROM FLUTTER" + response);
-        getTestName();
-        getTestKitsByCount(testCount);
+
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -327,6 +326,10 @@ Future<dynamic> getTestKitsByCount(int count) async {
       setState(() {
 
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        labInvestId = htsRegistration.laboratoryInvestigationId;
+        getTestName();
+        getTestKitsByCount(testCount);
+
 
       });
     } catch (e) {
@@ -931,6 +934,7 @@ Future<void>validateInputs() async{
 
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTest laboratoryInvestTest)async{
+    print("LAB INVESTIGATION TO BE SAVED"+ laboratoryInvestTest.toString());
     int response;
     var labInvestTestResponse;
     try {

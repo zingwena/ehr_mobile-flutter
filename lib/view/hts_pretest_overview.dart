@@ -177,6 +177,10 @@ class PretestOverviewState extends State<PretestOverview> {
     setState(() {
 
       htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      labInvestId = htsRegistration.laboratoryInvestigationId;
+      print("@@@@@@@@@@@@@@@@@@@@@@ labinvest @@@@@@@@@@@@"+ labInvestId);
+      getFinalResult(labInvestId);
+      getLabInvestigationTest(labInvestId);
       print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
     });
@@ -186,12 +190,9 @@ class PretestOverviewState extends State<PretestOverview> {
   Future<dynamic> getLabInvestigation(String personId) async {
 
     try {
-      String response = await htsChannel.invokeMethod('getLabInvestigation', personId);
+      String response = await htsChannel.invokeMethod('getcurrenthts', personId);
       setState(() {
-        labInvestId = response;
-        print("@@@@@@@@@@@@@@@@@@@@@@ labinvest @@@@@@@@@@@@"+ labInvestId);
-        getFinalResult(labInvestId);
-        getLabInvestigationTest(labInvestId);
+
 
       });
     } catch (e) {

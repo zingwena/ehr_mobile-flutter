@@ -104,6 +104,7 @@ public class HistoryService {
         if (existsByPersonId(personId)) {
             // testing has been initiated in current run so hts is never going to be null
             Hts hts = ehrMobileDatabase.htsDao().findLatestHts(personId);
+            Log.i(TAG, "Find latest hts"+ hts.toString());
             PersonInvestigation personInvestigation = htsService.getPersonInvestigation(personId);
             LaboratoryInvestigation laboratoryInvestigation = htsService.getLaboratoryInvestigation(personId);
             if (StringUtils.isNoneBlank(hts.getLaboratoryInvestigationId()) && laboratoryInvestigation != null
@@ -133,7 +134,8 @@ public class HistoryService {
             LaboratoryInvestigation laboratoryInvestigation = ehrMobileDatabase.laboratoryInvestigationDao()
                     .findLaboratoryInvestigationById(hts.getLaboratoryInvestigationId());
             personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
-            dto.setResult(personInvestigation.getResultId());
+
+            dto.setResult(ehrMobileDatabase.resultDao().findById(personInvestigation.getResultId()).getName());
 
         }
         // patient has already done hts screening previously and has no test in EHR &lt
@@ -151,6 +153,9 @@ public class HistoryService {
             dto.setResult(htsScreening.getResult());
             dto.setViralLoadDone(htsScreening.getViralLoadDone());
             dto.setCd4Done(htsScreening.getCd4Done());
+            Log.i(TAG, "Setting date last negative"+ htsScreening.getDateLastNegative());
+            dto.setDateLastNegative(htsScreening.getDateLastNegative());
+            Log.i(TAG, "Date last negative set successfully");
         }
 
         // check art details it must also work if patient is on art while not having

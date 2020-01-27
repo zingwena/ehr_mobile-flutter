@@ -38,13 +38,11 @@ public class HtsService {
     private EhrMobileDatabase ehrMobileDatabase;
     private VisitService visitService;
     private SiteService siteService;
-    private HistoryService historyService;
 
     public HtsService(EhrMobileDatabase ehrMobileDatabase, VisitService visitService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.visitService = visitService;
         this.siteService = new SiteService(ehrMobileDatabase);
-        this.historyService = new HistoryService(ehrMobileDatabase, this);
     }
 
     @Transaction
@@ -55,16 +53,16 @@ public class HtsService {
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         Log.i(TAG, "HTS RECORD CREATED HERE " + hts);
-        Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
         String laboratoryInvestigationId = createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
                 visitId, "36069471-adee-11e7-b30f-3372a2d8551e", null), true);
         hts.setLaboratoryInvestigationId(laboratoryInvestigationId);
-        ehrMobileDatabase.htsDao().createHts(hts);
+        Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
+        ehrMobileDatabase.htsDao().save(hts);
         return hts.getId();
     }
 
     @Transaction
-    public String createInvestigation(InvestigationDTO dto, boolean hivInvestigation) {
+    public String createInvestigation(InvestigationDTO dto, boolean labInvestigation) {
 
         if (StringUtils.isBlank(dto.getVisitId())) {
             String visitId = visitService.getCurrentVisit(dto.getPersonId());
@@ -82,7 +80,7 @@ public class HtsService {
 
         ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
-        if (hivInvestigation) {
+        if (labInvestigation) {
             Log.i(TAG, "Creating laboratory investigation record");
             String laboratoryInvestigationId = UUID.randomUUID().toString();
             LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, siteService.getFacilityDetails().getCode(), personInvestigationId);
@@ -225,7 +223,7 @@ public class HtsService {
 
     @Transaction
     public String processOtherInvestigationResults(LaboratoryInvestigationTestDTO testDTO) {
-        String laboratoryInvestigationId = createInvestigation(testDTO.get(testDTO), false);
+        String laboratoryInvestigationId = createInvestigation(testDTO.get(testDTO), true);
         Log.d(TAG, "Entering try method");
         LaboratoryInvestigationTest test = new LaboratoryInvestigationTest();
         String labInvestigationTestId = UUID.randomUUID().toString();
@@ -238,7 +236,7 @@ public class HtsService {
         test.setEndTime(DateUtil.getDateDiff(false));
         test.setBatchIssueId(testDTO.getBatchIssueId());
         Log.d(TAG, "Saving laboratory investigation test item : " + test);
-        ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
+        ehrMobileDatabase.labInvestTestdao().save(test);
         TestKitBatchIssue testKitBatchIssue = ehrMobileDatabase.testKitBatchIssueDao().findById(testDTO.getBatchIssueId());
         Log.d(TAG, "Removing item from batchIssue : " + testKitBatchIssue);
         testKitBatchIssue.setRemaining(testKitBatchIssue.getRemaining() - 1);
@@ -254,6 +252,7 @@ public class HtsService {
 
         int count = getTestCount(test.getLaboratoryInvestigationId());
         String labInvestigationTestId = UUID.randomUUID().toString();
+        Log.d(TAG, "Laboratory investigation test object : " + test);
         test.setId(labInvestigationTestId);
         test.setStartTime(DateUtil.getDateDiff(true));
         test.setEndTime(DateUtil.getDateDiff(false));
@@ -285,7 +284,7 @@ public class HtsService {
             }
             setFinalResult(test);
         }
-        ehrMobileDatabase.labInvestTestdao().insertLaboratoryInvestTest(test);
+        ehrMobileDatabase.labInvestTestdao().save(test);
         Log.d(TAG, "batch Issue ID : " + test.getBatchIssueId());
         TestKitBatchIssue testKitBatchIssue = ehrMobileDatabase.testKitBatchIssueDao().findById(test.getBatchIssueId());
         Log.d(TAG, "Removing item from batchIssue : " + testKitBatchIssue);
