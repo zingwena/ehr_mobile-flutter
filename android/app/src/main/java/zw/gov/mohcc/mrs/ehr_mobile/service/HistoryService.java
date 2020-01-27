@@ -104,6 +104,7 @@ public class HistoryService {
         if (existsByPersonId(personId)) {
             // testing has been initiated in current run so hts is never going to be null
             Hts hts = ehrMobileDatabase.htsDao().findLatestHts(personId);
+            Log.i(TAG, "Find latest hts"+ hts.toString());
             PersonInvestigation personInvestigation = htsService.getPersonInvestigation(personId);
             LaboratoryInvestigation laboratoryInvestigation = htsService.getLaboratoryInvestigation(personId);
             if (StringUtils.isNoneBlank(hts.getLaboratoryInvestigationId()) && laboratoryInvestigation != null
