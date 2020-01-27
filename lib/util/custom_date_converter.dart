@@ -9,7 +9,7 @@ class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
   DateTime fromJson(String json) {
     if(json == null){
       print("************************* date is nuuuullll");
-      return  DateFormat("MMM d, yyyy HH:mm:ss a").parse(DateTime.now().toString());
+      return  DateFormat("MMM d, yyyy HH:mm:ss a").parse("Jan 01, 2020 4:19:38 PM");
     }else {
 
        return DateFormat("MMM d, yyyy HH:mm:ss a").parse(json);

@@ -94,7 +94,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
   void initState()   {
       selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
       getPersonInvestigation(widget.personId);
-      getLabInvestigation(widget.personId);
+      //getLabInvestigation(widget.personId);
       getLabTest(widget.personId);
       getResults(widget.personId);
       getPersonQueueOrWard(widget.personId);
@@ -299,8 +299,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
       setState(() {
         labInvestId = response;
         debugPrint("HERE IS THE LAB INVESTIGATION ID RETURNED FROM FLUTTER" + response);
-        getTestName();
-        getTestKitsByCount(testCount);
+
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -328,6 +327,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
         labInvestId = htsRegistration.laboratoryInvestigationId;
+        getTestName();
+        getTestKitsByCount(testCount);
 
 
       });
