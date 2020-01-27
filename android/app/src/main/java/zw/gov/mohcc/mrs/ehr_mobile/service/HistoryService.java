@@ -133,7 +133,8 @@ public class HistoryService {
             LaboratoryInvestigation laboratoryInvestigation = ehrMobileDatabase.laboratoryInvestigationDao()
                     .findLaboratoryInvestigationById(hts.getLaboratoryInvestigationId());
             personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
-            dto.setResult(personInvestigation.getResultId());
+
+            dto.setResult(ehrMobileDatabase.resultDao().findById(personInvestigation.getResultId()).getName());
 
         }
         // patient has already done hts screening previously and has no test in EHR &lt
