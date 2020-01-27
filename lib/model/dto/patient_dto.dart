@@ -4,15 +4,15 @@ import 'package:ehr_mobile/db/tables/hts/hts_table.dart';
 import 'package:ehr_mobile/db/tables/hts/index_test_table.dart';
 import 'package:ehr_mobile/db/tables/hts_screening_table.dart';
 import 'package:ehr_mobile/db/tables/person_investigation_table.dart';
+import 'package:ehr_mobile/db/tables/person_table.dart';
 import 'package:ehr_mobile/db/tables/sexual_history_table.dart';
 
-import '../person.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PatientDto{
 
-  Person personDto;
+  PersonTable personDto;
   HtsTable htsDto;
   IndexTestTable indexTestDto;
 

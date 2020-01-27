@@ -30,13 +30,13 @@ import 'package:ehr_mobile/db/tables/height_table.dart';
 import 'package:ehr_mobile/db/tables/hts/index_contact_table.dart';
 import 'package:ehr_mobile/db/tables/laboratory_investigation_table.dart';
 import 'package:ehr_mobile/db/tables/laboratory_investigation_test_table.dart';
+import 'package:ehr_mobile/db/tables/person_table.dart';
 import 'package:ehr_mobile/db/tables/pulse_table.dart';
 import 'package:ehr_mobile/db/tables/respiratory_rate_table.dart';
 import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
 import 'package:ehr_mobile/db/tables/weight_table.dart';
 import 'package:ehr_mobile/model/dto/patient_dto.dart';
-import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/logger.dart';
 
 import 'package:http/http.dart' as http;
@@ -46,8 +46,8 @@ syncPatient(String token, String url) async {
   var dbHandler=DatabaseHelper();
   var adapter = await dbHandler.getAdapter();
   var personDao=PersonDao(adapter);
-  List<Person> persons = await personDao.findAll();
-  for(Person person in persons){
+  List<PersonTable> persons = await personDao.findAll();
+  for(PersonTable person in persons){
     var dto=PatientDto();
     dto.personDto=person;
     dto =await setPhoneNumbers(adapter,dto);
@@ -271,8 +271,8 @@ Future <PatientDto> setPhoneNumbers(SqfliteAdapter adapter, PatientDto dto) asyn
 
   if(phone!=null){
     log.i('----PHONE NUMBER------${phone.phoneNumber1}');
-    dto.personDto.phoneNumber1=phone.phoneNumber1;
-    dto.personDto.phoneNumber2=phone.phoneNumber2;
+    dto.personDto.phoneNumberTable.phoneNumber1=phone.phoneNumber1;
+    dto.personDto.phoneNumberTable.phoneNumber2=phone.phoneNumber2;
   }
   return dto;
 }

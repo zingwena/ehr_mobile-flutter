@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,8 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       await storeString(FACILITY_NAME, facility_name);
     }catch(e){
-      debugPrint('Exception caught in getfacility name '+ e);
-
+      //debugPrint('Exception caught in getfacility name '+ e);
+      log.e('Exception caught in getfacility name + $e');
     }
   }
   @override
