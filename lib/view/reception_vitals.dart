@@ -366,7 +366,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                           ? "Please fill this field"
                                                                           : null;
                                                                     },
-                                                                    keyboardType: TextInputType.number,
+
                                                                     decoration: InputDecoration(
                                                                       labelText: 'temperature',
 
@@ -656,7 +656,6 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                           ? "Please fill this field"
                                                                           : null;
                                                                     },
-                                                                    keyboardType: TextInputType.number,
                                                                     decoration: InputDecoration(
                                                                       labelText: 'weight',
                                                                     ),

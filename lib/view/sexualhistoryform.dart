@@ -335,7 +335,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   return value.isEmpty ? 'Enter date' : null;
                                                                 },
                                                                 decoration: InputDecoration(
-                                                                    labelText: 'Date of last test with female',
+                                                                    labelText: 'Date of last sex with female',
                                                                     border: OutlineInputBorder()),
                                                               ),
                                                             ),
