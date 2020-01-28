@@ -408,6 +408,7 @@ public class MainActivity extends FlutterActivity {
         getFacilityQueues(url);
         getFacilityWards(url);
         getSiteDetails(url);
+        getPatients(url);
     }
 
     private void getPatients(String baseUrl) {
