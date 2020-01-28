@@ -210,7 +210,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     for (Country country in _countryList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: country.code, child: Text(country.name)));
+      items.add(DropdownMenuItem(value: country.name, child: Text(country.name)));
     }
     return items;
   }

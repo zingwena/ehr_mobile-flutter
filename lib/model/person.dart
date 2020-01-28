@@ -66,8 +66,6 @@ class Person{
 
   Map<String, dynamic> toJson() => _$PersonToJson(this);
 
-  Map<String, dynamic> toEhrJson()=>_$PersonToEhrJson(this);
-
   @override
   String toString() {
     return 'Person{id: $id, status: $status, firstName: $firstName, lastName: $lastName, sex: $sex, nationalId: $nationalId, birthDate: $birthDate, selfIdentifiedGender: $selfIdentifiedGender, religionId: $religionId, occupationId: $occupationId, maritalStatusId: $maritalStatusId, educationLevelId: $educationLevelId, nationalityId: $nationalityId, countryOfBirthId: $countryOfBirthId, address: $address}';

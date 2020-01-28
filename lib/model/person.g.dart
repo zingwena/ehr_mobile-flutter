@@ -76,23 +76,3 @@ Person _$PersonFromMap(Map<String, dynamic> json) {
   person.countryOfBirthId = json['countryOfBirthId'];
   return person;
 }
-
-Map<String, dynamic> _$PersonToEhrJson(Person instance) => <String, dynamic>{
-  'id': instance.id,
-  'firstName': instance.firstName,
-  'lastName': instance.lastName,
-  'sex': instance.sex,
-  'nationalId': instance.nationalId,
-  'birthDate': const CustomDateTimeConverter().toSqlDate(instance.birthDate),
-  'selfIdentifiedGender': instance.selfIdentifiedGender,
-  'religionId': instance.religionId,
-  'occupationId': instance.occupationId,
-  'maritalStatusId': instance.maritalStatusId,
-  'educationLevelId': instance.educationLevelId,
-  'nationalityId': instance.nationalityId,
-  'countryOfBirthId': instance.countryOfBirthId,
-  'addressDto': instance.address,
-  'gender':instance.sex,
-  'phoneNumber1':instance.phoneNumber1,
-  'phoneNumber2':instance.phoneNumber2,
-};

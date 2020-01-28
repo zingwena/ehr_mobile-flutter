@@ -1,0 +1,42 @@
+
+
+  class PersonQuery {
+
+    String getAll(){
+      return """ 
+        query GetPatientsQuery{
+  
+          people(text: "", page: 0, sort: "", size: 15) {
+                  content {
+                      personId
+                      firstname
+                      lastname
+                      phones{number,phoneId}
+                      sex
+                      identifications{number,type{name}}
+                      occupation{id,name}
+                      identifications{identificationId}
+                      selfIdentifiedGender
+                      religion{name,id}
+                      education{id,name}
+                      marital{name,id}
+                      birthdate
+                      nationality{id,name}
+                      countryOfBirth{id,name}
+                      address {
+                          city
+                          town {
+                              name
+                          }
+                          street
+                      }
+                      age {
+                          years
+                      }
+                  }
+              }
+          }
+      """;
+    }
+
+  }

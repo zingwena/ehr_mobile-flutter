@@ -1,4 +1,5 @@
 
+import 'package:ehr_mobile/db/tables/person_table.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:ehr_mobile/util/relationship_type_convertor.dart';
@@ -19,7 +20,7 @@ class IndexContactTable extends BaseTable{
   String testingPlanId;
   int disclosureStatus;
   String disclosureMethodId;
-  Person personDto;
+  PersonTable personDto;
 
   static IndexContactTable fromJson(Map map) {
     var icTable = IndexContactTable();
