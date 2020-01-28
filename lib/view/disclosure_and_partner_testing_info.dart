@@ -600,7 +600,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                   onPressed: () {
                                                                   IndexContact indexcontact = IndexContact('', widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
                                                                   , widget.indexcontact.dateOfHivStatus, fear, _currentReligion,_currentTestingPlanStatus,disclosed_status, _currentReligion  );
-                                                                  print("TTTTTTTTTTTTTTTTTT HERE IS THE INDEX CONTACT PASSED TO BE SAVED"+ indexcontact.toString());
                                                                   saveIndexContact(indexcontact);
                                                                   Navigator.push(context,MaterialPageRoute(
                                                                       builder: (context)=> HIVServicesIndexContactList(widget.person, widget.person_contact,null, null, null, widget.personId, widget.indexcontact.indexTestId)

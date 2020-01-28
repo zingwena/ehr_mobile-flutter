@@ -271,11 +271,11 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            Padding(
+                         /*   Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text("Age - 25", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
+                            ),*/
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
@@ -535,7 +535,6 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                   ),
                                                                   //onPressed: () {}
                                                                   onPressed: () {
-                                                                  print("INDEX TEST ID IN HIV INFORMATION PAGE"+ widget.indexId);
                                                                 IndexContact indexcontact = new IndexContact('', widget.indexId, widget.person_contact.id, _currentRelation, result, date, null, null, null, null, null);
                                                                     Navigator.push(
                                                                       context,

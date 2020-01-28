@@ -195,7 +195,8 @@ public class DataChannel {
                                 final String personId = methodCall1.arguments();
                                 Age personAge = personService.getAge(personId);
                                 Log.d(TAG, "Person age retrieved : " + personAge);
-                                result1.success(personAge);
+                                String agejson = gson.toJson(personAge);
+                                result1.success(agejson);
                             } catch (Exception ex) {
                                 Log.e(TAG, "Error occureed : " + ex.getMessage());
                                 ex.printStackTrace();

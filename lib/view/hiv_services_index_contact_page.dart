@@ -85,7 +85,6 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-    print('TTTTTTTTTTTTTTTTTTTTTTTTT  list of people added'+ _religionList.toString());
       });
 
     }catch(e){
@@ -183,11 +182,11 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            Padding(
+                         /*   Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text("Age - 25", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
+                            ),*/
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
