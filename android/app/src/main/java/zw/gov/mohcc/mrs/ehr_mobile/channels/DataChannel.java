@@ -10,6 +10,7 @@ import java.util.List;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
@@ -25,12 +26,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Town;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.PersonService;
 
 public class DataChannel {
 
     private final String TAG = "Data Channel";
 
-    public DataChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase){
+    public DataChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase, PersonService personService){
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
                     @Override
@@ -187,15 +189,17 @@ public class DataChannel {
                             }
                         }
 
-                        if (methodCall1.method.equals("saveHtsRegistration")) {
-                            // TODO judge to add code here useless comment
-                            /*try {
-                                HtsRegistration htsRegistration = gson.fromJson(arguments, HtsRegistration.class);
-//                                ehrMobileDatabase.htsRegistrationDao().createHtsRegistration()
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
+                        if (methodCall1.method.equals("getage")) {
 
-                            }*/
+                            try {
+                                final String personId = methodCall1.arguments();
+                                Age personAge = personService.getAge(personId);
+                                Log.d(TAG, "Person age retrieved : " + personAge);
+                                result1.success(personAge);
+                            } catch (Exception ex) {
+                                Log.e(TAG, "Error occureed : " + ex.getMessage());
+                                ex.printStackTrace();
+                            }
                         }
 
                     }
