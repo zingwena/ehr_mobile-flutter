@@ -243,46 +243,7 @@ class _AddPatient extends State<AddPatientRelation> {
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        child: SizedBox(
-                                                          child: Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                vertical:
-                                                                16.0,
-                                                                horizontal:
-                                                                60.0),
-                                                            child:
-                                                            TextFormField(
-                                                              validator:
-                                                                  (value) {
-                                                                return value
-                                                                    .isEmpty
-                                                                    ? 'Enter Last Name'
-                                                                    : null;
-                                                              },
-                                                              onSaved:
-                                                                  (value) =>
-                                                                  setState(
-                                                                          () {
-                                                                        lastName = value;                                           }),
-                                                              decoration: InputDecoration(
-                                                                  labelText:
-                                                                  'Last Name',
-                                                                  border:
-                                                                  OutlineInputBorder()),
-                                                            ),
-                                                          ),
-                                                          width: 100,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10.0,
-                                                  ),
+
                                                   Row(
                                                     children: <Widget>[
                                                       Expanded(
@@ -322,6 +283,48 @@ class _AddPatient extends State<AddPatientRelation> {
                                                       ),
                                                     ],
                                                   ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                vertical:
+                                                                16.0,
+                                                                horizontal:
+                                                                60.0),
+                                                            child:
+                                                            TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter Last Name'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                  setState(
+                                                                          () {
+                                                                        lastName = value;                                           }),
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                  'Last Name',
+                                                                  border:
+                                                                  OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),

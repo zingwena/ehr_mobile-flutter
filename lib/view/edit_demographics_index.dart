@@ -9,6 +9,7 @@ import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/view/add_patient.dart';
 import 'package:ehr_mobile/view/index_patient_address.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/patient_address.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/link_bar.dart';
@@ -83,9 +84,6 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
   List _maritalStatuses= List();
   List<MaritalStatus> _maritalStatusListDropdown= List();
 
-
-
-
   List<DropdownMenuItem<String>> _dropDownMenuItems,
       _dropDownMenuItemsIdentified,
       _dropDownMenuItemsMaritalStatus,
@@ -128,6 +126,8 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
     firstName = widget.firstName;
     lastName = widget.lastName;
     birthDate = widget.birthDate;
+    getCountries();
+    getNationalities();
     super.initState();
   }
 
@@ -211,7 +211,7 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
     for (Country country in _countryList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: country.code, child: Text(country.name)));
+      items.add(DropdownMenuItem(value: country.name, child: Text(country.name)));
     }
     return items;
   }
@@ -511,7 +511,7 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
                                                           width: double.infinity,
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                          child: DropdownButton(
+                                                          child: SearchableDropdown(
                                                             isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Nationality"),
@@ -550,7 +550,7 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
                                                           width: double.infinity,
                                                           padding:
                                                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                          child: DropdownButton(
+                                                          child: SearchableDropdown(
                                                             isExpanded:true,
                                                             icon: Icon(Icons.keyboard_arrow_down),
                                                             hint: Text("Country of Birth"),
@@ -710,15 +710,6 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
         });
 
         _dropDownMenuItemsReligion = getDropDownMenuItemsReligion();
-
-        country=countries;
-        _countries= jsonDecode(country);
-        _countryListDropdown=Country.mapFromJson(_countries);
-        _countryListDropdown.forEach((e){
-          _countryList.add(e);
-        });
-        _dropDownMenuItemsCountry = getDropDownMenuItemsCountry();
-
       });
 
       occupation=occupations;
@@ -739,13 +730,7 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
       _dropDownMenuItemsMaritalStatus =
           getDropDownMenuItemsIdentifiedMaritalStatus();
 
-      nationality=nationalities;
-      _nationalities=jsonDecode(nationality);
-      _nationalityListDropdown= Nationality.mapFromJson(_nationalities);
-      _nationalityListDropdown.forEach((e){
-        _nationalityList.add(e);
-      });
-      _dropDownMenuItemsNationality = getDropDownMenuItemsNationality();
+
 
       educationLevel=educationLevels;
       _educationLevels= jsonDecode(educationLevel);
@@ -860,6 +845,48 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
         _dropdownError = null;
         countryIsValid = !countryIsValid;
       });
+    }
+  }
+
+  Future<void> getCountries() async{
+    print("here");
+    String countries;
+    try{
+      countries= await dataChannel.invokeMethod('countryOptions');
+      print('****************************** $countries');
+      setState(() {
+        country=countries;
+        _countries= jsonDecode(country);
+        _countryListDropdown=Country.mapFromJson(_countries);
+        _countryListDropdown.forEach((e){
+          _countryList.add(e);
+        });
+        _dropDownMenuItemsCountry = getDropDownMenuItemsCountry();
+      });
+
+    }catch(e){
+      print(e);
+    }
+  }
+
+  Future<void> getNationalities() async{
+    print("here");
+    String nationalities;
+    try{
+      nationalities= await dataChannel.invokeMethod('nationalityOptions');
+      print('****************************** $nationalities');
+      setState(() {
+        nationality=nationalities;
+        _nationalities=jsonDecode(nationality);
+        _nationalityListDropdown= Nationality.mapFromJson(_nationalities);
+        _nationalityListDropdown.forEach((e){
+          _nationalityList.add(e);
+        });
+        _dropDownMenuItemsNationality = getDropDownMenuItemsNationality();
+      });
+
+    }catch(e){
+      print(e);
     }
   }
 
