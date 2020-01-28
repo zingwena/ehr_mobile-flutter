@@ -132,7 +132,6 @@ public class AddPatientChannel {
                     String args = methodCall.arguments();
                     Log.i(TAG, "PATIENT ID FROM FLUTTER " + args);
                     PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPersonId(args);
-
                     String phoneNumber = "";
                     if (patientPhoneNumber != null) {
                         if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber1())) {

@@ -26,7 +26,7 @@ public interface PatientPhoneDao {
     @Query("SELECT * FROM PatientPhoneNumber WHERE id=:id")
     PatientPhoneNumber findById(String id);
 
-    @Query("SELECT * FROM PatientPhoneNumber WHERE id=:id")
+    @Query("SELECT * FROM PatientPhoneNumber WHERE personId=:id")
     PatientPhoneNumber findByPersonId(String id);
 
 
