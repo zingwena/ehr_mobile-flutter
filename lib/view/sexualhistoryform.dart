@@ -105,7 +105,7 @@ class _CbsQuestion extends State<CbsQuestions> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1900, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDateOfSexWithMale)
       setState(() {
@@ -288,7 +288,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
                                                     child:              Row(
                                                       children: <Widget>[
                                                         Expanded(
@@ -320,7 +320,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
                                                     child:              Row(
                                                       children: <Widget>[
                                                         Expanded(
@@ -352,7 +352,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
                                                     child:     Row(
                                                       children: <Widget>[
                                                         Expanded(
@@ -394,7 +394,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
                                                     child:     Row(
                                                       children: <Widget>[
                                                         Expanded(

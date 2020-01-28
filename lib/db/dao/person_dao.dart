@@ -1,5 +1,7 @@
 
-import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/db/tables/person_table.dart';
+import 'package:ehr_mobile/util/custom_convertor.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -21,6 +23,12 @@ class PersonDao extends BaseDao{
   var educationLevelId = new StrField('educationLevelId');
   var nationalityId = new StrField('nationalityId');
   var countryId = new StrField('countryId');
+
+  var street = new StrField('street');
+  var suburbVillage = new StrField('suburbVillage');
+  var town = new StrField('town');
+  var city = new StrField('city');
+
   SqfliteAdapter _adapter;
 
   /// Table name for the model this bean manages
@@ -38,30 +46,65 @@ class PersonDao extends BaseDao{
   }
 
   /// Finds one person by [id]
-  Future<Person> findOne(String id) async {
+  Future<PersonTable> findOne(String id) async {
     Find param = new Find(tableName);
 
     param.where(this.id.eq(id));
 
     Map map = await _adapter.findOne(param);
 
-    var person = Person.fromMap(map);
+    var person = PersonTable.fromJson(map);
     return person;
   }
 
   /// Finds all persons
-  Future<List<Person>> findAll() async {
+  Future<List<PersonTable>> findAll() async {
     Find finder = new Find(tableName);
 
     List<Map> maps = await (await _adapter.find(finder)).toList();
 
-    List<Person> persons = new List<Person>();
+    List<PersonTable> persons = new List<PersonTable>();
 
     for (Map map in maps) {
-      var person = Person.fromMap(map);
+      var person = PersonTable.fromJson(map);
       persons.add(person);
     }
     return persons;
+  }
+
+  Future insertFromEhr(Map map) async {
+    Insert inserter = new Insert(tableName);
+    inserter.set(id, map['personId']);
+    inserter.set(firstName, map['firstname']);
+    inserter.set(lastName, map['lastname']);
+
+    inserter.set(sex, const SexConverter().fromString(map['sex']));
+    inserter.set(nationalId, map['identifications'][0]['number']);
+    inserter.set(birthDate, const CustomDateTimeConverter().fromEhrJson(map['birthdate']));
+
+    inserter.set(selfIdentifiedGender, const SexConverter().fromString(map['selfIdentifiedGender']));
+    inserter.set(religionId, map['religion']['id']);
+    inserter.set(occupationId, map['occupation']['id']);
+
+    inserter.set(maritalStatusId, map['marital']['id']);
+    inserter.set(educationLevelId, map['education']['id']);
+    inserter.set(nationalityId, map['nationality']['id']);
+
+    if(map['countryOfBirth']!=null)
+    inserter.set(countryId, map['countryOfBirth']['id']);
+
+    if(map['address']!=null){
+      inserter.set(street, map['address']['street']);
+      inserter.set(town, map['address']['town']['name']);
+      inserter.set(city, map['address']['city']);
+    }
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+
+    return await _adapter.remove(deleter);
   }
 
 }
