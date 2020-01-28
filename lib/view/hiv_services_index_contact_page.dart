@@ -175,31 +175,33 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_outline,
-                                size: 25.0,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(
-                                widget.person.firstName +
-                                    " " +
-                                    widget.person.lastName,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.0,
-                                    color: Colors.white),
-                              ),
+                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
-                                Icons.verified_user,
-                                size: 25.0,
-                                color: Colors.white,
-                              ),
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age - 25", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
                             ),
                           ])),
                   //_buildButtonsRow(),

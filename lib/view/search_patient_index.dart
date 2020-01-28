@@ -276,7 +276,6 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     ),
                   ),
                   onTap: (){
-                    print("INDEX TEST ID IN SEARCH PATIENT"+ widget.indexTestId);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
