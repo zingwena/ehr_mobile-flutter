@@ -506,9 +506,6 @@ class OverviewState extends State<PatientIndexOverview> {
                                                       color: Colors.white),
                                                 ),
                                                 onPressed: () {
-                                                  print(
-                                                      "INDEX TEST ID IN INDEX PATIENT OVERVIEW" +
-                                                          widget.indexTestId);
 
                                                   Navigator.push(
                                                       context,
