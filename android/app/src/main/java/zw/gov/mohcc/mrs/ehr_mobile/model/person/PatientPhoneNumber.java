@@ -46,4 +46,13 @@ public class PatientPhoneNumber extends BaseEntity {
     public void setPhoneNumber2(String phoneNumber2) {
         this.phoneNumber2 = phoneNumber2;
     }
+
+    @Override
+    public String toString() {
+        return "PatientPhoneNumber{" +
+                "personId='" + personId + '\'' +
+                ", phoneNumber1='" + phoneNumber1 + '\'' +
+                ", phoneNumber2='" + phoneNumber2 + '\'' +
+                '}';
+    }
 }
