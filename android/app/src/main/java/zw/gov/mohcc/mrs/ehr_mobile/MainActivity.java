@@ -102,6 +102,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
+import zw.gov.mohcc.mrs.ehr_mobile.service.PersonService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.RelationshipService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.SiteService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
@@ -133,6 +134,7 @@ public class MainActivity extends FlutterActivity {
     private RelationshipService relationshipService;
     private SiteService siteService;
     private ArtService artService;
+    private PersonService personService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +153,7 @@ public class MainActivity extends FlutterActivity {
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);
         relationshipService = new RelationshipService(ehrMobileDatabase);
+        personService = new PersonService(ehrMobileDatabase);
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
@@ -195,7 +198,7 @@ public class MainActivity extends FlutterActivity {
             }
         });
 
-        new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase);
+        new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase, personService);
 
         new VisitChannel(getFlutterView(), VISITCHANNEL, ehrMobileDatabase, visitService);
 
@@ -403,7 +406,7 @@ public class MainActivity extends FlutterActivity {
         getFacilityQueues(url);
         getFacilityWards(url);
         getSiteDetails(url);
-        //getPatients(url);
+        getPatients(url);
     }
 
     private void getPatients(String baseUrl) {

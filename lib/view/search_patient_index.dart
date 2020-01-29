@@ -73,7 +73,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
           Stack(
             children: <Widget>[
               Container(
-                height: 200.0,
+                height: 180.0,
                 width: double.infinity,
                 color: Colors.blue,
               ),
@@ -121,43 +121,37 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 70.0,
+                    height: 35.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "Search Index Contact",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
-                              fontSize: 30),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(),
-                        ),
-
-                      ],
+                    child: Center(
+                      child: Text(
+                        "Search Index Contact",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                            fontSize: 30),
+                      ),
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 5,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                    child: Text(
-                      "Search For Patient",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white.withOpacity(0.80),
-                          fontWeight: FontWeight.w400),
+                    child: Center(
+                      child: Text(
+                        "Search For Patient",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white.withOpacity(0.80),
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
 
                   Padding(
@@ -171,7 +165,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                         child: Padding(
                           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                           child: Material(
-                            elevation: 5.0,
+                            elevation: 0.0,
                             borderRadius: BorderRadius.circular(5.0),
                             child: TextFormField(
                               decoration: InputDecoration(
@@ -204,7 +198,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15.0),
+                  SizedBox(height: 0.0),
                 ],
               ),
             ],
@@ -237,7 +231,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   subtitle: Container(
@@ -250,7 +244,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
@@ -261,7 +255,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -276,7 +270,6 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                     ),
                   ),
                   onTap: (){
-                    print("INDEX TEST ID IN SEARCH PATIENT"+ widget.indexTestId);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -292,7 +285,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
           ),
 
           SizedBox(
-            height: 15,
+            height: 5,
           ),
 
           _patientList != null
@@ -322,7 +315,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
               :   SizedBox( ),
 
           SizedBox(
-            height: 125,
+            height: 15,
           ),
 
         ],

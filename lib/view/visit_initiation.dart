@@ -4,6 +4,8 @@ import 'package:ehr_mobile/model/facility_queue.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patient_admission.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
+
 import 'package:ehr_mobile/model/queue.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/summary.dart';
@@ -33,6 +35,7 @@ class VisitInitiationState extends State<VisitInitiation>
 
   TabController controller;
   static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   String queue_string;
   List json_queue_list = List();
   List _queues = List();
@@ -43,6 +46,7 @@ class VisitInitiationState extends State<VisitInitiation>
   int _queue = -1;
 
   var facility_name;
+  Age age;
 
 
 
@@ -50,6 +54,7 @@ class VisitInitiationState extends State<VisitInitiation>
   void initState() {
     getFacilityQueues();
     getFacilityName();
+    getAge(widget.person);
     super.initState();
     controller = new TabController(length: 3, vsync: this);
 
@@ -136,11 +141,11 @@ class VisitInitiationState extends State<VisitInitiation>
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            Padding(
+                         /*   Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+ age.years.toString(), style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
+                            ),*/
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
@@ -334,6 +339,21 @@ class VisitInitiationState extends State<VisitInitiation>
       response = await retrieveString(FACILITY_NAME);
       setState(() {
         facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){

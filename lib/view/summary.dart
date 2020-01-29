@@ -207,16 +207,16 @@ class SummaryOverviewState extends State<SummaryOverview>
                             color: Colors.white,
                           ),
                         ),
-                        Padding(
+                      /*  Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text(
-                            "Age :" /*+ widget.person.age.years.toString() */,
+                            "Age :" *//*+ widget.person.age.years.toString() *//*,
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14.0,
                                 color: Colors.white),
                           ),
-                        ),
+                        ),*/
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Icon(

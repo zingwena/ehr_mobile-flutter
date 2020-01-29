@@ -299,31 +299,33 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_outline,
-                                size: 25.0,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(
-                                widget.person.firstName +
-                                    " " +
-                                    widget.person.lastName,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.0,
-                                    color: Colors.white),
-                              ),
+                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
-                                Icons.verified_user,
-                                size: 25.0,
-                                color: Colors.white,
-                              ),
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age - 25", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
                             ),
                           ])),
                   //    _buildButtonsRow(),
@@ -598,7 +600,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                   onPressed: () {
                                                                   IndexContact indexcontact = IndexContact('', widget.indexcontact.indexTestId, widget.indexcontact.personId, widget.indexcontact.relation, widget.indexcontact.hivStatus
                                                                   , widget.indexcontact.dateOfHivStatus, fear, _currentReligion,_currentTestingPlanStatus,disclosed_status, _currentReligion  );
-                                                                  print("TTTTTTTTTTTTTTTTTT HERE IS THE INDEX CONTACT PASSED TO BE SAVED"+ indexcontact.toString());
                                                                   saveIndexContact(indexcontact);
                                                                   Navigator.push(context,MaterialPageRoute(
                                                                       builder: (context)=> HIVServicesIndexContactList(widget.person, widget.person_contact,null, null, null, widget.personId, widget.indexcontact.indexTestId)

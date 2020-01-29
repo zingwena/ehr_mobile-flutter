@@ -97,10 +97,8 @@ class _PatientPretest extends State<PatientPretest> {
     String pretestjson;
     try {
         pretestjson =  await htsChannel.invokeMethod('savePreTest',  jsonEncode(preTest));
-        print('LLLLLLLLLLLLLLLL PRETEST TO JSON ON SAVING'+ pretestjson);
         setState(() {
           patient_preTest = PreTest.fromJson(jsonDecode(pretestjson));
-          print('LLLLLLLLLLLLLLLLLLLLL'+ patient_preTest.toString());
         });
     } catch (e) {
       print("channel failure: '$e'");
@@ -315,7 +313,26 @@ class _PatientPretest extends State<PatientPretest> {
                               child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
-
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            /*  Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age - 25", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),*/
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

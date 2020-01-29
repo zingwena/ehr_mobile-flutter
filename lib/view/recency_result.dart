@@ -292,7 +292,26 @@ class _Recency_Result  extends State<Recency_Result > {
                               child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
-
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                          /*  Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age - 25", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),*/
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
@@ -505,8 +524,7 @@ class _Recency_Result  extends State<Recency_Result > {
                             ));
                             },
                             ),
-                            ),
-                                                ],
+                            ),                ],
                                               ),
                                             ),
                                           ],
