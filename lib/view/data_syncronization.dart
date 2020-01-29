@@ -260,7 +260,6 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       log.e(value);
       throw Exception('Failed to connect to server, \n Check your IP address and Port');
     });
-      log.i(response.statusCode);
     if (response.statusCode == 200) {
       // If server returns an OK response, parse the JSON.
       token = Token.fromJson(json.decode(response.body));
@@ -268,14 +267,14 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       await storeString(SERVER_IP, ehr_url);
       log.i("token-------${token.id_token}");
 
+
+
+      String result =
+          await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
+      //log.i("RESULT-------${result.toString()}");
       var pull=await pullMetaData('$url/api',token.id_token).whenComplete(() async {
         await pullPatientData();
       });
-
-      //String result =
-          //await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
-      //log.i("RESULT-------${result.toString()}");
-
       print("Response =================$pull");
 
     } else {
