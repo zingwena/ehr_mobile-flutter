@@ -24,6 +24,7 @@ import 'package:ehr_mobile/db/dao/meta_dao/QuestionDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ReasonForNotIssuingResultDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ReligionDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/SamplesDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/SiteSettingDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/TestKitBatchIssueDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/TestKitLevelDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/TestKitsDao.dart';
@@ -38,6 +39,7 @@ import 'package:ehr_mobile/db/dao/meta_dao/town_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
 import 'package:ehr_mobile/graphql/graphql_queries.dart';
 import 'package:ehr_mobile/graphql/queue_query.dart';
+import 'package:ehr_mobile/graphql/site_query.dart';
 import 'package:ehr_mobile/graphql/ward_query.dart';
 import 'package:ehr_mobile/main.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -46,6 +48,29 @@ import 'package:ehr_mobile/util/logger.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
+
+
+Future<String> pullSiteData() async {
+  SiteQuery queryMutation = SiteQuery();
+  var ip = await retrieveString(SERVER_IP);
+  GraphQLClient _client = graphQLConfiguration.clientToQuery(ip);
+  QueryResult result = await _client.query(
+    QueryOptions(
+      document: queryMutation.getAll(),
+    ),
+  );
+
+  if (!result.hasErrors) {
+    var dbHandler = DatabaseHelper();
+    var adapter = await dbHandler.getAdapter();
+    var siteDao = SiteSettingDao(adapter);
+    siteDao.removeAll();
+    var map = await result.data["site"];
+      siteDao.insertFromEhr(map);
+  }
+  return "$DONE_STATUS";
+}
+
 
 Future<String> pullPatientData() async {
   PersonQuery queryMutation = PersonQuery();
@@ -163,6 +188,7 @@ Future<String> pullMetaData(String url, String authToken) async {
   await fetchTestingPlans(adapter, url, authToken);
   await pullWardData();
   await pullQueueData();
+  await pullSiteData();
 
 }
 

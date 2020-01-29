@@ -9,7 +9,6 @@ import 'package:ehr_mobile/util/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
