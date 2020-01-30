@@ -172,11 +172,9 @@ public class MainActivity extends FlutterActivity {
                     url = args.get(0).toString();
                     String tokenString = args.get(1).toString();
                     Token token = new Token(tokenString);
-
-
                     clearTables();
-                    pullData(token, url);
-
+                    //pullData(token, url);
+                    result.success("SUCCESS");
                 }
 
                 if (methodCall.method.equals("login")) {

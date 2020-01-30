@@ -103,7 +103,6 @@ class PersonDao extends BaseDao{
 
   Future<int> removeAll() async {
     Remove deleter = new Remove(tableName);
-
     return await _adapter.remove(deleter);
   }
 
