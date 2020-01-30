@@ -199,7 +199,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     for (Nationality nationality in _nationalityList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: nationality.code, child: Text(nationality.name)));
+      items.add(DropdownMenuItem(value: nationality.name, child: Text(nationality.name)));
     }
     return items;
   }
@@ -530,7 +530,6 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
-
 
                                                     !showError
                                                         ? SizedBox.shrink()
