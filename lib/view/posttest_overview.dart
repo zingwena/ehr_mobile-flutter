@@ -15,6 +15,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_initiation.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
 import 'package:flutter/material.dart';
@@ -56,10 +57,9 @@ class PostTestOverview extends StatefulWidget {
 
 class PostTestOverviewState extends State<PostTestOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
-  static const htsChannel =
-      MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-  static const artChannel =
-      MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
 
   Person _patient;
   Visit _visit;
@@ -75,6 +75,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
   String patient_aware_of_status;
   String patient_on_art_string;
   String consent_to_index_testing;
+  Age age;
 
   String facility_name;
 
@@ -116,6 +117,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
     }
 
   getFacilityName();
+    getAge(widget.person);
     super.initState();
   }
 
@@ -131,6 +133,21 @@ class PostTestOverviewState extends State<PostTestOverview> {
     setState(() {
       _entrypoint = entrypoint;
     });
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<void>getFacilityName()async{
@@ -240,11 +257,11 @@ class PostTestOverviewState extends State<PostTestOverview> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            /*  Padding(
+                              Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text("Age - 25", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

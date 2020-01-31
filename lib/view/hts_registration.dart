@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/home_page.dart';
@@ -62,6 +63,7 @@ class _Registration extends State<Registration> {
   List<EntryPoint> _entryPointList = List();
   HtsRegistration _htsRegistration;
   String _currentEntryPoint;
+  Age age;
 
   @override
   void initState() {
@@ -70,6 +72,7 @@ class _Registration extends State<Registration> {
     patientId = widget.patientId;
     getFacilities();
     getHtsRecord(patientId);
+    getAge(widget.person);
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     super.initState();
@@ -105,6 +108,20 @@ class _Registration extends State<Registration> {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
         date = DateFormat("yyyy/MM/dd").parse(selectedDate);
       });
+  }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
 
@@ -219,11 +236,11 @@ class _Registration extends State<Registration> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            /*  Padding(
+                              Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age "+age.years.toString()+ "years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

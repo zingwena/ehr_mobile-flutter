@@ -5,11 +5,13 @@ import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/htsscreeningdto.dart';
 import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/relationship_listPage.dart';
+
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,10 +47,13 @@ class SummaryOverviewState extends State<SummaryOverview>
   String weight_date;
   String height_date;
   String temp_date;
+  Age age;
   static const htsChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const visitChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+
 
   String facility_name;
 
@@ -56,6 +61,7 @@ class SummaryOverviewState extends State<SummaryOverview>
   void initState() {
     getHtsScreeningRecord(widget.person.id);
     getPatientSummary(widget.person.id);
+    getAge(widget.person);
     super.initState();
     controller = new TabController(length: 3, vsync: this);
   }
@@ -88,6 +94,22 @@ class SummaryOverviewState extends State<SummaryOverview>
 
     }
   }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
   Future<void> getPatientSummary(String patientId) async {
     var patient_summary;
@@ -207,16 +229,16 @@ class SummaryOverviewState extends State<SummaryOverview>
                             color: Colors.white,
                           ),
                         ),
-                      /*  Padding(
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text(
-                            "Age :" *//*+ widget.person.age.years.toString() *//*,
+                            "Age :" + age.years.toString()+ "years" ,
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14.0,
                                 color: Colors.white),
                           ),
-                        ),*/
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Icon(

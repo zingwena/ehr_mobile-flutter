@@ -8,6 +8,7 @@ import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/art_initiation.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,16 +45,14 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
-
-
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   Person _patient;
   Visit _visit;
   Map<String, dynamic> details;
   String _entrypoint;
   String regimen_name;
   String art_reason;
-
-
+  Age age;
   bool showInput = true;
   bool showInputTabOptions = true;
 
@@ -64,6 +63,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
     getRegimen(widget.artInitiation.artRegimenId);
     getReason(widget.artInitiation.artReasonId);
     //  getEntryPoint(widget.htsRegistration.entryPointId);
+    getAge(widget.person);
     super.initState();
   }
 
@@ -119,6 +119,21 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
 
 
   }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
@@ -181,11 +196,11 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            /*  Padding(
+                              Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

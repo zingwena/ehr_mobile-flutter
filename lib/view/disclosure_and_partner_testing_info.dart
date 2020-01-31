@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/testingplan.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
@@ -30,9 +31,6 @@ import 'package:cbs_app/home_screen.dart';
 import 'package:intl/intl.dart';
 
 import '../sidebar.dart';
-/*import 'package:cbs_app/bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/person_bloc.dart';*/
 
 class PatientIndexHivInfo extends StatefulWidget {
    final  Person person;
@@ -70,6 +68,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
   String testingplan;
   String disclosure_method;
   String indexContactId;
+  Age age;
   List _disclosuremethods= List();
   List<DisclosureMethod> _disclosuremethodsListDropdown= List();
   List _disclosureList = List();
@@ -136,6 +135,20 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
       response = await retrieveString(FACILITY_NAME);
       setState(() {
         facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -230,9 +243,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
 
   @override
   Widget build(BuildContext context) {
-/*
-    final PersonBloc _personBloc = BlocProvider.of<PersonBloc>(context);
-*/
     return Scaffold(
       drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
@@ -309,7 +319,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                             ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
                             Padding(

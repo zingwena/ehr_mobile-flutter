@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -15,7 +16,6 @@ import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
-
 import 'package:ehr_mobile/vitals/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +39,7 @@ class ReceptionVitals extends StatefulWidget {
 class _ReceptionVitalsState extends State<ReceptionVitals> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   HtsRegistration htsRegistration;
   final _formKey = GlobalKey<FormState>();
   final _formKeyHeight = GlobalKey<FormState>();
@@ -59,7 +60,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
   bool isPressed3 = false;
   bool isPressed4 = false;
   bool isPressed5 = false;
-
+  Age age;
   String facility_name;
 
   @override
@@ -67,6 +68,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
     setVisit();
     getHtsRecord(widget.personId);
     getFacilityName();
+    getAge(widget.person);
     super.initState();
   }
   Future<void> getHtsRecord(String patientId) async {
@@ -92,6 +94,21 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
       response = await retrieveString(FACILITY_NAME);
       setState(() {
         facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -198,7 +215,26 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                               child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
-
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

@@ -3,6 +3,7 @@ import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/postTest.dart';
@@ -49,6 +50,7 @@ class _Hts_Result  extends State<Hts_Result > {
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+
   String _visitId;
   String patientId;
   String labInvetsTestId;
@@ -77,6 +79,7 @@ class _Hts_Result  extends State<Hts_Result > {
   List<LaboratoryInvestigationTest> _labinvestList = List();
   String test_name;
   String _currentEntryPoint;
+  Age age;
 
   @override
   void initState() {
@@ -96,6 +99,7 @@ class _Hts_Result  extends State<Hts_Result > {
     //getStartTime(widget.labInvetsTestId);
     //getHtsRecord(widget.patientId);
     getTestName();
+    getAge(widget.person);
     super.initState();
   }
 
@@ -118,6 +122,23 @@ class _Hts_Result  extends State<Hts_Result > {
       print('--------------------Something went wrong  $e');
     }
   }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+
   Future<void>getTestName()async{
     try{
       String response = await htsChannel.invokeMethod('getTestName', widget.labInvestId);
@@ -229,11 +250,11 @@ class _Hts_Result  extends State<Hts_Result > {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            /*  Padding(
+                              Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
