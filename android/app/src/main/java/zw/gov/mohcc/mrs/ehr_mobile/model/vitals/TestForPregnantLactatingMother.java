@@ -1,11 +1,11 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
 public enum TestForPregnantLactatingMother {
-    NEW(0), NONE(1), RETEST(2);
+    NEW("NEW"), NONE("NONE"), RETEST("RETEST");
 
-    private final int code;
+    private final String code;
 
-    TestForPregnantLactatingMother(int code) {
+    TestForPregnantLactatingMother(String code) {
         this.code = code;
     }
 
@@ -22,7 +22,7 @@ public enum TestForPregnantLactatingMother {
         }
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 }

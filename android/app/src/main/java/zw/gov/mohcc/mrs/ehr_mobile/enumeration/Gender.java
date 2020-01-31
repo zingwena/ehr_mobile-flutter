@@ -2,19 +2,19 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum Gender {
-    MALE(0),
-    FEMALE(1),
-    UNKNOWN(2),
-    NON_BINARY(3),
-    NULL_VALS(-1);
+    MALE("MALE"),
+    FEMALE("FEMALE"),
+    UNKNOWN("UNKNOWN"),
+    NON_BINARY("NON_BINARY"),
+    NULL_VALS("NULL_VALS");
 
-    private final int sex;
+    private final String sex;
 
-    private Gender (int sex) {
+    private Gender (String sex) {
         this.sex = sex;
     }
 
-    public int getSex() {
+    public String getSex() {
         return sex;
     }
 

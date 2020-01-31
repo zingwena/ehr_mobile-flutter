@@ -8,20 +8,20 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TypeOfContact;
 public class PatientTypeConverter {
 
     @TypeConverter
-    public static PatientType toPatientType(int patientType) {
+    public static PatientType toPatientType(String patientType) {
 
-        if (patientType == PatientType.INPATIENT.getPatientType()) {
+        if (patientType.equals(PatientType.INPATIENT.getPatientType())) {
             return PatientType.INPATIENT;
-        } else if (patientType == PatientType.OUTPATIENT.getPatientType()) {
+        } else if (patientType.equals(PatientType.OUTPATIENT.getPatientType())) {
             return PatientType.OUTPATIENT;
         }
         return null;
     }
 
     @TypeConverter
-    public static int toInt(PatientType patientType) {
+    public static String toString(PatientType patientType) {
         if (patientType == null) {
-            return -1;
+            return null;
         }
         return patientType.getPatientType();
     }

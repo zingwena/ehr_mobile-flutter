@@ -7,22 +7,22 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 public class RegimenTypeConverter {
 
     @TypeConverter
-    public static RegimenType toRegimenType(int regimenType) {
+    public static RegimenType toRegimenType(String regimenType) {
 
-        if (regimenType == RegimenType.FIRST_LINE.getRegimenType()) {
+        if (regimenType.equals(RegimenType.FIRST_LINE.getRegimenType())) {
             return RegimenType.FIRST_LINE;
-        } else if (regimenType == RegimenType.SECOND_LINE.getRegimenType()) {
+        } else if (regimenType.equals(RegimenType.SECOND_LINE.getRegimenType())) {
             return RegimenType.SECOND_LINE;
-        } else if (regimenType == RegimenType.THIRD_LINE.getRegimenType()) {
+        } else if (regimenType.equals(RegimenType.THIRD_LINE.getRegimenType())) {
             return RegimenType.THIRD_LINE;
         }
         return null;
     }
 
     @TypeConverter
-    public static int toInt(RegimenType regimenType) {
+    public static String toString(RegimenType regimenType) {
         if (regimenType == null) {
-            return -1;
+            return null;
         }
         return regimenType.getRegimenType();
     }

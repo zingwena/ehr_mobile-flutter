@@ -27,7 +27,7 @@ public interface TestKitBatchIssueDao {
     @Update
     void update(TestKitBatchIssue testKitBatchIssue);
 
-    @Query("SELECT * FROM TestKitBatchIssue")
+    @Query("SELECT * FROM TestKitBatchIssue limit 3")
     List<TestKitBatchIssue> findAll();
 
     @Query("SELECT * FROM TestKitBatchIssue WHERE id=:id")
@@ -44,4 +44,8 @@ public interface TestKitBatchIssueDao {
 
     @Query("DELETE FROM TestKitBatchIssue where id=:id")
     void deleteById(String id);
+
+    // delete all after testing
+    @Query("SELECT * FROM TestKitBatchIssue WHERE detail_binType=:binType order by batch_expiryDate ASC limit 3")
+    List<TestKitBatchIssue> findByQueue(BinType binType);
 }

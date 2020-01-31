@@ -2,14 +2,15 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum WorkArea {
 
-    PNC(0), IMNCI(1), ART(2), TB(3), ANC(4), PNC_MOTHER(5),
-    PNC_CHILD(6), ART_SIGN(7), ART_SYMPTOM(8), ART_NEWOI(9), ESSENTIAL_BABY_CARE(10),
-    MATERNAL(11), HISTORY(12), MOTHER_PREGNANCY_DANGER_SIGNS(13),
-    BABY_PREGNANCY_DANGER_SIGNS(14), HTS(15), SEXUAL_HISTORY(16);
+    PNC("PNC"), IMNCI("IMNCI"), ART("ART"), TB("TB"), ANC("ANC"), PNC_MOTHER("PNC_MOTHER"),
+    PNC_CHILD("PNC_CHILD"), ART_SIGN("ART_SIGN"), ART_SYMPTOM("ART_SYMPTOM"), ART_NEWOI("ART_NEWOI"),
+    ESSENTIAL_BABY_CARE("ESSENTIAL_BABY_CARE"),
+    MATERNAL("MATERNAL"), HISTORY("HISTORY"), MOTHER_PREGNANCY_DANGER_SIGNS("MOTHER_PREGNANCY_DANGER_SIGNS"),
+    BABY_PREGNANCY_DANGER_SIGNS("BABY_PREGNANCY_DANGER_SIGNS"), HTS("HTS"), SEXUAL_HISTORY("SEXUAL_HISTORY");
 
-    private final int workArea;
+    private final String workArea;
 
-    WorkArea(Integer workArea) {
+    WorkArea(String workArea) {
         this.workArea = workArea;
     }
 
@@ -54,7 +55,7 @@ public enum WorkArea {
         }
     }
 
-    public Integer getWorkArea() {
+    public String getWorkArea() {
         return workArea;
     }
 }

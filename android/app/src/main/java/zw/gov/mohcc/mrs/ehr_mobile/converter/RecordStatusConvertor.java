@@ -8,15 +8,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
 public class RecordStatusConvertor {
 
         @TypeConverter
-        public static RecordStatus toRecordStatus(int status) {
+        public static RecordStatus toRecordStatus(String status) {
 
-            if (status == RecordStatus.IMPORTED.getStatus()) {
+            if (status.equals(RecordStatus.IMPORTED.getStatus())) {
                 return RecordStatus.IMPORTED;
-            } else if (status == RecordStatus.SYNCED.getStatus()) {
+            } else if (status.equals(RecordStatus.SYNCED.getStatus())) {
                 return RecordStatus.SYNCED;
-            } else if (status == RecordStatus.DELETED.getStatus()) {
+            } else if (status.equals(RecordStatus.DELETED.getStatus())) {
                 return RecordStatus.DELETED;
-            } else if (status == RecordStatus.CHANGED.getStatus()) {
+            } else if (status.equals(RecordStatus.CHANGED.getStatus())) {
                 return RecordStatus.CHANGED;
             } else {
                 return RecordStatus.NEW;
@@ -24,9 +24,9 @@ public class RecordStatusConvertor {
         }
 
         @TypeConverter
-        public static int toInt(RecordStatus status) {
+        public static String toString(RecordStatus status) {
             if (status == null) {
-                return 0;
+                return null;
             }
             return status.getStatus();
         }

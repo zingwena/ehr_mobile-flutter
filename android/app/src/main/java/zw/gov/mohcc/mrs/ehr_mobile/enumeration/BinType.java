@@ -2,11 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum BinType {
 
-    QUEUE(0), WARD(1);
+    QUEUE("QUEUE"), WARD("WARD");
 
-    private final int binType;
+    private final String binType;
 
-    BinType(Integer binType) {
+    BinType(String binType) {
         this.binType = binType;
     }
 
@@ -21,7 +21,7 @@ public enum BinType {
         }
     }
 
-    public Integer getBinType() {
+    public String getBinType() {
         return binType;
     }
 }

@@ -2,11 +2,12 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum QuestionType {
-    BOOLEAN(0), TEXT(1), SET(2), NUMERIC(3), SKIN_PINCH(4), VITAL(5), INVESTIGATION(6);
+    BOOLEAN("BOOLEAN"), TEXT("TEXT"), SET("SET"), NUMERIC("NUMERIC"),
+    SKIN_PINCH("SKIN_PINCH"), VITAL("VITAL"), INVESTIGATION("INVESTIGATION");
 
-    private final int questionTye;
+    private final String questionTye;
 
-    QuestionType(Integer questionTye) {
+    QuestionType(String questionTye) {
         this.questionTye = questionTye;
     }
 
@@ -31,7 +32,7 @@ public enum QuestionType {
         }
     }
 
-    public int getQuestionTye() {
+    public String getQuestionTye() {
         return questionTye;
     }
 }
