@@ -174,7 +174,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
-        FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class}, version = 4, exportSchema = false)
+        FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class}, version = 5, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
