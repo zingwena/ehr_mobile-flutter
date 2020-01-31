@@ -7,6 +7,8 @@ import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/sexualhistoryview.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/sexual_history_overview.dart';
 import 'package:ehr_mobile/view/sexual_history_qn.dart';
 import 'package:flutter/material.dart';
@@ -74,11 +76,14 @@ class _CbsQuestion extends State<CbsQuestions2> {
   var random_string;
   Age age;
 
+  String facility_name;
+
   @override
   void initState() {
     getHtsRecord(widget.personId);
     getSexualHistoryViews(widget.personId);
     getAge(widget.person);
+    getFacilityName();
     super.initState();
   }
 
@@ -94,6 +99,21 @@ class _CbsQuestion extends State<CbsQuestions2> {
       print("channel failure: '$e'");
     }
   }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
   Future<void>getAge(Person person)async{
     String response;
@@ -218,13 +238,9 @@ class _CbsQuestion extends State<CbsQuestions2> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
-              "Impilo Mobile",
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 25.0,
-              ),
-            ),
+            title:new Text(
+    facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+    fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

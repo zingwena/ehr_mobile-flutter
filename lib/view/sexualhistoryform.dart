@@ -7,6 +7,8 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
 import 'package:ehr_mobile/model/sexualhistory.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/sexualhistoryform2.dart';
@@ -67,11 +69,13 @@ class _CbsQuestion extends State<CbsQuestions> {
   String sexualHistoryId;
   String purposeOfTestId;
   Age age;
+  String facility_name;
   @override
   void initState() {
     //getDropDrowns();
     getHtsRecord(widget.personId);
     getAge(widget.person);
+    getFacilityName();
     super.initState();
   }
   List<DropdownMenuItem<String>>
@@ -114,6 +118,21 @@ class _CbsQuestion extends State<CbsQuestions> {
 
     }
   }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
   Future<Null> _selectDateOfSexWithMale(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -162,10 +181,9 @@ class _CbsQuestion extends State<CbsQuestions> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

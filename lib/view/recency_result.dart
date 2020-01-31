@@ -161,26 +161,6 @@ class _Recency_Result  extends State<Recency_Result > {
 
     }
   }
-/*  Future<void> getResultName() async {
-    String response;
-    try {
-      response = await htsChannel.invokeMethod('getLabInvestigations', widget.visitId);
-      setState(() {
-        {
-          _entryPoint = response;
-          entryPoints = jsonDecode(_entryPoint);
-          _dropDownListEntryPoints = LaboratoryInvestigationTest.mapFromJson(entryPoints);
-          _dropDownListEntryPoints.forEach((e) {
-            _entryPointList.add(e);
-          });
-        }
-      });
-    } catch (e) {
-      print('--------------------Something went wrong  $e');
-    }
-  }*/
-
-
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(

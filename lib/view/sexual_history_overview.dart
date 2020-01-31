@@ -5,6 +5,8 @@ import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/sexualhistory.dart';
 import 'package:ehr_mobile/model/sexualhistoryview.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -77,6 +79,8 @@ class _CbsOverview extends State<SexualHistoryOverview> {
   List _dropDownListEntryPoints = List();
   List<SexualHistoryView> _entryPointList = List();
   Age age;
+
+  String facility_name;
   @override
   void initState() {
     _patient = widget.patient;
@@ -84,6 +88,7 @@ class _CbsOverview extends State<SexualHistoryOverview> {
     getHtsRecord(_patient.id);
     getSexualHistoryViews(widget.personId);
     getAge(widget.patient);
+    getFacilityName();
     print(_patient.toString());
     //getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     super.initState();
@@ -172,6 +177,20 @@ class _CbsOverview extends State<SexualHistoryOverview> {
     }
   }
 
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
@@ -196,10 +215,9 @@ class _CbsOverview extends State<SexualHistoryOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

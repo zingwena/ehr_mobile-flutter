@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/landing_screen.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';

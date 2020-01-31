@@ -4,9 +4,11 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/postTest.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
@@ -81,6 +83,8 @@ class _Hts_Result  extends State<Hts_Result > {
   String _currentEntryPoint;
   Age age;
 
+  String facility_name;
+
   @override
   void initState() {
     _visitId = widget.visitId;
@@ -99,6 +103,7 @@ class _Hts_Result  extends State<Hts_Result > {
     //getStartTime(widget.labInvetsTestId);
     //getHtsRecord(widget.patientId);
     getTestName();
+    getFacilityName();
     getAge(widget.person);
     super.initState();
   }
@@ -122,6 +127,22 @@ class _Hts_Result  extends State<Hts_Result > {
       print('--------------------Something went wrong  $e');
     }
   }
+
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
   Future<void>getAge(Person person)async{
     String response;
@@ -190,10 +211,9 @@ class _Hts_Result  extends State<Hts_Result > {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
