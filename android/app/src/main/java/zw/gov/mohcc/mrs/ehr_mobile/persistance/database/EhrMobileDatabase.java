@@ -26,6 +26,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.ResponseTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.TestForPregnantLactatingMotherConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.TestLevelConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.TypeOfContactConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.WhoStageConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.WorkAreaConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
@@ -180,7 +181,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
         TypeOfContactConverter.class, TestLevelConverter.class, RegimenTypeConverter.class, AgeGroupConverter.class,
         PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class,
-        MedicineCategoryConverter.class, MedicineLevelConverter.class})
+        MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
