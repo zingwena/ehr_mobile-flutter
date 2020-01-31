@@ -41,7 +41,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistoryQuestion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.person.PatientPhoneNumber;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.PersonPhone;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Relationship;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
@@ -110,7 +110,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientPhoneDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonPhoneDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientQueueDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientWardDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonDao;
@@ -155,7 +155,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         HtsModel.class, EntryPoint.class, PurposeOfTest.class, ReasonForNotIssuingResult.class, BloodPressure.class,
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
-        LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PatientPhoneNumber.class,
+        LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PersonPhone.class,
         InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
         IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
@@ -249,7 +249,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract LaboratoryInvestigationDao laboratoryInvestigationDao();
 
-    public abstract PatientPhoneDao patientPhoneDao();
+    public abstract PersonPhoneDao patientPhoneDao();
 
     public abstract InvestigationResultDao investigationResultDao();
 
