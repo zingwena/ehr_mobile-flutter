@@ -178,16 +178,17 @@ class _Recency_Result  extends State<Recency_Result > {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
+
+      });
+
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -513,11 +514,20 @@ class _Recency_Result  extends State<Recency_Result > {
                             style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                            IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
-                            saveIndexTest(indexTest);
-                            Navigator.push(context,MaterialPageRoute(
-                            builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, INDEXTEST)
-                            ));
+                            getIndexTestByPersonId(widget.patientId);
+                            if(indextestid == null){
+                              IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
+                              saveIndexTest(indexTest);
+                              Navigator.push(context,MaterialPageRoute(
+                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+                              ));
+                            }else{
+                              Navigator.push(context,MaterialPageRoute(
+                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+                              ));
+                               }
+
+
                             },
                             ),
                             ),                ],
@@ -577,16 +587,38 @@ class _Recency_Result  extends State<Recency_Result > {
       response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
       print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
       setState(() {
-        INDEXTEST = response;
+        indextestid = response;
         print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED" + indextestid);
 
       });
 
     }catch(e){
+      print("channel failure: '$e'");
 
     }
 
   }
+  Future<void>  getIndexTestByPersonId(String personId)async{
+    var response ;
+
+    try{
+      response = await htsChannel.invokeMethod(' getIndexTestByPersonId', jsonEncode(personId));
+      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id returned as it was saved'+ response );
+      setState(() {
+        indextestid = response;
+        print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED indextest id returned as it was save" + indextestid);
+
+      });
+
+    }catch(e){
+      print("channel failure: '$e'");
+
+
+
+    }
+
+  }
+
   Widget _buildProductItem(BuildContext context, int index) {
     return Card(
       child: Column(

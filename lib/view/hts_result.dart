@@ -16,6 +16,7 @@ import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/posttest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
@@ -58,6 +59,7 @@ class _Hts_Result  extends State<Hts_Result > {
   String labInvetsTestId;
   String result_string;
   HtsRegistration htsRegistration;
+  PostTest patientPostTest;
   Person patient;
   var selectedDate;
   bool _showError = false;
@@ -82,7 +84,6 @@ class _Hts_Result  extends State<Hts_Result > {
   String test_name;
   String _currentEntryPoint;
   Age age;
-
   String facility_name;
 
   @override
@@ -105,9 +106,24 @@ class _Hts_Result  extends State<Hts_Result > {
     getTestName();
     getFacilityName();
     getAge(widget.person);
+    getPostTestRecord(widget.patientId);
     super.initState();
   }
 
+  Future<void> getPostTestRecord(String patientId) async {
+    var  postTest;
+    try {
+      postTest = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+        patientPostTest = PostTest.fromJson(postTest);
+        print("HERE IS THE POST TEST RETRIEVED AFTER ASSIGNMENT " + patientPostTest.toString());
+
+      });
+      print('POST TEST IN THE FLUTTER THE RETURNED ONE '+ postTest);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  }
   Future<void> getLabInvestigationTests() async {
     String response;
     try {
@@ -175,20 +191,6 @@ class _Hts_Result  extends State<Hts_Result > {
     }
   }
 
-  Future<void> getHtsRecord(String patientId) async {
-    var  hts;
-    try {
-      hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      setState(() {
-
-        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-
-      });
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -498,7 +500,16 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningTest(widget.patientId, widget.visitId, widget.person, widget.htsId, widget.htsRegistration)));
 
                                                             }else{
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId, widget.htsRegistration)));
+
+                                                              if(patientPostTest == null){
+                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId, widget.htsRegistration)));
+
+                                                              }else{
+
+                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> PostTestOverview(patientPostTest, widget.patientId, widget.visitId, widget.person, widget.htsId, patientPostTest.consentToIndexTesting,true, true, patientPostTest.finalResult, widget.htsRegistration)));
+
+
+                                                              }
                                                             }
                                                           }
                                                       ),

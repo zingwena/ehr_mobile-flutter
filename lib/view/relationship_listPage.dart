@@ -324,6 +324,9 @@ class PelationshipListState extends State<RelationshipListPage>
               DataColumn(label: Text("First Name")),
               DataColumn(label: Text("Last Name")),
               DataColumn(label: Text("Relationship")),
+              DataColumn(label: Text("")),
+
+
             ],
             rows:_entryPointList.map((relationship)=>
                 DataRow(
@@ -331,7 +334,7 @@ class PelationshipListState extends State<RelationshipListPage>
                       DataCell(Text(relationship.firstName)),
                       DataCell(Text(relationship.lastName)),
                       DataCell(Text(relationship.relation)),
-                /*      DataCell(    Padding(
+                      DataCell(    Padding(
                           padding: const EdgeInsets.only(right: 0),
                           child: RaisedButton(
                             onPressed: () async {
@@ -353,7 +356,7 @@ class PelationshipListState extends State<RelationshipListPage>
                               ),
                             ),
                           )),
-                      ),*/
+                      ),
                     ])
 
             ).toList()

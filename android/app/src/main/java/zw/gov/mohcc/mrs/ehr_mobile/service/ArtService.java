@@ -54,9 +54,11 @@ public class ArtService {
     }
 
     public List<ArvCombinationRegimen> getPersonArvCombinationRegimens(String personId, RegimenType regimenType) {
-
+        Log.i(TAG, "REGIMEN TYPE SENT KKKKKKKKKKK"+ regimenType.toString());
         Person person = ehrMobileDatabase.personDao().findPatientById(personId);
         Age age = Age.getInstance(person);
-        return ehrMobileDatabase.arvCombinationRegimenDao().findByLineAndAgeGroup(regimenType, AgeGroup.getPersonAgeGroup(age.getYears()));
+        List<ArvCombinationRegimen>combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByLineAndAgeGroup(regimenType, AgeGroup.getPersonAgeGroup(age.getYears()));
+        Log.i(TAG, "LIST OF ARVCOMBINATION REGIMEN JJJJJJJJJJ"+ combinationRegimenList.toString());
+        return  combinationRegimenList;
     }
 }

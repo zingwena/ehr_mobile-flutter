@@ -378,7 +378,6 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                                           SexualHistoryOverview(widget.person, null, widget.htsid, widget.visitId, widget.personId)
                                                                   ));
                                                           }
-
                                                       ),
                                                     ),
                                                     width: 100,

@@ -70,6 +70,7 @@ class _CbsQuestion extends State<CbsQuestions> {
   String purposeOfTestId;
   Age age;
   String facility_name;
+  bool sexually_active;
   @override
   void initState() {
     //getDropDrowns();
@@ -336,7 +337,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                       ],
                                                     ),
                                                   ),
-                                                  Container(
+                                                  sexuallyactive== true?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
                                                     child:              Row(
@@ -367,8 +368,8 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             })
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ):SizedBox(height: 0.0,),
+                                                  sexuallyactive == true?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
                                                     child:              Row(
@@ -399,8 +400,8 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                             })
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ):SizedBox(height: 0.0,),
+                                                  sexuallyactive== true?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
                                                     child:     Row(
@@ -441,8 +442,8 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                         ),
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
+                                                  ):SizedBox(height: 0.0,),
+                                                  sexuallyactive?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
                                                     child:     Row(
@@ -483,7 +484,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                         ),
                                                       ],
                                                     ),
-                                                  ),
+                                                  ):SizedBox(height: 0.0,),
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
@@ -546,7 +547,6 @@ class _CbsQuestion extends State<CbsQuestions> {
     var response;
     try{
       response = await htsChannel.invokeMethod('saveSexualHistory',jsonEncode(sexualHistory));
-      print("FFFFFFFFFFF RESPONSE FROM ANDEROIN SEXUALHISTORYID"+ response);
       setState(() {
         sexualHistoryId = response;
       });

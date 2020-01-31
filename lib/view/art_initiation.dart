@@ -158,7 +158,7 @@ class _Art_Initiation extends State<Art_Initiation> {
           _arvCombinationRegimenList.add(e);
 
         });
-        _currentArvCombinationRegimen = _arvCombinationRegimenList[0].name;
+        //_currentArvCombinationRegimen = _arvCombinationRegimenList[0].name;
 
         _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
 
@@ -181,8 +181,8 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 1:
           setState(() {
             line = "FIRST_LINE";
-            first_line_regimen = true;
             _arvCombinationRegimenList.clear();
+            first_line_regimen = true;
             getArvCombinationregimens(widget.patientId,"FIRST_LINE" );
               print("line value : $line");
           });
@@ -190,8 +190,8 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 2:
           setState(() {
             line = "SECOND_LINE";
-            second_line_regimen = true;
             _arvCombinationRegimenList.clear();
+            second_line_regimen = true;
             getArvCombinationregimens(widget.patientId,"SECOND_LINE" );
             print("line value : $line");
 
@@ -201,8 +201,8 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 3:
           setState(() {
             line = "THIRD_LINE";
-            third_line_regimen = true;
             _arvCombinationRegimenList.clear();
+            third_line_regimen = true;
             getArvCombinationregimens(widget.patientId,"THIRD_LINE" );
             print("line value : $line");
 
@@ -389,7 +389,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           child: Container(
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                              child: SearchableDropdown(
+                                                              child: DropdownButton(
                                                                 icon: Icon(Icons.keyboard_arrow_down),
                                                                 isExpanded:true,
                                                                 items: _dropDownMenuItemsArvCombinationRegimen,
@@ -397,12 +397,12 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                                 hint: new Text(
                                                                     'Art Combination Regimen'
                                                                 ),
-                                                                searchHint: new Text(
+                                                               /* searchHint: new Text(
                                                                   'Select Art Combination Regimen',
                                                                   style: new TextStyle(
                                                                       fontSize: 20
                                                                   ),
-                                                                ),
+                                                                ),*/
                                                                 onChanged: changedDropDownItemArvCombinationRegimen,
                                                               )
                                                           ),
@@ -424,7 +424,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           child: Container(
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                              child: SearchableDropdown(
+                                                              child: DropdownButton(
                                                                 icon: Icon(Icons.keyboard_arrow_down),
                                                                 isExpanded:true,
                                                                 items: _dropDownMenuItemsArvCombinationRegimen,
@@ -432,12 +432,12 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                                 hint: new Text(
                                                                     'Art Combination Regimen'
                                                                 ),
-                                                                searchHint: new Text(
+                                                               /* searchHint: new Text(
                                                                   'Select Art Combination Regimen',
                                                                   style: new TextStyle(
                                                                       fontSize: 20
                                                                   ),
-                                                                ),
+                                                                ),*/
                                                                 onChanged: changedDropDownItemArvCombinationRegimen,
                                                               )
                                                           ),
@@ -459,7 +459,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           child: Container(
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                              child: SearchableDropdown(
+                                                              child: DropdownButton(
                                                                 icon: Icon(Icons.keyboard_arrow_down),
                                                                 isExpanded:true,
                                                                 items: _dropDownMenuItemsArvCombinationRegimen,
@@ -467,12 +467,12 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                                 hint: new Text(
                                                                     'Art Combination Regimen'
                                                                 ),
-                                                                searchHint: new Text(
+                                                               /* searchHint: new Text(
                                                                   'Select Art Combination Regimen',
                                                                   style: new TextStyle(
                                                                       fontSize: 20
                                                                   ),
-                                                                ),
+                                                                ),*/
                                                                 onChanged: changedDropDownItemArvCombinationRegimen,
                                                               )
                                                           ),
