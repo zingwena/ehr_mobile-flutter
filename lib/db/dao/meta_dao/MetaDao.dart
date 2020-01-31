@@ -42,7 +42,7 @@ abstract class MetaDao{
     return status;
   }
 
-  /// Finds all visits
+  /// Finds all
   Future<List<BaseMeta>> findAll() async {
     Find finder = new Find(tableName);
 

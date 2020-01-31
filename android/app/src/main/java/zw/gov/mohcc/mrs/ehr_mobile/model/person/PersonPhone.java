@@ -10,13 +10,13 @@ import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(indices = {@Index("personId")}, foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
         parentColumns = "id", childColumns = "personId")})
-public class PatientPhoneNumber extends BaseEntity {
+public class PersonPhone extends BaseEntity {
 
     private String personId;
     private String phoneNumber1;
     private String phoneNumber2;
 
-    public PatientPhoneNumber(String id, String personId, String phoneNumber1, String phoneNumber2) {
+    public PersonPhone(String id, String personId, String phoneNumber1, String phoneNumber2) {
         super.setId(id);
         this.personId = personId;
         this.phoneNumber1 = phoneNumber1;
@@ -49,7 +49,7 @@ public class PatientPhoneNumber extends BaseEntity {
 
     @Override
     public String toString() {
-        return "PatientPhoneNumber{" +
+        return "PersonPhone{" +
                 "personId='" + personId + '\'' +
                 ", phoneNumber1='" + phoneNumber1 + '\'' +
                 ", phoneNumber2='" + phoneNumber2 + '\'' +

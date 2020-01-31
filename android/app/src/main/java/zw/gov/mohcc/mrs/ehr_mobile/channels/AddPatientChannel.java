@@ -17,7 +17,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientPhoneDto;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
-import zw.gov.mohcc.mrs.ehr_mobile.model.person.PatientPhoneNumber;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.PersonPhone;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
@@ -116,10 +116,10 @@ public class AddPatientChannel {
                     PatientPhoneDto patientPhoneDto = gson.fromJson(args, PatientPhoneDto.class);
                     System.out.println("PATIENT DTO" + patientPhoneDto);
                     String phoneNumberId = UUID.randomUUID().toString();
-                    PatientPhoneNumber patientPhoneNumber = new PatientPhoneNumber(phoneNumberId, patientPhoneDto.getPersonId(), patientPhoneDto.getPhoneNumber1(), patientPhoneDto.getPhoneNumber2());
-                    ehrMobileDatabase.patientPhoneDao().saveOne(patientPhoneNumber).intValue();
+                    PersonPhone personPhone = new PersonPhone(phoneNumberId, patientPhoneDto.getPersonId(), patientPhoneDto.getPhoneNumber1(), patientPhoneDto.getPhoneNumber2());
+                    ehrMobileDatabase.patientPhoneDao().saveOne(personPhone).intValue();
                     System.out.println("PATIENT NUMBER SAVED HERE ");
-                  /*  PatientPhoneNumber patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(phonenumber_id);
+                  /*  PersonPhone patient_PhoneNumber = ehrMobileDatabase.patientPhoneDao().findById(phonenumber_id);
                     System.out.println("NUMBER 1" + patient_PhoneNumber.getPhonenumber_1());*/
                     /*System.out.println("PATIENT ID HERE"+ patient_PhoneNumber.getPatientId());*/
                     result.success(phoneNumberId);
@@ -131,17 +131,17 @@ public class AddPatientChannel {
                 if (methodCall.method.equals("getPhonenumber")) {
                     String args = methodCall.arguments();
                     Log.i(TAG, "PATIENT ID FROM FLUTTER " + args);
-                    PatientPhoneNumber patientPhoneNumber = ehrMobileDatabase.patientPhoneDao().findByPersonId(args);
+                    PersonPhone personPhone = ehrMobileDatabase.patientPhoneDao().findByPersonId(args);
                     String phoneNumber = "";
-                    if (patientPhoneNumber != null) {
-                        if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber1())) {
-                            phoneNumber += patientPhoneNumber.getPhoneNumber1();
+                    if (personPhone != null) {
+                        if (StringUtils.isNoneBlank(personPhone.getPhoneNumber1())) {
+                            phoneNumber += personPhone.getPhoneNumber1();
                         }
-                        if (StringUtils.isNoneBlank(patientPhoneNumber.getPhoneNumber2())) {
+                        if (StringUtils.isNoneBlank(personPhone.getPhoneNumber2())) {
                             if (StringUtils.isNoneBlank(phoneNumber)) {
-                                phoneNumber += "/ " + patientPhoneNumber.getPhoneNumber2();
+                                phoneNumber += "/ " + personPhone.getPhoneNumber2();
                             } else {
-                                phoneNumber += patientPhoneNumber.getPhoneNumber2();
+                                phoneNumber += personPhone.getPhoneNumber2();
                             }
                         }
                     }
