@@ -23,6 +23,7 @@ public class MedicineName extends BaseNameModel {
     public MedicineName() {
     }
 
+    @Ignore
     public MedicineName(@NonNull String code, @NonNull String name, MedicineCategory medicineCategory, MedicineLevel medicineLevel, boolean otc) {
         super(code, name);
         this.medicineCategory = medicineCategory;
