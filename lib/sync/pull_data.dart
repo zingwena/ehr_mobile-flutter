@@ -775,7 +775,6 @@ Future<String> fetchMedicineNames(adapter,url,authToken) async {
   }).then((value) {
     if (value.statusCode == 200) {
       var values = json.decode(value.body);
-      log.i(values);
       for (Map map in values['content']) {
         dao.insertFromEhr(map).catchError((error){
           log.e(error);

@@ -37,6 +37,7 @@ import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
 import 'package:ehr_mobile/db/tables/weight_table.dart';
 import 'package:ehr_mobile/model/dto/patient_dto.dart';
+import 'package:ehr_mobile/model/enums/enums.dart';
 import 'package:ehr_mobile/util/logger.dart';
 
 import 'package:http/http.dart' as http;
@@ -63,7 +64,7 @@ syncPatient(String token, String url) async {
     //var encoded=json.encode(dto);
     //log.i(encoded.contains('Eve'));
     //log.i(encoded);
-    if(person.status=='0'){
+    if(person.status=='${RecordStatus.NEW.toString()}'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));

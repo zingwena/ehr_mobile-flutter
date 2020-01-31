@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/db/tables/person_table.dart';
+import 'package:ehr_mobile/model/enums/enums.dart';
 import 'package:ehr_mobile/util/custom_convertor.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
@@ -78,17 +79,18 @@ class PersonDao extends BaseDao{
     inserter.set(firstName, map['firstname']);
     inserter.set(lastName, map['lastname']);
 
-    inserter.set(sex, const SexConverter().fromString(map['sex']));
+    inserter.set(sex, map['sex']);
     inserter.set(nationalId, map['identifications'][0]['number']);
     inserter.set(birthDate, const CustomDateTimeConverter().fromEhrJson(map['birthdate']));
 
-    inserter.set(selfIdentifiedGender, const SexConverter().fromString(map['selfIdentifiedGender']));
+    inserter.set(selfIdentifiedGender, map['selfIdentifiedGender']);
     inserter.set(religionId, map['religion']['id']);
     inserter.set(occupationId, map['occupation']['id']);
 
     inserter.set(maritalStatusId, map['marital']['id']);
     inserter.set(educationLevelId, map['education']['id']);
     inserter.set(nationalityId, map['nationality']['id']);
+    inserter.set(status,'${RecordStatus.IMPORTED.toString()}');
 
     if(map['countryOfBirth']!=null)
     inserter.set(countryId, map['countryOfBirth']['id']);
