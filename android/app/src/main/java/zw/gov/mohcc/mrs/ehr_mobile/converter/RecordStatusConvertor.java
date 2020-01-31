@@ -11,13 +11,13 @@ public class RecordStatusConvertor {
 
         @TypeConverter
         public static RecordStatus toRecordStatus(String status) {
-            if (status.equals(RecordStatus.IMPORTED.getStatus())) {
+            if (RecordStatus.IMPORTED.getStatus().equals(status)) {
                 return RecordStatus.IMPORTED;
-            } else if (status.equals(RecordStatus.SYNCED.getStatus())) {
+            } else if (RecordStatus.SYNCED.getStatus().equals(status)) {
                 return RecordStatus.SYNCED;
-            } else if (status.equals(RecordStatus.DELETED.getStatus())) {
+            } else if (RecordStatus.DELETED.getStatus().equals(status)) {
                 return RecordStatus.DELETED;
-            } else if (status.equals(RecordStatus.CHANGED.getStatus())) {
+            } else if (RecordStatus.CHANGED.getStatus().equals(status)) {
                 return RecordStatus.CHANGED;
             } else {
                 return RecordStatus.NEW;
