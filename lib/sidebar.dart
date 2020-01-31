@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/hts_screening.dart';
+import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'model/htsscreening.dart';
 import 'model/person.dart';
 
 class Sidebar extends StatefulWidget{
@@ -37,10 +39,12 @@ class Sidebar extends StatefulWidget{
 class sidebarstate extends State<Sidebar>{
 
   ArtRegistration artReg;
+  HtsScreening htsScreening;
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   @override
   void initState() {
     getArtRecord(widget.patientId);
+    getHtsScreeningRecord(widget.patientId);
 
   }
 
@@ -59,7 +63,22 @@ class sidebarstate extends State<Sidebar>{
       print("channel failure: '$e'");
     }
 
+  }
 
+  Future<void> getHtsScreeningRecord(String patientId) async {
+    var hts_screening;
+    print("get screening method called here");
+    try {
+      hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
+      debugPrint("TTTTTTTTTTTTTTTTTTTTTTTTTT Screening record from android"+ hts_screening);
+
+      setState(() {
+        htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
+        debugPrint("TTTTTTTTTTTTTTTTTTTTTTTT screening record from android after assignment in flutter"+ htsScreening.toString());
+      });
+    } catch (e) {
+      print("channel failure at hts screening: '$e'");
+    }
   }
 
   @override
@@ -130,11 +149,17 @@ class sidebarstate extends State<Sidebar>{
           ),
           new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
-
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context)=> Hts_Screening(widget.patientId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
-
-            ));
+            if(htsScreening == null ){
+              debugPrint("The htsscreening record was null ######");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
+              ));
+            } else {
+              debugPrint("The htsscreening record wasn't null #######");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId,  widget.person.id)
+              ));
+            }
 
 
 

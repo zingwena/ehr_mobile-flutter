@@ -76,7 +76,9 @@ class _Art_Initiation extends State<Art_Initiation> {
   String _currentArtReason;
   ArtRegimenDto _artRegimenDto;
   Age age;
-
+  bool first_line_regimen = false ;
+  bool second_line_regimen = false;
+  bool third_line_regimen = false;
   String facility_name;
 
 
@@ -179,6 +181,7 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 1:
           setState(() {
             line = "FIRST_LINE";
+            first_line_regimen = true;
             _arvCombinationRegimenList.clear();
             getArvCombinationregimens(widget.patientId,"FIRST_LINE" );
               print("line value : $line");
@@ -187,6 +190,7 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 2:
           setState(() {
             line = "SECOND_LINE";
+            second_line_regimen = true;
             _arvCombinationRegimenList.clear();
             getArvCombinationregimens(widget.patientId,"SECOND_LINE" );
             print("line value : $line");
@@ -197,6 +201,7 @@ class _Art_Initiation extends State<Art_Initiation> {
         case 3:
           setState(() {
             line = "THIRD_LINE";
+            third_line_regimen = true;
             _arvCombinationRegimenList.clear();
             getArvCombinationregimens(widget.patientId,"THIRD_LINE" );
             print("line value : $line");
@@ -373,7 +378,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ],
                                                       ),
 
-                                                      Container(
+                                                      first_line_regimen== true?Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
@@ -408,7 +413,77 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                           onPressed: () {},
                                                         ),
-                                                      ),
+                                                      ): second_line_regimen == true?Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                              child: SearchableDropdown(
+                                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                                isExpanded:true,
+                                                                items: _dropDownMenuItemsArvCombinationRegimen,
+                                                                value: _currentArvCombinationRegimen,
+                                                                hint: new Text(
+                                                                    'Art Combination Regimen'
+                                                                ),
+                                                                searchHint: new Text(
+                                                                  'Select Art Combination Regimen',
+                                                                  style: new TextStyle(
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),
+                                                                onChanged: changedDropDownItemArvCombinationRegimen,
+                                                              )
+                                                          ),
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
+                                                        ),
+                                                      ): third_line_regimen == true?Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                              child: SearchableDropdown(
+                                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                                isExpanded:true,
+                                                                items: _dropDownMenuItemsArvCombinationRegimen,
+                                                                value: _currentArvCombinationRegimen,
+                                                                hint: new Text(
+                                                                    'Art Combination Regimen'
+                                                                ),
+                                                                searchHint: new Text(
+                                                                  'Select Art Combination Regimen',
+                                                                  style: new TextStyle(
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),
+                                                                onChanged: changedDropDownItemArvCombinationRegimen,
+                                                              )
+                                                          ),
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
+                                                        ),
+                                                      ):SizedBox(height: 0.0,),
                                                       SizedBox(
                                                         height: 10.0,
                                                       ),
