@@ -531,7 +531,6 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                       ),
                                                     ),
 
-
                                                     !showError
                                                         ? SizedBox.shrink()
                                                         : Text(
