@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/artInitiation.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_initiationoverview.dart';
 
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -61,6 +63,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
   ArtInitiation artInitiation;
   var dateOfEnrollment, dateOfHivTest;
   Age age;
+  String facility_name;
 
   @override
   void initState() {
@@ -69,6 +72,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
     print(_patient.toString());
   //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
+    getFacilityName();
     super.initState();
   }
 
@@ -79,6 +83,19 @@ class ArtOverviewState extends State<ArtRegOverview> {
       setState(() {
         age = Age.fromJson(jsonDecode(response));
         print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
       });
 
     }catch(e){
@@ -148,7 +165,8 @@ class ArtOverviewState extends State<ArtRegOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(

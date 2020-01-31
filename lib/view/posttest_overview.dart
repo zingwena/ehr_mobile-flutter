@@ -76,7 +76,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
   String patient_on_art_string;
   String consent_to_index_testing;
   Age age;
-
+  HtsRegistration htsRegistration;
   String facility_name;
 
   @override
@@ -116,7 +116,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
       consent_to_index_testing = "NO";
     }
 
-  getFacilityName();
+    getFacilityName();
     getAge(widget.person);
     super.initState();
   }
@@ -134,6 +134,8 @@ class PostTestOverviewState extends State<PostTestOverview> {
       _entrypoint = entrypoint;
     });
   }
+
+
 
   Future<void>getAge(Person person)async{
     String response;

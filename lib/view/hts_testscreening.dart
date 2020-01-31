@@ -358,6 +358,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   }
 
+
   void _handleTestKitChange(int value) {
     setState(() {
       _testKit = value;
@@ -499,10 +500,9 @@ Future<dynamic> getTestKitsByCount(int count) async {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -632,85 +632,40 @@ Future<dynamic> getTestKitsByCount(int count) async {
                             padding: new EdgeInsets.all(25.0),
                             child: new Column(
                               children: <Widget>[
-                                new Container(
-                                  child: new Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "Sample :",
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 16.0),
+                                        child: TextField(
+                                          controller: TextEditingController(
+                                              text: 'Blood'),
+                                          decoration: InputDecoration(
+                                            labelText: 'Sample',
+                                           // icon: Icon(Icons.add_box, color: Colors.blue),
                                           ),
-                                          width: 100,
+
                                         ),
                                       ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: Text(
-                                              ('Blood'),
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                    ),
+
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 16.0),
+                                        child: TextField(
+                                          controller: TextEditingController(
+                                              text: 'HIV'),
+                                          decoration: InputDecoration(
+                                            labelText: 'Investigation',
+                                            //icon: Icon(Icons.adjust, color: Colors.blue),
                                           ),
-                                          width: 100,
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                new Container(
-                                  child: new Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "Investigation :",
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: Text(
-                                              ("HIV"),
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+
                                 SizedBox(
                                   height: 16,
                                 ),
@@ -722,12 +677,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Test Kit',
-                                            style: TextStyle(
-                                              color: Colors.grey.shade600,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                            'Test Kit'
                                           ),
                                         ),
                                         width: 250,
@@ -747,12 +697,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             'Test Kit Batches',
-                                            style: TextStyle(
-                                              color: Colors.grey.shade600,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-
-                                            ),
                                           ),
                                         ),
                                         width: 250,
@@ -773,7 +717,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
+                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
                                           child: DateTimePickerFormField(
                                             inputType: InputType.both,
                                             format: DateFormat(
@@ -799,11 +743,10 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 ),
                                 Row(
                                   children: <Widget>[
-
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
+                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
                                           child: DateTimePickerFormField(
                                             inputType: InputType.both,
                                             format: DateFormat(
@@ -822,7 +765,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 100,
                                       ),
                                     ),
-
                                   ],
                                 ),
                                 SizedBox(
@@ -836,11 +778,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             'Result',
-                                            style: TextStyle(
-                                              color: Colors.grey.shade600,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+
                                           ),
                                         ),
                                         width: 250,
@@ -867,14 +805,14 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 24,
+                                  height: 30,
                                 ),
                                 Row(
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
+                                          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
                                           child: RaisedButton(
                                               elevation: 4.0,
                                               shape: RoundedRectangleBorder(
@@ -927,6 +865,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 100,
                                       ),
                                     ),
+
+
 
                                   ],
                                 ),

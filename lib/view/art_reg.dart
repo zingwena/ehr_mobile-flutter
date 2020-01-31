@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +47,8 @@ class _ArtReg extends State<ArtReg> {
   String _nationalIdError = "National Id number is invalid";
   Age age;
 
+  String facility_name;
+
   @override
   void initState() {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -53,6 +57,7 @@ class _ArtReg extends State<ArtReg> {
     test_date = DateTime.now();
     enrollment_date = DateTime.now();
     getAge(widget.person);
+    getFacilityName();
     super.initState();
   }
 
@@ -81,6 +86,20 @@ class _ArtReg extends State<ArtReg> {
         dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
         enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
       });
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
   Future<void>getAge(Person person)async{
     String response;
@@ -118,7 +137,8 @@ class _ArtReg extends State<ArtReg> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(

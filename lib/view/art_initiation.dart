@@ -8,6 +8,8 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -42,8 +44,6 @@ class _Art_Initiation extends State<Art_Initiation> {
   final _formKey = GlobalKey<FormState>();
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-
-
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   String personId;
  // var selectedDate;
@@ -57,15 +57,11 @@ class _Art_Initiation extends State<Art_Initiation> {
   ArtInitiation initiation;
   ArtRegimenDto artRegimenDto;
   bool regimen_selected;
-
   int _line = 0;
   String line="";
  // DateTime date;
  // int _selecType = 0;
  // String clientType = "";
-
-
-
   String _arvCombinationRegimen;
   List arvCombinationRegimens = List();
   List _dropDownListArvCombinationRegimens = List();
@@ -80,15 +76,18 @@ class _Art_Initiation extends State<Art_Initiation> {
   String _currentArtReason;
   ArtRegimenDto _artRegimenDto;
   Age age;
+  bool first_line_regimen = false ;
+  bool second_line_regimen = false;
+  bool third_line_regimen = false;
+  String facility_name;
 
 
   @override
   void initState() {
-
-
     getArtReasons();
     getArvCombinationregimens(widget.patientId, "FIRST_LINE");
     getAge(widget.person);
+    getFacilityName();
     super.initState();
   }
 
@@ -129,6 +128,20 @@ class _Art_Initiation extends State<Art_Initiation> {
     }
   }
 
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
 
   Future<void> getArvCombinationregimens(String personId, String regimenType) async {
@@ -145,7 +158,7 @@ class _Art_Initiation extends State<Art_Initiation> {
           _arvCombinationRegimenList.add(e);
 
         });
-        _currentArvCombinationRegimen = _arvCombinationRegimenList[0].name;
+        //_currentArvCombinationRegimen = _arvCombinationRegimenList[0].name;
 
         _dropDownMenuItemsArtReason = getDropDownMenuItemsIdentifiedArtReason();
 
@@ -169,6 +182,7 @@ class _Art_Initiation extends State<Art_Initiation> {
           setState(() {
             line = "FIRST_LINE";
             _arvCombinationRegimenList.clear();
+            first_line_regimen = true;
             getArvCombinationregimens(widget.patientId,"FIRST_LINE" );
               print("line value : $line");
           });
@@ -177,6 +191,7 @@ class _Art_Initiation extends State<Art_Initiation> {
           setState(() {
             line = "SECOND_LINE";
             _arvCombinationRegimenList.clear();
+            second_line_regimen = true;
             getArvCombinationregimens(widget.patientId,"SECOND_LINE" );
             print("line value : $line");
 
@@ -187,6 +202,7 @@ class _Art_Initiation extends State<Art_Initiation> {
           setState(() {
             line = "THIRD_LINE";
             _arvCombinationRegimenList.clear();
+            third_line_regimen = true;
             getArvCombinationregimens(widget.patientId,"THIRD_LINE" );
             print("line value : $line");
 
@@ -239,7 +255,8 @@ class _Art_Initiation extends State<Art_Initiation> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
           ),
           Positioned.fill(
@@ -361,7 +378,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         ],
                                                       ),
 
-                                                      Container(
+                                                      first_line_regimen== true?Container(
                                                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
@@ -372,7 +389,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           child: Container(
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                              child: SearchableDropdown(
+                                                              child: DropdownButton(
                                                                 icon: Icon(Icons.keyboard_arrow_down),
                                                                 isExpanded:true,
                                                                 items: _dropDownMenuItemsArvCombinationRegimen,
@@ -380,12 +397,12 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                                 hint: new Text(
                                                                     'Art Combination Regimen'
                                                                 ),
-                                                                searchHint: new Text(
+                                                               /* searchHint: new Text(
                                                                   'Select Art Combination Regimen',
                                                                   style: new TextStyle(
                                                                       fontSize: 20
                                                                   ),
-                                                                ),
+                                                                ),*/
                                                                 onChanged: changedDropDownItemArvCombinationRegimen,
                                                               )
                                                           ),
@@ -396,7 +413,77 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           ),
                                                           onPressed: () {},
                                                         ),
-                                                      ),
+                                                      ): second_line_regimen == true?Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                              child: DropdownButton(
+                                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                                isExpanded:true,
+                                                                items: _dropDownMenuItemsArvCombinationRegimen,
+                                                                value: _currentArvCombinationRegimen,
+                                                                hint: new Text(
+                                                                    'Art Combination Regimen'
+                                                                ),
+                                                               /* searchHint: new Text(
+                                                                  'Select Art Combination Regimen',
+                                                                  style: new TextStyle(
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),*/
+                                                                onChanged: changedDropDownItemArvCombinationRegimen,
+                                                              )
+                                                          ),
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
+                                                        ),
+                                                      ): third_line_regimen == true?Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                              child: DropdownButton(
+                                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                                isExpanded:true,
+                                                                items: _dropDownMenuItemsArvCombinationRegimen,
+                                                                value: _currentArvCombinationRegimen,
+                                                                hint: new Text(
+                                                                    'Art Combination Regimen'
+                                                                ),
+                                                               /* searchHint: new Text(
+                                                                  'Select Art Combination Regimen',
+                                                                  style: new TextStyle(
+                                                                      fontSize: 20
+                                                                  ),
+                                                                ),*/
+                                                                onChanged: changedDropDownItemArvCombinationRegimen,
+                                                              )
+                                                          ),
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
+                                                        ),
+                                                      ):SizedBox(height: 0.0,),
                                                       SizedBox(
                                                         height: 10.0,
                                                       ),

@@ -5,7 +5,9 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -64,6 +66,7 @@ class _Registration extends State<Registration> {
   HtsRegistration _htsRegistration;
   String _currentEntryPoint;
   Age age;
+  var facility_name;
 
   @override
   void initState() {
@@ -73,6 +76,7 @@ class _Registration extends State<Registration> {
     getFacilities();
     getHtsRecord(patientId);
     getAge(widget.person);
+    getFacilityName();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     super.initState();
@@ -116,6 +120,20 @@ class _Registration extends State<Registration> {
       setState(() {
         age = Age.fromJson(jsonDecode(response));
         print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
       });
 
     }catch(e){
@@ -176,10 +194,9 @@ class _Registration extends State<Registration> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+    facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+    fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -288,50 +305,51 @@ class _Registration extends State<Registration> {
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
                                                     SizedBox(
-                                                      height: 20.0,
+                                                      height: 30.0,
                                                     ),
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child:              Row(
+                                                      child: Row(
                                                         children: <Widget>[
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    vertical: 0.0, horizontal: 30.0),
+                                                                padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                                 child: TextFormField(
-                                                                  controller:
-                                                                  TextEditingController(text: selectedDate),
+                                                                  controller: TextEditingController(text: selectedDate),
                                                                   validator: (value) {
                                                                     return value.isEmpty ? 'Enter some text' : null;
                                                                   },
                                                                   decoration: InputDecoration(
+                                                                      suffixIcon: IconButton(
+                                                                          icon: Icon(Icons.calendar_today),
+                                                                          color: Colors.blue,
+                                                                          onPressed: () {
+                                                                            _selectDate(context);
+                                                                          }),
                                                                       labelText: 'Date of HIV Test',
                                                                       border: OutlineInputBorder()),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-                                                          IconButton(
-                                                              icon: Icon(Icons.calendar_today),
-                                                              color: Colors.blue,
-                                                              onPressed: () {
-                                                                _selectDate(context);
-                                                              })
+
                                                         ],
                                                       ),
                                                     ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child:     Row(
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
+                                                      child: Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(30.0),
+                                                              child: Padding( padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                                 child: Text('HTS Type'),
                                                               ),
                                                               width: 250,
@@ -346,11 +364,10 @@ class _Registration extends State<Registration> {
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                      height: 20.0,
+                                                      height: 15.0,
                                                     ),
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
                                                       width: double.infinity,
                                                       child: OutlineButton(
                                                         shape: RoundedRectangleBorder(
@@ -359,8 +376,7 @@ class _Registration extends State<Registration> {
                                                         padding: const EdgeInsets.all(0.0),
                                                         child: Container(
                                                           width: double.infinity,
-                                                          padding: EdgeInsets.symmetric(
-                                                              vertical: 8.0, horizontal: 30.0),
+                                                          padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                           child: DropdownButton(
                                                             isExpanded:true,
                                                             hint: Text('Select Entry Point'),
@@ -384,11 +400,19 @@ class _Registration extends State<Registration> {
                                                     ),
                                                     !_showError
                                                         ? SizedBox.shrink()
-                                                        : Text( _entryPointError ?? "",
-                                                      style: TextStyle(color: Colors.red),
-                                                    ),
+                                                        : Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(vertical: 2.0, horizontal: 60.0),
+                                                              child: Text( _entryPointError ?? "",
+                                                                style: TextStyle(color: Colors.red),
+                                                              ),
+                                                            ),),),], ),
                                                     SizedBox(
-                                                      height: 30.0,
+                                                      height: 40.0,
                                                     ),
                                                     Container(
                                                       width: double.infinity,
