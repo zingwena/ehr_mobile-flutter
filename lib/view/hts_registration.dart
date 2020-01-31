@@ -5,7 +5,9 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -64,6 +66,7 @@ class _Registration extends State<Registration> {
   HtsRegistration _htsRegistration;
   String _currentEntryPoint;
   Age age;
+  var facility_name;
 
   @override
   void initState() {
@@ -73,6 +76,7 @@ class _Registration extends State<Registration> {
     getFacilities();
     getHtsRecord(patientId);
     getAge(widget.person);
+    getFacilityName();
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
     super.initState();
@@ -116,6 +120,20 @@ class _Registration extends State<Registration> {
       setState(() {
         age = Age.fromJson(jsonDecode(response));
         print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
       });
 
     }catch(e){
@@ -176,10 +194,9 @@ class _Registration extends State<Registration> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+    facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+    fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

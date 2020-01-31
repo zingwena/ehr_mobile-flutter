@@ -358,6 +358,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
   }
 
+
   void _handleTestKitChange(int value) {
     setState(() {
       _testKit = value;
@@ -499,10 +500,9 @@ Future<dynamic> getTestKitsByCount(int count) async {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

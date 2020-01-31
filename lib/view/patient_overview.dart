@@ -63,6 +63,7 @@ class OverviewState extends State<Overview> {
     print("THIS IS THE PATIENT IN PATIENT OVERVIEW"+ widget.patient.toString());
     _patient = widget.patient;
     getVisit(_patient.id);
+    getHtsScreeningRecord(_patient.id);
     getHtsRecord(_patient.id);
     getArtRecord(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
@@ -82,6 +83,21 @@ class OverviewState extends State<Overview> {
     }catch(e){
       debugPrint("Exception thrown in get facility name method"+e);
 
+    }
+  }
+  Future<void> getHtsScreeningRecord(String patientId) async {
+    var hts_screening;
+    print("get screening method called here");
+    try {
+      hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
+      debugPrint("TTTTTTTTTTTTTTTTTTTTTTTTTT Screening record from android"+ hts_screening);
+
+      setState(() {
+        htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
+        debugPrint("TTTTTTTTTTTTTTTTTTTTTTTT screening record from android after assignment in flutter"+ htsScreening.toString());
+      });
+    } catch (e) {
+      print("channel failure at hts screening: '$e'");
     }
   }
 

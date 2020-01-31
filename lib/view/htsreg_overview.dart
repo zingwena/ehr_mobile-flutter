@@ -3,7 +3,11 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/age.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
+import 'package:ehr_mobile/util/constants.dart';
+
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -56,6 +60,8 @@ class HtsOverviewState extends State<HtsRegOverview> {
   Age age;
   var dateofreg;
 
+  String facility_name;
+
   @override
   void initState() {
     print(_patient.toString());
@@ -63,6 +69,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
     getPretestRecord(widget.personId);
     getHtsRecord(widget.personId);
     getAge(widget.person);
+    getFacilityName();
     dateofreg =  DateFormat("yyyy/MM/dd").format(widget.htsRegistration.dateOfHivTest);
 
     super.initState();
@@ -111,7 +118,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
     } catch (e) {
       print("channel failure: '$e'");
     }
-  ;
 
 
   }
@@ -130,8 +136,20 @@ class HtsOverviewState extends State<HtsRegOverview> {
       print("channel failure: '$e'");
     }
 
+  }
 
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
 
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
   Future<void> getHtsRecord(String patientId) async {
     var  hts;
@@ -176,10 +194,9 @@ class HtsOverviewState extends State<HtsRegOverview> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title:  new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
