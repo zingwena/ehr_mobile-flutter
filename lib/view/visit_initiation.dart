@@ -141,11 +141,11 @@ class VisitInitiationState extends State<VisitInitiation>
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                         /*   Padding(
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age -"+ age.years.toString(), style: TextStyle(
+                              child: Text("Age -"+ age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

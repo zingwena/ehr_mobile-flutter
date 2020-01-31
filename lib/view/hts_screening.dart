@@ -7,6 +7,7 @@ import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 
@@ -44,9 +45,9 @@ class Hts_Screening extends StatefulWidget {
 
 class _HtsScreening extends State<Hts_Screening> {
   static const platform = MethodChannel('example.channel.dev/people');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
 
-  static const htsChannel = MethodChannel(
-      'zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   final _formKey = GlobalKey<FormState>();
   bool testedBefore;
   bool art;
@@ -67,6 +68,7 @@ class _HtsScreening extends State<Hts_Screening> {
   int _result = 0;
   int _viralload = 0;
   int _cd4done = 0;
+  Age age;
   var birthDate, displayDate;
   var selectedLastNegDate, selectedDateOfEnrollment, selectedDateOfViralLoad, selectedDateOfCd4Count, selectedDateOfLastTest;
   DateTime dateOfLastNeg, dateOfEnrollmentIntoCare, dateOfViralLoad, dateOfCd4Count, dateLastTest;
@@ -90,6 +92,7 @@ class _HtsScreening extends State<Hts_Screening> {
     dateOfCd4Count = DateTime.now();
     dateLastTest = DateTime.now();
     getFacilityName();
+    getAge(widget.person);
     super.initState();
   }
 
@@ -195,6 +198,21 @@ class _HtsScreening extends State<Hts_Screening> {
         dateOfCd4Count = DateFormat("yyyy/MM/dd").parse(selectedDateOfCd4Count);
       });
   }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
 
   @override
@@ -279,11 +297,11 @@ class _HtsScreening extends State<Hts_Screening> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            /*  Padding(
+                              Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+ age.years.toString()+ "years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

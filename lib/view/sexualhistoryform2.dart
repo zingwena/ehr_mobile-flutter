@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/sexualhistoryview.dart';
@@ -33,9 +34,8 @@ class CbsQuestions2 extends StatefulWidget {
 
 class _CbsQuestion extends State<CbsQuestions2> {
   static const platform = MethodChannel('example.channel.dev/people');
-
-  static const htsChannel =
-      MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   final _formKey = GlobalKey<FormState>();
   PreTest preTest;
   List<HtsModel> _htsModelList = List();
@@ -72,11 +72,13 @@ class _CbsQuestion extends State<CbsQuestions2> {
   String response;
   int random_number;
   var random_string;
+  Age age;
 
   @override
   void initState() {
     getHtsRecord(widget.personId);
     getSexualHistoryViews(widget.personId);
+    getAge(widget.person);
     super.initState();
   }
 
@@ -90,6 +92,21 @@ class _CbsQuestion extends State<CbsQuestions2> {
       });
     } catch (e) {
       print("channel failure: '$e'");
+    }
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
     }
   }
 
@@ -257,34 +274,41 @@ class _CbsQuestion extends State<CbsQuestions2> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Icon(
-                            Icons.person_outline,
-                            size: 25.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text(
-                            widget.person.firstName +
-                                " " +
-                                widget.person.lastName,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.0,
-                                color: Colors.white),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Icon(
-                            Icons.verified_user,
-                            size: 25.0,
-                            color: Colors.white,
-                          ),
-                        ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
+                            ),
                       ])),
                   Expanded(
                     child: new Card(

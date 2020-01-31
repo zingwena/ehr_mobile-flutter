@@ -11,6 +11,8 @@ import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hiv_screening.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
+
 /*
 import 'package:ehr_mobile/home_screen.dart';
 */
@@ -56,11 +58,13 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
   String _entryPoint;
 
   String facility_name;
+  Age age;
 
 
   @override
   void initState() {
     getIndexContactList(widget.indexTestId);
+    getAge(widget.person);
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -73,6 +77,21 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
       });
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
   Future<void>getIndexContactList(String indexId)async{
     var response ;
@@ -182,11 +201,11 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                         /*   Padding(
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

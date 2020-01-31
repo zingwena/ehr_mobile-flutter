@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/preTest.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
@@ -39,6 +40,8 @@ class HtsRegOverview extends StatefulWidget {
 class HtsOverviewState extends State<HtsRegOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+
 
   Person _patient;
   Visit _visit;
@@ -50,6 +53,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
   bool showInputTabOptions = true;
   PreTest preTest;
   String htsApproach;
+  Age age;
   var dateofreg;
 
   @override
@@ -58,9 +62,25 @@ class HtsOverviewState extends State<HtsRegOverview> {
     getEntryPoint(widget.htsRegistration.entryPointId);
     getPretestRecord(widget.personId);
     getHtsRecord(widget.personId);
+    getAge(widget.person);
     dateofreg =  DateFormat("yyyy/MM/dd").format(widget.htsRegistration.dateOfHivTest);
 
     super.initState();
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<void> getVisit(String patientId) async {
@@ -84,11 +104,8 @@ class HtsOverviewState extends State<HtsRegOverview> {
     try {
       pre_test = await htsChannel.invokeMethod('getcurrenthts', patientId);
       setState(() {
-
         preTest = PreTest.fromJson(jsonDecode(pre_test));
         htsApproach = preTest.htsApproach;
-        print("HERE IS THE PRETEST AFTER ASSIGNMENT HTS APPROACH #######################" + htsApproach);
-
       });
       print('PRETEST IN THE FLUTTER THE RETURNED ONE '+ pre_test.toString());
     } catch (e) {
@@ -223,11 +240,11 @@ class HtsOverviewState extends State<HtsRegOverview> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            /*  Padding(
+                              Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+ age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

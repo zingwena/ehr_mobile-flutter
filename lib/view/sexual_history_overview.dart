@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/sexualhistory.dart';
 import 'package:ehr_mobile/model/sexualhistoryview.dart';
@@ -45,9 +46,10 @@ class SexualHistoryOverview extends StatefulWidget {
 
 class _CbsOverview extends State<SexualHistoryOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
-  static final MethodChannel patientChannel = MethodChannel(
-      'zw.gov.mohcc.mrs.ehr_mobile/addPatient');
+  static final MethodChannel patientChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+
 
   Person _patient;
   Visit _visit;
@@ -70,20 +72,36 @@ class _CbsOverview extends State<SexualHistoryOverview> {
   String historyofsti;
   String receivedbloodtrans;
   String unsterilisedinstruments;
-
   String _entryPoint;
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
   List<SexualHistoryView> _entryPointList = List();
+  Age age;
   @override
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     getSexualHistoryViews(widget.personId);
+    getAge(widget.patient);
     print(_patient.toString());
     //getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     super.initState();
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<void> getVisit(String patientId) async {
@@ -148,9 +166,7 @@ class _CbsOverview extends State<SexualHistoryOverview> {
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        print("Sexual hitsory list returned in Overview ######################^^^^^^^^^^^^^.>>>>>>>>>>>>>>>>>>>" +
-            _entryPointList.toString());
-      });
+             });
     } catch (e) {
       print("Exception thrown in getsexualhistory view method" + e);
     }
@@ -238,7 +254,26 @@ class _CbsOverview extends State<SexualHistoryOverview> {
                               child: Text(widget.patient.firstName + " " + widget.patient.lastName, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
-
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.patient.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
