@@ -14,6 +14,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.CoupleCounsellingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsApproachConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.MedicineCategoryConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.MedicineLevelConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.NewTestConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.PatientTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.PrepOptionConverter;
@@ -53,12 +55,17 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FamilyPlanningStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FunctionalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MedicineName;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.PurposeOfTest;
@@ -96,6 +103,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.EntryPointDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityQueueDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityWardDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FamilyPlanningStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FollowUpStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FunctionalStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsModelDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsScreeningDao;
@@ -107,7 +117,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationTestkitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LactatingStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MedicineNameDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonPhoneDao;
@@ -160,13 +172,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
         IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
-        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class}, version = 1, exportSchema = false)
+        Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
+        FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class}, version = 1, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
         HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
         TypeOfContactConverter.class, TestLevelConverter.class, RegimenTypeConverter.class, AgeGroupConverter.class,
-        PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class})
+        PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class,
+        MedicineCategoryConverter.class, MedicineLevelConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -300,4 +314,14 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract SexualHistoryQuestionDao sexualHistoryQuestionDao();
 
     public abstract TestKitBatchIssueDao testKitBatchIssueDao();
+
+    public abstract FollowUpStatusDao followUpStatusDao();
+
+    public abstract FunctionalStatusDao functionalStatusDao();
+
+    public abstract FamilyPlanningStatusDao familyPlanningStatusDao();
+
+    public abstract LactatingStatusDao lactatingStatusDao();
+
+    public abstract MedicineNameDao medicineNameDao();
 }
