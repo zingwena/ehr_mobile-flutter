@@ -6,11 +6,12 @@ import java.util.List;
 
 public enum TestLevel {
 
-    FIRST(0), SECOND(1), THIRD(2), PARALLEL_ONE(3), PARALLEL_TWO(4), SELF(5), DNA_PCR(6);
+    FIRST("FIRST"), SECOND("SECOND"), THIRD("THIRD"), PARALLEL_ONE("PARALLEL_ONE"),
+    PARALLEL_TWO("PARALLEL_TWO"), SELF("SELF"), DNA_PCR("DNA_PCR");
 
-    private final int testLevel;
+    private final String testLevel;
 
-    private TestLevel(int testLevel) {
+    private TestLevel(String testLevel) {
         this.testLevel = testLevel;
     }
 
@@ -39,7 +40,7 @@ public enum TestLevel {
         return new ArrayList<>(Arrays.asList(new TestLevel[] {FIRST, SECOND, THIRD}));
     }
 
-    public int getTestLevel() {
+    public String getTestLevel() {
         return testLevel;
     }
 

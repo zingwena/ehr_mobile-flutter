@@ -3,11 +3,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum MedicineLevel {
 
-    A(0), B(1), C(2), D(3), S(4);
+    A("A"), B("B"), C("C"), D("D"), S("S");
 
-    private final int medicineLevel;
+    private final String medicineLevel;
 
-    MedicineLevel(int medicineLevel) {
+    MedicineLevel(String medicineLevel) {
         this.medicineLevel = medicineLevel;
     }
 
@@ -28,7 +28,7 @@ public enum MedicineLevel {
         }
     }
 
-    public int getMedicineLevel() {
+    public String getMedicineLevel() {
         return medicineLevel;
     }
 }

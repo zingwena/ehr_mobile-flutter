@@ -2,11 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum AgeGroup {
 
-    ADULT(0), PEADS(1);
+    ADULT("ADULT"), PEADS("PEADS");
 
-    private final int ageGroup;
+    private final String ageGroup;
 
-    AgeGroup(Integer ageGroup) {
+    AgeGroup(String ageGroup) {
         this.ageGroup = ageGroup;
     }
 
@@ -28,7 +28,7 @@ public enum AgeGroup {
         return ADULT;
     }
 
-    public Integer getAgeGroup() {
+    public String getAgeGroup() {
         return ageGroup;
     }
 }

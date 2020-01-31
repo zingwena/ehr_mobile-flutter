@@ -3,11 +3,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum MedicineCategory {
 
-    V(0), E(1), N(2);
+    V("V"), E("E"), N("N");
 
-    private final int medicineCategory;
+    private final String medicineCategory;
 
-    MedicineCategory(int medicineCategory) {
+    MedicineCategory(String medicineCategory) {
         this.medicineCategory = medicineCategory;
     }
 
@@ -24,7 +24,7 @@ public enum MedicineCategory {
         }
     }
 
-    public int getMedicineCategory() {
+    public String getMedicineCategory() {
         return medicineCategory;
     }
 }

@@ -2,16 +2,16 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum CoupleCounselling {
-    YES(0),
-    NO(1);
+    YES("YES"),
+    NO("NO");
 
-    private final int coupleCounselling;
+    private final String coupleCounselling;
 
-    private CoupleCounselling(int coupleCounselling) {
+    private CoupleCounselling(String coupleCounselling) {
         this.coupleCounselling = coupleCounselling;
     }
 
-    public int getCoupleCounselling() {
+    public String getCoupleCounselling() {
         return coupleCounselling;
     }
 

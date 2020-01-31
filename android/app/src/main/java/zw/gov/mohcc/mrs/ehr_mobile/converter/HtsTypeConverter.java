@@ -7,12 +7,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.HtsType;
 public class HtsTypeConverter {
 
     @TypeConverter
-    public static HtsType toHtsType(int htsType) {
+    public static HtsType toHtsType(String htsType) {
 
-        System.out.println("HtsType = " + htsType);
-        if (htsType == HtsType.SELF.getHtsType()) {
+        if (htsType.equals(HtsType.SELF.getHtsType())) {
             return HtsType.SELF;
-        } else if (htsType == HtsType.RAPID.getHtsType()) {
+        } else if (htsType.equals(HtsType.RAPID.getHtsType())) {
             return HtsType.RAPID;
         } else {
             throw new IllegalArgumentException("Could not recognize status  " + htsType);
@@ -20,7 +19,7 @@ public class HtsTypeConverter {
     }
 
     @TypeConverter
-    public static int toInt(HtsType htsType) {
+    public static String toString(HtsType htsType) {
         return htsType.getHtsType();
     }
 }

@@ -7,15 +7,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PrepOption;
 public class PrepOptionConverter {
 
     @TypeConverter
-    public static PrepOption toPrepOption(int prepOption) {
+    public static PrepOption toPrepOption(String prepOption) {
 
-        if (prepOption == PrepOption.INFANT.getPrepOption()) {
+        if (prepOption.equals(PrepOption.INFANT.getPrepOption())) {
             return PrepOption.INFANT;
-        } else if (prepOption == PrepOption.PRE_EXPOSURE.getPrepOption()) {
+        } else if (prepOption.equals(PrepOption.PRE_EXPOSURE.getPrepOption())) {
             return PrepOption.PRE_EXPOSURE;
-        } else if (prepOption == PrepOption.POST_EXPOSURE.getPrepOption()) {
+        } else if (prepOption.equals(PrepOption.POST_EXPOSURE.getPrepOption())) {
             return PrepOption.POST_EXPOSURE;
-        } else if (prepOption == PrepOption.NONE.getPrepOption()) {
+        } else if (prepOption.equals(PrepOption.NONE.getPrepOption())) {
             return PrepOption.NONE;
         } else {
             return PrepOption.NONE;
@@ -23,9 +23,9 @@ public class PrepOptionConverter {
     }
 
     @TypeConverter
-    public static int toInt(PrepOption prepOption) {
+    public static String toString(PrepOption prepOption) {
         if (prepOption == null) {
-            return -1;
+            return null;
         }
         return prepOption.getPrepOption();
     }

@@ -9,16 +9,16 @@ public class BinTypeConverter {
     @TypeConverter
     public static BinType toBinType(String binType) {
 
-        if (binType == BinType.QUEUE.getBinType()) {
+        if (binType.equals(BinType.QUEUE.getBinType())) {
             return BinType.QUEUE;
-        } else if (binType == BinType.WARD.getBinType()) {
+        } else if (binType.equals(BinType.WARD.getBinType())) {
             return BinType.WARD;
         }
         return null;
     }
 
     @TypeConverter
-    public static String toInt(BinType binType) {
+    public static String toString(BinType binType) {
         if (binType == null) {
             return null;
         }

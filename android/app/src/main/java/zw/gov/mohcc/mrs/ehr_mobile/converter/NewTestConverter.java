@@ -6,12 +6,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.NewTest;
 
 public class NewTestConverter {
     @TypeConverter
-    public static NewTest toNewTest(int newTest) {
+    public static NewTest toNewTest(String newTest) {
 
-        System.out.println("newTest = " + newTest);
-        if (newTest == NewTest.PITC.getNewTest()) {
+        if (newTest.equals(NewTest.PITC.getNewTest())) {
             return NewTest.PITC;
-        } else if (newTest == NewTest.CICTC.getNewTest()) {
+        } else if (newTest.equals(NewTest.CICTC.getNewTest())) {
             return NewTest.CICTC;
         } else {
             throw new IllegalArgumentException("Could not recognize status  " + newTest);
@@ -19,7 +18,7 @@ public class NewTestConverter {
     }
 
     @TypeConverter
-    public static int toInt(NewTest newTest) {
+    public static String toString(NewTest newTest) {
         return newTest.getNewTest();
     }
 }

@@ -2,17 +2,13 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum NewTest {
-    PITC(0),
-    CICTC(1);
+    PITC("PITC"),
+    CICTC("CICTC");
 
-    private final int newTest;
+    private final String newTest;
 
-    private NewTest(int newTest) {
+    NewTest(String newTest) {
         this.newTest = newTest;
-    }
-
-    public int getNewTest() {
-        return newTest;
     }
 
     public static NewTest get(String name) {
@@ -25,5 +21,9 @@ public enum NewTest {
             default:
                 throw new IllegalArgumentException("Unknown argument passes to method : " + name);
         }
+    }
+
+    public String getNewTest() {
+        return newTest;
     }
 }

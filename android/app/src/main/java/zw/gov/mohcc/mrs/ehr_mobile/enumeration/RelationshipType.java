@@ -2,11 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum RelationshipType {
-    CHILD(0), PARENT(1), SPOUSE(2), SIBLING(3), SEXUAL_PARTNER(4), OTHER(5);
+    CHILD("CHILD"), PARENT("PARENT"), SPOUSE("SPOUSE"), SIBLING("SIBLING"), SEXUAL_PARTNER("SEXUAL_PARTNER"), OTHER("OTHER");
 
-    private final int relationshipType;
+    private final String relationshipType;
 
-    RelationshipType(int relationshipType) {
+    RelationshipType(String relationshipType) {
         this.relationshipType = relationshipType;
     }
 
@@ -30,7 +30,7 @@ public enum RelationshipType {
         }
     }
 
-    public int getRelationshipType() {
+    public String getRelationshipType() {
         return relationshipType;
     }
 }

@@ -8,20 +8,23 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ResponseType;
 public class ResponseTypeConverter {
 
     @TypeConverter
-    public static ResponseType toResponseType(int responseType) {
+    public static ResponseType toResponseType(String responseType) {
 
-        if (responseType == ResponseType.YES.getResponseType()) {
+        if (responseType.equals(ResponseType.YES.getResponseType())) {
             return ResponseType.YES;
-        } else if (responseType == ResponseType.NO.getResponseType()) {
+        } else if (responseType.equals(ResponseType.NO.getResponseType())) {
             return ResponseType.NO;
-        } else if (responseType == ResponseType.REFUSED.getResponseType()) {
+        } else if (responseType.equals(ResponseType.REFUSED.getResponseType())) {
             return ResponseType.REFUSED;
         }
         return null;
     }
 
     @TypeConverter
-    public static int toInt(ResponseType responseType) {
+    public static String toString(ResponseType responseType) {
+        if (responseType == null) {
+            return null;
+        }
         return responseType.getResponseType();
     }
 }

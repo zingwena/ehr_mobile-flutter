@@ -2,11 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum RegimenType {
 
-    FIRST_LINE(0), SECOND_LINE(1), THIRD_LINE(2);
+    FIRST_LINE("FIRST_LINE"), SECOND_LINE("SECOND_LINE"), THIRD_LINE("THIRD_LINE");
 
-    private final int regimenType;
+    private final String regimenType;
 
-    RegimenType(Integer regimenType) {
+    RegimenType(String regimenType) {
         this.regimenType = regimenType;
     }
 
@@ -23,7 +23,7 @@ public enum RegimenType {
         }
     }
 
-    public Integer getRegimenType() {
+    public String getRegimenType() {
         return regimenType;
     }
 }
