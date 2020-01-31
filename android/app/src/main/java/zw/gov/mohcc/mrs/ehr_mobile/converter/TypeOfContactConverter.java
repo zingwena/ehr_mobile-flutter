@@ -8,20 +8,20 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TypeOfContact;
 public class TypeOfContactConverter {
 
     @TypeConverter
-    public static TypeOfContact toTypeOfContact(int typeOfContact) {
+    public static TypeOfContact toTypeOfContact(String typeOfContact) {
 
-        if (typeOfContact == TypeOfContact.PRIMARY.getTypeOfContact()) {
+        if (typeOfContact.equals(TypeOfContact.PRIMARY.getTypeOfContact())) {
             return TypeOfContact.PRIMARY;
-        } else if (typeOfContact == TypeOfContact.SECONDARY.getTypeOfContact()) {
+        } else if (typeOfContact.equals(TypeOfContact.SECONDARY.getTypeOfContact())) {
             return TypeOfContact.SECONDARY;
         }
         return null;
     }
 
     @TypeConverter
-    public static int toInt(TypeOfContact typeOfContact) {
+    public static String toString(TypeOfContact typeOfContact) {
         if (typeOfContact == null) {
-            return -1;
+            return null;
         }
         return typeOfContact.getTypeOfContact();
     }

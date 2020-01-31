@@ -6,17 +6,16 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 
 public class GenderConverter {
     @TypeConverter
-    public static Gender toGender(int gender) {
+    public static Gender toGender(String gender) {
 
-        System.out.println("gender = " + gender);
-        if (gender == Gender.MALE.getSex()) {
+        if (gender.equals(Gender.MALE.getSex())) {
             return Gender.MALE;
-        } else if (gender == Gender.FEMALE.getSex()) {
+        } else if (gender.equals(Gender.FEMALE.getSex())) {
             return Gender.FEMALE;
-        } else if (gender == Gender.UNKNOWN.getSex()) {
+        } else if (gender.equals(Gender.UNKNOWN.getSex())) {
             return Gender.UNKNOWN;
 
-        } else if (gender == (Gender.NON_BINARY.getSex())) {
+        } else if (gender.equals(Gender.NON_BINARY.getSex())) {
             return Gender.NON_BINARY;
         } else {
             return Gender.NULL_VALS;
@@ -24,9 +23,9 @@ public class GenderConverter {
     }
 
     @TypeConverter
-    public static int toInt(Gender gender) {
+    public static String toString(Gender gender) {
         if (gender == null) {
-            return -1;
+            return null;
         }
         return gender.getSex();
     }

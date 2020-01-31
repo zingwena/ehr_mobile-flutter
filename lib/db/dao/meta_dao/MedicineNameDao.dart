@@ -1,35 +1,36 @@
 
-import 'package:ehr_mobile/db/tables/meta_tables/base_meta.dart';
+import 'package:ehr_mobile/db/tables/meta_tables/MedicineNameTable.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
-abstract class MetaDao{
+class MedicineNameDao {
 
+  var medicineCategory = new StrField('medicineCategory');
+  var medicineLevel = new StrField('medicineLevel');
+  var otc = new IntField('otc');
   var code = new StrField('code');
   var name = new StrField('name');
 
   SqfliteAdapter _adapter;
+  String get tableName => 'MedicineName';
 
-  /// Table name for the model this bean manages
-  String get tableName;
-
-  MetaDao(SqfliteAdapter _adapter){
+  MedicineNameDao (SqfliteAdapter _adapter){
     this._adapter=_adapter;
   }
 
   /// Finds by [code]
-  Future<BaseMeta> findById(String code) async {
+  Future<MedicineNameTable> findById(String code) async {
     Find param = new Find(tableName);
 
     param.where(this.code.eq(code));
 
     Map map = await _adapter.findOne(param);
 
-    var status = BaseMeta().fromJson(map);
+    var status = MedicineNameTable().fromJson(map);
     return status;
   }
 
 
-  Future<BaseMeta> findByName(String name) async {
+  Future<MedicineNameTable> findByName(String name) async {
     Find param = new Find(tableName);
 
     param.where(this.name.eq(name));
@@ -38,20 +39,20 @@ abstract class MetaDao{
     if(map==null || map.isEmpty){
       return null;
     }
-    var status = BaseMeta().fromJson(map);
+    var status = MedicineNameTable().fromJson(map);
     return status;
   }
 
   /// Finds all
-  Future<List<BaseMeta>> findAll() async {
+  Future<List<MedicineNameTable>> findAll() async {
     Find finder = new Find(tableName);
 
     List<Map> maps = (await _adapter.find(finder)).toList();
 
-    var sts = new List<BaseMeta>();
+    var sts = new List<MedicineNameTable>();
 
     for (Map map in maps) {
-      var status = BaseMeta().fromJson(map);
+      var status = MedicineNameTable().fromJson(map);
       sts.add(status);
     }
     return sts;
@@ -61,6 +62,11 @@ abstract class MetaDao{
     Insert inserter = new Insert(tableName);
     inserter.set(code, map['code']);
     inserter.set(name, map['name']);
+
+    inserter.set(medicineCategory, map['medicineCategory']);
+    inserter.set(medicineLevel, map['medicineLevel']);
+    inserter.set(otc, 1);
+
     return await _adapter.insert(inserter);
   }
 
@@ -68,5 +74,4 @@ abstract class MetaDao{
     Remove deleter = new Remove(tableName);
     return await _adapter.remove(deleter);
   }
-
 }

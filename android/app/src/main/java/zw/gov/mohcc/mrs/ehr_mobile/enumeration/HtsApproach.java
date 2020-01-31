@@ -2,16 +2,16 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum HtsApproach {
-    PITC(0),
-    CICTC(1);
+    PITC("PITC"),
+    CICTC("CICTC");
 
-    private final int htsApproach;
+    private final String htsApproach;
 
-    private HtsApproach(int htsApproach) {
+    private HtsApproach(String htsApproach) {
         this.htsApproach = htsApproach;
     }
 
-    public int getHtsApproach() {
+    public String getHtsApproach() {
         return htsApproach;
     }
 

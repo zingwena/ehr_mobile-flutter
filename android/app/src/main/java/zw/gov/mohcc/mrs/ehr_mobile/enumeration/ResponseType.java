@@ -2,11 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum ResponseType {
 
-    YES(0), NO(1), REFUSED(2);
+    YES("YES"), NO("NO"), REFUSED("REFUSED");
 
-    private final int responseType;
+    private final String responseType;
 
-    ResponseType(int responseType) {
+    ResponseType(String responseType) {
         this.responseType = responseType;
     }
 
@@ -24,7 +24,7 @@ public enum ResponseType {
         }
     }
 
-    public int getResponseType() {
+    public String getResponseType() {
         return responseType;
     }
 }

@@ -386,7 +386,9 @@ public class HtsChannel {
 
                             try {
                                 TestKitBatchDto testKitBatchDto = gson.fromJson(arguments, TestKitBatchDto.class);
+                                Log.d(TAG, "Entering method for retrieving testkit batches : " + testKitBatchDto);
                                 List<TestKitBatchIssue> testKitBatchIssueList = htsService.getQueueOrWardTestKits(testKitBatchDto.getBinType(), testKitBatchDto.getBinId(), testKitBatchDto.getTestKitId());
+                                Log.d(TAG, "Testkit batches retrieved : " + testKitBatchIssueList);
                                 String testkitsbatchissues_string = gson.toJson(testKitBatchIssueList);
                                 result.success(testkitsbatchissues_string);
 

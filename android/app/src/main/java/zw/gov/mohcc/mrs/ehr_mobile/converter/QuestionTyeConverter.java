@@ -7,28 +7,28 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.QuestionType;
 public class QuestionTyeConverter {
 
     @TypeConverter
-    public static QuestionType toQuestionTye(int questionTye) {
+    public static QuestionType toQuestionTye(String questionTye) {
 
-        if (questionTye == QuestionType.BOOLEAN.getQuestionTye()) {
+        if (questionTye.equals(QuestionType.BOOLEAN.getQuestionTye())) {
             return QuestionType.BOOLEAN;
-        } else if (questionTye == QuestionType.TEXT.getQuestionTye()) {
+        } else if (questionTye.equals(QuestionType.TEXT.getQuestionTye())) {
             return QuestionType.TEXT;
-        } else if (questionTye == QuestionType.SET.getQuestionTye()) {
+        } else if (questionTye.equals(QuestionType.SET.getQuestionTye())) {
             return QuestionType.SET;
-        } else if (questionTye == QuestionType.NUMERIC.getQuestionTye()) {
+        } else if (questionTye.equals(QuestionType.NUMERIC.getQuestionTye())) {
             return QuestionType.NUMERIC;
-        } else if (questionTye == QuestionType.SKIN_PINCH.getQuestionTye()) {
+        } else if (questionTye.equals(QuestionType.SKIN_PINCH.getQuestionTye())) {
             return QuestionType.SKIN_PINCH;
-        } else if (questionTye == QuestionType.VITAL.getQuestionTye()) {
+        } else if (questionTye.equals(QuestionType.VITAL.getQuestionTye())) {
             return QuestionType.VITAL;
-        } else if (questionTye == QuestionType.INVESTIGATION.getQuestionTye()) {
+        } else if (questionTye.equals(QuestionType.INVESTIGATION.getQuestionTye())) {
             return QuestionType.INVESTIGATION;
         }
         return null;
     }
 
     @TypeConverter
-    public static int toInt(QuestionType questionTye) {
+    public static String toInt(QuestionType questionTye) {
         return questionTye.getQuestionTye();
     }
 }

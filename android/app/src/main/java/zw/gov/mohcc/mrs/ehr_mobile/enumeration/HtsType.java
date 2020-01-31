@@ -2,12 +2,12 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum HtsType {
-    SELF(0),
-    RAPID(1);
+    SELF("SELF"),
+    RAPID("RAPID");
 
-    private final int htsType;
+    private final String htsType;
 
-    HtsType(int htsType) {
+    HtsType(String htsType) {
         this.htsType = htsType;
     }
 
@@ -23,16 +23,16 @@ public enum HtsType {
         }
     }
 
-    public static HtsType getInt(int htsType) {
+    public static HtsType getString(String htsType) {
         for (HtsType type : values()) {
-            if (type.getHtsType() == htsType) {
+            if (type.getHtsType().equals(htsType)) {
                 return type;
             }
         }
         throw new IllegalArgumentException("Unknown argument passes to method : " + htsType);
     }
 
-    public int getHtsType() {
+    public String getHtsType() {
         return htsType;
     }
 }

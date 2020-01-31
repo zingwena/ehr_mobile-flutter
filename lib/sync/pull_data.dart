@@ -11,12 +11,17 @@ import 'package:ehr_mobile/db/dao/meta_dao/EntryPointDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityQueueDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityWardDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/FamilyPlanningStatusDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/FollowUpStatusDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/FunctionalStatusDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/HtsModelsDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationResultDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationTestkitDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LaboratoryResultDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LaboratoryTestDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/LactatingStatusDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/MedicineNameDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/MetaDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/PurposeOfTestsDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/QuestionCategoryDao.dart';
@@ -190,6 +195,13 @@ Future<String> pullMetaData(String url, String authToken) async {
   await pullQueueData();
   await pullSiteData();
 
+  await fetchMeta(FunctionalStatusDao(adapter), '$url/functional-statuses', authToken);
+  await fetchMeta(FollowUpStatusDao(adapter), '$url/follow-up-statuses', authToken);
+  await fetchMeta(FamilyPlanningStatusDao(adapter), '$url/family-planning-statuses', authToken);
+
+  await fetchMeta(LactatingStatusDao(adapter), '$url/lactating-statuses', authToken);
+  await fetchMedicineNames(adapter,url,authToken);
+
 }
 
 Future<String> initDb(SqfliteAdapter adapter) async {
@@ -248,6 +260,12 @@ Future<String> initDb(SqfliteAdapter adapter) async {
   await ArvCombinationRegimenDao(adapter).removeAll();
   await DisclosureMethodDao(adapter).removeAll();
   await TestingPlanDao(adapter).removeAll();
+
+  await FunctionalStatusDao(adapter).removeAll();
+  await FollowUpStatusDao(adapter).removeAll();
+  await FamilyPlanningStatusDao(adapter).removeAll();
+  await LactatingStatusDao(adapter).removeAll();
+  await MedicineNameDao(adapter).removeAll();
 
   status = '$DONE_STATUS';
   return status;
@@ -732,6 +750,32 @@ Future<String> fetchTestingPlans(adapter, url, authToken) async {
   }).then((value) {
     if (value.statusCode == 200) {
       var values = json.decode(value.body);
+      for (Map map in values['content']) {
+        dao.insertFromEhr(map).catchError((error){
+          log.e(error);
+        });
+      }
+      status = '$DONE_STATUS';
+    } else {
+      log.i(value);
+      status = '$FAILED_STATUS';
+    }
+  }).catchError((error) {
+    log.i(error);
+  });
+  return status;
+}
+
+Future<String> fetchMedicineNames(adapter,url,authToken) async {
+  var dao = MedicineNameDao(adapter);
+  var status;
+  await http.get('$url/medicine-names?size=$TOWN_FETCH_SIZE', headers: {
+    'Authorization': 'Bearer $authToken',
+    'Content-Type': 'application/json'
+  }).then((value) {
+    if (value.statusCode == 200) {
+      var values = json.decode(value.body);
+      log.i(values);
       for (Map map in values['content']) {
         dao.insertFromEhr(map).catchError((error){
           log.e(error);

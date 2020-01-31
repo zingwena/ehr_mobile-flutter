@@ -1,6 +1,7 @@
 
 
-class BaseMeta{
+class BaseMeta {
+
   String code;
   String name;
 

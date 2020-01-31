@@ -7,30 +7,30 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 public class TestLevelConverter {
 
     @TypeConverter
-    public static TestLevel toTestLevel(int testLevel) {
+    public static TestLevel toTestLevel(String testLevel) {
 
-        if (testLevel == TestLevel.FIRST.getTestLevel()) {
+        if (testLevel.equals(TestLevel.FIRST.getTestLevel())) {
             return TestLevel.FIRST;
-        } else if (testLevel == TestLevel.SECOND.getTestLevel()) {
+        } else if (testLevel.equals(TestLevel.SECOND.getTestLevel())) {
             return TestLevel.SECOND;
-        } else if (testLevel == TestLevel.THIRD.getTestLevel()) {
+        } else if (testLevel.equals(TestLevel.THIRD.getTestLevel())) {
             return TestLevel.THIRD;
-        } else if (testLevel == TestLevel.PARALLEL_ONE.getTestLevel()) {
+        } else if (testLevel.equals(TestLevel.PARALLEL_ONE.getTestLevel())) {
             return TestLevel.PARALLEL_ONE;
-        } else if (testLevel == TestLevel.PARALLEL_TWO.getTestLevel()) {
+        } else if (testLevel.equals(TestLevel.PARALLEL_TWO.getTestLevel())) {
             return TestLevel.PARALLEL_TWO;
-        } else if (testLevel == TestLevel.SELF.getTestLevel()) {
+        } else if (testLevel.equals(TestLevel.SELF.getTestLevel())) {
             return TestLevel.SELF;
-        } else if (testLevel == TestLevel.DNA_PCR.getTestLevel()) {
+        } else if (testLevel.equals(TestLevel.DNA_PCR.getTestLevel())) {
             return TestLevel.DNA_PCR;
         }
         return null;
     }
 
     @TypeConverter
-    public static int toInt(TestLevel testLevel) {
+    public static String toString(TestLevel testLevel) {
         if (testLevel == null) {
-            return -1;
+            return null;
         }
         return testLevel.getTestLevel();
     }
