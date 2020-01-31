@@ -2,11 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 
 public enum TypeOfContact {
-    PRIMARY(0), SECONDARY(1);
+    PRIMARY("PRIMARY"), SECONDARY("SECONDARY");
 
-    private final int typeOfContact;
+    private final String typeOfContact;
 
-    TypeOfContact(int typeOfContact) {
+    TypeOfContact(String typeOfContact) {
         this.typeOfContact = typeOfContact;
     }
 
@@ -22,7 +22,7 @@ public enum TypeOfContact {
         }
     }
 
-    public int getTypeOfContact() {
+    public String getTypeOfContact() {
         return typeOfContact;
     }
 }

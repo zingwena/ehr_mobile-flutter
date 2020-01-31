@@ -2,11 +2,11 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum PatientType {
 
-    OUTPATIENT(0), INPATIENT(1);
+    OUTPATIENT("OUTPATIENT"), INPATIENT("INPATIENT");
 
-    private final Integer patientType;
+    private final String patientType;
 
-    PatientType(Integer patientType) {
+    PatientType(String patientType) {
         this.patientType = patientType;
     }
 
@@ -21,7 +21,7 @@ public enum PatientType {
         }
     }
 
-    public Integer getPatientType() {
+    public String getPatientType() {
         return patientType;
     }
 }

@@ -6,12 +6,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.HtsApproach;
 
 public class HtsApproachConverter {
     @TypeConverter
-    public static HtsApproach toHtsApproach(int htsApproach) {
+    public static HtsApproach toHtsApproach(String htsApproach) {
 
-        System.out.println("htsApproach = " + htsApproach);
-        if (htsApproach == HtsApproach.PITC.getHtsApproach()) {
+        if (htsApproach.equals(HtsApproach.PITC.getHtsApproach())) {
             return HtsApproach.PITC;
-        } else if (htsApproach == HtsApproach.CICTC.getHtsApproach()) {
+        } else if (htsApproach.equals(HtsApproach.CICTC.getHtsApproach())) {
             return HtsApproach.CICTC;
         } else {
             throw new IllegalArgumentException("Could not recognize status  " + htsApproach);
@@ -19,7 +18,7 @@ public class HtsApproachConverter {
     }
 
     @TypeConverter
-    public static int toInt(HtsApproach htsApproach) {
+    public static String toString(HtsApproach htsApproach) {
         return htsApproach.getHtsApproach();
     }
 }

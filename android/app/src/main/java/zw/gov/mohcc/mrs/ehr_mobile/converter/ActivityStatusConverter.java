@@ -7,13 +7,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
 public class ActivityStatusConverter {
 
     @TypeConverter
-    public static ActivityStatus toActivityStatus(int activityStatus) {
+    public static ActivityStatus toActivityStatus(String activityStatus) {
 
-        if (activityStatus == ActivityStatus.DONE.getActivityStatus()) {
+        if (activityStatus.equals(ActivityStatus.DONE.getActivityStatus())) {
             return ActivityStatus.DONE;
-        } else if (activityStatus == ActivityStatus.NOT_DONE.getActivityStatus()) {
+        } else if (activityStatus.equals(ActivityStatus.NOT_DONE.getActivityStatus())) {
             return ActivityStatus.NOT_DONE;
-        } else if (activityStatus == ActivityStatus.UNKNOWN.getActivityStatus()) {
+        } else if (activityStatus.equals(ActivityStatus.UNKNOWN.getActivityStatus())) {
             return ActivityStatus.UNKNOWN;
         } else {
             return ActivityStatus.UNKNOWN;
@@ -21,9 +21,9 @@ public class ActivityStatusConverter {
     }
 
     @TypeConverter
-    public static int toInt(ActivityStatus activityStatus) {
+    public static String toString(ActivityStatus activityStatus) {
         if (activityStatus == null) {
-            return -1;
+            return null;
         }
         return activityStatus.getActivityStatus();
     }

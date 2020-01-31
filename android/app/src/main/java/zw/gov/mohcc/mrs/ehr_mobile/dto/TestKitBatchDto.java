@@ -41,4 +41,13 @@ public class TestKitBatchDto {
     public void setTestKitId(String testKitId) {
         this.testKitId = testKitId;
     }
+
+    @Override
+    public String toString() {
+        return "TestKitBatchDto{" +
+                "binType=" + binType +
+                ", binId='" + binId + '\'' +
+                ", testKitId='" + testKitId + '\'' +
+                '}';
+    }
 }

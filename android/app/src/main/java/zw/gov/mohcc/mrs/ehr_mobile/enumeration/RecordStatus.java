@@ -2,19 +2,19 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum RecordStatus {
 
-    NEW(0),
-    IMPORTED(1),
-    SYNCED(2),
-    DELETED(3),
-    CHANGED(4);
+    NEW("NEW"),
+    IMPORTED("IMPORTED"),
+    SYNCED("SYNCED"),
+    DELETED("DELETED"),
+    CHANGED("CHANGED");
 
-    private final int status;
+    private final String status;
 
-    private RecordStatus(int status) {
+    private RecordStatus(String status) {
         this.status = status;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return this.status;
     }
 

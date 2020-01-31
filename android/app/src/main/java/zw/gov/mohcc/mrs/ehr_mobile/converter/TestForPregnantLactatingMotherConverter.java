@@ -7,13 +7,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.TestForPregnantLactatingMother;
 public class TestForPregnantLactatingMotherConverter {
 
     @TypeConverter
-    public static TestForPregnantLactatingMother toNewTestPregLact(int code) {
+    public static TestForPregnantLactatingMother toNewTestPregLact(String code) {
 
-        if (code == TestForPregnantLactatingMother.NEW.getCode()) {
+        if (code.equals(TestForPregnantLactatingMother.NEW.getCode())) {
             return TestForPregnantLactatingMother.NEW;
-        } else if (code == TestForPregnantLactatingMother.NONE.getCode()) {
+        } else if (code.equals(TestForPregnantLactatingMother.NONE.getCode())) {
             return TestForPregnantLactatingMother.NONE;
-        } else if (code == TestForPregnantLactatingMother.RETEST.getCode()) {
+        } else if (code.equals(TestForPregnantLactatingMother.RETEST.getCode())) {
             return TestForPregnantLactatingMother.RETEST;
         } else {
             throw new IllegalArgumentException("Could not recognize status  " + code);
@@ -21,7 +21,10 @@ public class TestForPregnantLactatingMotherConverter {
     }
 
     @TypeConverter
-    public static int toInt(TestForPregnantLactatingMother newTestPregLact) {
+    public static String toString(TestForPregnantLactatingMother newTestPregLact) {
+        if (newTestPregLact == null) {
+            return null;
+        }
         return newTestPregLact.getCode();
     }
 }

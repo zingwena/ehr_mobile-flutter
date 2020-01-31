@@ -2,15 +2,15 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum PrepOption {
 
-    INFANT(0), PRE_EXPOSURE(1), POST_EXPOSURE(2), NONE(3);
+    INFANT("INFANT"), PRE_EXPOSURE("PRE_EXPOSURE"), POST_EXPOSURE("POST_EXPOSURE"), NONE("NONE");
 
-    private int prepOption;
+    private String prepOption;
 
-    private PrepOption(Integer prepOption) {
+    private PrepOption(String prepOption) {
         this.prepOption = prepOption;
     }
 
-    public Integer getPrepOption() {
+    public String getPrepOption() {
         return prepOption;
     }
 

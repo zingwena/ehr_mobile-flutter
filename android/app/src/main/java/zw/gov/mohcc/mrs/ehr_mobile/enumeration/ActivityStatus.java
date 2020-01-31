@@ -2,16 +2,12 @@ package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum ActivityStatus {
 
-    DONE(0), NOT_DONE(1), UNKNOWN(2);
+    DONE("DONE"), NOT_DONE("NOT_DONE"), UNKNOWN("UNKNOWN");
 
-    private int activityStatus;
+    private String activityStatus;
 
-    private ActivityStatus(Integer activityStatus) {
+    ActivityStatus(String activityStatus) {
         this.activityStatus = activityStatus;
-    }
-
-    public Integer getActivityStatus() {
-        return activityStatus;
     }
 
     public static ActivityStatus get(String name) {
@@ -25,5 +21,9 @@ public enum ActivityStatus {
             default:
                 throw new IllegalArgumentException("Unknown argument passes to method : " + name);
         }
+    }
+
+    public String getActivityStatus() {
+        return activityStatus;
     }
 }

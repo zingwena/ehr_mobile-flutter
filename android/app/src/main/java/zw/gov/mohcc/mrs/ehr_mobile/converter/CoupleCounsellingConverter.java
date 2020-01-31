@@ -6,12 +6,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.CoupleCounselling;
 
 public class CoupleCounsellingConverter {
     @TypeConverter
-    public static CoupleCounselling toCoupleCounselling(int coupleCounselling) {
+    public static CoupleCounselling toCoupleCounselling(String coupleCounselling) {
 
-        System.out.println("coupleCounselling = " + coupleCounselling);
-        if (coupleCounselling == CoupleCounselling.YES.getCoupleCounselling()) {
+        if (coupleCounselling.equals(CoupleCounselling.YES.getCoupleCounselling())) {
             return CoupleCounselling.YES;
-        } else if (coupleCounselling == CoupleCounselling.NO.getCoupleCounselling()) {
+        } else if (coupleCounselling.equals(CoupleCounselling.NO.getCoupleCounselling())) {
             return CoupleCounselling.NO;
         } else {
             throw new IllegalArgumentException("Could not recognize status  " + coupleCounselling);
@@ -19,7 +18,7 @@ public class CoupleCounsellingConverter {
     }
 
     @TypeConverter
-    public static int toInt(CoupleCounselling coupleCounselling) {
+    public static String toString(CoupleCounselling coupleCounselling) {
         return coupleCounselling.getCoupleCounselling();
     }
 }
