@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indexcontact.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -11,16 +14,10 @@ import 'package:ehr_mobile/view/hiv_screening.dart';
 import 'package:ehr_mobile/view/edit_demographics.dart';
 import 'package:ehr_mobile/view/disclosure_and_partner_testing_info.dart';
 import 'package:ehr_mobile/view/home_page.dart';
-/*
-import 'package:ehr_mobile/view/bottomnavigation.dart';
-*/
-/*import 'package:ehr_mobile/home_screen.dart';*/
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-
 import '../sidebar.dart';
-/*import 'package:cbs_app/bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/person_bloc.dart';*/
+
 
 class HivInformation extends StatefulWidget {
   String indexId;
@@ -42,6 +39,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   final _formKey = GlobalKey<FormState>();
   String lastName, firstName;
   var selectedDate;
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   DateTime date;
   int _options = 0;
   int _relation = 0;
@@ -61,7 +59,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
   String _currentRelation;
   List<DropdownMenuItem<String>>_dropDownMenuItemsRelations;
   bool tested_for_hiv = false;
-
+  Age age;
   var facility_name;
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedRelations() {
@@ -85,6 +83,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
     date = DateTime.now();
     _dropDownMenuItemsRelations = getDropDownMenuItemsIdentifiedRelations();
     getFacilityName();
+    getAge(widget.person);
     print('KKKKKKKKKKK here is the person to be added'+ widget.person.toString()+ "RRRRRRR Here is the person contact"+ widget.person_contact.toString());
     super.initState();
   }
@@ -181,6 +180,20 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
 
       });
   }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
   Future<void>getFacilityName()async{
     String response;
     try{
@@ -271,11 +284,11 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                         /*   Padding(
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

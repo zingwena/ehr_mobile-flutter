@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/home_page.dart';
@@ -78,6 +79,8 @@ class _Art_Initiation extends State<Art_Initiation> {
   List<ArtReason> _artReasonList = List();
   String _currentArtReason;
   ArtRegimenDto _artRegimenDto;
+  Age age;
+
 
   @override
   void initState() {
@@ -85,10 +88,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
     getArtReasons();
     getArvCombinationregimens(widget.patientId, "FIRST_LINE");
-
-  //  patientId = patient.id;
-    /*selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();*/
+    getAge(widget.person);
     super.initState();
   }
 
@@ -113,6 +113,22 @@ class _Art_Initiation extends State<Art_Initiation> {
       print('--------------------Something went wrong  $e');
     }
   }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
 
   Future<void> getArvCombinationregimens(String personId, String regimenType) async {
@@ -261,11 +277,11 @@ class _Art_Initiation extends State<Art_Initiation> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            /*  Padding(
+                              Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/indextest.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTestDto.dart';
 import 'package:ehr_mobile/model/laboratory_investigation.dart';
@@ -85,7 +86,7 @@ class _Recency_Result  extends State<Recency_Result > {
   String final_result = 'Pending';
   List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
   List<LaboratoryInvestigationTest> _entryPointList = List();
-
+  Age age;
   String _currentEntryPoint;
 
   var facility_name;
@@ -103,6 +104,7 @@ class _Recency_Result  extends State<Recency_Result > {
     getTestKIt(widget.labInvetsTestId);
     getStartTime(widget.labInvetsTestId);
     getHtsRecord(widget.patientId);
+    getAge(widget.person);
     //getEndTime(widget.labInvetsTestId);
 
 
@@ -129,6 +131,20 @@ class _Recency_Result  extends State<Recency_Result > {
 
     } catch (e) {
       print('--------------------Something went wrong  $e');
+    }
+  }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
     }
   }
 
@@ -297,11 +313,11 @@ class _Recency_Result  extends State<Recency_Result > {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                          /*  Padding(
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
-                              child: Text("Age - 25", style: TextStyle(
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*/
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(

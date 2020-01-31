@@ -4,14 +4,12 @@ import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/CbsQuestions.dart';
 import 'package:ehr_mobile/model/sexualhistory.dart';
-
-
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/sexualhistoryform2.dart';
-
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
@@ -19,7 +17,6 @@ import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:intl/intl.dart';
@@ -46,8 +43,8 @@ class CbsQuestions extends StatefulWidget {
 
 class _CbsQuestion extends State<CbsQuestions> {
   static const platform = MethodChannel('example.channel.dev/people');
-
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   final _formKey = GlobalKey<FormState>();
   PreTest preTest;
   List<HtsModel> _htsModelList=List();
@@ -69,10 +66,12 @@ class _CbsQuestion extends State<CbsQuestions> {
   DateTime dateOfSexWithMale , dateOfSexWithFemale;
   String sexualHistoryId;
   String purposeOfTestId;
+  Age age;
   @override
   void initState() {
     //getDropDrowns();
     getHtsRecord(widget.personId);
+    getAge(widget.person);
     super.initState();
   }
   List<DropdownMenuItem<String>>
@@ -100,6 +99,20 @@ class _CbsQuestion extends State<CbsQuestions> {
       print("channel failure: '$e'");
     }
 
+  }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
   Future<Null> _selectDateOfSexWithMale(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -205,7 +218,26 @@ class _CbsQuestion extends State<CbsQuestions> {
                               child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
-
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
