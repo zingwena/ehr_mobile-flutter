@@ -11,6 +11,7 @@ import 'package:ehr_mobile/db/dao/meta_dao/EntryPointDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityQueueDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityWardDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/FollowUpStatusDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/HtsModelsDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationResultDao.dart';
@@ -174,6 +175,8 @@ Future<String> pullMetaData(String url, String authToken) async {
   await fetchMeta(LaboratoryTestDao(adapter), '$url/laboratory-tests', authToken);
   await fetchMeta(SamplesDao(adapter), '$url/samples', authToken);
   await fetchMeta(DiagnosisDao(adapter), '$url/diagnoses', authToken);
+
+  await fetchMeta(FollowUpStatusDao(adapter), '$url/follow-up-statuses', authToken);
 
   await fetchInvestigations(adapter, url, authToken);
   await fetchQuestionCategory(adapter,url,authToken);
