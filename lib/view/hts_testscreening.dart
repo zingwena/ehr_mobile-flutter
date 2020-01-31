@@ -743,7 +743,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 ),
                                 Row(
                                   children: <Widget>[
-
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
@@ -766,7 +765,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 100,
                                       ),
                                     ),
-
                                   ],
                                 ),
                                 SizedBox(
