@@ -65,6 +65,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
   void initState() {
     getIndexContactList(widget.indexTestId);
     getAge(widget.person);
+    getFacilityName();
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -78,6 +79,21 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
       });
   }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
 
   Future<void>getAge(Person person)async{
     String response;
@@ -110,20 +126,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
 
     }
   }
-  Future<void>getFacilityName()async{
-    String response;
-    try{
-      response = await retrieveString(FACILITY_NAME);
-      setState(() {
-        facility_name = response;
-      });
-
-    }catch(e){
-      debugPrint("Exception thrown in get facility name method"+e);
-
-    }
-  }
-  bool showInput = true;
+    bool showInput = true;
   bool showInputTabOptions = true;
 
   @override

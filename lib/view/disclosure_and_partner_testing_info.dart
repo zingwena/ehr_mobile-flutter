@@ -15,19 +15,6 @@ import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/services.dart';
-/*
-import 'package:cbs_app/view/link_bar.dart';
-*/
-
-/*
-import 'package:cbs_app/view/home_page.dart';
-*/
-/*
-import 'package:cbs_app/view/bottomnavigation.dart';
-*/
-/*
-import 'package:cbs_app/home_screen.dart';
-*/
 import 'package:intl/intl.dart';
 
 import '../sidebar.dart';
@@ -163,6 +150,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
     date = DateTime.now();
     getDropdowninfo();
     getFacilityName();
+    getAge(widget.person);
     _dropDownMenuItemsDisclosurePlanStatus = getDropDownMenuItemsReligion();
     _dropDownMenuItemsTesting_plans = getDropDownMenuItemsIdentifiedTestingPlanStatus();
     super.initState();
@@ -189,8 +177,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
           _testingplanlist.add(e);
         });
         _dropDownMenuItemsTestingPlans = getDropDownMenuItemsIdentifiedTestingPlanStatus();
-
-        print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"+ _testingplanlist.toString());
 
       });
 

@@ -1,11 +1,13 @@
 import 'dart:convert';
-
 import 'package:ehr_mobile/landing_screen.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
+import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
+import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 import 'package:ehr_mobile/view/hts_screening.dart';
+import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -17,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'model/htsscreening.dart';
 import 'model/person.dart';
 
 class Sidebar extends StatefulWidget{
@@ -38,10 +41,16 @@ class Sidebar extends StatefulWidget{
 class sidebarstate extends State<Sidebar>{
 
   ArtRegistration artReg;
+  HtsScreening htsScreening;
+  String indextestid;
+  String INDEXTEST;
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   @override
   void initState() {
+
     getArtRecord(widget.patientId);
+    getHtsScreeningRecord(widget.patientId);
+    getIndexTestByPersonId(widget.patientId);
 
   }
 
@@ -60,6 +69,57 @@ class sidebarstate extends State<Sidebar>{
       print("channel failure: '$e'");
     }
 
+  }
+
+  Future<void> getHtsScreeningRecord(String patientId) async {
+    var hts_screening;
+    print("get screening method called here");
+    try {
+      hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
+      setState(() {
+        htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
+      });
+    } catch (e) {
+      print("channel failure at hts screening: '$e'");
+    }
+  }
+
+  Future<void>saveIndexTest(IndexTest indexTest)async{
+    var response ;
+    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX '+ indexTest.toString());
+    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE ID FOR PERSON WATIKUDEALER NAYE INDEX TEST'+ indexTest.personId);
+
+    try{
+      response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
+      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
+      setState(() {
+        indextestid = response;
+        print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED" + indextestid);
+
+      });
+
+    }catch(e){
+      print("exception thrown in save index test method: '$e'");
+
+
+    }
+
+  }
+  Future<void>  getIndexTestByPersonId(String personId)async{
+    String response ;
+    try{
+
+      response = await htsChannel.invokeMethod('getIndexTestByPersonId', personId);
+      setState(() {
+        indextestid = response;
+      });
+
+    }catch(e){
+      print("exception thrown in getIndex test method: '$e'");
+
+
+
+    }
 
   }
 
@@ -111,8 +171,6 @@ class sidebarstate extends State<Sidebar>{
                 builder: (context) =>
                     SummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),
 
-           //   SummaryOverview(this.person, this.visitId, this.htsRegistration, this.htsId);
-
           )),
           Divider(
             height: 10.0,
@@ -131,15 +189,34 @@ class sidebarstate extends State<Sidebar>{
           ),
           new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
-
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context)=> Hts_Screening(widget.patientId, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
-
-            ));
-
-
-
-
+            if(htsScreening == null ){
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)
+              ));
+            } else {
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId,  widget.person.id)
+              ));
+            }
+          }),
+          Divider(
+            height: 10.0,
+            color: Colors.blue.shade500,
+          ),
+          new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("Index Testing",  style: new TextStyle(
+              color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
+            if(indextestid == null){
+              print("Index test id is null here ");
+              IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
+              saveIndexTest(indexTest);
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+              ));
+            }else{
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+              ));
+            }
           }),
           Divider(
             height: 10.0,

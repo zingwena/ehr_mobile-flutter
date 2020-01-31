@@ -66,7 +66,6 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
   String patientOnArt;
   String everbeenonprep;
   Age age;
-
   String facility_name;
   @override
   void initState() {

@@ -547,7 +547,6 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("getHtsScreening")) {
-                            Log.i(TAG, "Get hts screening method called in android with the arguments given >>>>>"+ arguments);
                             try {
                                 String personId = arguments;
                                 Log.d(TAG, "Person ID : " + personId);
@@ -581,7 +580,6 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("getSexualHistoryViews")) {
-                            Log.i(TAG, "HERE ARE THE ARGUMENTS TO RETRIEVE SEXUAL HISTORY VIEWS ////////////" + arguments);
                             try {
                                 List<SexualHistoryQuestionView> sexualHistoryQuestionViews = historyService.getPatientSexualHistQuestions(arguments);
                                 Log.i(TAG, "List of sexual history view returned" + sexualHistoryQuestionViews);
@@ -595,6 +593,17 @@ public class HtsChannel {
                             try {
                                 IndexTest indexTest = gson.fromJson(arguments, IndexTest.class);
                                 String indexTestId = indexTestingService.createIndexTest(indexTest);
+                                result.success(indexTestId);
+
+                            } catch (Exception e) {
+                                Log.i(TAG, "Error occurred : " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getIndexTestByPersonId")) {
+                            try {
+                                Log.i(TAG, "Index argumets sent from flutter"+ arguments);
+                                IndexTest indexTest =indexTestingService.getIndexTestByPresonId(arguments);
+                                String indexTestId =  indexTest.getId();
                                 result.success(indexTestId);
 
                             } catch (Exception e) {
@@ -677,6 +686,7 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("getPersonArvCombinationRegimens")) {
+                            Log.i(TAG, "ARGUMENTS SENT FROM FLUTTER TO GET ART REGIMEN >>>>>"+ arguments);
 
                             try {
                                 ArtRegimenDto artRegimenDto = gson.fromJson(arguments, ArtRegimenDto.class);
