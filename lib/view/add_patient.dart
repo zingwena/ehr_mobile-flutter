@@ -202,13 +202,8 @@ class _AddPatient extends State<AddPatient> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          16.0,
-                                                                      horizontal:
-                                                                          60.0),
-                                                              child:
-                                                                  TextFormField(
+                                                                  .symmetric(vertical: 16.0, horizontal: 60.0),
+                                                              child: TextFormField(
                                                                 /*validator:
                                                                     (value) {
                                                                   return value
@@ -216,12 +211,9 @@ class _AddPatient extends State<AddPatient> {
                                                                       ? 'Enter National Id number'
                                                                       : null;
                                                                 },*/
-                                                                onSaved:
-                                                                    (value) =>
-                                                                        setState(
-                                                                            () {
-                                                                  nationalId =
-                                                                      value;
+                                                                onSaved: (value) =>
+                                                                        setState(() {
+                                                                  nationalId = value;
                                                                 }),
                                                                 decoration: InputDecoration(
                                                                     labelText: _identifier ==
@@ -238,15 +230,24 @@ class _AddPatient extends State<AddPatient> {
                                                         ),
                                                       ],
                                                     ),
+
+
                                                     !showError
                                                         ? SizedBox.shrink()
-                                                        : Text(
-                                                            _nationalIdError ??
-                                                                "",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.red),
-                                                          ),
+                                                        : Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(vertical: 2.0, horizontal: 60.0),
+                                                              child: Text(
+                                                                _nationalIdError ??
+                                                                    "",
+                                                                style: TextStyle(
+                                                                    color: Colors.red),
+                                                              ),
+                                                            ),),),], ),
                                                     SizedBox(
                                                       height: 10.0,
                                                     ),
@@ -255,33 +256,23 @@ class _AddPatient extends State<AddPatient> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical:
-                                                                  16.0,
-                                                                  horizontal:
-                                                                  60.0),
-                                                              child:
-                                                              TextFormField(
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                      .isEmpty
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 16.0,
+                                                                  horizontal: 60.0),
+                                                              child: TextFormField(
+                                                                validator: (value) {
+                                                                  return value.isEmpty
                                                                       ? 'Enter First Name'
                                                                       : null;
                                                                 },
-                                                                onSaved:
-                                                                    (value) =>
-                                                                    setState(
-                                                                            () {
-                                                                          firstName =
-                                                                              value;
+                                                                onSaved: (value) =>
+                                                                    setState(() {
+                                                                          firstName = value;
                                                                         }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'First Name',
-                                                                    border:
-                                                                    OutlineInputBorder()),
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -298,17 +289,11 @@ class _AddPatient extends State<AddPatient> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          16.0,
-                                                                      horizontal:
-                                                                          60.0),
-                                                              child:
-                                                                  TextFormField(
-                                                                validator:
-                                                                    (value) {
-                                                                  return value
-                                                                          .isEmpty
+                                                                  .symmetric(vertical: 16.0,
+                                                                      horizontal: 60.0),
+                                                              child: TextFormField(
+                                                                validator: (value) {
+                                                                  return value.isEmpty
                                                                       ? 'Enter Last Name'
                                                                       : null;
                                                                 },
@@ -320,8 +305,7 @@ class _AddPatient extends State<AddPatient> {
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                         'Last Name',
-                                                                    border:
-                                                                        OutlineInputBorder()),
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -366,12 +350,9 @@ class _AddPatient extends State<AddPatient> {
                                                           Text('Female'),
                                                           Radio(
                                                               value: 2,
-                                                              groupValue:
-                                                                  _gender,
-                                                              activeColor:
-                                                                  Colors.blue,
-                                                              onChanged:
-                                                                  _handleGenderChange)
+                                                              groupValue: _gender,
+                                                              activeColor: Colors.blue,
+                                                              onChanged: _handleGenderChange)
                                                         ],
                                                       ),
                                                     ),
@@ -389,27 +370,17 @@ class _AddPatient extends State<AddPatient> {
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        0.0),
-                                                                child:
-                                                                    TextFormField(
-                                                                  controller:
-                                                                      TextEditingController(
-                                                                          text:
-                                                                              displayDate),
-                                                                  validator:
-                                                                      (value) {
-                                                                    return value
-                                                                            .isEmpty
+                                                                padding: const EdgeInsets.all(0.0),
+                                                                child: TextFormField(
+                                                                  controller: TextEditingController(
+                                                                          text: displayDate),
+                                                                  validator: (value) {
+                                                                    return value.isEmpty
                                                                         ? 'Enter some text'
                                                                         : null;
                                                                   },
                                                                   decoration: InputDecoration(
-                                                                      border: OutlineInputBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(0.0)),
+                                                                      border: OutlineInputBorder(),
                                                                   labelText: "Date of birth"),
                                                                 ),
                                                               ),
@@ -419,12 +390,8 @@ class _AddPatient extends State<AddPatient> {
                                                           IconButton(
                                                               icon: Icon(Icons
                                                                   .calendar_today),
-                                                              color:
-                                                                  Colors.blue,
-                                                              onPressed: () {
-                                                                _selectDate(
-                                                                    context);
-                                                              })
+                                                              color: Colors.blue,
+                                                              onPressed: () {_selectDate(context);})
                                                         ],
                                                       ),
                                                     ),
@@ -437,8 +404,7 @@ class _AddPatient extends State<AddPatient> {
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius.circular(5.0)),
+                                                            borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
                                                         child: Row(

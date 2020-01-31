@@ -288,50 +288,51 @@ class _Registration extends State<Registration> {
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
                                                     SizedBox(
-                                                      height: 20.0,
+                                                      height: 30.0,
                                                     ),
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child:              Row(
+                                                      child: Row(
                                                         children: <Widget>[
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    vertical: 0.0, horizontal: 30.0),
+                                                                padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                                 child: TextFormField(
-                                                                  controller:
-                                                                  TextEditingController(text: selectedDate),
+                                                                  controller: TextEditingController(text: selectedDate),
                                                                   validator: (value) {
                                                                     return value.isEmpty ? 'Enter some text' : null;
                                                                   },
                                                                   decoration: InputDecoration(
+                                                                      suffixIcon: IconButton(
+                                                                          icon: Icon(Icons.calendar_today),
+                                                                          color: Colors.blue,
+                                                                          onPressed: () {
+                                                                            _selectDate(context);
+                                                                          }),
                                                                       labelText: 'Date of HIV Test',
                                                                       border: OutlineInputBorder()),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-                                                          IconButton(
-                                                              icon: Icon(Icons.calendar_today),
-                                                              color: Colors.blue,
-                                                              onPressed: () {
-                                                                _selectDate(context);
-                                                              })
+
                                                         ],
                                                       ),
                                                     ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child:     Row(
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
+                                                      child: Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(30.0),
+                                                              child: Padding( padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                                 child: Text('HTS Type'),
                                                               ),
                                                               width: 250,
@@ -346,11 +347,10 @@ class _Registration extends State<Registration> {
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                      height: 20.0,
+                                                      height: 15.0,
                                                     ),
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
                                                       width: double.infinity,
                                                       child: OutlineButton(
                                                         shape: RoundedRectangleBorder(
@@ -359,8 +359,7 @@ class _Registration extends State<Registration> {
                                                         padding: const EdgeInsets.all(0.0),
                                                         child: Container(
                                                           width: double.infinity,
-                                                          padding: EdgeInsets.symmetric(
-                                                              vertical: 8.0, horizontal: 30.0),
+                                                          padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                           child: DropdownButton(
                                                             isExpanded:true,
                                                             hint: Text('Select Entry Point'),
@@ -384,11 +383,19 @@ class _Registration extends State<Registration> {
                                                     ),
                                                     !_showError
                                                         ? SizedBox.shrink()
-                                                        : Text( _entryPointError ?? "",
-                                                      style: TextStyle(color: Colors.red),
-                                                    ),
+                                                        : Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(vertical: 2.0, horizontal: 60.0),
+                                                              child: Text( _entryPointError ?? "",
+                                                                style: TextStyle(color: Colors.red),
+                                                              ),
+                                                            ),),),], ),
                                                     SizedBox(
-                                                      height: 30.0,
+                                                      height: 40.0,
                                                     ),
                                                     Container(
                                                       width: double.infinity,

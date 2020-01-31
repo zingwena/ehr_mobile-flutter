@@ -261,8 +261,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
                                         minHeight:
-                                        viewportConstraints.maxHeight -
-                                            48.0,
+                                        viewportConstraints.maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                         child: Column(
@@ -273,10 +272,14 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
+
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:        Row(
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
+                                                    child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
@@ -320,14 +323,14 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
-                                                    child:              Row(
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
+                                                    child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding: EdgeInsets.symmetric(
-                                                                  vertical: 0.0, horizontal: 30.0),
+                                                                  vertical: 16.0, horizontal: 60.0),
                                                               child: TextFormField(
                                                                 controller:
                                                                 TextEditingController(text: selectedDateOfSexWithMale),
@@ -335,72 +338,61 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                   return value.isEmpty ? 'Enter date' : null;
                                                                 },
                                                                 decoration: InputDecoration(
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateOfSexWithMale(context);}),
                                                                     labelText: 'Date of last sex with male',
                                                                     border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfSexWithMale(context);
-                                                            })
+
                                                       ],
                                                     ),
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 10.0, horizontal: 30.0),
                                                     child:              Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding: EdgeInsets.symmetric(
-                                                                  vertical: 0.0, horizontal: 30.0),
-                                                              child: TextFormField(
-                                                                controller:
+                                                                  vertical: 16.0, horizontal: 60.0),
+                                                              child: TextFormField( controller:
                                                                 TextEditingController(text: selectedDateOfSexWithFemale),
                                                                 validator: (value) {
                                                                   return value.isEmpty ? 'Enter date' : null;
                                                                 },
                                                                 decoration: InputDecoration(
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateOfSexWithFemale(context);}),
                                                                     labelText: 'Date of last sex with female',
                                                                     border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfSexWithFemale(context);
-                                                            })
+
                                                       ],
                                                     ),
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 12.0, horizontal: 30.0),
                                                     child:     Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical:
-                                                                  16.0,
-                                                                  horizontal:
-                                                                  60.0),
-                                                              child:
-                                                              TextFormField(
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 16.0, horizontal: 60.0),
+                                                              child: TextFormField(
                                                                 keyboardType: TextInputType.number,
-                                                                validator:
-                                                                    (value) {
+                                                                validator: (value) {
                                                                   return value
                                                                       .isEmpty
                                                                       ? 'Enter Number of sexual partners'
@@ -409,8 +401,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                 onSaved:
                                                                     (value) =>
                                                                     setState(
-                                                                            () {
-                                                                         numberofsexualpartners  = int.parse(value);                                           }),
+                                                                            () { numberofsexualpartners  = int.parse(value);                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'Number of sexual partners',
@@ -433,16 +424,10 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding: EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical:
-                                                                  16.0,
-                                                                  horizontal:
-                                                                  60.0),
-                                                              child:
-                                                              TextFormField(
+                                                                  .symmetric( vertical: 16.0, horizontal: 60.0),
+                                                              child: TextFormField(
                                                                 keyboardType: TextInputType.number,
-                                                                validator:
-                                                                    (value) {
+                                                                validator: (value) {
                                                                   return value
                                                                       .isEmpty
                                                                       ? 'Enter  Number of sexual partners'
@@ -467,7 +452,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: 20.0,
+                                                    height: 25.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
