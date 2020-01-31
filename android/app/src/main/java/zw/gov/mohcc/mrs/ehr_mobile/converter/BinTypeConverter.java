@@ -7,7 +7,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 public class BinTypeConverter {
 
     @TypeConverter
-    public static BinType toBinType(int binType) {
+    public static BinType toBinType(String binType) {
 
         if (binType == BinType.QUEUE.getBinType()) {
             return BinType.QUEUE;
@@ -18,9 +18,9 @@ public class BinTypeConverter {
     }
 
     @TypeConverter
-    public static int toInt(BinType binType) {
+    public static String toInt(BinType binType) {
         if (binType == null) {
-            return -1;
+            return null;
         }
         return binType.getBinType();
     }
