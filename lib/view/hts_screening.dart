@@ -347,9 +347,11 @@ class _HtsScreening extends State<Hts_Screening> {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment
                                                     .start,
-                                                mainAxisAlignment: MainAxisAlignment
-                                                    .spaceEvenly,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
