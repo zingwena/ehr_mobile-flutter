@@ -55,7 +55,7 @@ public class AddPatientChannel {
                     person.setAddress(patientDto.getAddress());
                     person.setOccupationId(patientDto.getOccupation());
                     person.setBirthDate(patientDto.getBirthDate());
-                    person.setStatus(RecordStatus.NEW);
+                    person.setRecordStatus(RecordStatus.NEW);
                     ehrMobileDatabase.personDao().createPatient(person);
                     Person person1 = ehrMobileDatabase.personDao().findPatientById(personId);
                     Log.i(TAG,"PERSON PERSON PERSON SAVED IN ANDROID"+ person1.toString());

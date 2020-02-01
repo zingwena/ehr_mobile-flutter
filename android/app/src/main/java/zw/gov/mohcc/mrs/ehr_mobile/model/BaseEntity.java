@@ -16,7 +16,7 @@ public class BaseEntity implements Serializable {
     private String id;
 
     @TypeConverters(RecordStatusConvertor.class)
-    private RecordStatus status;
+    private RecordStatus recordStatus;
 
     public BaseEntity() {
     }
@@ -33,12 +33,12 @@ public class BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public RecordStatus getStatus() {
-        return status;
+    public RecordStatus getRecordStatus() {
+        return recordStatus;
     }
 
-    public void setStatus(RecordStatus status) {
-        this.status = status;
+    public void setRecordStatus(RecordStatus recordStatus) {
+        this.recordStatus = recordStatus;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BaseEntity implements Serializable {
     public String toString() {
         return "BaseEntity{" +
                 "id='" + id + '\'' +
-                ", status=" + status +
+                ", recordStatus=" + recordStatus +
                 '}';
     }
 }

@@ -11,16 +11,13 @@ public enum ActivityStatus {
     }
 
     public static ActivityStatus get(String name) {
-        switch (name) {
-            case "DONE":
-                return DONE;
-            case "NOT_DONE":
-                return NOT_DONE;
-            case "UNKNOWN":
-                return UNKNOWN;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (ActivityStatus item : values()) {
+            if (item.getActivityStatus().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getActivityStatus() {

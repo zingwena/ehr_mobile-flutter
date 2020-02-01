@@ -11,33 +11,22 @@ public enum TestLevel {
 
     private final String testLevel;
 
-    private TestLevel(String testLevel) {
+    TestLevel(String testLevel) {
         this.testLevel = testLevel;
     }
 
     public static TestLevel get(String name) {
-        switch (name) {
-            case "FIRST":
-                return FIRST;
-            case "SECOND":
-                return SECOND;
-            case "THIRD":
-                return THIRD;
-            case "PARALLEL_ONE":
-                return PARALLEL_ONE;
-            case "PARALLEL_TWO":
-                return PARALLEL_TWO;
-            case "SELF":
-                return SELF;
-            case "DNA_PCR":
-                return DNA_PCR;
-            default:
-                throw new IllegalArgumentException("Unknown argument passed to method : " + name);
+
+        for (TestLevel item : values()) {
+            if (item.getTestLevel().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public static List<TestLevel> getEhrTestLevels() {
-        return new ArrayList<>(Arrays.asList(new TestLevel[] {FIRST, SECOND, THIRD}));
+        return new ArrayList<>(Arrays.asList(FIRST, SECOND, THIRD));
     }
 
     public String getTestLevel() {

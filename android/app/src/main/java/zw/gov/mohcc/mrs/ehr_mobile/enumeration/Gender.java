@@ -19,17 +19,12 @@ public enum Gender {
     }
 
     public static Gender get(String name) {
-        switch (name) {
-            case "MALE":
-                return MALE;
-            case "FEMALE":
-                return FEMALE;
-            case "UNKNOWN":
-                return UNKNOWN;
-            case "NON_BINARY":
-                return NON_BINARY;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (Gender item : values()) {
+            if(item.getSex().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 }

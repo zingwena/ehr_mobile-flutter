@@ -12,20 +12,13 @@ public enum MedicineLevel {
     }
 
     public static MedicineLevel get(String name) {
-        switch (name) {
-            case "A":
-                return A;
-            case "B":
-                return B;
-            case "C":
-                return C;
-            case "D":
-                return D;
-            case "S":
-                return S;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (MedicineLevel item : values()) {
+            if (item.getMedicineLevel().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getMedicineLevel() {

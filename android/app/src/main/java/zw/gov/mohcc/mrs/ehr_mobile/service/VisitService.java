@@ -18,7 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
@@ -237,12 +237,12 @@ public class VisitService {
         Art art = artService.getArt(personId);
         Log.d(TAG, "Retrieved patient art record : " + art);
         if (art != null) {
-            ArtInitiation artInitiation = ehrMobileDatabase.artInitiationDao().findByPersonId(personId);
+            ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByVisitId(personId);
             String arvRegimen = "";
-            if (artInitiation != null) {
-                arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artInitiation.getArtRegimenId()).getName();
+            if (artCurrentStatus != null) {
+                arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatus.getRegimen().getCode()).getName();
             }
-            Log.d(TAG, "Art Initiation object : " + artInitiation);
+            Log.d(TAG, "Art Initiation object : " + artCurrentStatus);
             summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getOiArtNumber(), null,
                     arvRegimen));
         }
