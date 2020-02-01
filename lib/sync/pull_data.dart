@@ -532,7 +532,7 @@ Future<String> fetchTestKitsLevels(adapter, url, authToken) async {
           if (value.statusCode == 200) {
             var values = json.decode(value.body);
             for (Map map in values) {
-              dao.insertFromEhr(map['code'],'$index');
+              dao.insertFromEhr(map['code'], testLevel);
             }
             status = '$DONE_STATUS';
           } else {
