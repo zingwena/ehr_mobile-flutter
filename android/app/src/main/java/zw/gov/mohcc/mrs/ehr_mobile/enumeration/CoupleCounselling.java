@@ -7,23 +7,21 @@ public enum CoupleCounselling {
 
     private final String coupleCounselling;
 
-    private CoupleCounselling(String coupleCounselling) {
+    CoupleCounselling(String coupleCounselling) {
         this.coupleCounselling = coupleCounselling;
+    }
+
+    public static CoupleCounselling get(String name) {
+
+        for (CoupleCounselling item : values()) {
+            if (item.getCoupleCounselling().equals(item)) {
+                return item;
+            }
+        }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getCoupleCounselling() {
         return coupleCounselling;
-    }
-
-    public static CoupleCounselling get(String name) {
-        switch (name) {
-            case "YES":
-                return YES;
-            case "NO":
-                return NO;
-
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
-        }
     }
 }

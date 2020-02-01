@@ -27,7 +27,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.TestKitBatchDto;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
@@ -37,7 +37,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
@@ -676,9 +675,9 @@ public class HtsChannel {
                         if (methodCall.method.equals("getArtInitiationRecord")) {
 
                             try {
-                                ArtInitiation artInitiation = ehrMobileDatabase.artInitiationDao().findByPersonId(arguments);
-                                Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID"+ artInitiation);
-                                String artjson = gson.toJson(artInitiation);
+                                ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByPersonId(arguments);
+                                Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID"+ artCurrentStatus);
+                                String artjson = gson.toJson(artCurrentStatus);
                                 Log.i(TAG, "ART INITIATION MODEL #################"+ artjson);
                                 result.success(artjson);
                             } catch (Exception e) {

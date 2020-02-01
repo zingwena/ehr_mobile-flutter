@@ -11,14 +11,13 @@ public enum PatientType {
     }
 
     public static PatientType get(String name) {
-        switch (name) {
-            case "OUTPATIENT":
-                return OUTPATIENT;
-            case "INPATIENT":
-                return INPATIENT;
-            default:
-                throw new IllegalArgumentException("Illegal parameter passed to method");
+
+        for (PatientType item : values()) {
+            if (item.getPatientType().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getPatientType() {

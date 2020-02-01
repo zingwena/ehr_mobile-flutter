@@ -10,9 +10,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
-
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 
 
 @Dao
@@ -20,31 +18,31 @@ public interface ArtInitiationDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void createArtInitiation(ArtInitiation artInitiation);
+    void createArtInitiation(ArtCurrentStatus artCurrentStatus);
 
-    @Query("DELETE from ArtInitiation")
+    @Query("DELETE from ArtCurrentStatus")
     void deleteAll();
 
-    @Query("SELECT COUNT(id) FROM ArtInitiation WHERE id =:id")
+    @Query("SELECT COUNT(id) FROM ArtCurrentStatus WHERE id =:id")
     int getNumberOfRows(String id);
 
     @Update
-    void updateArtInitiation(ArtInitiation artInitiation);
+    void updateArtInitiation(ArtCurrentStatus artCurrentStatus);
 
-    @Query("SELECT * FROM ArtInitiation")
-    List<ArtInitiation> listArtInitiation();
+    @Query("SELECT * FROM ArtCurrentStatus")
+    List<ArtCurrentStatus> listArtInitiation();
 
-    @Query("SELECT * FROM ArtInitiation WHERE id =:id")
-    ArtInitiation findArtInitiationById(String id);
+    @Query("SELECT * FROM ArtCurrentStatus WHERE id =:id")
+    ArtCurrentStatus findArtInitiationById(String id);
 
-    @Query("DELETE FROM ArtInitiation where id = :id")
+    @Query("DELETE FROM ArtCurrentStatus where id = :id")
     void deleteById(String id);
 
     @RawQuery
-    List<ArtInitiation> searchArtInitiation(SimpleSQLiteQuery query);
+    List<ArtCurrentStatus> searchArtInitiation(SimpleSQLiteQuery query);
 
-    @Query("SELECT * FROM ArtInitiation WHERE personId =:personId")
-    ArtInitiation findByPersonId(String personId);
+    @Query("SELECT * FROM ArtCurrentStatus WHERE personId =:personId")
+    ArtCurrentStatus findByPersonId(String personId);
 
 
 

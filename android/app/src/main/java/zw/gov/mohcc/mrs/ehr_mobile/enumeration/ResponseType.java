@@ -12,16 +12,12 @@ public enum ResponseType {
 
     public static ResponseType get(String name) {
 
-        switch (name) {
-            case "YES":
-                return YES;
-            case "NO":
-                return NO;
-            case "REFUSED":
-                return REFUSED;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+        for (ResponseType item : values()) {
+            if (item.getResponseType().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getResponseType() {

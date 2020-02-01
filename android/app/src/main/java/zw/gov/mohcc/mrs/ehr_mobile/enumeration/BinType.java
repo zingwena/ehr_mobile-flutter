@@ -11,14 +11,13 @@ public enum BinType {
     }
 
     public static BinType get(String name) {
-        switch (name) {
-            case "QUEUE":
-                return QUEUE;
-            case "WARD":
-                return WARD;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (BinType item : values()) {
+            if (item.getBinType().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getBinType() {

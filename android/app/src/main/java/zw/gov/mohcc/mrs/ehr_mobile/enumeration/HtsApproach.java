@@ -7,23 +7,21 @@ public enum HtsApproach {
 
     private final String htsApproach;
 
-    private HtsApproach(String htsApproach) {
+    HtsApproach(String htsApproach) {
         this.htsApproach = htsApproach;
+    }
+
+    public static HtsApproach get(String name) {
+
+        for (HtsApproach item : values()) {
+            if (item.getHtsApproach().equals(name)) {
+                return item;
+            }
+        }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getHtsApproach() {
         return htsApproach;
-    }
-
-    public static HtsApproach get(String name) {
-        switch (name) {
-            case "PITC":
-                return PITC;
-            case "CICTC":
-                return CICTC;
-
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
-        }
     }
 }

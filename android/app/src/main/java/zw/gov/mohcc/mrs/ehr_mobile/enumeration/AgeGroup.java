@@ -11,14 +11,13 @@ public enum AgeGroup {
     }
 
     public static AgeGroup get(String name) {
-        switch (name) {
-            case "ADULT":
-                return ADULT;
-            case "PEADS":
-                return PEADS;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (AgeGroup item : values()) {
+            if (item.getAgeGroup().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public static AgeGroup getPersonAgeGroup(int age) {

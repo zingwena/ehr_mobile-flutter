@@ -45,7 +45,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
@@ -217,7 +217,7 @@ public class MainActivity extends FlutterActivity {
                     bloodPressure.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(bloodPressure.getPersonId());
                     bloodPressure.setVisitId(visitId);
-                    bloodPressure.setStatus(RecordStatus.NEW);
+                    bloodPressure.setRecordStatus(RecordStatus.NEW);
                     ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
                     BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
 
@@ -229,7 +229,7 @@ public class MainActivity extends FlutterActivity {
                     temperature.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(temperature.getPersonId());
                     temperature.setVisitId(visitId);
-                    temperature.setStatus(RecordStatus.NEW);
+                    temperature.setRecordStatus(RecordStatus.NEW);
                     ehrMobileDatabase.temperatureDao().insert(temperature);
                     System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
 
@@ -242,7 +242,7 @@ public class MainActivity extends FlutterActivity {
                     respiratoryRate.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(respiratoryRate.getPersonId());
                     respiratoryRate.setVisitId(visitId);
-                    respiratoryRate.setStatus(RecordStatus.NEW);
+                    respiratoryRate.setRecordStatus(RecordStatus.NEW);
                     ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
                     System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
 
@@ -253,7 +253,7 @@ public class MainActivity extends FlutterActivity {
                     height.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(height.getPersonId());
                     height.setVisitId(visitId);
-                    height.setStatus(RecordStatus.NEW);
+                    height.setRecordStatus(RecordStatus.NEW);
                     ehrMobileDatabase.heightDao().insert(height);
                     System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
 
@@ -264,7 +264,7 @@ public class MainActivity extends FlutterActivity {
                     weight.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(weight.getPersonId());
                     weight.setVisitId(visitId);
-                    weight.setStatus(RecordStatus.NEW);
+                    weight.setRecordStatus(RecordStatus.NEW);
                     ehrMobileDatabase.weightDao().insert(weight);
 
 
@@ -274,7 +274,7 @@ public class MainActivity extends FlutterActivity {
                     pulse.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(pulse.getPersonId());
                     pulse.setVisitId(visitId);
-                    pulse.setStatus(RecordStatus.NEW);
+                    pulse.setRecordStatus(RecordStatus.NEW);
                     ehrMobileDatabase.pulseDao().insert(pulse);
                     System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
 
@@ -323,16 +323,16 @@ public class MainActivity extends FlutterActivity {
                         if (methodCall.method.equals("saveArtInitiation")) {
                             try {
 
-                                ArtInitiation artInitiation = gson.fromJson(arguments, ArtInitiation.class);
-                                System.out.println("ART ININTIATION HERE ART INITIATION HERE HERE " + artInitiation);
-                                String artRegmenId = ehrMobileDatabase.arvCombinationRegimenDao().findByName(artInitiation.getArtRegimenId()).getCode();
-                                String artReasonId = ehrMobileDatabase.artReasonDao().findByName(artInitiation.getArtReasonId()).getCode();
-                                artInitiation.setId(UUID.randomUUID().toString());
-                                artInitiation.setPersonId(artInitiation.getPersonId());
-                                artInitiation.setArtRegimenId(artRegmenId);
-                                artInitiation.setArtReasonId(artReasonId);
-                                ehrMobileDatabase.artInitiationDao().createArtInitiation(artInitiation);
-                                ArtInitiation initiation = ehrMobileDatabase.artInitiationDao().findArtInitiationById(artInitiation.getId());
+                                ArtCurrentStatus artCurrentStatus = gson.fromJson(arguments, ArtCurrentStatus.class);
+                                System.out.println("ART ININTIATION HERE ART INITIATION HERE HERE " + artCurrentStatus);
+                                String artRegmenId = ehrMobileDatabase.arvCombinationRegimenDao().findByName(artCurrentStatus.getArtRegimenId()).getCode();
+                                String artReasonId = ehrMobileDatabase.artReasonDao().findByName(artCurrentStatus.getArtReasonId()).getCode();
+                                artCurrentStatus.setId(UUID.randomUUID().toString());
+                                artCurrentStatus.setPersonId(artCurrentStatus.getPersonId());
+                                artCurrentStatus.setArtRegimenId(artRegmenId);
+                                artCurrentStatus.setArtReasonId(artReasonId);
+                                ehrMobileDatabase.artInitiationDao().createArtInitiation(artCurrentStatus);
+                                ArtCurrentStatus initiation = ehrMobileDatabase.artInitiationDao().findArtInitiationById(artCurrentStatus.getId());
                                 String response = gson.toJson(initiation);
                                 result.success(response);
 

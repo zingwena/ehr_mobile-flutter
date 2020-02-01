@@ -12,15 +12,13 @@ public enum NewTest {
     }
 
     public static NewTest get(String name) {
-        switch (name) {
-            case "PITC":
-                return PITC;
-            case "CICTC":
-                return CICTC;
 
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+        for (NewTest item : values()) {
+            if (item.getNewTest().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getNewTest() {

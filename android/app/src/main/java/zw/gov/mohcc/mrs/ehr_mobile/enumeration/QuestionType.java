@@ -12,24 +12,13 @@ public enum QuestionType {
     }
 
     public static QuestionType get(String name) {
-        switch (name) {
-            case "BOOLEAN":
-                return BOOLEAN;
-            case "TEXT":
-                return TEXT;
-            case "SET":
-                return SET;
-            case "NUMERIC":
-                return NUMERIC;
-            case "SKIN_PINCH":
-                return SKIN_PINCH;
-            case "VITAL":
-                return VITAL;
-            case "INVESTIGATION":
-                return INVESTIGATION;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (QuestionType item : values()) {
+            if (item.getQuestionTye().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getQuestionTye() {
