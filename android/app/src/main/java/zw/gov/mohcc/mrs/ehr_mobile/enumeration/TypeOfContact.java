@@ -11,15 +11,13 @@ public enum TypeOfContact {
     }
 
     public static TypeOfContact get(String name) {
-        switch (name) {
-            case "PRIMARY":
-                return PRIMARY;
-            case "SECONDARY":
-                return SECONDARY;
 
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+        for (TypeOfContact item : values()) {
+            if (item.getTypeOfContact().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getTypeOfContact() {

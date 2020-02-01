@@ -11,19 +11,13 @@ public enum WhoStage {
     }
 
     public static WhoStage get(String name) {
-        switch (name) {
-            case "ONE":
-                return ONE;
-            case "TWO":
-                return TWO;
-            case "THREE":
-                return THREE;
-            case "FOUR":
-                return FOUR;
 
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+        for (WhoStage item : values()) {
+            if (item.getWhoStage().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getWhoStage() {

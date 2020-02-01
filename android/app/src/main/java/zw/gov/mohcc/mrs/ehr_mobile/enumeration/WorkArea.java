@@ -15,44 +15,13 @@ public enum WorkArea {
     }
 
     public static WorkArea get(String name) {
-        switch (name) {
-            case "PNC":
-                return PNC;
-            case "IMNCI":
-                return IMNCI;
-            case "ART":
-                return ART;
-            case "TB":
-                return TB;
-            case "ANC":
-                return ANC;
-            case "PNC_MOTHER":
-                return PNC_MOTHER;
-            case "PNC_CHILD":
-                return PNC_CHILD;
-            case "ART_SIGN":
-                return ART_SIGN;
-            case "ART_SYMPTOM":
-                return ART_SYMPTOM;
-            case "ART_NEWOI":
-                return ART_NEWOI;
-            case "ESSENTIAL_BABY_CARE":
-                return ESSENTIAL_BABY_CARE;
-            case "MATERNAL":
-                return MATERNAL;
-            case "HISTORY":
-                return HISTORY;
-            case "MOTHER_PREGNANCY_DANGER_SIGNS":
-                return MOTHER_PREGNANCY_DANGER_SIGNS;
-            case "BABY_PREGNANCY_DANGER_SIGNS":
-                return BABY_PREGNANCY_DANGER_SIGNS;
-            case "HTS":
-                return HTS;
-            case "SEXUAL_HISTORY":
-                return SEXUAL_HISTORY;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (WorkArea item : values()) {
+            if (item.getWorkArea().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getWorkArea() {

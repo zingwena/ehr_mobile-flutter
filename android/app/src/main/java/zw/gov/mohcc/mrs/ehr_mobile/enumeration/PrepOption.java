@@ -6,26 +6,21 @@ public enum PrepOption {
 
     private String prepOption;
 
-    private PrepOption(String prepOption) {
+    PrepOption(String prepOption) {
         this.prepOption = prepOption;
+    }
+
+    public static PrepOption get(String name) {
+
+        for (PrepOption item : values()) {
+            if (item.getPrepOption().equals(name)) {
+                return item;
+            }
+        }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getPrepOption() {
         return prepOption;
-    }
-
-    public static PrepOption get(String name) {
-        switch (name) {
-            case "INFANT":
-                return INFANT;
-            case "PRE_EXPOSURE":
-                return PRE_EXPOSURE;
-            case "POST_EXPOSURE":
-                return POST_EXPOSURE;
-            case "NONE":
-                return NONE;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
-        }
     }
 }

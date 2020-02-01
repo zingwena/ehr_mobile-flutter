@@ -11,16 +11,13 @@ public enum RegimenType {
     }
 
     public static RegimenType get(String name) {
-        switch (name) {
-            case "FIRST_LINE":
-                return FIRST_LINE;
-            case "SECOND_LINE":
-                return SECOND_LINE;
-            case "THIRD_LINE":
-                return THIRD_LINE;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (RegimenType item : values()) {
+            if (item.getRegimenType().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getRegimenType() {

@@ -11,23 +11,13 @@ public enum RelationshipType {
     }
 
     public static RelationshipType get(String name) {
-        switch (name) {
-            case "CHILD":
-                return CHILD;
-            case "PARENT":
-                return PARENT;
-            case "SPOUSE":
-                return SPOUSE;
-            case "SIBLING":
-                return SIBLING;
-            case "SEXUAL_PARTNER":
-                return SEXUAL_PARTNER;
-            case "OTHER":
-                return OTHER;
 
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+        for (RelationshipType item : values()) {
+            if (item.getRelationshipType().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getRelationshipType() {

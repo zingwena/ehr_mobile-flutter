@@ -12,16 +12,13 @@ public enum MedicineCategory {
     }
 
     public static MedicineCategory get(String name) {
-        switch (name) {
-            case "V":
-                return V;
-            case "E":
-                return E;
-            case "N":
-                return N;
-            default:
-                throw new IllegalArgumentException("Unknown argument passes to method : " + name);
+
+        for (MedicineCategory item : values()) {
+            if (item.getMedicineCategory().equals(name)) {
+                return item;
+            }
         }
+        throw new IllegalArgumentException("Unknown argument passes to method : " + name);
     }
 
     public String getMedicineCategory() {

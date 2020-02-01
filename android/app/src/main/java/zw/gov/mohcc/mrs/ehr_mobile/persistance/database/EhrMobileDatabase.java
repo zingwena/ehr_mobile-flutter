@@ -9,6 +9,7 @@ import androidx.room.TypeConverters;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.ActivityStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.AgeGroupConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.ArvStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.CoupleCounsellingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
@@ -34,7 +35,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtInitiation;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
@@ -44,11 +45,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.hts.SexualHistoryQuestion;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.person.PersonPhone;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.PersonPhone;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Relationship;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Diagnosis;
@@ -63,6 +66,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
@@ -90,10 +94,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtInitiationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtCurrentStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitTypeDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArvCombinationRegimenDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
@@ -115,6 +121,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IndexTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationTestkitDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IptReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
@@ -123,11 +130,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MaritalStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.MedicineNameDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.NationalityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.OccupationDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonPhoneDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientQueueDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PatientWardDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonInvestigationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PersonPhoneDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.PurposeOfTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.QuestionCategoryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.QuestionDao;
@@ -169,19 +176,20 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         Temperature.class, RespiratoryRate.class, Weight.class, Height.class, Pulse.class, Visit.class,
         LaboratoryInvestigationTest.class, Investigation.class, Sample.class, LaboratoryTest.class,
         LaboratoryInvestigation.class, PersonInvestigation.class, Result.class, Town.class, Hts.class, PersonPhone.class,
-        InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtInitiation.class,
+        InvestigationResult.class, ArtStatus.class, ArtReason.class, Art.class, ArtCurrentStatus.class,
         ArvCombinationRegimen.class, SexualHistory.class, HtsScreening.class, TestingPlan.class, DisclosureMethod.class,
         IndexTest.class, IndexContact.class, Relationship.class, TestKitTestLevel.class, InvestigationTestkit.class,
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
-        FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class}, version = 5, exportSchema = false)
+        FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
+        ArtVisitType.class, ArtVisitStatus.class, IptReason.class}, version = 6, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
         HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
         TypeOfContactConverter.class, TestLevelConverter.class, RegimenTypeConverter.class, AgeGroupConverter.class,
         PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class,
-        MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class})
+        MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class, ArvStatusConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -274,7 +282,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract ArtRegistrationDao artRegistrationDao();
 
-    public abstract ArtInitiationDao artInitiationDao();
+    public abstract ArtCurrentStatusDao artInitiationDao();
 
     public abstract ArvCombinationRegimenDao arvCombinationRegimenDao();
 
@@ -325,4 +333,10 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract LactatingStatusDao lactatingStatusDao();
 
     public abstract MedicineNameDao medicineNameDao();
+
+    public abstract IptReasonDao iptReasonDao();
+
+    public abstract ArtVisitTypeDao artVisitTypeDao();
+
+    public abstract ArtVisitStatusDao artVisitStatusDao();
 }
