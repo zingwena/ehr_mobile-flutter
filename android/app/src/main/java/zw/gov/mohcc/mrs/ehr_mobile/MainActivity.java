@@ -217,7 +217,7 @@ public class MainActivity extends FlutterActivity {
                     bloodPressure.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(bloodPressure.getPersonId());
                     bloodPressure.setVisitId(visitId);
-                    bloodPressure.setRecordStatus(RecordStatus.NEW);
+                    bloodPressure.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
                     BloodPressure bp = ehrMobileDatabase.bloodPressureDao().findByVisitId(visitId);
 
@@ -229,7 +229,7 @@ public class MainActivity extends FlutterActivity {
                     temperature.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(temperature.getPersonId());
                     temperature.setVisitId(visitId);
-                    temperature.setRecordStatus(RecordStatus.NEW);
+                    temperature.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.temperatureDao().insert(temperature);
                     System.out.println("temp == " + ehrMobileDatabase.temperatureDao().getAll());
 
@@ -242,7 +242,7 @@ public class MainActivity extends FlutterActivity {
                     respiratoryRate.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(respiratoryRate.getPersonId());
                     respiratoryRate.setVisitId(visitId);
-                    respiratoryRate.setRecordStatus(RecordStatus.NEW);
+                    respiratoryRate.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
                     System.out.println("respirat == " + ehrMobileDatabase.respiratoryRateDao().getAll());
 
@@ -253,7 +253,7 @@ public class MainActivity extends FlutterActivity {
                     height.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(height.getPersonId());
                     height.setVisitId(visitId);
-                    height.setRecordStatus(RecordStatus.NEW);
+                    height.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.heightDao().insert(height);
                     System.out.println("height == " + ehrMobileDatabase.heightDao().getAll());
 
@@ -264,7 +264,7 @@ public class MainActivity extends FlutterActivity {
                     weight.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(weight.getPersonId());
                     weight.setVisitId(visitId);
-                    weight.setRecordStatus(RecordStatus.NEW);
+                    weight.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.weightDao().insert(weight);
 
 
@@ -274,7 +274,7 @@ public class MainActivity extends FlutterActivity {
                     pulse.setId(UUID.randomUUID().toString());
                     String visitId = visitService.getCurrentVisit(pulse.getPersonId());
                     pulse.setVisitId(visitId);
-                    pulse.setRecordStatus(RecordStatus.NEW);
+                    pulse.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.pulseDao().insert(pulse);
                     System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
 

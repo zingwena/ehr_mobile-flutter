@@ -19,7 +19,7 @@ public class ArtIpt extends BaseEntity {
     @NonNull
     private Date date;
     @Embedded(prefix = "status_")
-    private NameCode status;
+    private NameCode iptStatus;
     @Embedded(prefix = "reason_")
     private NameCode reason;
 
@@ -27,11 +27,11 @@ public class ArtIpt extends BaseEntity {
     }
 
     @Ignore
-    public ArtIpt(@NonNull String id, @NonNull String artId, @NonNull Date date, NameCode status, NameCode reason) {
+    public ArtIpt(@NonNull String id, @NonNull String artId, @NonNull Date date, NameCode iptStatus, NameCode reason) {
         super(id);
         this.artId = artId;
         this.date = date;
-        this.status = status;
+        this.iptStatus = iptStatus;
         this.reason = reason;
     }
 
@@ -53,12 +53,12 @@ public class ArtIpt extends BaseEntity {
         this.date = date;
     }
 
-    public NameCode getStatus() {
-        return status;
+    public NameCode getIptStatus() {
+        return iptStatus;
     }
 
-    public void setStatus(NameCode status) {
-        this.status = status;
+    public void setIptStatus(NameCode iptStatus) {
+        this.iptStatus = iptStatus;
     }
 
     public NameCode getReason() {

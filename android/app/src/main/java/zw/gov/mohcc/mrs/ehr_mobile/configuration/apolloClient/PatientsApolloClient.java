@@ -84,7 +84,7 @@ public class PatientsApolloClient {
                                 String lastName = patientData.lastname();
                                 Person person = new Person(firstName, lastName, sex);
                                 person.setId(patientData.personId());
-                                person.setRecordStatus(RecordStatus.IMPORTED);
+                                person.setStatus(RecordStatus.IMPORTED);
                                 if (patientData.address() != null) {
                                     Address address = new Address(patientData.address().street(), patientData.address().city(), patientData.address().town().name());
                                     person.setAddress(address);

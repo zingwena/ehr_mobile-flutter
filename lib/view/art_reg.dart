@@ -24,8 +24,10 @@ class ArtReg extends StatefulWidget {
   String visitId;
   Person person;
   HtsRegistration htsRegistration;
+
   String htsId;
   ArtReg(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
+
 
   @override
   State createState() {
@@ -48,6 +50,24 @@ class _ArtReg extends State<ArtReg> {
   Age age;
 
   String facility_name;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsHivTestUsedIdentified;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReasonForTestListIdentified;
+
+  List _referringListIdentified = ["Referring Program 1", "Referring Program 2", "Referring Program 3", "Referring Program 4" ];
+  List _hivTestUsedIdentified = ["HIV Test 1", "HIV Test 2", "HIV Test 3", "HIV Test 4" ];
+  List _reasonForHivTestIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4" ];
+
+  int _testingSite = 0;
+  int _reTested = 0;
+  String testingSite = "";
+  String retestedBeforeArt = "";
+
+  String  _currentReferringProgram, _currentHivTestUsed, _currentReasonForTest ;
+
+  bool selfIdentifiedReferringIsValid=false;
+  bool selfIdentifiedHIVTestIsValid=false;
+  bool selfIdentifiedReasonForTestIsValid=false;
 
   @override
   void initState() {
@@ -58,8 +78,13 @@ class _ArtReg extends State<ArtReg> {
     enrollment_date = DateTime.now();
     getAge(widget.person);
     getFacilityName();
+    _dropDownMenuItemsReferringListIdentified = getDropDownMenuItemsReferringList();
+    _dropDownMenuItemsHivTestUsedIdentified = getDropDownMenuItemsHivTestUsed();
+    _dropDownMenuItemsReasonForTestListIdentified = getDropDownMenuItemsReasonForHivTest();
     super.initState();
   }
+
+
 
   Future<Null> _selectDateOfHivTest(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -76,6 +101,19 @@ class _ArtReg extends State<ArtReg> {
 
 
   Future<Null> _selectDateOfEnrollment(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != dateOfTest)
+      setState(() {
+        dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
+        enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
+      });
+  }
+
+  Future<Null> _selectDateOfReTest(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -115,6 +153,76 @@ class _ArtReg extends State<ArtReg> {
 
     }
   }
+
+
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsReferringList() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String referringListIdentified in _referringListIdentified) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: referringListIdentified, child: Text(referringListIdentified)));
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsHivTestUsed() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String hivTestIdentified in _hivTestUsedIdentified) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: hivTestIdentified, child: Text(hivTestIdentified)));
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsReasonForHivTest() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String hivReasonIdentified in _reasonForHivTestIdentified) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: hivReasonIdentified, child: Text(hivReasonIdentified)));
+    }
+    return items;
+  }
+
+  void _handleTestingSiteChange(int value) {
+    setState(() {
+      _testingSite = value;
+
+      switch (_testingSite) {
+        case 1:
+          testingSite = "Health Facility";
+          break;
+        case 2:
+          testingSite = "Other Site";
+          break;
+      }
+    });
+  }
+
+  void _handleReTestedArtChange (int value) {
+    setState(() {
+      _reTested = value;
+
+      switch (_reTested) {
+        case 1:
+          retestedBeforeArt = "Yes";
+          break;
+        case 2:
+          retestedBeforeArt = "No";
+          break;
+      }
+    });
+  }
+
+  String _selfReferringProgramError="Select Referring Program";
+  String _selfHivTestUsedError="Select HIV Test Used";
+  String _selfReasonForHivTestError="Select HIV Test Used";
+
 
   @override
   Widget build(BuildContext context) {
@@ -270,12 +378,7 @@ class _ArtReg extends State<ArtReg> {
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
-                                                  SizedBox(
-                                                    height: 10.0,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10.0,
-                                                  ),
+
                                                   Container(
                                                     width: double.infinity,
                                                     padding:
@@ -315,8 +418,7 @@ class _ArtReg extends State<ArtReg> {
                                                           ),
                                                         ),
                                                         IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
+                                                            icon: Icon(Icons.calendar_today),
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
@@ -327,7 +429,7 @@ class _ArtReg extends State<ArtReg> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: 35.0,
+                                                    height: 10.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
@@ -361,7 +463,7 @@ class _ArtReg extends State<ArtReg> {
                                                                     border: OutlineInputBorder(
                                                                         borderRadius:
                                                                         BorderRadius.circular(0.0)),
-                                                                labelText: "Date of enrollment"),
+                                                                labelText: "Date of Enrollment"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -380,8 +482,341 @@ class _ArtReg extends State<ArtReg> {
                                                     ),
                                                   ),
                                                   SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets.all(8.0),
+                                                              child: Text('Testing Site'),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('Health Facility'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _testingSite,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleTestingSiteChange),
+                                                        Text('Other Site'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _testingSite,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleTestingSiteChange),
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(vertical: 16.0,
+                                                                horizontal: 60.0),
+                                                            child: TextFormField(
+
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                  'Health Facility Name',
+                                                                  border: OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(5.0)),
+                                                      color: Colors.white,
+                                                      padding: const EdgeInsets.all(0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                        child: DropdownButton(
+                                                          isExpanded:true,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint:Text("Referring Program"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentReferringProgram,
+                                                          items: _dropDownMenuItemsReferringListIdentified,
+                                                          onChanged: changedDropDownItemReferring,
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue, //Color of the border
+                                                        style: BorderStyle.solid, //Style of the border
+                                                        width: 2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {},
+                                                    ),
+                                                  ),
+
+
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(vertical: 16.0,
+                                                                horizontal: 60.0),
+                                                            child: TextFormField(
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                  'Program Number',
+                                                                  border: OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(
+                                                                  0.0),
+                                                              child:
+                                                              TextFormField(
+                                                                controller:
+                                                                TextEditingController(
+                                                                    text:
+                                                                    dateOfEnrollment),
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter some text'
+                                                                      : null;
+                                                                },
+                                                                decoration: InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius.circular(0.0)),
+                                                                    labelText: "Date of HIV Test"),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                            icon: Icon(Icons
+                                                                .calendar_today),
+                                                            color:
+                                                            Colors.blue,
+                                                            onPressed: () {
+                                                              _selectDateOfEnrollment(
+                                                                  context);
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(5.0)),
+                                                      color: Colors.white,
+                                                      padding: const EdgeInsets.all(0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                        child: DropdownButton(
+                                                          isExpanded:true,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint:Text("HIV Test Used"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentHivTestUsed,
+                                                          items: _dropDownMenuItemsHivTestUsedIdentified,
+                                                          onChanged: changedDropDownItemHIVTestUsed,
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue, //Color of the border
+                                                        style: BorderStyle.solid, //Style of the border
+                                                        width: 2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {},
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(5.0)),
+                                                      color: Colors.white,
+                                                      padding: const EdgeInsets.all(0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                        child: DropdownButton(
+                                                          isExpanded:true,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint:Text("Reason for HIV Test"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentReasonForTest,
+                                                          items: _dropDownMenuItemsReasonForTestListIdentified,
+                                                          onChanged: changedDropDownItemReasonForTest,
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue, //Color of the border
+                                                        style: BorderStyle.solid, //Style of the border
+                                                        width: 2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {},
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets.all(8.0),
+                                                              child: Text('Retested Before ART Initiation '),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('Yes'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue:
+                                                            _reTested,
+                                                            activeColor:
+                                                            Colors.blue,
+                                                            onChanged:
+                                                            _handleReTestedArtChange),
+                                                        Text('No'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _reTested,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleReTestedArtChange),
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(
+                                                                  0.0),
+                                                              child:
+                                                              TextFormField(
+                                                                controller:
+                                                                TextEditingController(
+                                                                    text:
+                                                                    dateOfEnrollment),
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                      .isEmpty
+                                                                      ? 'Enter some text'
+                                                                      : null;
+                                                                },
+                                                                decoration: InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius.circular(0.0)),
+                                                                    labelText: "Date of ReTest"),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                            icon: Icon(Icons
+                                                                .calendar_today),
+                                                            color:
+                                                            Colors.blue,
+                                                            onPressed: () {
+                                                              _selectDateOfReTest(
+                                                                  context);
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
                                                     height: 35.0,
                                                   ),
+
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
@@ -490,5 +925,29 @@ class _ArtReg extends State<ArtReg> {
       print('--------------something went wrong  $e');
     }
 
+  }
+
+  void changedDropDownItemReferring(String selectedReferringProgramIdentified) {
+    setState(() {
+      _currentReferringProgram = selectedReferringProgramIdentified;
+      selfIdentifiedReferringIsValid=!selfIdentifiedReferringIsValid;
+      _selfReferringProgramError=null;
+    });
+  }
+
+  void changedDropDownItemHIVTestUsed(String selectedHIVTestIdentified) {
+    setState(() {
+      _currentHivTestUsed = selectedHIVTestIdentified;
+      selfIdentifiedHIVTestIsValid=!selfIdentifiedHIVTestIsValid;
+      _selfHivTestUsedError=null;
+    });
+  }
+
+  void changedDropDownItemReasonForTest(String selectedHIVTestIdentified) {
+    setState(() {
+      _currentReasonForTest = selectedHIVTestIdentified;
+      selfIdentifiedReasonForTestIsValid=!selfIdentifiedReasonForTestIsValid;
+      _selfReasonForHivTestError=null;
+    });
   }
 }
