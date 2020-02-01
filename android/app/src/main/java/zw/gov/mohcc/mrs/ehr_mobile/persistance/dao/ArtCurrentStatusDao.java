@@ -14,7 +14,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 
 
 @Dao
-public interface ArtInitiationDao {
+public interface ArtCurrentStatusDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -41,8 +41,8 @@ public interface ArtInitiationDao {
     @RawQuery
     List<ArtCurrentStatus> searchArtInitiation(SimpleSQLiteQuery query);
 
-    @Query("SELECT * FROM ArtCurrentStatus WHERE personId =:personId")
-    ArtCurrentStatus findByPersonId(String personId);
+    @Query("SELECT * FROM ArtCurrentStatus WHERE artId =:artId")
+    ArtCurrentStatus findByVisitId(String artId);
 
 
 

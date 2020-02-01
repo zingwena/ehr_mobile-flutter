@@ -237,10 +237,10 @@ public class VisitService {
         Art art = artService.getArt(personId);
         Log.d(TAG, "Retrieved patient art record : " + art);
         if (art != null) {
-            ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByPersonId(personId);
+            ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByVisitId(personId);
             String arvRegimen = "";
             if (artCurrentStatus != null) {
-                arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatus.getArtRegimenId()).getName();
+                arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatus.getRegimen().getCode()).getName();
             }
             Log.d(TAG, "Art Initiation object : " + artCurrentStatus);
             summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getOiArtNumber(), null,

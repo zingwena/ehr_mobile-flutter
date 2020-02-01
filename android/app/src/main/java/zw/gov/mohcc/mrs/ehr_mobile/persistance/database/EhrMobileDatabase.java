@@ -94,7 +94,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtInitiationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtCurrentStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
@@ -282,7 +282,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract ArtRegistrationDao artRegistrationDao();
 
-    public abstract ArtInitiationDao artInitiationDao();
+    public abstract ArtCurrentStatusDao artInitiationDao();
 
     public abstract ArvCombinationRegimenDao arvCombinationRegimenDao();
 

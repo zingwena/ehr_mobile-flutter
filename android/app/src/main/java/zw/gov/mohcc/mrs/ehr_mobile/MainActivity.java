@@ -325,12 +325,12 @@ public class MainActivity extends FlutterActivity {
 
                                 ArtCurrentStatus artCurrentStatus = gson.fromJson(arguments, ArtCurrentStatus.class);
                                 System.out.println("ART ININTIATION HERE ART INITIATION HERE HERE " + artCurrentStatus);
-                                String artRegmenId = ehrMobileDatabase.arvCombinationRegimenDao().findByName(artCurrentStatus.getArtRegimenId()).getCode();
+                                /*String artRegmenId = ehrMobileDatabase.arvCombinationRegimenDao().findByName(artCurrentStatus.getArtRegimenId()).getCode();
                                 String artReasonId = ehrMobileDatabase.artReasonDao().findByName(artCurrentStatus.getArtReasonId()).getCode();
                                 artCurrentStatus.setId(UUID.randomUUID().toString());
                                 artCurrentStatus.setPersonId(artCurrentStatus.getPersonId());
                                 artCurrentStatus.setArtRegimenId(artRegmenId);
-                                artCurrentStatus.setArtReasonId(artReasonId);
+                                artCurrentStatus.setArtReasonId(artReasonId);*/
                                 ehrMobileDatabase.artInitiationDao().createArtInitiation(artCurrentStatus);
                                 ArtCurrentStatus initiation = ehrMobileDatabase.artInitiationDao().findArtInitiationById(artCurrentStatus.getId());
                                 String response = gson.toJson(initiation);

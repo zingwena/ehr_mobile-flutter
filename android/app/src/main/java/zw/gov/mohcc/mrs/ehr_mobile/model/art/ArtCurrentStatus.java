@@ -19,6 +19,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 public class ArtCurrentStatus extends BaseEntity {
 
     @NonNull
+    @TypeConverters(DateConverter.class)
     private Date date;
     @NonNull
     private String artId;
