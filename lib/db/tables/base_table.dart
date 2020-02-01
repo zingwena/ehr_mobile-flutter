@@ -3,6 +3,6 @@
 class BaseTable{
 
   String id;
-  int status;
+  String status;
 
 }

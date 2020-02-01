@@ -19,8 +19,6 @@ class LaboratoryInvestigationTestDao extends BaseDao{
   final testKitName = new StrField('testkit_name');
   final batchIssueId = new StrField('batchIssueId');
 
-  final status = new IntField('status');
-
   SqfliteAdapter _adapter;
 
   /// Table name for the model this bean manages
