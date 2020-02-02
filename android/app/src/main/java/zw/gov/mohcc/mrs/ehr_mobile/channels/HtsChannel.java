@@ -675,7 +675,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getArtInitiationRecord")) {
 
                             try {
-                                ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByVisitId(arguments);
+                                ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao().findByVisitId(arguments);
                                 Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID"+ artCurrentStatus);
                                 String artjson = gson.toJson(artCurrentStatus);
                                 Log.i(TAG, "ART INITIATION MODEL #################"+ artjson);

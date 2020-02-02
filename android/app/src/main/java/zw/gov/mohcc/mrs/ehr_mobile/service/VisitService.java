@@ -18,7 +18,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
@@ -238,7 +237,7 @@ public class VisitService {
         ArtDTO art = artService.getArt(personId);
         Log.d(TAG, "Retrieved patient art record : " + art);
         if (art != null) {
-            ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByVisitId(personId);
+            ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao().findByVisitId(personId);
             String arvRegimen = "";
             if (artCurrentStatus != null) {
                 arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatus.getRegimen().getCode()).getName();

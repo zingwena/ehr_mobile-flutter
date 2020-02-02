@@ -7,13 +7,16 @@ import androidx.room.Transaction;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.constant.InvestigationIdConstants;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ArvStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
@@ -82,9 +85,31 @@ public class ArtService {
         return latestPositiveHivResult;
     }
 
-    public String initiatePatientOnArt(String artId) {
+    public ArtCurrentStatus initiatePatientOnArt(ArtCurrentStatus artCurrentStatus) {
 
-        return null;
+        artCurrentStatus.setState(ArvStatus.START_ARV);
+        artCurrentStatus.setId(UUID.randomUUID().toString());
+        Log.d(TAG, "State of art current status : " + artCurrentStatus);
+        ehrMobileDatabase.artCurrentStatusDao().save(artCurrentStatus);
+
+        ArtCurrentStatus savedArtCurrentStatus = ehrMobileDatabase.artCurrentStatusDao()
+                .findLastestPatientStatus(artCurrentStatus.getArtId());
+
+        Log.d(TAG, "Latest saved art current status : " + savedArtCurrentStatus);
+
+        return savedArtCurrentStatus;
+    }
+
+    public ArtCurrentStatus getArtCurrentStatus(String artId) {
+
+        Log.d(TAG, "Fetching patient art current status using artId : " + artId);
+
+        ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao()
+                .findLastestPatientStatus(artId);
+
+        Log.d(TAG, "Fetched art current status : " + artId);
+
+        return artCurrentStatus;
     }
 
     public List<ArvCombinationRegimen> getPersonArvCombinationRegimens(String personId, RegimenType regimenType) {
