@@ -1,11 +1,13 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.annotation.NonNull;
+import androidx.room.TypeConverters;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.HivTestUsed;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.LinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Normality;
@@ -20,6 +22,7 @@ public class ArtDTO implements Serializable {
     @NonNull
     private String personId;
     @NonNull
+    @TypeConverters(DateConverter.class)
     private Date date;
     @NonNull
     private String artNumber;
@@ -30,25 +33,30 @@ public class ArtDTO implements Serializable {
     private Normality mentalStatus;
     private Normality centralNervousSystem;
     @NonNull
+    @TypeConverters(DateConverter.class)
     private Date dateOfHivTest;
     @NonNull
+    @TypeConverters(DateConverter.class)
     private Date dateEnrolled;
     private Boolean tracing;
     private Boolean followUp;
     private Boolean hivStatus;
     private RelationshipType relation;
+    @TypeConverters(DateConverter.class)
     private Date dateOfDisclosure;
     private ReasonOfNotDisclosing reason;
     // fields for linkages
     @NonNull
     private LinkageFrom linkageFrom;
     @NonNull
+    @TypeConverters(DateConverter.class)
     private Date dateHivConfirmed;
     private String linkageNumber;
     private HivTestUsed hivTestUsed;
     private String otherInstitution;
     private NameCode testReason;
     private Boolean reTested;
+    @TypeConverters(DateConverter.class)
     private Date dateRetested;
     private NameCode facility;
 
@@ -90,6 +98,39 @@ public class ArtDTO implements Serializable {
         linkage.setTestReason(dto.getTestReason());
         linkage.setId(UUID.randomUUID().toString());
         return linkage;
+    }
+
+    public static ArtDTO get(Art art, ArtLinkageFrom linkage) {
+
+        ArtDTO dto = new ArtDTO();
+        dto.setArtNumber(art.getArtNumber());
+        dto.setCentralNervousSystem(art.getCentralNervousSystem());;
+        dto.setCyanosis(art.getCyanosis());
+        dto.setDate(art.getDate());
+        dto.setDateEnrolled(art.getDateEnrolled());
+        dto.setDateHivConfirmed(linkage.getDateHivConfirmed());
+        dto.setDateOfHivTest(art.getDateOfHivTest());
+        dto.setDateEnrolled(art.getDateEnrolled());
+        dto.setDateOfDisclosure(art.getDateOfDisclosure());
+        dto.setDateRetested(linkage.getDateRetested());
+        dto.setEnlargedLymphNode(art.getEnlargedLymphNode());
+        dto.setFacility(linkage.getFacility());
+        dto.setFollowUp(art.getFollowUp());
+        dto.setHivStatus(art.getHivStatus());
+        dto.setJaundice(art.getJaundice());
+        dto.setHivTestUsed(linkage.getHivTestUsed());
+        dto.setLinkageFrom(linkage.getLinkageFrom());
+        dto.setLinkageNumber(linkage.getLinkageNumber());
+        dto.setMentalStatus(art.getMentalStatus());
+        dto.setOtherInstitution(linkage.getOtherInstitution());
+        dto.setPallor(art.getPallor());
+        dto.setPersonId(art.getPersonId());
+        dto.setReason(art.getReason());
+        dto.setRelation(art.getRelation());
+        dto.setReTested(linkage.getReTested());
+        dto.setTestReason(linkage.getTestReason());
+        dto.setTracing(art.getTracing());
+        return dto;
     }
 
     @NonNull

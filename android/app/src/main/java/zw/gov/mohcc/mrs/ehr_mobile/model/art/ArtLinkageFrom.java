@@ -3,10 +3,12 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HivTestUsedConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.LinkageFromConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.HivTestUsed;
@@ -24,6 +26,7 @@ public class ArtLinkageFrom extends BaseEntity {
     private LinkageFrom linkageFrom;
     private String linkageNumber;
     @NonNull
+    @TypeConverters(DateConverter.class)
     private Date dateHivConfirmed;
     private String otherInstitution;
     @NonNull
@@ -32,6 +35,7 @@ public class ArtLinkageFrom extends BaseEntity {
     @Embedded(prefix = "testReason_")
     private NameCode testReason;
     private Boolean reTested;
+    @TypeConverters(DateConverter.class)
     private Date dateRetested;
     @Embedded(prefix = "facility_")
     private NameCode facility;
@@ -39,6 +43,7 @@ public class ArtLinkageFrom extends BaseEntity {
     public ArtLinkageFrom() {
     }
 
+    @Ignore
     public ArtLinkageFrom(@NonNull String id, @NonNull String artId) {
         super(id);
         this.artId = artId;
