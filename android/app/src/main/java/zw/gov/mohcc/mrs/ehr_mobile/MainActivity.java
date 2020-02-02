@@ -34,7 +34,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.VisitChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.QuestionType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
@@ -300,21 +299,13 @@ public class MainActivity extends FlutterActivity {
 
                         if (methodCall.method.equals("saveArtRegistration")) {
                             try {
-                                ArtDto artdto = gson.fromJson(arguments, ArtDto.class);
-                                Art art = new Art();
-                                String artId = UUID.randomUUID().toString();
-                                art.setId(artId);
-                                art.setOiArtNumber(artdto.getOiArtNumber());
-                                art.setDateOfHivTest(artdto.getDateOfHivTest());
-                                art.setPersonId(artdto.getPersonId());
-                                art.setDateOfEnrolmentIntoCare(artdto.getDateOfEnrolmentIntoCare());
-                                ehrMobileDatabase.artRegistrationDao().createArtRegistration(art);
-                                Art _art = ehrMobileDatabase.artRegistrationDao().findArtRegistrationById(artId);
-                                String response = gson.toJson(_art);
+                                Art art = gson.fromJson(arguments, Art.class);
+                                String response = gson.toJson(artService.createArt(art));
                                 result.success(response);
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
+                                e.printStackTrace();
 
                             }
 
@@ -1236,7 +1227,7 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<ArvCombinationRegimenModel> call, Response<ArvCombinationRegimenModel> response) {
 
-                if(response.body()==null || response.body().getContent()==null){
+                if (response.body() == null || response.body().getContent() == null) {
                     return;
                 }
                 Log.d(TAG, "Arv combination regmines : " + response.body().getContent());

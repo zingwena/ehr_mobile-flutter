@@ -7,7 +7,7 @@ import androidx.room.Transaction;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
@@ -27,20 +27,25 @@ public class ArtService {
     }
 
     @Transaction
-    public String createArt(ArtDto dto) {
+    public Art createArt(Art art) {
 
-        Log.i(TAG, "Creating HTS record");
-        Art art = ArtDto.getInstance(dto);
-        ehrMobileDatabase.artRegistrationDao().createArtRegistration(art);
-        Log.i(TAG, "Created art record : " + ehrMobileDatabase.artRegistrationDao().findArtRegistrationById(art.getId()));
+        Log.i(TAG, "Creating ART record : " + art);
 
-        return art.getId();
+        ehrMobileDatabase.artRegistrationDao().save(art);
+
+        Art newArtRecord = ehrMobileDatabase.artRegistrationDao().findById(art.getId());
+        Log.i(TAG, "Created art record : " + newArtRecord);
+
+        return newArtRecord;
     }
 
-    public Art getArt(String personId) {
+    public ArtDTO getArt(String personId) {
 
-        Log.d(TAG, "Retrieving patient art record");
-        return ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+        Log.d(TAG, "Retrieving patient art record using art record : " + personId);
+
+        ArtDTO artDTO = ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+        Log.d(TAG, "ART and ART Linkage record retrieved : " + artDTO);
+        return artDTO;
     }
 
     public Hts getLatestHivPositiveRecord(String personId) {
@@ -54,11 +59,11 @@ public class ArtService {
     }
 
     public List<ArvCombinationRegimen> getPersonArvCombinationRegimens(String personId, RegimenType regimenType) {
-        Log.i(TAG, "REGIMEN TYPE SENT KKKKKKKKKKK"+ regimenType.toString());
+
         Person person = ehrMobileDatabase.personDao().findPatientById(personId);
         Age age = Age.getInstance(person);
-        List<ArvCombinationRegimen>combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByLineAndAgeGroup(regimenType, AgeGroup.getPersonAgeGroup(age.getYears()));
-        Log.i(TAG, "LIST OF ARVCOMBINATION REGIMEN JJJJJJJJJJ"+ combinationRegimenList.toString());
-        return  combinationRegimenList;
+        List<ArvCombinationRegimen> combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByLineAndAgeGroup(regimenType, AgeGroup.getPersonAgeGroup(age.getYears()));
+
+        return combinationRegimenList;
     }
 }

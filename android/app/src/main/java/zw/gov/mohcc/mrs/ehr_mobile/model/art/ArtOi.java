@@ -58,4 +58,13 @@ public class ArtOi extends BaseEntity {
     public void setOi(NameCode oi) {
         this.oi = oi;
     }
+
+    @Override
+    public String toString() {
+        return "ArtOi{" +
+                "date=" + date +
+                ", artId='" + artId + '\'' +
+                ", oi=" + oi +
+                '}';
+    }
 }

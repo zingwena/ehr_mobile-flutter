@@ -3,8 +3,6 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -13,15 +11,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.WhoStageConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-import static androidx.room.ForeignKey.CASCADE;
-
-@Entity(indices = {@Index(value = "personId", unique = true)},
-        foreignKeys = @ForeignKey(entity = Person.class, onDelete = CASCADE,
-                parentColumns = "id",
-                childColumns = "personId"))
+@Entity
 public class ArtWhoStage extends BaseEntity {
 
     @NonNull
@@ -79,5 +71,15 @@ public class ArtWhoStage extends BaseEntity {
 
     public void setFollowUpStatus(NameCode followUpStatus) {
         this.followUpStatus = followUpStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "ArtWhoStage{" +
+                "date=" + date +
+                ", artId='" + artId + '\'' +
+                ", stage=" + stage +
+                ", followUpStatus=" + followUpStatus +
+                '}';
     }
 }

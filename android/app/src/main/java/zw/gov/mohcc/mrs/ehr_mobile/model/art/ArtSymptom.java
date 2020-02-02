@@ -59,4 +59,13 @@ public class ArtSymptom extends BaseEntity {
     public void setSymptom(NameCode symptom) {
         this.symptom = symptom;
     }
+
+    @Override
+    public String toString() {
+        return "ArtSymptom{" +
+                "date=" + date +
+                ", artId='" + artId + '\'' +
+                ", symptom=" + symptom +
+                '}';
+    }
 }
