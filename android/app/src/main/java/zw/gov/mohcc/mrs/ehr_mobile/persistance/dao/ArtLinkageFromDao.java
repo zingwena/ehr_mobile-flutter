@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 
 
 @Dao
@@ -14,20 +15,20 @@ public interface ArtLinkageFromDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void save(Art artRegistration);
+    void save(ArtLinkageFrom artLinkageFrom);
 
-    @Query("DELETE from Art")
+    @Query("DELETE from ArtLinkageFrom")
     void deleteAll();
 
     @Update
-    void update(Art artRegistration);
+    void update(ArtLinkageFrom artLinkageFrom);
 
-    @Query("SELECT * FROM Art WHERE id =:id")
-    Art findById(String id);
+    @Query("SELECT * FROM ArtLinkageFrom WHERE id=:id")
+    ArtLinkageFrom findById(String id);
 
-    @Query("SELECT * FROM Art WHERE personId =:personId")
-    Art findByArtId(String personId);
+    @Query("SELECT * FROM ArtLinkageFrom WHERE artId=:artId")
+    ArtLinkageFrom findByArtId(String artId);
 
-    @Query("DELETE FROM Art where id = :id")
+    @Query("DELETE FROM ArtLinkageFrom where id=:id")
     void deleteById(String id);
 }

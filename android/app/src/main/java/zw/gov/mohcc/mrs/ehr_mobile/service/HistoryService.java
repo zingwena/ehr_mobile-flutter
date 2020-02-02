@@ -161,7 +161,7 @@ public class HistoryService {
 
         // check art details it must also work if patient is on art while not having
         // been tested in EHR
-        ArtDTO art = ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+        Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
         if (art != null) {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
@@ -244,7 +244,7 @@ public class HistoryService {
             if (dto.getArt() != null && dto.getArt()) {
 
                 Visit visit = ehrMobileDatabase.visitDao().findById(visitId);
-                ArtDTO art = ehrMobileDatabase.artRegistrationDao().findByPersonId(visit.getPersonId());
+                Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(visit.getPersonId());
                 if (art == null) {
                     // create art record
                     Log.i(TAG, "Creating art record");

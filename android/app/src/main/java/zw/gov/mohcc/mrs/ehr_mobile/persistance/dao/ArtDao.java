@@ -26,8 +26,8 @@ public interface ArtDao {
     @Query("SELECT * FROM Art WHERE id=:id")
     Art findById(String id);
 
-    @Query("SELECT * FROM Art a inner join ArtLinkageFrom l on a.id=l.artId WHERE personId =:personId")
-    ArtDTO findByPersonId(String personId);
+    @Query("SELECT * FROM Art WHERE personId =:personId")
+    Art findByPersonId(String personId);
 
     @Query("DELETE FROM Art where id = :id")
     void deleteById(String id);
