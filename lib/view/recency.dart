@@ -112,6 +112,9 @@ class _Recency extends State<RecencyTest> {
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   var facility_name;
+  bool _batch_selected = false;
+  bool show_batch_error_msg = false;
+
 
   @override
   void initState()  {
@@ -375,6 +378,7 @@ class _Recency extends State<RecencyTest> {
       _TestkitbatchesList.forEach((e){
         if(value == _TestkitbatchesList.indexOf(e)){
           batchIssueId = e.id;
+          _batch_selected = true;
 
 
         }
@@ -566,6 +570,9 @@ class _Recency extends State<RecencyTest> {
                                     getTestKitsBatchesLabels(_TestkitbatchesList),
                                   ],
                                 ),
+                                show_batch_error_msg == true ? SizedBox(
+                                  height: 20.0, width: 300.0, child: Text("Select textkit batch", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                ):SizedBox(height: 0.0, width: 0.0,),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -636,13 +643,22 @@ class _Recency extends State<RecencyTest> {
                                                         result, widget.visitId, testKitobj, null, null, widget.personId, batchIssueId);
 
                                                     saveLabInvestigationTest(labInvestTest);
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (
-                                                                context) =>
-                                                                Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest, widget.indexTestId)
+                                                    if(_batch_selected == true){
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(
+                                                              builder: (
+                                                                  context) =>
+                                                                  Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest, widget.indexTestId)
 
-                                                    ));
+                                                          ));
+                                                    }else{
+                                                      setState(() {
+                                                        show_batch_error_msg = true;
+
+                                                      });
+
+                                                    }
+
                                                   } else {
                                                     setState(() {
                                                       _showError = true;
