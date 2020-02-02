@@ -184,15 +184,13 @@ class VisitInitiationState extends State<VisitInitiation>
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
-                                        minHeight: viewportConstraints
-                                            .maxHeight - 48.0,
+                                        minHeight: viewportConstraints.maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                         child: Column(
                                           children: <Widget>[
                                         Form(
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(16.0),
+                                        child: Padding( padding: const EdgeInsets.all(16.0),
                                         child: Column(
                                           children: <Widget>[
 
