@@ -10,7 +10,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
 @Entity
-public class ArtFollowupVisit extends BaseEntity {
+public class ArtFollowUpVisit extends BaseEntity {
 
     @NonNull
     private String artAppointmentId;
@@ -18,10 +18,10 @@ public class ArtFollowupVisit extends BaseEntity {
     private NameCode outcome;
     private Date date;
 
-    public ArtFollowupVisit() {
+    public ArtFollowUpVisit() {
     }
 
-    public ArtFollowupVisit(@NonNull String id, @NonNull String artAppointmentId) {
+    public ArtFollowUpVisit(@NonNull String id, @NonNull String artAppointmentId) {
         super(id);
         this.artAppointmentId = artAppointmentId;
     }

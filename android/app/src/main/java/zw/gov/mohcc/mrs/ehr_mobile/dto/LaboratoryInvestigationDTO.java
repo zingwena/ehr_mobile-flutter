@@ -21,7 +21,6 @@ public class LaboratoryInvestigationDTO {
     }
 
 
-
     public Date getResultDate() {
         return resultDate;
     }
@@ -37,12 +36,4 @@ public class LaboratoryInvestigationDTO {
                 ", resultDate=" + resultDate +
                 '}';
     }
-
-//    @Transaction
-//    public void saveHts() {
-//         sav hts
-//        int personInvestinagId = savePrsonInvestigation();
-//        // set person investigation id in laboratory investigation object
-//        saveLaboratoryInvestigation();
-//    }
 }
