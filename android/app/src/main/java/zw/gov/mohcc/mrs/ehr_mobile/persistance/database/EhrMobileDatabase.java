@@ -18,9 +18,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.MedicineCategoryConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.MedicineLevelConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.NewTestConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.NormalityConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.PatientTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.PrepOptionConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.QuestionTyeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.ReasonOfNotDisclosingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.RegimenTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.RelationshipTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.ResponseTypeConverter;
@@ -189,7 +191,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
         TypeOfContactConverter.class, TestLevelConverter.class, RegimenTypeConverter.class, AgeGroupConverter.class,
         PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class,
-        MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class, ArvStatusConverter.class})
+        MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class, ArvStatusConverter.class,
+        ReasonOfNotDisclosingConverter.class, NormalityConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -200,7 +203,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "impiloDB")
+                            EhrMobileDatabase.class, "newImpilo")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
