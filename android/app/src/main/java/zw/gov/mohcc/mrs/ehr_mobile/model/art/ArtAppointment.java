@@ -95,4 +95,17 @@ public class ArtAppointment extends BaseEntity {
     public void setAppointmentOutcome(NameCode appointmentOutcome) {
         this.appointmentOutcome = appointmentOutcome;
     }
+
+    @Override
+    public String toString() {
+        return "ArtAppointment{" +
+                "artId='" + artId + '\'' +
+                ", reason=" + reason +
+                ", date=" + date +
+                ", followUpReason=" + followUpReason +
+                ", followupDate=" + followupDate +
+                ", appointmentOutcomeDate=" + appointmentOutcomeDate +
+                ", appointmentOutcome=" + appointmentOutcome +
+                '}';
+    }
 }

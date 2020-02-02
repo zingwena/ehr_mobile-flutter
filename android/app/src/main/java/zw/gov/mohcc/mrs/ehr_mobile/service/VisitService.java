@@ -243,7 +243,7 @@ public class VisitService {
                 arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatus.getRegimen().getCode()).getName();
             }
             Log.d(TAG, "Art Initiation object : " + artCurrentStatus);
-            summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getOiArtNumber(), null,
+            summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getArtNumber(), null,
                     arvRegimen));
         }
         List<PersonInvestigation> investigations = ehrMobileDatabase.personInvestigationDao().findLatestThreeTestsByPersonId(personId);

@@ -68,4 +68,14 @@ public class ArtIpt extends BaseEntity {
     public void setReason(NameCode reason) {
         this.reason = reason;
     }
+
+    @Override
+    public String toString() {
+        return "ArtIpt{" +
+                "artId='" + artId + '\'' +
+                ", date=" + date +
+                ", iptStatus=" + iptStatus +
+                ", reason=" + reason +
+                '}';
+    }
 }

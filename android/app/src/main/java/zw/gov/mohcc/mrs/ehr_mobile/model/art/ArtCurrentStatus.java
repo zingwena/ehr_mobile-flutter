@@ -100,4 +100,17 @@ public class ArtCurrentStatus extends BaseEntity {
     public void setAdverseEventStatus(NameCode adverseEventStatus) {
         this.adverseEventStatus = adverseEventStatus;
     }
+
+    @Override
+    public String toString() {
+        return "ArtCurrentStatus{" +
+                "date=" + date +
+                ", artId='" + artId + '\'' +
+                ", state=" + state +
+                ", regimen=" + regimen +
+                ", reason=" + reason +
+                ", regimenType=" + regimenType +
+                ", adverseEventStatus=" + adverseEventStatus +
+                '}';
+    }
 }

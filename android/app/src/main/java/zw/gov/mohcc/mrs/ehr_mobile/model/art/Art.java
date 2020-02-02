@@ -42,8 +42,10 @@ public class Art extends BaseEntity {
     @TypeConverters(NormalityConverter.class)
     private Normality centralNervousSystem;
     @TypeConverters(DateConverter.class)
+    @NonNull
     private Date dateOfHivTest;
     @TypeConverters(DateConverter.class)
+    @NonNull
     private Date dateEnrolled;
     private Boolean tracing;
     private Boolean followUp;
@@ -58,6 +60,7 @@ public class Art extends BaseEntity {
     public Art() {
     }
 
+    @Ignore
     public Art(@NonNull String id, @NonNull String personId) {
         super(id);
         this.personId = personId;
@@ -200,5 +203,28 @@ public class Art extends BaseEntity {
 
     public void setReason(ReasonOfNotDisclosing reason) {
         this.reason = reason;
+    }
+
+    @Override
+    public String toString() {
+        return "Art{" +
+                "personId='" + personId + '\'' +
+                ", date=" + date +
+                ", artNumber='" + artNumber + '\'' +
+                ", enlargedLymphNode=" + enlargedLymphNode +
+                ", pallor=" + pallor +
+                ", jaundice=" + jaundice +
+                ", cyanosis=" + cyanosis +
+                ", mentalStatus=" + mentalStatus +
+                ", centralNervousSystem=" + centralNervousSystem +
+                ", dateOfHivTest=" + dateOfHivTest +
+                ", dateEnrolled=" + dateEnrolled +
+                ", tracing=" + tracing +
+                ", followUp=" + followUp +
+                ", hivStatus=" + hivStatus +
+                ", relation=" + relation +
+                ", dateOfDisclosure=" + dateOfDisclosure +
+                ", reason=" + reason +
+                '}';
     }
 }

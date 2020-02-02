@@ -174,9 +174,9 @@ public class HtsScreeningDTO {
 
     public Art getArtInstance(HtsScreeningDTO dto, String personId) {
         Art art = new Art();
-        art.setDateOfEnrolmentIntoCare(dto.getDateEnrolled());
+        art.setDateEnrolled(dto.getDateEnrolled());
         art.setDateOfHivTest(dto.getDateLastTested());
-        art.setOiArtNumber(dto.getArtNumber());
+        art.setArtNumber(dto.getArtNumber());
         art.setPersonId(personId);
         art.setId(UUID.randomUUID().toString());
         return art;
