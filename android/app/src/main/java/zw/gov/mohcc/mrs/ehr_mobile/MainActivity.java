@@ -34,6 +34,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.VisitChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.QuestionType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
@@ -299,7 +300,7 @@ public class MainActivity extends FlutterActivity {
 
                         if (methodCall.method.equals("saveArtRegistration")) {
                             try {
-                                Art art = gson.fromJson(arguments, Art.class);
+                                ArtDTO art = gson.fromJson(arguments, ArtDTO.class);
                                 String response = gson.toJson(artService.createArt(art));
                                 result.success(response);
 
