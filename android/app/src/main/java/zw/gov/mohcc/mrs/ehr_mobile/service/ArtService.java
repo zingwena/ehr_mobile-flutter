@@ -31,16 +31,23 @@ public class ArtService {
     }
 
     @Transaction
-    public Art createArt(Art art) {
+    public ArtDTO createArt(ArtDTO artDTO) {
 
-        Log.i(TAG, "Creating ART record : " + art);
+        Log.i(TAG, "Creating ART record : " + artDTO);
 
-        ehrMobileDatabase.artRegistrationDao().save(art);
+        ehrMobileDatabase.artDao().save(ArtDTO.getArt(artDTO));
 
-        Art newArtRecord = ehrMobileDatabase.artRegistrationDao().findById(art.getId());
-        Log.i(TAG, "Created art record : " + newArtRecord);
+        Art art = ehrMobileDatabase.artDao().findById(ArtDTO.getArt(artDTO).getId());
+        Log.i(TAG, "Created art record : " + art);
+        Log.d(TAG, "Creating art linkage record ");
 
-        return newArtRecord;
+        ehrMobileDatabase.artLinkageFromDao().save(ArtDTO.getArtLinkage(artDTO, artDTO.getPersonId()));
+
+        ArtLinkageFrom artLinkageFrom = ehrMobileDatabase.artLinkageFromDao().findByArtId(art.getId());
+
+        Log.d(TAG, "Art Linkage record : " + artLinkageFrom);
+
+        return getArt(artDTO.getPersonId());
     }
 
     public ArtDTO getArt(String personId) {
@@ -48,7 +55,7 @@ public class ArtService {
         Log.d(TAG, "Retrieving patient art record using art record : " + personId);
 
         ArtDTO artDTO = null;
-        Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
         if (art != null) {
             ArtLinkageFrom linkage = ehrMobileDatabase.artLinkageFromDao().findByArtId(art.getId());
             artDTO = ArtDTO.get(art, linkage);

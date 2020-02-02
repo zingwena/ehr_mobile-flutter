@@ -663,7 +663,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getArtRecord")) {
 
                             try {
-                                Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(arguments);
+                                Art art = ehrMobileDatabase.artDao().findByPersonId(arguments);
                                 Log.i(TAG, "ART MODEL RETURNED FROM ANDROID"+ art);
                                 String artjson = gson.toJson(art);
                                 Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>"+ artjson);

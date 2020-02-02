@@ -132,4 +132,20 @@ public class ArtLinkageFrom extends BaseEntity {
     public void setFacility(NameCode facility) {
         this.facility = facility;
     }
+
+    @Override
+    public String toString() {
+        return "ArtLinkageFrom{" +
+                "artId='" + artId + '\'' +
+                ", linkageFrom=" + linkageFrom +
+                ", linkageNumber='" + linkageNumber + '\'' +
+                ", dateHivConfirmed=" + dateHivConfirmed +
+                ", otherInstitution='" + otherInstitution + '\'' +
+                ", hivTestUsed=" + hivTestUsed +
+                ", testReason=" + testReason +
+                ", reTested=" + reTested +
+                ", dateRetested=" + dateRetested +
+                ", facility=" + facility +
+                '}';
+    }
 }
