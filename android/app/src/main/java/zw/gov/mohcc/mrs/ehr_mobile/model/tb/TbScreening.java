@@ -1,7 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.tb;
 
 import androidx.annotation.NonNull;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
@@ -10,60 +9,108 @@ import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
 @Entity
 public class TbScreening extends BaseEntity {
 
-    @NonNull
+    private String visitId;
+
+    private boolean presumptive;
+
+    private String note;
+
     @TypeConverters(DateConverter.class)
-    private Date date;
-    private String artId;
-    @Embedded
-    private NameCode sign;
+    @NonNull
+    private Date time;
+
+    private Boolean fever;
+
+    private Boolean coughing;
+
+    private Boolean weightLoss;
+
+    private Boolean nightSweats;
+
+    private Boolean bmiUnderSeventeen;
 
     public TbScreening() {
     }
 
     @Ignore
-    public TbScreening(@NonNull String id, @NonNull Date date, String artId, NameCode sign) {
+    public TbScreening(@NonNull String id, String visitId) {
         super(id);
-        this.date = date;
-        this.artId = artId;
-        this.sign = sign;
+        this.visitId = visitId;
     }
 
-    @NonNull
-    public Date getDate() {
-        return date;
+    public String getVisitId() {
+        return visitId;
     }
 
-    public void setDate(@NonNull Date date) {
-        this.date = date;
+    public void setVisitId(String visitId) {
+        this.visitId = visitId;
     }
 
-    public String getArtId() {
-        return artId;
+    public boolean isPresumptive() {
+        return presumptive;
     }
 
-    public void setArtId(String artId) {
-        this.artId = artId;
+    public void setPresumptive(boolean presumptive) {
+        this.presumptive = presumptive;
     }
 
-    public NameCode getSign() {
-        return sign;
+    public String getNote() {
+        return note;
     }
 
-    public void setSign(NameCode sign) {
-        this.sign = sign;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    @Override
-    public String toString() {
-        return "ArtSign{" +
-                "date=" + date +
-                ", artId='" + artId + '\'' +
-                ", sign=" + sign +
-                '}';
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public Boolean getFever() {
+        return fever;
+    }
+
+    public void setFever(Boolean fever) {
+        this.fever = fever;
+    }
+
+    public Boolean getCoughing() {
+        return coughing;
+    }
+
+    public void setCoughing(Boolean coughing) {
+        this.coughing = coughing;
+    }
+
+    public Boolean getWeightLoss() {
+        return weightLoss;
+    }
+
+    public void setWeightLoss(Boolean weightLoss) {
+        this.weightLoss = weightLoss;
+    }
+
+    public Boolean getNightSweats() {
+        return nightSweats;
+    }
+
+    public void setNightSweats(Boolean nightSweats) {
+        this.nightSweats = nightSweats;
+    }
+
+    public Boolean getBmiUnderSeventeen() {
+        return bmiUnderSeventeen;
+    }
+
+    public void setBmiUnderSeventeen(Boolean bmiUnderSeventeen) {
+        this.bmiUnderSeventeen = bmiUnderSeventeen;
     }
 }
