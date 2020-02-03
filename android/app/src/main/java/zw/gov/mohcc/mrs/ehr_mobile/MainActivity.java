@@ -920,6 +920,7 @@ public class MainActivity extends FlutterActivity {
     public void clearTables() {
 
         ehrMobileDatabase.patientWardDao().deleteAll();
+        ehrMobileDatabase.artLinkageFromDao().deleteAll();
         ehrMobileDatabase.patientQueueDao().deleteAll();
         ehrMobileDatabase.sexualHistoryQuestionDao().deleteAll();
         ehrMobileDatabase.indexContactDao().deleteAll();
