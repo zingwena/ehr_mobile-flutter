@@ -80,6 +80,18 @@ class _AddPatient extends State<AddPatient> {
     }
   }
 
+  Future<void> getSiteName() async {
+    String response;
+    try {
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  }
+
   void _handleGenderChange(int value) {
     setState(() {
       _gender = value;

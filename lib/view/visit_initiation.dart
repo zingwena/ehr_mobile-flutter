@@ -224,7 +224,7 @@ class VisitInitiationState extends State<VisitInitiation>
                                                 getQueues(_queuesList),
 
                                                 SizedBox(
-                                                     height: 15.0,
+                                                     height: 25.0,
                                                        ),
 
                                             Container(
