@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -19,9 +20,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
@@ -36,6 +39,7 @@ public class ArtService {
 
     public ArtService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+        this.visitService = new VisitService(ehrMobileDatabase, null, null);
     }
 
     @Transaction
@@ -43,13 +47,14 @@ public class ArtService {
 
         Log.i(TAG, "Creating ART record : " + artDTO);
 
-        ehrMobileDatabase.artDao().save(ArtDTO.getArt(artDTO));
+        Art artFromDTO = ArtDTO.getArt(artDTO);
+        ehrMobileDatabase.artDao().save(artFromDTO);
 
-        Art art = ehrMobileDatabase.artDao().findById(ArtDTO.getArt(artDTO).getId());
+        Art art = ehrMobileDatabase.artDao().findById(artFromDTO.getId());
         Log.i(TAG, "Created art record : " + art);
         Log.d(TAG, "Creating art linkage record ");
 
-        ehrMobileDatabase.artLinkageFromDao().save(ArtDTO.getArtLinkage(artDTO, artDTO.getPersonId()));
+        ehrMobileDatabase.artLinkageFromDao().save(ArtDTO.getArtLinkage(artDTO, art.getId()));
 
         ArtLinkageFrom artLinkageFrom = ehrMobileDatabase.artLinkageFromDao().findByArtId(art.getId());
 
@@ -145,4 +150,62 @@ public class ArtService {
         Log.d(TAG, "Calling question dao with workarea : " + workArea + " and category ID : " + categoryId);
         return ehrMobileDatabase.questionDao().findByWorkAreaAndCategoryId(workArea, categoryId);
     }
+
+    public TbScreening getVisitTbScreening(String personId) {
+
+        String visitId = visitService.getCurrentVisit(personId);
+        Log.d(TAG, "Retrieved visitId : " + visitId);
+
+        TbScreening tbScreening = ehrMobileDatabase.tbScreeningDao().findByVisitId(visitId);
+        Log.d(TAG, "Current visit TB Screening record : " + tbScreening);
+
+        return tbScreening != null ? tbScreening : new TbScreening(null, visitId);
+    }
+
+    @Transaction
+    public TbScreening saveTbScreening(TbScreening tbScreening) {
+
+        String id = UUID.randomUUID().toString();
+        tbScreening.setId(id);
+        Log.d(TAG, "Current state of tb screening record :" + tbScreening);
+        ehrMobileDatabase.tbScreeningDao().save(tbScreening);
+
+        return ehrMobileDatabase.tbScreeningDao().findById(id);
+    }
+
+    public List<ArtSymptom> getArtSymptoms(String personId) {
+
+        Log.d(TAG, "Fetching art record using person ID : " + personId);
+
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+
+        Log.d(TAG, "Art record retrieved : " + art);
+
+        List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao()
+                .findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, "15");
+        Log.d(TAG, "List of art symptoms : " + artSymptomQuestions);
+
+        List<ArtSymptom> artSymptoms = new ArrayList<>();
+        for(Question question : artSymptomQuestions) {
+
+            ArtSymptom artSymptom = ehrMobileDatabase.artSymptomDao().findByArtIdAndQuestionId(question.getCode(), art.getId());
+            if (artSymptom != null) {
+                artSymptoms.add(artSymptom);
+            } else {
+                artSymptoms.add(new ArtSymptom(
+                        null, null, art.getId(), new NameCode(question.getCode(), question.getName())));
+            }
+
+        }
+        return artSymptoms;
+    }
+
+    public void saveArtSymptom(ArtSymptom artSymptom) {
+
+        Log.d(TAG, "Art Symptom record : " + artSymptom);
+        artSymptom.setId(UUID.randomUUID().toString());
+
+        ehrMobileDatabase.artSymptomDao().save(artSymptom);
+    }
+
 }

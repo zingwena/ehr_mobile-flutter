@@ -10,11 +10,10 @@ ArtStatus _$ArtStatusFromJson(Map<String, dynamic> json) {
   return ArtStatus(
     json['name'] as String,
     json['code'] as String,
-
   );
 }
 
 Map<String, dynamic> _$ArtStatusToJson(ArtStatus instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+      'code': instance.code,
+      'name': instance.name,
+    };

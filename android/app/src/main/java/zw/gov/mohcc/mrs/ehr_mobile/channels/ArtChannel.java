@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.channels;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,6 +14,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -33,13 +37,14 @@ public class ArtChannel {
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
 
                         if (methodCall.method.equals("saveArtRegistration")) {
+                            Log.i(TAG, "Artdto sent from flutter " + arguments);
                             try {
                                 ArtDTO art = gson.fromJson(arguments, ArtDTO.class);
                                 String response = gson.toJson(artService.createArt(art));
                                 result.success(response);
 
                             } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
+                                Log.d(TAG, "something went wrong " + e.getMessage());
                                 e.printStackTrace();
 
                             }
@@ -50,8 +55,7 @@ public class ArtChannel {
                             try {
 
                                 ArtCurrentStatus artCurrentStatus = gson.fromJson(arguments, ArtCurrentStatus.class);
-                                ArtCurrentStatus dbArtCurrentStatus = artService.initiatePatientOnArt(artCurrentStatus);
-                                result.success(gson.toJson(dbArtCurrentStatus));
+                                result.success(gson.toJson(artService.initiatePatientOnArt(artCurrentStatus)));
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
@@ -87,7 +91,48 @@ public class ArtChannel {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
+                        if (methodCall.method.equals("getTbScreening")) {
+                            Log.i(TAG, "PersonId String object from flutter " + arguments);
+                            try {
+                                result.success(artService.getVisitTbScreening(arguments));
 
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("saveTbScreening")) {
+                            Log.i(TAG, "TbScreening object from flutter " + arguments);
+                            try {
+                                TbScreening tbScreening = gson.fromJson(arguments, TbScreening.class);
+                                result.success(gson.toJson(artService.saveTbScreening(tbScreening)));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getArtSymptom")) {
+                            Log.i(TAG, "PersonId String object from flutter " + arguments);
+                            try {
+                                result.success(artService.getArtSymptoms(arguments));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("saveArtSymptom")) {
+                            Log.i(TAG, "ArtSymptom object from flutter " + arguments);
+                            try {
+                                ArtSymptom artSymptom = gson.fromJson(arguments, ArtSymptom.class);
+                                artService.saveArtSymptom(artSymptom);
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 });
     }

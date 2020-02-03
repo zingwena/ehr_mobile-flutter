@@ -9,6 +9,9 @@ public class PrepOptionConverter {
     @TypeConverter
     public static PrepOption toPrepOption(String prepOption) {
 
+        if (prepOption == null) {
+            return null;
+        }
         if (prepOption.equals(PrepOption.INFANT.getPrepOption())) {
             return PrepOption.INFANT;
         } else if (prepOption.equals(PrepOption.PRE_EXPOSURE.getPrepOption())) {

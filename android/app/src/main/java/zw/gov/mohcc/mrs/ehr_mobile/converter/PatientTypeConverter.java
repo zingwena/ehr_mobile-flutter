@@ -10,6 +10,9 @@ public class PatientTypeConverter {
     @TypeConverter
     public static PatientType toPatientType(String patientType) {
 
+        if (patientType == null) {
+            return null;
+        }
         if (patientType.equals(PatientType.INPATIENT.getPatientType())) {
             return PatientType.INPATIENT;
         } else if (patientType.equals(PatientType.OUTPATIENT.getPatientType())) {

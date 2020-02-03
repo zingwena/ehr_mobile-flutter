@@ -9,6 +9,9 @@ public class TestLevelConverter {
     @TypeConverter
     public static TestLevel toTestLevel(String testLevel) {
 
+        if (testLevel == null) {
+            return null;
+        }
         if (testLevel.equals(TestLevel.FIRST.getTestLevel())) {
             return TestLevel.FIRST;
         } else if (testLevel.equals(TestLevel.SECOND.getTestLevel())) {

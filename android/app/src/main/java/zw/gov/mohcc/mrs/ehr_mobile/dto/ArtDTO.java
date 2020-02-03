@@ -104,32 +104,36 @@ public class ArtDTO implements Serializable {
 
         ArtDTO dto = new ArtDTO();
         dto.setArtNumber(art.getArtNumber());
-        dto.setCentralNervousSystem(art.getCentralNervousSystem());;
+        dto.setCentralNervousSystem(art.getCentralNervousSystem());
         dto.setCyanosis(art.getCyanosis());
         dto.setDate(art.getDate());
         dto.setDateEnrolled(art.getDateEnrolled());
-        dto.setDateHivConfirmed(linkage.getDateHivConfirmed());
         dto.setDateOfHivTest(art.getDateOfHivTest());
         dto.setDateEnrolled(art.getDateEnrolled());
         dto.setDateOfDisclosure(art.getDateOfDisclosure());
-        dto.setDateRetested(linkage.getDateRetested());
         dto.setEnlargedLymphNode(art.getEnlargedLymphNode());
-        dto.setFacility(linkage.getFacility());
         dto.setFollowUp(art.getFollowUp());
         dto.setHivStatus(art.getHivStatus());
         dto.setJaundice(art.getJaundice());
-        dto.setHivTestUsed(linkage.getHivTestUsed());
-        dto.setLinkageFrom(linkage.getLinkageFrom());
-        dto.setLinkageNumber(linkage.getLinkageNumber());
         dto.setMentalStatus(art.getMentalStatus());
-        dto.setOtherInstitution(linkage.getOtherInstitution());
         dto.setPallor(art.getPallor());
         dto.setPersonId(art.getPersonId());
         dto.setReason(art.getReason());
         dto.setRelation(art.getRelation());
-        dto.setReTested(linkage.getReTested());
-        dto.setTestReason(linkage.getTestReason());
         dto.setTracing(art.getTracing());
+
+        if (linkage != null) {
+            dto.setReTested(linkage.getReTested());
+            dto.setTestReason(linkage.getTestReason());
+            dto.setHivTestUsed(linkage.getHivTestUsed());
+            dto.setLinkageFrom(linkage.getLinkageFrom());
+            dto.setLinkageNumber(linkage.getLinkageNumber());
+            dto.setDateHivConfirmed(linkage.getDateHivConfirmed());
+            dto.setDateRetested(linkage.getDateRetested());
+            dto.setFacility(linkage.getFacility());
+            dto.setOtherInstitution(linkage.getOtherInstitution());
+        }
+
         return dto;
     }
 

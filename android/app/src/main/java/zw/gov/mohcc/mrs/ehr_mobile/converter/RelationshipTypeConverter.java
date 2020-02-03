@@ -8,6 +8,9 @@ public class RelationshipTypeConverter {
     @TypeConverter
     public static RelationshipType toRelationshipType(String relationshipType) {
 
+        if (relationshipType == null) {
+            return null;
+        }
         if (relationshipType.equals(RelationshipType.CHILD.getRelationshipType())) {
             return RelationshipType.CHILD;
         } else if (relationshipType.equals(RelationshipType.PARENT.getRelationshipType())) {

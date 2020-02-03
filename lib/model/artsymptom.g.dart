@@ -10,20 +10,17 @@ ArtSymptom _$ArtSymptomFromJson(Map<String, dynamic> json) {
   return ArtSymptom(
     json['id'] as String,
     json['artId'] as String,
-    const CustomDateTimeConverter()
-        .fromJson(json['date'] as String),
+    const CustomDateTimeConverter().fromJson(json['date'] as String),
     json['symptom'] == null
         ? null
         : NameCode.fromJson(json['symptom'] as Map<String, dynamic>),
   );
 }
 
-
-Map<String, dynamic> _$ArtSymptomToJson(
-    ArtSymptom instance) =>
+Map<String, dynamic> _$ArtSymptomToJson(ArtSymptom instance) =>
     <String, dynamic>{
       'id': instance.id,
       'artId': instance.artId,
-      'date': instance.date,
+      'date': const CustomDateTimeConverter().toJson(instance.date),
       'symptom': instance.symptom,
     };

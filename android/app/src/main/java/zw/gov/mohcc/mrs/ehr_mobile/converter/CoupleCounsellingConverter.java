@@ -8,6 +8,9 @@ public class CoupleCounsellingConverter {
     @TypeConverter
     public static CoupleCounselling toCoupleCounselling(String coupleCounselling) {
 
+        if (coupleCounselling == null) {
+            return null;
+        }
         if (coupleCounselling.equals(CoupleCounselling.YES.getCoupleCounselling())) {
             return CoupleCounselling.YES;
         } else if (coupleCounselling.equals(CoupleCounselling.NO.getCoupleCounselling())) {

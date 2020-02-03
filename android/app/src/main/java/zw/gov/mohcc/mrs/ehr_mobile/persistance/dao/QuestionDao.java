@@ -31,12 +31,12 @@ public interface QuestionDao {
     @Query("SELECT * FROM Question where name=:name")
     Question findByName(String name);
 
-    @Query("SELECT q.* FROM Question q inner join QuestionCategory c on c.code=q.categoryId where c.workArea=:workArea")
+    @Query("SELECT q.* FROM Question q inner join QuestionCategory c on c.code=q.categoryId where c.workArea=:workArea Order by name ASC")
     List<Question> findByWorkArea(WorkArea workArea);
 
-    @Query("SELECT * FROM Question where categoryId=:categoryId")
+    @Query("SELECT * FROM Question where categoryId=:categoryId Order by name ASC")
     List<Question> findByCategoryId(String categoryId);
 
-    @Query("SELECT q.* FROM Question q inner join QuestionCategory c on c.code=q.categoryId where c.workArea=:workArea and q.categoryId=:categoryId")
+    @Query("SELECT q.* FROM Question q inner join QuestionCategory c on c.code=q.categoryId where c.workArea=:workArea and q.categoryId=:categoryId Order by name ASC")
     List<Question> findByWorkAreaAndCategoryId(WorkArea workArea, String categoryId);
 }

@@ -9,6 +9,9 @@ public class HtsTypeConverter {
     @TypeConverter
     public static HtsType toHtsType(String htsType) {
 
+        if (htsType == null) {
+            return null;
+        }
         if (htsType.equals(HtsType.SELF.getHtsType())) {
             return HtsType.SELF;
         } else if (htsType.equals(HtsType.RAPID.getHtsType())) {

@@ -130,6 +130,11 @@ public class MainActivity extends FlutterActivity {
     private ArtService artService;
     private PersonService personService;
 
+    /**
+     *
+     * @param savedInstanceState
+     * highly preferable to have all services as singletons, this will be implemented
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -920,6 +925,7 @@ public class MainActivity extends FlutterActivity {
     public void clearTables() {
 
         ehrMobileDatabase.patientWardDao().deleteAll();
+        ehrMobileDatabase.artLinkageFromDao().deleteAll();
         ehrMobileDatabase.patientQueueDao().deleteAll();
         ehrMobileDatabase.sexualHistoryQuestionDao().deleteAll();
         ehrMobileDatabase.indexContactDao().deleteAll();

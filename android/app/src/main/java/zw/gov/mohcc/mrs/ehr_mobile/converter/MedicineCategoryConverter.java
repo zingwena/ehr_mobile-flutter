@@ -9,6 +9,9 @@ public class MedicineCategoryConverter {
     @TypeConverter
     public static MedicineCategory toMedicineCategory(String medicineCategory) {
 
+        if (medicineCategory == null) {
+            return null;
+        }
         if (medicineCategory.equals(MedicineCategory.V.getMedicineCategory())) {
             return MedicineCategory.V;
         } else if (medicineCategory.equals(MedicineCategory.E.getMedicineCategory())) {

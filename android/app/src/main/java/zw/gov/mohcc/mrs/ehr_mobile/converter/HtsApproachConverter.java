@@ -8,6 +8,9 @@ public class HtsApproachConverter {
     @TypeConverter
     public static HtsApproach toHtsApproach(String htsApproach) {
 
+        if (htsApproach == null) {
+            return null;
+        }
         if (htsApproach.equals(HtsApproach.PITC.getHtsApproach())) {
             return HtsApproach.PITC;
         } else if (htsApproach.equals(HtsApproach.CICTC.getHtsApproach())) {

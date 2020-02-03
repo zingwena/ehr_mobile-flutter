@@ -13,7 +13,8 @@ FollowUpReason _$FollowUpReasonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$FollowUpReasonToJson(FollowUpReason instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+Map<String, dynamic> _$FollowUpReasonToJson(FollowUpReason instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+    };

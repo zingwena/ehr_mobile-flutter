@@ -11,6 +11,10 @@ public class RecordStatusConvertor {
 
         @TypeConverter
         public static RecordStatus toRecordStatus(String status) {
+
+            if (status == null) {
+                return null;
+            }
             if (RecordStatus.IMPORTED.getStatus().equals(status)) {
                 return RecordStatus.IMPORTED;
             } else if (RecordStatus.SYNCED.getStatus().equals(status)) {

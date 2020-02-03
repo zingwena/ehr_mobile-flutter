@@ -13,7 +13,8 @@ ArtVisitStatus _$ArtVisitStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ArtVisitStatusToJson(ArtVisitStatus instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+Map<String, dynamic> _$ArtVisitStatusToJson(ArtVisitStatus instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+    };

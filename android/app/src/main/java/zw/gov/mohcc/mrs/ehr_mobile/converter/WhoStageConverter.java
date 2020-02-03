@@ -9,6 +9,9 @@ public class WhoStageConverter {
     @TypeConverter
     public static WhoStage toWhoStage(String whoStage) {
 
+        if (whoStage == null) {
+            return null;
+        }
         if (whoStage.equals(WhoStage.ONE.getWhoStage())) {
             return WhoStage.ONE;
         } else if (whoStage.equals(WhoStage.TWO.getWhoStage())) {

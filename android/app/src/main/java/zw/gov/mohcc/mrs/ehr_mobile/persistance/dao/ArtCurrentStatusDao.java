@@ -26,8 +26,8 @@ public interface ArtCurrentStatusDao {
     @Update
     void update(ArtCurrentStatus artCurrentStatus);
 
-    @Query("SELECT * FROM ArtCurrentStatus WHERE id =:id")
-    ArtCurrentStatus findArtInitiationById(String id);
+    @Query("SELECT * FROM ArtCurrentStatus WHERE id=:id")
+    ArtCurrentStatus findByArtId(String id);
 
     @Query("DELETE FROM ArtCurrentStatus where id=:id")
     void deleteById(String id);
