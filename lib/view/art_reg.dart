@@ -45,8 +45,8 @@ class _ArtReg extends State<ArtReg> {
   static const dataChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   String oi_art_number, program_number;
   ArtRegistration _artRegistration;
-  var dateOfTest,dateOfEnrollment, displayDate, dateOfRetest;
-  DateTime enrollment_date, test_date, retest_date;
+  var dateOfTest,dateOfEnrollment, displayDate, dateOfRetest, dateHivConfirmed;
+  DateTime enrollment_date, test_date, retest_date, hivConfirmation_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
 
@@ -106,7 +106,7 @@ class _ArtReg extends State<ArtReg> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != dateOfTest)
+    if (picked != null && picked != dateOfEnrollment)
       setState(() {
         dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
         enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
@@ -139,6 +139,19 @@ class _ArtReg extends State<ArtReg> {
 
     }
   }
+  Future<Null> _selectDateHivConfirmed(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != dateHivConfirmed)
+      setState(() {
+        dateHivConfirmed = DateFormat("yyyy/MM/dd").format(picked);
+        hivConfirmation_date = DateFormat("yyyy/MM/dd").parse(dateHivConfirmed);
+      });
+  }
+
   Future<void>getAge(Person person)async{
     String response;
     try{
@@ -599,7 +612,7 @@ class _ArtReg extends State<ArtReg> {
                                                                         program_number = value;                                           }),
                                                               decoration: InputDecoration(
                                                                   labelText:
-                                                                  'Proram Number',
+                                                                  'Program Number',
                                                                   border:
                                                                   OutlineInputBorder()),
                                                             ),
@@ -633,19 +646,19 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    dateOfEnrollment),
+                                                                    dateHivConfirmed),
                                                                 validator:
                                                                     (value) {
                                                                   return value
                                                                       .isEmpty
-                                                                      ? 'Enter some text'
+                                                                      ? 'Enter date'
                                                                       : null;
                                                                 },
                                                                 decoration: InputDecoration(
                                                                     border: OutlineInputBorder(
                                                                         borderRadius:
                                                                         BorderRadius.circular(0.0)),
-                                                                    labelText: "Date of HIV Test"),
+                                                                    labelText: "Date  HIV Confirmed"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -657,7 +670,7 @@ class _ArtReg extends State<ArtReg> {
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
-                                                              _selectDateOfEnrollment(
+                                                              _selectDateHivConfirmed(
                                                                   context);
                                                             })
                                                       ],
@@ -795,7 +808,7 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    dateOfEnrollment),
+                                                                    dateOfRetest),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -935,7 +948,7 @@ class _ArtReg extends State<ArtReg> {
   Future<void> artRegistration(Artdto artRegistration) async {
     String art_registration_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod reg object ');
+      print('pppppppppppppppppppppppppppppppppppp art regmethod reg object '+ artRegistration.toString());
 
       art_registration_response = await artChannel.invokeMethod('saveArtRegistration', jsonEncode(artRegistration));
       print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
