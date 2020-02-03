@@ -19,9 +19,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -71,6 +74,13 @@ public class ArtService {
             PersonInvestigation personInvestigation = getLatestHivPositiveRecord(personId);
             if (personInvestigation != null) {
                 artDTO.setDateOfHivTest(personInvestigation.getDate());
+                LaboratoryInvestigation laboratoryInvestigation = getLaboratoryInvestigationForLatestHivTest(personInvestigation.getId());
+                Log.d(TAG, "Laboratory investigation if any for this history record : " + laboratoryInvestigation);
+
+                if (laboratoryInvestigation != null) {
+                    Facility facility = ehrMobileDatabase.facilityDao().findById(laboratoryInvestigation.getFacilityId());
+                    artDTO.setFacility(new NameCode(facility.getCode(), facility.getName()));
+                }
             }
         }
 
@@ -85,6 +95,13 @@ public class ArtService {
                         new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.HIV_TESTS)));
         Log.d(TAG, "Retrieved latest hiv positive result for this patient : " + latestPositiveHivResult);
         return latestPositiveHivResult;
+    }
+
+    public LaboratoryInvestigation getLaboratoryInvestigationForLatestHivTest(String personInvestigationId) {
+
+        Log.d(TAG, "Retrieved laboratory investigation record if test was done in EHR : " + personInvestigationId);
+
+        return ehrMobileDatabase.laboratoryInvestigationDao().findByPersonInvestigationId(personInvestigationId);
     }
 
     public ArtCurrentStatus initiatePatientOnArt(ArtCurrentStatus artCurrentStatus) {

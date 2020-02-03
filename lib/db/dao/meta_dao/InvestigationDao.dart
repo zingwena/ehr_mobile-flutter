@@ -1,6 +1,7 @@
 
 import 'package:ehr_mobile/db/dao/base_dao.dart';
 import 'package:ehr_mobile/db/tables/meta_tables/InvestigationTable.dart';
+import 'package:ehr_mobile/model/enums/enums.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 
@@ -49,7 +50,7 @@ class InvestigationDao extends BaseDao{
     inserter.set(laboratoryTestId, map['laboratoryTestId']);
     inserter.set(sampleId, map['sampleId']);
     inserter.set(id, map['investigationId']);
-    inserter.set(status,1);
+    inserter.set(status,'${RecordStatus.IMPORTED.toString()}');
     return await _adapter.insert(inserter);
   }
 
