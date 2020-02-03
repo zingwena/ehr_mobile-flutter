@@ -8,7 +8,9 @@ part of 'artdetailsdto.dart';
 
 ArtDetailsDto _$ArtDetailsDtoFromJson(Map<String, dynamic> json) {
   return ArtDetailsDto(
-    const CustomDateTimeConverter().fromJson(json['dateRegistered'] as String),
+    json['dateRegistered'] == null
+        ? null
+        : DateTime.parse(json['dateRegistered'] as String),
     json['artNumber'] as String,
     json['whoStage'] as String,
     json['arvRegimen'] as String,
@@ -17,7 +19,7 @@ ArtDetailsDto _$ArtDetailsDtoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ArtDetailsDtoToJson(ArtDetailsDto instance) =>
     <String, dynamic>{
-      'dateRegistered': instance.dateRegistered,
+      'dateRegistered': instance.dateRegistered?.toIso8601String(),
       'artNumber': instance.artNumber,
       'whoStage': instance.whoStage,
       'arvRegimen': instance.arvRegimen,

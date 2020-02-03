@@ -855,9 +855,19 @@ class _ArtReg extends State<ArtReg> {
                                                               .currentState
                                                               .save();
                                                           setState(() {
+
+                                                          /*  Artdto(this.personId, this.date, this.artNumber, this.enlargedLymphNode,
+                                                                this.pallor, this.jaundice, this.cyanosis, this.mentalStatus,
+                                                                this.centralNervousSystem, this.dateOfHivTest, this.dateEnrolled,
+                                                                this.tracing, this.followUp, this.hivStatus, this.relation,
+                                                                this.dateOfDisclosure, this.reason, this.linkageFrom,
+                                                                this.dateHivConfirmed, this.linkageNumber, this.hivTestUsed,
+                                                                this.otherInstitution, this.testReason, this.reTested, this.dateRetested,
+                                                                this.facility);*/
                                                             Artdto artdto = Artdto(widget.personId, test_date, oi_art_number, null, null, null,
-                                                            null, null, null, test_date, enrollment_date,null, null, null, null, null, null, _currentReferringProgram,null,program_number,  _currentHivTestUsed, null, null,
+                                                            null, null, null, test_date, enrollment_date,null, null, null, null, test_date, null, _currentReferringProgram,test_date,program_number,  _currentHivTestUsed, null, null,
                                                             retestedBeforeArt, retest_date, null);
+
                                                             ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
                                                             artRegistration(artdto);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));

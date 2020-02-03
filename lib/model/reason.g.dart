@@ -14,6 +14,6 @@ Reason _$ReasonFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ReasonToJson(Reason instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+      'code': instance.code,
+      'name': instance.name,
+    };

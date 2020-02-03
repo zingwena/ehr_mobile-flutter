@@ -9,8 +9,7 @@ part of 'artdto.dart';
 Artdto _$ArtdtoFromJson(Map<String, dynamic> json) {
   return Artdto(
     json['personId'] as String,
-    const CustomDateTimeConverter()
-        .fromJson(json['date'] as String),
+    const CustomDateTimeConverter().fromJson(json['date'] as String),
     json['artNumber'] as String,
     json['enlargedLymphNode'] as bool,
     json['pallor'] as bool,
@@ -18,10 +17,8 @@ Artdto _$ArtdtoFromJson(Map<String, dynamic> json) {
     json['cyanosis'] as bool,
     json['mentalStatus'] as String,
     json['centralNervousSystem'] as String,
-    const CustomDateTimeConverter()
-        .fromJson(json['dateOfHivTest'] as String),
-    const CustomDateTimeConverter()
-        .fromJson(json['dateEnrolled'] as String),
+    const CustomDateTimeConverter().fromJson(json['dateOfHivTest'] as String),
+    const CustomDateTimeConverter().fromJson(json['dateEnrolled'] as String),
     json['tracing'] as bool,
     json['followUp'] as bool,
     json['hivStatus'] as bool,
@@ -39,20 +36,16 @@ Artdto _$ArtdtoFromJson(Map<String, dynamic> json) {
         ? null
         : NameCode.fromJson(json['testReason'] as Map<String, dynamic>),
     json['reTested'] as bool,
-    const CustomDateTimeConverter()
-        .fromJson(json['dateRetested'] as String),
+    const CustomDateTimeConverter().fromJson(json['dateRetested'] as String),
     json['facility'] == null
         ? null
         : NameCode.fromJson(json['facility'] as Map<String, dynamic>),
-
   );
 }
 
-Map<String, dynamic> _$ArtdtoToJson(
-    Artdto instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ArtdtoToJson(Artdto instance) => <String, dynamic>{
       'personId': instance.personId,
-      'date':  const CustomDateTimeConverter().toJson(instance.date),
+      'date': const CustomDateTimeConverter().toJson(instance.date),
       'artNumber': instance.artNumber,
       'enlargedLymphNode': instance.enlargedLymphNode,
       'pallor': instance.pallor,
@@ -60,22 +53,26 @@ Map<String, dynamic> _$ArtdtoToJson(
       'cyanosis': instance.cyanosis,
       'mentalStatus': instance.mentalStatus,
       'centralNervousSystem': instance.centralNervousSystem,
-      'dateOfHivTest': const CustomDateTimeConverter().toJson(instance.dateOfHivTest),
+      'dateOfHivTest':
+          const CustomDateTimeConverter().toJson(instance.dateOfHivTest),
+      'dateEnrolled':
+          const CustomDateTimeConverter().toJson(instance.dateEnrolled),
       'tracing': instance.tracing,
       'followUp': instance.followUp,
       'hivStatus': instance.hivStatus,
       'relation': instance.relation,
-      'dateEnrolled': const CustomDateTimeConverter().toJson(instance.dateEnrolled),
-      'dateOfDisclosure': const CustomDateTimeConverter().toJson(instance.dateOfDisclosure),
+      'dateOfDisclosure':
+          const CustomDateTimeConverter().toJson(instance.dateOfDisclosure),
       'reason': instance.reason,
       'linkageFrom': instance.linkageFrom,
-      'dateHivConfirmed': const CustomDateTimeConverter().toJson(instance.dateHivConfirmed),
+      'dateHivConfirmed':
+          const CustomDateTimeConverter().toJson(instance.dateHivConfirmed),
       'linkageNumber': instance.linkageNumber,
       'hivTestUsed': instance.hivTestUsed,
       'otherInstitution': instance.otherInstitution,
-      'testReason': instance.testReason,
+      'testReason': instance.testReason?.toJson(),
       'reTested': instance.reTested,
-      'dateRetested': const CustomDateTimeConverter().toJson(instance.dateRetested),
-      'facility': instance.facility,
-
+      'dateRetested':
+          const CustomDateTimeConverter().toJson(instance.dateRetested),
+      'facility': instance.facility?.toJson(),
     };

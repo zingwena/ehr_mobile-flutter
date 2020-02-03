@@ -40,9 +40,9 @@ class HtsScreeningdto{
   }
 
 
-  factory HtsScreeningdto.fromJson(Map<String, dynamic> json) => _$HtsScreeningFromJson(json);
+  factory HtsScreeningdto.fromJson(Map<String, dynamic> json) => _$HtsScreeningdtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$HtsScreeningToJson(this);
+  Map<String, dynamic> toJson() => _$HtsScreeningdtoToJson(this);
   @override
   String toString() {
     return 'HtsScreeningdto{visitId: $visitId, testedBefore: $testedBefore, art: $art, '

@@ -27,26 +27,24 @@ ArtVisit _$ArtVisitFromJson(Map<String, dynamic> json) {
         : NameCode.fromJson(json['lactatingStatus'] as Map<String, dynamic>),
     json['familyPlanningStatus'] == null
         ? null
-        : NameCode.fromJson(json['familyPlanningStatus'] as Map<String, dynamic>),
+        : NameCode.fromJson(
+            json['familyPlanningStatus'] as Map<String, dynamic>),
     json['tbStatus'] == null
         ? null
         : NameCode.fromJson(json['tbStatus'] as Map<String, dynamic>),
   );
 }
 
-
-Map<String, dynamic> _$ArtVisitToJson(
-    ArtVisit instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ArtVisitToJson(ArtVisit instance) => <String, dynamic>{
       'id': instance.id,
       'artId': instance.artId,
       'visitId': instance.visitId,
       'visitType': instance.visitType,
       'functionalStatus': instance.functionalStatus,
       'visitStatus': instance.visitStatus,
-      'ancFirstBookingDate': instance.ancFirstBookingDate,
+      'ancFirstBookingDate':
+          const CustomDateTimeConverter().toJson(instance.ancFirstBookingDate),
       'lactatingStatus': instance.lactatingStatus,
       'familyPlanningStatus': instance.familyPlanningStatus,
       'tbStatus': instance.tbStatus,
-
     };

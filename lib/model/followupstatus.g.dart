@@ -13,7 +13,8 @@ FollowUpStatus _$FollowUpStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$FollowUpStatusToJson(FollowUpStatus instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+Map<String, dynamic> _$FollowUpStatusToJson(FollowUpStatus instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+    };

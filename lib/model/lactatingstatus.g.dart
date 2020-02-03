@@ -13,7 +13,8 @@ LactatingStatus _$LactatingStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$LactatingStatusToJson(LactatingStatus instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+Map<String, dynamic> _$LactatingStatusToJson(LactatingStatus instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+    };

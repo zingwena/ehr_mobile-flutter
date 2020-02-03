@@ -14,6 +14,6 @@ NameCode _$NameCodeFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$NameCodeToJson(NameCode instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+      'code': instance.code,
+      'name': instance.name,
+    };

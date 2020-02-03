@@ -14,6 +14,6 @@ IptStatus _$IptStatusFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$IptStatusToJson(IptStatus instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+      'code': instance.code,
+      'name': instance.name,
+    };

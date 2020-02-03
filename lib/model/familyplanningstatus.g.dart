@@ -13,7 +13,9 @@ FamilyPlanningStatus _$FamilyPlanningStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$FamilyPlanningStatusToJson(FamilyPlanningStatus instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+Map<String, dynamic> _$FamilyPlanningStatusToJson(
+        FamilyPlanningStatus instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+    };

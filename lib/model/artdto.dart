@@ -51,7 +51,7 @@ class Artdto {
 
   Map<String,dynamic> toJson() => _$ArtdtoToJson(this);
 
-  static mapFromJson(List dynamicList){
+   static mapFromJson(List dynamicList){
     List<Artdto> artdtoList=[];
     if(dynamicList!=null){
       dynamicList.forEach((e){
