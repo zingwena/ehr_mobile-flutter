@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
@@ -170,4 +172,40 @@ public class ArtService {
 
         return ehrMobileDatabase.tbScreeningDao().findById(id);
     }
+
+    public List<ArtSymptom> getArtSymptoms(String personId) {
+
+        Log.d(TAG, "Fetching art record using person ID : " + personId);
+
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+
+        Log.d(TAG, "Art record retrieved : " + art);
+
+        List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao()
+                .findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, "15");
+        Log.d(TAG, "List of art symptoms : " + artSymptomQuestions);
+
+        List<ArtSymptom> artSymptoms = new ArrayList<>();
+        for(Question question : artSymptomQuestions) {
+
+            ArtSymptom artSymptom = ehrMobileDatabase.artSymptomDao().findByArtIdAndQuestionId(question.getCode(), art.getId());
+            if (artSymptom != null) {
+                artSymptoms.add(artSymptom);
+            } else {
+                artSymptoms.add(new ArtSymptom(
+                        null, null, art.getId(), new NameCode(question.getCode(), question.getName())));
+            }
+
+        }
+        return artSymptoms;
+    }
+
+    public void saveArtSymptom(ArtSymptom artSymptom) {
+
+        Log.d(TAG, "Art Symptom record : " + artSymptom);
+        artSymptom.setId(UUID.randomUUID().toString());
+
+        ehrMobileDatabase.artSymptomDao().save(artSymptom);
+    }
+
 }
