@@ -200,7 +200,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                       if (_key.currentState.validate()) {
                         _key.currentState.save();
                         progressDialog.show();
-                        await fetchPost().then((result){
+                        await fetchPost(progressDialog).then((result){
                           progressDialog.hide().whenComplete((){
                             Navigator.push(
                                 context, MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -243,7 +243,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
         ),
       );
 
-  Future<void> fetchPost() async {
+  Future<void> fetchPost(ProgressDialog progressDialog) async {
     String ehr_url = url;
     var body = json.encode({"username": username, "password": password});
 
@@ -271,8 +271,8 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       String result =
           await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
       //log.i("RESULT-------${result.toString()}");
-      var pull=await pullMetaData('$url/api',token.id_token).whenComplete(() async {
-        await pullPatientData();
+      var pull=await pullMetaData(progressDialog,'$url/api',token.id_token).whenComplete(() async {
+        await pullPatientData(progressDialog);
       });
       print("Response =================$pull");
 
