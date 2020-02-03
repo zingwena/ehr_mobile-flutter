@@ -394,8 +394,16 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
                                                     child: DataTable(
                                                         columns: [
-                                                          DataColumn(label: Text("TestKit")),
-                                                          DataColumn(label: Text("Result")),
+                                                          DataColumn(label: Text("TestKit",
+                                                              style: TextStyle(
+                                                              fontSize: 20,
+                                                              color: Colors.white.withOpacity(0.80),
+                                                              fontWeight: FontWeight.w400), )),
+                                                          DataColumn(label: Text("Result",
+                                                            style: TextStyle(
+                                                                fontSize: 20,
+                                                                color: Colors.white.withOpacity(0.80),
+                                                                fontWeight: FontWeight.w400), )),
                                                         ],
                                                         rows: [
                                                           DataRow(cells: [
