@@ -442,88 +442,45 @@ class _Recency extends State<RecencyTest> {
                             padding: new EdgeInsets.all(25.0),
                             child: new Column(
                               children: <Widget>[
-                                new Container(
-                                  child: new Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "Sample :",
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 16.0),
+                                        child: TextField(
+                                          controller: TextEditingController(
+                                              text: 'Blood'),
+                                          decoration: InputDecoration(
+                                            labelText: 'Sample',
+                                            // icon: Icon(Icons.add_box, color: Colors.blue),
                                           ),
-                                          width: 100,
+
                                         ),
                                       ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: Text(
-                                              (sample_name),
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                    ),
+
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 16.0),
+                                        child: TextField(
+                                          controller: TextEditingController(
+                                              text: investigation_name),
+                                          decoration: InputDecoration(
+                                            labelText: 'Investigation',
+                                            //icon: Icon(Icons.adjust, color: Colors.blue),
                                           ),
-                                          width: 100,
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                new Container(
-                                  child: new Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "Investigation :",
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: Text(
-                                              (investigation_name),
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          width: 100,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+
+
                                 SizedBox(
                                   height: 16,
                                 ),
+
                                 Row(
                                   children: <Widget>[
 
@@ -532,12 +489,7 @@ class _Recency extends State<RecencyTest> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Test Kit',
-                                            style: TextStyle(
-                                              color: Colors.grey.shade600,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                            'Test Kit'
                                           ),
                                         ),
                                         width: 250,
@@ -556,12 +508,7 @@ class _Recency extends State<RecencyTest> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Test Kit Batches',
-                                            style: TextStyle(
-                                              color: Colors.grey.shade600,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                            'Test Kit Batches'
                                           ),
                                         ),
                                         width: 250,
@@ -577,19 +524,14 @@ class _Recency extends State<RecencyTest> {
                                   height: 20,
                                 ),
 
-                                Row(
+                              /*  Row(
                                   children: <Widget>[
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Results',
-                                            style: TextStyle(
-                                              color: Colors.grey.shade600,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                            'Results'
                                           ),
                                         ),
                                         width: 250,
@@ -597,11 +539,11 @@ class _Recency extends State<RecencyTest> {
                                     ),
 
                                   ],
-                                ),
+                                ), */
 
 
                                 Row(children: <Widget>[
-                                 // Text("Results"),
+                                  Text("Results"),
                                   SizedBox(width: 10.0),
                                   getRecencyResults(_entryPointList),
 

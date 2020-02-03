@@ -311,8 +311,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                       child: new ConstrainedBox(
                                         constraints: new BoxConstraints(
                                           minHeight:
-                                          viewportConstraints.maxHeight -
-                                              48.0,
+                                          viewportConstraints.maxHeight - 48.0,
                                         ),
                                         child: new IntrinsicHeight(
                                           child: Column(
@@ -332,76 +331,31 @@ class _Hts_Result  extends State<Hts_Result > {
                                                       child: Row(
                                                         children: <Widget>[
                                                           Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text(
-                                                                  "Sample :",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: 'Blood'),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Sample',
+                                                                  // icon: Icon(Icons.add_box, color: Colors.blue),
                                                                 ),
-                                                              ),
-                                                              width: 100,
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(0.0),
-                                                                child: Text(
-                                                                  ("Blood"),
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              width: 100,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
 
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text(
-                                                                  "Investigation:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
-                                                                ),
                                                               ),
-                                                              width: 100,
                                                             ),
                                                           ),
+
                                                           Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(0.0),
-                                                                child: Text(
-                                                                  ("HIV"),
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: 'HIV'),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Investigation',
+                                                                  //icon: Icon(Icons.adjust, color: Colors.blue),
                                                                 ),
                                                               ),
-                                                              width: 100,
                                                             ),
                                                           ),
                                                         ],
@@ -409,8 +363,9 @@ class _Hts_Result  extends State<Hts_Result > {
                                                     ),
 
                                                     SizedBox(
-                                                      height: 10.0,
+                                                      height: 16,
                                                     ),
+
 
                                                     Container(
                                                       width: double.infinity,
@@ -446,37 +401,21 @@ class _Hts_Result  extends State<Hts_Result > {
                                                       child: Row(
                                                         children: <Widget>[
                                                           Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text(
-                                                                  "Final Result:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: final_result),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Sample',
+                                                                  // icon: Icon(Icons.add_box, color: Colors.blue),
                                                                 ),
+
                                                               ),
-                                                              width: 100,
                                                             ),
                                                           ),
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(0.0),
-                                                                child: Text(
-                                                                  (final_result),
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey.shade600,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              width: 100,
-                                                            ),
-                                                          ),
+
+
                                                         ],
                                                       ),
                                                     ),
