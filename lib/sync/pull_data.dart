@@ -97,12 +97,14 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
     var personDao = PersonDao(adapter);
     personDao.removeAll();
     var t = await result.data["people"]['content'];
-
-    for (var i = 0; i < t.length; i++) {
-      progressDialog.update(message: '${t[i]['firstname']}  ${t[i]['lastname']}');
-      personDao.insertFromEhr(t[i]);
+    for (Map map in t) {
+      log.i(map);
+      progressDialog.update(message: '${map['firstname']}  ${map['lastname']}');
+      personDao.insertFromEhr(map);
       await Future.delayed(Duration(milliseconds: 500));
     }
+  } else{
+    log.e('$result');
   }
   return "$DONE_STATUS";
 }
