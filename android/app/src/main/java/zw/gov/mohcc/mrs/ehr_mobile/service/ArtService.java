@@ -43,14 +43,10 @@ public class ArtService {
 
         Log.i(TAG, "Creating ART record : " + artDTO);
 
-        try {
-            ehrMobileDatabase.artDao().save(ArtDTO.getArt(artDTO));
-        } catch (Exception ex) {
-            Log.e(TAG, "Error occureed : " + ex.getMessage());
-            ex.printStackTrace();
-        }
+        Art artFromDTO = ArtDTO.getArt(artDTO);
+        ehrMobileDatabase.artDao().save(artFromDTO);
 
-        Art art = ehrMobileDatabase.artDao().findById(ArtDTO.getArt(artDTO).getId());
+        Art art = ehrMobileDatabase.artDao().findById(artFromDTO.getId());
         Log.i(TAG, "Created art record : " + art);
         Log.d(TAG, "Creating art linkage record ");
 

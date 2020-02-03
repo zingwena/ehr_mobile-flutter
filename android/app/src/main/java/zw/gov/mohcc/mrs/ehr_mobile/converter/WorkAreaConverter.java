@@ -9,6 +9,9 @@ public class WorkAreaConverter {
     @TypeConverter
     public static WorkArea toWorkArea(String workArea) {
 
+        if (workArea == null) {
+            return null;
+        }
         if (workArea.equals(WorkArea.PNC.getWorkArea())) {
             return WorkArea.PNC;
         } else if (workArea.equals(WorkArea.IMNCI.getWorkArea())) {

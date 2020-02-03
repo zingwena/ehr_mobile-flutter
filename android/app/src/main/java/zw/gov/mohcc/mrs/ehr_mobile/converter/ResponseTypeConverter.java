@@ -10,6 +10,9 @@ public class ResponseTypeConverter {
     @TypeConverter
     public static ResponseType toResponseType(String responseType) {
 
+        if (responseType == null) {
+            return null;
+        }
         if (responseType.equals(ResponseType.YES.getResponseType())) {
             return ResponseType.YES;
         } else if (responseType.equals(ResponseType.NO.getResponseType())) {

@@ -10,6 +10,9 @@ public class TypeOfContactConverter {
     @TypeConverter
     public static TypeOfContact toTypeOfContact(String typeOfContact) {
 
+        if (typeOfContact == null) {
+            return null;
+        }
         if (typeOfContact.equals(TypeOfContact.PRIMARY.getTypeOfContact())) {
             return TypeOfContact.PRIMARY;
         } else if (typeOfContact.equals(TypeOfContact.SECONDARY.getTypeOfContact())) {

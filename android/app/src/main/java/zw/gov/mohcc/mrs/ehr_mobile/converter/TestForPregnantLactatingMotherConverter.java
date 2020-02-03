@@ -9,6 +9,9 @@ public class TestForPregnantLactatingMotherConverter {
     @TypeConverter
     public static TestForPregnantLactatingMother toNewTestPregLact(String code) {
 
+        if (code == null) {
+            return null;
+        }
         if (code.equals(TestForPregnantLactatingMother.NEW.getCode())) {
             return TestForPregnantLactatingMother.NEW;
         } else if (code.equals(TestForPregnantLactatingMother.NONE.getCode())) {

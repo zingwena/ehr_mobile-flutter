@@ -9,6 +9,9 @@ public class MedicineLevelConverter {
     @TypeConverter
     public static MedicineLevel toMedicineLevel(String medicineLevel) {
 
+        if (medicineLevel == null) {
+            return null;
+        }
         if (medicineLevel.equals(MedicineLevel.A.getMedicineLevel())) {
             return MedicineLevel.A;
         } else if (medicineLevel.equals(MedicineLevel.B.getMedicineLevel())) {

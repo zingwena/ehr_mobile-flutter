@@ -9,6 +9,9 @@ public class ReasonOfNotDisclosingConverter {
     @TypeConverter
     public static ReasonOfNotDisclosing toReasonOfNotDisclosing(String reasonOfNotDisclosing) {
 
+        if (reasonOfNotDisclosing == null) {
+            return null;
+        }
         if (reasonOfNotDisclosing.equals(ReasonOfNotDisclosing.FEAR.getReasonOfNotDisclosing())) {
             return ReasonOfNotDisclosing.FEAR;
         } else if (reasonOfNotDisclosing.equals(ReasonOfNotDisclosing.NOT_READY.getReasonOfNotDisclosing())) {
