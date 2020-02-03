@@ -57,4 +57,13 @@ public class ArtSign extends BaseEntity {
     public void setSign(NameCode sign) {
         this.sign = sign;
     }
+
+    @Override
+    public String toString() {
+        return "ArtSign{" +
+                "date=" + date +
+                ", artId='" + artId + '\'' +
+                ", sign=" + sign +
+                '}';
+    }
 }

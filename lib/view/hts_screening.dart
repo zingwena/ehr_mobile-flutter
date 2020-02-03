@@ -213,8 +213,6 @@ class _HtsScreening extends State<Hts_Screening> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

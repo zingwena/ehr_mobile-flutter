@@ -1,4 +1,5 @@
 import 'package:ehr_mobile/view/data_syncronization.dart';
+//import 'package:ehr_mobile/art_visit.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';

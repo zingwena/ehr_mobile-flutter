@@ -4,16 +4,25 @@ import android.util.Log;
 
 import androidx.room.Transaction;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
+import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ArvStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class ArtService {
@@ -27,38 +36,96 @@ public class ArtService {
     }
 
     @Transaction
-    public String createArt(ArtDto dto) {
+    public ArtDTO createArt(ArtDTO artDTO) {
 
-        Log.i(TAG, "Creating HTS record");
-        Art art = ArtDto.getInstance(dto);
-        ehrMobileDatabase.artRegistrationDao().createArtRegistration(art);
-        Log.i(TAG, "Created art record : " + ehrMobileDatabase.artRegistrationDao().findArtRegistrationById(art.getId()));
+        Log.i(TAG, "Creating ART record : " + artDTO);
 
-        return art.getId();
+        ehrMobileDatabase.artDao().save(ArtDTO.getArt(artDTO));
+
+        Art art = ehrMobileDatabase.artDao().findById(ArtDTO.getArt(artDTO).getId());
+        Log.i(TAG, "Created art record : " + art);
+        Log.d(TAG, "Creating art linkage record ");
+
+        ehrMobileDatabase.artLinkageFromDao().save(ArtDTO.getArtLinkage(artDTO, artDTO.getPersonId()));
+
+        ArtLinkageFrom artLinkageFrom = ehrMobileDatabase.artLinkageFromDao().findByArtId(art.getId());
+
+        Log.d(TAG, "Art Linkage record : " + artLinkageFrom);
+
+        return getArt(artDTO.getPersonId());
     }
 
-    public Art getArt(String personId) {
+    public ArtDTO getArt(String personId) {
 
-        Log.d(TAG, "Retrieving patient art record");
-        return ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+        Log.d(TAG, "Retrieving patient art record using art record : " + personId);
+
+        ArtDTO artDTO = null;
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+        if (art != null) {
+            ArtLinkageFrom linkage = ehrMobileDatabase.artLinkageFromDao().findByArtId(art.getId());
+            artDTO = ArtDTO.get(art, linkage);
+        } else {
+            // set default fields
+            artDTO = new ArtDTO();
+            artDTO.setPersonId(personId);
+            PersonInvestigation personInvestigation = getLatestHivPositiveRecord(personId);
+            if (personInvestigation != null) {
+                artDTO.setDateOfHivTest(personInvestigation.getDate());
+            }
+        }
+
+        Log.d(TAG, "ART and ART Linkage record retrieved : " + artDTO);
+        return artDTO;
     }
 
-    public Hts getLatestHivPositiveRecord(String personId) {
+    public PersonInvestigation getLatestHivPositiveRecord(String personId) {
 
-        return null;
+        PersonInvestigation latestPositiveHivResult = ehrMobileDatabase.personInvestigationDao().
+                findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(personId, APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT,
+                        new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.HIV_TESTS)));
+        Log.d(TAG, "Retrieved latest hiv positive result for this patient : " + latestPositiveHivResult);
+        return latestPositiveHivResult;
     }
 
-    public String initiatePatientOnArt(String artId) {
+    public ArtCurrentStatus initiatePatientOnArt(ArtCurrentStatus artCurrentStatus) {
 
-        return null;
+        artCurrentStatus.setState(ArvStatus.START_ARV);
+        artCurrentStatus.setId(UUID.randomUUID().toString());
+        Log.d(TAG, "State of art current status : " + artCurrentStatus);
+        ehrMobileDatabase.artCurrentStatusDao().save(artCurrentStatus);
+
+        ArtCurrentStatus savedArtCurrentStatus = ehrMobileDatabase.artCurrentStatusDao()
+                .findLastestPatientStatus(artCurrentStatus.getArtId());
+
+        Log.d(TAG, "Latest saved art current status : " + savedArtCurrentStatus);
+
+        return savedArtCurrentStatus;
+    }
+
+    public ArtCurrentStatus getArtCurrentStatus(String artId) {
+
+        Log.d(TAG, "Fetching patient art current status using artId : " + artId);
+
+        ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao()
+                .findLastestPatientStatus(artId);
+
+        Log.d(TAG, "Fetched art current status : " + artId);
+
+        return artCurrentStatus;
     }
 
     public List<ArvCombinationRegimen> getPersonArvCombinationRegimens(String personId, RegimenType regimenType) {
-        Log.i(TAG, "REGIMEN TYPE SENT KKKKKKKKKKK"+ regimenType.toString());
+
         Person person = ehrMobileDatabase.personDao().findPatientById(personId);
         Age age = Age.getInstance(person);
-        List<ArvCombinationRegimen>combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByLineAndAgeGroup(regimenType, AgeGroup.getPersonAgeGroup(age.getYears()));
-        Log.i(TAG, "LIST OF ARVCOMBINATION REGIMEN JJJJJJJJJJ"+ combinationRegimenList.toString());
-        return  combinationRegimenList;
+        List<ArvCombinationRegimen> combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByLineAndAgeGroup(regimenType, AgeGroup.getPersonAgeGroup(age.getYears()));
+
+        return combinationRegimenList;
+    }
+
+    public List<Question> findByWorkAreaAndCategoryId(WorkArea workArea, String categoryId) {
+
+        Log.d(TAG, "Calling question dao with workarea : " + workArea + " and category ID : " + categoryId);
+        return ehrMobileDatabase.questionDao().findByWorkAreaAndCategoryId(workArea, categoryId);
     }
 }

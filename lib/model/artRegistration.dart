@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+
 part 'artRegistration.g.dart';
 
 @CustomDateTimeConverter()

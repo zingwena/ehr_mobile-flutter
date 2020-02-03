@@ -1,7 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum RecordStatus {
-
     NEW("NEW"),
     IMPORTED("IMPORTED"),
     SYNCED("SYNCED"),

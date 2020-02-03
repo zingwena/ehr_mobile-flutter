@@ -13,14 +13,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.ArvStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.CoupleCounsellingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.HivTestUsedConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsApproachConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.LinkageFromConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.MedicineCategoryConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.MedicineLevelConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.NewTestConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.NormalityConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.PatientTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.PrepOptionConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.QuestionTyeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.ReasonOfNotDisclosingConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.RegimenTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.RelationshipTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.ResponseTypeConverter;
@@ -36,6 +40,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
@@ -95,8 +100,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtCurrentStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtLinkageFromDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtRegistrationDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitTypeDao;
@@ -182,14 +188,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
-        ArtVisitType.class, ArtVisitStatus.class, IptReason.class}, version = 6, exportSchema = false)
+        ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class}, version = 7, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
         HtsTypeConverter.class, ActivityStatusConverter.class, PrepOptionConverter.class, RelationshipTypeConverter.class,
         TypeOfContactConverter.class, TestLevelConverter.class, RegimenTypeConverter.class, AgeGroupConverter.class,
         PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class,
-        MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class, ArvStatusConverter.class})
+        MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class, ArvStatusConverter.class,
+        ReasonOfNotDisclosingConverter.class, NormalityConverter.class, LinkageFromConverter.class, HivTestUsedConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -200,7 +207,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "impiloDB")
+                            EhrMobileDatabase.class, "newImpilo")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
@@ -280,9 +287,9 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract ArtReasonDao artReasonDao();
 
-    public abstract ArtRegistrationDao artRegistrationDao();
+    public abstract ArtDao artDao();
 
-    public abstract ArtCurrentStatusDao artInitiationDao();
+    public abstract ArtCurrentStatusDao artCurrentStatusDao();
 
     public abstract ArvCombinationRegimenDao arvCombinationRegimenDao();
 
@@ -339,4 +346,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract ArtVisitTypeDao artVisitTypeDao();
 
     public abstract ArtVisitStatusDao artVisitStatusDao();
+
+    public abstract ArtLinkageFromDao artLinkageFromDao();
 }
