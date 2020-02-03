@@ -50,7 +50,7 @@ public class ArtService {
         Log.i(TAG, "Created art record : " + art);
         Log.d(TAG, "Creating art linkage record ");
 
-        ehrMobileDatabase.artLinkageFromDao().save(ArtDTO.getArtLinkage(artDTO, artDTO.getPersonId()));
+        ehrMobileDatabase.artLinkageFromDao().save(ArtDTO.getArtLinkage(artDTO, art.getId()));
 
         ArtLinkageFrom artLinkageFrom = ehrMobileDatabase.artLinkageFromDao().findByArtId(art.getId());
 
