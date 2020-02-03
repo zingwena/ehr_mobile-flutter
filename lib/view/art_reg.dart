@@ -25,9 +25,10 @@ class ArtReg extends StatefulWidget {
   String visitId;
   Person person;
   HtsRegistration htsRegistration;
+  Artdto artdto;
 
   String htsId;
-  ArtReg(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
+  ArtReg(this.artdto, this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
 
 
   @override
@@ -44,12 +45,11 @@ class _ArtReg extends State<ArtReg> {
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   static const dataChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   String oi_art_number, program_number;
-  ArtRegistration _artRegistration;
+  Artdto _artRegistration;
   var dateOfTest,dateOfEnrollment, displayDate, dateOfRetest, dateHivConfirmed;
   DateTime enrollment_date, test_date, retest_date, hivConfirmation_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
-
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsHivTestUsedIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
@@ -74,8 +74,14 @@ class _ArtReg extends State<ArtReg> {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     dateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
     dateOfTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    dateOfRetest = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    dateHivConfirmed = DateFormat("yyyy/MM/dd").format(DateTime.now());
     test_date = DateTime.now();
     enrollment_date = DateTime.now();
+    retest_date = DateTime.now();
+    hivConfirmation_date = DateTime.now();
+
+
     getAge(widget.person);
     getFacilityName();
     _dropDownMenuItemsReferringListIdentified = getDropDownMenuItemsReferringList();
@@ -166,8 +172,6 @@ class _ArtReg extends State<ArtReg> {
 
     }
   }
-
-
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsReferringList() {
     List<DropdownMenuItem<String>> items = new List();
@@ -877,13 +881,36 @@ class _ArtReg extends State<ArtReg> {
                                                                 this.dateHivConfirmed, this.linkageNumber, this.hivTestUsed,
                                                                 this.otherInstitution, this.testReason, this.reTested, this.dateRetested,
                                                                 this.facility);*/
-                                                            Artdto artdto = Artdto(widget.personId, test_date, oi_art_number, null, null, null,
-                                                            null, null, null, test_date, enrollment_date,null, null, null, null, test_date, null, _currentReferringProgram,test_date,program_number,  _currentHivTestUsed, null, null,
-                                                            retestedBeforeArt, retest_date, null);
+                                                            widget.artdto.personId = widget.personId;
+                                                            widget.artdto.date = test_date;
+                                                            widget.artdto.artNumber = oi_art_number;
+                                                            widget.artdto.enlargedLymphNode = null;
+                                                            widget.artdto.pallor = null;
+                                                            widget.artdto.jaundice = null;
+                                                            widget.artdto.cyanosis = null;
+                                                            widget.artdto.mentalStatus = null;
+                                                            widget.artdto.centralNervousSystem = null;
+                                                            widget.artdto.dateOfHivTest = test_date;
+                                                            widget.artdto.dateEnrolled = enrollment_date;
+                                                            widget.artdto.tracing = null;
+                                                            widget.artdto.followUp = null;
+                                                            widget.artdto.hivStatus = null;
+                                                            widget.artdto.relation = null;
+                                                            widget.artdto.dateOfDisclosure = test_date;
+                                                            widget.artdto.reason = null;
+                                                            widget.artdto.linkageFrom = _currentReferringProgram;
+                                                            widget.artdto.dateHivConfirmed = test_date;
+                                                            widget.artdto.linkageNumber = program_number;
+                                                            widget.artdto.hivTestUsed = _currentHivTestUsed;
+                                                            widget.artdto.otherInstitution = null;
+                                                            widget.artdto.testReason = null;
+                                                            widget.artdto.reTested = retestedBeforeArt;
+                                                            widget.artdto.dateRetested = retest_date;
 
-                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
-                                                            artRegistration(artdto);
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
+                                                            artRegistration(widget.artdto);
+                                                            print("ART DTO WAS NULL %%%%%%%%%%%%%%%%%%%%");
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(_artRegistration, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
+
 
                                                           });
                                                         }
@@ -953,7 +980,7 @@ class _ArtReg extends State<ArtReg> {
       art_registration_response = await artChannel.invokeMethod('saveArtRegistration', jsonEncode(artRegistration));
       print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
       setState(() {
-        _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));
+        _artRegistration = Artdto.fromJson(jsonDecode(art_registration_response));
         print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
       });
 

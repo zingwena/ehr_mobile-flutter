@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/model/art_reason.dart';
+import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/artregmendto.dart';
 import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
@@ -80,6 +81,7 @@ class _Art_Initiation extends State<Art_Initiation> {
   bool second_line_regimen = false;
   bool third_line_regimen = false;
   String facility_name;
+  Artdto artdto;
 
 
   @override
@@ -88,6 +90,7 @@ class _Art_Initiation extends State<Art_Initiation> {
     getArvCombinationregimens(widget.patientId, "FIRST_LINE");
     getAge(widget.person);
     getFacilityName();
+    getArt(widget.patientId);
     super.initState();
   }
 
@@ -120,6 +123,21 @@ class _Art_Initiation extends State<Art_Initiation> {
       setState(() {
         age = Age.fromJson(jsonDecode(response));
         print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+  Future<void>getArt(String personId)async{
+    String response;
+    try{
+      response = await artChannel.invokeMethod('getArt', personId);
+      setState(() {
+        this.artdto = Artdto.fromJson(jsonDecode(response));
+        print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
       });
 
     }catch(e){
@@ -614,7 +632,7 @@ class _Art_Initiation extends State<Art_Initiation> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
+                    ArtReg(artdto, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
           ),
           ),
           new RoundedButton(text: "Art Initiation", selected: true),

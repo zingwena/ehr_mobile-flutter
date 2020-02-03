@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/htsscreeningdto.dart';
@@ -48,11 +49,13 @@ class SummaryOverviewState extends State<SummaryOverview>
   String height_date;
   String temp_date;
   Age age;
+  Artdto artdto;
   static const htsChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const visitChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
 
 
   String facility_name;
@@ -61,9 +64,25 @@ class SummaryOverviewState extends State<SummaryOverview>
   void initState() {
     getHtsScreeningRecord(widget.person.id);
     getPatientSummary(widget.person.id);
+    getArt(widget.person.id);
    getAge(widget.person);
     super.initState();
     controller = new TabController(length: 3, vsync: this);
+  }
+
+  Future<void>getArt(String personId)async{
+    String response;
+    try{
+      response = await artChannel.invokeMethod('getArt', personId);
+      setState(() {
+        this.artdto = Artdto.fromJson(jsonDecode(response));
+        print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<void> getHtsScreeningRecord(String patientId) async {
@@ -1120,7 +1139,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) => ArtReg(
+                                                              builder: (context) => ArtReg(artdto,
                                                                   widget.person
                                                                       .id,
                                                                   widget
@@ -1344,7 +1363,7 @@ class SummaryOverviewState extends State<SummaryOverview>
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ArtReg(widget.person.id, widget.visitId,
+                  builder: (context) => ArtReg(artdto,widget.person.id, widget.visitId,
                       widget.person, widget.htsRegistration, widget.htsId)),
             ),
           ),

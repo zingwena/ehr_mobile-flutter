@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/artInitiation.dart';
@@ -30,7 +31,7 @@ import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 
 class ArtRegOverview extends StatefulWidget {
-  final ArtRegistration artRegistration;
+  final Artdto artRegistration;
   final String personId;
   final String visitId;
   final Person person;
@@ -61,14 +62,16 @@ class ArtOverviewState extends State<ArtRegOverview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   ArtInitiation artInitiation;
-  var dateOfEnrollment, dateOfHivTest;
+  var dateOfEnrollment, dateOfHivTest, dateHivConfirmed, dateOfRetest;
   Age age;
   String facility_name;
 
   @override
   void initState() {
-    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfEnrolmentIntoCare);
+    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateEnrolled);
     dateOfHivTest = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfHivTest);
+    dateHivConfirmed =  DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateHivConfirmed);
+    dateOfRetest =   DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateRetested);
     print(_patient.toString());
   //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
@@ -307,7 +310,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.oiArtNumber)),
+                                                                        widget.artRegistration.artNumber)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Oi Art NUmber',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
@@ -316,6 +319,134 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               ),
                                                             ),
                                                           ),
+
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        widget.artRegistration.linkageFrom)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Linkage from',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        widget.artRegistration.linkageNumber)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Program Number',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        dateHivConfirmed)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Date of Hiv confirmation',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        widget.artRegistration.hivTestUsed)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'HIV Test used',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          widget.artRegistration.testReason == null ? SizedBox(height: 0.0,):Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        widget.artRegistration.testReason.name)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Reason for HIV Test',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        widget.artRegistration.reTested.toString())),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Retested before ART',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        dateOfRetest)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Date of retest',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
 
                                                         ],
                                                       ),
