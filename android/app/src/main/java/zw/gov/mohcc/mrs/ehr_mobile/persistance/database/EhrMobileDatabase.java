@@ -209,7 +209,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "newImpilo")
+                            EhrMobileDatabase.class, "ehr")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
