@@ -925,10 +925,9 @@ class _ArtReg extends State<ArtReg> {
   Future<void> artRegistration(Artdto artRegistration) async {
     String art_registration_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod');
+      print('pppppppppppppppppppppppppppppppppppp art regmethod reg object ');
 
-      art_registration_response = await artChannel.invokeMethod(
-          'saveArtRegistration', jsonEncode(artRegistration.toJson()));
+      art_registration_response = await artChannel.invokeMethod('saveArtRegistration', jsonEncode(artRegistration));
       print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
       setState(() {
         _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));

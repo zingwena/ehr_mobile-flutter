@@ -45,35 +45,8 @@ Artdto _$ArtdtoFromJson(Map<String, dynamic> json) {
         ? null
         : NameCode.fromJson(json['facility'] as Map<String, dynamic>),
 
-
   );
 }
-String personId;
-DateTime date;
-String artNumber;
-bool enlargedLymphNode;
-bool pallor;
-bool jaundice;
-bool cyanosis;
-String mentalStatus;
-String centralNervousSystem;
-DateTime dateOfHivTest;
-DateTime dateEnrolled;
-bool tracing;
-bool followUp;
-bool hivStatus;
-String relation;
-DateTime dateOfDisclosure;
-String reason;
-String linkageFrom;
-DateTime dateHivConfirmed;
-String linkageNumber;
-String hivTestUsed;
-String otherInstitution;
-NameCode testReason;
-bool reTested;
-DateTime dateRetested;
-NameCode facility;
 
 Map<String, dynamic> _$ArtdtoToJson(
     Artdto instance) =>

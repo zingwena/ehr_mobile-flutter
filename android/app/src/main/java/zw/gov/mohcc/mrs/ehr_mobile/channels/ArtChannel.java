@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.channels;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,6 +33,7 @@ public class ArtChannel {
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
 
                         if (methodCall.method.equals("saveArtRegistration")) {
+                            Log.i(TAG, "Artdto sent from flutter "+ arguments );
                             try {
                                 ArtDTO art = gson.fromJson(arguments, ArtDTO.class);
                                 String response = gson.toJson(artService.createArt(art));

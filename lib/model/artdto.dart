@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'appointmentoutcome.dart';
 import 'followupreason.dart';
 part 'artdto.g.dart';
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CustomDateTimeConverter()
 class Artdto {
    String personId;
@@ -38,7 +38,6 @@ class Artdto {
    DateTime dateRetested;
    NameCode facility;
 
-
    Artdto(this.personId, this.date, this.artNumber, this.enlargedLymphNode,
        this.pallor, this.jaundice, this.cyanosis, this.mentalStatus,
        this.centralNervousSystem, this.dateOfHivTest, this.dateEnrolled,
@@ -53,14 +52,14 @@ class Artdto {
   Map<String,dynamic> toJson() => _$ArtdtoToJson(this);
 
   static mapFromJson(List dynamicList){
-    List<Artdto> artappointmentList=[];
+    List<Artdto> artdtoList=[];
     if(dynamicList!=null){
       dynamicList.forEach((e){
-        Artdto artAppointment= Artdto.fromJson(e);
-        artappointmentList.add(artAppointment);
+        Artdto artdto= Artdto.fromJson(e);
+        artdtoList.add(artdto);
       });
     }
-    return artappointmentList;
+    return artdtoList;
   }
 
 
