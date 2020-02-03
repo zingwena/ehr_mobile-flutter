@@ -2,9 +2,12 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.tb;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 
 @Entity
@@ -16,6 +19,8 @@ public class TbScreening extends BaseEntity {
 
     private String note;
 
+    @TypeConverters(DateConverter.class)
+    @NonNull
     private Date time;
 
     private Boolean fever;
@@ -31,6 +36,7 @@ public class TbScreening extends BaseEntity {
     public TbScreening() {
     }
 
+    @Ignore
     public TbScreening(@NonNull String id, String visitId) {
         super(id);
         this.visitId = visitId;
