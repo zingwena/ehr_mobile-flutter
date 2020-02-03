@@ -18,33 +18,23 @@ public interface ArtCurrentStatusDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void createArtInitiation(ArtCurrentStatus artCurrentStatus);
+    void save(ArtCurrentStatus artCurrentStatus);
 
     @Query("DELETE from ArtCurrentStatus")
     void deleteAll();
 
-    @Query("SELECT COUNT(id) FROM ArtCurrentStatus WHERE id =:id")
-    int getNumberOfRows(String id);
-
     @Update
-    void updateArtInitiation(ArtCurrentStatus artCurrentStatus);
-
-    @Query("SELECT * FROM ArtCurrentStatus")
-    List<ArtCurrentStatus> listArtInitiation();
+    void update(ArtCurrentStatus artCurrentStatus);
 
     @Query("SELECT * FROM ArtCurrentStatus WHERE id =:id")
     ArtCurrentStatus findArtInitiationById(String id);
 
-    @Query("DELETE FROM ArtCurrentStatus where id = :id")
+    @Query("DELETE FROM ArtCurrentStatus where id=:id")
     void deleteById(String id);
 
-    @RawQuery
-    List<ArtCurrentStatus> searchArtInitiation(SimpleSQLiteQuery query);
-
-    @Query("SELECT * FROM ArtCurrentStatus WHERE artId =:artId")
+    @Query("SELECT * FROM ArtCurrentStatus WHERE artId=:artId")
     ArtCurrentStatus findByVisitId(String artId);
 
-
-
-
+    @Query("SELECT * FROM ArtCurrentStatus WHERE artId=:artId Order By date Desc limit 1")
+    ArtCurrentStatus findLastestPatientStatus(String artId);
 }

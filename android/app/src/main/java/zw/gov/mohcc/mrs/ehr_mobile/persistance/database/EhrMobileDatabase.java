@@ -287,9 +287,9 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public abstract ArtReasonDao artReasonDao();
 
-    public abstract ArtDao artRegistrationDao();
+    public abstract ArtDao artDao();
 
-    public abstract ArtCurrentStatusDao artInitiationDao();
+    public abstract ArtCurrentStatusDao artCurrentStatusDao();
 
     public abstract ArvCombinationRegimenDao arvCombinationRegimenDao();
 

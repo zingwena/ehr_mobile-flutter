@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 import zw.gov.mohcc.mrs.ehr_mobile.constant.InvestigationIdConstants;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
@@ -161,7 +160,7 @@ public class HistoryService {
 
         // check art details it must also work if patient is on art while not having
         // been tested in EHR
-        Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
         if (art != null) {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
@@ -244,12 +243,12 @@ public class HistoryService {
             if (dto.getArt() != null && dto.getArt()) {
 
                 Visit visit = ehrMobileDatabase.visitDao().findById(visitId);
-                Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(visit.getPersonId());
+                Art art = ehrMobileDatabase.artDao().findByPersonId(visit.getPersonId());
                 if (art == null) {
                     // create art record
                     Log.i(TAG, "Creating art record");
-                    ehrMobileDatabase.artRegistrationDao().save(dto.getArtInstance(dto, visit.getPersonId()));
-                    Log.i(TAG, "Saved art record : " + ehrMobileDatabase.artRegistrationDao().findByPersonId(visit.getPersonId()));
+                    ehrMobileDatabase.artDao().save(dto.getArtInstance(dto, visit.getPersonId()));
+                    Log.i(TAG, "Saved art record : " + ehrMobileDatabase.artDao().findByPersonId(visit.getPersonId()));
                 }
             }
 
