@@ -298,6 +298,7 @@ public class MainActivity extends FlutterActivity {
                         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
 
                         if (methodCall.method.equals("saveArtRegistration")) {
+                            Log.i(TAG, "Artdto passed from the flutter method"+ arguments);
                             try {
                                 Art art = gson.fromJson(arguments, Art.class);
                                 String response = gson.toJson(artService.createArt(art));

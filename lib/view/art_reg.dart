@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -42,10 +43,10 @@ class _ArtReg extends State<ArtReg> {
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   static const dataChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
-  String oi_art_number;
+  String oi_art_number, program_number;
   ArtRegistration _artRegistration;
-  var dateOfTest,dateOfEnrollment, displayDate;
-  DateTime enrollment_date, test_date;
+  var dateOfTest,dateOfEnrollment, displayDate, dateOfRetest;
+  DateTime enrollment_date, test_date, retest_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
 
@@ -54,15 +55,14 @@ class _ArtReg extends State<ArtReg> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonForTestListIdentified;
 
-  List _referringListIdentified = ["Referring Program 1", "Referring Program 2", "Referring Program 3", "Referring Program 4" ];
-  List _hivTestUsedIdentified = ["HIV Test 1", "HIV Test 2", "HIV Test 3", "HIV Test 4" ];
+  List _referringListIdentified = ["EID", "HTS", "PMTCT", "STI", "TB_PROGRAM", "VMMC", "VIAC" ];
+  List _hivTestUsedIdentified = ["AB", "PCR" ];
   List _reasonForHivTestIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4" ];
 
   int _testingSite = 0;
   int _reTested = 0;
   String testingSite = "";
-  String retestedBeforeArt = "";
-
+  bool retestedBeforeArt = false;
   String  _currentReferringProgram, _currentHivTestUsed, _currentReasonForTest ;
 
   bool selfIdentifiedReferringIsValid=false;
@@ -121,8 +121,8 @@ class _ArtReg extends State<ArtReg> {
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
-        dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
-        enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
+        dateOfRetest = DateFormat("yyyy/MM/dd").format(picked);
+        retest_date = DateFormat("yyyy/MM/dd").parse(dateOfRetest);
       });
   }
 
@@ -210,10 +210,10 @@ class _ArtReg extends State<ArtReg> {
 
       switch (_reTested) {
         case 1:
-          retestedBeforeArt = "Yes";
+          retestedBeforeArt = true;
           break;
         case 2:
-          retestedBeforeArt = "No";
+          retestedBeforeArt = true;
           break;
       }
     });
@@ -584,11 +584,24 @@ class _ArtReg extends State<ArtReg> {
                                                             padding: EdgeInsets
                                                                 .symmetric(vertical: 16.0,
                                                                 horizontal: 60.0),
-                                                            child: TextFormField(
+                                                            child:    TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter Program Number'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                  setState(
+                                                                          () {
+                                                                        program_number = value;                                           }),
                                                               decoration: InputDecoration(
                                                                   labelText:
-                                                                  'Program Number',
-                                                                  border: OutlineInputBorder()),
+                                                                  'Proram Number',
+                                                                  border:
+                                                                  OutlineInputBorder()),
                                                             ),
                                                           ),
                                                           width: 100,
@@ -842,11 +855,12 @@ class _ArtReg extends State<ArtReg> {
                                                               .currentState
                                                               .save();
                                                           setState(() {
+                                                            Artdto artdto = Artdto(widget.personId, test_date, oi_art_number, null, null, null,
+                                                            null, null, null, test_date, enrollment_date,null, null, null, null, null, null, _currentReferringProgram,null,program_number,  _currentHivTestUsed, null, null,
+                                                            retestedBeforeArt, retest_date, null);
                                                             ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
-                                                            artRegistration(artRegistrationDetails);
+                                                            artRegistration(artdto);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
-
-
 
                                                           });
                                                         }
@@ -908,7 +922,7 @@ class _ArtReg extends State<ArtReg> {
     );
   }
 
-  Future<void> artRegistration(ArtRegistration artRegistration) async {
+  Future<void> artRegistration(Artdto artRegistration) async {
     String art_registration_response;
     try {
       print('pppppppppppppppppppppppppppppppppppp art regmethod');

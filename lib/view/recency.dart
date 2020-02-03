@@ -571,7 +571,7 @@ class _Recency extends State<RecencyTest> {
                                   ],
                                 ),
                                 show_batch_error_msg == true ? SizedBox(
-                                  height: 20.0, width: 300.0, child: Text("Select textkit batch", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                  height: 20.0, width: 300.0, child: Text("Select testkit batch", style: TextStyle(color: Colors.red, fontSize: 15),),
                                 ):SizedBox(height: 0.0, width: 0.0,),
                                 SizedBox(
                                   height: 20,
