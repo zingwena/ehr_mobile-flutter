@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/db/dao/hts_dao/hts_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArtReasonDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArtStatusDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArtVisitStatusDao.dart';
@@ -44,6 +45,7 @@ import 'package:ehr_mobile/db/dao/meta_dao/nationality_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/occupation_dao.dart';
 import 'package:ehr_mobile/db/dao/person_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/town_dao.dart';
+import 'package:ehr_mobile/db/dao/visit_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
 import 'package:ehr_mobile/graphql/graphql_queries.dart';
 import 'package:ehr_mobile/graphql/queue_query.dart';
@@ -81,33 +83,7 @@ Future<String> pullSiteData() async {
 }
 
 
-Future<String> pullPatientData(ProgressDialog progressDialog) async {
-  PersonQuery queryMutation = PersonQuery();
-  var ip = await retrieveString(SERVER_IP);
-  GraphQLClient _client = graphQLConfiguration.clientToQuery(ip);
-  QueryResult result = await _client.query(
-    QueryOptions(
-      document: queryMutation.getAll(),
-    ),
-  );
 
-  if (!result.hasErrors) {
-    var dbHandler = DatabaseHelper();
-    var adapter = await dbHandler.getAdapter();
-    var personDao = PersonDao(adapter);
-    personDao.removeAll();
-    var t = await result.data["people"]['content'];
-    for (Map map in t) {
-      log.i(map);
-      progressDialog.update(message: '${map['firstname']}  ${map['lastname']}');
-      personDao.insertFromEhr(map);
-      await Future.delayed(Duration(milliseconds: 500));
-    }
-  } else{
-    log.e('$result');
-  }
-  return "$DONE_STATUS";
-}
 
 Future<String> pullQueueData(ProgressDialog progressDialog) async{
   QueueQuery query = QueueQuery();

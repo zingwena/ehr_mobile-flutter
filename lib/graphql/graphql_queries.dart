@@ -6,7 +6,7 @@
       return """ 
         query GetPatientsQuery{
             
-            people(text: "", page: 0, size: 100000, sort: "") {
+            people(text: "", page: 0, size: 10000, sort: "") {
               content {
                 personId
                 firstname
@@ -64,6 +64,17 @@
                 hivStatus {
                   date
                   status
+                }
+                history {
+                  investigations{
+                    personInvestigationId
+                    investigationId
+                    date
+                    result{
+                      id
+                      name
+                    }
+                  }
                 }
                 visitHistory {
                   patientId
@@ -124,6 +135,9 @@
                       id
                     }
                     reasonForNotIssuingResult {
+                      id
+                    }
+                    purpose{
                       id
                     }
                   }
