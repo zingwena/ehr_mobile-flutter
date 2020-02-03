@@ -20,7 +20,6 @@ TestKitBatchIssue _$TestKitBatchIssueFromJson(Map<String, dynamic> json) {
         : BinTypeIdName.fromJson(json['detail'] as Map<String, dynamic>),
     (json['quantity'] as num)?.toDouble(),
     const CustomDateTimeConverter().fromJson(json['date'] as String),
-
   );
 }
 
@@ -34,5 +33,4 @@ Map<String, dynamic> _$TestKitBatchIssueToJson(TestKitBatchIssue instance) =>
       'detail': instance.detail?.toJson(),
       'quantity': instance.quantity,
       'date': const CustomDateTimeConverter().toJson(instance.date),
-
     };

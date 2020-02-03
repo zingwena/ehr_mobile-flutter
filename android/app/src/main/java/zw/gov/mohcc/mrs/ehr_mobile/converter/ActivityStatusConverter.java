@@ -9,6 +9,9 @@ public class ActivityStatusConverter {
     @TypeConverter
     public static ActivityStatus toActivityStatus(String activityStatus) {
 
+        if (activityStatus == null) {
+            return null;
+        }
         if (activityStatus.equals(ActivityStatus.DONE.getActivityStatus())) {
             return ActivityStatus.DONE;
         } else if (activityStatus.equals(ActivityStatus.NOT_DONE.getActivityStatus())) {

@@ -8,6 +8,7 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.ArvStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.RegimenTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ArvStatus;
@@ -23,9 +24,11 @@ public class ArtCurrentStatus extends BaseEntity {
     private Date date;
     @NonNull
     private String artId;
-    @TypeConverters(DateConverter.class)
+    @TypeConverters(ArvStatusConverter.class)
+    @NonNull
     private ArvStatus state;
     @Embedded(prefix = "regimen_")
+    @NonNull
     private NameCode regimen;
     @Embedded(prefix = "reason_")
     private NameCode reason;
@@ -99,5 +102,18 @@ public class ArtCurrentStatus extends BaseEntity {
 
     public void setAdverseEventStatus(NameCode adverseEventStatus) {
         this.adverseEventStatus = adverseEventStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "ArtCurrentStatus{" +
+                "date=" + date +
+                ", artId='" + artId + '\'' +
+                ", state=" + state +
+                ", regimen=" + regimen +
+                ", reason=" + reason +
+                ", regimenType=" + regimenType +
+                ", adverseEventStatus=" + adverseEventStatus +
+                '}';
     }
 }

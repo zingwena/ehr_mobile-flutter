@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/db/dao/meta_dao/ArtReasonDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArtStatusDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/ArtVisitStatusDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/ArtVisitTypeDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArvCombinationRegimenDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/AuthorityDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/DiagnosisDao.dart';
@@ -18,6 +20,7 @@ import 'package:ehr_mobile/db/dao/meta_dao/HtsModelsDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationResultDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationTestkitDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/IptReasonDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LaboratoryResultDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LaboratoryTestDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LactatingStatusDao.dart';
@@ -53,6 +56,7 @@ import 'package:ehr_mobile/util/logger.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 
 Future<String> pullSiteData() async {
@@ -77,7 +81,7 @@ Future<String> pullSiteData() async {
 }
 
 
-Future<String> pullPatientData() async {
+Future<String> pullPatientData(ProgressDialog progressDialog) async {
   PersonQuery queryMutation = PersonQuery();
   var ip = await retrieveString(SERVER_IP);
   GraphQLClient _client = graphQLConfiguration.clientToQuery(ip);
@@ -93,15 +97,19 @@ Future<String> pullPatientData() async {
     var personDao = PersonDao(adapter);
     personDao.removeAll();
     var t = await result.data["people"]['content'];
-
-    for (var i = 0; i < t.length; i++) {
-      personDao.insertFromEhr(t[i]);
+    for (Map map in t) {
+      log.i(map);
+      progressDialog.update(message: '${map['firstname']}  ${map['lastname']}');
+      personDao.insertFromEhr(map);
+      await Future.delayed(Duration(milliseconds: 500));
     }
+  } else{
+    log.e('$result');
   }
   return "$DONE_STATUS";
 }
 
-Future<String> pullQueueData() async{
+Future<String> pullQueueData(ProgressDialog progressDialog) async{
   QueueQuery query = QueueQuery();
   var ip = await retrieveString(SERVER_IP);
   GraphQLClient _client = graphQLConfiguration.clientToQuery(ip);
@@ -120,6 +128,7 @@ Future<String> pullQueueData() async{
     await facilityQueueDao.removeAll();
     var wards = await result.data["queues"]['content'];
     for (Map map in wards) {
+      //progressDialog.update(message:'Fetching Queue: ${map['queue']['name']} data ...');
       await facilityQueueDao.insertFromEhr(map['queueId'],map['queue']['id'],
           map['queue']['name'],map['department']['id'],map['department']['name'], 0);
       for(Map kit in map['currentTestKits']['content']){
@@ -155,59 +164,141 @@ Future<String> pullWardData() async {
   return "$DONE_STATUS";
 }
 
-Future<String> pullMetaData(String url, String authToken) async {
+Future<String> pullMetaData(ProgressDialog progressDialog,String url, String authToken) async {
   var dbHandler = DatabaseHelper();
   var adapter = await dbHandler.getAdapter();
   await initDb(adapter);
+
+  progressDialog.update(message: 'Fetching Users...');
   await fetchUsers(adapter,url,authToken);
+
+  progressDialog.update(message: 'Fetching Towns...');
   await fetchTowns(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Marital Status...');
   await fetchMaritalStatus(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Countries...');
   await fetchCountries(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Nationalities...');
   await fetchNationalities(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Occupations...');
   await fetchOccupations(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Facilities...');
   await fetchFacilities(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Religions...');
   await fetchReligions(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Education Levels...');
   await fetchMeta(
       EducationLevelsDao(adapter), '$url/education-levels', authToken);
+
+  progressDialog.update(message: 'Fetching Entry Points...');
   await fetchMeta(EntryPointDao(adapter), '$url/entryPoints', authToken);
+
+  progressDialog.update(message: 'Fetching Hts Models...');
   await fetchMeta(HtsModelsDao(adapter), '$url/hts-models', authToken);
+
+  progressDialog.update(message: 'Fetching Reason For Not Issuing Results...');
   await fetchMeta(ReasonForNotIssuingResultDao(adapter),
       '$url/reason-for-not-issuing-results', authToken);
+
+  progressDialog.update(message: 'Fetching Purpose Of Tests...');
   await fetchMeta(PurposeOfTestsDao(adapter), '$url/purpose-of-tests', authToken);
+
+  progressDialog.update(message: 'Fetching Test Kits...');
   await fetchTestKits(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Test Kits Levels...');
   await fetchTestKitsLevels(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Laboratory Test...');
   await fetchMeta(LaboratoryTestDao(adapter), '$url/laboratory-tests', authToken);
+
+  progressDialog.update(message: 'Fetching Samples...');
   await fetchMeta(SamplesDao(adapter), '$url/samples', authToken);
+
+  progressDialog.update(message: 'Fetching Diagnosis...');
   await fetchMeta(DiagnosisDao(adapter), '$url/diagnoses', authToken);
 
+  progressDialog.update(message: 'Fetching Diagnosis...');
   await fetchInvestigations(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Diagnosis...');
   await fetchQuestionCategory(adapter,url,authToken);
+
+  progressDialog.update(message: 'Fetching Questions...');
   await fetchQuestions(adapter,url,authToken);
+
+  progressDialog.update(message: 'Fetching Investigation Test Kits...');
   await fetchInvestigationTestKits(adapter,url,authToken);
+
+  progressDialog.update(message: 'Fetching Investigation Results...');
   await fetchInvestigationResults(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Laboratory Result...');
   await fetchMeta(LaboratoryResultDao(adapter), '$url/lab-results', authToken);
+
+  progressDialog.update(message: 'Fetching Art Status...');
   await fetchMeta(ArtStatusDao(adapter), '$url/art-statuses', authToken);
+
+  progressDialog.update(message: 'Fetching Art Reasons...');
   await fetchArtReasons(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Arv Combination Regimens...');
   await fetchArvCombinationRegimens(adapter, url,authToken);
+
+  progressDialog.update(message: 'Fetching Disclosure Methods...');
   await fetchDisclosureMethods(adapter,url,authToken);
+
+  progressDialog.update(message: 'Fetching Testing Plans...');
   await fetchTestingPlans(adapter, url, authToken);
+
+  progressDialog.update(message: 'Fetching Ward Data...');
   await pullWardData();
-  await pullQueueData();
+
+  progressDialog.update(message: 'Fetching Queue Data...');
+  await pullQueueData(progressDialog);
+
+  progressDialog.update(message: 'Fetching Site Data...');
   await pullSiteData();
 
+  progressDialog.update(message: 'Fetching Functional Status...');
   await fetchMeta(FunctionalStatusDao(adapter), '$url/functional-statuses', authToken);
+
+  progressDialog.update(message: 'Fetching Follow Status...');
   await fetchMeta(FollowUpStatusDao(adapter), '$url/follow-up-statuses', authToken);
+
+  progressDialog.update(message: 'Fetching Family Planning Status...');
   await fetchMeta(FamilyPlanningStatusDao(adapter), '$url/family-planning-statuses', authToken);
 
+  progressDialog.update(message: 'Fetching Lactating Status...');
   await fetchMeta(LactatingStatusDao(adapter), '$url/lactating-statuses', authToken);
+
+  progressDialog.update(message: 'Fetching Medicine Names...');
   await fetchMedicineNames(adapter,url,authToken);
 
+  progressDialog.update(message: 'Fetching Art Visit Types...');
+  await fetchMeta(ArtVisitTypeDao(adapter), '$url/art-visit-types', authToken);
+
+  progressDialog.update(message: 'Fetching ArtV isit Status...');
+  await fetchMeta(ArtVisitStatusDao(adapter), '$url/art-visit-statuses', authToken);
+
+  progressDialog.update(message: 'Fetching Ipt Reason...');
+  await fetchMeta(IptReasonDao(adapter), '$url/ipt-reasons', authToken);
+
+  var status='$DONE_STATUS';
+  return status;
 }
 
 Future<String> initDb(SqfliteAdapter adapter) async {
   var status;
 
-  await PersonDao(adapter).removeAll();
+  //await PersonDao(adapter).removeAll();
   await AuthorityDao(adapter).removeAll();
   await UserDao(adapter).removeAll();
   await TownDao(adapter).removeAll();
@@ -266,6 +357,12 @@ Future<String> initDb(SqfliteAdapter adapter) async {
   await FamilyPlanningStatusDao(adapter).removeAll();
   await LactatingStatusDao(adapter).removeAll();
   await MedicineNameDao(adapter).removeAll();
+
+  await ArtVisitTypeDao(adapter).removeAll();
+
+  await ArtVisitStatusDao(adapter).removeAll();
+
+  await IptReasonDao(adapter).removeAll();
 
   status = '$DONE_STATUS';
   return status;

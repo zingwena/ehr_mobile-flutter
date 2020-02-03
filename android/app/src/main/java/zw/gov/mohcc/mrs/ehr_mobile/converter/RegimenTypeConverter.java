@@ -9,6 +9,9 @@ public class RegimenTypeConverter {
     @TypeConverter
     public static RegimenType toRegimenType(String regimenType) {
 
+        if (regimenType == null) {
+            return null;
+        }
         if (regimenType.equals(RegimenType.FIRST_LINE.getRegimenType())) {
             return RegimenType.FIRST_LINE;
         } else if (regimenType.equals(RegimenType.SECOND_LINE.getRegimenType())) {

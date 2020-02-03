@@ -9,6 +9,9 @@ public class QuestionTyeConverter {
     @TypeConverter
     public static QuestionType toQuestionTye(String questionTye) {
 
+        if (questionTye == null) {
+            return null;
+        }
         if (questionTye.equals(QuestionType.BOOLEAN.getQuestionTye())) {
             return QuestionType.BOOLEAN;
         } else if (questionTye.equals(QuestionType.TEXT.getQuestionTye())) {

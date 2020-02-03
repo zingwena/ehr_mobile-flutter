@@ -4,11 +4,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'art_reason.g.dart';
 @JsonSerializable()
 class ArtReason extends BaseCode{
-  ArtReason(String name,String code){
+
+  String artStatusId;
+  ArtReason(String name,String code, String artStatusId){
     this.name = name;
     this.code = code;
+    this.artStatusId = artStatusId;
   }
-
 
   factory ArtReason.fromJson(Map<String,dynamic> json) => _$ArtReasonFromJson(json);
 

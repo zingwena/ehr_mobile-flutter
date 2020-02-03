@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
@@ -115,9 +116,8 @@ public class HistoryService {
         HtsScreeningDTO dto = null;
         // retrieve person last negative result this applies to both test in ehr and
         // outside it
-        final String negativeHivResult = "41d3c273-fd7d-11e6-9840-000c29c7ff5e";
-        final Set<String> hivTests = new HashSet<>(Arrays.asList(
-                "36069471-adee-11e7-b30f-3372a2d8551e", "ee7d91fc-b27f-11e8-b121-c48e8faf029b"));
+        final String negativeHivResult = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT;
+        final Set<String> hivTests = new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.HIV_TESTS));
 
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(personId, negativeHivResult, hivTests);
@@ -160,19 +160,18 @@ public class HistoryService {
 
         // check art details it must also work if patient is on art while not having
         // been tested in EHR
-        Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(personId);
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
         if (art != null) {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
             }
             dto.setPersonId(personId);
             dto.setArt(true);
-            dto.setArtNumber(art.getOiArtNumber());
-            dto.setDateEnrolled(art.getDateOfEnrolmentIntoCare());
+            dto.setArtNumber(art.getArtNumber());
+            dto.setDateEnrolled(art.getDateEnrolled());
         }
         // retrieve tests for viral load and cd4 count
-        final Set<String> viralLoadTests = new HashSet<>(Arrays.asList(
-                "36069624-adee-11e7-b30f-3372a2d8551e", "360696a5-adee-11e7-b30f-3372a2d8551e"));
+        final Set<String> viralLoadTests = new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.VIRAL_LOAD_TESTS));
 
         PersonInvestigation viralLoadInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndInvestigationIdInOrderByDateDesc(personId, viralLoadTests);
@@ -190,7 +189,7 @@ public class HistoryService {
         }
 
         final Set<String> cd4CountTests = new HashSet<>(
-                Arrays.asList("36069a11-adee-11e7-b30f-3372a2d8551e"));
+                Arrays.asList(APPLICATION_CONSTANTS.CD4_COUNT_TESTS));
 
         PersonInvestigation cd4CountInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndInvestigationIdInOrderByDateDesc(personId, cd4CountTests);
@@ -244,12 +243,12 @@ public class HistoryService {
             if (dto.getArt() != null && dto.getArt()) {
 
                 Visit visit = ehrMobileDatabase.visitDao().findById(visitId);
-                Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(visit.getPersonId());
+                Art art = ehrMobileDatabase.artDao().findByPersonId(visit.getPersonId());
                 if (art == null) {
                     // create art record
                     Log.i(TAG, "Creating art record");
-                    ehrMobileDatabase.artRegistrationDao().createArtRegistration(dto.getArtInstance(dto, visit.getPersonId()));
-                    Log.i(TAG, "Saved art record : " + ehrMobileDatabase.artRegistrationDao().findByPersonId(visit.getPersonId()));
+                    ehrMobileDatabase.artDao().save(dto.getArtInstance(dto, visit.getPersonId()));
+                    Log.i(TAG, "Saved art record : " + ehrMobileDatabase.artDao().findByPersonId(visit.getPersonId()));
                 }
             }
 
@@ -262,13 +261,13 @@ public class HistoryService {
                 Log.d(TAG, "Retrieve either positive or negative HIV results : " + dto.getResult());
                 String resultId = "";
                 if (dto.getResult().equalsIgnoreCase("POSITIVE")) {
-                    resultId = "41d3c228-fd7d-11e6-9840-000c29c7ff5e";
+                    resultId = APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT;
                 } else if (dto.getResult().equalsIgnoreCase("NEGATIVE")) {
-                    resultId = "41d3c273-fd7d-11e6-9840-000c29c7ff5e";
+                    resultId = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT;
                 }
 
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getDateLastTested(), visitId,
-                        "36069471-adee-11e7-b30f-3372a2d8551e", resultId);
+                        APPLICATION_CONSTANTS.HIV_TESTS[0], resultId);
                 Log.i(TAG, "Saving investigation record ");
                 htsService.createInvestigation(investigationDTO, false);
             }
@@ -276,7 +275,7 @@ public class HistoryService {
             if (dto.getViralLoad() != null && dto.getViralLoadDate() != null) {
                 Log.i(TAG, "Viral load tests");
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getViralLoadDate(), visitId,
-                        "36069624-adee-11e7-b30f-3372a2d8551e", dto.getViralLoad().toString());
+                        APPLICATION_CONSTANTS.VIRAL_LOAD_TESTS[0], dto.getViralLoad().toString());
                 Log.i(TAG, "Saved viral load investigation record");
                 htsService.createInvestigation(investigationDTO, false);
             }
@@ -285,7 +284,7 @@ public class HistoryService {
             if (dto.getCd4Count() != null && dto.getCd4CountDate() != null) {
                 Log.i(TAG, "Cd4 count tests");
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getCd4CountDate(), visitId,
-                        "36069a11-adee-11e7-b30f-3372a2d8551e", dto.getCd4Count().toString());
+                        APPLICATION_CONSTANTS.CD4_COUNT_TESTS[0], dto.getCd4Count().toString());
                 Log.i(TAG, "Saved cd4 count investigation record");
                 htsService.createInvestigation(investigationDTO, false);
             }

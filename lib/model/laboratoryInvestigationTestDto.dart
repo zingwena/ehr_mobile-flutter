@@ -22,10 +22,10 @@ class LaboratoryInvestigationTestDto{
   LaboratoryInvestigationTestDto(this.id, this.investigationId,
       this.startDate, this.endDate, this.result, this.visitId, this.testkit, this.startTime, this.endTime, this.personId, this.batchIssueId);
 
-  factory LaboratoryInvestigationTestDto.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestFromJson(json);
+  factory LaboratoryInvestigationTestDto.fromJson(Map<String, dynamic> json) => _$LaboratoryInvestigationTestDtoFromJson(json);
 
 
-  Map<String, dynamic> toJson() => _$LaboratoryInvestigationTestToJson(this);
+  Map<String, dynamic> toJson() => _$LaboratoryInvestigationTestDtoToJson(this);
 
   static mapFromJson(List dynamicList){
     List<LaboratoryInvestigationTestDto> labInvestigationList=[];

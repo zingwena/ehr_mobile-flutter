@@ -6,7 +6,7 @@ part of 'laboratoryInvestigationTestDto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-LaboratoryInvestigationTestDto _$LaboratoryInvestigationTestFromJson(
+LaboratoryInvestigationTestDto _$LaboratoryInvestigationTestDtoFromJson(
     Map<String, dynamic> json) {
   return LaboratoryInvestigationTestDto(
     json['id'] as String,
@@ -26,12 +26,11 @@ LaboratoryInvestigationTestDto _$LaboratoryInvestigationTestFromJson(
     json['endTime'] as String,
     json['personId'] as String,
     json['batchIssueId'] as String,
-
   );
 }
 
-Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
-    LaboratoryInvestigationTestDto instance) =>
+Map<String, dynamic> _$LaboratoryInvestigationTestDtoToJson(
+        LaboratoryInvestigationTestDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'investigationId': instance.investigationId,
@@ -43,5 +42,5 @@ Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
       'visitId': instance.visitId,
       'testkit': instance.testkit,
       'personId': instance.personId,
-      'batchIssueId': instance.batchIssueId
+      'batchIssueId': instance.batchIssueId,
     };

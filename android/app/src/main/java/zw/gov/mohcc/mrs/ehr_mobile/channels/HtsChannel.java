@@ -663,7 +663,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getArtRecord")) {
 
                             try {
-                                Art art = ehrMobileDatabase.artRegistrationDao().findByPersonId(arguments);
+                                Art art = ehrMobileDatabase.artDao().findByPersonId(arguments);
                                 Log.i(TAG, "ART MODEL RETURNED FROM ANDROID"+ art);
                                 String artjson = gson.toJson(art);
                                 Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>"+ artjson);
@@ -675,7 +675,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getArtInitiationRecord")) {
 
                             try {
-                                ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByVisitId(arguments);
+                                ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao().findByVisitId(arguments);
                                 Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID"+ artCurrentStatus);
                                 String artjson = gson.toJson(artCurrentStatus);
                                 Log.i(TAG, "ART INITIATION MODEL #################"+ artjson);

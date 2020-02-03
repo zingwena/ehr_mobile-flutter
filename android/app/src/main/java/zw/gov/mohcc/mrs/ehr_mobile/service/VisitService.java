@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSummaryDTO;
@@ -17,7 +18,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
@@ -234,16 +234,16 @@ public class VisitService {
         if (respiratoryRate != null) {
             summary.setRespiratoryRate(new PatientSummaryDTO.ValueDate(respiratoryRate.getValue(), respiratoryRate.getDateTime()));
         }
-        Art art = artService.getArt(personId);
+        ArtDTO art = artService.getArt(personId);
         Log.d(TAG, "Retrieved patient art record : " + art);
         if (art != null) {
-            ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artInitiationDao().findByVisitId(personId);
+            ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao().findByVisitId(personId);
             String arvRegimen = "";
             if (artCurrentStatus != null) {
                 arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatus.getRegimen().getCode()).getName();
             }
             Log.d(TAG, "Art Initiation object : " + artCurrentStatus);
-            summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getOiArtNumber(), null,
+            summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getArtNumber(), null,
                     arvRegimen));
         }
         List<PersonInvestigation> investigations = ehrMobileDatabase.personInvestigationDao().findLatestThreeTestsByPersonId(personId);

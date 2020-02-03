@@ -115,4 +115,19 @@ public class ArtVisit extends BaseEntity {
     public void setTbStatus(NameCode tbStatus) {
         this.tbStatus = tbStatus;
     }
+
+    @Override
+    public String toString() {
+        return "ArtVisit{" +
+                "artId='" + artId + '\'' +
+                ", visitId='" + visitId + '\'' +
+                ", visitType=" + visitType +
+                ", functionalStatus=" + functionalStatus +
+                ", visitStatus=" + visitStatus +
+                ", ancFirstBookingDate=" + ancFirstBookingDate +
+                ", lactatingStatus=" + lactatingStatus +
+                ", familyPlanningStatus=" + familyPlanningStatus +
+                ", tbStatus=" + tbStatus +
+                '}';
+    }
 }

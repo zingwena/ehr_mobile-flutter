@@ -8,7 +8,6 @@ import androidx.room.Transaction;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.AddPatientChannel;
+import zw.gov.mohcc.mrs.ehr_mobile.channels.ArtChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.DataChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.HtsChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.channels.PatientChannel;
@@ -34,7 +34,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.channels.VisitChannel;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.RetrofitClient;
 import zw.gov.mohcc.mrs.ehr_mobile.configuration.apolloClient.PatientsApolloClient;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.LoginValidator;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDto;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Page;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.QuestionType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RecordStatus;
@@ -44,13 +43,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.Authorities;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.Token;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReasonModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenEhr;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimenModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Country;
@@ -107,7 +102,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.RelationshipService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.SiteService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.TerminologyService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
-import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 
 public class MainActivity extends FlutterActivity {
 
@@ -136,6 +130,11 @@ public class MainActivity extends FlutterActivity {
     private ArtService artService;
     private PersonService personService;
 
+    /**
+     *
+     * @param savedInstanceState
+     * highly preferable to have all services as singletons, this will be implemented
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -290,82 +289,7 @@ public class MainActivity extends FlutterActivity {
 
         new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, visitService, artService);
 
-        /*   ===============================================ART REGISTRATION AND INITIATION  =============================================================== */
-        new MethodChannel(getFlutterView(), ART_CHANNEL).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-                        String arguments = methodCall.arguments();
-                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).create();
-
-                        if (methodCall.method.equals("saveArtRegistration")) {
-                            try {
-                                ArtDto artdto = gson.fromJson(arguments, ArtDto.class);
-                                Art art = new Art();
-                                String artId = UUID.randomUUID().toString();
-                                art.setId(artId);
-                                art.setOiArtNumber(artdto.getOiArtNumber());
-                                art.setDateOfHivTest(artdto.getDateOfHivTest());
-                                art.setPersonId(artdto.getPersonId());
-                                art.setDateOfEnrolmentIntoCare(artdto.getDateOfEnrolmentIntoCare());
-                                ehrMobileDatabase.artRegistrationDao().createArtRegistration(art);
-                                Art _art = ehrMobileDatabase.artRegistrationDao().findArtRegistrationById(artId);
-                                String response = gson.toJson(_art);
-                                result.success(response);
-
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-
-                            }
-
-                        }
-
-                        if (methodCall.method.equals("saveArtInitiation")) {
-                            try {
-
-                                ArtCurrentStatus artCurrentStatus = gson.fromJson(arguments, ArtCurrentStatus.class);
-                                System.out.println("ART ININTIATION HERE ART INITIATION HERE HERE " + artCurrentStatus);
-                                /*String artRegmenId = ehrMobileDatabase.arvCombinationRegimenDao().findByName(artCurrentStatus.getArtRegimenId()).getCode();
-                                String artReasonId = ehrMobileDatabase.artReasonDao().findByName(artCurrentStatus.getArtReasonId()).getCode();
-                                artCurrentStatus.setId(UUID.randomUUID().toString());
-                                artCurrentStatus.setPersonId(artCurrentStatus.getPersonId());
-                                artCurrentStatus.setArtRegimenId(artRegmenId);
-                                artCurrentStatus.setArtReasonId(artReasonId);*/
-                                ehrMobileDatabase.artInitiationDao().createArtInitiation(artCurrentStatus);
-                                ArtCurrentStatus initiation = ehrMobileDatabase.artInitiationDao().findArtInitiationById(artCurrentStatus.getId());
-                                String response = gson.toJson(initiation);
-                                result.success(response);
-
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-
-                            }
-
-                        }
-                        if (methodCall.method.equals("getRegimenName")) {
-                            try {
-                                ArvCombinationRegimen arvCombinationRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findByName(arguments);
-                                String regimenname = arvCombinationRegimen.getName();
-                                result.success(regimenname);
-
-                            } catch (Exception e) {
-
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
-                        }
-                        if (methodCall.method.equals("getReason")) {
-                            try {
-                                ArtReason artReason = ehrMobileDatabase.artReasonDao().findByName(arguments);
-                                String reason = artReason.getName();
-                                result.success(reason);
-
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
-                        }
-                    }
-                });
-
+        new ArtChannel(getFlutterView(), ART_CHANNEL, ehrMobileDatabase, artService);
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
@@ -1001,14 +925,15 @@ public class MainActivity extends FlutterActivity {
     public void clearTables() {
 
         ehrMobileDatabase.patientWardDao().deleteAll();
+        ehrMobileDatabase.artLinkageFromDao().deleteAll();
         ehrMobileDatabase.patientQueueDao().deleteAll();
         ehrMobileDatabase.sexualHistoryQuestionDao().deleteAll();
         ehrMobileDatabase.indexContactDao().deleteAll();
         ehrMobileDatabase.indexTestDao().deleteAll();
-        ehrMobileDatabase.artRegistrationDao().deleteAll();
+        ehrMobileDatabase.artDao().deleteAll();
         ehrMobileDatabase.htsScreeningDao().deleteAll();
         ehrMobileDatabase.sexualHistoryDao().deleteAll();
-        ehrMobileDatabase.artInitiationDao().deleteAll();
+        ehrMobileDatabase.artCurrentStatusDao().deleteAll();
         ehrMobileDatabase.personInvestigationDao().deletePersonInvestigations();
         ehrMobileDatabase.htsDao().deleteAll();
         ehrMobileDatabase.bloodPressureDao().deleteAll();
@@ -1236,7 +1161,7 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onResponse(Call<ArvCombinationRegimenModel> call, Response<ArvCombinationRegimenModel> response) {
 
-                if(response.body()==null || response.body().getContent()==null){
+                if (response.body() == null || response.body().getContent() == null) {
                     return;
                 }
                 Log.d(TAG, "Arv combination regmines : " + response.body().getContent());

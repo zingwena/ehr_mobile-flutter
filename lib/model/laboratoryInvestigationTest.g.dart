@@ -26,7 +26,6 @@ LaboratoryInvestigationTest _$LaboratoryInvestigationTestFromJson(
     json['endTime'] as String,
     json['personId'] as String,
     json['batchIssueId'] as String,
-
   );
 }
 
@@ -43,5 +42,5 @@ Map<String, dynamic> _$LaboratoryInvestigationTestToJson(
       'visitId': instance.visitId,
       'testkit': instance.testkit,
       'personId': instance.personId,
-      'batchIssueId': instance.batchIssueId
+      'batchIssueId': instance.batchIssueId,
     };

@@ -9,6 +9,9 @@ public class ArvStatusConverter {
     @TypeConverter
     public static ArvStatus toArvStatus(String arvStatus) {
 
+        if (arvStatus == null) {
+            return null;
+        }
         if (arvStatus.equals(ArvStatus.NO_ARV.getArvStatus())) {
             return ArvStatus.NO_ARV;
         } else if (arvStatus.equals(ArvStatus.START_ARV.getArvStatus())) {
