@@ -22,6 +22,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
@@ -36,6 +37,7 @@ public class ArtService {
 
     public ArtService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+        this.visitService = new VisitService(ehrMobileDatabase, null, null);
     }
 
     @Transaction
@@ -145,5 +147,27 @@ public class ArtService {
 
         Log.d(TAG, "Calling question dao with workarea : " + workArea + " and category ID : " + categoryId);
         return ehrMobileDatabase.questionDao().findByWorkAreaAndCategoryId(workArea, categoryId);
+    }
+
+    public TbScreening getVisitTbScreening(String personId) {
+
+        String visitId = visitService.getCurrentVisit(personId);
+        Log.d(TAG, "Retrieved visitId : " + visitId);
+
+        TbScreening tbScreening = ehrMobileDatabase.tbScreeningDao().findByVisitId(visitId);
+        Log.d(TAG, "Current visit TB Screening record : " + tbScreening);
+
+        return tbScreening != null ? tbScreening : new TbScreening(null, visitId);
+    }
+
+    @Transaction
+    public TbScreening saveTbScreening(TbScreening tbScreening) {
+
+        String id = UUID.randomUUID().toString();
+        tbScreening.setId(id);
+        Log.d(TAG, "Current state of tb screening record :" + tbScreening);
+        ehrMobileDatabase.tbScreeningDao().save(tbScreening);
+
+        return ehrMobileDatabase.tbScreeningDao().findById(id);
     }
 }

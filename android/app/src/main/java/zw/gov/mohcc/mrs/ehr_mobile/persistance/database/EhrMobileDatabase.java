@@ -53,6 +53,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.PersonPhone;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Relationship;
+import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitStatus;
@@ -152,6 +153,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SampleDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SexualHistoryQuestionDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.SiteSettingDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TbScreeningDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitBatchIssueDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.TestKitTestLevelDao;
@@ -188,7 +190,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
-        ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class}, version = 8, exportSchema = false)
+        ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class}, version = 9, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -348,4 +350,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract ArtVisitStatusDao artVisitStatusDao();
 
     public abstract ArtLinkageFromDao artLinkageFromDao();
+
+    public abstract TbScreeningDao tbScreeningDao();
 }

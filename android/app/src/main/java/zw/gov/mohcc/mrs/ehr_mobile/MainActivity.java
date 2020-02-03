@@ -130,6 +130,11 @@ public class MainActivity extends FlutterActivity {
     private ArtService artService;
     private PersonService personService;
 
+    /**
+     *
+     * @param savedInstanceState
+     * highly preferable to have all services as singletons, this will be implemented
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
