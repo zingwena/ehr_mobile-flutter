@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import zw.gov.mohcc.mrs.ehr_mobile.constant.InvestigationIdConstants;
+import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
@@ -116,8 +116,8 @@ public class HistoryService {
         HtsScreeningDTO dto = null;
         // retrieve person last negative result this applies to both test in ehr and
         // outside it
-        final String negativeHivResult = InvestigationIdConstants.NEGATIVE_HIV_RESULT;
-        final Set<String> hivTests = new HashSet<>(Arrays.asList(InvestigationIdConstants.HIV_TESTS));
+        final String negativeHivResult = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT;
+        final Set<String> hivTests = new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.HIV_TESTS));
 
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(personId, negativeHivResult, hivTests);
@@ -171,7 +171,7 @@ public class HistoryService {
             dto.setDateEnrolled(art.getDateEnrolled());
         }
         // retrieve tests for viral load and cd4 count
-        final Set<String> viralLoadTests = new HashSet<>(Arrays.asList(InvestigationIdConstants.VIRAL_LOAD_TESTS));
+        final Set<String> viralLoadTests = new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.VIRAL_LOAD_TESTS));
 
         PersonInvestigation viralLoadInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndInvestigationIdInOrderByDateDesc(personId, viralLoadTests);
@@ -189,7 +189,7 @@ public class HistoryService {
         }
 
         final Set<String> cd4CountTests = new HashSet<>(
-                Arrays.asList(InvestigationIdConstants.CD4_COUNT_TESTS));
+                Arrays.asList(APPLICATION_CONSTANTS.CD4_COUNT_TESTS));
 
         PersonInvestigation cd4CountInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findTopByPersonIdAndInvestigationIdInOrderByDateDesc(personId, cd4CountTests);
@@ -261,13 +261,13 @@ public class HistoryService {
                 Log.d(TAG, "Retrieve either positive or negative HIV results : " + dto.getResult());
                 String resultId = "";
                 if (dto.getResult().equalsIgnoreCase("POSITIVE")) {
-                    resultId = InvestigationIdConstants.POSITIVE_HIV_RESULT;
+                    resultId = APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT;
                 } else if (dto.getResult().equalsIgnoreCase("NEGATIVE")) {
-                    resultId = InvestigationIdConstants.NEGATIVE_HIV_RESULT;
+                    resultId = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT;
                 }
 
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getDateLastTested(), visitId,
-                        InvestigationIdConstants.HIV_TESTS[0], resultId);
+                        APPLICATION_CONSTANTS.HIV_TESTS[0], resultId);
                 Log.i(TAG, "Saving investigation record ");
                 htsService.createInvestigation(investigationDTO, false);
             }
@@ -275,7 +275,7 @@ public class HistoryService {
             if (dto.getViralLoad() != null && dto.getViralLoadDate() != null) {
                 Log.i(TAG, "Viral load tests");
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getViralLoadDate(), visitId,
-                        InvestigationIdConstants.VIRAL_LOAD_TESTS[0], dto.getViralLoad().toString());
+                        APPLICATION_CONSTANTS.VIRAL_LOAD_TESTS[0], dto.getViralLoad().toString());
                 Log.i(TAG, "Saved viral load investigation record");
                 htsService.createInvestigation(investigationDTO, false);
             }
@@ -284,7 +284,7 @@ public class HistoryService {
             if (dto.getCd4Count() != null && dto.getCd4CountDate() != null) {
                 Log.i(TAG, "Cd4 count tests");
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getCd4CountDate(), visitId,
-                        InvestigationIdConstants.CD4_COUNT_TESTS[0], dto.getCd4Count().toString());
+                        APPLICATION_CONSTANTS.CD4_COUNT_TESTS[0], dto.getCd4Count().toString());
                 Log.i(TAG, "Saved cd4 count investigation record");
                 htsService.createInvestigation(investigationDTO, false);
             }
