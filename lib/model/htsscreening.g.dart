@@ -13,15 +13,9 @@ HtsScreening _$HtsScreeningFromJson(Map<String, dynamic> json) {
     json['testedBefore'] as bool,
     json['art'] as bool,
     json['result'] as String,
-    json['dateLastNegative'] == null
-        ? null
-        : DateTime.parse(json['dateLastNegative'] as String),
-    json['dateLastTested'] == null
-        ? null
-        : DateTime.parse(json['dateLastTested'] as String),
-    json['dateEnrolled'] == null
-        ? null
-        : DateTime.parse(json['dateEnrolled'] as String),
+    const CustomDateTimeConverter().fromJson(json['dateLastNegative'] as String),
+    const CustomDateTimeConverter().fromJson(json['dateLastTested'] as String),
+    const CustomDateTimeConverter().fromJson(json['dateEnrolled'] as String),
     json['artNumber'] as String,
     json['beenOnPrep'] as bool,
     json['prepOption'] as String,
@@ -37,12 +31,14 @@ Map<String, dynamic> _$HtsScreeningToJson(HtsScreening instance) =>
       'testedBefore': instance.testedBefore,
       'art': instance.art,
       'result': instance.result,
-      'dateLastTested': instance.dateLastTested?.toIso8601String(),
+      'dateLastTested':
+      const CustomDateTimeConverter().toJson(instance.dateLastTested),
       'artNumber': instance.artNumber,
       'beenOnPrep': instance.beenOnPrep,
       'prepOption': instance.prepOption,
       'viralLoadDone': instance.viralLoadDone,
       'cd4Done': instance.cd4Done,
-      'dateEnrolled': instance.dateEnrolled?.toIso8601String(),
-      'dateLastNegative': instance.dateLastNegative?.toIso8601String(),
+      'dateEnrolled': const CustomDateTimeConverter().toJson(instance.dateEnrolled),
+      'dateLastNegative': const CustomDateTimeConverter().toJson(instance.dateLastNegative),
+
     };

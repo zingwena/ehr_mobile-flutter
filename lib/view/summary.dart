@@ -61,7 +61,7 @@ class SummaryOverviewState extends State<SummaryOverview>
   void initState() {
     getHtsScreeningRecord(widget.person.id);
     getPatientSummary(widget.person.id);
-    getAge(widget.person);
+   getAge(widget.person);
     super.initState();
     controller = new TabController(length: 3, vsync: this);
   }
@@ -71,11 +71,9 @@ class SummaryOverviewState extends State<SummaryOverview>
     print("get screening method called here");
     try {
       hts_screening = await htsChannel.invokeMethod('getHtsScreening', patientId);
-      debugPrint("TTTTTTTTTTTTTTTTTTTTTTTTTT Screening record from android"+ hts_screening);
 
       setState(() {
         htsScreening = HtsScreening.fromJson(jsonDecode(hts_screening));
-        debugPrint("TTTTTTTTTTTTTTTTTTTTTTTT screening record from android after assignment in flutter"+ htsScreening.toString());
       });
     } catch (e) {
       print("channel failure at hts screening: '$e'");
@@ -105,7 +103,7 @@ class SummaryOverviewState extends State<SummaryOverview>
       });
 
     }catch(e){
-      debugPrint("Exception thrown in get facility name method"+e);
+      debugPrint("Exception thrown in get Age name method"+e);
 
     }
   }
@@ -229,7 +227,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                             color: Colors.white,
                           ),
                         ),
-                        Padding(
+                        age == null?SizedBox(height: 0.0,):Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text(
                             "Age :" + age.years.toString()+ "years" ,
