@@ -42,7 +42,7 @@ public class ArtChannel {
                                 result.success(response);
 
                             } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
+                                Log.d(TAG, "something went wrong " + e.getMessage());
                                 e.printStackTrace();
 
                             }
