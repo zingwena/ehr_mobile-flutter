@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.constant.InvestigationIdConstants;
+import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
@@ -55,7 +55,7 @@ public class HtsService {
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         Log.i(TAG, "HTS RECORD CREATED HERE " + hts);
         String laboratoryInvestigationId = createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
-                visitId, InvestigationIdConstants.HIV_TESTS[0], null), true);
+                visitId, APPLICATION_CONSTANTS.HIV_TESTS[0], null), true);
         hts.setLaboratoryInvestigationId(laboratoryInvestigationId);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));
         ehrMobileDatabase.htsDao().save(hts);
@@ -315,8 +315,8 @@ public class HtsService {
     }
 
     public boolean getPersonHivStatus(String personId) {
-        String hivBloodInvestigationId = InvestigationIdConstants.HIV_TESTS[0];
-        String hivPositiveResultId = InvestigationIdConstants.POSITIVE_HIV_RESULT;
+        String hivBloodInvestigationId = APPLICATION_CONSTANTS.HIV_TESTS[0];
+        String hivPositiveResultId = APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT;
         return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndInvestigationIdAndResultId(personId, hivBloodInvestigationId, hivPositiveResultId) != null;
     }
 
