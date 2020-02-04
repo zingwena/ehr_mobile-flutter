@@ -35,7 +35,7 @@ public interface HtsScreeningDao {
     @Query("SELECT * FROM HtsScreening WHERE visitId =:visitId")
     HtsScreening findByVisitId(String visitId);
 
-    @Query("SELECT * FROM HtsScreening s,Visit v WHERE s.visitId == v.id AND v.personId=:personId")
+    @Query("SELECT s.* FROM HtsScreening s,Visit v WHERE s.visitId == v.id AND v.personId=:personId")
     List<HtsScreening> findByPersonId(String personId);
 
 }

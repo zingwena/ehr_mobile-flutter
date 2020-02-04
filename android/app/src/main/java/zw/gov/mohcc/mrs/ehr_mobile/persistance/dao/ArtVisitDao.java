@@ -31,7 +31,7 @@ public interface ArtVisitDao {
     @Query("SELECT * FROM ArtVisit WHERE visitId=:visitId")
     ArtVisit findByVisitId(String visitId);
 
-    @Query("SELECT * FROM ArtVisit a inner join Visit v on a.visitId=v.id WHERE artId=:artId Order by v.time DESC")
+    @Query("SELECT a.* FROM ArtVisit a inner join Visit v on a.visitId=v.id WHERE artId=:artId Order by v.time DESC")
     List<ArtVisit> findByArtId(String artId);
 
     @Query("DELETE FROM ArtVisit where id=:id")

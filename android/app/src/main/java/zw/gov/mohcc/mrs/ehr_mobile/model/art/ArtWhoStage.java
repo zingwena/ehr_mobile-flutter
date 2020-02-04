@@ -3,6 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -29,6 +30,7 @@ public class ArtWhoStage extends BaseEntity {
     public ArtWhoStage() {
     }
 
+    @Ignore
     public ArtWhoStage(@NonNull String id, @NonNull String visitId, @NonNull String artId, @NonNull WhoStage stage, NameCode followUpStatus) {
         super(id);
         this.visitId = visitId;
