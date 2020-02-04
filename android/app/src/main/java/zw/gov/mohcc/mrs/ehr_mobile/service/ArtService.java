@@ -29,8 +29,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FamilyPlanningStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FunctionalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
@@ -237,9 +243,42 @@ public class ArtService {
     public ArtVisitDTO saveArtVisit(ArtVisitDTO dto) {
 
         Log.d(TAG, "Art visit DTO state : " + dto);
-        ehrMobileDatabase.artVisitDao().save(dto.getArtVisitInstance(dto));
 
-        ehrMobileDatabase.artWhoStageDao().save(dto.getArtWhoStageInstance(dto));
+        FamilyPlanningStatus familyPlanningStatus = null;
+        if (StringUtils.isNoneBlank(dto.getFamilyPlanningStatus())) {
+
+            familyPlanningStatus = ehrMobileDatabase.familyPlanningStatusDao().findById(dto.getFamilyPlanningStatus());
+        }
+        FunctionalStatus functionalStatus = null;
+        if (StringUtils.isNoneBlank(dto.getFunctionalStatus())) {
+
+            functionalStatus = ehrMobileDatabase.functionalStatusDao().findById(dto.getFunctionalStatus());
+        }
+        LactatingStatus lactatingStatus = null;
+        if (StringUtils.isNoneBlank(dto.getLactatingStatus())) {
+
+            lactatingStatus = ehrMobileDatabase.lactatingStatusDao().findById(dto.getLactatingStatus());
+        }
+        ArtVisitType artVisitType = null;
+        if (StringUtils.isNoneBlank(dto.getVisitType())) {
+
+            artVisitType = ehrMobileDatabase.artVisitTypeDao().findById(dto.getVisitType());
+        }
+        ArtVisitStatus artVisitStatus = null;
+        if (StringUtils.isNoneBlank(dto.getVisitStatus())) {
+
+            artVisitStatus = ehrMobileDatabase.artVisitStatusDao().findById(dto.getVisitStatus());
+        }
+        FollowUpStatus followUpStatus = null;
+        if (StringUtils.isNoneBlank(dto.getFollowUpStatus())) {
+
+            followUpStatus = ehrMobileDatabase.followUpStatusDao().findById(dto.getFollowUpStatus());
+        }
+
+        ehrMobileDatabase.artVisitDao().save(dto.getArtVisitInstance(dto, familyPlanningStatus, functionalStatus,
+                lactatingStatus, artVisitType, artVisitStatus));
+
+        ehrMobileDatabase.artWhoStageDao().save(dto.getArtWhoStageInstance(dto, followUpStatus));
 
         return null;
     }
