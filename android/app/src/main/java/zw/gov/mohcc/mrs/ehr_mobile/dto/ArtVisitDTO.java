@@ -124,7 +124,7 @@ public class ArtVisitDTO implements Serializable {
                 dto.getStage(), followUpStatus != null ? new NameCode(followUpStatus.getCode(), followUpStatus.getName()) : null);
     }
 
-    public ArtVisitDTO get(ArtVisit artVisit, ArtWhoStage artWhoStage) {
+    public static ArtVisitDTO get(ArtVisit artVisit, ArtWhoStage artWhoStage) {
 
         ArtVisitDTO dto = new ArtVisitDTO();
         dto.setArtId(artVisit.getArtId());

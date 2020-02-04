@@ -25,6 +25,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtVisit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
@@ -278,9 +279,21 @@ public class ArtService {
         ehrMobileDatabase.artVisitDao().save(dto.getArtVisitInstance(dto, familyPlanningStatus, functionalStatus,
                 lactatingStatus, artVisitType, artVisitStatus));
 
-        ehrMobileDatabase.artWhoStageDao().save(dto.getArtWhoStageInstance(dto, followUpStatus));
+        ArtVisit savedArtVisit = ehrMobileDatabase.artVisitDao().findByVisitId(dto.getVisitId());
 
-        return null;
+        Log.d(TAG, "Saved art visit object : " + savedArtVisit);
+        ArtWhoStage artWhoStage = dto.getArtWhoStageInstance(dto, followUpStatus);
+
+        if (ehrMobileDatabase.artWhoStageDao().existsByArtIdAndWhoStage(artWhoStage.getArtId(), artWhoStage.getStage()) <= 0) {
+            Log.d(TAG, "Patient is still on same stage ignore");
+            ehrMobileDatabase.artWhoStageDao().save(artWhoStage);
+        }
+
+        ArtWhoStage saveArtWhoStage = ehrMobileDatabase.artWhoStageDao().findByArtIdAndWhoStage(artWhoStage.getArtId(), artWhoStage.getStage());
+
+        Log.d(TAG, "Current latest who stage in db : " + savedArtVisit);
+
+        return ArtVisitDTO.get(savedArtVisit, saveArtWhoStage);
     }
 
 }

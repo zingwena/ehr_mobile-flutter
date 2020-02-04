@@ -8,6 +8,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
 
 
@@ -32,4 +33,10 @@ public interface ArtWhoStageDao {
 
     @Query("SELECT * FROM ArtWhoStage WHERE visitId=:visitId")
     ArtWhoStage findByVisitId(String visitId);
+
+    @Query("SELECT count(*) FROM ArtWhoStage WHERE artId=:artId and stage=:whoStage")
+    int existsByArtIdAndWhoStage(String artId, WhoStage whoStage);
+
+    @Query("SELECT * FROM ArtWhoStage WHERE artId=:artId and stage=:whoStage")
+    ArtWhoStage findByArtIdAndWhoStage(String artId, WhoStage whoStage);
 }
