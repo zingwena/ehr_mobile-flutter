@@ -202,7 +202,7 @@ public class MainActivity extends FlutterActivity {
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase, personService);
 
-        new VisitChannel(getFlutterView(), VISITCHANNEL, ehrMobileDatabase, visitService);
+        new VisitChannel(getFlutterView(), VISITCHANNEL, appWideService, visitService);
 
         new SiteChannel(getFlutterView(), SITECHANNEL, ehrMobileDatabase, siteService);
         new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
@@ -290,7 +290,7 @@ public class MainActivity extends FlutterActivity {
 
         });
 
-        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, visitService, artService);
+        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, appWideService, artService);
 
         new ArtChannel(getFlutterView(), ART_CHANNEL, ehrMobileDatabase, artService);
 

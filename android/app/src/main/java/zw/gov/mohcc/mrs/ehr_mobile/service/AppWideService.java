@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.service;
 
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -27,5 +29,21 @@ public class AppWideService {
             return visit.getId();
         }
         return null;
+    }
+
+    public PatientQueue getPatientQueue(String personId) {
+        Visit visit = getVisit(personId);
+        if (visit == null) {
+            return null;
+        }
+        return ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
+    }
+
+    public PatientWard getPatientWard(String personId) {
+        Visit visit = getVisit(personId);
+        if (visit == null) {
+            return null;
+        }
+        return ehrMobileDatabase.patientWardDao().findByVisitId(visit.getId());
     }
 }

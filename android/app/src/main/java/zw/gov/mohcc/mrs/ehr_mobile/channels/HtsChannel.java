@@ -28,8 +28,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexTest;
@@ -37,6 +35,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationEhr;
@@ -47,11 +47,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Sample;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.AppWideService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HtsService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.IndexTestingService;
-import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateDeserializer;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
@@ -62,7 +62,7 @@ public class HtsChannel {
 
     public HtsChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase, HtsService htsService,
                       LaboratoryInvestigation laboratoryInvestigation, HistoryService historyService,
-                      IndexTestingService indexTestingService, VisitService visitService, ArtService artService) {
+                      IndexTestingService indexTestingService, AppWideService appWideService, ArtService artService) {
         final String index_id;
         new MethodChannel(flutterView, channelName).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
@@ -123,11 +123,11 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("htsRegistration")) {
                             try {
-                                Log.i(TAG, "HTS RECORD FROM FLUTTER"+ arguments);
+                                Log.i(TAG, "HTS RECORD FROM FLUTTER" + arguments);
                                 HtsRegDTO htsRegDTO = gson.fromJson(arguments, HtsRegDTO.class);
                                 String htsId = htsService.createHts(htsRegDTO);
                                 result.success(htsId);
-                                Log.i(TAG, "HTS id to be sent back >>>>>>>>>"+ htsId);
+                                Log.i(TAG, "HTS id to be sent back >>>>>>>>>" + htsId);
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -308,7 +308,7 @@ public class HtsChannel {
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String sample_name = sample.getName();
-                                Log.i(TAG, "Here is the sample name to be returned >>>>>>>>>>>>>"+ sample_name);
+                                Log.i(TAG, "Here is the sample name to be returned >>>>>>>>>>>>>" + sample_name);
                                 result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -372,7 +372,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getPatientQueueOrWard")) {
 
                             try {
-                                PatientQueue patientQueue = visitService.getPatientQueue(arguments);
+                                PatientQueue patientQueue = appWideService.getPatientQueue(arguments);
                                 String binId = patientQueue.getQueue().getCode();
                                 result.success(binId);
 
@@ -484,7 +484,7 @@ public class HtsChannel {
                             try {
                                 Log.d(TAG, "Agi HERE IS THE RECENCY LAB INVESTIGATION $$$$$$$$$$$$$$$$$ >>>>>>" + arguments);
                                 LaboratoryInvestigationTestDTO laboratoryInvestigationTestDTO = gson.fromJson(arguments, LaboratoryInvestigationTestDTO.class);
-                                Log.d(TAG, " RECENCY OBJECT AFTER ASSIGNMENT $$$$$$$$$$$$$$$$$ >>>>>> VISIT ID AND INVESTIGATION ID >>>>>>>>>>" + laboratoryInvestigationTestDTO.getInvestigationId()+">>>>>>>>>>> VISIT ID >>>" + laboratoryInvestigationTestDTO.getVisitId());
+                                Log.d(TAG, " RECENCY OBJECT AFTER ASSIGNMENT $$$$$$$$$$$$$$$$$ >>>>>> VISIT ID AND INVESTIGATION ID >>>>>>>>>>" + laboratoryInvestigationTestDTO.getInvestigationId() + ">>>>>>>>>>> VISIT ID >>>" + laboratoryInvestigationTestDTO.getVisitId());
                                 String labinvestTestId = htsService.processOtherInvestigationResults(laboratoryInvestigationTestDTO);
                                 result.success(labinvestTestId);
 
@@ -539,7 +539,7 @@ public class HtsChannel {
                             Log.i(TAG, "Save hts method in Android" + arguments);
                             try {
                                 HtsScreeningDTO htsScreeningDTO = gson.fromJson(arguments, HtsScreeningDTO.class);
-                                historyService.saveHtsScreening(htsScreeningDTO, visitService.getCurrentVisit(htsScreeningDTO.getPersonId()));
+                                historyService.saveHtsScreening(htsScreeningDTO, appWideService.getCurrentVisit(htsScreeningDTO.getPersonId()));
                                 result.success(1);
                             } catch (Exception e) {
                                 Log.i(TAG, "Error occurred : " + e.getMessage());
@@ -549,7 +549,7 @@ public class HtsChannel {
                             try {
                                 String personId = arguments;
                                 Log.d(TAG, "Person ID : " + personId);
-                                String htsscreeningdto = gson.toJson(historyService.getHtsScreening(visitService.getVisit(personId).getId()));
+                                String htsscreeningdto = gson.toJson(historyService.getHtsScreening(appWideService.getVisit(personId).getId()));
                                 Log.i(TAG, "Retrieve Htsscreening from Android" + htsscreeningdto);
                                 result.success(htsscreeningdto);
                             } catch (Exception e) {
@@ -600,9 +600,9 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getIndexTestByPersonId")) {
                             try {
-                                Log.i(TAG, "Index argumets sent from flutter"+ arguments);
-                                IndexTest indexTest =indexTestingService.getIndexTestByPresonId(arguments);
-                                String indexTestId =  indexTest.getId();
+                                Log.i(TAG, "Index argumets sent from flutter" + arguments);
+                                IndexTest indexTest = indexTestingService.getIndexTestByPresonId(arguments);
+                                String indexTestId = indexTest.getId();
                                 result.success(indexTestId);
 
                             } catch (Exception e) {
@@ -642,7 +642,7 @@ public class HtsChannel {
 
                             try {
                                 IndexContact indexContact = gson.fromJson(arguments, IndexContact.class);
-                                Log.d(TAG, "@@@@@@@@@@@@@ Index contact sent from flutter "+ arguments);
+                                Log.d(TAG, "@@@@@@@@@@@@@ Index contact sent from flutter " + arguments);
                                /* IndexContact indexContact = new IndexContact();
                                 indexContact.setPersonId(indexContactDto.getPersonId());
                                 indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());
@@ -664,9 +664,9 @@ public class HtsChannel {
 
                             try {
                                 Art art = ehrMobileDatabase.artDao().findByPersonId(arguments);
-                                Log.i(TAG, "ART MODEL RETURNED FROM ANDROID"+ art);
+                                Log.i(TAG, "ART MODEL RETURNED FROM ANDROID" + art);
                                 String artjson = gson.toJson(art);
-                                Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>"+ artjson);
+                                Log.i(TAG, "ART REGISTRATION MODEL >>>>>>>>>>" + artjson);
                                 result.success(artjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -676,23 +676,23 @@ public class HtsChannel {
 
                             try {
                                 ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao().findByVisitId(arguments);
-                                Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID"+ artCurrentStatus);
+                                Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID" + artCurrentStatus);
                                 String artjson = gson.toJson(artCurrentStatus);
-                                Log.i(TAG, "ART INITIATION MODEL #################"+ artjson);
+                                Log.i(TAG, "ART INITIATION MODEL #################" + artjson);
                                 result.success(artjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
                         if (methodCall.method.equals("getPersonArvCombinationRegimens")) {
-                            Log.i(TAG, "ARGUMENTS SENT FROM FLUTTER TO GET ART REGIMEN >>>>>"+ arguments);
+                            Log.i(TAG, "ARGUMENTS SENT FROM FLUTTER TO GET ART REGIMEN >>>>>" + arguments);
 
                             try {
                                 ArtRegimenDto artRegimenDto = gson.fromJson(arguments, ArtRegimenDto.class);
                                 String personId = artRegimenDto.getPersonId();
                                 RegimenType regimenType = artRegimenDto.getLine();
                                 List<ArvCombinationRegimen> arvCombinationRegimenList = artService.getPersonArvCombinationRegimens(personId, regimenType);
-                                Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID"+ arvCombinationRegimenList);
+                                Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID" + arvCombinationRegimenList);
                                 String artjson = gson.toJson(arvCombinationRegimenList);
                                 result.success(artjson);
                             } catch (Exception e) {

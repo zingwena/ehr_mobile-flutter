@@ -56,22 +56,6 @@ public class VisitService {
         return ehrMobileDatabase.facilityWardDao().findAll();
     }
 
-    public PatientQueue getPatientQueue(String personId) {
-        Visit visit = appWideService.getVisit(personId);
-        if (visit == null) {
-            return null;
-        }
-        return ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
-    }
-
-    public PatientWard getPatientWard(String personId) {
-        Visit visit = appWideService.getVisit(personId);
-        if (visit == null) {
-            return null;
-        }
-        return ehrMobileDatabase.patientWardDao().findByVisitId(visit.getId());
-    }
-
     public void dischargePatient(String visitId, Date dischargedDate) {
 
         Log.d(TAG, "Discharging patient process");
