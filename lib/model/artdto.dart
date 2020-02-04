@@ -24,7 +24,7 @@ class Artdto {
    String testReason;
    bool reTested;
    DateTime dateRetested;
-   NameCode facility;
+   String facility;
 
 
 
