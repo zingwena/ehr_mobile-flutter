@@ -69,10 +69,12 @@ public class ArtService {
         Log.i(TAG, "Created art record : " + art);
         Log.d(TAG, "Creating art linkage record ");
         // update testReason with actual value
-        Question question = ehrMobileDatabase.questionDao().findByid(artDTO.getTestReason());
+        Question question = ehrMobileDatabase.questionDao().findById(artDTO.getTestReason());
 
         ArtLinkageFrom artLinkageFrom = ArtDTO.getArtLinkage(artDTO, art.getId());
-        artLinkageFrom.setTestReason(new NameCode(question.getCode(), question.getName()));
+        if (question != null) {
+            artLinkageFrom.setTestReason(new NameCode(question.getCode(), question.getName()));
+        }
         if (StringUtils.isNoneBlank(artDTO.getFacility())) {
             Facility facility = ehrMobileDatabase.facilityDao().findById(artDTO.getFacility());
             artLinkageFrom.setFacility(new NameCode(facility.getCode(), facility.getName()));
@@ -317,7 +319,7 @@ public class ArtService {
         return ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null));
     }
 
-    public ArtIptDTO saveArtIpt (ArtIptDTO artIptDTO) {
+    public ArtIptDTO saveArtIpt(ArtIptDTO artIptDTO) {
 
         Log.d(TAG, "Current state of IPT DTO : " + artIptDTO);
 

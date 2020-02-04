@@ -26,7 +26,7 @@ public interface QuestionDao {
     List<Question> findAll();
 
     @Query("SELECT * FROM Question WHERE code=:code")
-    Question findByid(String code);
+    Question findById(String code);
 
     @Query("SELECT * FROM Question where name=:name")
     Question findByName(String name);
