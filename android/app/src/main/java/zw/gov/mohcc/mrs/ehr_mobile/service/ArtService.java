@@ -50,11 +50,11 @@ public class ArtService {
 
     private final String TAG = "Art Service";
     private EhrMobileDatabase ehrMobileDatabase;
-    private VisitService visitService;
+    private AppWideService appWideService;
 
-    public ArtService(EhrMobileDatabase ehrMobileDatabase) {
+    public ArtService(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
-        this.visitService = new VisitService(ehrMobileDatabase, null, null);
+        this.appWideService = appWideService;
     }
 
     @Transaction
@@ -69,10 +69,12 @@ public class ArtService {
         Log.i(TAG, "Created art record : " + art);
         Log.d(TAG, "Creating art linkage record ");
         // update testReason with actual value
-        Question question = ehrMobileDatabase.questionDao().findByid(artDTO.getTestReason());
+        Question question = ehrMobileDatabase.questionDao().findById(artDTO.getTestReason());
 
         ArtLinkageFrom artLinkageFrom = ArtDTO.getArtLinkage(artDTO, art.getId());
-        artLinkageFrom.setTestReason(new NameCode(question.getCode(), question.getName()));
+        if (question != null) {
+            artLinkageFrom.setTestReason(new NameCode(question.getCode(), question.getName()));
+        }
         if (StringUtils.isNoneBlank(artDTO.getFacility())) {
             Facility facility = ehrMobileDatabase.facilityDao().findById(artDTO.getFacility());
             artLinkageFrom.setFacility(new NameCode(facility.getCode(), facility.getName()));
@@ -185,7 +187,7 @@ public class ArtService {
 
     public TbScreening getVisitTbScreening(String personId) {
 
-        String visitId = visitService.getCurrentVisit(personId);
+        String visitId = appWideService.getCurrentVisit(personId);
         Log.d(TAG, "Retrieved visitId : " + visitId);
 
         TbScreening tbScreening = ehrMobileDatabase.tbScreeningDao().findByVisitId(visitId);
@@ -242,7 +244,7 @@ public class ArtService {
 
     public ArtVisit getArtVisit(String personId) {
 
-        String visitId = visitService.getCurrentVisit(personId);
+        String visitId = appWideService.getCurrentVisit(personId);
         Log.d(TAG, "Current visit ID : " + visitId);
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
 
@@ -313,7 +315,7 @@ public class ArtService {
 
         Log.d(TAG, "Retrieving visitId using personId : " + personId);
 
-        String visitId = visitService.getCurrentVisit(personId);
+        String visitId = appWideService.getCurrentVisit(personId);
 
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
 
@@ -326,7 +328,7 @@ public class ArtService {
         return ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null));
     }
 
-    public ArtIptDTO saveArtIpt (ArtIptDTO artIptDTO) {
+    public ArtIptDTO saveArtIpt(ArtIptDTO artIptDTO) {
 
         Log.d(TAG, "Current state of IPT DTO : " + artIptDTO);
 
