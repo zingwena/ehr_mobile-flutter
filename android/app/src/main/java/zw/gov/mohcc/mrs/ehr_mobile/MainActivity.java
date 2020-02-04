@@ -92,6 +92,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.AppWideService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.ArtService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.DataSyncService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.HistoryService;
@@ -120,6 +121,7 @@ public class MainActivity extends FlutterActivity {
     public Token token;
     public String url, username, password;
     private EhrMobileDatabase ehrMobileDatabase;
+    private AppWideService appWideService;
     private VisitService visitService;
     private HtsService htsService;
     private TerminologyService terminologyService;
@@ -145,9 +147,10 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
         siteService = new SiteService(ehrMobileDatabase);
-        artService = new ArtService(ehrMobileDatabase);
-        visitService = new VisitService(ehrMobileDatabase, siteService, artService);
-        htsService = new HtsService(ehrMobileDatabase, visitService);
+        appWideService = new AppWideService(ehrMobileDatabase);
+        artService = new ArtService(ehrMobileDatabase, appWideService);
+        visitService = new VisitService(ehrMobileDatabase, siteService, artService, appWideService);
+        htsService = new HtsService(ehrMobileDatabase, appWideService);
         historyService = new HistoryService(ehrMobileDatabase, htsService);
         terminologyService = new TerminologyService(ehrMobileDatabase);
         indexTestingService = new IndexTestingService(ehrMobileDatabase);
@@ -199,7 +202,7 @@ public class MainActivity extends FlutterActivity {
 
         new DataChannel(getFlutterView(), DATACHANNEL, ehrMobileDatabase, personService);
 
-        new VisitChannel(getFlutterView(), VISITCHANNEL, ehrMobileDatabase, visitService);
+        new VisitChannel(getFlutterView(), VISITCHANNEL, appWideService, visitService);
 
         new SiteChannel(getFlutterView(), SITECHANNEL, ehrMobileDatabase, siteService);
         new PatientChannel(getFlutterView(), PATIENT_CHANNEL, ehrMobileDatabase, relationshipService);
@@ -214,7 +217,7 @@ public class MainActivity extends FlutterActivity {
                 if (methodCall.method.equals("bloodPressure")) {
                     BloodPressure bloodPressure = gson.fromJson(arguments, BloodPressure.class);
                     bloodPressure.setId(UUID.randomUUID().toString());
-                    String visitId = visitService.getCurrentVisit(bloodPressure.getPersonId());
+                    String visitId = appWideService.getCurrentVisit(bloodPressure.getPersonId());
                     bloodPressure.setVisitId(visitId);
                     bloodPressure.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.bloodPressureDao().insert(bloodPressure);
@@ -226,7 +229,7 @@ public class MainActivity extends FlutterActivity {
                     Log.i(TAG, "person ID from flutter : " + temperature.getPersonId());
                     Log.i(TAG, "Temparture : " + temperature);
                     temperature.setId(UUID.randomUUID().toString());
-                    String visitId = visitService.getCurrentVisit(temperature.getPersonId());
+                    String visitId = appWideService.getCurrentVisit(temperature.getPersonId());
                     temperature.setVisitId(visitId);
                     temperature.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.temperatureDao().insert(temperature);
@@ -239,7 +242,7 @@ public class MainActivity extends FlutterActivity {
                     Log.i(TAG, "person ID from flutter : " + respiratoryRate.getPersonId());
                     Log.i(TAG, "RespiratoryRate : " + respiratoryRate);
                     respiratoryRate.setId(UUID.randomUUID().toString());
-                    String visitId = visitService.getCurrentVisit(respiratoryRate.getPersonId());
+                    String visitId = appWideService.getCurrentVisit(respiratoryRate.getPersonId());
                     respiratoryRate.setVisitId(visitId);
                     respiratoryRate.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.respiratoryRateDao().insert(respiratoryRate);
@@ -250,7 +253,7 @@ public class MainActivity extends FlutterActivity {
 
                     Height height = gson.fromJson(arguments, Height.class);
                     height.setId(UUID.randomUUID().toString());
-                    String visitId = visitService.getCurrentVisit(height.getPersonId());
+                    String visitId = appWideService.getCurrentVisit(height.getPersonId());
                     height.setVisitId(visitId);
                     height.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.heightDao().insert(height);
@@ -261,7 +264,7 @@ public class MainActivity extends FlutterActivity {
 
                     Weight weight = gson.fromJson(arguments, Weight.class);
                     weight.setId(UUID.randomUUID().toString());
-                    String visitId = visitService.getCurrentVisit(weight.getPersonId());
+                    String visitId = appWideService.getCurrentVisit(weight.getPersonId());
                     weight.setVisitId(visitId);
                     weight.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.weightDao().insert(weight);
@@ -271,14 +274,14 @@ public class MainActivity extends FlutterActivity {
 
                     Pulse pulse = gson.fromJson(arguments, Pulse.class);
                     pulse.setId(UUID.randomUUID().toString());
-                    String visitId = visitService.getCurrentVisit(pulse.getPersonId());
+                    String visitId = appWideService.getCurrentVisit(pulse.getPersonId());
                     pulse.setVisitId(visitId);
                     pulse.setStatus(RecordStatus.NEW);
                     ehrMobileDatabase.pulseDao().insert(pulse);
                     System.out.println("pulse == " + ehrMobileDatabase.pulseDao().getAll());
 
                 } else if (methodCall.method.equals("visit")) {
-                    String visitId = visitService.getCurrentVisit(arguments);
+                    String visitId = appWideService.getCurrentVisit(arguments);
                     result.success(visitId);
                 } else {
                     result.notImplemented();
@@ -287,7 +290,7 @@ public class MainActivity extends FlutterActivity {
 
         });
 
-        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, visitService, artService);
+        new HtsChannel(getFlutterView(), HTSCHANNEL, ehrMobileDatabase, htsService, MainActivity.this.getLabInvestigation(), historyService, indexTestingService, appWideService, artService);
 
         new ArtChannel(getFlutterView(), ART_CHANNEL, ehrMobileDatabase, artService);
 

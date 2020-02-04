@@ -3,6 +3,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -17,8 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 public class ArtWhoStage extends BaseEntity {
 
     @NonNull
-    @TypeConverters(DateConverter.class)
-    private Date date;
+    private String visitId;
     @NonNull
     private String artId;
     @NonNull
@@ -30,21 +30,22 @@ public class ArtWhoStage extends BaseEntity {
     public ArtWhoStage() {
     }
 
-    public ArtWhoStage(@NonNull String id, @NonNull Date date, @NonNull String artId, @NonNull WhoStage stage, NameCode followUpStatus) {
+    @Ignore
+    public ArtWhoStage(@NonNull String id, @NonNull String visitId, @NonNull String artId, @NonNull WhoStage stage, NameCode followUpStatus) {
         super(id);
-        this.date = date;
+        this.visitId = visitId;
         this.artId = artId;
         this.stage = stage;
         this.followUpStatus = followUpStatus;
     }
 
     @NonNull
-    public Date getDate() {
-        return date;
+    public String getVisitId() {
+        return visitId;
     }
 
-    public void setDate(@NonNull Date date) {
-        this.date = date;
+    public void setVisitId(@NonNull String visitId) {
+        this.visitId = visitId;
     }
 
     @NonNull
@@ -76,7 +77,7 @@ public class ArtWhoStage extends BaseEntity {
     @Override
     public String toString() {
         return "ArtWhoStage{" +
-                "date=" + date +
+                "visitId=" + visitId +
                 ", artId='" + artId + '\'' +
                 ", stage=" + stage +
                 ", followUpStatus=" + followUpStatus +

@@ -1,9 +1,9 @@
 
 
-  class PersonQuery {
+class PersonQuery {
 
-    String getAll(){
-      return """ 
+  String getAll(){
+    return """ 
         query GetPatientsQuery{
             
             people(text: "", page: 0, size: 10000, sort: "") {
@@ -147,6 +147,6 @@
 
           }
       """;
-    }
-
   }
+
+}

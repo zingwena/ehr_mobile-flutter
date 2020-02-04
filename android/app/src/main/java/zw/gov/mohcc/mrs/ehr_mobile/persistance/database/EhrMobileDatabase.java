@@ -40,8 +40,11 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtVisit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
@@ -74,6 +77,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationResult;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.InvestigationTestkit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptReason;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LaboratoryTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
@@ -103,12 +107,15 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtCurrentStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtIptDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtLinkageFromDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtSymptomDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitTypeDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtWhoStageDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArvCombinationRegimenDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
@@ -131,6 +138,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationResultDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.InvestigationTestkitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IptReasonDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.IptStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryInvestigationTestDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.LaboratoryTestDao;
@@ -192,7 +200,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
-        ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class}, version = 9, exportSchema = false)
+        ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class,
+        ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class}, version = 9, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -211,7 +220,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "newImpilo")
+                            EhrMobileDatabase.class, "ehrMobile")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
@@ -356,4 +365,12 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract TbScreeningDao tbScreeningDao();
 
     public abstract ArtSymptomDao artSymptomDao();
+
+    public abstract ArtVisitDao artVisitDao();
+
+    public abstract ArtWhoStageDao artWhoStageDao();
+
+    public abstract ArtIptDao artIptDao();
+
+    public abstract IptStatusDao iptStatusDao();
 }
