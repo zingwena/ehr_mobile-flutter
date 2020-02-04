@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-
 import 'package:ehr_mobile/landing_screen.dart';
 import 'package:ehr_mobile/model/country.dart';
-import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/view/art_symptoms.dart';
+import 'package:ehr_mobile/login_screen.dart';
 
 import 'package:ehr_mobile/view/patient_address.dart';
 
@@ -14,7 +15,6 @@ import 'package:flutter/services.dart';
 //import 'package:ehr_mobile/login_screen.dart';
 
 class ArtNewOI extends StatefulWidget {
-
 
   ArtNewOI();
 
@@ -32,12 +32,62 @@ class _ArtNewOI extends State<ArtNewOI> {
   final _formKey = GlobalKey<FormState>();
 
 
-  DateTime birthDate;
   bool _formValid=false;
   bool showError=false;
-  String clinicalStage = "";
-  int _gender = 0;
-  String gender = "";
+
+  int _zoster = 0;
+  bool zosterOption = false;
+
+  int _thrushVaginal = 0;
+  bool thrushVaginalOption = false;
+
+  int _dementia = 0;
+  bool dementiaOption = false;
+
+  int _pneumonia = 0;
+  bool pneumoniaOption = false;
+
+  int _cough = 0;
+  bool coughOption = false;
+
+  int _fever = 0;
+  bool feverOption = false;
+
+  int _hypertension = 0;
+  bool hypertensionOption = false;
+
+  int _diabetes = 0;
+  bool diabetesOption = false;
+
+  int _mentalDisorders = 0;
+  bool mentalDisordersOption = false;
+
+  int _thrushOral = 0;
+  bool thrushOralOption = false;
+
+  int _ulcersGenital = 0;
+  bool ulcersGenitalOption = false;
+
+  int _iris = 0;
+  bool irisOption = false;
+
+  int _ulcersOral = 0;
+  bool ulcersOralOption = false;
+
+  int _difficultBreathing = 0;
+  bool difficultBreathingOption = false;
+
+  int _tb = 0;
+  bool tbOption = false;
+
+  int _cancer = 0;
+  bool cancerOption = false;
+
+  int _hepatitis = 0;
+  bool hepatitisOption = false;
+
+  int _weightLoss = 0;
+  bool weightLossOption = false;
 
   @override
   void initState() {
@@ -45,17 +95,273 @@ class _ArtNewOI extends State<ArtNewOI> {
     super.initState();
   }
 
-  void _handleGenderChange(int value) {
+  void _handleZosterOption (int value) {
     setState(() {
-      _gender = value;
+      _zoster = value;
 
-      switch (_gender) {
+      switch (_zoster) {
         case 1:
-          gender = "MALE";
+          zosterOption = true;
           break;
         case 2:
-          gender = "FEMALE";
+          zosterOption = true;
+          break;
+      }
+    });
+  }
 
+  void _handleThrushVaginalOption (int value) {
+    setState(() {
+      _thrushVaginal = value;
+
+      switch (_thrushVaginal) {
+        case 1:
+          thrushVaginalOption = true;
+          break;
+        case 2:
+          thrushVaginalOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleDementiaOption (int value) {
+    setState(() {
+      _dementia = value;
+
+      switch (_dementia) {
+        case 1:
+          dementiaOption = true;
+          break;
+        case 2:
+          dementiaOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handlePneumoniaOption (int value) {
+    setState(() {
+      _pneumonia = value;
+
+      switch (_pneumonia) {
+        case 1:
+          pneumoniaOption = true;
+          break;
+        case 2:
+          pneumoniaOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleCoughOption (int value) {
+    setState(() {
+      _cough = value;
+
+      switch (_cough) {
+        case 1:
+          coughOption = true;
+          break;
+        case 2:
+          coughOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleFeverOption (int value) {
+    setState(() {
+      _fever = value;
+
+      switch (_fever) {
+        case 1:
+          feverOption = true;
+          break;
+        case 2:
+          feverOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleHypertensionOption (int value) {
+    setState(() {
+      _hypertension = value;
+
+      switch (_hypertension) {
+        case 1:
+          hypertensionOption = true;
+          break;
+        case 2:
+          hypertensionOption = true;
+          break;
+      }
+    });
+  }
+
+
+
+  void _handleDiabetesOption (int value) {
+    setState(() {
+      _diabetes = value;
+
+      switch (_diabetes) {
+        case 1:
+          diabetesOption = true;
+          break;
+        case 2:
+          diabetesOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleMentalDisordersOption (int value) {
+    setState(() {
+      _mentalDisorders = value;
+
+      switch (_mentalDisorders) {
+        case 1:
+          mentalDisordersOption = true;
+          break;
+        case 2:
+          mentalDisordersOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleThrushOralOption (int value) {
+    setState(() {
+      _thrushOral = value;
+
+      switch (_thrushOral) {
+        case 1:
+          thrushOralOption = true;
+          break;
+        case 2:
+          thrushOralOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleUlcersGenitalOption (int value) {
+    setState(() {
+      _ulcersGenital = value;
+
+      switch (_ulcersGenital) {
+        case 1:
+          ulcersGenitalOption = true;
+          break;
+        case 2:
+          ulcersGenitalOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleIrisOption (int value) {
+    setState(() {
+      _iris = value;
+
+      switch (_iris) {
+        case 1:
+          irisOption = true;
+          break;
+        case 2:
+          irisOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleUlcersOralOption (int value) {
+    setState(() {
+      _ulcersOral = value;
+
+      switch (_ulcersOral) {
+        case 1:
+          ulcersOralOption = true;
+          break;
+        case 2:
+          ulcersOralOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleDifficultBreathingOption (int value) {
+    setState(() {
+      _difficultBreathing = value;
+
+      switch (_difficultBreathing) {
+        case 1:
+          difficultBreathingOption = true;
+          break;
+        case 2:
+          difficultBreathingOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleTbOption (int value) {
+    setState(() {
+      _tb = value;
+
+      switch (_tb) {
+        case 1:
+          tbOption = true;
+          break;
+        case 2:
+          tbOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleCancerOption (int value) {
+    setState(() {
+      _cancer = value;
+
+      switch (_cancer) {
+        case 1:
+          cancerOption = true;
+          break;
+        case 2:
+          cancerOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleHepatitisOption (int value) {
+    setState(() {
+      _hepatitis = value;
+
+      switch (_hepatitis) {
+        case 1:
+          hepatitisOption = true;
+          break;
+        case 2:
+          hepatitisOption = true;
+          break;
+      }
+    });
+  }
+
+  void _handleWeightLossOption (int value) {
+    setState(() {
+      _weightLoss = value;
+
+      switch (_weightLoss) {
+        case 1:
+          weightLossOption = true;
+          break;
+        case 2:
+          weightLossOption = true;
           break;
       }
     });
@@ -120,7 +426,7 @@ class _ArtNewOI extends State<ArtNewOI> {
                     child: Text("Art New OIs", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                 // _buildButtonsRow(),
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -154,423 +460,636 @@ class _ArtNewOI extends State<ArtNewOI> {
                                                         SizedBox(
                                                           height: 35.0,
                                                         ),
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Zoster'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Zoster '),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _zoster,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleZosterOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _zoster,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleZosterOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        SizedBox(
-                                                          height: 10.0,
+                                                       Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Thrush / Vaginal '),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
+                                                              ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _thrushVaginal,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleThrushVaginalOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _thrushVaginal,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleThrushVaginalOption),
+
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Thrush - Vaginal'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Dementia'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _dementia,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleDementiaOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _dementia,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleDementiaOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        SizedBox(
-                                                          height: 10.0,
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Pneumonia'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
+                                                              ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _pneumonia,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handlePneumoniaOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _pneumonia,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handlePneumoniaOption),
+
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Dementia / Encephalitis'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Cough'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _cough,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleCoughOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _cough,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleCoughOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        SizedBox(
-                                                          height: 10.0,
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Fever'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
+                                                              ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _fever,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleFeverOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _fever,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleFeverOption),
+
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Pneumonia'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Hypertension'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _hypertension,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleHypertensionOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _hypertension,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleHypertensionOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        SizedBox(
-                                                          height: 10.0,
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Diabetes Mellitus'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
+                                                              ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _diabetes,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleDiabetesOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _diabetes,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleDiabetesOption),
+
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Cough'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Mental Disorders'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _mentalDisorders,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleMentalDisordersOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _mentalDisorders,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleMentalDisordersOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        SizedBox(
-                                                          height: 10.0,
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Thrush - Oral'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
+                                                              ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _thrushOral,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleThrushOralOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _thrushOral,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleThrushOralOption),
+
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Fever'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Ulcers - Genital'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _ulcersGenital,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleUlcersGenitalOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _ulcersGenital,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleUlcersGenitalOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        SizedBox(
-                                                          height: 10.0,
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('IRIS'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
+                                                              ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _iris,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleIrisOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _iris,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleIrisOption),
+
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Hypertension'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Ulcers - Oral'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _ulcersOral,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleUlcersOralOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _ulcersOral,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleUlcersOralOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Diabetes Mellitus'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Difficult Breathing'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _difficultBreathing,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleDifficultBreathingOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _difficultBreathing,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleDifficultBreathingOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Mental Disorders'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('TB'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _tb,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleTbOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _tb,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleTbOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Thrush - Oral'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Cancer'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _cancer,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleCancerOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _cancer,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleCancerOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Ulcers - Genital'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Hepatitis'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _hepatitis,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleHepatitisOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _hepatitis,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleHepatitisOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('IRIS'),
+                                                        Container(
+                                                          width: double.infinity,
+                                                          padding:
+                                                          EdgeInsets.symmetric( vertical: 16.0, horizontal: 130.0 ),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                                    padding:
+                                                                    const EdgeInsets.all(8.0),
+                                                                    child: Text('Weight Loss'),
+                                                                  ),
+                                                                  width: 250,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
+                                                              Text('Yes'),
+                                                              Radio(
+                                                                  value: 1,
+                                                                  groupValue: _weightLoss,
+                                                                  activeColor:
+                                                                  Colors.blue,
+                                                                  onChanged:
+                                                                  _handleWeightLossOption),
+                                                              Text('No'),
+                                                              Radio(
+                                                                  value: 2,
+                                                                  groupValue: _weightLoss,
+                                                                  activeColor: Colors.blue,
+                                                                  onChanged: _handleWeightLossOption),
 
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
 
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Ulcers - Oral'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Difficult Breathing'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('TB'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Cancer'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Hepatitis'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Weight Loss'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _gender,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleGenderChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
 
                                                         SizedBox(
                                                           height: 30.0,
@@ -589,8 +1108,8 @@ class _ArtNewOI extends State<ArtNewOI> {
                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                               crossAxisAlignment: CrossAxisAlignment.center,
                                                               children: <Widget>[
-                                                                Text('Proceed to Contact Details', style: TextStyle(color: Colors.white),),
-                                                                Icon(Icons.navigate_next, color: Colors.white, ),
+                                                                Text('Save', style: TextStyle(color: Colors.white),),
+                                                                //Icon(Icons.navigate_next, color: Colors.white, ),
                                                               ],
                                                             ),
                                                             onPressed: () {
@@ -643,7 +1162,36 @@ class _ArtNewOI extends State<ArtNewOI> {
     );
   }
 
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(
+            text: "Art NewOIs",
+            selected: true,
+          ),
 
+          new RoundedButton(
+            text: "Art Symptoms",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ArtSymptoms()),
+            ),
+
+          ),
+
+          new RoundedButton(
+            text: "Close",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
 }
 
