@@ -766,10 +766,10 @@ class _ArtStatus extends State<ArtStatus> {
                                                               .currentState
                                                               .save();
                                                           setState(() {
-                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
+                                                          /*  ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
                                                             artRegistration(artRegistrationDetails);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
-
+*/
 
                                                           });
                                                         }
