@@ -50,11 +50,11 @@ public class ArtService {
 
     private final String TAG = "Art Service";
     private EhrMobileDatabase ehrMobileDatabase;
-    private VisitService visitService;
+    private AppWideService appWideService;
 
-    public ArtService(EhrMobileDatabase ehrMobileDatabase) {
+    public ArtService(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
-        this.visitService = new VisitService(ehrMobileDatabase, null, null);
+        this.appWideService = appWideService;
     }
 
     @Transaction
@@ -178,7 +178,7 @@ public class ArtService {
 
     public TbScreening getVisitTbScreening(String personId) {
 
-        String visitId = visitService.getCurrentVisit(personId);
+        String visitId = appWideService.getCurrentVisit(personId);
         Log.d(TAG, "Retrieved visitId : " + visitId);
 
         TbScreening tbScreening = ehrMobileDatabase.tbScreeningDao().findByVisitId(visitId);
@@ -235,7 +235,7 @@ public class ArtService {
 
     public ArtVisit getArtVisit(String personId) {
 
-        String visitId = visitService.getCurrentVisit(personId);
+        String visitId = appWideService.getCurrentVisit(personId);
         Log.d(TAG, "Current visit ID : " + visitId);
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
 
@@ -306,7 +306,7 @@ public class ArtService {
 
         Log.d(TAG, "Retrieving visitId using personId : " + personId);
 
-        String visitId = visitService.getCurrentVisit(personId);
+        String visitId = appWideService.getCurrentVisit(personId);
 
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
 
