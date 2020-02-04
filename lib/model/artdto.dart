@@ -14,20 +14,8 @@ class Artdto {
    String personId;
    DateTime date;
    String artNumber;
-   bool enlargedLymphNode;
-   bool pallor;
-   bool jaundice;
-   bool cyanosis;
-   String mentalStatus;
-   String centralNervousSystem;
    DateTime dateOfHivTest;
    DateTime dateEnrolled;
-   bool tracing;
-   bool followUp;
-   bool hivStatus;
-   String relation;
-   DateTime dateOfDisclosure;
-   String reason;
    String linkageFrom;
    DateTime dateHivConfirmed;
    String linkageNumber;
@@ -38,11 +26,9 @@ class Artdto {
    DateTime dateRetested;
    NameCode facility;
 
-   Artdto(this.personId, this.date, this.artNumber, this.enlargedLymphNode,
-       this.pallor, this.jaundice, this.cyanosis, this.mentalStatus,
-       this.centralNervousSystem, this.dateOfHivTest, this.dateEnrolled,
-       this.tracing, this.followUp, this.hivStatus, this.relation,
-       this.dateOfDisclosure, this.reason, this.linkageFrom,
+
+
+   Artdto(this.personId, this.date, this.artNumber,  this.dateOfHivTest, this.dateEnrolled, this.linkageFrom,
        this.dateHivConfirmed, this.linkageNumber, this.hivTestUsed,
        this.otherInstitution, this.testReason, this.reTested, this.dateRetested,
        this.facility);

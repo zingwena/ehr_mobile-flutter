@@ -948,20 +948,8 @@ class _ArtReg extends State<ArtReg> {
                                                           widget.artdto.personId = widget.personId;
                                                           widget.artdto.date = test_date;
                                                           widget.artdto.artNumber = oi_art_number;
-                                                          widget.artdto.enlargedLymphNode = null;
-                                                          widget.artdto.pallor = null;
-                                                          widget.artdto.jaundice = null;
-                                                          widget.artdto.cyanosis = null;
-                                                          widget.artdto.mentalStatus = null;
-                                                          widget.artdto.centralNervousSystem = null;
                                                           widget.artdto.dateOfHivTest = test_date;
                                                           widget.artdto.dateEnrolled = enrollment_date;
-                                                          widget.artdto.tracing = null;
-                                                          widget.artdto.followUp = null;
-                                                          widget.artdto.hivStatus = null;
-                                                          widget.artdto.relation = null;
-                                                          widget.artdto.dateOfDisclosure = test_date;
-                                                          widget.artdto.reason = null;
                                                           widget.artdto.linkageFrom = _currentReferringProgram;
                                                           widget.artdto.dateHivConfirmed = test_date;
                                                           widget.artdto.linkageNumber = program_number;
@@ -1068,7 +1056,7 @@ class _ArtReg extends State<ArtReg> {
   }
 
   Future<void> artRegistration(Artdto artRegistration) async {
-    String art_registration_response;
+    var art_registration_response;
     try {
       print('pppppppppppppppppppppppppppppppppppp art regmethod reg object '+ artRegistration.toString());
 
@@ -1080,7 +1068,7 @@ class _ArtReg extends State<ArtReg> {
       });
 
     } catch (e) {
-      print('--------------something went wrong  $e');
+      print('--------------something went wrong in art registration  $e');
     }
 
   }
