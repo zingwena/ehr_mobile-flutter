@@ -8,6 +8,9 @@ public class GenderConverter {
     @TypeConverter
     public static Gender toGender(String gender) {
 
+        if (gender == null) {
+            return null;
+        }
         if (gender.equals(Gender.MALE.getSex())) {
             return Gender.MALE;
         } else if (gender.equals(Gender.FEMALE.getSex())) {

@@ -11,12 +11,11 @@ ArtReason _$ArtReasonFromJson(Map<String, dynamic> json) {
     json['name'] as String,
     json['code'] as String,
     json['artStatusId'] as String,
-
   );
 }
 
 Map<String, dynamic> _$ArtReasonToJson(ArtReason instance) => <String, dynamic>{
       'code': instance.code,
       'name': instance.name,
-      'artStatusId': instance.artStatusId
+      'artStatusId': instance.artStatusId,
     };

@@ -10,6 +10,9 @@ public class NormalityConverter {
     @TypeConverter
     public static Normality toNormality(String normality) {
 
+        if (normality == null) {
+            return null;
+        }
         if (normality.equals(Normality.NONE.getNormality())) {
             return Normality.NONE;
         } else if (normality.equals(Normality.NORMAL.getNormality())) {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -42,10 +43,10 @@ class _ArtReg extends State<ArtReg> {
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   static const dataChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
-  String oi_art_number;
+  String oi_art_number, program_number;
   ArtRegistration _artRegistration;
-  var dateOfTest,dateOfEnrollment, displayDate;
-  DateTime enrollment_date, test_date;
+  var dateOfTest,dateOfEnrollment, displayDate, dateOfRetest, dateHivConfirmed;
+  DateTime enrollment_date, test_date, retest_date, hivConfirmation_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
 
@@ -54,15 +55,14 @@ class _ArtReg extends State<ArtReg> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonForTestListIdentified;
 
-  List _referringListIdentified = ["Referring Program 1", "Referring Program 2", "Referring Program 3", "Referring Program 4" ];
-  List _hivTestUsedIdentified = ["HIV Test 1", "HIV Test 2", "HIV Test 3", "HIV Test 4" ];
+  List _referringListIdentified = ["EID", "HTS", "PMTCT", "STI", "TB_PROGRAM", "VMMC", "VIAC" ];
+  List _hivTestUsedIdentified = ["AB", "PCR" ];
   List _reasonForHivTestIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4" ];
 
   int _testingSite = 0;
   int _reTested = 0;
   String testingSite = "";
-  String retestedBeforeArt = "";
-
+  bool retestedBeforeArt = false;
   String  _currentReferringProgram, _currentHivTestUsed, _currentReasonForTest ;
 
   bool selfIdentifiedReferringIsValid=false;
@@ -106,7 +106,7 @@ class _ArtReg extends State<ArtReg> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != dateOfTest)
+    if (picked != null && picked != dateOfEnrollment)
       setState(() {
         dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
         enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
@@ -121,8 +121,8 @@ class _ArtReg extends State<ArtReg> {
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
-        dateOfEnrollment = DateFormat("yyyy/MM/dd").format(picked);
-        enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfEnrollment);
+        dateOfRetest = DateFormat("yyyy/MM/dd").format(picked);
+        retest_date = DateFormat("yyyy/MM/dd").parse(dateOfRetest);
       });
   }
 
@@ -139,6 +139,19 @@ class _ArtReg extends State<ArtReg> {
 
     }
   }
+  Future<Null> _selectDateHivConfirmed(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != dateHivConfirmed)
+      setState(() {
+        dateHivConfirmed = DateFormat("yyyy/MM/dd").format(picked);
+        hivConfirmation_date = DateFormat("yyyy/MM/dd").parse(dateHivConfirmed);
+      });
+  }
+
   Future<void>getAge(Person person)async{
     String response;
     try{
@@ -210,10 +223,10 @@ class _ArtReg extends State<ArtReg> {
 
       switch (_reTested) {
         case 1:
-          retestedBeforeArt = "Yes";
+          retestedBeforeArt = true;
           break;
         case 2:
-          retestedBeforeArt = "No";
+          retestedBeforeArt = true;
           break;
       }
     });
@@ -584,11 +597,24 @@ class _ArtReg extends State<ArtReg> {
                                                             padding: EdgeInsets
                                                                 .symmetric(vertical: 16.0,
                                                                 horizontal: 60.0),
-                                                            child: TextFormField(
+                                                            child:    TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                    .isEmpty
+                                                                    ? 'Enter Program Number'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                  setState(
+                                                                          () {
+                                                                        program_number = value;                                           }),
                                                               decoration: InputDecoration(
                                                                   labelText:
                                                                   'Program Number',
-                                                                  border: OutlineInputBorder()),
+                                                                  border:
+                                                                  OutlineInputBorder()),
                                                             ),
                                                           ),
                                                           width: 100,
@@ -620,19 +646,19 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    dateOfEnrollment),
+                                                                    dateHivConfirmed),
                                                                 validator:
                                                                     (value) {
                                                                   return value
                                                                       .isEmpty
-                                                                      ? 'Enter some text'
+                                                                      ? 'Enter date'
                                                                       : null;
                                                                 },
                                                                 decoration: InputDecoration(
                                                                     border: OutlineInputBorder(
                                                                         borderRadius:
                                                                         BorderRadius.circular(0.0)),
-                                                                    labelText: "Date of HIV Test"),
+                                                                    labelText: "Date  HIV Confirmed"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -644,7 +670,7 @@ class _ArtReg extends State<ArtReg> {
                                                             color:
                                                             Colors.blue,
                                                             onPressed: () {
-                                                              _selectDateOfEnrollment(
+                                                              _selectDateHivConfirmed(
                                                                   context);
                                                             })
                                                       ],
@@ -782,7 +808,7 @@ class _ArtReg extends State<ArtReg> {
                                                                 controller:
                                                                 TextEditingController(
                                                                     text:
-                                                                    dateOfEnrollment),
+                                                                    dateOfRetest),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -842,11 +868,22 @@ class _ArtReg extends State<ArtReg> {
                                                               .currentState
                                                               .save();
                                                           setState(() {
+
+                                                          /*  Artdto(this.personId, this.date, this.artNumber, this.enlargedLymphNode,
+                                                                this.pallor, this.jaundice, this.cyanosis, this.mentalStatus,
+                                                                this.centralNervousSystem, this.dateOfHivTest, this.dateEnrolled,
+                                                                this.tracing, this.followUp, this.hivStatus, this.relation,
+                                                                this.dateOfDisclosure, this.reason, this.linkageFrom,
+                                                                this.dateHivConfirmed, this.linkageNumber, this.hivTestUsed,
+                                                                this.otherInstitution, this.testReason, this.reTested, this.dateRetested,
+                                                                this.facility);*/
+                                                            Artdto artdto = Artdto(widget.personId, test_date, oi_art_number, null, null, null,
+                                                            null, null, null, test_date, enrollment_date,null, null, null, null, test_date, null, _currentReferringProgram,test_date,program_number,  _currentHivTestUsed, null, null,
+                                                            retestedBeforeArt, retest_date, null);
+
                                                             ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
-                                                            artRegistration(artRegistrationDetails);
+                                                            artRegistration(artdto);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
-
-
 
                                                           });
                                                         }
@@ -908,13 +945,12 @@ class _ArtReg extends State<ArtReg> {
     );
   }
 
-  Future<void> artRegistration(ArtRegistration artRegistration) async {
+  Future<void> artRegistration(Artdto artRegistration) async {
     String art_registration_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod');
+      print('pppppppppppppppppppppppppppppppppppp art regmethod reg object '+ artRegistration.toString());
 
-      art_registration_response = await artChannel.invokeMethod(
-          'saveArtRegistration', jsonEncode(artRegistration.toJson()));
+      art_registration_response = await artChannel.invokeMethod('saveArtRegistration', jsonEncode(artRegistration));
       print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
       setState(() {
         _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));

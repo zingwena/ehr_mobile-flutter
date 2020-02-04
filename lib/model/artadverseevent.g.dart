@@ -18,14 +18,11 @@ ArtAdverseEvent _$ArtAdverseEventFromJson(Map<String, dynamic> json) {
   );
 }
 
-
-Map<String, dynamic> _$ArtAdverseEventToJson(
-    ArtAdverseEvent instance) =>
+Map<String, dynamic> _$ArtAdverseEventToJson(ArtAdverseEvent instance) =>
     <String, dynamic>{
       'id': instance.id,
       'statusId': instance.statusId,
       'code': instance.code,
       'name': instance.name,
       'reason': instance.reason,
-
     };

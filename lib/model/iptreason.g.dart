@@ -14,6 +14,6 @@ IptReason _$IptReasonFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$IptReasonToJson(IptReason instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+      'code': instance.code,
+      'name': instance.name,
+    };

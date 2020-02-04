@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/db/tables/person_investigation_table.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:ehr_mobile/util/logger.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
@@ -83,6 +84,28 @@ class PersonInvestigationDao extends BaseDao{
       personInvestigations.add(personInvestigation);
     }
     return personInvestigations;
+  }
+
+  Future insertFromEhr(Map map,String ehrPersonId) async {
+    Insert inserter = new Insert(tableName);
+    inserter.set(personId, ehrPersonId);
+    if(map['result']!=null){
+      if(map['result']['id']!=null){
+        inserter.set(resultId, map['result']['id']);
+      }else if(map['result']['name']!=null){
+        inserter.set(resultId, map['result']['name']);
+      }
+    }
+    inserter.set(investigationId, map['investigationId']);
+    inserter.set(status,'IMPORTED');
+    inserter.set(id,map['personInvestigationId']);
+    inserter.set(date,const CustomDateTimeConverter().fromEhrJson(map['date']));
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
   }
 
 }

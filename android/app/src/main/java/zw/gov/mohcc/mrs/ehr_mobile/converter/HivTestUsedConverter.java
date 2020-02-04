@@ -9,6 +9,9 @@ public class HivTestUsedConverter {
     @TypeConverter
     public static HivTestUsed toHivTestUsed(String hivTestUsed) {
 
+        if (hivTestUsed == null) {
+            return null;
+        }
         if (hivTestUsed.equals(HivTestUsed.AB.getHivTestUsed())) {
             return HivTestUsed.AB;
         } else if (hivTestUsed.equals(HivTestUsed.PCR.getHivTestUsed())) {

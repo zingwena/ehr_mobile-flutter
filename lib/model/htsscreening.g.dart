@@ -24,20 +24,21 @@ HtsScreening _$HtsScreeningFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$HtsScreeningToJson(HtsScreening  instance) =>
+Map<String, dynamic> _$HtsScreeningToJson(HtsScreening instance) =>
     <String, dynamic>{
       'personId': instance.personId,
       'visitId': instance.visitId,
       'testedBefore': instance.testedBefore,
       'art': instance.art,
       'result': instance.result,
-      'dateLastNegative': const CustomDateTimeConverter().toJson(instance.dateLastNegative),
-      'dateLastTested': const CustomDateTimeConverter().toJson(instance.dateLastTested),
-      'dateEnrolled': const CustomDateTimeConverter().toJson(instance.dateEnrolled),
+      'dateLastTested':
+      const CustomDateTimeConverter().toJson(instance.dateLastTested),
       'artNumber': instance.artNumber,
       'beenOnPrep': instance.beenOnPrep,
       'prepOption': instance.prepOption,
       'viralLoadDone': instance.viralLoadDone,
       'cd4Done': instance.cd4Done,
+      'dateEnrolled': const CustomDateTimeConverter().toJson(instance.dateEnrolled),
+      'dateLastNegative': const CustomDateTimeConverter().toJson(instance.dateLastNegative),
 
     };

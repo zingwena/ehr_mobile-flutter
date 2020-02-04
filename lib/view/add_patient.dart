@@ -80,6 +80,18 @@ class _AddPatient extends State<AddPatient> {
     }
   }
 
+  Future<void> getSiteName() async {
+    String response;
+    try {
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  }
+
   void _handleGenderChange(int value) {
     setState(() {
       _gender = value;
@@ -187,11 +199,8 @@ class _AddPatient extends State<AddPatient> {
                                               Form(
                                                 key: _formKey,
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
                                                     SizedBox(
                                                       height: 20.0,
@@ -211,8 +220,7 @@ class _AddPatient extends State<AddPatient> {
                                                                       ? 'Enter National Id number'
                                                                       : null;
                                                                 },*/
-                                                                onSaved: (value) =>
-                                                                        setState(() {
+                                                                onSaved: (value) => setState(() {
                                                                   nationalId = value;
                                                                 }),
                                                                 decoration: InputDecoration(
@@ -320,20 +328,14 @@ class _AddPatient extends State<AddPatient> {
                                                     Container(
                                                       width: double.infinity,
                                                       padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 16.0,
-                                                              horizontal: 60.0),
+                                                          EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
                                                       child: Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child:
-                                                                    Text('Sex'),
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: Text('Sex'),
                                                               ),
                                                               width: 250,
                                                             ),
@@ -341,12 +343,9 @@ class _AddPatient extends State<AddPatient> {
                                                           Text('Male'),
                                                           Radio(
                                                               value: 1,
-                                                              groupValue:
-                                                                  _gender,
-                                                              activeColor:
-                                                                  Colors.blue,
-                                                              onChanged:
-                                                                  _handleGenderChange),
+                                                              groupValue: _gender,
+                                                              activeColor: Colors.blue,
+                                                              onChanged: _handleGenderChange),
                                                           Text('Female'),
                                                           Radio(
                                                               value: 2,

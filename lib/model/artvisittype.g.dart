@@ -13,7 +13,8 @@ ArtVisitType _$ArtVisitTypeFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ArtVisitTypeToJson(ArtVisitType instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+Map<String, dynamic> _$ArtVisitTypeToJson(ArtVisitType instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+    };

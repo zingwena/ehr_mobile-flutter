@@ -47,7 +47,15 @@ class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
   String toJson(DateTime json) => json.toIso8601String();
 
   int fromEhrJson(String date) {
+    if(date==null){
+      return null;
+    }
     var df=DateFormat('yyyy-MM-dd');
+    return df.parse(date).millisecondsSinceEpoch;
+  }
+
+  int fromEhrDateTimeJson(String date) {
+    var df=DateFormat('yyyy-MM-dd\'T\'HH:mm');
     return df.parse(date).millisecondsSinceEpoch;
   }
 }

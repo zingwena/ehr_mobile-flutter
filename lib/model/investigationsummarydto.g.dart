@@ -18,6 +18,6 @@ Map<String, dynamic> _$InvestigationSummaryDtoToJson(
     InvestigationSummaryDto instance) =>
     <String, dynamic>{
       'testName': instance.testName,
-      'testDate': instance.testDate,
+      'testDate': const CustomDateTimeConverter().toJson(instance.testDate),
       'result': instance.result,
     };

@@ -1,5 +1,7 @@
 
 import 'package:ehr_mobile/db/tables/visit_table.dart';
+import 'package:ehr_mobile/model/enums/enums.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -71,6 +73,25 @@ class VisitDao extends BaseDao{
       visits.add(visit);
     }
     return visits;
+  }
+
+  Future insertFromEhr(Map map,String ehrPersonId) async {
+    Insert inserter = new Insert(tableName);
+    inserter.set(patientType,map['type']);
+    inserter.set(id, map['patientId']);
+    inserter.set(code, map['facility']['id']);
+    inserter.set(name, map['facility']['name']);
+    inserter.set(personId,ehrPersonId);
+    inserter.set(discharged, const CustomDateTimeConverter().fromEhrJson(map['discharged']));
+    inserter.set(time,const CustomDateTimeConverter().fromEhrDateTimeJson(map['time']));
+    inserter.set(hospitalNumber, map['hospitalNumber']);
+    inserter.set(status, RecordStatus.IMPORTED.toString());
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
   }
 
 }

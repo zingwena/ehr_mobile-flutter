@@ -13,7 +13,8 @@ FunctionalStatus _$FunctionalStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$FunctionalStatusToJson(FunctionalStatus instance) => <String, dynamic>{
-  'code': instance.code,
-  'name': instance.name,
-};
+Map<String, dynamic> _$FunctionalStatusToJson(FunctionalStatus instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'name': instance.name,
+    };

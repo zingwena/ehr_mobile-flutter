@@ -13,17 +13,14 @@ ArtFollowUpVisit _$ArtFollowUpVisitFromJson(Map<String, dynamic> json) {
     json['outcome'] == null
         ? null
         : NameCode.fromJson(json['outcome'] as Map<String, dynamic>),
-    const CustomDateTimeConverter()
-        .fromJson(json['date'] as String),
-
+    const CustomDateTimeConverter().fromJson(json['date'] as String),
   );
 }
 
-Map<String, dynamic> _$ArtFollowUpVisitToJson(
-    ArtFollowUpVisit instance) =>
+Map<String, dynamic> _$ArtFollowUpVisitToJson(ArtFollowUpVisit instance) =>
     <String, dynamic>{
       'id': instance.id,
       'artAppointmentId': instance.artAppointmentId,
       'outcome': instance.outcome,
-      'date': instance.date,
+      'date': const CustomDateTimeConverter().toJson(instance.date),
     };

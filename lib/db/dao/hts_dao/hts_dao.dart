@@ -1,5 +1,7 @@
 
 import 'package:ehr_mobile/db/tables/hts/hts_table.dart';
+import 'package:ehr_mobile/model/enums/enums.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:ehr_mobile/util/logger.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
@@ -65,5 +67,44 @@ class HtsDao {
     return hts;
   }
 
+  Future insertFromEhr(Map map,String ehrPersonId, String patientId) async {
+
+    Insert inserter = new Insert(tableName);
+    inserter.set(personId,ehrPersonId);
+    inserter.set(id, map['htsId']);
+    inserter.set(visitId, patientId);
+    inserter.set(htsType, map['htsType']);
+    inserter.set(laboratoryInvestigationId,map['laboratoryInvestigation']['laboratoryInvestigationId']);
+    inserter.set(dateOfHivTest,const CustomDateTimeConverter().fromEhrJson(map['dateOfHivTest']));
+    inserter.set(entryPointId,map['entryPoint']['id']);
+    inserter.set(htsApproach,map['approach']);
+
+    if(map['purpose']!=null){
+      inserter.set(reasonForHivTestingId,map['purpose']['id']);
+    }
+    inserter.set(htsModelId,map['model']['id']);
+    inserter.set(preTestInformationGiven,map['preTestInformationGiven']);
+    inserter.set(newTestInClientLife,map['firstHivTest']);
+    //inserter.set(newTestPregLact,map['testForPregnancy']); //TODO needs clarification
+    inserter.set(coupleCounselling,map['coupleCounselling']);
+    inserter.set(optOutOfTest,map['optOut']);
+    inserter.set(resultReceived,map['resultsIssued']);
+    inserter.set(reasonForNotIssuingResultId,map['reasonForNotIssuingResult']);
+
+    map['postTestCounselling']!=null?inserter.set(postTestCounselled,map['postTestCounselling']):inserter.set(postTestCounselled,false);
+
+    if(map['postDateCounselled']!=null){
+      inserter.set(datePostTestCounselled,const CustomDateTimeConverter().fromEhrJson(map['postDateCounselled']));
+    }
+    map['consentToIndexTesting']!=null? inserter.set(consentToIndexTesting, map['consentToIndexTesting']):
+    inserter.set(consentToIndexTesting, false);
+    inserter.set(status, 'IMPORTED');
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
+  }
 
 }

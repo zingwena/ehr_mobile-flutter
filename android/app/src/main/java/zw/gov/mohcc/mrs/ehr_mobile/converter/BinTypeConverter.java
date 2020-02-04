@@ -9,6 +9,9 @@ public class BinTypeConverter {
     @TypeConverter
     public static BinType toBinType(String binType) {
 
+        if (binType == null) {
+            return null;
+        }
         if (binType.equals(BinType.QUEUE.getBinType())) {
             return BinType.QUEUE;
         } else if (binType.equals(BinType.WARD.getBinType())) {

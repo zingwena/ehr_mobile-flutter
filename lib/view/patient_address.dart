@@ -9,6 +9,8 @@ import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'rounded_button.dart';
+import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
@@ -44,6 +46,7 @@ class _PatientAddressState extends State<PatientAddress> {
   List _townList = List();
   List townList= List();
   List<Town> _townListDropdown= List();
+  String facility_name;
 
   @override
   void initState() {
@@ -60,6 +63,20 @@ class _PatientAddressState extends State<PatientAddress> {
       items.add(DropdownMenuItem(value: town.name, child: Text(town.name)));
     }
     return items;
+  }
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   @override
@@ -82,10 +99,9 @@ class _PatientAddressState extends State<PatientAddress> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),

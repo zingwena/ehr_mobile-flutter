@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/add_patient_index.dart';
+import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
 
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class SearchPatientIndex extends StatefulWidget {
   Person person_patient;
   String visitId;
   String htsId;
+  //final Person person;
   HtsRegistration htsRegistration;
   String personId;
   SearchPatientIndex(this.person_patient,this.indexTestId, this.visitId, this.personId);
@@ -29,6 +31,7 @@ class SearchPatientIndex extends StatefulWidget {
 
 class _SearchPatientState extends State<SearchPatientIndex> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
+
   String searchItem;
   final _searchFormKey = GlobalKey<FormState>();
   List<Person> _patientList;
@@ -61,6 +64,8 @@ class _SearchPatientState extends State<SearchPatientIndex> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+     // drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       /*  appBar: AppBar(
         title: Text('Search Patient'),
       ),*/
@@ -131,7 +136,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
                             color: Colors.white,
-                            fontSize: 30),
+                            fontSize: 16),
                       ),
                     ),
                   ),

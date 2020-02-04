@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.util.HashSet;
 import java.util.List;
 
 import io.flutter.plugin.common.MethodCall;
@@ -129,7 +130,7 @@ public class DataChannel {
                         if (methodCall1.method.equals("getArtReasonOptions")) {
                             try {
                                 List<ArtReason> artReasons = ehrMobileDatabase.artReasonDao().findAll();
-                                String list = gson.toJson(artReasons);
+                                String list = gson.toJson(new HashSet<>(artReasons));
                                 Log.d(TAG, "**************************** TIKI TAKA : " + artReasons);
                                 result1.success(list);
                             } catch (Exception e) {

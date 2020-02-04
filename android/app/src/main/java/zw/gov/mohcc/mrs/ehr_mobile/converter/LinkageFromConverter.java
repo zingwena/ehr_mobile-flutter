@@ -9,6 +9,9 @@ public class LinkageFromConverter {
     @TypeConverter
     public static LinkageFrom toLinkageFrom(String linkageFrom) {
 
+        if (linkageFrom == null) {
+            return null;
+        }
         if (linkageFrom.equals(LinkageFrom.EID.getLinkageFrom())) {
             return LinkageFrom.EID;
         } else if (linkageFrom.equals(LinkageFrom.HTS.getLinkageFrom())) {

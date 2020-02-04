@@ -11,13 +11,12 @@ MedicineName _$MedicineNameFromJson(Map<String, dynamic> json) {
     json['medicineCategory'] as String,
     json['medicineLevel'] as String,
     json['otc'] as bool,
-
   );
 }
 
-Map<String, dynamic> _$MedicineNameToJson(MedicineName instance) => <String, dynamic>{
-  'medicineCategory': instance.medicineCategory,
-  'medicineLevel': instance.medicineLevel,
-  'otc': instance.otc,
-
-};
+Map<String, dynamic> _$MedicineNameToJson(MedicineName instance) =>
+    <String, dynamic>{
+      'medicineCategory': instance.medicineCategory,
+      'medicineLevel': instance.medicineLevel,
+      'otc': instance.otc,
+    };

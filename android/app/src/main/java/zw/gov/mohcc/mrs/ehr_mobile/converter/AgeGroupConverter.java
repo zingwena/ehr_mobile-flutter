@@ -9,6 +9,9 @@ public class AgeGroupConverter {
     @TypeConverter
     public static AgeGroup toAgeGroup(String ageGroup) {
 
+        if (ageGroup == null) {
+            return null;
+        }
         if (ageGroup.equals(AgeGroup.ADULT.getAgeGroup())) {
             return AgeGroup.ADULT;
         } else if (ageGroup.equals(AgeGroup.PEADS.getAgeGroup())) {
