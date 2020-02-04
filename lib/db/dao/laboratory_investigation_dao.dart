@@ -1,5 +1,7 @@
 
 import 'package:ehr_mobile/db/tables/laboratory_investigation_table.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -9,7 +11,6 @@ class LaboratoryInvestigationDao extends BaseDao{
   var facilityId = new StrField('facilityId');
   var personInvestigationId = new StrField('personInvestigationId');
   var resultDate = new DateTimeField('resultDate');
-  final id = new StrField('id');
 
   SqfliteAdapter _adapter;
 
@@ -64,6 +65,21 @@ class LaboratoryInvestigationDao extends BaseDao{
       labInvestigations.add(labInvestigation);
     }
     return labInvestigations;
+  }
+
+  Future insertFromEhr(Map map,String facility) async {
+    Insert inserter = new Insert(tableName);
+    inserter.set(facilityId, facility);
+    inserter.set(personInvestigationId, map['laboratoryInvestigationId']);
+    inserter.set(id, map['laboratoryInvestigationId']);
+    inserter.set(status,'IMPORTED');
+    inserter.set(resultDate,const CustomDateTimeConverter().fromEhrJson(map['date']));
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
   }
 
 }

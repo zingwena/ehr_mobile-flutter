@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:ehr_mobile/graphql/graphql_queries.dart';
 import 'package:ehr_mobile/model/token.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
-import 'package:ehr_mobile/sync/pull_data.dart';
+import 'package:ehr_mobile/sync/fetch_patient_record.dart';
+import 'package:ehr_mobile/sync/pull_meta_data.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/util/logger.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,6 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../login_screen.dart';
-import '../main.dart';
 
 class DataSyncronization extends StatefulWidget {
   @override

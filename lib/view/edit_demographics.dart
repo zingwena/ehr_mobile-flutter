@@ -18,9 +18,11 @@ import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ehr_mobile/util/constants.dart';
 //import 'patient_address.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 
 class EditDemographics extends StatefulWidget {
   final String lastName, firstName, sex, nationalId;
@@ -42,6 +44,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   final _formKey = GlobalKey<FormState>();
 
   List<String> _list;
+  String facility_name;
   DateTime birthDate;
   Person registeredPatient;
   String lastName,  firstName,nationalId, religion, country,occupation,educationLevel,nationality,maritalStatus;
@@ -215,6 +218,21 @@ class _EditDemographicsState extends State<EditDemographics> {
     return items;
   }
 
+
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
   String nullValidator(var cell) {
     return cell == null ? "" : cell;
   }
@@ -239,7 +257,8 @@ class _EditDemographicsState extends State<EditDemographics> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(

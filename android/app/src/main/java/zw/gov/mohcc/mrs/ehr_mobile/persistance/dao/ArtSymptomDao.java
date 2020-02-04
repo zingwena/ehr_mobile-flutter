@@ -30,4 +30,7 @@ public interface ArtSymptomDao {
 
     @Query("SELECT * FROM ArtSymptom WHERE artId=:artId")
     ArtSymptom findById(String artId);
+
+    @Query("SELECT * FROM ArtSymptom WHERE artId=:artId and code=:questionId")
+    ArtSymptom findByArtIdAndQuestionId(String artId, String questionId);
 }

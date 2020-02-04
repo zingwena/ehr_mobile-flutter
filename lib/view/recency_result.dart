@@ -351,79 +351,34 @@ class _Recency_Result  extends State<Recency_Result > {
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child: Row(
+                                                    child:               Row(
                                                       children: <Widget>[
                                                         Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text(
-                                                                "Sample :",
-                                                                style: TextStyle(
-                                                                  color: Colors.grey.shade600,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(right: 16.0),
+                                                            child: TextField(
+                                                              controller: TextEditingController(
+                                                                  text: 'Blood'),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Sample',
+                                                                // icon: Icon(Icons.add_box, color: Colors.blue),
                                                               ),
-                                                            ),
-                                                            width: 100,
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(0.0),
-                                                              child: Text(
-                                                                ("Blood"),
-                                                                style: TextStyle(
-                                                                  color: Colors.grey.shade600,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            width: 100,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
 
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text(
-                                                                "Investigation:",
-                                                                style: TextStyle(
-                                                                  color: Colors.grey.shade600,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
                                                             ),
-                                                            width: 100,
                                                           ),
                                                         ),
+
                                                         Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(0.0),
-                                                              child: Text(
-                                                                ("HIV"),
-                                                                style: TextStyle(
-                                                                  color: Colors.grey.shade600,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(right: 16.0),
+                                                            child: TextField(
+                                                              controller: TextEditingController(
+                                                                  text: 'HIV'),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Investigation',
+                                                                //icon: Icon(Icons.adjust, color: Colors.blue),
                                                               ),
                                                             ),
-                                                            width: 100,
                                                           ),
                                                         ),
                                                       ],
@@ -436,11 +391,19 @@ class _Recency_Result  extends State<Recency_Result > {
 
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                    padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
                                                     child: DataTable(
                                                         columns: [
-                                                          DataColumn(label: Text("TestKit")),
-                                                          DataColumn(label: Text("Result")),
+                                                          DataColumn(label: Text("TestKit",
+                                                              style: TextStyle(
+                                                              fontSize: 20,
+                                                              color: Colors.white.withOpacity(0.80),
+                                                              fontWeight: FontWeight.w400), )),
+                                                          DataColumn(label: Text("Result",
+                                                            style: TextStyle(
+                                                                fontSize: 20,
+                                                                color: Colors.white.withOpacity(0.80),
+                                                                fontWeight: FontWeight.w400), )),
                                                         ],
                                                         rows: [
                                                           DataRow(cells: [
@@ -456,51 +419,34 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     height: 20.0,
                                                   ),
 
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Text(
-                                                                "Final Result:",
-                                                                style: TextStyle(
-                                                                  color: Colors.grey.shade600,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
+
+
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
+                                                          child: TextField(
+                                                            controller: TextEditingController(
+                                                                text: widget.laboratoryInvestigation.result.name),
+                                                            decoration: InputDecoration(
+                                                              labelText: 'Final Result',
+                                                              // icon: Icon(Icons.add_box, color: Colors.blue),
                                                             ),
-                                                            width: 100,
+
                                                           ),
                                                         ),
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(0.0),
-                                                              child: Text(
-                                                                (widget.laboratoryInvestigation.result.name),
-                                                                style: TextStyle(
-                                                                  color: Colors.grey.shade600,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            width: 100,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+
+
+                                                    ],
                                                   ),
 
                                                   SizedBox(
                                                     height: 30.0,
                                                   ),
-                            Container(
+
+                                                  Container(
                             width: double.infinity,
                             padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                             child: RaisedButton(
