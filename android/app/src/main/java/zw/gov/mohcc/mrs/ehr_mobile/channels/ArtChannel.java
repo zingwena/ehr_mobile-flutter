@@ -129,7 +129,7 @@ public class ArtChannel {
                         if (methodCall.method.equals("getArtSymptom")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
-                                result.success(artService.getArtSymptoms(arguments));
+                                result.success(gson.toJson(artService.getArtSymptoms(arguments)));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
@@ -141,6 +141,60 @@ public class ArtChannel {
                             try {
                                 ArtSymptom artSymptom = gson.fromJson(arguments, ArtSymptom.class);
                                 artService.saveArtSymptom(artSymptom);
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getFamilyPlanningStatus")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.familyPlanningStatusDao().findAll()));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getFunctionalStatus")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.functionalStatusDao().findAll()));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getLactatingStatus")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.lactatingStatusDao().findAll()));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getArtVisitType")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.artVisitTypeDao().findAll()));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getArtVisitStatus")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.artVisitStatusDao().findAll()));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getFollowUpStatus")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.followUpStatusDao().findAll()));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
