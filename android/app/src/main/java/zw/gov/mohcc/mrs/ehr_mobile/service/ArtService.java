@@ -15,6 +15,7 @@ import java.util.UUID;
 import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ArvStatus;
@@ -22,6 +23,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtVisit;
@@ -37,6 +39,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FamilyPlanningStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FunctionalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptReason;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
@@ -294,6 +298,41 @@ public class ArtService {
         Log.d(TAG, "Current latest who stage in db : " + savedArtVisit);
 
         return ArtVisitDTO.get(savedArtVisit, saveArtWhoStage);
+    }
+
+    public ArtIptDTO getArtIpt(String personId) {
+
+        Log.d(TAG, "Retrieving visitId using personId : " + personId);
+
+        String visitId = visitService.getCurrentVisit(personId);
+
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+
+        ArtIpt artIpt = ehrMobileDatabase.artIptDao().findByVisitId(visitId);
+        Log.d(TAG, "Current IPT record for this visit : " + artIpt);
+        if (artIpt != null) {
+            return ArtIptDTO.get(artIpt);
+        }
+
+        return ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null));
+    }
+
+    public ArtIptDTO saveArtIpt (ArtIptDTO artIptDTO) {
+
+        Log.d(TAG, "Current state of IPT DTO : " + artIptDTO);
+
+        IptReason iptReason = null;
+        if (artIptDTO.getReason() != null) {
+            iptReason = ehrMobileDatabase.iptReasonDao().findById(artIptDTO.getReason());
+        }
+        IptStatus iptStatus = null;
+        if (artIptDTO.getIptStatus() != null) {
+            iptStatus = ehrMobileDatabase.iptStatusDao().findById(artIptDTO.getReason());
+        }
+
+        ehrMobileDatabase.artIptDao().save(artIptDTO.getInstance(artIptDTO, iptStatus, iptReason));
+
+        return ArtIptDTO.get(ehrMobileDatabase.artIptDao().findByVisitId(artIptDTO.getVisitId()));
     }
 
 }

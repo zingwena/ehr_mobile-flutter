@@ -83,7 +83,7 @@ public class HtsService {
         Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
         if (labInvestigation) {
             Log.i(TAG, "Creating laboratory investigation record");
-            String laboratoryInvestigationId = UUID.randomUUID().toString();
+            String laboratoryInvestigationId = personInvestigationId;
             LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, siteService.getFacilityDetails().getCode(), personInvestigationId);
             ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
             Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));

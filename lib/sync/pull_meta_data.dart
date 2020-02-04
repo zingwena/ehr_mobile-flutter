@@ -275,7 +275,7 @@ Future<String> initDb(SqfliteAdapter adapter) async {
   var status;
 
   //await PersonDao(adapter).removeAll();
-  await AuthorityDao(adapter).removeAll();
+  //await AuthorityDao(adapter).removeAll();
   await UserDao(adapter).removeAll();
   await TownDao(adapter).removeAll();
 

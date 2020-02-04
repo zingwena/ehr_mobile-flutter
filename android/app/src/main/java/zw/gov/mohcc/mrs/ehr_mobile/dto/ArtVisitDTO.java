@@ -109,7 +109,7 @@ public class ArtVisitDTO implements Serializable {
     public ArtVisit getArtVisitInstance(ArtVisitDTO dto, FamilyPlanningStatus familyPlanningStatus, FunctionalStatus functionalStatus,
                                         LactatingStatus lactatingStatus, ArtVisitType artVisitType, ArtVisitStatus artVisitStatus) {
 
-        ArtVisit artVisit = new ArtVisit(UUID.randomUUID().toString(), dto.getArtId(), dto.getVisitId());
+        ArtVisit artVisit = new ArtVisit(dto.getVisitId(), dto.getArtId(), dto.getVisitId());
         artVisit.setFamilyPlanningStatus(familyPlanningStatus != null ? new NameCode(familyPlanningStatus.getCode(), familyPlanningStatus.getName()) : null);
         artVisit.setFunctionalStatus(functionalStatus != null ? new NameCode(functionalStatus.getCode(), functionalStatus.getName()) : null);
         artVisit.setLactatingStatus(lactatingStatus != null ? new NameCode(lactatingStatus.getCode(), lactatingStatus.getName()) : null);
@@ -120,7 +120,7 @@ public class ArtVisitDTO implements Serializable {
 
     public ArtWhoStage getArtWhoStageInstance(ArtVisitDTO dto, FollowUpStatus followUpStatus) {
 
-        return new ArtWhoStage(UUID.randomUUID().toString(), dto.getVisitId(), dto.getArtId(),
+        return new ArtWhoStage(dto.getVisitId(), dto.getVisitId(), dto.getArtId(),
                 dto.getStage(), followUpStatus != null ? new NameCode(followUpStatus.getCode(), followUpStatus.getName()) : null);
     }
 
