@@ -142,6 +142,15 @@ public class ArtService {
 
         return combinationRegimenList;
     }
+    public List<ArvCombinationRegimen> getArvCombinationRegimens(String personId) {
+
+        Person person = ehrMobileDatabase.personDao().findPatientById(personId);
+        Age age = Age.getInstance(person);
+        List<ArvCombinationRegimen> combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByAgeGroup( AgeGroup.getPersonAgeGroup(age.getYears()));
+
+        return combinationRegimenList;
+    }
+
 
     public List<Question> findByWorkAreaAndCategoryId(WorkArea workArea, String categoryId) {
 

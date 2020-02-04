@@ -223,7 +223,7 @@ class sidebarstate extends State<Sidebar>{
           ),
           new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: (){
-            if(artdto.date == null ){
+            if(artdto.artNumber == null ){
               print("ART DTO DATE IS  NULL");
 
               Navigator.push(context,MaterialPageRoute(

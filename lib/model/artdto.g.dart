@@ -32,9 +32,7 @@ Artdto _$ArtdtoFromJson(Map<String, dynamic> json) {
     json['linkageNumber'] as String,
     json['hivTestUsed'] as String,
     json['otherInstitution'] as String,
-    json['testReason'] == null
-        ? null
-        : NameCode.fromJson(json['testReason'] as Map<String, dynamic>),
+    json['testReason'] as String,
     json['reTested'] as bool,
     const CustomDateTimeConverter().fromJson(json['dateRetested'] as String),
     json['facility'] == null
@@ -70,7 +68,7 @@ Map<String, dynamic> _$ArtdtoToJson(Artdto instance) => <String, dynamic>{
       'linkageNumber': instance.linkageNumber,
       'hivTestUsed': instance.hivTestUsed,
       'otherInstitution': instance.otherInstitution,
-      'testReason': instance.testReason?.toJson(),
+      'testReason': instance.testReason,
       'reTested': instance.reTested,
       'dateRetested':
           const CustomDateTimeConverter().toJson(instance.dateRetested),

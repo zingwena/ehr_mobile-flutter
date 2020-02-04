@@ -33,7 +33,7 @@ class Artdto {
    String linkageNumber;
    String hivTestUsed;
    String otherInstitution;
-   NameCode testReason;
+   String testReason;
    bool reTested;
    DateTime dateRetested;
    NameCode facility;

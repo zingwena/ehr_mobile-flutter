@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
@@ -1360,26 +1361,24 @@ class SummaryOverviewState extends State<SummaryOverview>
               }),
           new RoundedButton(
             text: "ART",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ArtReg(artdto,widget.person.id, widget.visitId,
-                      widget.person, widget.htsRegistration, widget.htsId)),
-            ),
+            onTap: ()  {
+
+              if(artdto.artNumber == null ){
+                print("ART DTO DATE IS  NULL");
+
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=>  ArtReg(this.artdto, widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                ));
+              } else {
+                print("ART DTO DATE IS NOT NULL");
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context)=> ArtRegOverview(this.artdto, widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+                ));
+              }
+
+            }
           ),
-      /*    new RoundedButton(
-            text: "RELATIONS",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RelationshipListPage(
-                      widget.person,
-                      widget.visitId,
-                      widget.htsId,
-                      widget.htsRegistration,
-                      widget.person.id)),
-            ),
-          ),*/
         ],
       ),
     );

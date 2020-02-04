@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/namecode.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/question.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -53,8 +55,7 @@ class _ArtReg extends State<ArtReg> {
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsHivTestUsedIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsReasonForTestListIdentified;
-
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReasonForTest;
   List _referringListIdentified = ["EID", "HTS", "PMTCT", "STI", "TB_PROGRAM", "VMMC", "VIAC" ];
   List _hivTestUsedIdentified = ["AB", "PCR" ];
   List _reasonForHivTestIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4" ];
@@ -68,6 +69,13 @@ class _ArtReg extends State<ArtReg> {
   bool selfIdentifiedReferringIsValid=false;
   bool selfIdentifiedHIVTestIsValid=false;
   bool selfIdentifiedReasonForTestIsValid=false;
+  String _reason;
+  List reasons = List();
+  List _dropDownListReasons = List();
+  List<Question> _reasonList = List();
+  NameCode testreason;
+  bool otherSite = false;
+  bool healthFacility = false;
 
   @override
   void initState() {
@@ -80,13 +88,14 @@ class _ArtReg extends State<ArtReg> {
     enrollment_date = DateTime.now();
     retest_date = DateTime.now();
     hivConfirmation_date = DateTime.now();
-
-
     getAge(widget.person);
     getFacilityName();
+    getHivReasonForTesting();
     _dropDownMenuItemsReferringListIdentified = getDropDownMenuItemsReferringList();
     _dropDownMenuItemsHivTestUsedIdentified = getDropDownMenuItemsHivTestUsed();
-    _dropDownMenuItemsReasonForTestListIdentified = getDropDownMenuItemsReasonForHivTest();
+   // _dropDownMenuItemsReasonForTestListIdentified = getDropDownMenuItemsReasonForHivTest();
+    _dropDownMenuItemsReasonForTest  =     getDropDownMenuItemsReasonsForHivTest();
+
     super.initState();
   }
 
@@ -104,6 +113,26 @@ class _ArtReg extends State<ArtReg> {
         test_date = DateFormat("yyyy/MM/dd").parse(dateOfTest);
       });
   }
+
+  Future<void> getHivReasonForTesting() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getReasonForhivTest');
+      setState(() {
+        _reason = response;
+        reasons = jsonDecode(_reason);
+        _dropDownListReasons = Question.mapFromJson(reasons);
+        _dropDownListReasons.forEach((e) {
+          _reasonList.add(e);
+        });
+        _dropDownMenuItemsReasonForTest =
+            getDropDownMenuItemsReasonsForHivTest();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
 
 
   Future<Null> _selectDateOfEnrollment(BuildContext context) async {
@@ -195,7 +224,7 @@ class _ArtReg extends State<ArtReg> {
     return items;
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsReasonForHivTest() {
+/*  List<DropdownMenuItem<String>> getDropDownMenuItemsReasonForHivTest() {
     List<DropdownMenuItem<String>> items = new List();
     for (String hivReasonIdentified in _reasonForHivTestIdentified) {
       // here we are creating the drop down menu items, you can customize the item right here
@@ -204,7 +233,19 @@ class _ArtReg extends State<ArtReg> {
           value: hivReasonIdentified, child: Text(hivReasonIdentified)));
     }
     return items;
+  }*/
+
+  List<DropdownMenuItem<String>> getDropDownMenuItemsReasonsForHivTest() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (Question question in _reasonList) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: question.code, child: Text(question.name)));
+    }
+    return items;
   }
+
 
   void _handleTestingSiteChange(int value) {
     setState(() {
@@ -212,9 +253,11 @@ class _ArtReg extends State<ArtReg> {
 
       switch (_testingSite) {
         case 1:
+          healthFacility = true;
           testingSite = "Health Facility";
           break;
         case 2:
+          otherSite = true;
           testingSite = "Other Site";
           break;
       }
@@ -540,7 +583,7 @@ class _ArtReg extends State<ArtReg> {
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
-                                                  Row(
+                                                  otherSite?Row(
                                                     children: <Widget>[
                                                       Expanded(
                                                         child: SizedBox(
@@ -560,7 +603,38 @@ class _ArtReg extends State<ArtReg> {
                                                         ),
                                                       ),
                                                     ],
-                                                  ),
+                                                  ):SizedBox(height: 0.0,),
+
+                                                  healthFacility?Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(5.0)),
+                                                      color: Colors.white,
+                                                      padding: const EdgeInsets.all(0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                        child: DropdownButton(
+                                                          isExpanded:true,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint:Text("Health Facility"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentReferringProgram,
+                                                          items: _dropDownMenuItemsReferringListIdentified,
+                                                          onChanged: changedDropDownItemReferring,
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue, //Color of the border
+                                                        style: BorderStyle.solid, //Style of the border
+                                                        width: 2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {},
+                                                    ),
+                                                  ):SizedBox(height: 0.0,),
+
 
                                                   Container(
                                                     padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
@@ -736,7 +810,7 @@ class _ArtReg extends State<ArtReg> {
                                                           hint:Text("Reason for HIV Test"),
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentReasonForTest,
-                                                          items: _dropDownMenuItemsReasonForTestListIdentified,
+                                                          items: _dropDownMenuItemsReasonForTest,
                                                           onChanged: changedDropDownItemReasonForTest,
                                                         ),
                                                       ),
@@ -871,6 +945,57 @@ class _ArtReg extends State<ArtReg> {
                                                           _formKey
                                                               .currentState
                                                               .save();
+                                                          widget.artdto.personId = widget.personId;
+                                                          widget.artdto.date = test_date;
+                                                          widget.artdto.artNumber = oi_art_number;
+                                                          widget.artdto.enlargedLymphNode = null;
+                                                          widget.artdto.pallor = null;
+                                                          widget.artdto.jaundice = null;
+                                                          widget.artdto.cyanosis = null;
+                                                          widget.artdto.mentalStatus = null;
+                                                          widget.artdto.centralNervousSystem = null;
+                                                          widget.artdto.dateOfHivTest = test_date;
+                                                          widget.artdto.dateEnrolled = enrollment_date;
+                                                          widget.artdto.tracing = null;
+                                                          widget.artdto.followUp = null;
+                                                          widget.artdto.hivStatus = null;
+                                                          widget.artdto.relation = null;
+                                                          widget.artdto.dateOfDisclosure = test_date;
+                                                          widget.artdto.reason = null;
+                                                          widget.artdto.linkageFrom = _currentReferringProgram;
+                                                          widget.artdto.dateHivConfirmed = test_date;
+                                                          widget.artdto.linkageNumber = program_number;
+                                                          widget.artdto.hivTestUsed = _currentHivTestUsed;
+                                                          widget.artdto.otherInstitution = null;
+                                                          widget.artdto.testReason = _currentReasonForTest;
+                                                          widget.artdto.reTested = retestedBeforeArt;
+                                                          widget.artdto.dateRetested = retest_date;
+
+                                                           await artRegistration(widget.artdto);
+                                                          print("ART DTO WAS NULL %%%%%%%%%%%%%%%%%%%%");
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(_artRegistration, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
+
+                                                          artRegistration(
+                                                              widget.artdto);
+                                                          print(
+                                                              "ART DTO WAS NULL %%%%%%%%%%%%%%%%%%%%");
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (
+                                                                      context) =>
+                                                                      ArtRegOverview(
+                                                                          _artRegistration,
+                                                                          widget
+                                                                              .personId,
+                                                                          widget
+                                                                              .visitId,
+                                                                          widget
+                                                                              .person,
+                                                                          widget
+                                                                              .htsRegistration,
+                                                                          widget
+                                                                              .htsId)));
                                                           setState(() {
 
                                                           /*  Artdto(this.personId, this.date, this.artNumber, this.enlargedLymphNode,
@@ -881,38 +1006,8 @@ class _ArtReg extends State<ArtReg> {
                                                                 this.dateHivConfirmed, this.linkageNumber, this.hivTestUsed,
                                                                 this.otherInstitution, this.testReason, this.reTested, this.dateRetested,
                                                                 this.facility);*/
-                                                            widget.artdto.personId = widget.personId;
-                                                            widget.artdto.date = test_date;
-                                                            widget.artdto.artNumber = oi_art_number;
-                                                            widget.artdto.enlargedLymphNode = null;
-                                                            widget.artdto.pallor = null;
-                                                            widget.artdto.jaundice = null;
-                                                            widget.artdto.cyanosis = null;
-                                                            widget.artdto.mentalStatus = null;
-                                                            widget.artdto.centralNervousSystem = null;
-                                                            widget.artdto.dateOfHivTest = test_date;
-                                                            widget.artdto.dateEnrolled = enrollment_date;
-                                                            widget.artdto.tracing = null;
-                                                            widget.artdto.followUp = null;
-                                                            widget.artdto.hivStatus = null;
-                                                            widget.artdto.relation = null;
-                                                            widget.artdto.dateOfDisclosure = test_date;
-                                                            widget.artdto.reason = null;
-                                                            widget.artdto.linkageFrom = _currentReferringProgram;
-                                                            widget.artdto.dateHivConfirmed = test_date;
-                                                            widget.artdto.linkageNumber = program_number;
-                                                            widget.artdto.hivTestUsed = _currentHivTestUsed;
-                                                            widget.artdto.otherInstitution = null;
-                                                            widget.artdto.testReason = null;
-                                                            widget.artdto.reTested = retestedBeforeArt;
-                                                            widget.artdto.dateRetested = retest_date;
 
-                                                            artRegistration(widget.artdto);
-                                                            print("ART DTO WAS NULL %%%%%%%%%%%%%%%%%%%%");
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(_artRegistration, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
-
-
-                                                          });
+                                                          } );
                                                         }
                                                       },
                                                     ),
@@ -1006,9 +1101,10 @@ class _ArtReg extends State<ArtReg> {
     });
   }
 
-  void changedDropDownItemReasonForTest(String selectedHIVTestIdentified) {
+  void changedDropDownItemReasonForTest(String selectedReasonForTest) {
     setState(() {
-      _currentReasonForTest = selectedHIVTestIdentified;
+      _currentReasonForTest = selectedReasonForTest;
+      //testreason.code = _currentReasonForTest;
       selfIdentifiedReasonForTestIsValid=!selfIdentifiedReasonForTestIsValid;
       _selfReasonForHivTestError=null;
     });

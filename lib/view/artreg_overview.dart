@@ -400,7 +400,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.testReason.name)),
+                                                                        widget.artRegistration.testReason)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Reason for HIV Test',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),

@@ -571,7 +571,7 @@ class OverviewState extends State<Overview> {
           ),
 
       new RoundedButton(text: "ART", onTap: () {
-        if(artReg == null ){
+        if(artdto.artNumber == null ){
           print('nnnnnn artreg null ');
           Navigator.push(context,MaterialPageRoute(
               builder: (context)=>  ArtReg(this.artdto, widget.patient.id, visitId, widget.patient, htsRegistration, htsId)
@@ -600,15 +600,7 @@ class OverviewState extends State<Overview> {
       ),
     );
   }
-Widget _sidemenu(){
-    return new Drawer(
-      child: ListView(
-        children: <Widget>[
 
-        ],
-      ),
-    );
-}
 
   Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
     String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;
