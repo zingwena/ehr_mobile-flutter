@@ -407,7 +407,7 @@ class _Hts_Result  extends State<Hts_Result > {
                                                                 controller: TextEditingController(
                                                                     text: final_result),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Sample',
+                                                                  labelText: 'Final Result',
                                                                   // icon: Icon(Icons.add_box, color: Colors.blue),
                                                                 ),
 
