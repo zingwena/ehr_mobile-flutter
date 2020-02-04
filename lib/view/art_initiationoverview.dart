@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/art_visit.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -396,11 +397,11 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                     )),
           ),*/
           ),
-          new RoundedButton(text: "Close", onTap: () =>     Navigator.push(
+          new RoundedButton(text: "Art Visit", onTap: () =>     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    SearchPatient()),
+                    ArtVisit()),
           ),
           ),
 
