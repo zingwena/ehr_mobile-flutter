@@ -22,4 +22,7 @@ public interface IptStatusDao {
 
     @Query("SELECT * FROM IptStatus ORDER BY name DESC")
     List<IptStatus> findAll();
+
+    @Query("SELECT * FROM IptStatus Where code=:code")
+    IptStatus findById(String code);
 }
