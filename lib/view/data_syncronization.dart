@@ -252,6 +252,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
           "Accept": "application/json",
         },
         body: body).timeout(Duration(seconds: 5),onTimeout:() {
+          progressDialog.hide();
           throw Exception('Failed to connect to server');
           //return resp;
     }).catchError((value){
@@ -265,11 +266,9 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       await storeString(SERVER_IP, ehr_url);
       log.i("token-------${token.id_token}");
 
-
-
-      //String result =
-          //await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
-      //log.i("RESULT-------${result.toString()}");
+      String result =
+          await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
+      log.i("RESULT-------${result.toString()}");
       var pull=await pullMetaData(progressDialog,'$url/api',token.id_token);
       print("Response =========Meta Data========$pull");
       pull=await pullPatientData(progressDialog).catchError((error){
