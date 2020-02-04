@@ -17,6 +17,7 @@ public class ArtVisit extends BaseEntity {
 
     @NonNull
     private String artId;
+    @NonNull
     private String visitId;
     @Embedded(prefix = "visitType_")
     private NameCode visitType;
