@@ -1,48 +1,30 @@
-package zw.gov.mohcc.mrs.ehr_mobile.model.art;
+package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.annotation.NonNull;
-import androidx.room.Embedded;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WhoStage;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtVisit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
-public class ArtVisit extends BaseEntity {
+public class ArtVisitDTO implements Serializable {
 
     @NonNull
     private String artId;
     @NonNull
     private String visitId;
-    @Embedded(prefix = "visitType_")
     private NameCode visitType;
-    @Embedded(prefix = "functionalStatus_")
     private NameCode functionalStatus;
-    @Embedded(prefix = "visitStatus_")
     private NameCode visitStatus;
-    @TypeConverters(DateConverter.class)
-    private Date ancFirstBookingDate;
-    @Embedded(prefix = "lactatingStatus_")
     private NameCode lactatingStatus;
-    @Embedded(prefix = "familyPlanningStatus_")
     private NameCode familyPlanningStatus;
-    @Embedded(prefix = "tbStatus_")
-    private NameCode tbStatus;
-
-    public ArtVisit() {
-    }
-
-    @Ignore
-    public ArtVisit(@NonNull String id, @NonNull String artId, String visitId) {
-        super(id);
-        this.artId = artId;
-        this.visitId = visitId;
-    }
+    @NonNull
+    private WhoStage stage;
+    private NameCode followUpStatus;
 
     @NonNull
     public String getArtId() {
@@ -53,11 +35,12 @@ public class ArtVisit extends BaseEntity {
         this.artId = artId;
     }
 
+    @NonNull
     public String getVisitId() {
         return visitId;
     }
 
-    public void setVisitId(String visitId) {
+    public void setVisitId(@NonNull String visitId) {
         this.visitId = visitId;
     }
 
@@ -85,14 +68,6 @@ public class ArtVisit extends BaseEntity {
         this.visitStatus = visitStatus;
     }
 
-    public Date getAncFirstBookingDate() {
-        return ancFirstBookingDate;
-    }
-
-    public void setAncFirstBookingDate(Date ancFirstBookingDate) {
-        this.ancFirstBookingDate = ancFirstBookingDate;
-    }
-
     public NameCode getLactatingStatus() {
         return lactatingStatus;
     }
@@ -109,26 +84,52 @@ public class ArtVisit extends BaseEntity {
         this.familyPlanningStatus = familyPlanningStatus;
     }
 
-    public NameCode getTbStatus() {
-        return tbStatus;
+    @NonNull
+    public WhoStage getStage() {
+        return stage;
     }
 
-    public void setTbStatus(NameCode tbStatus) {
-        this.tbStatus = tbStatus;
+    public void setStage(@NonNull WhoStage stage) {
+        this.stage = stage;
+    }
+
+    public NameCode getFollowUpStatus() {
+        return followUpStatus;
+    }
+
+    public void setFollowUpStatus(NameCode followUpStatus) {
+        this.followUpStatus = followUpStatus;
+    }
+
+    public ArtVisit getArtVisitInstance(ArtVisitDTO dto) {
+
+        ArtVisit artVisit = new ArtVisit(UUID.randomUUID().toString(), dto.getArtId(), dto.getVisitId());
+        artVisit.setFamilyPlanningStatus(dto.getFamilyPlanningStatus());
+        artVisit.setFunctionalStatus(dto.getFunctionalStatus());
+        artVisit.setLactatingStatus(dto.getLactatingStatus());
+        artVisit.setVisitType(dto.getVisitType());
+        artVisit.setVisitStatus(dto.getVisitStatus());
+        return artVisit;
+    }
+
+    public ArtWhoStage getArtWhoStageInstance(ArtVisitDTO dto) {
+
+        return new ArtWhoStage(UUID.randomUUID().toString(), dto.getVisitId(), dto.getArtId(),
+                dto.getStage(), dto.getFollowUpStatus());
     }
 
     @Override
     public String toString() {
-        return "ArtVisit{" +
+        return "ArtVisitDTO{" +
                 "artId='" + artId + '\'' +
                 ", visitId='" + visitId + '\'' +
                 ", visitType=" + visitType +
                 ", functionalStatus=" + functionalStatus +
                 ", visitStatus=" + visitStatus +
-                ", ancFirstBookingDate=" + ancFirstBookingDate +
                 ", lactatingStatus=" + lactatingStatus +
                 ", familyPlanningStatus=" + familyPlanningStatus +
-                ", tbStatus=" + tbStatus +
+                ", stage=" + stage +
+                ", followUpStatus=" + followUpStatus +
                 '}';
     }
 }

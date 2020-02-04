@@ -42,6 +42,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtVisit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.IndexContact;
@@ -107,8 +109,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtLinkageFromDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtSymptomDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtVisitTypeDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtWhoStageDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArvCombinationRegimenDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.AuthoritiesDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.CountryDao;
@@ -192,7 +196,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         FacilityQueue.class, FacilityWard.class, PatientQueue.class, PatientWard.class, SiteSetting.class,
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
-        ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class}, version = 9, exportSchema = false)
+        ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class,
+        ArtVisit.class, ArtWhoStage.class}, version = 9, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -356,4 +361,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract TbScreeningDao tbScreeningDao();
 
     public abstract ArtSymptomDao artSymptomDao();
+
+    public abstract ArtVisitDao artVisitDao();
+
+    public abstract ArtWhoStageDao artWhoStageDao();
 }
