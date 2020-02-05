@@ -22,10 +22,11 @@ class ArtVisit{
   String familyPlanningStatus;
   String tbStatus;
   String stage;
+  String followUpStatus;
 
 
   ArtVisit(String id, String artId, String visitId, String visitType, String functionalStatus, String visitStatus,
-      DateTime ancFirstBookingDate, String lactatingStatus, String familyPlanningStatus, String tbStatus, stage ){
+      DateTime ancFirstBookingDate, String lactatingStatus, String familyPlanningStatus, String tbStatus,  String stage , String followUpStatus){
 
     this.id = id;
     this.artId = artId;
@@ -36,6 +37,7 @@ class ArtVisit{
     this.ancFirstBookingDate = ancFirstBookingDate;
     this.lactatingStatus = lactatingStatus;
     this.familyPlanningStatus = familyPlanningStatus;
+    this.followUpStatus = followUpStatus;
     this.tbStatus = tbStatus;
     this.stage = stage;
   }
