@@ -42,6 +42,11 @@ public class TbScreening extends BaseEntity {
         this.visitId = visitId;
     }
 
+    @Ignore
+    public TbScreening(String visitId) {
+        this.visitId = visitId;
+    }
+
     public String getVisitId() {
         return visitId;
     }

@@ -53,6 +53,20 @@ public class ArtChannel {
                             }
 
                         }
+                        if (methodCall.method.equals("getArt")) {
+                            Log.i(TAG, "person id sent from flutter "+ arguments );
+                            try {
+                                ArtDTO  artdto = artService.getArt(arguments);
+                                String art = gson.toJson(artdto);
+                                result.success(art);
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+
+                            }
+
+                        }
 
                         if (methodCall.method.equals("saveArtInitiation")) {
                             try {

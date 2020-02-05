@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/tbscreening.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -20,14 +21,13 @@ import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 //import 'edit_demographics.dart';
 
-class TbScreening extends StatefulWidget {
+class TbScreeningView extends StatefulWidget {
   String personId;
   String visitId;
   Person person;
   HtsRegistration htsRegistration;
-
   String htsId;
-  TbScreening();
+  TbScreeningView(this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
 
   @override
@@ -36,7 +36,7 @@ class TbScreening extends StatefulWidget {
   }
 }
 
-class _TbScreening extends State<TbScreening> {
+class _TbScreening extends State<TbScreeningView> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   static final MethodChannel addPatient =
@@ -49,6 +49,8 @@ class _TbScreening extends State<TbScreening> {
   DateTime enrollment_date, test_date, retest_date, hivConfirmation_date;
 
   Age age;
+  TbScreening tbScreeningobj;
+  TbScreening tbscreeningResponse;
 
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsHivTestUsedIdentified;
@@ -84,6 +86,8 @@ class _TbScreening extends State<TbScreening> {
 
     getAge(widget.person);
     getFacilityName();
+    getTbScreening(widget.personId);
+
     super.initState();
   }
 
@@ -101,6 +105,20 @@ class _TbScreening extends State<TbScreening> {
     }
   }
 
+  Future<void>getTbScreening(String personId)async{
+    String response;
+    try{
+      response = await artChannel.invokeMethod('getTbScreening', personId);
+      setState(() {
+        tbScreeningobj = TbScreening.fromJson(jsonDecode(response));
+        print("THIS IS THE TB SCREENING  RETRIEVED"+ tbScreeningobj.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get Tb Screening name method"+e);
+
+    }
+  }
   Future<void>getAge(Person person)async{
     String response;
     try{
@@ -125,10 +143,10 @@ class _TbScreening extends State<TbScreening> {
 
       switch (_coughing) {
         case 1:
-          coughing = "Yes";
+          coughingOption = true;
           break;
         case 2:
-          coughing = "No";
+          coughingOption = false ;
           break;
       }
     });
@@ -140,10 +158,10 @@ class _TbScreening extends State<TbScreening> {
 
       switch (_fever) {
         case 1:
-          fever = "Yes";
+          feverOption = true;
           break;
         case 2:
-          fever = "No";
+          feverOption = false;
           break;
       }
     });
@@ -155,10 +173,10 @@ class _TbScreening extends State<TbScreening> {
 
       switch (_nightSweats) {
         case 1:
-          nightSweats = "Yes";
+          nightSweatsOption = true;
           break;
         case 2:
-          nightSweats= "No";
+          nightSweatsOption= false;
           break;
       }
     });
@@ -170,10 +188,10 @@ class _TbScreening extends State<TbScreening> {
 
       switch (_weightLoss) {
         case 1:
-          weightLoss = "Yes";
+          weightLossOption = true;
           break;
         case 2:
-          weightLoss = "No";
+          weightLossOption = false;
           break;
       }
     });
@@ -220,50 +238,6 @@ class _TbScreening extends State<TbScreening> {
                     child: Text("TB Screening", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                 /* Container(
-                      child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_outline, size: 25.0, color: Colors.white,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.date_range, size: 25.0, color: Colors.white,),
-                            ),
-                              Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person, size: 25.0, color: Colors.white,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.verified_user, size: 25.0, color: Colors.white,),
-                            ),
-                          ])
-                  ), */
-                  //_buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -454,8 +428,6 @@ class _TbScreening extends State<TbScreening> {
                                                     ),
                                                   ),
 
-
-
                                                   SizedBox(
                                                     height: 35.0,
                                                   ),
@@ -478,9 +450,19 @@ class _TbScreening extends State<TbScreening> {
                                                             color: Colors.white,
                                                             fontWeight: FontWeight.w500),
                                                       ),
-                                                      onPressed: () => Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(builder: (context) => SearchPatient()), ),
+                                                      onPressed: () async {
+                                                        tbScreeningobj.visitId = widget.visitId;
+                                                        tbScreeningobj.weightLoss = weightLossOption;
+                                                        tbScreeningobj.nightSweats = nightSweatsOption;
+                                                        tbScreeningobj.fever = feverOption;
+                                                        tbScreeningobj.coughing = coughingOption;
+
+                                                        await saveTbScreening(tbScreeningobj);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(builder: (context) => SearchPatient()), );
+
+                                                        }
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -512,4 +494,23 @@ class _TbScreening extends State<TbScreening> {
     );
   }
 
+
+
+  Future<void> saveTbScreening(TbScreening tbscreening) async {
+    var tb_screening_response;
+    try {
+      print('pppppppppppppppppppppppppppppppppppp tb screening to be saved '+ tb_screening_response.toString());
+
+      tb_screening_response = await artChannel.invokeMethod('saveTbScreening', jsonEncode(tbscreening));
+      print('pppppppppppppppppppppppppppppppppppp tb screening response response'+ tb_screening_response);
+      setState(() {
+        tbscreeningResponse = TbScreening.fromJson(jsonDecode(tb_screening_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF'+ tbscreeningResponse.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit save method  $e');
+    }
+
+  }
 }
