@@ -121,6 +121,7 @@ class _ArtVisit extends State<ArtVisitView> {
 
   @override
   void initState() {
+    print("HHHHHHHHHHHHHHh here is the vist id"+ widget.visitId);
     getArtVist(widget.personId);
    getVisitTypes();
    getFunctionalStatus();
@@ -765,7 +766,6 @@ class _ArtVisit extends State<ArtVisitView> {
 
                                                           if (_formValid) {
                                                             _formKey.currentState.save();
-                                                             _artVisit.visitId = widget.visitId;
                                                              _artVisit.visitType = _currentVisitType;
                                                              _artVisit.functionalStatus = _currentFunctionalStatus;
                                                              _artVisit.visitStatus = _currentVisitStatus;
@@ -774,6 +774,7 @@ class _ArtVisit extends State<ArtVisitView> {
                                                              _artVisit.familyPlanningStatus = _currentFamilyPlanningStatus;
                                                              _artVisit.tbStatus = '';
                                                              _artVisit.stage = clinicalStage;
+                                                             _artVisit.followUpStatus = _currentFollowUpStatus;
 
 
                                                              await saveArtVist(_artVisit);
@@ -849,7 +850,7 @@ class _ArtVisit extends State<ArtVisitView> {
       print('pppppppppppppppppppppppppppppppppppp art response'+ art_visit_response);
       setState(() {
         _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artVisit.toString());
+        print('FFFFFFFFFFFFFFFFFFFFFFF art visit response at first'+ _artVisit.toString());
       });
 
     } catch (e) {

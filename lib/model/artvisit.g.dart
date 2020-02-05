@@ -20,6 +20,8 @@ ArtVisit _$ArtVisitFromJson(Map<String, dynamic> json) {
     json['familyPlanningStatus'] as String,
     json['tbStatus'] as String,
     json['stage'] as String,
+    json['followUpStatus'] as String,
+
 
   );
 }
@@ -36,5 +38,6 @@ Map<String, dynamic> _$ArtVisitToJson(ArtVisit instance) => <String, dynamic>{
       'lactatingStatus': instance.lactatingStatus,
       'familyPlanningStatus': instance.familyPlanningStatus,
       'tbStatus': instance.tbStatus,
-   'stage': instance.stage
+      'stage': instance.stage,
+      'followUpStatus': instance.followUpStatus
     };
