@@ -12,6 +12,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
@@ -188,6 +189,24 @@ public class ArtChannel {
                                 e.printStackTrace();
                             }
                         }
+                        if (methodCall.method.equals("getIptReason")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.iptReasonDao().findAll()));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getIptStatus")) {
+                            try {
+                                result.success(gson.toJson(ehrMobileDatabase.iptStatusDao().findAll()));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
                         if (methodCall.method.equals("getArtVisit")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
@@ -203,6 +222,27 @@ public class ArtChannel {
                             try {
                                 ArtVisitDTO artVisitDTO = gson.fromJson(arguments, ArtVisitDTO.class);
                                 result.success(gson.toJson(artService.saveArtVisit(artVisitDTO)));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getArtIpt")) {
+                            Log.i(TAG, "PersonId String object from flutter " + arguments);
+                            try {
+                                result.success(gson.toJson(artService.getArtIpt(arguments)));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("saveArtIpt")) {
+                            Log.i(TAG, "ArtIPT object from flutter " + arguments);
+                            try {
+                                ArtIptDTO artIptDTO = gson.fromJson(arguments, ArtIptDTO.class);
+                                result.success(gson.toJson(artService.saveArtIpt(artIptDTO)));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
