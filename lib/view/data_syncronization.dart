@@ -265,15 +265,12 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       await storeString(AUTH_TOKEN, token.id_token);
       await storeString(SERVER_IP, ehr_url);
       log.i("token-------${token.id_token}");
-
       String result =
           await platform.invokeMethod("DataSync", [ehr_url, token.id_token]);
       log.i("RESULT-------${result.toString()}");
       var pull=await pullMetaData(progressDialog,'$url/api',token.id_token);
       print("Response =========Meta Data========$pull");
-      pull=await pullPatientData(progressDialog).catchError((error){
-        log.e(error);
-      });
+      pull=await pullPatientData(progressDialog);
       print("Response =========Patient Data========$pull");
     } else {
       print(response.body);
