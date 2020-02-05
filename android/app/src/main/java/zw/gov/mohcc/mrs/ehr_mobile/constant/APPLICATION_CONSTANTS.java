@@ -12,5 +12,7 @@ public interface APPLICATION_CONSTANTS {
 
     String POSITIVE_HIV_RESULT = "41d3c228-fd7d-11e6-9840-000c29c7ff5e";
 
-    String ART_CATEGORY_ID = "37";
+    String ART_SYMPTOM_CATEGORY_ID = "37";
+
+    String REASON_FOR_HIV_TEST_CATEGORY_ID = "37";
 }

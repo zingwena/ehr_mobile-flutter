@@ -37,19 +37,19 @@ public class HtsService {
 
     private final String TAG = "Hts Service";
     private EhrMobileDatabase ehrMobileDatabase;
-    private VisitService visitService;
+    private AppWideService appWideService;
     private SiteService siteService;
 
-    public HtsService(EhrMobileDatabase ehrMobileDatabase, VisitService visitService) {
+    public HtsService(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
-        this.visitService = visitService;
+        this.appWideService = appWideService;
         this.siteService = new SiteService(ehrMobileDatabase);
     }
 
     @Transaction
     public String createHts(HtsRegDTO dto) {
 
-        String visitId = visitService.getCurrentVisit(dto.getPersonId());
+        String visitId = appWideService.getCurrentVisit(dto.getPersonId());
         Log.i(TAG, "Retrieving or creating current visit : " + visitId);
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
@@ -66,7 +66,7 @@ public class HtsService {
     public String createInvestigation(InvestigationDTO dto, boolean labInvestigation) {
 
         if (StringUtils.isBlank(dto.getVisitId())) {
-            String visitId = visitService.getCurrentVisit(dto.getPersonId());
+            String visitId = appWideService.getCurrentVisit(dto.getPersonId());
             Log.i(TAG, "Retrieving or creating current visit : " + visitId);
         }
 
@@ -103,7 +103,7 @@ public class HtsService {
     }
 
     public Hts getCurrentHts(String personId) {
-        Visit visit = visitService.getVisit(personId);
+        Visit visit = appWideService.getVisit(personId);
         // check if patient has current hts record
         if (visit != null) {
             return ehrMobileDatabase.htsDao().findCurrentHts(visit.getId());

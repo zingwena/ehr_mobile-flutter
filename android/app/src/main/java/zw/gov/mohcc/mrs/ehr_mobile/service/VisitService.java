@@ -37,11 +37,13 @@ public class VisitService {
     private EhrMobileDatabase ehrMobileDatabase;
     private SiteService siteService;
     private ArtService artService;
+    private AppWideService appWideService;
 
-    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, ArtService artService) {
+    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, ArtService artService, AppWideService appWideService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.siteService = siteService;
         this.artService = artService;
+        this.appWideService = appWideService;
     }
 
     public List<FacilityQueue> getFacilityQueues() {
@@ -52,36 +54,6 @@ public class VisitService {
     public List<FacilityWard> getFacilityWards() {
 
         return ehrMobileDatabase.facilityWardDao().findAll();
-    }
-
-    public PatientQueue getPatientQueue(String personId) {
-        Visit visit = getVisit(personId);
-        if (visit == null) {
-            return null;
-        }
-        return ehrMobileDatabase.patientQueueDao().findByVisitId(visit.getId());
-    }
-
-    public PatientWard getPatientWard(String personId) {
-        Visit visit = getVisit(personId);
-        if (visit == null) {
-            return null;
-        }
-        return ehrMobileDatabase.patientWardDao().findByVisitId(visit.getId());
-    }
-
-    public Visit getVisit(String personId) {
-
-        return ehrMobileDatabase.visitDao().findByPersonIdAndDischargedIsNull(personId);
-    }
-
-    public String getCurrentVisit(String personId) {
-
-        Visit visit = getVisit(personId);
-        if (visit != null) {
-            return visit.getId();
-        }
-        return null;
     }
 
     public void dischargePatient(String visitId, Date dischargedDate) {
@@ -165,7 +137,7 @@ public class VisitService {
 
         Log.d(TAG, "Changing patient queue " + dto);
         // just go ahead and update current patient queue
-        Visit visit = getVisit(dto.getPersonId());
+        Visit visit = appWideService.getVisit(dto.getPersonId());
         if (visit == null) {
             Log.d(TAG, "Patient must have an active visit at this stage");
             throw new IllegalStateException("Patient is expected to have an active visit at this stage : " + visit);
@@ -184,7 +156,7 @@ public class VisitService {
 
         Log.d(TAG, "Changing patient ward " + dto);
         // just go ahead and update current patient ward
-        Visit visit = getVisit(dto.getPersonId());
+        Visit visit = appWideService.getVisit(dto.getPersonId());
         if (visit == null) {
             Log.d(TAG, "Patient must have an active visit at this stage");
             throw new IllegalStateException("Patient is expected to have an active visit at this stage : " + visit);

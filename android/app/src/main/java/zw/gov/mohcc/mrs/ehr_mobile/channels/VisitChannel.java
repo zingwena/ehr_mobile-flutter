@@ -13,12 +13,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSummaryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.service.AppWideService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 
 public class VisitChannel {
     private final static String TAG = "Main Activity";
 
-    public VisitChannel(FlutterView flutterView, String channelName, EhrMobileDatabase ehrMobileDatabase, VisitService visitService) {
+    public VisitChannel(FlutterView flutterView, String channelName, AppWideService appWideService, VisitService visitService) {
         new MethodChannel(flutterView, channelName).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
             @Override
             public void onMethodCall(MethodCall call, MethodChannel.Result result1) {
@@ -39,7 +40,7 @@ public class VisitChannel {
                     result1.success(queue_id);
                 }
                 if(call.method.equals("getPatientQueue")){
-                    PatientQueue patientQueue = visitService.getPatientQueue(arguments);
+                    PatientQueue patientQueue = appWideService.getPatientQueue(arguments);
                     String queue_response = gson.toJson(patientQueue);
                     result1.success(queue_response);
                 }
