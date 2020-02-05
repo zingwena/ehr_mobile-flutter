@@ -248,40 +248,6 @@ class _ArtStatus extends State<ArtStatus> {
                                                   ),
 
                                                   Container(
-                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
-                                                    width: double.infinity,
-                                                    child: OutlineButton(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(5.0)),
-                                                      color: Colors.white,
-                                                      padding: const EdgeInsets.all(0.0),
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                        child: DropdownButton(
-                                                          isExpanded:true,
-                                                          icon: Icon(Icons.keyboard_arrow_down),
-                                                          hint:Text("ARV Status"),
-                                                          iconEnabledColor: Colors.black,
-                                                          value: _currentArvStatus,
-                                                          items: _dropDownMenuItemsArvStatusIdentified,
-                                                          onChanged: changedDropDownItemArvStatus,
-                                                        ),
-                                                      ),
-                                                      borderSide: BorderSide(
-                                                        color: Colors.blue, //Color of the border
-                                                        style: BorderStyle.solid, //Style of the border
-                                                        width: 2.0, //width of the border
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
-                                                  ),
-
-                                                  SizedBox(
-                                                    height: 10.0,
-                                                  ),
-
-                                                  Container(
                                                     width: double.infinity,
                                                     padding:
                                                     EdgeInsets.symmetric(
@@ -308,6 +274,10 @@ class _ArtStatus extends State<ArtStatus> {
                                                         ),
                                                       ],
                                                     ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
                                                   ),
 
                                                   Container(
@@ -371,6 +341,40 @@ class _ArtStatus extends State<ArtStatus> {
                                                         ),
 
                                                       ],
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(5.0)),
+                                                      color: Colors.white,
+                                                      padding: const EdgeInsets.all(0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                        child: DropdownButton(
+                                                          isExpanded:true,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint:Text("ARV Status"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentArvStatus,
+                                                          items: _dropDownMenuItemsArvStatusIdentified,
+                                                          onChanged: changedDropDownItemArvStatus,
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue, //Color of the border
+                                                        style: BorderStyle.solid, //Style of the border
+                                                        width: 2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {},
                                                     ),
                                                   ),
 
@@ -488,25 +492,6 @@ class _ArtStatus extends State<ArtStatus> {
       ),
     );
   } */
-
-  Future<void> artRegistration(ArtRegistration artRegistration) async {
-    String art_registration_response;
-    try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod');
-
-      art_registration_response = await artChannel.invokeMethod(
-          'saveArtRegistration', jsonEncode(artRegistration.toJson()));
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
-      setState(() {
-        _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
-      });
-
-    } catch (e) {
-      print('--------------something went wrong  $e');
-    }
-
-  }
 
   void changedDropDownItemRegimen(String selectedArvRegimenIdentified) {
     setState(() {
