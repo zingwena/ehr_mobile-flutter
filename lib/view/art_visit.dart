@@ -2,12 +2,14 @@ import 'dart:convert';
 
 
 import 'package:ehr_mobile/landing_screen.dart';
+import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/artvisitstatus.dart';
 import 'package:ehr_mobile/model/artvisittype.dart';
 import 'package:ehr_mobile/model/country.dart';
 import 'package:ehr_mobile/model/familyplanningstatus.dart';
 import 'package:ehr_mobile/model/followupstatus.dart';
 import 'package:ehr_mobile/model/functionalstatus.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/lactatingstatus.dart';
 import 'package:ehr_mobile/model/person.dart';
 
@@ -15,14 +17,22 @@ import 'package:ehr_mobile/view/patient_address.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'art_Visit_Overview.dart';
 //import 'patient_address.dart';
 //import 'rounded_button.dart';
 //import 'package:ehr_mobile/login_screen.dart';
 
-class ArtVisit extends StatefulWidget {
+class ArtVisitView extends StatefulWidget {
+
+  final Person person;
+  final String personId;
+  final String visitId;
+  final String htsId;
+  final HtsRegistration htsRegistration;
 
 
-  ArtVisit();
+  ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
 
   @override
   State createState() {
@@ -30,7 +40,7 @@ class ArtVisit extends StatefulWidget {
   }
 }
 
-class _ArtVisit extends State<ArtVisit> {
+class _ArtVisit extends State<ArtVisitView> {
   static const platform = MethodChannel('example.channel.dev/people');
   static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
@@ -103,11 +113,15 @@ class _ArtVisit extends State<ArtVisit> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsLactatingStatuses;
   List<LactatingStatus> _lactatingStatusList = List();
 
+  ArtVisit _artVisit;
+  ArtVisit _artVisitResponse;
+
 
   String  _currentVisitType, _currentFunctionalStatus, _currentFollowUpStatus, _currentVisitStatus, _currentFamilyPlanningStatus, _currentPregnancyStatus;
 
   @override
   void initState() {
+    getArtVist(widget.personId);
    getVisitTypes();
    getFunctionalStatus();
    getFollowUp();
@@ -739,11 +753,11 @@ class _ArtVisit extends State<ArtVisit> {
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: <Widget>[
-                                                            Text('Proceed to Contact Details', style: TextStyle(color: Colors.white),),
+                                                            Text('Save', style: TextStyle(color: Colors.white),),
                                                             Icon(Icons.navigate_next, color: Colors.white, ),
                                                           ],
                                                         ),
-                                                        onPressed: () {
+                                                        onPressed: () async{
                                                           setState(() {
                                                             _formValid = true;
                                                           });
@@ -751,14 +765,25 @@ class _ArtVisit extends State<ArtVisit> {
 
                                                           if (_formValid) {
                                                             _formKey.currentState.save();
+                                                             _artVisit.visitId = widget.visitId;
+                                                             _artVisit.visitType = _currentVisitType;
+                                                             _artVisit.functionalStatus = _currentFunctionalStatus;
+                                                             _artVisit.visitStatus = _currentVisitStatus;
+                                                             _artVisit.ancFirstBookingDate = DateTime.now();
+                                                             _artVisit.lactatingStatus = _currentPregnancyStatus;
+                                                             _artVisit.familyPlanningStatus = _currentFamilyPlanningStatus;
+                                                             _artVisit.tbStatus = '';
+                                                             _artVisit.stage = clinicalStage;
 
 
+                                                             await saveArtVist(_artVisit);
 
                                                             Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        LandingScreen()));
+                                                                        ArtVisitOverview(this._artVisitResponse, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                                                                ));
                                                           }
 
                                                         },
@@ -798,23 +823,40 @@ class _ArtVisit extends State<ArtVisit> {
   }
 
 
- /* Future<void> saveArtVist(ArtVisit artVisit) async {
+  Future<void> saveArtVist(ArtVisit artVisit) async {
     var art_visit_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art visit object '+ artRegistration.toString());
+      print('pppppppppppppppppppppppppppppppppppp art visit object '+ artVisit.toString());
 
-      art_visit_response = await artChannel.invokeMethod('saveArtRegistration', jsonEncode(artRegistration));
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
+      art_visit_response = await artChannel.invokeMethod('saveArtVisit', jsonEncode(artVisit));
+      print('pppppppppppppppppppppppppppppppppppp art response'+ art_visit_response);
       setState(() {
-        _artRegistration = Artdto.fromJson(jsonDecode(art_registration_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
+        _artVisitResponse = ArtVisit.fromJson(jsonDecode(art_visit_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artVisitResponse.toString());
       });
 
     } catch (e) {
-      print('--------------something went wrong in art registration  $e');
+      print('--------------something went wrong in art visit save method  $e');
     }
 
-  }*/
+  }
+
+
+  Future<void> getArtVist(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
+      print('pppppppppppppppppppppppppppppppppppp art response'+ art_visit_response);
+      setState(() {
+        _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artVisit.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
+
+  }
 
   void changedDropDownVisitItems(String selectedVisitType) {
     setState(() {
