@@ -1,23 +1,29 @@
 import 'dart:convert';
-
+import 'package:ehr_mobile/model/artipt.dart';
+import 'package:ehr_mobile/model/functionalstatus.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/namecode.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
+import 'package:ehr_mobile/model/reason.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/landing_screen.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
-class ArtIptStatus extends StatefulWidget {
+class ArtIptStatusView extends StatefulWidget {
 
+  final Person person;
+  final String personId;
+  final String visitId;
+  final String htsId;
+  final HtsRegistration htsRegistration;
 
-
-  ArtIptStatus();
-
+  ArtIptStatusView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
 
   @override
   State createState() {
@@ -25,7 +31,7 @@ class ArtIptStatus extends StatefulWidget {
   }
 }
 
-class _ArtIptStatus extends State<ArtIptStatus> {
+class _ArtIptStatus extends State<ArtIptStatusView> {
   final _formKey = GlobalKey<FormState>();
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
@@ -35,7 +41,23 @@ class _ArtIptStatus extends State<ArtIptStatus> {
   String  _currentIptStatus;
   String  _currentReason;
 
+  String _iptreason;
+  List  iptreasons= List();
+  List _dropDownReasons = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
+  List<Reason> _iptReasonsList = List();
 
+  String _entryPoint;
+  List entryPoints = List();
+  List _dropDownListEntryPoints = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
+  List<NameCode> _entryPointList = List();
+
+  String _iptStatus;
+  List  iptStatuses = List();
+  List _dropDownStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsStatuses;
+  List<NameCode> _iptStatusesList = List();
 
   String line="";
   bool iptStatusOptionIsValid=false;
@@ -43,8 +65,13 @@ class _ArtIptStatus extends State<ArtIptStatus> {
   String _reasonError="Select Reason";
   String _iptStatusError="Select IPT Status";
 
-  int _iptStatus = 0;
-  bool iptStatusOption = false;
+  String _functionalStatus;
+  List functionalStatuses = List();
+  List _dropDownFunctionalStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsFunctionalStatuses;
+  List<FunctionalStatus> _functionalStatusList = List();
+
+
 
   int _reason = 0;
   bool reasonOption = false;
@@ -53,21 +80,22 @@ class _ArtIptStatus extends State<ArtIptStatus> {
   List _reasonListIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4", "Reason 5" ];
 
   Age age;
+  ArtIpt _artIpt;
+  ArtIpt artIptResponse;
 
   String facility_name;
 
-  List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsIptStatusIdentified;
+
 
   @override
   void initState() {
 
     //getAge(widget.person);
     getFacilityName();
-
-    _dropDownMenuItemsReasonIdentified = getDropDownMenuItemsReasonList();
-    _dropDownMenuItemsIptStatusIdentified = getDropDownMenuItemsIptStatusList();
-
+    getArtIpt(widget.personId);
+    getIptReason();
+    getIptStatus();
+    getFunctionalStatus();
     super.initState();
   }
 
@@ -85,6 +113,88 @@ class _ArtIptStatus extends State<ArtIptStatus> {
       debugPrint("Exception thrown in get facility name method"+e);
 
     }
+  }
+
+  Future<void> getFunctionalStatus() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getFunctionalStatus');
+      setState(() {
+        _functionalStatus = response;
+        print("Here is the FUNCTIONAL STATUS STRING RETURNED"+ _iptreason);
+
+        functionalStatuses = jsonDecode(_functionalStatus);
+        print("Here is the IPT FUNCTIONAL STATUS dynamic list RETURNED"+ iptreasons.toString());
+
+        _dropDownFunctionalStatuses = FunctionalStatus.mapFromJson(functionalStatuses);
+        _dropDownFunctionalStatuses.forEach((e) {
+          _functionalStatusList.add(e);
+        });
+
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+
+  Future<void> getIptReason() async {
+    var response;
+    try {
+      response = await artChannel.invokeMethod('getIptReason');
+      setState(() {
+        _iptreason = response;
+        print("Here is the IPT REASON STRING RETURNED"+ _iptreason);
+        iptreasons = jsonDecode(_iptreason);
+        print("Here is the IPT REASON dynamic list RETURNED"+ iptreasons.toString());
+
+        _dropDownReasons = Reason.mapFromJson(iptreasons);
+        print("Here is the IPT REASON list of name code RETURNED"+ _iptreason);
+
+        _dropDownReasons.forEach((e) {
+          _iptReasonsList.add(e);
+        });
+        _dropDownMenuItemsReasons = getDropDownMenuItemsReasonList();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong in getIptReason $e');
+    }
+  }
+
+  Future<void> getIptStatus() async {
+    var response;
+    try {
+      response = await artChannel.invokeMethod('getIptStatus');
+      setState(() {
+        _iptStatus = response;
+        iptStatuses = jsonDecode(_iptStatus);
+        _dropDownStatuses = NameCode.mapFromJson(iptStatuses);
+        _dropDownStatuses.forEach((e) {
+          _iptStatusesList.add(e);
+        });
+        _dropDownMenuItemsStatuses =
+            getDropDownMenuItemsIptStatusList();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  in getIptStatus $e');
+    }
+  }
+
+
+  Future<void> getArtIpt(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtIpt', personId);
+      print('pppppppppppppppppppppppppppppppppppp IPT response'+ art_visit_response);
+      setState(() {
+        _artIpt = ArtIpt.fromJson(jsonDecode(art_visit_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF art IPT  at first'+ _artIpt.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
+
   }
 
   Future<void>getFacilityName()async{
@@ -140,49 +250,6 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                     child: Text("Art IPT Status", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                 /* Container(
-                      child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_outline, size: 25.0, color: Colors.white,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.date_range, size: 25.0, color: Colors.white,),
-                            ),
-                              Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person, size: 25.0, color: Colors.white,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.verified_user, size: 25.0, color: Colors.white,),
-                            ),
-                          ])
-                  ), */
                   _buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     child: new Card(
@@ -229,7 +296,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                                                               hint:Text("IPT Status"),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentIptStatus,
-                                                              items: _dropDownMenuItemsIptStatusIdentified,
+                                                              items: _dropDownMenuItemsStatuses,
                                                               onChanged: changedDropDownItemIptStatus,
                                                             ),
                                                           ),
@@ -263,7 +330,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                                                               hint:Text("Reason"),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentReason,
-                                                              items: _dropDownMenuItemsReasonIdentified,
+                                                              items: _dropDownMenuItemsEntryPoint,
                                                               onChanged: changedDropDownItemReason,
                                                             ),
                                                           ),
@@ -359,22 +426,22 @@ class _ArtIptStatus extends State<ArtIptStatus> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsReasonList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String reasonListIdentified in _reasonListIdentified) {
+    for (NameCode reasonListIdentified in _reasonListIdentified) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: reasonListIdentified, child: Text(reasonListIdentified)));
+          value: reasonListIdentified.code, child: Text(reasonListIdentified.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIptStatusList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String iptStatusListIdentified in _iptStatusListIdentified) {
+    for (NameCode iptStatusListIdentified in _iptStatusListIdentified) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: iptStatusListIdentified, child: Text(iptStatusListIdentified)));
+          value: iptStatusListIdentified.code, child: Text(iptStatusListIdentified.name)));
     }
     return items;
   }

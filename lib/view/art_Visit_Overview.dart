@@ -7,6 +7,7 @@ import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_initiationoverview.dart';
+import 'package:ehr_mobile/view/art_iptStatus.dart';
 
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
@@ -93,6 +94,7 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
 
     }
   }
+
   Future<void>getFacilityName()async{
     String response;
     try{
@@ -441,8 +443,10 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
 
           new RoundedButton(text: "ART Visit ", selected: true),
           new RoundedButton(text: "TB Screening", onTap: (){
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context)=>    TbScreeningView(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+            Navigator.push(context,
+                MaterialPageRoute(
+                builder: (context)=>    ArtIptStatusView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)
+
 
             ));
 

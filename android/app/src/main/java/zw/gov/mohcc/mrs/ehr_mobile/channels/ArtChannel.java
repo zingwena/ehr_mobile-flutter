@@ -223,6 +223,8 @@ public class ArtChannel {
                         }
                         if (methodCall.method.equals("getIptReason")) {
                             try {
+                                Log.i(TAG, "UUUUUUUUUUUU List of Reasons returned"+ehrMobileDatabase.iptReasonDao().findAll().toString());
+
                                 result.success(gson.toJson(ehrMobileDatabase.iptReasonDao().findAll()));
 
                             } catch (Exception e) {
@@ -232,6 +234,7 @@ public class ArtChannel {
                         }
                         if (methodCall.method.equals("getIptStatus")) {
                             try {
+                                Log.i(TAG, "UUUUUUUUUUUU List of Statuses returned"+ehrMobileDatabase.iptStatusDao().findAll().toString());
                                 result.success(gson.toJson(ehrMobileDatabase.iptStatusDao().findAll()));
 
                             } catch (Exception e) {

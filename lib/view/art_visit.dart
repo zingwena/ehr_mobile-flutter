@@ -842,7 +842,6 @@ class _ArtVisit extends State<ArtVisitView> {
 
   }
 
-
   Future<void> getArtVist(String  personId) async {
     var art_visit_response;
     try {
