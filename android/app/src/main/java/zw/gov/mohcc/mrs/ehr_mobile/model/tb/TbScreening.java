@@ -13,24 +13,17 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 @Entity
 public class TbScreening extends BaseEntity {
 
+    @NonNull
     private String visitId;
-
     private boolean presumptive;
-
     private String note;
-
     @TypeConverters(DateConverter.class)
     @NonNull
     private Date time;
-
     private Boolean fever;
-
     private Boolean coughing;
-
     private Boolean weightLoss;
-
     private Boolean nightSweats;
-
     private Boolean bmiUnderSeventeen;
 
     public TbScreening() {
@@ -43,7 +36,7 @@ public class TbScreening extends BaseEntity {
     }
 
     @Ignore
-    public TbScreening(String visitId) {
+    public TbScreening(@NonNull String visitId) {
         this.visitId = visitId;
     }
 
@@ -117,5 +110,20 @@ public class TbScreening extends BaseEntity {
 
     public void setBmiUnderSeventeen(Boolean bmiUnderSeventeen) {
         this.bmiUnderSeventeen = bmiUnderSeventeen;
+    }
+
+    @Override
+    public String toString() {
+        return "TbScreening{" +
+                "visitId='" + visitId + '\'' +
+                ", presumptive=" + presumptive +
+                ", note='" + note + '\'' +
+                ", time=" + time +
+                ", fever=" + fever +
+                ", coughing=" + coughing +
+                ", weightLoss=" + weightLoss +
+                ", nightSweats=" + nightSweats +
+                ", bmiUnderSeventeen=" + bmiUnderSeventeen +
+                '}';
     }
 }
