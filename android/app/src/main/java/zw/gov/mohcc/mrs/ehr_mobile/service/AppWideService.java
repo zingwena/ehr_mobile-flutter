@@ -12,21 +12,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 public class AppWideService {
 
     private EhrMobileDatabase ehrMobileDatabase;
+    private static AppWideService INSTANCE;
 
-    /*
-    private static LazySingleton instance;
-private LazySingleton() {
-}
-public static synchronized LazySingleton getInstance() {
-if( instance == null ) {
-instance = new LazySingleton();
-}
-return instance;
-}
-     */
-
-    public AppWideService(EhrMobileDatabase ehrMobileDatabase) {
+    private AppWideService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+    }
+
+    public static synchronized AppWideService getInstance(EhrMobileDatabase ehrMobileDatabase) {
+
+        if (INSTANCE == null) {
+            return new AppWideService(ehrMobileDatabase);
+        }
+        return INSTANCE;
     }
 
     public Visit getVisit(String personId) {

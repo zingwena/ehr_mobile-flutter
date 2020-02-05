@@ -147,7 +147,7 @@ public class MainActivity extends FlutterActivity {
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
         siteService = new SiteService(ehrMobileDatabase);
-        appWideService = new AppWideService(ehrMobileDatabase);
+        appWideService = AppWideService.getInstance(ehrMobileDatabase);
         artService = new ArtService(ehrMobileDatabase, appWideService);
         visitService = new VisitService(ehrMobileDatabase, siteService, artService, appWideService);
         htsService = new HtsService(ehrMobileDatabase, appWideService);
