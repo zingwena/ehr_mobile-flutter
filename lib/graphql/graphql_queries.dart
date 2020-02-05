@@ -5,8 +5,8 @@ class PersonQuery {
   String getAll(){
     return """ 
         query GetPatientsQuery{
-            
-            people(text: "", page: 0, size: 10000, sort: "") {
+                    
+            people(text: "", page: 0, size: 3, sort: "") {
               content {
                 personId
                 firstname
@@ -66,11 +66,11 @@ class PersonQuery {
                   status
                 }
                 history {
-                  investigations{
+                  investigations {
                     personInvestigationId
                     investigationId
                     date
-                    result{
+                    result {
                       id
                       name
                     }
@@ -85,7 +85,18 @@ class PersonQuery {
                   registeredOnArt
                   cbsNotificationDone
                   screenTbPatient
-                  facility{
+                  temperatures{
+                    readingId
+                    value
+                  }
+                  bloodPressures{
+                    systolic
+                    diastolic
+                  }
+                  weight {
+                    value
+                  }
+                  facility {
                     id
                     name
                   }
@@ -118,6 +129,9 @@ class PersonQuery {
                     recencyInvestigationOrderId
                     clientAlreadyPositive
                     clientAlreadyOnArt
+                    purpose {
+                      id
+                    }
                     laboratoryInvestigation {
                       laboratoryInvestigationId
                       date
@@ -137,9 +151,16 @@ class PersonQuery {
                     reasonForNotIssuingResult {
                       id
                     }
-                    purpose{
-                      id
-                    }
+                  }
+                }
+                art {
+                  artId
+                  artNumber
+                  dateEnrolled
+                  dateOfHivTest
+                  stages{
+                    artStageId
+                    stage
                   }
                 }
               }

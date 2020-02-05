@@ -1,6 +1,7 @@
 
 
 import 'package:ehr_mobile/db/tables/blood_pressure_table.dart';
+import 'package:ehr_mobile/util/util.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'vital_base_dao.dart';
@@ -36,5 +37,22 @@ class BloodPressureDao extends VitalBaseDao{
       values.add(BloodPressureTable.fromJson(map));
     }
     return values;
+  }
+
+  ///Change status to ${RecordStatus.IMPORTED} when flutter enums is stable
+  Future insertFromEhr(Map map,String person,String patientId) async {
+    Insert inserter = new Insert(tableName);
+    inserter.set(personId, person);
+    inserter.set(visitId, patientId);
+    inserter.set(id, Uuid.generateV4());
+    inserter.set(systolic, map['systolic']);
+    inserter.set(diastolic, map['diastolic']);
+    inserter.set(status,'IMPORTED');
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
   }
 }
