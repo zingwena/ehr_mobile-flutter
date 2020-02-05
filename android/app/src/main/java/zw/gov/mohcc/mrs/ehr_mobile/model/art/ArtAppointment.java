@@ -15,6 +15,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 @Entity
 public class ArtAppointment extends BaseEntity {
 
+    /**
+     * all name code meta data are FollowUpReason
+     */
     @NonNull
     private String artId;
     @Embedded(prefix = "reason_")
