@@ -1,21 +1,10 @@
 import 'dart:convert';
-import 'package:ehr_mobile/model/artInitiation.dart';
 
-import 'package:ehr_mobile/model/artregmendto.dart';
-import 'package:ehr_mobile/model/arv_combination_regimen.dart';
-
-import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
-
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
-import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/landing_screen.dart';
-
-import 'package:ehr_mobile/view/art_initiationoverview.dart';
-
-import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 
@@ -43,32 +32,32 @@ class _ArtIptStatus extends State<ArtIptStatus> {
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   String personId;
 
-  String artRegimenId;
+  String  _currentIptStatus;
   String  _currentReason;
-  ArtInitiation initiation;
-  ArtRegimenDto artRegimenDto;
-  bool regimen_selected;
+
+
 
   String line="";
-  bool selfIdentifiedReferringIsValid=false;
-  String _reasonError="Select Referring Program";
+  bool iptStatusOptionIsValid=false;
+  bool reasonOptionIsValid=false;
+  String _reasonError="Select Reason";
+  String _iptStatusError="Select IPT Status";
+
+  int _iptStatus = 0;
+  bool iptStatusOption = false;
 
   int _reason = 0;
   bool reasonOption = false;
 
-  List<ArvCombinationRegimen> _arvCombinationRegimenList = List();
-  String _currentArvCombinationRegimen;
-
+  List _iptStatusListIdentified = ["Status 1", "Status 2", "Status 3", "Status 4", "Status 5" ];
   List _reasonListIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4", "Reason 5" ];
-
-  String _currentArtReason;
 
   Age age;
 
   String facility_name;
 
-
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsIptStatusIdentified;
 
   @override
   void initState() {
@@ -77,24 +66,11 @@ class _ArtIptStatus extends State<ArtIptStatus> {
     getFacilityName();
 
     _dropDownMenuItemsReasonIdentified = getDropDownMenuItemsReasonList();
+    _dropDownMenuItemsIptStatusIdentified = getDropDownMenuItemsIptStatusList();
 
     super.initState();
   }
 
-  void _handleReasonOption (int value) {
-    setState(() {
-      _reason = value;
-
-      switch (_reason) {
-        case 1:
-          reasonOption = true;
-          break;
-        case 2:
-          reasonOption = true;
-          break;
-      }
-    });
-  }
 
   Future<void>getAge(Person person)async{
     String response;
@@ -125,16 +101,6 @@ class _ArtIptStatus extends State<ArtIptStatus> {
     }
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsIdentifiedArvCombinationRegimen() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (ArvCombinationRegimen arvCombinationRegimen in _arvCombinationRegimenList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(
-          value: arvCombinationRegimen.name, child: Text(arvCombinationRegimen.name)));
-    }
-    return items;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -247,37 +213,32 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                                                     children: <Widget>[
 
                                                       Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                         width: double.infinity,
-                                                        padding:
-                                                        EdgeInsets.symmetric( vertical: 16.0, horizontal: 100.0 ),
-                                                        child: Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: SizedBox(
-                                                                child: Padding(
-                                                                  padding:
-                                                                  const EdgeInsets.all(8.0),
-                                                                  child: Text('IPT Status'),
-                                                                ),
-                                                                width: 250,
-                                                              ),
+                                                        child: OutlineButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                          color: Colors.white,
+                                                          padding: const EdgeInsets.all(0.0),
+                                                          child: Container(
+                                                            width: double.infinity,
+                                                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            child: DropdownButton(
+                                                              isExpanded:true,
+                                                              icon: Icon(Icons.keyboard_arrow_down),
+                                                              hint:Text("IPT Status"),
+                                                              iconEnabledColor: Colors.black,
+                                                              value: _currentIptStatus,
+                                                              items: _dropDownMenuItemsIptStatusIdentified,
+                                                              onChanged: changedDropDownItemIptStatus,
                                                             ),
-                                                            Text('Yes'),
-                                                            Radio(
-                                                                value: 1,
-                                                                groupValue: _reason,
-                                                                activeColor:
-                                                                Colors.blue,
-                                                                onChanged:
-                                                                _handleReasonOption),
-                                                            Text('No'),
-                                                            Radio(
-                                                                value: 2,
-                                                                groupValue: _reason,
-                                                                activeColor: Colors.blue,
-                                                                onChanged: _handleReasonOption),
-
-                                                          ],
+                                                          ),
+                                                          borderSide: BorderSide(
+                                                            color: Colors.blue, //Color of the border
+                                                            style: BorderStyle.solid, //Style of the border
+                                                            width: 2.0, //width of the border
+                                                          ),
+                                                          onPressed: () {},
                                                         ),
                                                       ),
 
@@ -319,7 +280,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
 
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
                                                         child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(
@@ -396,9 +357,6 @@ class _ArtIptStatus extends State<ArtIptStatus> {
     );
   }
 
-
-
-
   List<DropdownMenuItem<String>> getDropDownMenuItemsReasonList() {
     List<DropdownMenuItem<String>> items = new List();
     for (String reasonListIdentified in _reasonListIdentified) {
@@ -410,12 +368,32 @@ class _ArtIptStatus extends State<ArtIptStatus> {
     return items;
   }
 
+  List<DropdownMenuItem<String>> getDropDownMenuItemsIptStatusList() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String iptStatusListIdentified in _iptStatusListIdentified) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(DropdownMenuItem(
+          value: iptStatusListIdentified, child: Text(iptStatusListIdentified)));
+    }
+    return items;
+  }
 
-  void changedDropDownItemReason(String selectedReferringProgramIdentified) {
+
+
+  void changedDropDownItemReason (String selectedReferringProgramIdentified) {
     setState(() {
       _currentReason = selectedReferringProgramIdentified;
-      selfIdentifiedReferringIsValid=!selfIdentifiedReferringIsValid;
+     reasonOptionIsValid=!reasonOptionIsValid;
       _reasonError=null;
+    });
+  }
+
+  void changedDropDownItemIptStatus (String selectedReferringProgramIdentified) {
+    setState(() {
+      _currentIptStatus = selectedReferringProgramIdentified;
+      iptStatusOptionIsValid=!iptStatusOptionIsValid;
+      _iptStatusError=null;
     });
   }
 
