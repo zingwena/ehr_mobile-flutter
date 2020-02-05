@@ -237,7 +237,7 @@ public class ArtService {
         ehrMobileDatabase.artSymptomDao().save(artSymptom);
     }
 
-    public ArtVisit getArtVisit(String personId) {
+    public ArtVisitDTO getArtVisit(String personId) {
 
         String visitId = appWideService.getCurrentVisit(personId);
         Log.d(TAG, "Current visit ID : " + visitId);
@@ -247,7 +247,8 @@ public class ArtService {
 
         Log.d(TAG, "Art visit record : " + artVisit);
 
-        return artVisit != null ? artVisit : new ArtVisit(null, art.getId(), visitId);
+        return artVisit != null ? ArtVisitDTO.get(artVisit, null) :
+                ArtVisitDTO.get(new ArtVisit(null, art.getId(), visitId), null);
     }
 
     @Transaction
