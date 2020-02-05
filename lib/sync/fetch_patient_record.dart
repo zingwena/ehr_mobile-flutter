@@ -83,7 +83,7 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
           }
         }catch(e){
           log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
-          //throw e;
+          throw e;
         }
       //await Future.delayed(Duration(milliseconds: 500));
     }
