@@ -451,7 +451,6 @@ class _TbScreening extends State<TbScreeningView> {
                                                             fontWeight: FontWeight.w500),
                                                       ),
                                                       onPressed: () async {
-                                                        tbScreeningobj.visitId = widget.visitId;
                                                         tbScreeningobj.weightLoss = weightLossOption;
                                                         tbScreeningobj.nightSweats = nightSweatsOption;
                                                         tbScreeningobj.fever = feverOption;
