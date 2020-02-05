@@ -2,7 +2,13 @@ import 'dart:convert';
 
 
 import 'package:ehr_mobile/landing_screen.dart';
+import 'package:ehr_mobile/model/artvisitstatus.dart';
+import 'package:ehr_mobile/model/artvisittype.dart';
 import 'package:ehr_mobile/model/country.dart';
+import 'package:ehr_mobile/model/familyplanningstatus.dart';
+import 'package:ehr_mobile/model/followupstatus.dart';
+import 'package:ehr_mobile/model/functionalstatus.dart';
+import 'package:ehr_mobile/model/lactatingstatus.dart';
 import 'package:ehr_mobile/model/person.dart';
 
 import 'package:ehr_mobile/view/patient_address.dart';
@@ -27,8 +33,8 @@ class ArtVisit extends StatefulWidget {
 class _ArtVisit extends State<ArtVisit> {
   static const platform = MethodChannel('example.channel.dev/people');
   static final MethodChannel addPatient= MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
-
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   final _formKey = GlobalKey<FormState>();
 
   List<String> _list;
@@ -55,94 +61,125 @@ class _ArtVisit extends State<ArtVisit> {
   int _clinicalStage = 0;
   String clinicalStage = "";
 
-  List<DropdownMenuItem<String>>_dropDownMenuVisitItemsIdentified, _dropDownMenuFunctionalStatusItemsIdentified, _dropDownMenuFollowUpStatusItemsIdentified, _dropDownMenuVisitStatusItemsIdentified,
-      _dropDownMenuFamilyPlanningStatusItemsIdentified, _dropDownMenuPregnancyStatusItemsIdentified   ;
+  String _visitType;
+  List  visitTypes= List();
+  List _dropDownVisitTypes = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsVisitType;
+  List<ArtVisitType> _artVisitList = List();
+
+  String _functionalStatus;
+  List functionalStatuses = List();
+  List _dropDownFunctionalStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsFunctionalStatuses;
+  List<FunctionalStatus> _functionalStatusList = List();
+
+
+  String _followUpStatus;
+  List followUpStatuses = List();
+  List _dropDownFollowUpStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsFollowUpStatuses;
+  List<FollowUpStatus> _followUpStatusList = List();
+
+
+
+  String _visitStatus;
+  List visitStatuses = List();
+  List _dropDownVisitStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsVisitStatuses;
+  List<ArtVisitStatus> _visitStatusList = List();
+
+
+  String _familyPlanningStatus;
+  List familyPlanningStatuses = List();
+  List _dropDownFamilyPlanningStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsFamilyPlanningStatuses;
+  List<FamilyPlanningStatus> _familyPlanningStatusList = List();
+
+
+
+  String _lactatingstatus;
+  List lactatingstatuses = List();
+  List _dropDownLactatingStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsLactatingStatuses;
+  List<LactatingStatus> _lactatingStatusList = List();
+
 
   String  _currentVisitType, _currentFunctionalStatus, _currentFollowUpStatus, _currentVisitStatus, _currentFamilyPlanningStatus, _currentPregnancyStatus;
 
-  List _visitTypeListIdentified = [ "Visit Type 1", "Visit Type 2", "Visit Type 3", "Visit Type 4", ];
-  List _functionalStatusListIdentified = [ "Functional Status 1", "Functional Status 2", "Functional Status 3", "Functional Status 4", ];
-  List _followUpStatusListIdentified = [ "Follow Up 1", "Follow Up 2", "Follow Up 3", "Follow Up 4", ];
-  List _visitStatusListIdentified = [ "Visit Status 1", "Visit Status 2", "Visit Status 3", "Visit Status 4", ];
-  List _familyPlanningStatusListIdentified = [ "Family Planning State Type 1", "Family Planning State  2", "Family Planning State  3", "Family Planning State  4", ];
-  List _pregnancyStatusListIdentified = [ "Pregnancy Status 1", "Pregnancy Status 2", "Pregnancy Status 3", "Pregnancy Status 4", ];
-
   @override
   void initState() {
-
-    _dropDownMenuVisitItemsIdentified = getDropDownMenuVisitItemsIdentified();
-    _dropDownMenuFunctionalStatusItemsIdentified = getDropDownMenuFunctionalStatusItemsIdentified();
-    _dropDownMenuFollowUpStatusItemsIdentified = getDropDownMenuFollowUpStatusItemsIdentified();
-    _dropDownMenuVisitStatusItemsIdentified = getDropDownMenuVisitStatusItemsIdentified();
-    _dropDownMenuFamilyPlanningStatusItemsIdentified = getDropDownMenuFamilyPlanningStatusItemsIdentified();
-    _dropDownMenuPregnancyStatusItemsIdentified = getDropDownMenuPregnancyStatusItemsIdentified();
-
+   getVisitTypes();
+   getFunctionalStatus();
+   getFollowUp();
+   getVisitStatus();
+   getFamilyPlanningStatus();
+   getPregnancyStatus();
     super.initState();
   }
 
 
-  List<DropdownMenuItem<String>> getDropDownMenuVisitItemsIdentified() {
+  List<DropdownMenuItem<String>> getDropDownMenuVisitTypeItemsIdentified() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String visitTypeIdentified in _visitTypeListIdentified) {
+    for (ArtVisitType visitTypeIdentified in _artVisitList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: visitTypeIdentified, child: Text(visitTypeIdentified)));
+          value: visitTypeIdentified.code, child: Text(visitTypeIdentified.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuFunctionalStatusItemsIdentified() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String functionalStatusIdentified in _functionalStatusListIdentified) {
+    for (FunctionalStatus functionalStatusIdentified in _functionalStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: functionalStatusIdentified, child: Text(functionalStatusIdentified)));
+          value: functionalStatusIdentified.code, child: Text(functionalStatusIdentified.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuFollowUpStatusItemsIdentified() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String followUpStatusIdentified in _followUpStatusListIdentified) {
+    for (FollowUpStatus followUpStatusIdentified in _followUpStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: followUpStatusIdentified, child: Text(followUpStatusIdentified)));
+          value: followUpStatusIdentified.code, child: Text(followUpStatusIdentified.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuVisitStatusItemsIdentified() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String visitStatusIdentified in _visitStatusListIdentified) {
+    for (ArtVisitStatus visitStatusIdentified in _visitStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: visitStatusIdentified, child: Text(visitStatusIdentified)));
+          value: visitStatusIdentified.code, child: Text(visitStatusIdentified.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuFamilyPlanningStatusItemsIdentified() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String familyPlanningIdentified in _familyPlanningStatusListIdentified) {
+    for (FamilyPlanningStatus familyPlanningIdentified in _familyPlanningStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: familyPlanningIdentified, child: Text(familyPlanningIdentified)));
+          value: familyPlanningIdentified.code, child: Text(familyPlanningIdentified.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuPregnancyStatusItemsIdentified() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String pregnancyStatusIdentified in _pregnancyStatusListIdentified) {
+    for (LactatingStatus pregnancyStatusIdentified in _lactatingStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: pregnancyStatusIdentified, child: Text(pregnancyStatusIdentified)));
+          value: pregnancyStatusIdentified.code, child: Text(pregnancyStatusIdentified.name)));
     }
     return items;
   }
@@ -167,6 +204,124 @@ class _ArtVisit extends State<ArtVisit> {
       }
     });
   }
+
+  Future<void> getVisitTypes() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getArtVisitType');
+      setState(() {
+        _visitType = response;
+        visitTypes = jsonDecode(_visitType);
+        _dropDownVisitTypes = ArtVisitType.mapFromJson(visitTypes);
+        _dropDownVisitTypes.forEach((e) {
+          _artVisitList.add(e);
+        });
+        _dropDownMenuItemsVisitType =
+            getDropDownMenuVisitTypeItemsIdentified();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+  Future<void> getFunctionalStatus() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getFunctionalStatus');
+      setState(() {
+        _functionalStatus = response;
+        functionalStatuses = jsonDecode(_functionalStatus);
+        _dropDownFunctionalStatuses = FunctionalStatus.mapFromJson(functionalStatuses);
+        _dropDownFunctionalStatuses.forEach((e) {
+          _functionalStatusList.add(e);
+        });
+        _dropDownMenuItemsFunctionalStatuses =
+            getDropDownMenuFunctionalStatusItemsIdentified();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+  Future<void> getFollowUp() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getFollowUpStatus');
+      setState(() {
+        _followUpStatus = response;
+        followUpStatuses = jsonDecode(_followUpStatus);
+        _dropDownFollowUpStatuses = FollowUpStatus.mapFromJson(followUpStatuses);
+        _dropDownFollowUpStatuses.forEach((e) {
+          _followUpStatusList.add(e);
+        });
+        _dropDownMenuItemsFollowUpStatuses =
+            getDropDownMenuFollowUpStatusItemsIdentified();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+  Future<void> getVisitStatus() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getArtVisitStatus');
+      setState(() {
+        _visitStatus = response;
+        visitStatuses = jsonDecode(_visitStatus);
+        _dropDownVisitStatuses = ArtVisitStatus.mapFromJson(visitStatuses);
+        _dropDownVisitStatuses.forEach((e) {
+          _visitStatusList.add(e);
+        });
+        _dropDownMenuItemsVisitStatuses =
+            getDropDownMenuVisitStatusItemsIdentified();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+
+  Future<void> getFamilyPlanningStatus() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getFamilyPlanningStatus');
+      setState(() {
+        _familyPlanningStatus = response;
+        familyPlanningStatuses = jsonDecode(_familyPlanningStatus);
+        _dropDownFamilyPlanningStatuses = FamilyPlanningStatus.mapFromJson(familyPlanningStatuses);
+        _dropDownFamilyPlanningStatuses.forEach((e) {
+          _familyPlanningStatusList.add(e);
+        });
+        _dropDownMenuItemsFamilyPlanningStatuses =
+            getDropDownMenuFamilyPlanningStatusItemsIdentified();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+
+  Future<void> getPregnancyStatus() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getLactatingStatus');
+      setState(() {
+        _lactatingstatus = response;
+        lactatingstatuses = jsonDecode(_lactatingstatus);
+        _dropDownLactatingStatuses = LactatingStatus.mapFromJson(lactatingstatuses);
+        _dropDownLactatingStatuses.forEach((e) {
+          _lactatingStatusList.add(e);
+        });
+        _dropDownMenuItemsLactatingStatuses =
+            getDropDownMenuPregnancyStatusItemsIdentified();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
+
+
 
   String nullValidator(var cell) {
     return cell == null ? "" : cell;
@@ -279,7 +434,7 @@ class _ArtVisit extends State<ArtVisit> {
                                                             hint:Text("Visit Type"),
                                                             iconEnabledColor: Colors.black,
                                                             value: _currentVisitType,
-                                                            items: _dropDownMenuVisitItemsIdentified,
+                                                            items: _dropDownMenuItemsVisitType,
                                                             onChanged: changedDropDownVisitItems,
                                                           ),
                                                         ),
@@ -365,7 +520,7 @@ class _ArtVisit extends State<ArtVisit> {
                                                             hint:Text("Functional Status"),
                                                             iconEnabledColor: Colors.black,
                                                             value: _currentFunctionalStatus,
-                                                            items: _dropDownMenuFunctionalStatusItemsIdentified,
+                                                            items: _dropDownMenuItemsFunctionalStatuses,
                                                             onChanged: changedDropDownFunctionalStatusItems,
                                                           ),
                                                         ),
@@ -402,7 +557,7 @@ class _ArtVisit extends State<ArtVisit> {
                                                             hint:Text("Follow Up Status"),
                                                             iconEnabledColor: Colors.black,
                                                             value: _currentFollowUpStatus,
-                                                            items: _dropDownMenuFollowUpStatusItemsIdentified,
+                                                            items: _dropDownMenuItemsFollowUpStatuses,
                                                             onChanged: changedDropDownFollowUpItems,
                                                           ),
                                                         ),
@@ -439,7 +594,7 @@ class _ArtVisit extends State<ArtVisit> {
                                                             hint:Text("Visit Status"),
                                                             iconEnabledColor: Colors.black,
                                                             value: _currentVisitStatus,
-                                                            items: _dropDownMenuVisitStatusItemsIdentified,
+                                                            items: _dropDownMenuItemsVisitStatuses,
                                                             onChanged: changedDropDownVisitStatusItems,
                                                           ),
                                                         ),
@@ -506,7 +661,7 @@ class _ArtVisit extends State<ArtVisit> {
                                                             hint:Text("Family Planning Status "),
                                                             iconEnabledColor: Colors.black,
                                                             value: _currentFamilyPlanningStatus,
-                                                            items: _dropDownMenuFamilyPlanningStatusItemsIdentified,
+                                                            items: _dropDownMenuItemsFamilyPlanningStatuses,
                                                             onChanged: changedDropDownFamilyPlanningItems,
                                                           ),
                                                         ),
@@ -543,7 +698,7 @@ class _ArtVisit extends State<ArtVisit> {
                                                             hint:Text("Pregnancy Status"),
                                                             iconEnabledColor: Colors.black,
                                                             value: _currentPregnancyStatus,
-                                                            items: _dropDownMenuPregnancyStatusItemsIdentified,
+                                                            items: _dropDownMenuItemsLactatingStatuses,
                                                             onChanged: changedDropDownPregnancyStatusItems,
                                                           ),
                                                         ),
@@ -642,6 +797,24 @@ class _ArtVisit extends State<ArtVisit> {
     );
   }
 
+
+ /* Future<void> saveArtVist(ArtVisit artVisit) async {
+    var art_visit_response;
+    try {
+      print('pppppppppppppppppppppppppppppppppppp art visit object '+ artRegistration.toString());
+
+      art_visit_response = await artChannel.invokeMethod('saveArtRegistration', jsonEncode(artRegistration));
+      print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
+      setState(() {
+        _artRegistration = Artdto.fromJson(jsonDecode(art_registration_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art registration  $e');
+    }
+
+  }*/
 
   void changedDropDownVisitItems(String selectedVisitType) {
     setState(() {
