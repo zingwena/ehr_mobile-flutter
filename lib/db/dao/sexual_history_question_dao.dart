@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -69,6 +70,7 @@ class SexualHistoryQuestionDao extends BaseDao{
 
   Future insertFromEhr(Map map,String sexualHistory) async {
 
+    log.i(map);
     Insert inserter = new Insert(tableName);
 
     inserter.set(id, map['sexualHistoryQuestionId']);

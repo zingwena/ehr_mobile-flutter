@@ -6,7 +6,7 @@ class PersonQuery {
     return """ 
         query GetPatientsQuery{
                     
-            people(text: "", page: 0, size: 100, sort: "") {
+            people(text: "", page: 0, size: 1000, sort: "") {
               content {
                 personId
                 firstname

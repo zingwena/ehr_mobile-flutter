@@ -94,7 +94,6 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
 }
 
 Future<String> savePersonInvestigations(Map map,PersonInvestigationDao dao, String personId) async{
-  log.i(map);
   if(map['investigations']!=null){
     for(Map investigation in map['investigations']){
       await dao.insertFromEhr(investigation,personId);

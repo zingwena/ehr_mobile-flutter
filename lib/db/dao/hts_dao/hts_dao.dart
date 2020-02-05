@@ -86,15 +86,19 @@ class HtsDao {
       inserter.set(htsModelId,map['model']['id']);
     }
 
-    inserter.set(preTestInformationGiven,map['preTestInformationGiven']);
-    inserter.set(newTestInClientLife,map['firstHivTest']);
+    map['preTestInformationGiven']!=null
+        ? inserter.set(preTestInformationGiven,map['preTestInformationGiven']):
+    inserter.set(preTestInformationGiven,false);
+    inserter.set(newTestInClientLife,map['firstHivTest']??!null);
     //inserter.set(newTestPregLact,map['testForPregnancy']); //TODO needs clarification
-    inserter.set(coupleCounselling,map['coupleCounselling']);
+
+    map['coupleCounselling']!=null?inserter.set(coupleCounselling,map['coupleCounselling']):inserter.set(coupleCounselling,false);
     inserter.set(optOutOfTest,map['optOut']);
     inserter.set(resultReceived,map['resultsIssued']);
     inserter.set(reasonForNotIssuingResultId,map['reasonForNotIssuingResult']);
 
-    map['postTestCounselling']!=null?inserter.set(postTestCounselled,map['postTestCounselling']):inserter.set(postTestCounselled,false);
+    map['postTestCounselling']!=null ? inserter.set(postTestCounselled,map['postTestCounselling'])
+        :inserter.set(postTestCounselled,false);
 
     if(map['postDateCounselled']!=null){
       inserter.set(datePostTestCounselled,const CustomDateTimeConverter().fromEhrJson(map['postDateCounselled']));
