@@ -14,17 +14,19 @@ class ArtVisit{
   String id;
   String artId;
   String visitId;
-  NameCode visitType;
-  NameCode functionalStatus;
-  NameCode visitStatus;
+  String visitType;
+  String functionalStatus;
+  String visitStatus;
   DateTime ancFirstBookingDate;
-  NameCode lactatingStatus;
-  NameCode familyPlanningStatus;
-  NameCode tbStatus;
+  String lactatingStatus;
+  String familyPlanningStatus;
+  String tbStatus;
+  String stage;
+  String followUpStatus;
 
 
-  ArtVisit(String id, String artId, String visitId, NameCode visitType, NameCode functionalStatus, NameCode visitStatus,
-      DateTime ancFirstBookingDate, NameCode lactatingStatus, NameCode familyPlanningStatus, NameCode tbStatus ){
+  ArtVisit(String id, String artId, String visitId, String visitType, String functionalStatus, String visitStatus,
+      DateTime ancFirstBookingDate, String lactatingStatus, String familyPlanningStatus, String tbStatus,  String stage , String followUpStatus){
 
     this.id = id;
     this.artId = artId;
@@ -35,7 +37,9 @@ class ArtVisit{
     this.ancFirstBookingDate = ancFirstBookingDate;
     this.lactatingStatus = lactatingStatus;
     this.familyPlanningStatus = familyPlanningStatus;
+    this.followUpStatus = followUpStatus;
     this.tbStatus = tbStatus;
+    this.stage = stage;
   }
 
   factory ArtVisit.fromJson(Map<String,dynamic> json) => _$ArtVisitFromJson(json);

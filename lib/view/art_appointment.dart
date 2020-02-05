@@ -243,40 +243,6 @@ class _ArtAppointment extends State<ArtAppointment> {
                                                   ),
 
                                                   Container(
-                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
-                                                    width: double.infinity,
-                                                    child: OutlineButton(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(5.0)),
-                                                      color: Colors.white,
-                                                      padding: const EdgeInsets.all(0.0),
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-                                                        child: DropdownButton(
-                                                          isExpanded:true,
-                                                          icon: Icon(Icons.keyboard_arrow_down),
-                                                          hint:Text("Appointment Reason"),
-                                                          iconEnabledColor: Colors.black,
-                                                          value: _currentAppointmentReason,
-                                                          items: _dropDownMenuItemsAppointmentReasonIdentified,
-                                                          onChanged: changedDropDownItemAppointmentReason,
-                                                        ),
-                                                      ),
-                                                      borderSide: BorderSide(
-                                                        color: Colors.blue, //Color of the border
-                                                        style: BorderStyle.solid, //Style of the border
-                                                        width: 2.0, //width of the border
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
-                                                  ),
-
-                                                  SizedBox(
-                                                    height: 10.0,
-                                                  ),
-
-                                                  Container(
                                                     width: double.infinity,
                                                     padding:
                                                     EdgeInsets.symmetric(
@@ -316,6 +282,40 @@ class _ArtAppointment extends State<ArtAppointment> {
                                                                   context);
                                                             })
                                                       ],
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(5.0)),
+                                                      color: Colors.white,
+                                                      padding: const EdgeInsets.all(0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                        child: DropdownButton(
+                                                          isExpanded:true,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint:Text("Appointment Reason"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentAppointmentReason,
+                                                          items: _dropDownMenuItemsAppointmentReasonIdentified,
+                                                          onChanged: changedDropDownItemAppointmentReason,
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue, //Color of the border
+                                                        style: BorderStyle.solid, //Style of the border
+                                                        width: 2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {},
                                                     ),
                                                   ),
 

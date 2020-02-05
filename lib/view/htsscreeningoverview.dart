@@ -554,59 +554,6 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
     );
   }
 
-  Widget _buildButtonsRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          new RoundedButton(text: "VITALS", onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ReceptionVitals(
-                        _patient.id, visitId, _patient, htsId)),
-          ),
-          ),
-          new RoundedButton(text: "HTS",  onTap: () {
-            if(htsRegistration == null ){
-              print('bbbbbbbbbbbbbb htsreg null ');
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  Registration(visitId, _patient.id, _patient)
-              ));
-            } else {
-              print('bbbbbbbbbbbbbb htsreg  not null ');
-
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=> HtsRegOverview(htsRegistration, _patient.id, htsId, visitId, _patient)
-              ));
-            }
-          }
-          ),
-
-
-          new RoundedButton(text: "ART", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ArtReg(_patient.id, visitId, _patient, htsRegistration, htsId)),
-          ),),
-
-
-          new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-
-
 }
 
 

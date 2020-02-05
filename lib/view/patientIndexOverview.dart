@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -45,6 +46,8 @@ class OverviewState extends State<PatientIndexOverview> {
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const htsChannel =
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+
 
   Person _patient;
   Visit _visit;
@@ -60,6 +63,8 @@ class OverviewState extends State<PatientIndexOverview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   String visitId;
+  Artdto artdto;
+
 
   var facility_name;
 
@@ -69,16 +74,26 @@ class OverviewState extends State<PatientIndexOverview> {
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     getFacilityName();
-    print(_patient.toString());
-    print(">>>>>>>>> HERE IS THE PATIENT ADDED " +
-        widget.person_contact.firstName +
-        ">>>>>>>>>>and the patient we are dealing with" +
-        widget.patient.firstName);
-
     getDetails(_patient.maritalStatusId, _patient.educationLevelId,
         _patient.occupationId, _patient.nationalityId, _patient.id);
+    getArt(_patient.id);
 
     super.initState();
+  }
+
+  Future<void>getArt(String personId)async{
+    String response;
+    try{
+      response = await artChannel.invokeMethod('getArt', personId);
+      setState(() {
+        this.artdto = Artdto.fromJson(jsonDecode(response));
+        print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
   }
 
   Future<void> getVisit(String patientId) async {
@@ -591,7 +606,7 @@ class OverviewState extends State<PatientIndexOverview> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ArtReg(
+                  builder: (context) => ArtReg(artdto,
                       _patient.id, visitId, _patient, htsRegistration, htsId)),
             ),
           ),

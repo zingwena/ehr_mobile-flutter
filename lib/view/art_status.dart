@@ -22,7 +22,6 @@ class ArtStatus extends StatefulWidget {
   String htsId;
   ArtStatus();
 
-
   @override
   State createState() {
     return _ArtStatus();
@@ -39,84 +38,36 @@ class _ArtStatus extends State<ArtStatus> {
   String oi_art_number;
   ArtRegistration _artRegistration;
   var dateOfTest,dateOfInitiation, displayDate;
-  DateTime enrollment_date, test_date;
-  String _nationalIdError = "National Id number is invalid";
+
   Age age;
 
   String facility_name;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsArvStatusIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsArvRegimenIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsAdverseEventListIdentified;
 
   List _arvRegimenIdentified = ["ARV Regimen 1", "ARV Regimen 2", "ARV Regimen 3", "ARV Regimen 4" ];
-  List _reasonIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4" ];
+  List _arvStatusIdentified = ["ARV Status 1", "ARV Status 2", "ARV Status 3", "ARV Status 4" ];
   List _adverseEventStatusIdentified = ["Adverse Event Status 1", "Adverse Event Status 2", "Adverse Event Status 3", "Adverse Event Status 4" ];
 
-  int _noARV = 0;
-  int _startARV = 0;
-  int _continue = 0;
-  int _change = 0;
-  int _stop = 0;
-  int _restart = 0;
-  int _pmtct = 0;
-  String noARV = "";
-  String startARV = "";
-  String Continue = "";
-  String change = "";
-  String stop = "";
-  String restart = "";
-  String pmtct = "";
 
   String retestedBeforeArt = "";
 
-  String  _currentArvRegimen, _currentReason, _currentAdverseEventStatus ;
+  String  _currentArvRegimen, _currentArvStatus, _currentAdverseEventStatus ;
 
   bool selfIdentifiedArvRegimenIsValid=false;
-  bool selfIdentifiedReasonIsValid=false;
+  bool selfIdentifiedArvStatusIsValid=false;
   bool selfIdentifiedAdverseEventIsValid=false;
 
   @override
   void initState() {
-    displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfInitiation = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    test_date = DateTime.now();
-    enrollment_date = DateTime.now();
+
     getAge(widget.person);
     getFacilityName();
     _dropDownMenuItemsArvRegimenIdentified = getDropDownMenuItemsArvRegimenList();
-    _dropDownMenuItemsReasonIdentified = getDropDownMenuItemsReason();
+    _dropDownMenuItemsArvStatusIdentified = getDropDownMenuItemsArvStatus();
     _dropDownMenuItemsAdverseEventListIdentified = getDropDownMenuItemsAdverseEvents();
     super.initState();
-  }
-
-
-
-  Future<Null> _selectDateOfInitiation(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != dateOfTest)
-      setState(() {
-        dateOfTest = DateFormat("yyyy/MM/dd").format(picked);
-        test_date = DateFormat("yyyy/MM/dd").parse(dateOfTest);
-      });
-  }
-
-
-  Future<Null> _selectDateOfEnrollment(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != dateOfTest)
-      setState(() {
-        dateOfInitiation = DateFormat("yyyy/MM/dd").format(picked);
-        enrollment_date = DateFormat("yyyy/MM/dd").parse(dateOfInitiation);
-      });
   }
 
   Future<void>getFacilityName()async{
@@ -147,7 +98,6 @@ class _ArtStatus extends State<ArtStatus> {
     }
   }
 
-
   List<DropdownMenuItem<String>> getDropDownMenuItemsArvRegimenList() {
     List<DropdownMenuItem<String>> items = new List();
     for (String arvRegimenIdentified in _arvRegimenIdentified) {
@@ -159,13 +109,13 @@ class _ArtStatus extends State<ArtStatus> {
     return items;
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsReason() {
+  List<DropdownMenuItem<String>> getDropDownMenuItemsArvStatus() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String reasonIdentified in _reasonIdentified) {
+    for (String arvStatusIdentified in _arvStatusIdentified) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: reasonIdentified, child: Text(reasonIdentified)));
+          value: arvStatusIdentified, child: Text(arvStatusIdentified)));
     }
     return items;
   }
@@ -181,98 +131,8 @@ class _ArtStatus extends State<ArtStatus> {
     return items;
   }
 
-  void _handleNoARVChange (int value) {
-    setState(() {
-      _noARV = value;
-
-      switch (_noARV) {
-        case 1:
-          noARV = "ARV Change";
-          break;
-
-      }
-    });
-  }
-
-  void _handleStartARVChange (int value) {
-    setState(() {
-      _startARV = value;
-
-      switch (_startARV) {
-        case 1:
-          startARV = "Start ARV";
-          break;
-      }
-    });
-  }
-
-  void _handleContinueChange(int value) {
-    setState(() {
-      _continue = value;
-
-      switch (_continue) {
-        case 1:
-          Continue = "Continue";
-          break;
-
-      }
-    });
-  }
-
-  void _handleChangeChange(int value) {
-    setState(() {
-      _change = value;
-
-      switch (_change) {
-        case 1:
-          change = "Change";
-          break;
-
-      }
-    });
-  }
-
-  void _handleStopChange(int value) {
-    setState(() {
-      _stop = value;
-
-      switch (_stop) {
-        case 1:
-          stop = "Stop";
-          break;
-
-      }
-    });
-  }
-
-  void _handleRestartChange(int value) {
-    setState(() {
-      _restart = value;
-
-      switch (_restart) {
-        case 1:
-          restart = "Restart";
-          break;
-
-      }
-    });
-  }
-
-  void _handlePmtctChange(int value) {
-    setState(() {
-      _pmtct = value;
-
-      switch (_pmtct) {
-        case 1:
-          pmtct = "PMTCT";
-          break;
-
-      }
-    });
-  }
-
   String _selfArvRegimenError="Select ARV Regimen";
-  String _selfReasonError="Select Reason";
+  String _selfArvStatusError="Select ARV Status";
   String _selfAdverseEventStatusError="Select Adverse Event Status";
 
 
@@ -371,9 +231,7 @@ class _ArtStatus extends State<ArtStatus> {
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
-                                        minHeight:
-                                        viewportConstraints.maxHeight -
-                                            48.0,
+                                        minHeight: viewportConstraints.maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                         child: Column(
@@ -387,213 +245,6 @@ class _ArtStatus extends State<ArtStatus> {
 
                                                   SizedBox(
                                                     height: 30.0,
-                                                  ),
-
-                                                  Column(
-                                                      children: <Widget>[
-                                                        Row(
-                                                          children: <Widget>[
-
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('ARV Status'),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 10.0,
-                                                        ),
-
-
-                                                      ]),
-
-                                                  Column(
-                                                      children: <Widget>[
-                                                        Row(
-                                                          children: <Widget>[
-
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('No ARV'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _noARV,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleNoARVChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 10.0,
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Start ARV'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child:  Radio(
-                                                                    value: 1,
-                                                                    groupValue: _startARV,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleStartARVChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 10.0,
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Continue'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _continue,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleContinueChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10.0,
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Change'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _change,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleChangeChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10.0,
-                                                        ),
-
-                                                      ]),
-
-
-                                                  Column(
-                                                      children: <Widget>[
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Stop'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _stop,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleStopChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10.0,
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('Restart'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _restart,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handleRestartChange),
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10.0,
-                                                        ),
-
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 90.0 ),
-                                                                child: Text('PMTCT PROPHLAXIS'),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(right: 16.0),
-                                                                child: Radio(
-                                                                    value: 1,
-                                                                    groupValue: _pmtct,
-                                                                    activeColor: Colors.blue,
-                                                                    onChanged: _handlePmtctChange),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ] ),
-
-                                                  SizedBox(
-                                                    height: 10.0,
                                                   ),
 
                                                   Container(
@@ -610,13 +261,7 @@ class _ArtStatus extends State<ArtStatus> {
                                                               padding: const EdgeInsets.all(0.0),
                                                               child: TextFormField(
                                                                 controller: TextEditingController(
-                                                                    text: dateOfTest),
-                                                                validator: (value) {
-                                                                  return value
-                                                                      .isEmpty
-                                                                      ? 'Enter some text'
-                                                                      : null;
-                                                                },
+                                                                    text: '2020/02/06'),
                                                                 decoration: InputDecoration(
                                                                     border: OutlineInputBorder(
                                                                         borderRadius:
@@ -627,16 +272,12 @@ class _ArtStatus extends State<ArtStatus> {
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfInitiation(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
                                                   ),
 
                                                   Container(
@@ -657,7 +298,7 @@ class _ArtStatus extends State<ArtStatus> {
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentArvRegimen,
                                                           items: _dropDownMenuItemsArvRegimenIdentified,
-                                                          onChanged: changedDropDownItemReferring,
+                                                          onChanged: changedDropDownItemRegimen,
                                                         ),
                                                       ),
                                                       borderSide: BorderSide(
@@ -666,6 +307,40 @@ class _ArtStatus extends State<ArtStatus> {
                                                         width: 2.0, //width of the border
                                                       ),
                                                       onPressed: () {},
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                    text: 'Reason 1 Option'),
+                                                                decoration: InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius.circular(0.0)),
+                                                                    labelText: "Reason"),
+                                                              ),
+                                                            ),
+                                                            width: 100,
+                                                          ),
+                                                        ),
+
+                                                      ],
                                                     ),
                                                   ),
 
@@ -687,11 +362,11 @@ class _ArtStatus extends State<ArtStatus> {
                                                         child: DropdownButton(
                                                           isExpanded:true,
                                                           icon: Icon(Icons.keyboard_arrow_down),
-                                                          hint:Text("Reason"),
+                                                          hint:Text("ARV Status"),
                                                           iconEnabledColor: Colors.black,
-                                                          value: _currentReason,
-                                                          items: _dropDownMenuItemsReasonIdentified,
-                                                          onChanged: changedDropDownItemReason,
+                                                          value: _currentArvStatus,
+                                                          items: _dropDownMenuItemsArvStatusIdentified,
+                                                          onChanged: changedDropDownItemArvStatus,
                                                         ),
                                                       ),
                                                       borderSide: BorderSide(
@@ -759,20 +434,7 @@ class _ArtStatus extends State<ArtStatus> {
                                                             fontWeight: FontWeight.w500),
                                                       ),
                                                       onPressed: () async {
-                                                        if (_formKey
-                                                            .currentState
-                                                            .validate()) {
-                                                          _formKey
-                                                              .currentState
-                                                              .save();
-                                                          setState(() {
-                                                            ArtRegistration artRegistrationDetails = ArtRegistration(widget.personId, enrollment_date, test_date, oi_art_number);
-                                                            artRegistration(artRegistrationDetails);
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtRegOverview(artRegistrationDetails, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)));
 
-
-                                                          });
-                                                        }
                                                       },
                                                     ),
                                                   ),
@@ -831,26 +493,7 @@ class _ArtStatus extends State<ArtStatus> {
     );
   } */
 
-  Future<void> artRegistration(ArtRegistration artRegistration) async {
-    String art_registration_response;
-    try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod');
-
-      art_registration_response = await artChannel.invokeMethod(
-          'saveArtRegistration', jsonEncode(artRegistration.toJson()));
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
-      setState(() {
-        _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
-      });
-
-    } catch (e) {
-      print('--------------something went wrong  $e');
-    }
-
-  }
-
-  void changedDropDownItemReferring(String selectedArvRegimenIdentified) {
+  void changedDropDownItemRegimen(String selectedArvRegimenIdentified) {
     setState(() {
       _currentArvRegimen = selectedArvRegimenIdentified;
       selfIdentifiedArvRegimenIsValid=!selfIdentifiedArvRegimenIsValid;
@@ -858,11 +501,11 @@ class _ArtStatus extends State<ArtStatus> {
     });
   }
 
-  void changedDropDownItemReason(String selectedReasonIdentified) {
+  void changedDropDownItemArvStatus(String selectedARvStatusIdentified) {
     setState(() {
-      _currentReason = selectedReasonIdentified;
-      selfIdentifiedReasonIsValid=!selfIdentifiedReasonIsValid;
-      _selfReasonError=null;
+      _currentArvStatus = selectedARvStatusIdentified;
+      selfIdentifiedArvStatusIsValid=!selfIdentifiedArvStatusIsValid;
+      _selfArvStatusError=null;
     });
   }
 

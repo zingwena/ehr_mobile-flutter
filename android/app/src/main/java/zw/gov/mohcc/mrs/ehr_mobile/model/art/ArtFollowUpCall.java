@@ -4,26 +4,30 @@ import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
 @Entity
-public class ArtFollowupCall extends BaseEntity {
+public class ArtFollowUpCall extends BaseEntity {
 
     @NonNull
     private String artAppointmentId;
     @Embedded
     private NameCode outcome;
+    @NonNull
+    @TypeConverters(DateConverter.class)
     private Date date;
 
-    public ArtFollowupCall() {
+    public ArtFollowUpCall() {
     }
 
     @Ignore
-    public ArtFollowupCall(@NonNull String id, @NonNull String artAppointmentId) {
+    public ArtFollowUpCall(@NonNull String id, @NonNull String artAppointmentId) {
         super(id);
         this.artAppointmentId = artAppointmentId;
     }
@@ -49,13 +53,13 @@ public class ArtFollowupCall extends BaseEntity {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(@NonNull Date date) {
         this.date = date;
     }
 
     @Override
     public String toString() {
-        return "ArtFollowupCall{" +
+        return "ArtFollowUpCall{" +
                 "artAppointmentId='" + artAppointmentId + '\'' +
                 ", outcome=" + outcome +
                 ", date=" + date +

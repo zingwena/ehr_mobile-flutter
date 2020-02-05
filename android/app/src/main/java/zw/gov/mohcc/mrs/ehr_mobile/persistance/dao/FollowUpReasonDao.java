@@ -22,4 +22,7 @@ public interface FollowUpReasonDao {
 
     @Query("SELECT * FROM FollowUpReason ORDER BY name DESC")
     List<FollowUpReason> findAll();
+
+    @Query("SELECT * FROM FollowUpReason Where code=:id")
+    FollowUpReason findById(String id);
 }

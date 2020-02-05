@@ -22,7 +22,8 @@ class SearchPatientIndex extends StatefulWidget {
   Person person_patient;
   String visitId;
   String htsId;
-  //final Person person;
+  String person;
+
   HtsRegistration htsRegistration;
   String personId;
   SearchPatientIndex(this.person_patient,this.indexTestId, this.visitId, this.personId);
@@ -59,13 +60,15 @@ class _SearchPatientState extends State<SearchPatientIndex> {
 
   @override
   void initState() {
+
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-     // drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
+     //drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       /*  appBar: AppBar(
         title: Text('Search Patient'),
       ),*/
@@ -136,7 +139,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
                             color: Colors.white,
-                            fontSize: 16),
+                            fontSize: 30),
                       ),
                     ),
                   ),

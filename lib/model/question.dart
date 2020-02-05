@@ -8,7 +8,7 @@ class Question{
   String type;
   String categoryId;
 
-  Question(this.code, this.name, this.type, this.categoryId);
+  Question(this.name, this.code, this.type, this.categoryId);
 
   factory Question.fromJson(Map<String, dynamic> json) =>_$QuestionFromJson(json);
 

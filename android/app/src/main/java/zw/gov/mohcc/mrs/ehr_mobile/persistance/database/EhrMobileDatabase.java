@@ -39,6 +39,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
@@ -70,6 +71,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EducationLevel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FamilyPlanningStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FunctionalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
@@ -105,6 +107,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtAppointmentDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtCurrentStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtIptDao;
@@ -127,6 +130,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityQueueDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FacilityWardDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FamilyPlanningStatusDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FollowUpReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FollowUpStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.FunctionalStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.HtsDao;
@@ -201,7 +205,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
         ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class,
-        ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class}, version = 9, exportSchema = false)
+        ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class, ArtAppointment.class, FollowUpReason.class}, version = 9, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -373,4 +377,8 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract ArtIptDao artIptDao();
 
     public abstract IptStatusDao iptStatusDao();
+
+    public abstract ArtAppointmentDao artAppointmentDao();
+
+    public abstract FollowUpReasonDao followUpReasonDao();
 }

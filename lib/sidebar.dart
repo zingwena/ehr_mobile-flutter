@@ -19,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'model/artdto.dart';
 import 'model/htsscreening.dart';
 import 'model/person.dart';
 
@@ -44,31 +45,32 @@ class sidebarstate extends State<Sidebar>{
   HtsScreening htsScreening;
   String indextestid;
   String INDEXTEST;
+  Artdto artdto;
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+
   @override
   void initState() {
 
-    getArtRecord(widget.patientId);
+    getArt(widget.patientId);
     getHtsScreeningRecord(widget.patientId);
     getIndexTestByPersonId(widget.patientId);
 
   }
 
-  Future<void> getArtRecord(String patientId) async {
-    var  art;
-    try {
-      art = await htsChannel.invokeMethod('getArtRecord', patientId);
+  Future<void>getArt(String personId)async{
+    String response;
+    try{
+      response = await artChannel.invokeMethod('getArt', personId);
       setState(() {
-        artReg = ArtRegistration.fromJson(jsonDecode(art));
-        print("HERE IS THE ART REGISTRATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artReg.toString());
-
+        this.artdto = Artdto.fromJson(jsonDecode(response));
+        print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
       });
 
-      print('ART IN THE FLUTTER THE RETURNED ONE '+ artReg.toString());
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
 
+    }
   }
 
   Future<void> getHtsScreeningRecord(String patientId) async {
@@ -86,9 +88,6 @@ class sidebarstate extends State<Sidebar>{
 
   Future<void>saveIndexTest(IndexTest indexTest)async{
     var response ;
-    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX '+ indexTest.toString());
-    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE ID FOR PERSON WATIKUDEALER NAYE INDEX TEST'+ indexTest.personId);
-
     try{
       response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
       print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
@@ -224,14 +223,16 @@ class sidebarstate extends State<Sidebar>{
           ),
           new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: (){
-            if(artReg == null ){
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  ArtReg(widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
-              ));
-            } else {
+            if(artdto.artNumber == null ){
+              print("ART DTO DATE IS  NULL");
 
               Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=> ArtRegOverview(artReg, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                  builder: (context)=>  ArtReg(this.artdto, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+              ));
+            } else {
+            print("ART DTO DATE IS NOT NULL");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=> ArtRegOverview(this.artdto, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
 
               ));
             }
