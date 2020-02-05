@@ -173,6 +173,15 @@ public class ArtService {
 
         return combinationRegimenList;
     }
+    public List<ArvCombinationRegimen> getArvCombinationRegimens(String personId) {
+
+        Person person = ehrMobileDatabase.personDao().findPatientById(personId);
+        Age age = Age.getInstance(person);
+        List<ArvCombinationRegimen> combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByAgeGroup( AgeGroup.getPersonAgeGroup(age.getYears()));
+
+        return combinationRegimenList;
+    }
+
 
     public List<Question> findByWorkAreaAndCategoryId(WorkArea workArea, String categoryId) {
 
@@ -188,7 +197,7 @@ public class ArtService {
         TbScreening tbScreening = ehrMobileDatabase.tbScreeningDao().findByVisitId(visitId);
         Log.d(TAG, "Current visit TB Screening record : " + tbScreening);
 
-        return tbScreening != null ? tbScreening : new TbScreening(null, visitId);
+        return tbScreening != null ? tbScreening : new TbScreening(visitId);
     }
 
     @Transaction
@@ -237,7 +246,7 @@ public class ArtService {
         ehrMobileDatabase.artSymptomDao().save(artSymptom);
     }
 
-    public ArtVisit getArtVisit(String personId) {
+    public ArtVisitDTO getArtVisit(String personId) {
 
         String visitId = appWideService.getCurrentVisit(personId);
         Log.d(TAG, "Current visit ID : " + visitId);
@@ -247,7 +256,8 @@ public class ArtService {
 
         Log.d(TAG, "Art visit record : " + artVisit);
 
-        return artVisit != null ? artVisit : new ArtVisit(null, art.getId(), visitId);
+        return artVisit != null ? ArtVisitDTO.get(artVisit, null) :
+                ArtVisitDTO.get(new ArtVisit(null, art.getId(), visitId), null);
     }
 
     @Transaction

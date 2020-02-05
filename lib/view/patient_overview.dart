@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
@@ -45,6 +46,8 @@ class OverviewState extends State<Overview> {
   static final MethodChannel patientChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/addPatient');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const visitChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/visitChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+
   Person _patient;
   Visit _visit;
   Map<String, dynamic> details;
@@ -58,6 +61,7 @@ class OverviewState extends State<Overview> {
   String visitId;
   PatientQueue patientQueue;
   String facility_name;
+  Artdto artdto;
   @override
   void initState() {
     print("THIS IS THE PATIENT IN PATIENT OVERVIEW"+ widget.patient.toString());
@@ -65,7 +69,7 @@ class OverviewState extends State<Overview> {
     getVisit(_patient.id);
     getHtsScreeningRecord(_patient.id);
     getHtsRecord(_patient.id);
-    getArtRecord(_patient.id);
+    getArt(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);
     getQueueName(_patient.id);
     getFacilityName();
@@ -137,23 +141,6 @@ class OverviewState extends State<Overview> {
 
 
   }
-  Future<void> getArtRecord(String patientId) async {
-    var  art;
-    try {
-      art = await htsChannel.invokeMethod('getArtRecord', patientId);
-      setState(() {
-        artReg = ArtRegistration.fromJson(jsonDecode(art));
-        print("HERE IS THE ART REGISTRATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artReg.toString());
-
-      });
-
-      print('ART IN THE FLUTTER THE RETURNED ONE '+ artReg.toString());
-    } catch (e) {
-      print("channel failure in get art record method: '$e'");
-    }
-
-
-  }
 
   Future<void> getHtsId(String patientId) async {
     var hts;
@@ -167,6 +154,21 @@ class OverviewState extends State<Overview> {
       print("channel failure in get htsId: '$e'");
     }
      }
+
+  Future<void>getArt(String personId)async{
+    String response;
+    try{
+      response = await artChannel.invokeMethod('getArt', personId);
+      setState(() {
+        this.artdto = Artdto.fromJson(jsonDecode(response));
+        print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
 
      Future<void>getQueueName(String patientId) async {
      String queue_response;
@@ -569,16 +571,16 @@ class OverviewState extends State<Overview> {
           ),
 
       new RoundedButton(text: "ART", onTap: () {
-        if(artReg == null ){
+        if(artdto.artNumber == null ){
           print('nnnnnn artreg null ');
           Navigator.push(context,MaterialPageRoute(
-              builder: (context)=>  ArtReg(widget.patient.id, visitId, widget.patient, htsRegistration, htsId)
+              builder: (context)=>  ArtReg(this.artdto, widget.patient.id, visitId, widget.patient, htsRegistration, htsId)
           ));
         } else {
           print('nnnnn artreg  not null ');
 
           Navigator.push(context,MaterialPageRoute(
-              builder: (context)=> ArtRegOverview(artReg, _patient.id, visitId, _patient, htsRegistration, htsId)
+              builder: (context)=> ArtRegOverview(artdto, _patient.id, visitId, _patient, htsRegistration, htsId)
           ));
         }
       //    ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
@@ -598,15 +600,7 @@ class OverviewState extends State<Overview> {
       ),
     );
   }
-Widget _sidemenu(){
-    return new Drawer(
-      child: ListView(
-        children: <Widget>[
 
-        ],
-      ),
-    );
-}
 
   Future<void> getDetails(String maritalStatusId,String educationLevelId,String occupationId,String nationalityId, String patientId) async{
     String maritalStatus,educationLevel,occupation,nationality, address, patientphonenumber;

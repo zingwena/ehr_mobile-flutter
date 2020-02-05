@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ehr_mobile/model/artdto.dart';
+import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/artInitiation.dart';
@@ -14,6 +15,7 @@ import 'package:ehr_mobile/view/art_initiation.dart';
 
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
+import 'package:ehr_mobile/view/tb_screening.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
 import 'package:flutter/material.dart';
@@ -30,30 +32,28 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 
-class ArtRegOverview extends StatefulWidget {
-  final Artdto artRegistration;
+class ArtVisitOverview extends StatefulWidget {
+  final ArtVisit artVisit;
   final String personId;
   final String visitId;
   final Person person;
   final HtsRegistration htsRegistration;
   final String htsId;
 
-  ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
+  ArtVisitOverview(this.artVisit, this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return ArtOverviewState();
+    return ArtVisitOverviewState();
   }
 }
 
-class ArtOverviewState extends State<ArtRegOverview> {
+class ArtVisitOverviewState extends State<ArtVisitOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   static const dataChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
-
-
 
   Person _patient;
   Visit _visit;
@@ -68,12 +68,12 @@ class ArtOverviewState extends State<ArtRegOverview> {
 
   @override
   void initState() {
-    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateEnrolled);
+  /*  dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateEnrolled);
     dateOfHivTest = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfHivTest);
     dateHivConfirmed =  DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateHivConfirmed);
-    dateOfRetest =   DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateRetested);
+    dateOfRetest =   DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateRetested);*/
     print(_patient.toString());
-  //  getEntryPoint(widget.htsRegistration.entryPointId);
+    //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
     getFacilityName();
     super.initState();
@@ -148,6 +148,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
     return value == null ? "" : value;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,7 +184,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("ART Registration OverView", style: TextStyle(
+                    child: Text("ART Visit OverView", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   Container(
@@ -207,7 +208,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                              Padding(
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
@@ -268,40 +269,6 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                   padding: const EdgeInsets.all(16.0),
                                                   child: Column(
                                                     children: <Widget>[
-
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: dateOfHivTest),
-                                                                decoration: InputDecoration(
-                                                                    icon: Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Date of Hiv Test",
-                                                                    hintText: "Date of Hiv Test"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        dateOfEnrollment)),
-                                                                decoration: InputDecoration(
-                                                                    icon: new Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Date of enrollment into care",
-                                                                    hintText: "Date of enrollment into care"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
                                                       Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -310,9 +277,9 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.artNumber)),
+                                                                        widget.artVisit.visitType)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Oi Art NUmber',
+                                                                  labelText: 'Art Visit Type',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -326,9 +293,9 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.linkageFrom)),
+                                                                        widget.artVisit.functionalStatus)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Linkage from',
+                                                                  labelText: 'Functional Status',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -347,9 +314,9 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.linkageNumber)),
+                                                                        widget.artVisit.visitStatus)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Program Number',
+                                                                  labelText: 'Visit Status',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -357,21 +324,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                             ),
                                                           ),
 
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        dateHivConfirmed)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Date of Hiv confirmation',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
-                                                                ),
 
-                                                              ),
-                                                            ),
-                                                          ),
 
 
                                                         ],
@@ -384,9 +337,9 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.hivTestUsed)),
+                                                                        widget.artVisit.lactatingStatus)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'HIV Test used',
+                                                                  labelText: 'Lactating Status',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -394,25 +347,23 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                             ),
                                                           ),
 
-                                                          widget.artRegistration.testReason == null ? SizedBox(height: 0.0,):Expanded(
+                                                        Expanded(
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.artRegistration.testReason)),
+                                                                        widget.artVisit.familyPlanningStatus)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Reason for HIV Test',
+                                                                  labelText: 'Family Planning Status',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
                                                               ),
                                                             ),
                                                           ),
-
-
                                                         ],
-                                                      ),
+                                                      ),/*
                                                       Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -449,28 +400,13 @@ class ArtOverviewState extends State<ArtRegOverview> {
 
 
                                                         ],
-                                                      ),
+                                                      ),*/
 
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 
@@ -503,26 +439,13 @@ class ArtOverviewState extends State<ArtRegOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Registration", selected: true,/* onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Registration(_patient.id)),
-          ),*/),
-          new RoundedButton(text: "ART Initiation", onTap: (){
-            if(artInitiation == null ){
-              debugPrint("GGGGGGGGGGGGG art initiation is null");
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  Art_Initiation(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
-              ));
-            } else {
-              debugPrint("GGGGGGGGGGGGG art initiation is not null");
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=> ArtInitiationOverview(artInitiation, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+          new RoundedButton(text: "ART Visit ", selected: true),
+          new RoundedButton(text: "TB Screening", onTap: (){
+            Navigator.push(context,MaterialPageRoute(
+                builder: (context)=>    TbScreeningView(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
 
-              ));
+            ));
 
-            }
           }
           ),
           new RoundedButton(text: "Close",)

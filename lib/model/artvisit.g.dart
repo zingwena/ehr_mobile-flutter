@@ -11,27 +11,18 @@ ArtVisit _$ArtVisitFromJson(Map<String, dynamic> json) {
     json['id'] as String,
     json['artId'] as String,
     json['visitId'] as String,
-    json['visitType'] == null
-        ? null
-        : NameCode.fromJson(json['visitType'] as Map<String, dynamic>),
-    json['functionalStatus'] == null
-        ? null
-        : NameCode.fromJson(json['functionalStatus'] as Map<String, dynamic>),
-    json['visitStatus'] == null
-        ? null
-        : NameCode.fromJson(json['visitStatus'] as Map<String, dynamic>),
+    json['visitType'] as String,
+    json['functionalStatus'] as String,
+    json['visitStatus'] as String,
     const CustomDateTimeConverter()
         .fromJson(json['ancFirstBookingDate'] as String),
-    json['lactatingStatus'] == null
-        ? null
-        : NameCode.fromJson(json['lactatingStatus'] as Map<String, dynamic>),
-    json['familyPlanningStatus'] == null
-        ? null
-        : NameCode.fromJson(
-            json['familyPlanningStatus'] as Map<String, dynamic>),
-    json['tbStatus'] == null
-        ? null
-        : NameCode.fromJson(json['tbStatus'] as Map<String, dynamic>),
+    json['lactatingStatus'] as String,
+    json['familyPlanningStatus'] as String,
+    json['tbStatus'] as String,
+    json['stage'] as String,
+    json['followUpStatus'] as String,
+
+
   );
 }
 
@@ -47,4 +38,6 @@ Map<String, dynamic> _$ArtVisitToJson(ArtVisit instance) => <String, dynamic>{
       'lactatingStatus': instance.lactatingStatus,
       'familyPlanningStatus': instance.familyPlanningStatus,
       'tbStatus': instance.tbStatus,
+      'stage': instance.stage,
+      'followUpStatus': instance.followUpStatus
     };

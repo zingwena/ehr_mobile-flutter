@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/art_Visit_Overview.dart';
+import 'package:ehr_mobile/view/art_visit.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -58,11 +61,13 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
   bool showInput = true;
   bool showInputTabOptions = true;
   String facility_name;
+  ArtVisit _artVisit;
 
   @override
   void initState() {
 
     print(_patient.toString());
+    getArtVist(widget.personId);
     getRegimen(widget.artInitiation.artRegimenId);
     getReason(widget.artInitiation.artReasonId);
     //  getEntryPoint(widget.htsRegistration.entryPointId);
@@ -104,6 +109,21 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
       regimen_name = regimenname;
     });
 
+
+  }
+  Future<void> getArtVist(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
+      print('pppppppppppppppppppppppppppppppppppp art visit response'+ art_visit_response);
+      setState(() {
+        _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artVisit.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
 
   }
   Future<void> getReason(String reasonId) async {
@@ -334,22 +354,6 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 
@@ -382,44 +386,32 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Registration",/* onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Registration(_patient.id)),
-          ),*/),
-          new RoundedButton(text: "ART Initiation", /*onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Art_Initiation(widget.artRegistration.personId
-                    )),
-          ),*/
+          new RoundedButton(text: "ART Registration",),
+          new RoundedButton(text: "ART Initiation", selected: true,
           ),
-          new RoundedButton(text: "Close", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
+          new RoundedButton(text: "Art Visit", onTap: () {
+
+            if(_artVisit.visitType == null ){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
+              );
+            } else {
+              print("ART DTO DATE IS NOT NULL");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+              ));
+            }
+          }
+
+             // ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
+
           ),
 
 
-          /*new RoundedButton(text: "HTS Post-Testing", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Art_Registration(_patient.id)),
-          ),),*/
-
-
-          /* new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
-          ),*/
         ],
       ),
     );
