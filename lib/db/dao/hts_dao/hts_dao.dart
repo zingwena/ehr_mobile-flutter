@@ -82,7 +82,10 @@ class HtsDao {
     if(map['purpose']!=null){
       inserter.set(reasonForHivTestingId,map['purpose']['id']);
     }
-    inserter.set(htsModelId,map['model']['id']);
+    if(map['model']!=null){
+      inserter.set(htsModelId,map['model']['id']);
+    }
+
     inserter.set(preTestInformationGiven,map['preTestInformationGiven']);
     inserter.set(newTestInClientLife,map['firstHivTest']);
     //inserter.set(newTestPregLact,map['testForPregnancy']); //TODO needs clarification

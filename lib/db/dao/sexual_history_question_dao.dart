@@ -67,4 +67,25 @@ class SexualHistoryQuestionDao extends BaseDao{
     return sexualHistoryQnList;
   }
 
+  Future insertFromEhr(Map map,String sexualHistory) async {
+
+    Insert inserter = new Insert(tableName);
+
+    inserter.set(id, map['sexualHistoryQuestionId']);
+    inserter.set(sexualHistoryId, sexualHistory);
+    inserter.set(responseType, map['question']['responseType']);
+
+    inserter.set(code, map['question']['id']);
+    inserter.set(name, map['question']['name']);
+
+    inserter.set(status,'IMPORTED');
+
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
+  }
+
 }

@@ -90,7 +90,7 @@ class PersonDao extends BaseDao{
     inserter.set(maritalStatusId, map['marital']['id']);
     inserter.set(educationLevelId, map['education']['id']);
     inserter.set(nationalityId, map['nationality']['id']);
-    inserter.set(status,'${RecordStatus.IMPORTED.toString()}');
+    inserter.set(status,'IMPORTED');
 
     if(map['countryOfBirth']!=null)
     inserter.set(countryId, map['countryOfBirth']['id']);
