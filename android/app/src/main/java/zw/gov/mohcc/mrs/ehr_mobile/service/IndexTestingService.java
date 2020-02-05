@@ -16,9 +16,18 @@ public class IndexTestingService {
 
     private final String TAG = "Index Tracking Service";
     private EhrMobileDatabase ehrMobileDatabase;
+    private static IndexTestingService INSTANCE;
 
-    public IndexTestingService(EhrMobileDatabase ehrMobileDatabase) {
+    private IndexTestingService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+    }
+
+    public static synchronized IndexTestingService getInstance(EhrMobileDatabase ehrMobileDatabase) {
+
+        if (INSTANCE == null) {
+            return new IndexTestingService(ehrMobileDatabase);
+        }
+        return INSTANCE;
     }
 
     public String createIndexTest(IndexTest indexTest) {

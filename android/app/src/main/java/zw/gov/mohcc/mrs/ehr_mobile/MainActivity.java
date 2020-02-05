@@ -146,16 +146,16 @@ public class MainActivity extends FlutterActivity {
         getApplicationContext();
         ehrMobileDatabase = EhrMobileDatabase.getDatabaseInstance(getApplication());
 
-        siteService = new SiteService(ehrMobileDatabase);
+        siteService = SiteService.getInstance(ehrMobileDatabase);
         appWideService = AppWideService.getInstance(ehrMobileDatabase);
-        artService = new ArtService(ehrMobileDatabase, appWideService);
-        visitService = new VisitService(ehrMobileDatabase, siteService, artService, appWideService);
-        htsService = new HtsService(ehrMobileDatabase, appWideService);
-        historyService = new HistoryService(ehrMobileDatabase, htsService);
-        terminologyService = new TerminologyService(ehrMobileDatabase);
-        indexTestingService = new IndexTestingService(ehrMobileDatabase);
-        relationshipService = new RelationshipService(ehrMobileDatabase);
-        personService = new PersonService(ehrMobileDatabase);
+        artService = ArtService.getInstance(ehrMobileDatabase, appWideService);
+        visitService = VisitService.getInstance(ehrMobileDatabase, siteService, artService, appWideService);
+        htsService = HtsService.getInstance(ehrMobileDatabase, appWideService);
+        historyService = HistoryService.getInstance(ehrMobileDatabase, htsService);
+        terminologyService = TerminologyService.getInstance(ehrMobileDatabase);
+        indexTestingService = IndexTestingService.getInstance(ehrMobileDatabase);
+        relationshipService = RelationshipService.getInstance(ehrMobileDatabase);
+        personService = PersonService.getInstance(ehrMobileDatabase);
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()

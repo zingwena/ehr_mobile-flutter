@@ -42,11 +42,6 @@ public class TbScreening extends BaseEntity {
         this.visitId = visitId;
     }
 
-    @Ignore
-    public TbScreening(String visitId) {
-        this.visitId = visitId;
-    }
-
     public String getVisitId() {
         return visitId;
     }
@@ -117,5 +112,20 @@ public class TbScreening extends BaseEntity {
 
     public void setBmiUnderSeventeen(Boolean bmiUnderSeventeen) {
         this.bmiUnderSeventeen = bmiUnderSeventeen;
+    }
+
+    @Override
+    public String toString() {
+        return "TbScreening{" +
+                "visitId='" + visitId + '\'' +
+                ", presumptive=" + presumptive +
+                ", note='" + note + '\'' +
+                ", time=" + time +
+                ", fever=" + fever +
+                ", coughing=" + coughing +
+                ", weightLoss=" + weightLoss +
+                ", nightSweats=" + nightSweats +
+                ", bmiUnderSeventeen=" + bmiUnderSeventeen +
+                '}';
     }
 }

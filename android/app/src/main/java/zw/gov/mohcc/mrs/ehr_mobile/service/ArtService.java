@@ -52,13 +52,22 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class ArtService {
 
+    private static ArtService INSTANCE;
     private final String TAG = "Art Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private AppWideService appWideService;
 
-    public ArtService(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
+    private ArtService(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.appWideService = appWideService;
+    }
+
+    public static synchronized ArtService getInstance(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
+
+        if (INSTANCE == null) {
+            return new ArtService(ehrMobileDatabase, appWideService);
+        }
+        return INSTANCE;
     }
 
     @Transaction
@@ -173,11 +182,12 @@ public class ArtService {
 
         return combinationRegimenList;
     }
+
     public List<ArvCombinationRegimen> getArvCombinationRegimens(String personId) {
 
         Person person = ehrMobileDatabase.personDao().findPatientById(personId);
         Age age = Age.getInstance(person);
-        List<ArvCombinationRegimen> combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByAgeGroup( AgeGroup.getPersonAgeGroup(age.getYears()));
+        List<ArvCombinationRegimen> combinationRegimenList = ehrMobileDatabase.arvCombinationRegimenDao().findByAgeGroup(AgeGroup.getPersonAgeGroup(age.getYears()));
 
         return combinationRegimenList;
     }
@@ -197,7 +207,7 @@ public class ArtService {
         TbScreening tbScreening = ehrMobileDatabase.tbScreeningDao().findByVisitId(visitId);
         Log.d(TAG, "Current visit TB Screening record : " + tbScreening);
 
-        return tbScreening != null ? tbScreening : new TbScreening(visitId);
+        return tbScreening;
     }
 
     @Transaction

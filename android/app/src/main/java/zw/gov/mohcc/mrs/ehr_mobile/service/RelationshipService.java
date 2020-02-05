@@ -18,11 +18,20 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class RelationshipService {
 
+    private static RelationshipService INSTANCE;
     private final String TAG = "Relationship Service";
     private EhrMobileDatabase ehrMobileDatabase;
 
-    public RelationshipService(EhrMobileDatabase ehrMobileDatabase) {
+    private RelationshipService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+    }
+
+    public static synchronized RelationshipService getInstance(EhrMobileDatabase ehrMobileDatabase) {
+
+        if (INSTANCE == null) {
+            return new RelationshipService(ehrMobileDatabase);
+        }
+        return INSTANCE;
     }
 
     public boolean relationshipExists(String personId, String memberId) {
@@ -71,7 +80,7 @@ public class RelationshipService {
         // add checks to ensure child only has one mother
         Log.d(TAG, "Checking that a child is assigned to only one mother");
         List<Relationship> relationships = getByPersonIdAndMemberIdRelationAndSex(relationship.getPersonId(),
-                        relationship.getMemberId(), relationship.getRelation(), Gender.FEMALE);
+                relationship.getMemberId(), relationship.getRelation(), Gender.FEMALE);
 
         if (relationships != null && !relationships.isEmpty()) {
             Log.e(TAG, "Attempting to add child to more than 1 mother : operation failed ");
@@ -93,7 +102,7 @@ public class RelationshipService {
             member = new Relationship(UUID.randomUUID().toString(), relationship.getMemberId(),
                     relationship.getPersonId(), memberType, null);
         }
-        Relationship [] items = {person, member};
+        Relationship[] items = {person, member};
         ehrMobileDatabase.relationshipDao().saveAll(new ArrayList<>(Arrays.asList(items)));
         return person.getId();
     }

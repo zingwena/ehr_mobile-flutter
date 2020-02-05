@@ -40,9 +40,18 @@ public class TerminologyService {
 
     private final String TAG = "Terminology Service";
     private EhrMobileDatabase ehrMobileDatabase;
+    private static TerminologyService INSTANCE;
 
-    public TerminologyService(EhrMobileDatabase ehrMobileDatabase) {
+    private TerminologyService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+    }
+
+    public static synchronized TerminologyService getInstance(EhrMobileDatabase ehrMobileDatabase) {
+
+        if (INSTANCE == null) {
+            return new TerminologyService(ehrMobileDatabase);
+        }
+        return INSTANCE;
     }
 
     public void saveSample(List<Sample> samples) {

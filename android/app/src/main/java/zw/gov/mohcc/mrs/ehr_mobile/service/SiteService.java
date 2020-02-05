@@ -18,9 +18,18 @@ public class SiteService {
 
     private final String TAG = "Site Service";
     private EhrMobileDatabase ehrMobileDatabase;
+    private static SiteService INSTANCE;
 
-    public SiteService(EhrMobileDatabase ehrMobileDatabase) {
+    private SiteService(EhrMobileDatabase ehrMobileDatabase) {
         this.ehrMobileDatabase = ehrMobileDatabase;
+    }
+
+    public static synchronized SiteService getInstance(EhrMobileDatabase ehrMobileDatabase) {
+
+        if (INSTANCE == null) {
+            return new SiteService(ehrMobileDatabase);
+        }
+        return INSTANCE;
     }
 
     public NameCode getFacilityDetails() {
