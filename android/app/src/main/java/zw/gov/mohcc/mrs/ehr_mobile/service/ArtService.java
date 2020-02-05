@@ -207,7 +207,7 @@ public class ArtService {
         TbScreening tbScreening = ehrMobileDatabase.tbScreeningDao().findByVisitId(visitId);
         Log.d(TAG, "Current visit TB Screening record : " + tbScreening);
 
-        return tbScreening;
+        return tbScreening != null ? tbScreening : new TbScreening(null, visitId);
     }
 
     @Transaction

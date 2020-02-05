@@ -205,7 +205,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
         ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class,
-        ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class, ArtAppointment.class, FollowUpReason.class}, version = 10, exportSchema = false)
+        ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class, ArtAppointment.class, FollowUpReason.class}, version = 11, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,

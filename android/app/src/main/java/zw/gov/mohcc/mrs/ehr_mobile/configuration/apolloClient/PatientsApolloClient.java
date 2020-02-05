@@ -156,7 +156,7 @@ public class PatientsApolloClient {
 
     public static void getFacilityQueuesFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
         System.out.println("baseUrl = " + baseUrl);
-        SiteService siteService = new SiteService(ehrMobileDatabase);
+        SiteService siteService = SiteService.getInstance(ehrMobileDatabase);
         PatientsApolloClient.getApolloClient(baseUrl).query(
 
 
@@ -221,7 +221,7 @@ public class PatientsApolloClient {
 
     public static void getFacilityWardsFromEhr(final EhrMobileDatabase ehrMobileDatabase, String baseUrl) {
         System.out.println("baseUrl = " + baseUrl);
-        SiteService siteService = new SiteService(ehrMobileDatabase);
+        SiteService siteService = SiteService.getInstance(ehrMobileDatabase);
         PatientsApolloClient.getApolloClient(baseUrl).query(
 
 
