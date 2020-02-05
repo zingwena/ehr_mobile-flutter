@@ -130,10 +130,12 @@ public class ArtVisitDTO implements Serializable {
         dto.setArtId(artVisit.getArtId());
         dto.setFamilyPlanningStatus(artVisit.getFamilyPlanningStatus() != null ?
                 artVisit.getFamilyPlanningStatus().getName() : null);
-        dto.setFollowUpStatus(artWhoStage.getFollowUpStatus() != null ? artWhoStage.getFollowUpStatus().getName() : null);
-        dto.setFunctionalStatus(artVisit.getFunctionalStatus() != null ? artVisit.getFunctionalStatus().getName() : null);
+        if(artWhoStage != null) {
+            dto.setFollowUpStatus(artWhoStage.getFollowUpStatus() != null ? artWhoStage.getFollowUpStatus().getName() : null);
+            dto.setStage(artWhoStage.getStage());
+        }
         dto.setLactatingStatus(artVisit.getLactatingStatus() != null ? artVisit.getLactatingStatus().getName() : null);
-        dto.setStage(artWhoStage.getStage());
+        dto.setFunctionalStatus(artVisit.getFunctionalStatus() != null ? artVisit.getFunctionalStatus().getName() : null);
         dto.setVisitStatus(artVisit.getVisitStatus() != null ? artVisit.getVisitStatus().getName() : null);
         dto.setVisitId(artVisit.getVisitId());
         dto.setVisitType(artVisit.getVisitType() != null ? artVisit.getVisitType().getName() : null);

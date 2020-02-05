@@ -442,7 +442,8 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
           new RoundedButton(text: "ART Visit ", selected: true),
           new RoundedButton(text: "TB Screening", onTap: (){
             Navigator.push(context,MaterialPageRoute(
-                builder: (context)=>  TbScreening()
+                builder: (context)=>    TbScreeningView(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+
             ));
 
           }
