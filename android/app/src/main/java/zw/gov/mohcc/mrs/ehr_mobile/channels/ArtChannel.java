@@ -87,7 +87,15 @@ public class ArtChannel {
                         }
                         if (methodCall.method.equals("getReasonForhivTest")) {
                             try {
-                                result.success(gson.toJson(artService.findByWorkAreaAndCategoryId(WorkArea.ART, APPLICATION_CONSTANTS.ART_CATEGORY_ID)));
+                                result.success(gson.toJson(artService.findByWorkAreaAndCategoryId(WorkArea.ART, APPLICATION_CONSTANTS.REASON_FOR_HIV_TEST_CATEGORY_ID)));
+
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("getArtSymptoms")) {
+                            try {
+                                result.success(gson.toJson(artService.findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, APPLICATION_CONSTANTS.ART_SYMPTOM_CATEGORY_ID)));
 
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
