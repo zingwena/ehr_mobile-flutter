@@ -80,7 +80,9 @@ class PersonDao extends BaseDao{
     inserter.set(lastName, map['lastname']);
 
     inserter.set(sex, map['sex']);
-    inserter.set(nationalId, map['identifications'][0]['number']);
+    for(Map id in map['identifications']){
+      inserter.set(nationalId, id['number']);
+    }
     inserter.set(birthDate, const CustomDateTimeConverter().fromEhrJson(map['birthdate']));
 
     inserter.set(selfIdentifiedGender, map['selfIdentifiedGender']);
