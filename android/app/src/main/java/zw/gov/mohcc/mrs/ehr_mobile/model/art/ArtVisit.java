@@ -3,16 +3,45 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitType;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FamilyPlanningStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FunctionalStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
+@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true)},
+        foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
+                parentColumns = "id",
+                childColumns = "artId"),
+                @ForeignKey(entity = Visit.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "id",
+                        childColumns = "visitId"),
+                @ForeignKey(entity = FunctionalStatus.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "functionalStatus_code"),
+                @ForeignKey(entity = ArtVisitStatus.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "visitStatus_code"),
+                @ForeignKey(entity = ArtVisitType.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "visitType_code"),
+                @ForeignKey(entity = LactatingStatus.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "lactatingStatus_code"),
+                @ForeignKey(entity = FamilyPlanningStatus.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "familyPlanningStatus_code")})
 public class ArtVisit extends BaseEntity {
 
     @NonNull

@@ -22,22 +22,15 @@ public class SexualHistory extends BaseEntity {
 
     @NonNull
     private String personId;
-
     private boolean sexuallyActive;
-
     @TypeConverters(DateConverter.class)
     private Date sexWithMaleDate;
-
     @TypeConverters(DateConverter.class)
     private Date sexWithFemaleDate;
-
     @TypeConverters(DateConverter.class)
     private Date date;
-
     private Integer numberOfSexualPartners;
-
     private Integer numberOfSexualPartnersLastTwelveMonths;
-
     @NonNull
     public String getPersonId() {
         return personId;

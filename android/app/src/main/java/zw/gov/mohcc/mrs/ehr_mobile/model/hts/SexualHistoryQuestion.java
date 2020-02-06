@@ -20,10 +20,8 @@ public class SexualHistoryQuestion extends BaseEntity {
 
     @NonNull
     private String sexualHistoryId;
-
     @Embedded
     private NameCodeResponse question;
-
     public SexualHistoryQuestion() {
     }
 

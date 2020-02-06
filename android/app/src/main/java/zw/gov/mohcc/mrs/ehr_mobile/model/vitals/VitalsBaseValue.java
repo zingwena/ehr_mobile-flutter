@@ -7,11 +7,12 @@ public class VitalsBaseValue extends VitalsBaseEntityId {
     @NonNull
     private Double value;
 
+    @NonNull
     public Double getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(@NonNull Double value) {
         this.value = value;
     }
 

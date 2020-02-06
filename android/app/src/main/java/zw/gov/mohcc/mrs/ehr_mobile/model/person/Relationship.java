@@ -26,14 +26,11 @@ public class Relationship extends BaseEntity {
 
     @NonNull
     private String personId;
-
     @NonNull
     private String memberId;
-
     @TypeConverters(RelationshipTypeConverter.class)
     @NonNull
     private RelationshipType relation;
-
     @TypeConverters(TypeOfContactConverter.class)
     private TypeOfContact typeOfContact;
 

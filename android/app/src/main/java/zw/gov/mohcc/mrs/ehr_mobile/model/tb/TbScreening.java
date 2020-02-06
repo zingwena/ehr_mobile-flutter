@@ -2,15 +2,22 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.tb;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 
-@Entity
+@Entity(indices = {@Index("visitId")},
+        foreignKeys = {
+                @ForeignKey(entity = Visit.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "id",
+                        childColumns = "visitId")})
 public class TbScreening extends BaseEntity {
 
     @NonNull
@@ -20,31 +27,32 @@ public class TbScreening extends BaseEntity {
     @TypeConverters(DateConverter.class)
     @NonNull
     private Date time;
+    @NonNull
     private Boolean fever;
+    @NonNull
     private Boolean coughing;
+    @NonNull
     private Boolean weightLoss;
+    @NonNull
     private Boolean nightSweats;
+    @NonNull
     private Boolean bmiUnderSeventeen;
 
     public TbScreening() {
     }
 
     @Ignore
-    public TbScreening(@NonNull String id, String visitId) {
+    public TbScreening(@NonNull String id, @NonNull String visitId) {
         super(id);
         this.visitId = visitId;
     }
 
-    @Ignore
-    public TbScreening(@NonNull String visitId) {
-        this.visitId = visitId;
-    }
-
+    @NonNull
     public String getVisitId() {
         return visitId;
     }
 
-    public void setVisitId(String visitId) {
+    public void setVisitId(@NonNull String visitId) {
         this.visitId = visitId;
     }
 
@@ -64,51 +72,57 @@ public class TbScreening extends BaseEntity {
         this.note = note;
     }
 
+    @NonNull
     public Date getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(@NonNull Date time) {
         this.time = time;
     }
 
+    @NonNull
     public Boolean getFever() {
         return fever;
     }
 
-    public void setFever(Boolean fever) {
+    public void setFever(@NonNull Boolean fever) {
         this.fever = fever;
     }
 
+    @NonNull
     public Boolean getCoughing() {
         return coughing;
     }
 
-    public void setCoughing(Boolean coughing) {
+    public void setCoughing(@NonNull Boolean coughing) {
         this.coughing = coughing;
     }
 
+    @NonNull
     public Boolean getWeightLoss() {
         return weightLoss;
     }
 
-    public void setWeightLoss(Boolean weightLoss) {
+    public void setWeightLoss(@NonNull Boolean weightLoss) {
         this.weightLoss = weightLoss;
     }
 
+    @NonNull
     public Boolean getNightSweats() {
         return nightSweats;
     }
 
-    public void setNightSweats(Boolean nightSweats) {
+    public void setNightSweats(@NonNull Boolean nightSweats) {
         this.nightSweats = nightSweats;
     }
 
+    @NonNull
     public Boolean getBmiUnderSeventeen() {
         return bmiUnderSeventeen;
     }
 
-    public void setBmiUnderSeventeen(Boolean bmiUnderSeventeen) {
+    public void setBmiUnderSeventeen(@NonNull Boolean bmiUnderSeventeen) {
         this.bmiUnderSeventeen = bmiUnderSeventeen;
     }
 

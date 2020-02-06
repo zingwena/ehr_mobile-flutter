@@ -9,38 +9,38 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.EntryPoint;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.HtsModel;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ReasonForNotIssuingResult;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(indices = {@Index("personId"), @Index(value = "visitId", unique = true), @Index("laboratoryInvestigationId"),
         @Index("entryPointId"), @Index("reasonForHivTestingId"), @Index("htsModelId"), @Index("reasonForNotIssuingResultId")},
-foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
-        parentColumns = "id",
-        childColumns = "personId"),
-        @ForeignKey(entity = Visit.class, onDelete = CASCADE,
+        foreignKeys = {@ForeignKey(entity = Person.class, onDelete = CASCADE,
                 parentColumns = "id",
-                childColumns = "visitId"),
-        @ForeignKey(entity = LaboratoryInvestigation.class, onDelete = CASCADE,
-                parentColumns = "id",
-                childColumns = "laboratoryInvestigationId"),
-        @ForeignKey(entity = EntryPoint.class, onDelete = CASCADE,
-                parentColumns = "code",
-                childColumns = "entryPointId"),
-        @ForeignKey(entity = HtsModel.class, onDelete = CASCADE,
-                parentColumns = "code",
-                childColumns = "htsModelId"),
-        @ForeignKey(entity = ReasonForNotIssuingResult.class, onDelete = CASCADE,
-                parentColumns = "code",
-                childColumns = "reasonForNotIssuingResultId"),
-})
+                childColumns = "personId"),
+                @ForeignKey(entity = Visit.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "visitId"),
+                @ForeignKey(entity = LaboratoryInvestigation.class, onDelete = CASCADE,
+                        parentColumns = "id",
+                        childColumns = "laboratoryInvestigationId"),
+                @ForeignKey(entity = EntryPoint.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "entryPointId"),
+                @ForeignKey(entity = HtsModel.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "htsModelId"),
+                @ForeignKey(entity = ReasonForNotIssuingResult.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "reasonForNotIssuingResultId"),
+        })
 
 public class Hts extends BaseEntity {
     @NonNull
