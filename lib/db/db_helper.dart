@@ -9,7 +9,7 @@ class DatabaseHelper {
 
   initDb() async {
     String documentsDirectory = await getDatabasesPath();
-    String path = join(documentsDirectory, 'impMob');
+    String path = join(documentsDirectory, 'impMobi');
     _adapter = new SqfliteAdapter(path);
     await _adapter.connect();
     return _adapter;

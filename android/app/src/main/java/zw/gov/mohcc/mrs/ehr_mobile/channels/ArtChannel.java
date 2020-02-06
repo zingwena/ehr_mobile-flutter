@@ -151,6 +151,16 @@ public class ArtChannel {
                                 e.printStackTrace();
                             }
                         }
+                        if (methodCall.method.equals("removeArtSymptom")) {
+                            Log.i(TAG, "ArtSymptom ID object from flutter " + arguments);
+                            try {
+                                artService.removeArtSymptom(arguments);
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
                         if (methodCall.method.equals("getArtNewOi")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
@@ -162,10 +172,20 @@ public class ArtChannel {
                             }
                         }
                         if (methodCall.method.equals("saveArtNewOi")) {
-                            Log.i(TAG, "ArtSymptom object from flutter " + arguments);
+                            Log.i(TAG, "Art New OI object from flutter " + arguments);
                             try {
                                 ArtOi artOi = gson.fromJson(arguments, ArtOi.class);
                                 artService.saveArtNewOi(artOi);
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("removeArtNewOi")) {
+                            Log.i(TAG, "Art New OI ID from flutter " + arguments);
+                            try {
+                                artService.removeArtNewOi(arguments);
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());

@@ -17,7 +17,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity(indices = {@Index(value = "personId", unique = true), @Index("code")},
+@Entity(indices = {@Index(value = "personId"), @Index("code")},
         foreignKeys = {@ForeignKey(entity = Person.class, onDelete = ForeignKey.CASCADE,
                 parentColumns = "id",
                 childColumns = "personId"),

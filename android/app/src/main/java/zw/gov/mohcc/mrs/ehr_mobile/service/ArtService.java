@@ -257,6 +257,13 @@ public class ArtService {
         ehrMobileDatabase.artSymptomDao().save(artSymptom);
     }
 
+    public void removeArtSymptom(String artSymptomId) {
+
+        Log.d(TAG, "Deleting art symptom record : " + artSymptomId);
+
+        ehrMobileDatabase.artSymptomDao().deleteById(artSymptomId);
+    }
+
     public List<ArtOi> getArtNewOi(String personId) {
 
         Log.d(TAG, "Fetching art record using person ID : " + personId);
@@ -290,6 +297,13 @@ public class ArtService {
         artOi.setId(UUID.randomUUID().toString());
 
         ehrMobileDatabase.artOiDao().save(artOi);
+    }
+
+    public void removeArtNewOi(String artOiId) {
+
+        Log.d(TAG, "Deleting art new OI record : " + artOiId);
+
+        ehrMobileDatabase.artOiDao().deleteById(artOiId);
     }
 
     public ArtVisitDTO getArtVisit(String personId) {
