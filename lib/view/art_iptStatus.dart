@@ -9,10 +9,13 @@ import 'package:ehr_mobile/model/reason.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/landing_screen.dart';
+import 'package:ehr_mobile/view/art_iptStatusOverView.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'art_symptoms.dart';
 
 
 class ArtIptStatusView extends StatefulWidget {
@@ -66,13 +69,6 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsIptStatuses;
   List<Reason> _iptStatusList = List();
 
-
-
-
-
-
-
-
   int _reason = 0;
   bool reasonOption = false;
 
@@ -89,13 +85,11 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
 
   @override
   void initState() {
-
-    //getAge(widget.person);
     getFacilityName();
     getArtIpt(widget.personId);
-   /* getIptReason();
-    getIptStatus();*/
-    getFunctionalStatus();
+    getReasons();
+    getAge(widget.person);
+    getIptStatus();
     super.initState();
   }
 
@@ -106,7 +100,6 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -115,28 +108,18 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
     }
   }
 
-  Future<void> getFunctionalStatus() async {
+  Future<void> getReasons() async {
     String response;
     try {
       response = await artChannel.invokeMethod('getIptReason');
       setState(() {
         _functionalStatus = response;
-        print("Here is the FUNCTIONAL STATUS STRING RETURNED"+ _functionalStatus);
-
         functionalStatuses = jsonDecode(_functionalStatus);
-        print("Here is the IPT FUNCTIONAL STATUS dynamic list RETURNED"+ functionalStatuses.toString());
-
         _dropDownFunctionalStatuses = Reason.mapFromJson(functionalStatuses);
-        print("Here is the IPT FUNCTIONAL STATUS after mapping list RETURNED"+ _dropDownFunctionalStatuses.toString());
-
         _dropDownFunctionalStatuses.forEach((e) {
           _functionalStatusList.add(e);
         });
         _dropDownMenuItemsReasons = getDropDownMenuItemsReasonList();
-        print("Here is the IPT FUNCTIONAL STATUS dropdown mapping list RETURNED"+ _dropDownMenuItemsReasons.toString());
-
-
-
       });
     } catch (e) {
       print('--------------------Something went wrong in functional status list $e');
@@ -149,22 +132,12 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
       response = await artChannel.invokeMethod('getIptStatus');
       setState(() {
         _iptStatusString = response;
-        print("Here is the IPT STATUS STRING RETURNED"+ _iptStatusString);
-
         iptStatuses = jsonDecode(_iptStatusString);
-        print("Here is the IPT  STATUS dynamic list RETURNED"+ iptStatuses.toString());
-
         _dropDownIptStatuses = Reason.mapFromJson(iptStatuses);
-        print("Here is the IPT  STATUS after mapping list RETURNED"+ _dropDownIptStatuses.toString());
-
         _dropDownIptStatuses.forEach((e) {
           _iptStatusList.add(e);
         });
         _dropDownMenuItemsIptStatuses = getDropDownMenuItemsIptStatusList();
-        print("Here is the IPT  STATUS dropdown mapping list RETURNED"+ _dropDownMenuItemsReasons.toString());
-
-
-
       });
     } catch (e) {
       print('--------------------Something went wrong in functional status list $e');
@@ -176,10 +149,11 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
     var art_visit_response;
     try {
       art_visit_response = await artChannel.invokeMethod('getArtIpt', personId);
-      print('pppppppppppppppppppppppppppppppppppp IPT response'+ art_visit_response);
+      print("KKKKKKKKKKK art ipt string here "+ _artIpt.toString());
+
       setState(() {
         _artIpt = ArtIpt.fromJson(jsonDecode(art_visit_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF art IPT  at first'+ _artIpt.toString());
+        print("KKKKKKKKKKK art ipt here "+ _artIpt.toString());
       });
 
     } catch (e) {
@@ -240,6 +214,49 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                     padding: const EdgeInsets.all(6.0),
                     child: Text("Art IPT Status", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                  ),
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
+                            ),
+                          ])
                   ),
                   _buildButtonsRow(),
                   Expanded(child: WillPopScope(
@@ -352,7 +369,14 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                                                                 fontWeight: FontWeight.w500),
                                                           ),
 
-                                                          onPressed: () {
+                                                          onPressed: () async{
+                                                            _artIpt.reason = _currentReason;
+                                                            _artIpt.iptStatus = _currentIptStatus;
+
+
+                                                           // await saveIptStatus(_artIpt);
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>   ArtSymptoms()
+                                                            ));
 
 
                                                           },
@@ -388,6 +412,24 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
         ],
       ),
     );
+  }
+
+
+  Future<void> saveIptStatus(ArtIpt artIpt) async {
+    var art_ipt_response;
+    try {
+      print('pppppppppppppppppppppppppppppppppppp art ipt  to be saved '+ art_ipt_response.toString());
+      art_ipt_response = await artChannel.invokeMethod('saveArtIpt', jsonEncode(artIpt));
+      print('pppppppppppppppppppppppppppppppppppp art ipt  response response'+ art_ipt_response);
+      setState(() {
+        artIptResponse = ArtIpt.fromJson(jsonDecode(art_ipt_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF'+ artIptResponse.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit save method  $e');
+    }
+
   }
 
   Widget _buildButtonsRow() {

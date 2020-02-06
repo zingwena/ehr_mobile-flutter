@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/artipt.dart';
 import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
@@ -31,13 +32,13 @@ import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 
 class ArtIptStatusOverview extends StatefulWidget {
-  final ArtInitiation artInitiation;
+  final ArtIpt artIpt;
   final Person person;
   final String personId;
   final String visitId;
   final String htsId;
   final HtsRegistration htsRegistration;
-  ArtIptStatusOverview(this.artInitiation, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  ArtIptStatusOverview(this.artIpt, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
@@ -65,60 +66,18 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
 
   @override
   void initState() {
-
-    print(_patient.toString());
-    getArtVist(widget.personId);
-    getRegimen(widget.artInitiation.artRegimenId);
-    getReason(widget.artInitiation.artReasonId);
-    //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
     getFacilityName();
     super.initState();
   }
 
 
-  Future<void> getEntryPoint(String entrypointId) async {
-    String entrypoint;
-
-    try {
-      entrypoint =
-      await htsChannel.invokeMethod('getEntrypoint', entrypointId);
-
-
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      _entrypoint = entrypoint;
-    });
-
-
-  }
-  Future<void> getRegimen(String regId) async {
-    String regimenname;
-
-    try {
-      regimenname =
-      await artChannel.invokeMethod('getRegimenName', regId);
-
-
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      regimen_name = regimenname;
-    });
-
-
-  }
   Future<void> getArtVist(String  personId) async {
     var art_visit_response;
     try {
       art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
-      print('pppppppppppppppppppppppppppppppppppp art visit response'+ art_visit_response);
       setState(() {
         _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artVisit.toString());
       });
 
     } catch (e) {
@@ -126,23 +85,7 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
     }
 
   }
-  Future<void> getReason(String reasonId) async {
-    String reason;
 
-    try {
-      reason =
-      await artChannel.invokeMethod('getReason', reasonId);
-
-
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      art_reason = reason;
-    });
-
-
-  }
   Future<void>getAge(Person person)async{
     String response;
     try{
@@ -210,7 +153,7 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("ART Registration OverView", style: TextStyle(
+                    child: Text("ART IptStatus OverView", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   Container(
@@ -303,11 +246,11 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.artInitiation.line),
+                                                                    text: widget.artIpt.iptStatus),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Line",
-                                                                    hintText: "Line"
+                                                                    labelText: "Ipt Status",
+                                                                    hintText: "Ipt Status"
                                                                 ),
                                                               ),
                                                             ),
@@ -318,11 +261,11 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        regimen_name)),
+                                                                        widget.artIpt.reason)),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(Icons.credit_card, color: Colors.blue),
-                                                                    labelText: "Regimen",
-                                                                    hintText: "Regimen"
+                                                                    labelText: "Reason",
+                                                                    hintText: "Reason"
                                                                 ),
                                                               ),
                                                             ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 
 import 'package:ehr_mobile/landing_screen.dart';
+import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/artvisitstatus.dart';
 import 'package:ehr_mobile/model/artvisittype.dart';
@@ -14,6 +15,7 @@ import 'package:ehr_mobile/model/lactatingstatus.dart';
 import 'package:ehr_mobile/model/person.dart';
 
 import 'package:ehr_mobile/view/patient_address.dart';
+import 'package:ehr_mobile/view/rounded_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,6 +67,8 @@ class _ArtVisit extends State<ArtVisitView> {
   bool visitStatusIsValid=false;
   bool familyPlanningStatusIsValid=false;
   bool pregnancyStatusIsValid=false;
+
+  Age age;
 
   bool _formValid=false;
   bool showError=false;
@@ -129,6 +133,7 @@ class _ArtVisit extends State<ArtVisitView> {
    getVisitStatus();
    getFamilyPlanningStatus();
    getPregnancyStatus();
+   getAge(widget.person);
     super.initState();
   }
 
@@ -236,6 +241,21 @@ class _ArtVisit extends State<ArtVisitView> {
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
+    }
+  }
+
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
     }
   }
 
@@ -397,7 +417,50 @@ class _ArtVisit extends State<ArtVisitView> {
                     child: Text("Art Visit", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                 // _buildButtonsRow(),
+                  Container(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.date_range, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.verified_user, size: 25.0, color: Colors.white,),
+                            ),
+                          ])
+                  ),
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -824,6 +887,10 @@ class _ArtVisit extends State<ArtVisitView> {
   }
 
 
+
+
+
+
   Future<void> saveArtVist(ArtVisit artVisit) async {
     var art_visit_response;
     try {
@@ -906,5 +973,45 @@ class _ArtVisit extends State<ArtVisitView> {
     });
   }
 
+
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          new RoundedButton(text: "Art Visit", onTap: () {
+
+            if(_artVisit.visitType == null ){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
+              );
+            } else {
+              print("ART DTO DATE IS NOT NULL");
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+              ));
+            }
+          }
+
+            // ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
+
+          ),
+
+          new RoundedButton(text: "ART Registration",),
+          new RoundedButton(text: "ART Initiation", selected: true,
+          ),
+
+
+
+        ],
+      ),
+    );
+  }
+
 }
+
 

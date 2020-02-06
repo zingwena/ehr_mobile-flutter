@@ -71,11 +71,10 @@ class ArtOverviewState extends State<ArtRegOverview> {
     dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateEnrolled);
     dateOfHivTest = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfHivTest);
     dateHivConfirmed =  DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateHivConfirmed);
-    dateOfRetest =   DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateRetested);
-    print(_patient.toString());
-  //  getEntryPoint(widget.htsRegistration.entryPointId);
+    dateOfRetest =   DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateRetested);;
     getAge(widget.person);
     getFacilityName();
+    getArtInitiation(widget.personId);
     super.initState();
   }
 

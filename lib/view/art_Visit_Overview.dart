@@ -442,7 +442,7 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
         children: <Widget>[
 
           new RoundedButton(text: "ART Visit ", selected: true),
-          new RoundedButton(text: "TB Screening", onTap: (){
+          new RoundedButton(text: "IPT Status", onTap: (){
             Navigator.push(context,
                 MaterialPageRoute(
                 builder: (context)=>    ArtIptStatusView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)
