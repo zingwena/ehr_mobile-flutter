@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:ehr_mobile/db/dao/hts_dao/hts_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArtReasonDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArtStatusDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/ArtVisitStatusDao.dart';
@@ -44,11 +43,8 @@ import 'package:ehr_mobile/db/dao/meta_dao/country_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/marital_status_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/nationality_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/occupation_dao.dart';
-import 'package:ehr_mobile/db/dao/person_dao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/town_dao.dart';
-import 'package:ehr_mobile/db/dao/visit_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
-import 'package:ehr_mobile/graphql/graphql_queries.dart';
 import 'package:ehr_mobile/graphql/queue_query.dart';
 import 'package:ehr_mobile/graphql/site_query.dart';
 import 'package:ehr_mobile/graphql/ward_query.dart';
