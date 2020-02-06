@@ -176,6 +176,28 @@ class PersonQuery {
                   artNumber
                   dateEnrolled
                   dateOfHivTest
+                  date
+                  enlargedLymphNode
+                  pallor
+                  jaundice
+                  cyanosis
+                  mentalStatus
+                  centralNervousSystem
+                  tracing
+                  followUp
+                  hivStatus
+                  relation
+                  dateOfDisclosure
+                  reason
+                  symptoms{
+                    artSymptomId
+                    date
+                    present
+                    Symptom{
+                      id
+                      name
+                    }
+                  }
                   stages{
                     artStageId
                     stage
