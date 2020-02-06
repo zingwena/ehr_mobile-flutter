@@ -43,6 +43,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtVisit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
@@ -112,6 +113,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtCurrentStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtIptDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtLinkageFromDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtOiDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtReasonDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtSymptomDao;
@@ -205,7 +207,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         Diagnosis.class, QuestionCategory.class, Question.class, SexualHistoryQuestion.class, TestKitBatchIssue.class,
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
         ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class,
-        ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class, ArtAppointment.class, FollowUpReason.class}, version = 11, exportSchema = false)
+        ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class, ArtAppointment.class, FollowUpReason.class,
+        ArtOi.class}, version = 11, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -381,4 +384,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract ArtAppointmentDao artAppointmentDao();
 
     public abstract FollowUpReasonDao followUpReasonDao();
+
+    public abstract ArtOiDao artOiDao();
 }
