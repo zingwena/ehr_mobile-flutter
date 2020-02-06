@@ -140,6 +140,9 @@ Future <String> saveSexualHistoryQuestion(Map qns,String sexualHistoryId) async 
   var adapter = await dbHandler.getAdapter();
   var shq = SexualHistoryQuestionDao(adapter);
   for(Map qn in qns['questions']){
-    shq.insertFromEhr(qn,sexualHistoryId);
+    if(qn['sexualHistoryQuestionId']!=null){
+      shq.insertFromEhr(qn,sexualHistoryId);
+    }
+
   }
 }
