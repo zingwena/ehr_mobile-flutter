@@ -125,7 +125,7 @@ public class HistoryService {
         HtsScreeningDTO dto = null;
         // retrieve person last negative result this applies to both test in ehr and
         // outside it
-        final String negativeHivResult = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT;
+        final String negativeHivResult = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT_LITERAL;
         final Set<String> hivTests = new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.HIV_TESTS));
 
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
@@ -144,7 +144,7 @@ public class HistoryService {
                     .findLaboratoryInvestigationById(hts.getLaboratoryInvestigationId());
             personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
 
-            dto.setResult(ehrMobileDatabase.resultDao().findById(personInvestigation.getResultId()).getName());
+            dto.setResult(personInvestigation.getResult());
 
         }
         // patient has already done hts screening previously and has no test in EHR &lt
@@ -191,8 +191,8 @@ public class HistoryService {
             }
             dto.setPersonId(personId);
             dto.setViralLoadDone(ActivityStatus.DONE);
-            dto.setViralLoad(StringUtils.isNoneBlank(viralLoadInvestigation.getResultId())
-                    ? Integer.valueOf(viralLoadInvestigation.getResultId())
+            dto.setViralLoad(StringUtils.isNoneBlank(viralLoadInvestigation.getResult())
+                    ? Integer.valueOf(viralLoadInvestigation.getResult())
                     : null);
             dto.setViralLoadDate(viralLoadInvestigation.getDate());
         }
@@ -209,8 +209,8 @@ public class HistoryService {
             }
             dto.setPersonId(personId);
             dto.setCd4Done(ActivityStatus.DONE);
-            dto.setCd4Count(StringUtils.isNoneBlank(cd4CountInvestigation.getResultId())
-                    ? Integer.valueOf(cd4CountInvestigation.getResultId())
+            dto.setCd4Count(StringUtils.isNoneBlank(cd4CountInvestigation.getResult())
+                    ? Integer.valueOf(cd4CountInvestigation.getResult())
                     : null);
             dto.setCd4CountDate(cd4CountInvestigation.getDate());
         }

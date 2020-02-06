@@ -237,12 +237,12 @@ public class VisitService {
                 // String testName, Date testDate, String result
                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
 
-                PatientSummaryDTO.InvestigationSummaryDTO investigationSummaryDTO =
+                /*PatientSummaryDTO.InvestigationSummaryDTO investigationSummaryDTO =
                         new PatientSummaryDTO.InvestigationSummaryDTO(
                                 ehrMobileDatabase.laboratoryTestDao().findById(investigation.getLaboratoryTestId()).getName(),
                                 personInvestigation.getDate(),
                                 ehrMobileDatabase.resultDao().findById(personInvestigation.getResultId()).getName());
-                investigationSummaryDTOS.add(investigationSummaryDTO);
+                investigationSummaryDTOS.add(investigationSummaryDTO);*/
             }
             summary.setInvestigations(investigationSummaryDTOS);
         }
