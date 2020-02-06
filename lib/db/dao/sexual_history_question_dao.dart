@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -65,6 +66,28 @@ class SexualHistoryQuestionDao extends BaseDao{
       sexualHistoryQnList.add(sexualHistoryQn);
     }
     return sexualHistoryQnList;
+  }
+
+  Future insertFromEhr(Map map,String sexualHistory) async {
+
+    log.i(map);
+    Insert inserter = new Insert(tableName);
+
+    inserter.set(id, map['sexualHistoryQuestionId']);
+    inserter.set(sexualHistoryId, sexualHistory);
+    inserter.set(responseType, map['question']['responseType']);
+
+    inserter.set(code, map['question']['id']);
+    inserter.set(name, map['question']['name']);
+
+    inserter.set(status,'IMPORTED');
+
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
   }
 
 }

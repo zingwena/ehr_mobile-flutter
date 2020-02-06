@@ -28,6 +28,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtVisit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
@@ -230,7 +231,7 @@ public class ArtService {
         Log.d(TAG, "Art record retrieved : " + art);
 
         List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao()
-                .findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, "15");
+                .findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, APPLICATION_CONSTANTS.ART_SYMPTOM_CATEGORY_ID);
         Log.d(TAG, "List of art symptoms : " + artSymptomQuestions);
 
         List<ArtSymptom> artSymptoms = new ArrayList<>();
@@ -254,6 +255,41 @@ public class ArtService {
         artSymptom.setId(UUID.randomUUID().toString());
 
         ehrMobileDatabase.artSymptomDao().save(artSymptom);
+    }
+
+    public List<ArtOi> getArtNewOi(String personId) {
+
+        Log.d(TAG, "Fetching art record using person ID : " + personId);
+
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+
+        Log.d(TAG, "Art record retrieved : " + art);
+
+        List<Question> artOiQuestions = ehrMobileDatabase.questionDao()
+                .findByWorkAreaAndCategoryId(WorkArea.ART, APPLICATION_CONSTANTS.ART_NEW_OI_CATEGORY_ID);
+        Log.d(TAG, "List of art new oi : " + artOiQuestions);
+
+        List<ArtOi> artOis = new ArrayList<>();
+        for (Question question : artOiQuestions) {
+
+            ArtOi artOi = ehrMobileDatabase.artOiDao().findByArtIdAndQuestionId(question.getCode(), art.getId());
+            if (artOi != null) {
+                artOis.add(artOi);
+            } else {
+                artOis.add(new ArtOi(
+                        null, null, art.getId(), new NameCode(question.getCode(), question.getName())));
+            }
+
+        }
+        return artOis;
+    }
+
+    public void saveArtNewOi(ArtOi artOi) {
+
+        Log.d(TAG, "Art New OI record : " + artOi);
+        artOi.setId(UUID.randomUUID().toString());
+
+        ehrMobileDatabase.artOiDao().save(artOi);
     }
 
     public ArtVisitDTO getArtVisit(String personId) {

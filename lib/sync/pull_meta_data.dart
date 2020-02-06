@@ -22,6 +22,7 @@ import 'package:ehr_mobile/db/dao/meta_dao/InvestigationDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationResultDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/InvestigationTestkitDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/IptReasonDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/IptStatusDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LaboratoryResultDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LaboratoryTestDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/LactatingStatusDao.dart';
@@ -267,6 +268,9 @@ Future<String> pullMetaData(ProgressDialog progressDialog,String url, String aut
   progressDialog.update(message: 'Fetching Ipt Reason...');
   await fetchMeta(IptReasonDao(adapter), '$url/ipt-reasons', authToken);
 
+  progressDialog.update(message: 'Fetching Ipt Status...');
+  await fetchMeta(IptStatusDao(adapter), '$url/ipt-statuses', authToken);
+
   var status='$DONE_STATUS';
   return status;
 }
@@ -339,6 +343,8 @@ Future<String> initDb(SqfliteAdapter adapter) async {
   await ArtVisitStatusDao(adapter).removeAll();
 
   await IptReasonDao(adapter).removeAll();
+
+  await IptStatusDao(adapter).removeAll();
 
   status = '$DONE_STATUS';
   return status;
