@@ -2,14 +2,14 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import androidx.room.Index;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 
 /**
  * @author kombo on 8/21/19
  */
-@Entity
+@Entity(indices = {@Index(value = "code", unique = true)})
 public class TestKit extends BaseNameModel {
 
     private String description;

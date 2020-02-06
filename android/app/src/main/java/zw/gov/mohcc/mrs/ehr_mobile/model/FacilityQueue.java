@@ -1,11 +1,10 @@
-package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
+package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
 @Entity

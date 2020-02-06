@@ -3,18 +3,28 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
-import java.util.Date;
-
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.WhoStageConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
+@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true), @Index("code")},
+        foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
+                parentColumns = "id",
+                childColumns = "artId"),
+                @ForeignKey(entity = Visit.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "id",
+                        childColumns = "visitId"),
+                @ForeignKey(entity = FollowUpStatus.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "code")})
 public class ArtWhoStage extends BaseEntity {
 
     @NonNull

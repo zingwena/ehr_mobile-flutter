@@ -1,9 +1,11 @@
-package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
+package zw.gov.mohcc.mrs.ehr_mobile.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -11,10 +13,17 @@ import java.util.Date;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.PatientTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
+@Entity(indices = {@Index(value = "personId"), @Index("code")},
+        foreignKeys = {@ForeignKey(entity = Person.class, onDelete = ForeignKey.CASCADE,
+                parentColumns = "id",
+                childColumns = "personId"),
+                @ForeignKey(entity = Facility.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "code")})
 public class Visit extends BaseEntity {
 
     @NonNull

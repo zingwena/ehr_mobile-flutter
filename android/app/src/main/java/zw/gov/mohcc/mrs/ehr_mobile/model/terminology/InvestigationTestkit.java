@@ -3,11 +3,21 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 
-@Entity
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(indices = {@Index("investigationId"), @Index("testKitId")},
+        foreignKeys = {@ForeignKey(entity = Investigation.class, onDelete = CASCADE,
+                parentColumns = "id",
+                childColumns = "investigationId"),
+                @ForeignKey(entity = TestKit.class, onDelete = CASCADE,
+                        parentColumns = "code",
+                        childColumns = "testKitId")})
 public class InvestigationTestkit extends BaseEntity {
 
     private String investigationId;

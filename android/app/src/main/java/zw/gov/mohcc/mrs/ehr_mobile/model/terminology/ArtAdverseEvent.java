@@ -3,11 +3,12 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 
-@Entity
+@Entity(indices = {@Index(value = "statusId", unique = true),
+        @Index(value = "code", unique = true), @Index(value = "name", unique = true)})
 public class ArtAdverseEvent extends BaseEntity {
 
     private String statusId;
@@ -49,5 +50,14 @@ public class ArtAdverseEvent extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "ArtAdverseEvent{" +
+                "statusId='" + statusId + '\'' +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

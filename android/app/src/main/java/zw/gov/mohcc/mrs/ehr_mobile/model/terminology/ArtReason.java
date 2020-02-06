@@ -8,10 +8,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(/*indices = {@Index("artStatusId")},
+@Entity(indices = {@Index("artStatusId"), @Index(value = "code", unique = true)},
         foreignKeys = {@ForeignKey(entity = ArtStatus.class, onDelete = CASCADE,
                 parentColumns = "code",
-                childColumns = "artStatusId")}*/)
+                childColumns = "artStatusId")})
 public class ArtReason extends BaseNameModel {
 
     private String artStatusId;

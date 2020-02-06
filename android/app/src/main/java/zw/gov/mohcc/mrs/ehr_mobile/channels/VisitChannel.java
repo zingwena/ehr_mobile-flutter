@@ -11,8 +11,7 @@ import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSummaryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
-import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.service.AppWideService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 

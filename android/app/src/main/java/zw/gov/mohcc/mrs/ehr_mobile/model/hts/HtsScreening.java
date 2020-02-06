@@ -8,11 +8,11 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.ActivityStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -24,19 +24,13 @@ public class HtsScreening extends BaseEntity {
 
     @NonNull
     private String visitId;
-
     private boolean testedBefore;
-
     private Boolean art;
-
     private String result;
-
     @TypeConverters(DateConverter.class)
     private Date dateLastTested;
-
     @TypeConverters(DateConverter.class)
     private Date dateLastNegative;
-
     private String artNumber;
 
     @TypeConverters(ActivityStatusConverter.class)

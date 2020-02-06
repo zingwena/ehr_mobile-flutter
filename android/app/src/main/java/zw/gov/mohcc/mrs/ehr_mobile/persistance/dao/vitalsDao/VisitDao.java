@@ -5,11 +5,10 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.Date;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 
 @Dao
 public interface VisitDao {

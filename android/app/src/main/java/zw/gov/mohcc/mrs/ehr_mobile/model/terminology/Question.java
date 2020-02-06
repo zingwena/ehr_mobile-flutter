@@ -2,13 +2,18 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.QuestionType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseNameModel;
 
-@Entity(indices = {@Index(value = "code", unique = true)})
+@Entity(indices = {@Index(value = "code", unique = true), @Index(value = "categoryId")},
+        foreignKeys = {
+                @ForeignKey(entity = Country.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "categoryId")})
 public class Question extends BaseNameModel {
 
     @NonNull
@@ -41,5 +46,13 @@ public class Question extends BaseNameModel {
 
     public void setType(QuestionType type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString().concat("Question{" +
+                "categoryId='" + categoryId + '\'' +
+                ", type=" + type +
+                '}');
     }
 }

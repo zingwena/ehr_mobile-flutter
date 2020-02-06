@@ -8,13 +8,13 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.RelationshipTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RelationshipType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.DisclosureMethod;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.RelationshipTypeConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 

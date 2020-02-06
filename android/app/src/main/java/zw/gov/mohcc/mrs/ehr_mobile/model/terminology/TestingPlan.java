@@ -2,8 +2,9 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 
-@Entity
+@Entity(indices = {@Index(value = "id", unique = true)})
 public class TestingPlan extends NameIdModel {
 
     public TestingPlan() {
