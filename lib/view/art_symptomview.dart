@@ -11,11 +11,9 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 
 class ArtSymptomView extends StatefulWidget{
   ArtSymptom artSymptom;
-  String sexualHistoryId;
-  Response question;
   String personId;
   bool isQuestion;
-  ArtSymptomView(this.artSymptom, this.sexualHistoryId, this.personId, this.isQuestion);
+  ArtSymptomView(this.artSymptom,  this.personId, this.isQuestion);
 
   @override
   State createState() {
@@ -28,6 +26,7 @@ class ArtSymptomState extends State<ArtSymptomView>{
   static const htsChannel =
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   String sexualHistoryDtoId ;
+  bool _artsymptom;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,20 +43,24 @@ class ArtSymptomState extends State<ArtSymptomView>{
               width: 250,
             ),
           ),
-          widget.isQuestion == true ?RadioButtonGroup(
+              Checkbox(
+                value: _artsymptom,
+                onChanged: _onArtSymptomChanged
+              )
+        /*  widget.isQuestion == true ?RadioButtonGroup(
             orientation: GroupedButtonsOrientation.HORIZONTAL,
             margin: const EdgeInsets.only(left: 12.0),
             onSelected: (String selected) => setState(() {
               _picked = selected;
-              widget.sexualHistoryView.question.responseType = _picked;
-              Response _response = Response(widget.sexualHistoryView.question.code, widget.sexualHistoryView.question.name, widget.sexualHistoryView.question.responseType);
-              SexualHistoryDto sexualHistorydto = SexualHistoryDto(widget.personId, widget.sexualHistoryId, _response);
+             // widget.sexualHistoryView.question.responseType = _picked;
+              //Response _response = Response(widget.sexualHistoryView.question.code, widget.sexualHistoryView.question.name, widget.sexualHistoryView.question.responseType);
+              //SexualHistoryDto sexualHistorydto = SexualHistoryDto(widget.personId, widget.sexualHistoryId, _response);
               saveSexualHistoryDto(sexualHistorydto);
             }),
             labels: <String>[
               "YES",
               "NO",
-              "REFUSED"
+
             ],
             picked: _picked,
             itemBuilder: (Radio rb, Text txt, int i) {
@@ -68,12 +71,20 @@ class ArtSymptomState extends State<ArtSymptomView>{
                 ],
               );
             },
-          ): Text(widget.sexualHistoryView.question.responseType)
+          ): Text(widget.sexualHistoryView.question.responseType)*/
         ],
       ),
     );
 
   }
+
+  void _onArtSymptomChanged(bool value) {
+    setState(() {
+      _artsymptom = value;
+
+    });
+  }
+
 
   Future<void>saveSexualHistoryDto(SexualHistoryDto sexualHistoryview)async{
     var response;

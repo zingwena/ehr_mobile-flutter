@@ -374,8 +374,9 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                                                             _artIpt.iptStatus = _currentIptStatus;
 
 
-                                                           // await saveIptStatus(_artIpt);
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>   ArtSymptoms()
+                                                           await saveIptStatus(_artIpt);
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>  ArtSymptoms(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId,
+                                                                widget.person)
                                                             ));
 
 

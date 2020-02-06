@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 import '../sidebar.dart';
+import 'art_symptomview.dart';
 
 class ArtSymptoms extends StatefulWidget {
   final String htsid;
@@ -24,10 +25,9 @@ class ArtSymptoms extends StatefulWidget {
   final HtsRegistration htsRegistration;
   final String visitId;
   final Person person;
-  final String sexualHistoryId;
 
   ArtSymptoms(this.personId, this.htsid, this.htsRegistration, this.visitId,
-      this.person, this.sexualHistoryId);
+      this.person);
 
   @override
   State createState() {
@@ -69,7 +69,7 @@ class _ArtSymptomState extends State<ArtSymptoms> {
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
   String purposeOfTestId;
-  List<SexualHistoryView> _entryPointList = List();
+  List<ArtSymptom> _entryPointList = List();
   int _question_response = 0;
   String response;
   int random_number;
@@ -163,13 +163,16 @@ class _ArtSymptomState extends State<ArtSymptoms> {
       await artChannel.invokeMethod('getArtSymptom', patientId);
       setState(() {
         _entryPoint = response;
+        print("Art Symptoms list returned as string @@@@@@@@@@@" + _entryPointList.toString());
+
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = ArtSymptom.mapFromJson(entryPoints);
+        print("Art Symptoms list returned after mapping @@@@@@@@@@@" + _entryPointList.toString());
+
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        print("Art Symptoms list returned @@@@@@@@@@@" +
-            _entryPointList.toString());
+        print("Art Symptoms list returned @@@@@@@@@@@" + _entryPointList.toString());
       });
     } catch (e) {
       print("Exception thrown in getsexualhistory view method" + e);
@@ -348,7 +351,7 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                                       child: new IntrinsicHeight(
                                         child: Column(
                                           children: <Widget>[
-                                            getQuestions(_entryPointList, widget.sexualHistoryId, widget.personId),
+                                            getArtSymptomWidgets(_entryPointList,  widget.personId),
                                             Row(
                                               children: <Widget>[
                                                 Expanded(
@@ -411,12 +414,12 @@ class _ArtSymptomState extends State<ArtSymptoms> {
 
 }
 
-Widget getQuestions(List<ArtSymptom> artsymptoms, String sexualHistoryId, String personId) {
+Widget getArtSymptomWidgets(List<ArtSymptom> artsymptoms,String personId) {
 
   return new Column(
       children: artsymptoms
           .map(
-              (item) => SexualHistoryQuestionView(item, sexualHistoryId, personId, true)
+              (item) => ArtSymptomView(item,  personId, true)
       )
           .toList());
 }

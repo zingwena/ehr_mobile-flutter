@@ -886,21 +886,12 @@ class _ArtVisit extends State<ArtVisitView> {
     );
   }
 
-
-
-
-
-
   Future<void> saveArtVist(ArtVisit artVisit) async {
     var art_visit_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art visit object '+ artVisit.toString());
-
       art_visit_response = await artChannel.invokeMethod('saveArtVisit', jsonEncode(artVisit));
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_visit_response);
       setState(() {
         _artVisitResponse = ArtVisit.fromJson(jsonDecode(art_visit_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artVisitResponse.toString());
       });
 
     } catch (e) {
