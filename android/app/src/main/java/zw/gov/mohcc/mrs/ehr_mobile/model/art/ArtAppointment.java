@@ -3,26 +3,36 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
+@Entity(indices = {@Index(value = "artId"), @Index(value = "followUpReason_code"), @Index(value = "appointmentOutcome_code")},
+        foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
+                parentColumns = "id",
+                childColumns = "artId"),
+                @ForeignKey(entity = FollowUpReason.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "followUpReason_code"),
+                @ForeignKey(entity = FollowUpReason.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "appointmentOutcome_code")})
 public class ArtAppointment extends BaseEntity {
 
-    /**
-     * all name code meta data are FollowUpReason
-     */
     @NonNull
     private String artId;
     @Embedded(prefix = "reason_")
     private NameCode reason;
     @TypeConverters(DateConverter.class)
+    @NonNull
     private Date date;
     @Embedded(prefix = "followUpReason_")
     private NameCode followUpReason;

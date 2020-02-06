@@ -91,20 +91,35 @@ public class PatientSummaryDTO implements Serializable {
 
     public static class ValueDate {
 
-        private final String value;
+        private final Double value;
+        private Double otherBloodPressureValue;
         private final Date date;
 
-        public ValueDate(String value, Date date) {
+        public ValueDate(Double value, Date date) {
             this.value = value;
             this.date = date;
         }
 
-        public String getValue() {
+        public ValueDate(Double value, Double otherBloodPressureValue, Date date) {
+            this.value = value;
+            this.otherBloodPressureValue = otherBloodPressureValue;
+            this.date = date;
+        }
+
+        public Double getValue() {
             return value;
         }
 
         public Date getDate() {
             return date;
+        }
+
+        public Double getOtherBloodPressureValue() {
+            return otherBloodPressureValue;
+        }
+
+        public void setOtherBloodPressureValue(Double otherBloodPressureValue) {
+            this.otherBloodPressureValue = otherBloodPressureValue;
         }
 
         @Override

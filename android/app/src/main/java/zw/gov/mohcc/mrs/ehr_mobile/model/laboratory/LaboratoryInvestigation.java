@@ -9,9 +9,9 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 

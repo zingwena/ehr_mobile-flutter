@@ -12,6 +12,8 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
@@ -22,12 +24,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.MaritalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Nationality;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Occupation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Religion;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity/*(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
+@Entity(indices = {@Index("countryId"), @Index("educationLevelId"), @Index("religionId"), @Index("maritalStatusId"),
         @Index("nationalityId"), @Index("occupationId")},
         foreignKeys = {
                 @ForeignKey(entity = Country.class, onDelete = CASCADE,
@@ -52,7 +52,7 @@ import static androidx.room.ForeignKey.CASCADE;
                         parentColumns = "code",
                         childColumns = "occupationId")
         }
-)*/
+)
 public class Person extends BaseEntity {
 
     @TypeConverters(GenderConverter.class)
@@ -69,11 +69,13 @@ public class Person extends BaseEntity {
     private String maritalStatusId;
     private String educationLevelId;
     @TypeConverters(DateConverter.class)
+    @NonNull
     private Date birthDate;
     private String nationalityId;
     private String countryId;
     @Embedded
     private Address address;
+    @Ignore
     private transient Age age;
     @Ignore
     private AgeGroup ageGroup;
@@ -197,6 +199,7 @@ public class Person extends BaseEntity {
         this.birthDate = birthDate;
     }
 
+    @Ignore
     public Age getAge() {
 
         //return Age.getInstance(this);
@@ -208,13 +211,13 @@ public class Person extends BaseEntity {
         this.age = age;
     }
 
-    public void setAgeGroup(AgeGroup ageGroup) {
-        this.ageGroup = ageGroup;
+    @Ignore
+    private AgeGroup getAgeGroup() {
+        return AgeGroup.getPersonAgeGroup(getAge().getYears());
     }
 
-    @Ignore
-    private AgeGroup getAgeGroup () {
-        return AgeGroup.getPersonAgeGroup(getAge().getYears());
+    public void setAgeGroup(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
     }
 
     @Override

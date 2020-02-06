@@ -1,26 +1,43 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 
-@Entity
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
+
+@Entity(indices = {@Index("visitId"), @Index("personId")},
+        foreignKeys = {
+                @ForeignKey(entity = Visit.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "id",
+                        childColumns = "visitId"),
+                @ForeignKey(entity = Person.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "id",
+                        childColumns = "personId")})
 public class BloodPressure extends VitalsBaseEntityId {
 
-    private double systolic;
-    private double diastolic;
+    @NonNull
+    private Double systolic;
+    @NonNull
+    private Double diastolic;
 
-    public double getSystolic() {
+    @NonNull
+    public Double getSystolic() {
         return systolic;
     }
 
-    public void setSystolic(double systolic) {
+    public void setSystolic(@NonNull Double systolic) {
         this.systolic = systolic;
     }
 
-    public double getDiastolic() {
+    @NonNull
+    public Double getDiastolic() {
         return diastolic;
     }
 
-    public void setDiastolic(double diastolic) {
+    public void setDiastolic(@NonNull Double diastolic) {
         this.diastolic = diastolic;
     }
 

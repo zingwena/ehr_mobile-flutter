@@ -8,7 +8,6 @@ import androidx.room.Update;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 
 @Dao
 public interface PatientQueueDao {

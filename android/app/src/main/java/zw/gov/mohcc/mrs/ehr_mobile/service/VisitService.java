@@ -22,12 +22,12 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Height;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Pulse;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.RespiratoryRate;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Temperature;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Weight;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
@@ -198,7 +198,7 @@ public class VisitService {
         Log.d(TAG, "Retrieved latest patient bloodPressure record : " + bloodPressure);
         if (bloodPressure != null) {
             summary.setBloodPressure(new PatientSummaryDTO.ValueDate(
-                    bloodPressure.getSystolic() + "/" + bloodPressure.getDiastolic(), bloodPressure.getDateTime()));
+                    bloodPressure.getSystolic(), bloodPressure.getDiastolic(), bloodPressure.getDateTime()));
         }
         Weight weight = ehrMobileDatabase.weightDao().findLatestRecordByPersonId(personId);
         Log.d(TAG, "Retrieved latest patient weight record : " + weight);

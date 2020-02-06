@@ -3,7 +3,9 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
@@ -14,9 +16,20 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.LinkageFromConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.HivTestUsed;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.LinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 
-@Entity
+@Entity(indices = {@Index(value = "artId", unique = true), @Index("testReason_code"), @Index("facility_code")},
+        foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
+                parentColumns = "id",
+                childColumns = "artId"),
+                @ForeignKey(entity = Question.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "testReason_code"),
+                @ForeignKey(entity = Facility.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "facility_code")})
 public class ArtLinkageFrom extends BaseEntity {
 
     @NonNull

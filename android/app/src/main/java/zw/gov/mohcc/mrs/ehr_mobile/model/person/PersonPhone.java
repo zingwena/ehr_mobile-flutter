@@ -1,5 +1,6 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.person;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -13,6 +14,7 @@ import static androidx.room.ForeignKey.CASCADE;
 public class PersonPhone extends BaseEntity {
 
     private String personId;
+    @NonNull
     private String phoneNumber1;
     private String phoneNumber2;
 

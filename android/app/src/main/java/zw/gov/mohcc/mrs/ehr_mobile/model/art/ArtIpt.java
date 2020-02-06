@@ -3,15 +3,30 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.art;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
-import java.util.Date;
-
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptReason;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity(indices = {@Index(value = "artId", unique = true)})
+@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true),
+@Index("status_code"), @Index("reason_code")},
+        foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
+                parentColumns = "id",
+                childColumns = "artId"),
+                @ForeignKey(entity = Visit.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "id",
+                        childColumns = "visitId"),
+                @ForeignKey(entity = IptStatus.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "status_code"),
+                @ForeignKey(entity = IptReason.class, onDelete = ForeignKey.CASCADE,
+                        parentColumns = "code",
+                        childColumns = "reason_code")})
 public class ArtIpt extends BaseEntity {
 
     @NonNull

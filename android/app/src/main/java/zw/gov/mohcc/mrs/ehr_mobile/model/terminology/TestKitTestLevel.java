@@ -2,7 +2,6 @@ package zw.gov.mohcc.mrs.ehr_mobile.model.terminology;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.TypeConverters;
 
 import java.io.Serializable;
@@ -10,11 +9,6 @@ import java.io.Serializable;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.TestLevelConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
 
-import static androidx.room.ForeignKey.CASCADE;
-
-/**
- * @author kombo on 8/21/19
- */
 @Entity(primaryKeys = {"testKitId", "testLevel"})
 public class TestKitTestLevel implements Serializable {
 
