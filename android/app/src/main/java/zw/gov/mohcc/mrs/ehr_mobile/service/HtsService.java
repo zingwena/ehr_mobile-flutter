@@ -83,7 +83,7 @@ public class HtsService {
         String personInvestigationId = UUID.randomUUID().toString();
         PersonInvestigation personInvestigation = new PersonInvestigation(personInvestigationId, dto.getPersonId(), dto.getInvestigationId().trim(), dto.getDateOfTest());
         if (StringUtils.isNoneBlank(dto.getResult())) {
-            personInvestigation.setResultId(dto.getResult());
+            personInvestigation.setResult(dto.getResult());
         }
 
         Log.d(TAG, "Person investigation object : " + personInvestigation);
@@ -228,7 +228,7 @@ public class HtsService {
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
                 .findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
 
-        return personInvestigation.getResultId();
+        return personInvestigation.getResult();
     }
 
     @Transaction
@@ -318,14 +318,14 @@ public class HtsService {
         // retrieve person investigation and update
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(
                 laboratoryInvestigation.getPersonInvestigationId());
-        personInvestigation.setResultId(test.getResult().getCode());
+        personInvestigation.setResult(test.getResult().getName());
         Log.d(TAG, "Retrieved person investigation record : " + personInvestigation);
         ehrMobileDatabase.personInvestigationDao().update(personInvestigation);
     }
 
     public boolean getPersonHivStatus(String personId) {
         String hivBloodInvestigationId = APPLICATION_CONSTANTS.HIV_TESTS[0];
-        String hivPositiveResultId = APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT;
+        String hivPositiveResultId = APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT_LITERAL;
         return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndInvestigationIdAndResultId(personId, hivBloodInvestigationId, hivPositiveResultId) != null;
     }
 

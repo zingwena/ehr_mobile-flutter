@@ -1,5 +1,7 @@
 
 
+import 'package:ehr_mobile/db/dao/art_dao/art_dao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtSymptomDao.dart';
 import 'package:ehr_mobile/db/dao/blood_pressure_dao.dart';
 import 'package:ehr_mobile/db/dao/hts_dao/hts_dao.dart';
 import 'package:ehr_mobile/db/dao/laboratory_investigation_dao.dart';
@@ -56,6 +58,7 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
             var history=patient['history'];
             await savePersonInvestigations(history,personInvestigationDao,personId);
 
+            //log.i('${patient['firstname']}  ${patient['lastname']}..... $history');
             ///-------Save Sexual History--------------
             if(history['sexualHistory']!=null){
               var sexualHistory = history['sexualHistory'];
@@ -68,7 +71,7 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
             }
 
           }
-          //try{
+
           for(Map visitHistory in patient['visitHistory']){
             var patientId= visitHistory['patientId'];
             await visitDao.insertFromEhr(visitHistory,patient['personId']);
@@ -81,6 +84,18 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
               await htsDao.insertFromEhr(visitHistory['hts'],personId,patientId);
             }
           }
+
+          ///-------Save Art --------------
+          if(patient['art']!=null){
+            var art=patient['art'];
+            log.i('${patient['firstname']}  ${patient['lastname']}..... $art');
+            await savePatientArt(art,personId);
+
+            if(art['symptoms']!=null){
+              await savePatientArtSymptoms(art,art['artId']);
+            }
+          }
+
         }catch(e){
           log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
           //throw e;
@@ -143,6 +158,27 @@ Future <String> saveSexualHistoryQuestion(Map qns,String sexualHistoryId) async 
     if(qn['sexualHistoryQuestionId']!=null){
       shq.insertFromEhr(qn,sexualHistoryId);
     }
+  }
+  return '$DONE_STATUS';
+}
+
+Future <String> savePatientArt(Map map,String personId) async {
+  var dbHandler = DatabaseHelper();
+  var adapter = await dbHandler.getAdapter();
+  var artDao = ArtDao(adapter);
+  artDao.insertFromEhr(map,personId);
+  return '$DONE_STATUS';
+}
+
+Future <String> savePatientArtSymptoms(Map map,String artId) async {
+  var dbHandler = DatabaseHelper();
+  var adapter = await dbHandler.getAdapter();
+  var artSymptomDao = ArtSymptomDao(adapter);
+  for(Map symptom in map['symptoms']){
+    if (symptom['artSymptomId'] != null) {
+      await artSymptomDao.insertFromEhr(symptom,artId);
+    }
 
   }
+  return '$DONE_STATUS';
 }

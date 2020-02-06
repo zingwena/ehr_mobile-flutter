@@ -7,19 +7,14 @@ import 'package:ehr_mobile/model/religion.dart';
 import 'package:ehr_mobile/model/education_level.dart';
 import 'package:ehr_mobile/model/nationality.dart';
 import 'package:ehr_mobile/model/occupation.dart';
-import 'package:ehr_mobile/model/religion.dart';
-import 'package:ehr_mobile/view/add_patient.dart';
 import 'package:ehr_mobile/view/patient_address.dart';
-import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/link_bar.dart';
 
-import 'package:intl/intl.dart';
 import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ehr_mobile/util/constants.dart';
-//import 'patient_address.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -202,7 +197,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     for (Nationality nationality in _nationalityList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: nationality.code, child: Text(nationality.name)));
+      items.add(DropdownMenuItem(value: nationality.name, child: Text(nationality.name)));
     }
     return items;
   }
@@ -627,7 +622,15 @@ class _EditDemographicsState extends State<EditDemographics> {
 
                                                           if (_formValid) {
                                                             _formKey.currentState.save();
-
+                                                            Map nationalities=Map();
+                                                            Map countries=Map();
+                                                            _countryList.forEach((country){
+                                                              countries['${country.name}']='${country.code}';
+                                                            });
+                                                            _nationalityList.forEach((nationality){
+                                                              nationalities['${nationality.name}']='${nationality.code}';
+                                                            });
+                                                            //var nationalityId=nationalities['$_currentNationality'];
                                                             Person patient = Person.basic(
                                                                 firstName,
                                                                 lastName,
@@ -637,8 +640,8 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 _currentReligion,
                                                                 _currentMaritalStatus,
                                                                 _currentEducationLevel,
-                                                                _currentNationality,
-                                                                _currentCountry,
+                                                                nationalities['$_currentNationality'],
+                                                                countries['$_currentCountry'],
                                                                 _currentSiGender,
                                                                 _currentOccupation);
 

@@ -38,10 +38,10 @@ public interface PersonInvestigationDao {
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId")
     PersonInvestigation findByPersonId(String personId);
 
-    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId=:investigationId and resultId=:resultId")
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId=:investigationId and result=:resultId")
     PersonInvestigation findByPersonIdAndInvestigationIdAndResultId(String personId, String investigationId, String resultId);
 
-    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and resultId=:hivResult and investigationId in (:hivTests) order by date Desc limit 1")
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and result=:hivResult and investigationId in (:hivTests) order by date Desc limit 1")
     PersonInvestigation findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(
             String personId, String hivResult, Set<String> hivTests);
 

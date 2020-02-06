@@ -18,17 +18,14 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index("personId"), @Index("investigationId"), @Index("resultId")},
+@Entity(indices = {@Index("personId"), @Index("investigationId")},
         foreignKeys = {
                 @ForeignKey(entity = Person.class, onDelete = CASCADE,
                         parentColumns = "id",
                         childColumns = "personId"),
                 @ForeignKey(entity = Investigation.class, onDelete = CASCADE,
                         parentColumns = "id",
-                        childColumns = "investigationId"),
-                @ForeignKey(entity = Result.class, onDelete = CASCADE,
-                        parentColumns = "code",
-                        childColumns = "resultId")})
+                        childColumns = "investigationId")})
 public class PersonInvestigation extends BaseEntity {
 
     @NonNull
@@ -37,7 +34,7 @@ public class PersonInvestigation extends BaseEntity {
     private String investigationId;
     @TypeConverters(DateConverter.class)
     private Date date;
-    private String resultId;
+    private String result;
 
     public PersonInvestigation() {
     }
@@ -74,12 +71,12 @@ public class PersonInvestigation extends BaseEntity {
         this.date = date;
     }
 
-    public String getResultId() {
-        return resultId;
+    public String getResult() {
+        return result;
     }
 
-    public void setResultId(String resultId) {
-        this.resultId = resultId;
+    public void setResult(String resultId) {
+        this.result = resultId;
     }
 
     @Override
@@ -89,7 +86,7 @@ public class PersonInvestigation extends BaseEntity {
                 ", patientId='" + personId + '\'' +
                 ", investigationId='" + investigationId + '\'' +
                 ", date='" + date + '\'' +
-                ", resultId='" + resultId + '\'' +
+                ", resultId='" + result + '\'' +
                 '}');
     }
 }
