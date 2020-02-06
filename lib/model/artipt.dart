@@ -11,15 +11,15 @@ part 'artipt.g.dart';
 @JsonSerializable()
 @CustomDateTimeConverter()
 class ArtIpt {
-  String id;
+  String visitId;
   String artId;
   String reason;
   DateTime date;
   String iptStatus;
 
-  ArtIpt(String id, String artId, String reason, DateTime date, String iptStatus){
+  ArtIpt(String visitId, String artId, String reason, DateTime date, String iptStatus){
 
-    this.id = id;
+    this.visitId = visitId;
     this.artId = artId;
     this.reason = reason;
     this.date = date;

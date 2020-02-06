@@ -300,6 +300,7 @@ public class ArtChannel {
                         if (methodCall.method.equals("getArtIpt")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
+                                Log.d(TAG, "ART IPT FROM ANDROID IN CHANNEL"+gson.toJson(artService.getArtIpt(arguments)) );
                                 result.success(gson.toJson(artService.getArtIpt(arguments)));
 
                             } catch (Exception e) {
