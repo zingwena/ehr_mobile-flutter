@@ -229,6 +229,9 @@ public class ArtService {
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
 
         Log.d(TAG, "Art record retrieved : " + art);
+/*
+        List<Question>artSymptomQuestions = ehrMobileDatabase.questionDao().findByCategoryId("15");
+*/
 
         List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao()
                 .findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, APPLICATION_CONSTANTS.ART_SYMPTOM_CATEGORY_ID);
@@ -405,7 +408,7 @@ public class ArtService {
         }
         IptStatus iptStatus = null;
         if (artIptDTO.getIptStatus() != null) {
-            iptStatus = ehrMobileDatabase.iptStatusDao().findById(artIptDTO.getReason());
+            iptStatus = ehrMobileDatabase.iptStatusDao().findById(artIptDTO.getIptStatus());
         }
 
         ehrMobileDatabase.artIptDao().save(artIptDTO.getInstance(artIptDTO, iptStatus, iptReason));

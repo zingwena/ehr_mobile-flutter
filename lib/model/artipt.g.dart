@@ -8,7 +8,7 @@ part of 'artipt.dart';
 
 ArtIpt _$ArtIptFromJson(Map<String, dynamic> json) {
   return ArtIpt(
-    json['id'] as String,
+    json['visitId'] as String,
     json['artId'] as String,
     json['reason'] as String,
     const CustomDateTimeConverter().fromJson(json['date'] as String),
@@ -19,7 +19,7 @@ ArtIpt _$ArtIptFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ArtIptToJson(ArtIpt instance) => <String, dynamic>{
-      'id': instance.id,
+      'visitId': instance.visitId,
       'artId': instance.artId,
       'reason': instance.reason,
       'date': const CustomDateTimeConverter().toJson(instance.date),

@@ -26,7 +26,7 @@ class ArtSymptomState extends State<ArtSymptomView>{
   static const htsChannel =
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   String sexualHistoryDtoId ;
-  bool _artsymptom;
+  bool _artsymptom = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,31 +47,6 @@ class ArtSymptomState extends State<ArtSymptomView>{
                 value: _artsymptom,
                 onChanged: _onArtSymptomChanged
               )
-        /*  widget.isQuestion == true ?RadioButtonGroup(
-            orientation: GroupedButtonsOrientation.HORIZONTAL,
-            margin: const EdgeInsets.only(left: 12.0),
-            onSelected: (String selected) => setState(() {
-              _picked = selected;
-             // widget.sexualHistoryView.question.responseType = _picked;
-              //Response _response = Response(widget.sexualHistoryView.question.code, widget.sexualHistoryView.question.name, widget.sexualHistoryView.question.responseType);
-              //SexualHistoryDto sexualHistorydto = SexualHistoryDto(widget.personId, widget.sexualHistoryId, _response);
-              saveSexualHistoryDto(sexualHistorydto);
-            }),
-            labels: <String>[
-              "YES",
-              "NO",
-
-            ],
-            picked: _picked,
-            itemBuilder: (Radio rb, Text txt, int i) {
-              return Row(
-                children: <Widget>[
-                  rb,
-                  txt,
-                ],
-              );
-            },
-          ): Text(widget.sexualHistoryView.question.responseType)*/
         ],
       ),
     );

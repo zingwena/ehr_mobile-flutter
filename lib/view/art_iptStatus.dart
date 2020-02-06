@@ -149,7 +149,7 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
     var art_visit_response;
     try {
       art_visit_response = await artChannel.invokeMethod('getArtIpt', personId);
-      print("KKKKKKKKKKK art ipt string here "+ _artIpt.toString());
+      print("KKKKKKKKKKK art ipt string here "+ art_visit_response.toString());
 
       setState(() {
         _artIpt = ArtIpt.fromJson(jsonDecode(art_visit_response));
@@ -372,11 +372,11 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                                                           onPressed: () async{
                                                             _artIpt.reason = _currentReason;
                                                             _artIpt.iptStatus = _currentIptStatus;
+                                                            _artIpt.visitId = widget.visitId;
 
 
                                                            await saveIptStatus(_artIpt);
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>  ArtSymptoms(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId,
-                                                                widget.person)
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>   ArtIptStatusOverview(artIptResponse, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
                                                             ));
 
 
