@@ -10,7 +10,7 @@ import java.util.List;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.SiteSetting;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
+import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 

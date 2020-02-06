@@ -7,7 +7,6 @@ import androidx.room.Query;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.FacilityQueue;
 
 @Dao
 public interface FacilityWardDao {

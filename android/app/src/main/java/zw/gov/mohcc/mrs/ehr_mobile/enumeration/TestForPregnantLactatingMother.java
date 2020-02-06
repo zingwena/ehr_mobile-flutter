@@ -1,4 +1,4 @@
-package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
+package zw.gov.mohcc.mrs.ehr_mobile.enumeration;
 
 public enum TestForPregnantLactatingMother {
     NEW("NEW"), NONE("NONE"), RETEST("RETEST");

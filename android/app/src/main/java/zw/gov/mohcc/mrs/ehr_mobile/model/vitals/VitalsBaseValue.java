@@ -1,14 +1,17 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.vitals;
 
+import androidx.annotation.NonNull;
+
 public class VitalsBaseValue extends VitalsBaseEntityId {
 
-    private String value;
+    @NonNull
+    private Double value;
 
-    public String getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

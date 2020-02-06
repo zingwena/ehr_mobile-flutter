@@ -2,7 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.converter;
 
 import androidx.room.TypeConverter;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.TestForPregnantLactatingMother;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestForPregnantLactatingMother;
 
 public class TestForPregnantLactatingMotherConverter {
 

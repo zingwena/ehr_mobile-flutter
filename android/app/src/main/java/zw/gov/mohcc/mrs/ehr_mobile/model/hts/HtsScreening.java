@@ -10,7 +10,7 @@ import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.ActivityStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 
