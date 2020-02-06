@@ -20,7 +20,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity(indices = {@Index(value = "artId")},
+@Entity(indices = {@Index(value = "artId"), @Index(value = "regimen_code"), @Index(value = "reason_code")},
         foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
                 parentColumns = "id",
                 childColumns = "artId"),

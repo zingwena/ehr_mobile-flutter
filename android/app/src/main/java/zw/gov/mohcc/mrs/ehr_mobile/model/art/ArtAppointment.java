@@ -15,7 +15,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity(indices = {@Index(value = "artId")},
+@Entity(indices = {@Index(value = "artId"), @Index(value = "followUpReason_code"), @Index(value = "appointmentOutcome_code")},
         foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
                 parentColumns = "id",
                 childColumns = "artId"),

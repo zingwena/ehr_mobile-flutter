@@ -23,7 +23,8 @@ public class BloodPressure extends VitalsBaseEntityId {
     @NonNull
     private Double diastolic;
 
-    public double getSystolic() {
+    @NonNull
+    public Double getSystolic() {
         return systolic;
     }
 
@@ -31,6 +32,7 @@ public class BloodPressure extends VitalsBaseEntityId {
         this.systolic = systolic;
     }
 
+    @NonNull
     public Double getDiastolic() {
         return diastolic;
     }

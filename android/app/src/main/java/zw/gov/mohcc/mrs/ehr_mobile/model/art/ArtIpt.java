@@ -13,7 +13,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true)},
+@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true),
+@Index("status_code"), @Index("reason_code")},
         foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
                 parentColumns = "id",
                 childColumns = "artId"),

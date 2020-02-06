@@ -198,7 +198,7 @@ public class VisitService {
         Log.d(TAG, "Retrieved latest patient bloodPressure record : " + bloodPressure);
         if (bloodPressure != null) {
             summary.setBloodPressure(new PatientSummaryDTO.ValueDate(
-                    bloodPressure.getSystolic() + "/" + bloodPressure.getDiastolic(), bloodPressure.getDateTime()));
+                    bloodPressure.getSystolic(), bloodPressure.getDiastolic(), bloodPressure.getDateTime()));
         }
         Weight weight = ehrMobileDatabase.weightDao().findLatestRecordByPersonId(personId);
         Log.d(TAG, "Retrieved latest patient weight record : " + weight);

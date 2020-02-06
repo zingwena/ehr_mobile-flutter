@@ -20,7 +20,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Facility;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 
-@Entity(indices = {@Index(value = "artId", unique = true)},
+@Entity(indices = {@Index(value = "artId", unique = true), @Index("testReason_code"), @Index("facility_code")},
         foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
                 parentColumns = "id",
                 childColumns = "artId"),

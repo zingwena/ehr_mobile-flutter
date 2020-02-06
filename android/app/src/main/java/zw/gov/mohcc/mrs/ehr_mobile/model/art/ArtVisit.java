@@ -20,7 +20,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FunctionalStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true)},
+@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true),
+        @Index(value = "functionalStatus_code"), @Index(value = "visitStatus_code"), @Index(value = "visitType_code"),
+        @Index(value = "lactatingStatus_code"), @Index(value = "familyPlanningStatus_code")},
         foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
                 parentColumns = "id",
                 childColumns = "artId"),
