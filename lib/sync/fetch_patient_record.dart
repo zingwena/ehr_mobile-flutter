@@ -98,7 +98,7 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
 
         }catch(e){
           log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
-          throw e;
+          //throw e;
         }
       //await Future.delayed(Duration(milliseconds: 500));
     }
@@ -178,7 +178,7 @@ Future <String> savePatientArtSymptoms(Map map,String artId) async {
     if (symptom['artSymptomId'] != null) {
       await artSymptomDao.insertFromEhr(symptom,artId);
     }
-    
+
   }
   return '$DONE_STATUS';
 }
