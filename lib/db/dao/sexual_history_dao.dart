@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/db/tables/sexual_history_table.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -71,6 +72,30 @@ class SexualHistoryDao extends BaseDao{
       sexualHistoryList.add(sexualHistory);
     }
     return sexualHistoryList;
+  }
+
+  Future insertFromEhr(Map map) async {
+
+    Insert inserter = new Insert(tableName);
+
+    inserter.set(id, map['sexualHistoryId']);
+    inserter.set(personId, map['personId']);
+    inserter.set(sexuallyActive, map['sexuallyActive']);
+
+    inserter.set(sexWithMaleDate, const CustomDateTimeConverter().fromEhrJson(map['sexWithMaleDate']));
+    inserter.set(sexWithFemaleDate, const CustomDateTimeConverter().fromEhrJson(map['sexWithFemaleDate']));
+
+    inserter.set(numberOfSexualPartners, map['sexWithFemaleDate']);
+    inserter.set(numberOfSexualPartnersLastTwelveMonths, map['numberOfSexualPartnersLastTwelveMonths']);
+
+    inserter.set(status,'IMPORTED');
+
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
   }
 
 }

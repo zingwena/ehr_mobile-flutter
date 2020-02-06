@@ -6,7 +6,7 @@ class PersonQuery {
     return """ 
         query GetPatientsQuery{
                     
-            people(text: "", page: 0, size: 3, sort: "") {
+            people(text: "", page: 0, size: 1000, sort: "") {
               content {
                 personId
                 firstname
@@ -66,6 +66,23 @@ class PersonQuery {
                   status
                 }
                 history {
+                  sexualHistory {
+                    sexualHistoryId
+                    personId
+                    sexuallyActive
+                    sexWithMaleDate
+                    sexWithFemaleDate
+                    numberOfSexualPartners
+                    numberOfSexualPartnersLastTwelveMonths
+                    questions {
+                      sexualHistoryQuestionId
+                      question{
+                        id
+                        name
+                        responseType
+                      }
+                    }
+                  }
                   investigations {
                     personInvestigationId
                     investigationId
@@ -87,6 +104,7 @@ class PersonQuery {
                   screenTbPatient
                   temperatures{
                     readingId
+                    unit
                     value
                   }
                   bloodPressures{
