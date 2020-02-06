@@ -41,29 +41,30 @@ class _PatientAddressState extends State<PatientAddress> {
   String schoolHouse, suburbVillage, town, phonenumber_1, phonenumber_2, patient_phonenumber_string;
   PatientPhoneNumber patientPhoneNumber;
   Person registeredPatient;
-  List<DropdownMenuItem<String>>  _dropDownMenuItemsTown;
+  List<DropdownMenuItem<String>>  _dropDownMenuItemsTown=List();
   String _currentTown,_towns;
-  List _townList = List();
   List townList= List();
   List<Town> _townListDropdown= List();
   String facility_name;
 
   @override
   void initState() {
-    print("=======");
- getTowns();
     super.initState();
+    print("=======");
+    //_dropDownMenuItemsTown.add(DropdownMenuItem(value: 'test', child: Text('test')));
+     getTowns();
+
   }
 
-  List<DropdownMenuItem<String>> getDropDownMenuItemsTown() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (Town town in _townList) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: town.name, child: Text(town.name)));
-    }
-    return items;
-  }
+//  List<DropdownMenuItem<String>> getDropDownMenuItemsTown() {
+//    List<DropdownMenuItem<String>> items = new List();
+//    for (Town town in _townList) {
+//      // here we are creating the drop down menu items, you can customize the item right here
+//      // but I'll just use a simple text for this
+//      items.add(DropdownMenuItem(value: town.name, child: Text(town.name)));
+//    }
+//    return items;
+//  }
 
   Future<void>getFacilityName()async{
     String response;
@@ -441,11 +442,11 @@ class _PatientAddressState extends State<PatientAddress> {
     try {
       String jsonPatient = jsonEncode(patient);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
-      print('HERE IS THE RESPONSE ID OF THE PERSON SAVED'+ response);
+      log.i('HERE IS THE RESPONSE ID OF THE PERSON SAVED'+ response);
       patientResponse= await addPatient.invokeMethod("getPatientById", response);
       setState(() {
         registeredPatient = Person.fromJson(jsonDecode(patientResponse));
-        print("THIS IS THE PATIENT AFTER ASSIGNMENT IN FLUTTER"+ registeredPatient.toString());
+        log.i("THIS IS THE PATIENT AFTER ASSIGNMENT IN FLUTTER"+ registeredPatient.toString());
       });
       await savephonenumber();
 
@@ -476,20 +477,19 @@ class _PatientAddressState extends State<PatientAddress> {
       _townIsValid=!_townIsValid;
     });
   }
+
   Future<void> getTowns() async{
-    print("here");
     String towns;
     try{
       towns= await dataChannel.invokeMethod('townOptions');
-   print('****************************** $towns');
+        print('****************************** $towns');
       setState(() {
         _towns=towns;
         townList =jsonDecode(_towns);
         _townListDropdown= Town.mapFromJson(townList);
-        _townListDropdown.forEach((e){
-          _townList.add(e);
+        _townListDropdown.forEach((town){
+          _dropDownMenuItemsTown.add(DropdownMenuItem(value: town.name, child: Text(town.name)));
         });
-        _dropDownMenuItemsTown= getDropDownMenuItemsTown();
       });
 
     }catch(e){
