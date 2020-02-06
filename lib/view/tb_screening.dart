@@ -8,6 +8,7 @@ import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/tb_screening_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -451,7 +452,6 @@ class _TbScreening extends State<TbScreeningView> {
                                                             fontWeight: FontWeight.w500),
                                                       ),
                                                       onPressed: () async {
-                                                        tbScreeningobj.visitId = widget.visitId;
                                                         tbScreeningobj.weightLoss = weightLossOption;
                                                         tbScreeningobj.nightSweats = nightSweatsOption;
                                                         tbScreeningobj.fever = feverOption;
@@ -460,7 +460,8 @@ class _TbScreening extends State<TbScreeningView> {
                                                         await saveTbScreening(tbScreeningobj);
                                                         Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) => SearchPatient()), );
+                                                          MaterialPageRoute(builder: (context) =>   TbScreeningOverview(tbscreeningResponse, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                                                          ), );
 
                                                         }
                                                     ),

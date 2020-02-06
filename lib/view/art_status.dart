@@ -98,6 +98,7 @@ class _ArtStatus extends State<ArtStatus> {
     }
   }
 
+
   List<DropdownMenuItem<String>> getDropDownMenuItemsArvRegimenList() {
     List<DropdownMenuItem<String>> items = new List();
     for (String arvRegimenIdentified in _arvRegimenIdentified) {

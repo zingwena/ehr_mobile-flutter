@@ -1,23 +1,32 @@
 import 'dart:convert';
-
+import 'package:ehr_mobile/model/artipt.dart';
+import 'package:ehr_mobile/model/functionalstatus.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/namecode.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
+import 'package:ehr_mobile/model/reason.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/landing_screen.dart';
+import 'package:ehr_mobile/view/art_iptStatusOverView.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
-class ArtIptStatus extends StatefulWidget {
-
+import 'art_symptoms.dart';
 
 
-  ArtIptStatus();
+class ArtIptStatusView extends StatefulWidget {
 
+  final Person person;
+  final String personId;
+  final String visitId;
+  final String htsId;
+  final HtsRegistration htsRegistration;
+
+  ArtIptStatusView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
 
   @override
   State createState() {
@@ -25,7 +34,7 @@ class ArtIptStatus extends StatefulWidget {
   }
 }
 
-class _ArtIptStatus extends State<ArtIptStatus> {
+class _ArtIptStatus extends State<ArtIptStatusView> {
   final _formKey = GlobalKey<FormState>();
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
@@ -35,6 +44,11 @@ class _ArtIptStatus extends State<ArtIptStatus> {
   String  _currentIptStatus;
   String  _currentReason;
 
+  String _iptreason;
+  List  iptreasons= List();
+  List _dropDownReasons = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
+  List<Reason> _iptReasonsList = List();
 
 
   String line="";
@@ -43,8 +57,17 @@ class _ArtIptStatus extends State<ArtIptStatus> {
   String _reasonError="Select Reason";
   String _iptStatusError="Select IPT Status";
 
-  int _iptStatus = 0;
-  bool iptStatusOption = false;
+  String _functionalStatus;
+  List functionalStatuses = List();
+  List _dropDownFunctionalStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsFunctionalStatuses;
+  List<Reason> _functionalStatusList = List();
+
+  String _iptStatusString;
+  List iptStatuses = List();
+  List _dropDownIptStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsIptStatuses;
+  List<Reason> _iptStatusList = List();
 
   int _reason = 0;
   bool reasonOption = false;
@@ -53,21 +76,20 @@ class _ArtIptStatus extends State<ArtIptStatus> {
   List _reasonListIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4", "Reason 5" ];
 
   Age age;
+  ArtIpt _artIpt;
+  ArtIpt artIptResponse;
 
   String facility_name;
 
-  List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsIptStatusIdentified;
+
 
   @override
   void initState() {
-
-    //getAge(widget.person);
     getFacilityName();
-
-    _dropDownMenuItemsReasonIdentified = getDropDownMenuItemsReasonList();
-    _dropDownMenuItemsIptStatusIdentified = getDropDownMenuItemsIptStatusList();
-
+    getArtIpt(widget.personId);
+    getReasons();
+    getAge(widget.person);
+    getIptStatus();
     super.initState();
   }
 
@@ -78,13 +100,66 @@ class _ArtIptStatus extends State<ArtIptStatus> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
       debugPrint("Exception thrown in get facility name method"+e);
 
     }
+  }
+
+  Future<void> getReasons() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getIptReason');
+      setState(() {
+        _functionalStatus = response;
+        functionalStatuses = jsonDecode(_functionalStatus);
+        _dropDownFunctionalStatuses = Reason.mapFromJson(functionalStatuses);
+        _dropDownFunctionalStatuses.forEach((e) {
+          _functionalStatusList.add(e);
+        });
+        _dropDownMenuItemsReasons = getDropDownMenuItemsReasonList();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong in functional status list $e');
+    }
+  }
+
+  Future<void> getIptStatus() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getIptStatus');
+      setState(() {
+        _iptStatusString = response;
+        iptStatuses = jsonDecode(_iptStatusString);
+        _dropDownIptStatuses = Reason.mapFromJson(iptStatuses);
+        _dropDownIptStatuses.forEach((e) {
+          _iptStatusList.add(e);
+        });
+        _dropDownMenuItemsIptStatuses = getDropDownMenuItemsIptStatusList();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong in functional status list $e');
+    }
+  }
+
+
+  Future<void> getArtIpt(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtIpt', personId);
+      print("KKKKKKKKKKK art ipt string here "+ _artIpt.toString());
+
+      setState(() {
+        _artIpt = ArtIpt.fromJson(jsonDecode(art_visit_response));
+        print("KKKKKKKKKKK art ipt here "+ _artIpt.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
+
   }
 
   Future<void>getFacilityName()async{
@@ -140,7 +215,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                     child: Text("Art IPT Status", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                 /* Container(
+                  Container(
                       child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment:
@@ -161,7 +236,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                              Padding(
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
@@ -182,7 +257,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                                 Icons.verified_user, size: 25.0, color: Colors.white,),
                             ),
                           ])
-                  ), */
+                  ),
                   _buildButtonsRow(),
                   Expanded(child: WillPopScope(
                     child: new Card(
@@ -229,7 +304,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                                                               hint:Text("IPT Status"),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentIptStatus,
-                                                              items: _dropDownMenuItemsIptStatusIdentified,
+                                                              items: _dropDownMenuItemsIptStatuses,
                                                               onChanged: changedDropDownItemIptStatus,
                                                             ),
                                                           ),
@@ -263,7 +338,7 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                                                               hint:Text("Reason"),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentReason,
-                                                              items: _dropDownMenuItemsReasonIdentified,
+                                                              items: _dropDownMenuItemsReasons,
                                                               onChanged: changedDropDownItemReason,
                                                             ),
                                                           ),
@@ -294,7 +369,15 @@ class _ArtIptStatus extends State<ArtIptStatus> {
                                                                 fontWeight: FontWeight.w500),
                                                           ),
 
-                                                          onPressed: () {
+                                                          onPressed: () async{
+                                                            _artIpt.reason = _currentReason;
+                                                            _artIpt.iptStatus = _currentIptStatus;
+
+
+                                                           await saveIptStatus(_artIpt);
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>  ArtSymptoms(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId,
+                                                                widget.person)
+                                                            ));
 
 
                                                           },
@@ -332,6 +415,24 @@ class _ArtIptStatus extends State<ArtIptStatus> {
     );
   }
 
+
+  Future<void> saveIptStatus(ArtIpt artIpt) async {
+    var art_ipt_response;
+    try {
+      print('pppppppppppppppppppppppppppppppppppp art ipt  to be saved '+ art_ipt_response.toString());
+      art_ipt_response = await artChannel.invokeMethod('saveArtIpt', jsonEncode(artIpt));
+      print('pppppppppppppppppppppppppppppppppppp art ipt  response response'+ art_ipt_response);
+      setState(() {
+        artIptResponse = ArtIpt.fromJson(jsonDecode(art_ipt_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF'+ artIptResponse.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit save method  $e');
+    }
+
+  }
+
   Widget _buildButtonsRow() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -359,22 +460,22 @@ class _ArtIptStatus extends State<ArtIptStatus> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsReasonList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String reasonListIdentified in _reasonListIdentified) {
+    for (Reason reasonListIdentified in _functionalStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: reasonListIdentified, child: Text(reasonListIdentified)));
+          value: reasonListIdentified.code, child: Text(reasonListIdentified.name)));
     }
     return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsIptStatusList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String iptStatusListIdentified in _iptStatusListIdentified) {
+    for (Reason iptStatusListIdentified in _iptStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: iptStatusListIdentified, child: Text(iptStatusListIdentified)));
+          value: iptStatusListIdentified.code, child: Text(iptStatusListIdentified.name)));
     }
     return items;
   }

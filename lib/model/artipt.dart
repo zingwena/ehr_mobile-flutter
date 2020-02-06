@@ -13,11 +13,11 @@ part 'artipt.g.dart';
 class ArtIpt {
   String id;
   String artId;
-  NameCode reason;
+  String reason;
   DateTime date;
-  NameCode iptStatus;
+  String iptStatus;
 
-  ArtIpt(String id, String artId, NameCode reason, DateTime date, NameCode iptStatus){
+  ArtIpt(String id, String artId, String reason, DateTime date, String iptStatus){
 
     this.id = id;
     this.artId = artId;
