@@ -35,13 +35,22 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class HistoryService {
+    private static HistoryService INSTANCE;
     private final String TAG = "History Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private HtsService htsService;
 
-    public HistoryService(EhrMobileDatabase ehrMobileDatabase, HtsService htsService) {
+    private HistoryService(EhrMobileDatabase ehrMobileDatabase, HtsService htsService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.htsService = htsService;
+    }
+
+    public static synchronized HistoryService getInstance(EhrMobileDatabase ehrMobileDatabase, HtsService htsService) {
+
+        if (INSTANCE == null) {
+            return new HistoryService(ehrMobileDatabase, htsService);
+        }
+        return INSTANCE;
     }
 
     public SexualHistory getSexualHistory(String personId) {
@@ -105,7 +114,7 @@ public class HistoryService {
         if (existsByPersonId(personId)) {
             // testing has been initiated in current run so hts is never going to be null
             Hts hts = ehrMobileDatabase.htsDao().findLatestHts(personId);
-            Log.i(TAG, "Find latest hts"+ hts.toString());
+            Log.i(TAG, "Find latest hts" + hts.toString());
             PersonInvestigation personInvestigation = htsService.getPersonInvestigation(personId);
             LaboratoryInvestigation laboratoryInvestigation = htsService.getLaboratoryInvestigation(personId);
             if (StringUtils.isNoneBlank(hts.getLaboratoryInvestigationId()) && laboratoryInvestigation != null
@@ -153,7 +162,7 @@ public class HistoryService {
             dto.setResult(htsScreening.getResult());
             dto.setViralLoadDone(htsScreening.getViralLoadDone());
             dto.setCd4Done(htsScreening.getCd4Done());
-            Log.i(TAG, "Setting date last negative"+ htsScreening.getDateLastNegative());
+            Log.i(TAG, "Setting date last negative" + htsScreening.getDateLastNegative());
             dto.setDateLastNegative(htsScreening.getDateLastNegative());
             Log.i(TAG, "Date last negative set successfully");
         }

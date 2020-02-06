@@ -69,7 +69,7 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
   List functionalStatuses = List();
   List _dropDownFunctionalStatuses = List();
   List<DropdownMenuItem<String>> _dropDownMenuItemsFunctionalStatuses;
-  List<FunctionalStatus> _functionalStatusList = List();
+  List<Reason> _functionalStatusList = List();
 
 
 
@@ -93,8 +93,8 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
     //getAge(widget.person);
     getFacilityName();
     getArtIpt(widget.personId);
-    getIptReason();
-    getIptStatus();
+   /* getIptReason();
+    getIptStatus();*/
     getFunctionalStatus();
     super.initState();
   }
@@ -118,22 +118,28 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
   Future<void> getFunctionalStatus() async {
     String response;
     try {
-      response = await artChannel.invokeMethod('getFunctionalStatus');
+      response = await artChannel.invokeMethod('getIptReason');
       setState(() {
         _functionalStatus = response;
-        print("Here is the FUNCTIONAL STATUS STRING RETURNED"+ _iptreason);
+        print("Here is the FUNCTIONAL STATUS STRING RETURNED"+ _functionalStatus);
 
         functionalStatuses = jsonDecode(_functionalStatus);
-        print("Here is the IPT FUNCTIONAL STATUS dynamic list RETURNED"+ iptreasons.toString());
+        print("Here is the IPT FUNCTIONAL STATUS dynamic list RETURNED"+ functionalStatuses.toString());
 
-        _dropDownFunctionalStatuses = FunctionalStatus.mapFromJson(functionalStatuses);
+        _dropDownFunctionalStatuses = Reason.mapFromJson(functionalStatuses);
+        print("Here is the IPT FUNCTIONAL STATUS after mapping list RETURNED"+ _dropDownFunctionalStatuses.toString());
+
         _dropDownFunctionalStatuses.forEach((e) {
           _functionalStatusList.add(e);
         });
+        _dropDownMenuItemsReasons = getDropDownMenuItemsReasonList();
+        print("Here is the IPT FUNCTIONAL STATUS dropdown mapping list RETURNED"+ _dropDownMenuItemsReasons.toString());
+
+
 
       });
     } catch (e) {
-      print('--------------------Something went wrong  $e');
+      print('--------------------Something went wrong in functional status list $e');
     }
   }
 
@@ -330,7 +336,7 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                                                               hint:Text("Reason"),
                                                               iconEnabledColor: Colors.black,
                                                               value: _currentReason,
-                                                              items: _dropDownMenuItemsEntryPoint,
+                                                              items: _dropDownMenuItemsReasons,
                                                               onChanged: changedDropDownItemReason,
                                                             ),
                                                           ),
@@ -426,7 +432,7 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
 
   List<DropdownMenuItem<String>> getDropDownMenuItemsReasonList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (NameCode reasonListIdentified in _reasonListIdentified) {
+    for (Reason reasonListIdentified in _functionalStatusList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(

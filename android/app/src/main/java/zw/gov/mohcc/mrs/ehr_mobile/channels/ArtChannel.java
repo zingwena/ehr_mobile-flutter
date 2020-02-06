@@ -119,7 +119,7 @@ public class ArtChannel {
                         if (methodCall.method.equals("getTbScreening")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
-                                result.success(artService.getVisitTbScreening(arguments));
+                                result.success(gson.toJson(artService.getVisitTbScreening(arguments)));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());

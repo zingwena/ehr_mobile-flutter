@@ -35,15 +35,24 @@ import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class HtsService {
 
+    private static HtsService INSTANCE;
     private final String TAG = "Hts Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private AppWideService appWideService;
     private SiteService siteService;
 
-    public HtsService(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
+    private HtsService(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.appWideService = appWideService;
-        this.siteService = new SiteService(ehrMobileDatabase);
+        this.siteService = SiteService.getInstance(ehrMobileDatabase);
+    }
+
+    public static synchronized HtsService getInstance(EhrMobileDatabase ehrMobileDatabase, AppWideService appWideService) {
+
+        if (INSTANCE == null) {
+            return new HtsService(ehrMobileDatabase, appWideService);
+        }
+        return INSTANCE;
     }
 
     @Transaction

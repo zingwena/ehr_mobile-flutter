@@ -33,17 +33,26 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 
 public class VisitService {
 
+    private static VisitService INSTANCE;
     private final String TAG = "Visit Service";
     private EhrMobileDatabase ehrMobileDatabase;
     private SiteService siteService;
     private ArtService artService;
     private AppWideService appWideService;
 
-    public VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, ArtService artService, AppWideService appWideService) {
+    private VisitService(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, ArtService artService, AppWideService appWideService) {
         this.ehrMobileDatabase = ehrMobileDatabase;
         this.siteService = siteService;
         this.artService = artService;
         this.appWideService = appWideService;
+    }
+
+    public static synchronized VisitService getInstance(EhrMobileDatabase ehrMobileDatabase, SiteService siteService, ArtService artService, AppWideService appWideService) {
+
+        if (INSTANCE == null) {
+            return new VisitService(ehrMobileDatabase, siteService, artService, appWideService);
+        }
+        return INSTANCE;
     }
 
     public List<FacilityQueue> getFacilityQueues() {
