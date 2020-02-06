@@ -17,6 +17,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
@@ -54,9 +55,9 @@ public class ArtChannel {
 
                         }
                         if (methodCall.method.equals("getArt")) {
-                            Log.i(TAG, "person id sent from flutter "+ arguments );
+                            Log.i(TAG, "person id sent from flutter " + arguments);
                             try {
-                                ArtDTO  artdto = artService.getArt(arguments);
+                                ArtDTO artdto = artService.getArt(arguments);
                                 String art = gson.toJson(artdto);
                                 result.success(art);
 
@@ -108,14 +109,6 @@ public class ArtChannel {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                        if (methodCall.method.equals("getArtSymptoms")) {
-                            try {
-                                result.success(gson.toJson(artService.findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, APPLICATION_CONSTANTS.ART_SYMPTOM_CATEGORY_ID)));
-
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
-                        }
                         if (methodCall.method.equals("getTbScreening")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
@@ -152,6 +145,27 @@ public class ArtChannel {
                             try {
                                 ArtSymptom artSymptom = gson.fromJson(arguments, ArtSymptom.class);
                                 artService.saveArtSymptom(artSymptom);
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getArtNewOi")) {
+                            Log.i(TAG, "PersonId String object from flutter " + arguments);
+                            try {
+                                result.success(gson.toJson(artService.getArtNewOi(arguments)));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("saveArtNewOi")) {
+                            Log.i(TAG, "ArtSymptom object from flutter " + arguments);
+                            try {
+                                ArtOi artOi = gson.fromJson(arguments, ArtOi.class);
+                                artService.saveArtNewOi(artOi);
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());

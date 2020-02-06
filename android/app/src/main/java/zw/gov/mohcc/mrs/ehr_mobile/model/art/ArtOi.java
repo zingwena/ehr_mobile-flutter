@@ -28,9 +28,11 @@ public class ArtOi extends BaseEntity {
     }
 
     @Ignore
-    public ArtOi(@NonNull String id, @NonNull String artId) {
+    public ArtOi(@NonNull String id, @NonNull Date date, @NonNull String artId, NameCode oi) {
         super(id);
+        this.date = date;
         this.artId = artId;
+        this.oi = oi;
     }
 
     @NonNull
