@@ -10,13 +10,11 @@ ArtIpt _$ArtIptFromJson(Map<String, dynamic> json) {
   return ArtIpt(
     json['id'] as String,
     json['artId'] as String,
-    json['reason'] == null
-        ? null
-        : NameCode.fromJson(json['reason'] as Map<String, dynamic>),
+    json['reason'] as String,
     const CustomDateTimeConverter().fromJson(json['date'] as String),
-    json['iptStatus'] == null
-        ? null
-        : NameCode.fromJson(json['iptStatus'] as Map<String, dynamic>),
+    json['iptStatus'] as String,
+
+
   );
 }
 

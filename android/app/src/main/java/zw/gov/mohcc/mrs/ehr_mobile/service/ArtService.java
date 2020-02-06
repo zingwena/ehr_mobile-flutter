@@ -390,6 +390,8 @@ public class ArtService {
             return ArtIptDTO.get(artIpt);
         }
 
+        Log.d(TAG, "ART DTO TO BE RETURNED IN ANDROID >>>>>>"+ ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null)));
+
         return ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null));
     }
 

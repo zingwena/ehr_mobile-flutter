@@ -1174,10 +1174,10 @@ class _ArtNewOI extends State<ArtNewOI> {
 
           new RoundedButton(
             text: "Art Symptoms",
-            onTap: () => Navigator.push(
+         /*   onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ArtSymptoms()),
-            ),
+            ),*/
 
           ),
 
