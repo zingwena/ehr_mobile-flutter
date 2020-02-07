@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.Date;
+import java.util.List;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -133,7 +134,9 @@ public class ArtChannel {
                         if (methodCall.method.equals("getArtSymptom")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
-                                result.success(gson.toJson(artService.getArtSymptoms(arguments)));
+                                List<ArtSymptom> artSymptoms = artService.getArtSymptoms(arguments);
+                                Log.d(TAG, "ART SYMPTOMS ART SYMPTOMS ART SYMPTOMS : " + artSymptoms);
+                                result.success(gson.toJson(artSymptoms));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
@@ -144,7 +147,7 @@ public class ArtChannel {
                             Log.i(TAG, "ArtSymptom object from flutter " + arguments);
                             try {
                                 ArtSymptom artSymptom = gson.fromJson(arguments, ArtSymptom.class);
-                                artService.saveArtSymptom(artSymptom);
+                                result.success(gson.toJson(artService.saveArtSymptom(artSymptom));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
@@ -175,7 +178,7 @@ public class ArtChannel {
                             Log.i(TAG, "Art New OI object from flutter " + arguments);
                             try {
                                 ArtOi artOi = gson.fromJson(arguments, ArtOi.class);
-                                artService.saveArtNewOi(artOi);
+                                result.success(gson.toJson(artService.saveArtNewOi(artOi)));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
