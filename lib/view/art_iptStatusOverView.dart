@@ -7,6 +7,7 @@ import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_Visit_Overview.dart';
+import 'package:ehr_mobile/view/art_symptoms.dart';
 import 'package:ehr_mobile/view/art_visit.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -272,26 +273,6 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
                                                           ),
                                                         ],
                                                       ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        art_reason)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Art reason',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                        ],
-                                                      ),
 
                                                     ],
                                                   ),
@@ -329,8 +310,17 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Registration",),
-          new RoundedButton(text: "ART Initiation", selected: true,
+          new RoundedButton(text: "IPT Overview", selected: true),
+          new RoundedButton(text: "Symptoms", onTap: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>  ArtSymptoms(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId,
+                      widget.person)
+              ),
+            );
+
+          },
           ),
           new RoundedButton(text: "Art Visit", onTap: () {
 

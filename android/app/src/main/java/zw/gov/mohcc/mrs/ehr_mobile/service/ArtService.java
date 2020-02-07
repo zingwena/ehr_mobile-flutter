@@ -230,8 +230,8 @@ public class ArtService {
 
         Log.d(TAG, "Art record retrieved : " + art);
 
-        List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao()
-                .findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, APPLICATION_CONSTANTS.ART_SYMPTOM_CATEGORY_ID);
+
+        List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao().findByWorkArea(WorkArea.ART_SYMPTOM);
         Log.d(TAG, "List of art symptoms : " + artSymptomQuestions);
 
         List<ArtSymptom> artSymptoms = new ArrayList<>();
@@ -249,12 +249,14 @@ public class ArtService {
         return artSymptoms;
     }
 
-    public void saveArtSymptom(ArtSymptom artSymptom) {
+    public ArtSymptom saveArtSymptom(ArtSymptom artSymptom) {
 
         Log.d(TAG, "Art Symptom record : " + artSymptom);
         artSymptom.setId(UUID.randomUUID().toString());
 
         ehrMobileDatabase.artSymptomDao().save(artSymptom);
+
+        return ehrMobileDatabase.artSymptomDao().findById(artSymptom.getId());
     }
 
     public void removeArtSymptom(String artSymptomId) {
@@ -291,12 +293,16 @@ public class ArtService {
         return artOis;
     }
 
-    public void saveArtNewOi(ArtOi artOi) {
+    public ArtOi saveArtNewOi(ArtOi artOi) {
 
         Log.d(TAG, "Art New OI record : " + artOi);
         artOi.setId(UUID.randomUUID().toString());
 
         ehrMobileDatabase.artOiDao().save(artOi);
+        Log.d(TAG, "Art New OI record to be returned : " + ehrMobileDatabase.artOiDao().findById(artOi.getId()));
+
+
+        return ehrMobileDatabase.artOiDao().findById(artOi.getId());
     }
 
     public void removeArtNewOi(String artOiId) {
@@ -405,7 +411,7 @@ public class ArtService {
         }
         IptStatus iptStatus = null;
         if (artIptDTO.getIptStatus() != null) {
-            iptStatus = ehrMobileDatabase.iptStatusDao().findById(artIptDTO.getReason());
+            iptStatus = ehrMobileDatabase.iptStatusDao().findById(artIptDTO.getIptStatus());
         }
 
         ehrMobileDatabase.artIptDao().save(artIptDTO.getInstance(artIptDTO, iptStatus, iptReason));
