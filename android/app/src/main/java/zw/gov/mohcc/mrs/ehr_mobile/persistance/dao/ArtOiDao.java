@@ -30,8 +30,8 @@ public interface ArtOiDao {
     @Query("DELETE FROM ArtOi where id=:id")
     void deleteById(String id);
 
-    @Query("SELECT * FROM ArtOi WHERE id=:artId")
-    ArtOi findById(String artId);
+    @Query("SELECT * FROM ArtOi WHERE id=:id")
+    ArtOi findById(String id);
 
     @Query("SELECT * FROM ArtOi WHERE artId=:artId and code=:questionId")
     ArtOi findByArtIdAndQuestionId(String artId, String questionId);
