@@ -264,6 +264,8 @@ public class ArtService {
         Log.d(TAG, "Deleting art symptom record : " + artSymptomId);
 
         ehrMobileDatabase.artSymptomDao().deleteById(artSymptomId);
+
+        Log.d(TAG, "Deleted ART Symptom : " + ehrMobileDatabase.artSymptomDao().findById(artSymptomId));
     }
 
     public List<ArtOi> getArtNewOi(String personId) {
@@ -310,6 +312,8 @@ public class ArtService {
         Log.d(TAG, "Deleting art new OI record : " + artOiId);
 
         ehrMobileDatabase.artOiDao().deleteById(artOiId);
+
+        Log.d(TAG, "Deleted ART Symptom : " + ehrMobileDatabase.artOiDao().findById(artOiId));
     }
 
     public ArtVisitDTO getArtVisit(String personId) {
