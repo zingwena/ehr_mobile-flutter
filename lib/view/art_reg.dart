@@ -105,7 +105,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
@@ -139,7 +139,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfEnrollment)
       setState(() {
@@ -152,7 +152,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
@@ -178,7 +178,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateHivConfirmed)
       setState(() {

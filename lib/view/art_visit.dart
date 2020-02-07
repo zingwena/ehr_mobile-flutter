@@ -365,7 +365,12 @@ class _ArtVisit extends State<ArtVisitView> {
   @override
   Widget build(BuildContext context) {
 
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
+
+
       body: Stack(
         children: <Widget>[
           Container(
@@ -376,6 +381,8 @@ class _ArtVisit extends State<ArtVisitView> {
                 colors: [Colors.blue, Colors.blue],
               ),
             ),
+
+
             height: 210.0,
           ),
           new AppBar(
@@ -795,7 +802,6 @@ class _ArtVisit extends State<ArtVisitView> {
                                                       _pregnancyStatusError ?? "",
                                                       style: TextStyle(color: Colors.red),
                                                     ),
-
 
                                                     SizedBox(
                                                       height: 20.0,
