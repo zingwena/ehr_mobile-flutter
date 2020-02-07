@@ -94,13 +94,10 @@ class ArtOiViewState extends State<ArtOiView>{
     var response;
     try{
       response = await artChannel.invokeMethod('saveArtNewOi', jsonEncode(artOi));
-      print("JJJJJJJJJJJJJJJJJ this is the artoi response before assignment in save >>>>>>>>>>."+ response);
       setState(() {
         artOiResponse  = ArtOi.fromJson(jsonDecode(response));
         widget.artOi = artOiResponse;
-        print("JJJJJJJJJJJJJJJJJ this is the artoi response after assignment in save >>>>>>>>>>."+ artOiResponse.toString());
-        print("NEW WIDGET ART OI "+ widget.artOi.toString());
-      });
+            });
     }catch(e){
       print("Exception thrown in save sexualhistory dto method"+e);
 
@@ -112,10 +109,6 @@ class ArtOiViewState extends State<ArtOiView>{
     var response;
     try{
       response = await artChannel.invokeMethod('removeArtNewOi', artOi.id);
-      print("JJJJJJJJJJJJJJJJJ this is the artoi response before assignment in save >>>>>>>>>>."+ response);
-      setState(() {
-        widget.artOi.id = null;
-      });
     }catch(e){
       print("Exception thrown in save sexualhistory dto method"+e);
 

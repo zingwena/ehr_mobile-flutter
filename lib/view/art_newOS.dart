@@ -19,6 +19,7 @@ import 'package:flutter/services.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 import '../sidebar.dart';
+import 'art_appointment.dart';
 import 'art_newOS.dart';
 import 'art_symptomview.dart';
 
@@ -361,12 +362,12 @@ class _ArtOIState extends State<ArtNewOI> {
                                                                     .w500),
                                                           ),
                                                           onPressed: ()  {
-                                                         /*   Navigator.push(context,
+                                                            Navigator.push(context,
                                                                 MaterialPageRoute(
                                                                     builder: (
-                                                                        context) =>  ArtNewOI()
+                                                                        context) =>  ArtAppointmentView()
 
-                                                                ));*/
+                                                                ));
                                                           }
                                                       ),
                                                     ),

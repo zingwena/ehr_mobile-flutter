@@ -30,6 +30,19 @@ class ArtSymptomState extends State<ArtSymptomView>{
   String sexualHistoryDtoId ;
   bool _artsymptom = false;
   ArtSymptom artSymptomResponse;
+
+
+  @override
+  void initState() {
+    print("############### thie is the artSymptom sent"+ widget.artSymptom.toString());
+    if(widget.artSymptom.id == null){
+      _artsymptom = false;
+    }else{
+      _artsymptom = true;
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,6 +75,7 @@ class ArtSymptomState extends State<ArtSymptomView>{
       if(_artsymptom == true){
         saveArtSymptom(widget.artSymptom);
       }else{
+        deleteArtSymptom(widget.artSymptom);
 
       }
 
@@ -75,6 +89,7 @@ class ArtSymptomState extends State<ArtSymptomView>{
       response = artChannel.invokeMethod('saveArtSymptom', jsonEncode(artSymptom));
       setState(() {
         artSymptomResponse = ArtSymptom.fromJson(jsonDecode(response));
+        widget.artSymptom = artSymptomResponse;
       });
     }catch(e){
       print("Exception thrown in save sexualhistory dto method");
