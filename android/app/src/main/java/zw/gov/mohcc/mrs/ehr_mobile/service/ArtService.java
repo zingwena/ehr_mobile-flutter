@@ -299,6 +299,8 @@ public class ArtService {
         artOi.setId(UUID.randomUUID().toString());
 
         ehrMobileDatabase.artOiDao().save(artOi);
+        Log.d(TAG, "Art New OI record to be returned : " + ehrMobileDatabase.artOiDao().findById(artOi.getId()));
+
 
         return ehrMobileDatabase.artOiDao().findById(artOi.getId());
     }

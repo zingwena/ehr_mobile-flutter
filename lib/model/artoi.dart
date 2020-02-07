@@ -26,6 +26,12 @@ class ArtOi{
 
   factory ArtOi.fromJson(Map<String,dynamic> json) => _$ArtOiFromJson(json);
 
+
+  @override
+  String toString() {
+    return 'ArtOi{id: $id, artId: $artId, date: $date, oi:$oi}';
+  }
+
   Map<String,dynamic> toJson() => _$ArtOiToJson(this);
 
   static mapFromJson(List dynamicList){

@@ -36,6 +36,7 @@ class ArtOiViewState extends State<ArtOiView>{
 
   String sexualHistoryDtoId ;
   bool _artsymptom = false;
+  ArtOi artOiResponse;
 
   @override
   void initState() {
@@ -74,14 +75,14 @@ class ArtOiViewState extends State<ArtOiView>{
 
   }
 
-  void _onArtSymptomChanged(bool value) {
+  void _onArtSymptomChanged(bool value) async{
     setState(() {
       _artsymptom = value;
       if(_artsymptom == true){
-        saveArtNewOi(widget.artOi);
+         saveArtNewOi(widget.artOi);
       }
-         Navigator.push(context,MaterialPageRoute(builder: (context) =>    ArtNewOI(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId,widget.person)
-         ));
+        /* Navigator.push(context,MaterialPageRoute(builder: (context) =>    ArtNewOI(widget.personId, widget.htsId, widget.htsRegistration, widget.visitId,widget.person)
+         ));*/
 
     });
   }
@@ -91,8 +92,12 @@ class ArtOiViewState extends State<ArtOiView>{
     var response;
     try{
       response = await artChannel.invokeMethod('saveArtNewOi', jsonEncode(artOi));
+      print("JJJJJJJJJJJJJJJJJ this is the artoi response before assignment in save >>>>>>>>>>."+ response);
       setState(() {
-        sexualHistoryDtoId = response;
+        artOiResponse  = ArtOi.fromJson(jsonDecode(response));
+        widget.artOi = artOiResponse;
+        print("JJJJJJJJJJJJJJJJJ this is the artoi response after assignment in save >>>>>>>>>>."+ artOiResponse.toString());
+        print("NEW WIDGET ART OI "+ widget.artOi.toString());
       });
     }catch(e){
       print("Exception thrown in save sexualhistory dto method"+e);
