@@ -26,6 +26,9 @@ public interface ResultDao {
     @Query("SELECT * FROM Result WHERE code=:id")
     Result findById(String id);
 
+    @Query("SELECT * FROM Result WHERE name=:name")
+    Result findByName(String name);
+
     @Query("SELECT * FROM Result WHERE code in (:resultIds)")
     List<Result> findByIdsIn(List<String> resultIds);
 }

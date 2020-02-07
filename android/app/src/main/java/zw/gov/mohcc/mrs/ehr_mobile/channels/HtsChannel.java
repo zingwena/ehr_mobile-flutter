@@ -272,7 +272,7 @@ public class HtsChannel {
                             try {
                                 Log.i(TAG, "*************************** reching this point");
                                 String resultId = htsService.getFinalResult(arguments);
-                                Result result1 = ehrMobileDatabase.resultDao().findById(resultId);
+                                Result result1 = ehrMobileDatabase.resultDao().findByName(resultId);
                                 Log.i(TAG, "*************************** after first call : " + result1);
                                 String result_name = result1 != null ? result1.getName() : "";
                                 Log.d(TAG, "GGGGGGGGGGGGGGGGGGGGGGG FINAL RESULT + " + result_name);
