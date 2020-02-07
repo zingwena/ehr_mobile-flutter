@@ -115,10 +115,8 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
     var art_visit_response;
     try {
       art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
-      print('pppppppppppppppppppppppppppppppppppp art visit response'+ art_visit_response);
       setState(() {
         _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artVisit.toString());
       });
 
     } catch (e) {
@@ -132,14 +130,15 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
     try {
       reason =
       await artChannel.invokeMethod('getReason', reasonId);
+      setState(() {
+        art_reason = reason;
+      });
+
 
 
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      art_reason = reason;
-    });
 
 
   }
@@ -149,7 +148,6 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -399,7 +397,6 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                         ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
               );
             } else {
-              print("ART DTO DATE IS NOT NULL");
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
 

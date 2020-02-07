@@ -6,6 +6,7 @@ class QuestionTable {
   String type;
   String code;
   String name;
+  String workArea;
 
   QuestionTable fromJson(Map map) {
     var obj = QuestionTable();
@@ -13,6 +14,7 @@ class QuestionTable {
     obj.type=map['type'];
     obj.code=map['code'];
     obj.name=map['name'];
+    obj.workArea=map['workArea'];
     return obj;
   }
 
@@ -21,6 +23,7 @@ class QuestionTable {
     'type':type,
     'code':code,
     'name':name,
+    'workArea':workArea,
   };
 
 }

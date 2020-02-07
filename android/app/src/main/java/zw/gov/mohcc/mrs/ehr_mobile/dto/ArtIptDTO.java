@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 
@@ -20,6 +22,8 @@ public class ArtIptDTO implements Serializable {
     private String iptStatus;
     @NonNull
     private String reason;
+    private final String TAG = "ART Channel";
+
 
     public ArtIptDTO() {
     }
@@ -76,6 +80,11 @@ public class ArtIptDTO implements Serializable {
     }
 
     public ArtIpt getInstance(ArtIptDTO dto, IptStatus iptStatus, IptReason iptReason) {
+        Log.d(TAG, "ART DTO :  "+ dto.toString());
+        Log.d(TAG, "IPT STATUS :  "+ iptStatus.toString());
+        Log.d(TAG, "IPT REASON in get ARTIPTDTO:  "+ iptReason.toString());
+
+
 
         return new ArtIpt(dto.getVisitId(), dto.getArtId(), dto.getVisitId(),
                 new NameCode(iptStatus.getCode(), iptStatus.getName()), new NameCode(iptReason.getCode(), iptReason.getName()));

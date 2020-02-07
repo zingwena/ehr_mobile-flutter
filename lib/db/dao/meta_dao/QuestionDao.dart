@@ -9,6 +9,7 @@ class QuestionDao {
   var type = new StrField('type');
   var code = StrField('code');
   var name = StrField('name');
+  var workArea = StrField('workArea');
 
   SqfliteAdapter _adapter;
 
@@ -51,6 +52,7 @@ class QuestionDao {
     inserter.set(type, map['type']);
     inserter.set(code, map['questionId']);
     inserter.set(name,map['name']);
+    inserter.set(workArea,map['workArea']);
     return _adapter.insert(inserter);
   }
 

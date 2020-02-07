@@ -1120,7 +1120,7 @@ public class MainActivity extends FlutterActivity {
                 Log.d(TAG, "&&&&&&&&&&&&&&&&&&&&&&&&&& : " + response.body().getContent());
                 for (QuestionEhr item : response.body().getContent()) {
                     questions.add(new Question(
-                            item.getQuestionId(), item.getName(), item.getCategoryId(), QuestionType.get(item.getType())
+                            item.getQuestionId(), item.getName(), item.getCategoryId(), QuestionType.get(item.getType()), WorkArea.get(item.getWorkArea())
                     ));
                 }
                 terminologyService.saveQuestions(questions);

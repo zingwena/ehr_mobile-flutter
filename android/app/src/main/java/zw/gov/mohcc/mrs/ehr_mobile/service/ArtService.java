@@ -230,14 +230,14 @@ public class ArtService {
 
         Log.d(TAG, "Art record retrieved : " + art);
 
-        List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao()
-                .findByWorkAreaAndCategoryId(WorkArea.ART_SYMPTOM, APPLICATION_CONSTANTS.ART_SYMPTOM_CATEGORY_ID);
+
+        List<Question> artSymptomQuestions = ehrMobileDatabase.questionDao().findByWorkArea(WorkArea.ART_SYMPTOM);
         Log.d(TAG, "List of art symptoms : " + artSymptomQuestions);
 
         List<ArtSymptom> artSymptoms = new ArrayList<>();
         for (Question question : artSymptomQuestions) {
 
-            ArtSymptom artSymptom = ehrMobileDatabase.artSymptomDao().findByArtIdAndQuestionId(question.getCode(), art.getId());
+            ArtSymptom artSymptom = ehrMobileDatabase.artSymptomDao().findByArtIdAndQuestionId(art.getId(), question.getCode());
             if (artSymptom != null) {
                 artSymptoms.add(artSymptom);
             } else {
@@ -249,12 +249,14 @@ public class ArtService {
         return artSymptoms;
     }
 
-    public void saveArtSymptom(ArtSymptom artSymptom) {
+    public ArtSymptom saveArtSymptom(ArtSymptom artSymptom) {
 
         Log.d(TAG, "Art Symptom record : " + artSymptom);
         artSymptom.setId(UUID.randomUUID().toString());
 
         ehrMobileDatabase.artSymptomDao().save(artSymptom);
+
+        return ehrMobileDatabase.artSymptomDao().findById(artSymptom.getId());
     }
 
     public void removeArtSymptom(String artSymptomId) {
@@ -262,6 +264,8 @@ public class ArtService {
         Log.d(TAG, "Deleting art symptom record : " + artSymptomId);
 
         ehrMobileDatabase.artSymptomDao().deleteById(artSymptomId);
+
+        Log.d(TAG, "Deleted ART Symptom : " + ehrMobileDatabase.artSymptomDao().findById(artSymptomId));
     }
 
     public List<ArtOi> getArtNewOi(String personId) {
@@ -279,7 +283,7 @@ public class ArtService {
         List<ArtOi> artOis = new ArrayList<>();
         for (Question question : artOiQuestions) {
 
-            ArtOi artOi = ehrMobileDatabase.artOiDao().findByArtIdAndQuestionId(question.getCode(), art.getId());
+            ArtOi artOi = ehrMobileDatabase.artOiDao().findByArtIdAndQuestionId(art.getId(), question.getCode());
             if (artOi != null) {
                 artOis.add(artOi);
             } else {
@@ -291,12 +295,16 @@ public class ArtService {
         return artOis;
     }
 
-    public void saveArtNewOi(ArtOi artOi) {
+    public ArtOi saveArtNewOi(ArtOi artOi) {
 
         Log.d(TAG, "Art New OI record : " + artOi);
         artOi.setId(UUID.randomUUID().toString());
 
         ehrMobileDatabase.artOiDao().save(artOi);
+        Log.d(TAG, "Art New OI record to be returned : " + ehrMobileDatabase.artOiDao().findById(artOi.getId()));
+
+
+        return ehrMobileDatabase.artOiDao().findById(artOi.getId());
     }
 
     public void removeArtNewOi(String artOiId) {
@@ -304,6 +312,8 @@ public class ArtService {
         Log.d(TAG, "Deleting art new OI record : " + artOiId);
 
         ehrMobileDatabase.artOiDao().deleteById(artOiId);
+
+        Log.d(TAG, "Deleted ART Symptom : " + ehrMobileDatabase.artOiDao().findById(artOiId));
     }
 
     public ArtVisitDTO getArtVisit(String personId) {
@@ -405,7 +415,7 @@ public class ArtService {
         }
         IptStatus iptStatus = null;
         if (artIptDTO.getIptStatus() != null) {
-            iptStatus = ehrMobileDatabase.iptStatusDao().findById(artIptDTO.getReason());
+            iptStatus = ehrMobileDatabase.iptStatusDao().findById(artIptDTO.getIptStatus());
         }
 
         ehrMobileDatabase.artIptDao().save(artIptDTO.getInstance(artIptDTO, iptStatus, iptReason));
