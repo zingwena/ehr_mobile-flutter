@@ -47,9 +47,10 @@ class LaboratoryInvestigationDao extends BaseDao{
     param.where(this.personInvestigationId.eq(personInvestigationId));
 
     Map map = await _adapter.findOne(param);
-
-    var labInvestigation = LaboratoryInvestigationTable.fromJson(map);
-    return labInvestigation;
+    if(map!=null){
+      return LaboratoryInvestigationTable.fromJson(map);
+    }
+    return null;
   }
 
   /// Finds all labInvestigations

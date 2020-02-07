@@ -15,7 +15,7 @@ class SexualHistoryQuestionTable extends BaseTable {
     shQn.id = map['id'];
     shQn.status=map['status'];
     shQn.sexualHistoryId=map['sexualHistoryId'];
-    shQn.responseType= const ResponseTypeConvertor().fromInt(map['responseType']) ;
+    shQn.responseType= map['responseType'];
     shQn.code = map['code'];
     shQn.name = map['name'];
     return shQn;

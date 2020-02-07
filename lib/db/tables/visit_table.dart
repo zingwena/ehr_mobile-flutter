@@ -7,7 +7,7 @@ import 'base_table.dart';
 class VisitTable extends BaseTable {
 
   String personId;
-  int patientType;
+  String patientType;
   String time;
   String discharged;
   String hospitalNumber;
