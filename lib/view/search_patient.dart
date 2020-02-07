@@ -90,9 +90,9 @@ class _SearchPatientState extends State<SearchPatient> {
 //     var result = await platformDataSync.invokeMethod('syncPatients',[token,'$url/api/']);
 //     print(result);
     await syncPatient(token,'$url/api');
-    setState(() {
-      isLoading=false;
-    });
+//    setState(() {
+//      isLoading=false;
+//    });
     Alert(
       context: context,
       style: alertStyle,
@@ -235,9 +235,9 @@ class _SearchPatientState extends State<SearchPatient> {
                                   ),
                                   onPressed: (){
                                     Navigator.pop(context);
-                                    setState(() {
-                                      isLoading=true;
-                                    });
+//                                    setState(() {
+//                                      isLoading=true;
+//                                    });
                                     syncPatients();
                                   },
                                   color: Colors.blue,

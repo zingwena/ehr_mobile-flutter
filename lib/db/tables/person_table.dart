@@ -16,7 +16,7 @@ class PersonTable extends BaseTable{
   String occupationId;
   String maritalStatusId;
   String educationLevelId;
-  DateTime birthDate;
+  int birthDate;
   String nationalityId;
   String countryId;
 
@@ -70,12 +70,12 @@ class PersonTable extends BaseTable{
   };
 
   Map<String, dynamic> toEhrJson() => <String, dynamic>{
-    'id': id,
+    'personId': id,
     'firstName': firstName,
     'lastName': lastName,
     'sex': sex,
     'nationalId': nationalId,
-    'birthDate': const CustomDateTimeConverter().toSqlDate(birthDate),
+    'birthDate': const CustomDateTimeConverter().fromIntToSqlDateTime(birthDate),
     'selfIdentifiedGender': selfIdentifiedGender,
     'religionId': religionId,
     'occupationId': occupationId,
@@ -85,8 +85,8 @@ class PersonTable extends BaseTable{
     'countryOfBirthId': countryOfBirthId,
     'addressDto': address,
     'gender':sex,
-    'phoneNumber1':phoneNumberTable.phoneNumber1,
-    'phoneNumber2':phoneNumberTable.phoneNumber2,
+//    'phoneNumber1':phoneNumberTable.phoneNumber1,
+//    'phoneNumber2':phoneNumberTable.phoneNumber2,
   };
 
 }

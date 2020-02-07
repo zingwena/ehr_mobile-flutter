@@ -13,7 +13,7 @@ class PhoneNumberDao extends BaseDao{
   SqfliteAdapter _adapter;
 
   /// Table name for the model this bean manages
-  String get tableName => 'PatientPhoneNumber';
+  String get tableName => 'PersonPhone';
   PhoneNumberDao(SqfliteAdapter _adapter){
     this._adapter=_adapter;
   }
