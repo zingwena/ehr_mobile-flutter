@@ -28,8 +28,8 @@ public interface ArtSymptomDao {
     @Query("DELETE FROM ArtSymptom where id=:id")
     void deleteById(String id);
 
-    @Query("SELECT * FROM ArtSymptom WHERE artId=:artId")
-    ArtSymptom findById(String artId);
+    @Query("SELECT * FROM ArtSymptom WHERE id=:id")
+    ArtSymptom findById(String id);
 
     @Query("SELECT * FROM ArtSymptom WHERE artId=:artId and code=:questionId")
     ArtSymptom findByArtIdAndQuestionId(String artId, String questionId);

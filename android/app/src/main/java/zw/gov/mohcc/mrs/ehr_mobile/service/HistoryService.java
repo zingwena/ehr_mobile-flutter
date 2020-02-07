@@ -268,12 +268,7 @@ public class HistoryService {
             if (dto.isTestedBefore()) {
                 Log.i(TAG, "Hiv results here");
                 Log.d(TAG, "Retrieve either positive or negative HIV results : " + dto.getResult());
-                String resultId = "";
-                if (dto.getResult().equalsIgnoreCase("POSITIVE")) {
-                    resultId = APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT;
-                } else if (dto.getResult().equalsIgnoreCase("NEGATIVE")) {
-                    resultId = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT;
-                }
+                String resultId = dto.getResult();
 
                 InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getDateLastTested(), visitId,
                         APPLICATION_CONSTANTS.HIV_TESTS[0], resultId);
