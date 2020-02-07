@@ -237,7 +237,7 @@ public class ArtService {
         List<ArtSymptom> artSymptoms = new ArrayList<>();
         for (Question question : artSymptomQuestions) {
 
-            ArtSymptom artSymptom = ehrMobileDatabase.artSymptomDao().findByArtIdAndQuestionId(question.getCode(), art.getId());
+            ArtSymptom artSymptom = ehrMobileDatabase.artSymptomDao().findByArtIdAndQuestionId(art.getId(), question.getCode());
             if (artSymptom != null) {
                 artSymptoms.add(artSymptom);
             } else {
@@ -281,7 +281,7 @@ public class ArtService {
         List<ArtOi> artOis = new ArrayList<>();
         for (Question question : artOiQuestions) {
 
-            ArtOi artOi = ehrMobileDatabase.artOiDao().findByArtIdAndQuestionId(question.getCode(), art.getId());
+            ArtOi artOi = ehrMobileDatabase.artOiDao().findByArtIdAndQuestionId(art.getId(), question.getCode());
             if (artOi != null) {
                 artOis.add(artOi);
             } else {
