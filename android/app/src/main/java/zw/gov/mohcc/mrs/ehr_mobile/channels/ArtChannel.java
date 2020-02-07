@@ -147,7 +147,7 @@ public class ArtChannel {
                             Log.i(TAG, "ArtSymptom object from flutter " + arguments);
                             try {
                                 ArtSymptom artSymptom = gson.fromJson(arguments, ArtSymptom.class);
-                                result.success(gson.toJson(artService.saveArtSymptom(artSymptom));
+                                result.success(gson.toJson(artService.saveArtSymptom(artSymptom)));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
