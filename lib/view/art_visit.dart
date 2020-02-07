@@ -125,7 +125,6 @@ class _ArtVisit extends State<ArtVisitView> {
 
   @override
   void initState() {
-    print("HHHHHHHHHHHHHHh here is the vist id"+ widget.visitId);
     getArtVist(widget.personId);
    getVisitTypes();
    getFunctionalStatus();
@@ -904,10 +903,8 @@ class _ArtVisit extends State<ArtVisitView> {
     var art_visit_response;
     try {
       art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_visit_response);
       setState(() {
         _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF art visit response at first'+ _artVisit.toString());
       });
 
     } catch (e) {

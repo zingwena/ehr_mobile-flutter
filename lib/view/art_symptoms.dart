@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 import '../sidebar.dart';
+import 'art_newOS.dart';
 import 'art_symptomview.dart';
 
 class ArtSymptoms extends StatefulWidget {
@@ -121,7 +122,6 @@ class _ArtSymptomState extends State<ArtSymptoms> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -163,16 +163,11 @@ class _ArtSymptomState extends State<ArtSymptoms> {
       await artChannel.invokeMethod('getArtSymptom', patientId);
       setState(() {
         _entryPoint = response;
-        print("Art Symptoms list returned as string @@@@@@@@@@@" + _entryPointList.toString());
-
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = ArtSymptom.mapFromJson(entryPoints);
-        print("Art Symptoms list returned after mapping @@@@@@@@@@@" + _entryPointList.toString());
-
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        print("Art Symptoms list returned @@@@@@@@@@@" + _entryPointList.toString());
       });
     } catch (e) {
       print("Exception thrown in getsexualhistory view method" + e);
@@ -377,8 +372,9 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                                                             Navigator.push(context,
                                                                 MaterialPageRoute(
                                                                     builder: (
-                                                                        context) =>
-                                                                        SexualHistoryOverview(widget.person, null, widget.htsid, widget.visitId, widget.personId)
+                                                                        context) =>   ArtNewOI(widget.personId, widget.htsid, widget.htsRegistration, widget.visitId,
+                                                                        widget.person)
+
                                                                 ));
                                                           }
                                                       ),
