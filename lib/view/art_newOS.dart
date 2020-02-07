@@ -268,7 +268,7 @@ class _ArtOIState extends State<ArtNewOI> {
                   Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Text(
-                      "Art Symptoms",
+                      "Art New OI",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16.0,
