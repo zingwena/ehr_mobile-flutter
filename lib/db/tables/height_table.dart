@@ -12,7 +12,7 @@ class HeightTable extends VitalBaseValueTable{
     height.visitId = map['visitId'];
     height.dateTime = const CustomDateTimeConverter().fromIntToSqlDate(map['dateTime']);
     height.status = map['status'];
-    height.value=map['value'];
+    height.value='${map['value']}';
     return height;
   }
 

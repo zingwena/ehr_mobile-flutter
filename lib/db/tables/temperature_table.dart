@@ -12,7 +12,7 @@ class TemperatureTable extends VitalBaseValueTable{
     temp.visitId = map['visitId'];
     temp.dateTime = const CustomDateTimeConverter().fromIntToSqlDate(map['dateTime']);
     temp.status = map['status'];
-    temp.value=map['value'];
+    temp.value='${map['value']}';
     return temp;
   }
 

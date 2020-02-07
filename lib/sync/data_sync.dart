@@ -61,11 +61,10 @@ syncPatient(String token, String url) async {
     dto = await setSexualHistory(adapter,dto);
     dto=await setHtsScreening(adapter,dto);
     dto=await setArt(adapter, dto);
-    //var encoded=json.encode(dto);
-    //log.i(encoded.contains('Eve'));
-    //log.i(encoded);
+    var encoded=json.encode(dto.toJson());
+    log.i(encoded);
     if(person.status=='IMPORTED'){
-      http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
+      http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: jsonEncode(dto.toJson())).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
         if(value.statusCode==201){
@@ -172,7 +171,6 @@ Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dt
   var personInvestigationList=await personInvestigationDao.findByPersonId(dto.personDto.id);
   for(var personInvestigation in personInvestigationList){
     personInvestigation.laboratoryInvestigationDto=await getLabInvestigation(adapter,personInvestigation.id);
-    //log.i(personInvestigation.laboratoryInvestigationDto.toJson());
     dto.personInvestigationDtos.add(personInvestigation);
   }
   return dto;
@@ -181,8 +179,10 @@ Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dt
 Future <LaboratoryInvestigationTable> getLabInvestigation(SqfliteAdapter adapter,String personInvestigationId) async {
   var labInvestigationDao=LaboratoryInvestigationDao(adapter);
   var labInvestigation=await labInvestigationDao.findPersonInvestigationId(personInvestigationId);
+  if(labInvestigation!=null){
     var labTests=await getLabInvestigationTests(adapter,labInvestigation.id);
     labInvestigation.laboratoryInvestigationTestDtos=labTests;
+  }
   return labInvestigation;
 }
 

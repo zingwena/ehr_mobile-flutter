@@ -22,7 +22,7 @@ class PatientDto{
   HtsScreeningTable htsScreeningDto;
 
   String personId;
-  int patientType;
+  String patientType;
   String time;
   String discharged;
   String hospitalNumber;

@@ -13,7 +13,7 @@ class WeightTable extends VitalBaseValueTable{
     weight.visitId = map['visitId'];
     weight.dateTime = const CustomDateTimeConverter().fromIntToSqlDate(map['dateTime']);
     weight.status = map['status'];
-    weight.value=map['value'];
+    weight.value='${map['value']}';
     return weight;
   }
 

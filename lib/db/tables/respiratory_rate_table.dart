@@ -12,7 +12,7 @@ class RespiratoryTable extends VitalBaseValueTable{
     resp.visitId = map['visitId'];
     resp.dateTime = const CustomDateTimeConverter().fromIntToSqlDate(map['dateTime']);
     resp.status = map['status'];
-    resp.value=map['value'];
+    resp.value='${map['value']}';
     return resp;
   }
 
