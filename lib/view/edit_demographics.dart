@@ -688,26 +688,6 @@ class _EditDemographicsState extends State<EditDemographics> {
     );
   }
 
-  Widget _buildLinkBar({bool showFirstOption}) {
-    return
-      Row(
-        children: <Widget>[
-          new LinkBarItems(
-            text: "Home Page",
-          ),
-          new LinkBarItems(
-            text: "Add Patient",
-          ),
-          new LinkBarItems(
-            text: "Demographics",
-            selected: true,
-          ),
-          new LinkBarItems(
-            text: "Contact Details",
-          ),
-        ],
-      );
-  }
 
   Widget _buildButtonsRow() {
     return Padding(
