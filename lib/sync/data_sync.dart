@@ -64,7 +64,7 @@ syncPatient(String token, String url) async {
     //var encoded=json.encode(dto);
     //log.i(encoded.contains('Eve'));
     //log.i(encoded);
-    if(person.status=='${RecordStatus.NEW.toString()}'){
+    if(person.status=='IMPORTED'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: json.encode(dto)).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
