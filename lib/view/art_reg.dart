@@ -52,6 +52,7 @@ class _ArtReg extends State<ArtReg> {
   DateTime enrollment_date, test_date, retest_date, hivConfirmation_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
+  ArtRegistration art;
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsHivTestUsedIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
@@ -77,6 +78,9 @@ class _ArtReg extends State<ArtReg> {
   bool otherSite = false;
   bool healthFacility = false;
 
+  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
+  List<EntryPoint> _entryPointList = List();
+
   @override
   void initState() {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -91,10 +95,18 @@ class _ArtReg extends State<ArtReg> {
     getAge(widget.person);
     getFacilityName();
     getHivReasonForTesting();
+    getFacilities();
     _dropDownMenuItemsReferringListIdentified = getDropDownMenuItemsReferringList();
     _dropDownMenuItemsHivTestUsedIdentified = getDropDownMenuItemsHivTestUsed();
    // _dropDownMenuItemsReasonForTestListIdentified = getDropDownMenuItemsReasonForHivTest();
     _dropDownMenuItemsReasonForTest  =     getDropDownMenuItemsReasonsForHivTest();
+    if(widget.artdto.facility != null){
+      _testingSite = 1;
+
+    }
+    /*currentReferringProgram = widget.artdto.
+
+    var over21s = users.where((user) => user[“age”] > 21)*/
 
     super.initState();
   }
@@ -112,6 +124,24 @@ class _ArtReg extends State<ArtReg> {
         dateOfTest = DateFormat("yyyy/MM/dd").format(picked);
         test_date = DateFormat("yyyy/MM/dd").parse(dateOfTest);
       });
+  }
+  Future<void> getFacilities() async {
+    String response;
+    try {
+      response = await dataChannel.invokeMethod('getEntryPointsOptions');
+      setState(() {
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = EntryPoint.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+        _dropDownMenuItemsEntryPoint =
+            getDropDownMenuItemsIdentifiedEntryPoint();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
   }
 
   Future<void> getHivReasonForTesting() async {
@@ -194,6 +224,21 @@ class _ArtReg extends State<ArtReg> {
       setState(() {
         age = Age.fromJson(jsonDecode(response));
         print("THIS IS THE AGE RETRIEVED"+ age.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+  Future<void>getArt(String personId)async{
+    String response;
+    try{
+      response = await artChannel.invokeMethod('getArt', personId);
+      setState(() {
+        art = ArtRegistration.fromJson(jsonDecode(response));
+        print("THIS IS THE ART RECORED  RETRIEVED IN ART REGISTRATION"+ art.toString());
       });
 
     }catch(e){
