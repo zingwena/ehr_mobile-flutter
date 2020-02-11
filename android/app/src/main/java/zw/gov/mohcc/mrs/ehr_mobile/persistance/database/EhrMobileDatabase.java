@@ -12,6 +12,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.converter.AgeGroupConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.ArvStatusConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.CoupleCounsellingConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.converter.FollowUpTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HivTestUsedConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.HtsApproachConverter;
@@ -41,6 +42,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.User;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtFollowUp;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
@@ -111,6 +113,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtAppointmentDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtCurrentStatusDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtDao;
+import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtFollowUpDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtIptDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtLinkageFromDao;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.ArtOiDao;
@@ -208,7 +211,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
         ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class,
         ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class, ArtAppointment.class, FollowUpReason.class,
-        ArtOi.class}, version = 2, exportSchema = false)
+        ArtOi.class, ArtFollowUp.class}, version = 2, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -216,7 +219,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         TypeOfContactConverter.class, TestLevelConverter.class, RegimenTypeConverter.class, AgeGroupConverter.class,
         PatientTypeConverter.class, QuestionTyeConverter.class, ResponseTypeConverter.class, WorkAreaConverter.class, BinTypeConverter.class,
         MedicineCategoryConverter.class, MedicineLevelConverter.class, WhoStageConverter.class, ArvStatusConverter.class,
-        ReasonOfNotDisclosingConverter.class, NormalityConverter.class, LinkageFromConverter.class, HivTestUsedConverter.class})
+        ReasonOfNotDisclosingConverter.class, NormalityConverter.class, LinkageFromConverter.class, HivTestUsedConverter.class,
+        FollowUpTypeConverter.class})
 public abstract class EhrMobileDatabase extends RoomDatabase {
 
     public static volatile EhrMobileDatabase INSTANCE;
@@ -386,4 +390,6 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
     public abstract FollowUpReasonDao followUpReasonDao();
 
     public abstract ArtOiDao artOiDao();
+
+    public abstract ArtFollowUpDao artFollowUpDao();
 }
