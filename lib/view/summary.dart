@@ -686,7 +686,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
-                                                  Container(
+                                            /*      Container(
                                                     padding:
                                                         EdgeInsets.symmetric(
                                                             vertical: 16.0,
@@ -913,7 +913,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                         }
                                                       },
                                                     ),
-                                                  ),
+                                                  ),*/
 
                                                   SizedBox(
                                                     height: 10.0,

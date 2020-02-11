@@ -47,7 +47,7 @@ class _AddPatient extends State<AddPatient> {
 
   @override
   void initState() {
-    displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    displayDate = '';
     birthDate = DateTime.now();
 
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
@@ -399,7 +399,7 @@ class _AddPatient extends State<AddPatient> {
                                                                 padding: const EdgeInsets.all(0.0),
                                                                 child: TextFormField(
                                                                   controller: TextEditingController(
-                                                                          text: displayDate),
+                                                                          text:displayDate),
                                                                   validator: (value) {
                                                                     return value.isEmpty
                                                                         ? 'Enter some text'

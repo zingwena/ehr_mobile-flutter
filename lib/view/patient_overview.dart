@@ -192,7 +192,7 @@ class OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  Sidebar(_patient, widget.patient.id, visitId, htsRegistration, htsId),
+      //drawer:  Sidebar(_patient, widget.patient.id, visitId, htsRegistration, htsId),
       body: Stack(
         children: <Widget>[
           Container(

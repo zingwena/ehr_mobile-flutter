@@ -132,6 +132,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     birthDate = widget.birthDate;
     getCountries();
     getNationalities();
+    getFacilityName();
 
   }
 

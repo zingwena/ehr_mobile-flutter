@@ -50,6 +50,8 @@ class _Registration extends State<Registration> {
   bool _showError = false;
   bool _entryPointIsValid = false;
   bool _formIsValid = false;
+  bool showTypeError = false;
+  bool typeselected = false;
   String _entryPointError = "Select Entry Point";
   DateTime date;
   int _htsType = 0;
@@ -71,7 +73,6 @@ class _Registration extends State<Registration> {
   @override
   void initState() {
     visitId = widget.visitId;
-//    patient id
     patientId = widget.patientId;
     getEntryPoints();
     getHtsRecord(patientId);
@@ -152,11 +153,13 @@ class _Registration extends State<Registration> {
         case 1:
           htsType = "Self";
           print("hts value : $htsType");
+          typeselected = true;
 
           break;
         case 2:
           htsType = "Rapid";
           print("hts value : $htsType");
+          typeselected = true;
 
           break;
       }
@@ -366,6 +369,9 @@ class _Registration extends State<Registration> {
                                                     SizedBox(
                                                       height: 15.0,
                                                     ),
+                                                    showTypeError == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("Select HTS type ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
                                                     Container(
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
                                                       width: double.infinity,
@@ -432,13 +438,14 @@ class _Registration extends State<Registration> {
                                                         onPressed: () async {
                                                           if (_formKey.currentState.validate()) {
                                                             _formKey.currentState.save();
-                                                            if (_entryPointIsValid) {
+                                                            if (_entryPointIsValid & typeselected) {
                                                               setState(() {
                                                                 _formIsValid = true;
                                                               });
                                                             } else {
                                                               setState(() {
                                                                 _showError = true;
+                                                                showTypeError = true;
                                                               });
                                                             }
                                                             if (_formIsValid) {
