@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 
 
@@ -28,6 +27,9 @@ public interface ArtLinkageFromDao {
 
     @Query("SELECT * FROM ArtLinkageFrom WHERE artId=:artId")
     ArtLinkageFrom findByArtId(String artId);
+
+    @Query("SELECT count(*) FROM ArtLinkageFrom WHERE artId=:artId")
+    int exixtsByArtId(String artId);
 
     @Query("DELETE FROM ArtLinkageFrom where id=:id")
     void deleteById(String id);
