@@ -144,8 +144,8 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     try {
       hts = await artChannel.invokeMethod('getArtAppointment', patientId);
       setState(() {
-        artAppointment = ArtAppointment.fromJson(jsonDecode(hts));
-        print("HERE IS THE art appointments AFTER ASSIGNMENT " + artAppointment.toString());
+        artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(hts));
+        print("HERE IS THE art appointments AFTER ASSIGNMENT " + artAppointmentResponse.toString());
       });
       print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
     } catch (e) {
@@ -399,12 +399,13 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                             fontWeight: FontWeight.w500),
                                                       ),
                                                       onPressed: () async{
-                                                     //  ArtAppointment artAppointment = ArtAppointment(null, )
-                                                      // ArtAppointment(String id, String artId, String reason, DateTime date, NameCode followUpReason, DateTime followupDate,
-                                                      //     DateTime appointmentOutcomeDate, NameCode appointmentOutcome  )
-                                                    /*    Navigator.push(
+                                                       ArtAppointment artAppointment = ArtAppointment(null, artAppointmentResponse.artId, _currentAppointmentReason, test_date, null, null,null , null );
+                                                       await artappintmentReg(artAppointment);
+
+                                                        Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) => ArtAppointmentsOverview()), );*/
+                                                          MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this.artAppointmentResponse, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                          ), );
 
                                                        }
                                                     ),

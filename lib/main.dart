@@ -23,7 +23,7 @@ class EhrMobileApp extends StatelessWidget {
     //fillList();
     return MaterialApp(
       title: 'Impilo Mobile',
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
 
         primarySwatch: Colors.blue,

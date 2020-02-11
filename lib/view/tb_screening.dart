@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/tbscreening.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/util/constants.dart';
@@ -206,7 +207,7 @@ class _TbScreening extends State<TbScreeningView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
 
       body: Stack(
         children: <Widget>[
@@ -457,10 +458,10 @@ class _TbScreening extends State<TbScreeningView> {
                                                         tbScreeningobj.fever = feverOption;
                                                         tbScreeningobj.coughing = coughingOption;
 
-                                                        await saveTbScreening(tbScreeningobj);
+                                                         saveTbScreening(tbScreeningobj);
                                                         Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) =>   TbScreeningOverview(tbscreeningResponse, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                                                          MaterialPageRoute(builder: (context) =>   TbScreeningOverview(tbScreeningobj, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
                                                           ), );
 
                                                         }

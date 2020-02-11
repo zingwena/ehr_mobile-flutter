@@ -37,6 +37,12 @@ class ArtAppointment {
 
   Map<String,dynamic> toJson() => _$ArtAppointmentToJson(this);
 
+
+  @override
+  String toString() {
+    return 'ArtAppointment{artId: $artId, reason: $reason}, date: $date, followUpReason: $followUpReason, ';
+  }
+
   static mapFromJson(List dynamicList){
     List<ArtAppointment> artappointmentList=[];
     if(dynamicList!=null){

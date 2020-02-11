@@ -66,11 +66,36 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
   var dateOfEnrollment, dateOfHivTest, dateHivConfirmed, dateOfRetest;
   Age age;
   String facility_name;
+  String cough = " ";
+  String fever = " ";
+  String nightsweats = " ";
+  String weightloss = " ";
 
   @override
   void initState() {
     getAge(widget.person);
     getFacilityName();
+    if(widget.tbScreening.coughing){
+      cough = "Yes";
+
+    }else{
+      cough = "No";
+    }
+    if(widget.tbScreening.fever){
+      fever = "Yes";
+    }else{
+      fever = "No";
+    }
+    if(widget.tbScreening.nightSweats){
+      nightsweats = "Yes";
+    }else{
+      nightsweats = "No";
+    }
+    if(widget.tbScreening.weightLoss){
+      weightloss = "Yes";
+    }else{
+      weightloss = "No";
+    }
     super.initState();
   }
 
@@ -272,7 +297,7 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.tbScreening.coughing.toString())),
+                                                                        cough)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Coughing',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
@@ -288,7 +313,7 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.tbScreening.fever.toString())),
+                                                                        fever)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Fever',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
@@ -309,7 +334,7 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.tbScreening.weightLoss.toString())),
+                                                                        weightloss)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Weight Loss',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
@@ -324,7 +349,7 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        widget.tbScreening.nightSweats.toString())),
+                                                                        nightsweats)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Night Sweats',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
@@ -374,14 +399,14 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Visit ", selected: true),
-          new RoundedButton(text: "TB Screening", onTap: (){
+          new RoundedButton(text: "TB Screening ", selected: true),
+          new RoundedButton(text: "TB Screening", /*onTap: (){
             Navigator.push(context,MaterialPageRoute(
                 builder: (context)=>    TbScreeningView(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
 
             ));
 
-          }
+          }*/
           ),
           new RoundedButton(text: "Close",)
         ],
