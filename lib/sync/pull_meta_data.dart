@@ -14,6 +14,7 @@ import 'package:ehr_mobile/db/dao/meta_dao/FacilityDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityQueueDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FacilityWardDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FamilyPlanningStatusDao.dart';
+import 'package:ehr_mobile/db/dao/meta_dao/FollowUpReasonDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FollowUpStatusDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/FunctionalStatusDao.dart';
 import 'package:ehr_mobile/db/dao/meta_dao/HtsModelsDao.dart';
@@ -49,6 +50,7 @@ import 'package:ehr_mobile/graphql/queue_query.dart';
 import 'package:ehr_mobile/graphql/site_query.dart';
 import 'package:ehr_mobile/graphql/ward_query.dart';
 import 'package:ehr_mobile/main.dart';
+import 'package:ehr_mobile/model/followupreason.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/util/logger.dart';
@@ -267,6 +269,9 @@ Future<String> pullMetaData(ProgressDialog progressDialog,String url, String aut
   progressDialog.update(message: 'Fetching Ipt Status...');
   await fetchMeta(IptStatusDao(adapter), '$url/ipt-statuses', authToken);
 
+  progressDialog.update(message: 'Fetching Follow Up Reasons...');
+  await fetchMeta(FollowUpReasonDao(adapter), '$url/follow-up-reasons', authToken);
+
   var status='$DONE_STATUS';
   return status;
 }
@@ -276,6 +281,7 @@ Future<String> initDb(SqfliteAdapter adapter) async {
 
   //await PersonDao(adapter).removeAll();
   //await AuthorityDao(adapter).removeAll();
+  await FollowUpReasonDao(adapter).removeAll();
   await UserDao(adapter).removeAll();
   await TownDao(adapter).removeAll();
 

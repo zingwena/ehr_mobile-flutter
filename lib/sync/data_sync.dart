@@ -62,8 +62,8 @@ syncPatient(String token, String url) async {
     dto=await setHtsScreening(adapter,dto);
     dto=await setArt(adapter, dto);
 
-    if(person.status=='NEW'){
-      var encoded=json.encode(dto.toJson());
+    //if(person.status=='NEW'){
+    var encoded=json.encode(dto.toJson());
     log.i(encoded);
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: jsonEncode(dto.toJson())).then((value){
         log.i(value.statusCode);
@@ -76,7 +76,7 @@ syncPatient(String token, String url) async {
       }).catchError((error){
         log.i(error);
       });
-    }
+    //}
   }
 }
 
@@ -180,7 +180,11 @@ Future <PatientDto> setPersonInvestigations(SqfliteAdapter adapter,PatientDto dt
 
 Future <LaboratoryInvestigationTable> getLabInvestigation(SqfliteAdapter adapter,String personInvestigationId) async {
   var labInvestigationDao=LaboratoryInvestigationDao(adapter);
+
   var labInvestigation=await labInvestigationDao.findPersonInvestigationId(personInvestigationId);
+  if(labInvestigation!=null && labInvestigation.id==null){
+    log.i('-------ITS HERE--------');
+  }
   if(labInvestigation!=null){
     var labTests=await getLabInvestigationTests(adapter,labInvestigation.id);
     labInvestigation.laboratoryInvestigationTestDtos=labTests;

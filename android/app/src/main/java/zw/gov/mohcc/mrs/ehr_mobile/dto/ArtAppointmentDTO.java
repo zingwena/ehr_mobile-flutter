@@ -27,7 +27,8 @@ public class ArtAppointmentDTO implements Serializable {
 
     public static ArtAppointmentDTO get(ArtAppointment artAppointment) {
 
-        return new ArtAppointmentDTO(artAppointment.getArtId(), artAppointment.getReason().getName(), artAppointment.getDate());
+        return new ArtAppointmentDTO(artAppointment.getArtId(),
+                artAppointment.getReason() != null ? artAppointment.getReason().getName() : null, artAppointment.getDate());
     }
 
     @NonNull
