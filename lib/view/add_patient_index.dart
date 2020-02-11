@@ -238,7 +238,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                                               decoration: InputDecoration(
                                                                   labelText: _identifier ==
                                                                       "Select Identifier"
-                                                                      ? "ID Number e.g 22-345276T67"
+                                                                      ? "ID Number e.g 22-234567Y23"
                                                                       : _identifier +
                                                                       " Number",
                                                                   border:

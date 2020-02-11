@@ -15,27 +15,25 @@ class ArtAppointment {
   String artId;
   String reason;
   DateTime date;
-  NameCode followUpReason;
-  DateTime followupDate;
-  DateTime appointmentOutcomeDate;
-  NameCode appointmentOutcome;
 
-  ArtAppointment(String id, String artId, String reason, DateTime date, NameCode followUpReason, DateTime followupDate,
-      DateTime appointmentOutcomeDate, NameCode appointmentOutcome  ){
+  ArtAppointment(String id, String artId, String reason, DateTime date  ){
 
      this.id = id;
       this.artId = artId;
       this.reason = reason;
       this.date = date;
-      this.followUpReason = followUpReason;
-      this.followupDate = followupDate;
-      this.appointmentOutcomeDate = appointmentOutcomeDate;
-      this.appointmentOutcome = appointmentOutcome;
+
 
   }
   factory ArtAppointment.fromJson(Map<String,dynamic> json) => _$ArtAppointmentFromJson(json);
 
   Map<String,dynamic> toJson() => _$ArtAppointmentToJson(this);
+
+
+  @override
+  String toString() {
+    return 'ArtAppointment{artId: $artId, reason: $reason}, date: $date,  ';
+  }
 
   static mapFromJson(List dynamicList){
     List<ArtAppointment> artappointmentList=[];

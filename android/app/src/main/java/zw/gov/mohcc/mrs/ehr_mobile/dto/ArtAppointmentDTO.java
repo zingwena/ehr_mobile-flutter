@@ -3,7 +3,9 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
@@ -29,6 +31,15 @@ public class ArtAppointmentDTO implements Serializable {
 
         return new ArtAppointmentDTO(artAppointment.getArtId(),
                 artAppointment.getReason() != null ? artAppointment.getReason().getName() : null, artAppointment.getDate());
+    }
+
+    public static List<ArtAppointmentDTO> get(List<ArtAppointment> artAppointments) {
+
+        List<ArtAppointmentDTO> items = new ArrayList<>();
+        for(ArtAppointment artAppointment : artAppointments){
+            items.add(get(artAppointment));
+        }
+        return items;
     }
 
     @NonNull

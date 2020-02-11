@@ -401,16 +401,18 @@ class _Registration extends State<Registration> {
                                                     !_showError
                                                         ? SizedBox.shrink()
                                                         : Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(vertical: 2.0, horizontal: 60.0),
-                                                              child: Text( _entryPointError ?? "",
-                                                                style: TextStyle(color: Colors.red),
-                                                              ),
-                                                            ),),),], ),
+                                                           children: <Widget>[
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  child: Padding(
+                                                               padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60.0),
+                                                                    child: Text(
+                                                              _entryPointError ??
+                                                               "",
+                                                           style: TextStyle(
+                                                color: Colors.red),
+                                          ),
+                                        ),),),], ),
                                                     SizedBox(
                                                       height: 40.0,
                                                     ),

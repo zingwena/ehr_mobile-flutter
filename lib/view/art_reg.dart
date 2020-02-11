@@ -121,10 +121,7 @@ class _ArtReg extends State<ArtReg> {
       healthFacility = true;
 
     }
-    print("ART DTO >>>>>>>>>>"+ widget.artdto.facility);
- /*   List<NameCode> entryList= _entryPointList.where((entryPoint)=> entryPoint.code.contains(widget.artdto.facility) ).toList();
-    print("JJJJJJJJJJJ entry list after searching in list"+ entryList.toString());
-    _currentReferringProgram = entryList[0].code;*/
+
     super.initState();
   }
 
@@ -132,7 +129,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
@@ -183,7 +180,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfEnrollment)
       setState(() {
@@ -196,7 +193,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateOfTest)
       setState(() {
@@ -221,7 +218,7 @@ class _ArtReg extends State<ArtReg> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1990, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != dateHivConfirmed)
       setState(() {

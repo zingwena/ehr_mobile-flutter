@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/artadverseevent.dart';
+import 'package:ehr_mobile/model/artappointment.dart';
 import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/artInitiation.dart';
+import 'package:ehr_mobile/model/tbscreening.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_Visit_Overview.dart';
@@ -14,6 +17,7 @@ import 'package:ehr_mobile/view/art_initiation.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
+import 'package:ehr_mobile/view/tb_screening.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,23 +34,23 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 
-class ArtInitiationOverview extends StatefulWidget {
-  final ArtInitiation artInitiation;
+class ArtAppointmentsOverview extends StatefulWidget {
+  final List<ArtAppointment> artAppointment;
   final Person person;
   final String personId;
   final String visitId;
   final String htsId;
   final HtsRegistration htsRegistration;
-  ArtInitiationOverview(this.artInitiation, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  ArtAppointmentsOverview(this.artAppointment, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return ArtInitiationOverviewState();
+    return ArtAppointmentOverviewState();
   }
 }
 
-class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
+class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
@@ -62,14 +66,15 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
   bool showInputTabOptions = true;
   String facility_name;
   ArtVisit _artVisit;
+  var dateOfAppointment, displayDate;
+
 
   @override
   void initState() {
 
     print(_patient.toString());
     getArtVist(widget.personId);
-    getRegimen(widget.artInitiation.artRegimenId);
-    getReason(widget.artInitiation.artReasonId);
+
     //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
     getFacilityName();
@@ -288,7 +293,132 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                       child: new IntrinsicHeight(
                                           child: Column(
                                             children: <Widget>[
-                                              Form(
+                                              Container(
+                                                padding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 16.0,
+                                                    horizontal: 20.0),
+                                                width: double.infinity,
+                                                child: OutlineButton(
+                                                  shape:
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          5.0)),
+                                                  color: Colors.white,
+                                                  padding:
+                                                  const EdgeInsets.all(
+                                                      0.0),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 8.0,
+                                                        horizontal:
+                                                        30.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                      MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .start,
+                                                      children: <Widget>[
+                                                        // three line description
+                                                        Container(
+                                                          alignment:
+                                                          Alignment
+                                                              .topLeft,
+                                                          child: Text(
+                                                            'Art Appointments List',
+                                                            style:
+                                                            TextStyle(
+                                                              fontSize:
+                                                              16.0,
+                                                              fontStyle:
+                                                              FontStyle
+                                                                  .normal,
+                                                              color: Colors
+                                                                  .black87,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Divider(
+                                                          height: 10.0,
+                                                          color: Colors.blue
+                                                              .shade500,
+                                                        ),
+                                                        Container(
+                                                          height: 2.0,
+                                                          color:
+                                                          Colors.blue,
+                                                        ),
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child: widget.artAppointment.isEmpty
+                                                                  ? Container(
+                                                                  alignment:
+                                                                  Alignment.topLeft,
+                                                                  child:
+                                                                  Center(child: Text(
+                                                                    'No Records',
+                                                                    style: TextStyle(
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
+                                                                  ),)
+                                                              )
+                                                                  : Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                padding: EdgeInsets.symmetric(
+                                                                    vertical:
+                                                                    0.0,
+                                                                    horizontal:
+                                                                    30.0),
+                                                                child: DataTable(
+                                                                    columns: [
+                                                                      DataColumn(label: Text("Date")),
+                                                                      DataColumn(label: Text("Reason Name")),
+                                                                    ],
+                                                                    rows: widget.artAppointment
+                                                                        .map((appointment) => DataRow(cells: [
+                                                                      DataCell(Text(DateFormat("yyyy/MM/dd").format(appointment.date))),
+                                                                      DataCell(Text(appointment.reason)),
+                                                                    ]))
+                                                                        .toList()),
+                                                              ),)
+                                                          ],
+                                                        ),
+
+                                                        Divider(
+                                                          height: 10.0,
+                                                          color: Colors.blue
+                                                              .shade500,
+                                                        ),
+                                                        Container(
+                                                          height: 2.0,
+                                                          color:
+                                                          Colors.blue,
+                                                        ),
+
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  borderSide: BorderSide(
+                                                    color: Colors.blue,
+                                                    //Color of the border
+                                                    style:
+                                                    BorderStyle.solid,
+                                                    //Style of the border
+                                                    width:
+                                                    2.0, //width of the border
+                                                  ),
+                                                  onPressed: () {},
+                                                ),
+                                              ),
+                                          /*    Form(
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(16.0),
                                                   child: Column(
@@ -301,11 +431,11 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.artInitiation.line),
+                                                                    text: dateOfAppointment),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Line",
-                                                                    hintText: "Line"
+                                                                    labelText: "Date",
+                                                                    hintText: "Date"
                                                                 ),
                                                               ),
                                                             ),
@@ -316,11 +446,11 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        regimen_name)),
+                                                                        widget.artAppointment.reason)),
                                                                 decoration: InputDecoration(
                                                                     icon: new Icon(Icons.credit_card, color: Colors.blue),
-                                                                    labelText: "Regimen",
-                                                                    hintText: "Regimen"
+                                                                    labelText: "Reason",
+                                                                    hintText: "Reason"
                                                                 ),
                                                               ),
                                                             ),
@@ -351,7 +481,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                     ],
                                                   ),
                                                 ),
-                                              ),
+                                              )*/
                                             ],
                                           )
 
@@ -384,10 +514,18 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Registration",),
-          new RoundedButton(text: "ART Initiation", selected: true,
+          new RoundedButton(text: "ART Appointment",selected: true,),
+          new RoundedButton(text: "TB Screening", onTap: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      TbScreeningView(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
+            ));
+
+          },
           ),
-          new RoundedButton(text: "Art Visit", onTap: () {
+          new RoundedButton(text: "Close", onTap: () {
 
             if(_artVisit.visitType == null ){
               Navigator.push(

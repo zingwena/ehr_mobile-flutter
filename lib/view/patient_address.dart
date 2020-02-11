@@ -34,7 +34,7 @@ class _PatientAddressState extends State<PatientAddress> {
   MethodChannel('example.channel.dev/singlePatient');
 
   final _formKey = GlobalKey<FormState>();
-  bool _showError=false;
+  bool _showTownError=false;
   bool _townIsValid=false;
   bool _formIsValid=false;
   String _townError="Select Town";
@@ -122,6 +122,30 @@ class _PatientAddressState extends State<PatientAddress> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -317,6 +341,12 @@ class _PatientAddressState extends State<PatientAddress> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
+                                                    !_showTownError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _townError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
 
                                                     SizedBox(
                                                       height: 35.0,
@@ -324,10 +354,7 @@ class _PatientAddressState extends State<PatientAddress> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 0.0,
-                                                          horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                       child:   RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
@@ -353,7 +380,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                             }
                                                             else{
                                                               setState(() {
-                                                                _showError=true;
+                                                                _showTownError=true;
                                                               });
                                                             }
                                                             if(_formIsValid){

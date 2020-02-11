@@ -582,7 +582,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                         child: new LayoutBuilder(
                           builder: (BuildContext context,
                               BoxConstraints viewportConstraints) {
-                            return    _body(list);
+                            return  _body(list);
                           },
                         ),
                         length: 3,
@@ -701,6 +701,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                 show_batch_error_msg == true ? SizedBox(
                                 height: 20.0, width: 300.0, child: Text("Select testkit batch", style: TextStyle(color: Colors.red, fontSize: 15),),
                                 ):SizedBox(height: 0.0, width: 0.0,),
+
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -771,24 +772,26 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             'Result',
-
                                           ),
                                         ),
                                         width: 250,
                                       ),
                                     ),
+                                    VerticalDivider(),
                                     Text('Negative'),
                                     Radio(
                                         value: 1,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
+                                    VerticalDivider(),
                                     Text('Positive'),
                                     Radio(
                                         value: 2,
                                         groupValue: _result,
                                         activeColor: Colors.blue,
                                         onChanged: _handleResultChange),
+                                    VerticalDivider(),
                                     Text('Inconclusive'),
                                     Radio(
                                         value: 3,
@@ -843,13 +846,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                                   }else{
                                                     setState(() {
                                                       show_batch_error_msg = true;
-
-
                                                     });
-
                                                   }
-
-
                                                 }
                                               }
 
@@ -858,9 +856,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                         width: 100,
                                       ),
                                     ),
-
-
-
                                   ],
                                 ),
                               ],
@@ -896,12 +891,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
   }
 Future<void>validateInputs() async{
     try{
-
-
     }catch(e){
-
     }
-
 }
 
 
@@ -920,8 +911,6 @@ Future<void>validateInputs() async{
       print('Something went wrong...... cause $e');
     }
   }
-
-
 }
 
 

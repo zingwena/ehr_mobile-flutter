@@ -353,7 +353,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding: const EdgeInsets.all(30.0),
+                                                                padding: const EdgeInsets.all(60.0),
                                                                 child: Text('Please Select'),
                                                               ),
                                                               width: 250,
@@ -478,7 +478,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
                                                         child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(

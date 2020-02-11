@@ -453,10 +453,10 @@ public class ArtService {
                 artAppointmentDTO.getArtId(), artAppointmentDTO.getDate().getTime()));
     }
 
-    public List<ArtAppointment> getPersonArtAppointments(String personId) {
+    public List<ArtAppointmentDTO> getPersonArtAppointments(String personId) {
 
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
-        return ehrMobileDatabase.artAppointmentDao().findByArtIdOrderByDateDesc(art.getId());
+        return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdOrderByDateDesc(art.getId()));
     }
 
 }

@@ -351,7 +351,7 @@ class _Recency_Result  extends State<Recency_Result > {
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:               Row(
+                                                    child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: Padding(
@@ -385,10 +385,6 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     ),
                                                   ),
 
-                                                  SizedBox(
-                                                    height: 20.0,
-                                                  ),
-
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
@@ -411,15 +407,12 @@ class _Recency_Result  extends State<Recency_Result > {
                                                             DataCell(Text(widget.laboratoryInvestigation.result.name))
                                                           ])
                                                         ]
-
                                                     ),
                                                   ),
 
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
-
-
 
                                                   Row(
                                                     children: <Widget>[
@@ -442,41 +435,37 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     ],
                                                   ),
 
-                                                  SizedBox(
-                                                    height: 30.0,
-                                                  ),
 
                                                   Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                            child: RaisedButton(
-                            elevation: 4.0,
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                            color: Colors.blue,
-                            padding: const EdgeInsets.all(20.0),
-                            child: Text(
-                            "Proceed to Index Testing",
-                            style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                            getIndexTestByPersonId(widget.patientId);
-                            if(indextestid == null){
-                              IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
-                              saveIndexTest(indexTest);
-                              Navigator.push(context,MaterialPageRoute(
-                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
-                              ));
-                            }else{
-                              Navigator.push(context,MaterialPageRoute(
-                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
-                              ));
-                               }
-
-
-                            },
-                            ),
-                            ),                ],
+                                                      width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                                  child: RaisedButton(
+                                                                        elevation: 4.0,
+                                                                           shape: RoundedRectangleBorder(
+                                                                             borderRadius: BorderRadius.circular(5.0)),
+                                                                                color: Colors.blue,
+                                                                                    padding: const EdgeInsets.all(20.0),
+                                                                                        child: Text(
+                                                                                             "Proceed to Index Testing",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                                  ),
+                                                                                              onPressed: () {
+                                                                                             getIndexTestByPersonId(widget.patientId);
+                                                                                            if(indextestid == null){
+                                                                                     IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
+                                                                                       saveIndexTest(indexTest);
+                                                                                   Navigator.push(context,MaterialPageRoute(
+                                                                          builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+                                                                         ));
+                                                                         }else{
+                                                       Navigator.push(context,MaterialPageRoute(
+                                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+                                                ));
+                                                }
+                                                    },
+                                                   ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
@@ -499,6 +488,73 @@ class _Recency_Result  extends State<Recency_Result > {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+
+
+  Widget buildNotificationItem({IconData icon}) {
+    return Padding(
+      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0 ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 10),
+
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "RESULT",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+          ],
+        ),
+
+        title: Text(
+          "FINAL",
+          style: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        trailing: Container(
+          height: 40,
+          width: 60,
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                width: 1,
+                color: Colors.black26,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Row(
+              children: <Widget>[
+                /*  Icon(
+                  Icons.plus_one,
+                  color: Colors.grey,
+                  size: 15,
+                ), */
+                Text(
+                  widget.laboratoryInvestigation.result.name,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        onTap: () {},
       ),
     );
   }
