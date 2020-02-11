@@ -251,6 +251,7 @@ public class ArtChannel {
                         }
                         if (methodCall.method.equals("getFollowUpReason")) {
                             try {
+                                Log.i(TAG, " LIST OF REASONS IN ANDROID"+gson.toJson(ehrMobileDatabase.followUpReasonDao().findAll()));
                                 result.success(gson.toJson(ehrMobileDatabase.followUpReasonDao().findAll()));
 
                             } catch (Exception e) {

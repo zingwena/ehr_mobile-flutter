@@ -704,7 +704,7 @@ class _ArtVisit extends State<ArtVisitView> {
                                                                   horizontal: 60.0),
                                                               child: TextFormField(
                                                                 controller: TextEditingController(
-                                                                    text: 'Jane Doe'),
+                                                                    text: 'admin '),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'Name Of Clinician ',

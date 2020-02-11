@@ -7,6 +7,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/reason.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/artappointmentOverview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +22,6 @@ class ArtAppointmentView extends StatefulWidget {
   String visitId;
   Person person;
   HtsRegistration htsRegistration;
-
   String htsId;
   ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
 
@@ -50,6 +50,12 @@ class _ArtAppointment extends State<ArtAppointmentView> {
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
 
+  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
+  List<FollowUpReason> _entryPointList = List();
+  String _entryPoint;
+  List entryPoints = List();
+  List _dropDownListEntryPoints = List();
+
 
   List _appointmentReasonIdentified = ["Appointment Reason 1", "Appointment Reason 2", "Appointment Reason 3", "Appointment Reason 4" ];
 
@@ -68,7 +74,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
   List<FollowUpReason> _functionalStatusList = List();
 
 
-
   @override
   void initState() {
     displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
@@ -80,13 +85,32 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     //getAge(widget.person);
     getFacilityName();
     getFunctionalStatus();
-
-    _dropDownMenuItemsAppointmentReasonIdentified = getDropDownMenuAppointmentReasonList();
+    getEntryPoints();
 
     super.initState();
   }
 
 
+
+  Future<void> getEntryPoints() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getFollowUpReason');
+      setState(() {
+        _entryPoint = response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = FollowUpReason.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+        print("LIST OF REASONS "+_entryPointList.toString());
+        _dropDownMenuItemsEntryPoint =
+            getDropDownMenuAppointmentReasonList();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
+    }
+  }
 
   Future<Null> _selectDateOfInitiation(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -121,7 +145,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
       hts = await artChannel.invokeMethod('getArtAppointment', patientId);
       setState(() {
         artAppointment = ArtAppointment.fromJson(jsonDecode(hts));
-        print("HERE IS THE HTS AFTER ASSIGNMENT " + artAppointment.toString());
+        print("HERE IS THE art appointments AFTER ASSIGNMENT " + artAppointment.toString());
       });
       print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
     } catch (e) {
@@ -152,7 +176,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
   List<DropdownMenuItem<String>> getDropDownMenuAppointmentReasonList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (Reason appointmentReasonIdentified in _appointmentReasonIdentified) {
+    for (FollowUpReason appointmentReasonIdentified in _appointmentReasonIdentified) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
@@ -340,7 +364,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                           hint:Text("Appointment Reason"),
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentAppointmentReason,
-                                                          items: _dropDownMenuItemsFunctionalStatuses,
+                                                          items: _dropDownMenuItemsEntryPoint,
                                                           onChanged: changedDropDownItemAppointmentReason,
                                                         ),
                                                       ),
@@ -375,11 +399,12 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                             fontWeight: FontWeight.w500),
                                                       ),
                                                       onPressed: () async{
-                                                        artAppointment.date = test_date;
-                                                        artAppointment.reason = _currentAppointmentReason;
-                                                       /* Navigator.push(
+                                                     //  ArtAppointment artAppointment = ArtAppointment(null, )
+                                                      // ArtAppointment(String id, String artId, String reason, DateTime date, NameCode followUpReason, DateTime followupDate,
+                                                      //     DateTime appointmentOutcomeDate, NameCode appointmentOutcome  )
+                                                    /*    Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) => ArtAppointmentView()), );*/
+                                                          MaterialPageRoute(builder: (context) => ArtAppointmentsOverview()), );*/
 
                                                        }
                                                     ),
@@ -439,17 +464,16 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     );
   } */
 
-  Future<void> artRegistration(ArtRegistration artRegistration) async {
-    String art_registration_response;
+  Future<void> artappintmentReg(ArtAppointment artAppointment) async {
+    String art_appointment_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod');
 
-      art_registration_response = await artChannel.invokeMethod(
-          'saveArtRegistration', jsonEncode(artRegistration.toJson()));
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_registration_response);
+      art_appointment_response = await artChannel.invokeMethod(
+          'saveArtAppointment', jsonEncode(artAppointment.toJson()));
+      print('pppppppppppppppppppppppppppppppppppp art response'+ art_appointment_response);
       setState(() {
-        _artRegistration = ArtRegistration.fromJson(jsonDecode(art_registration_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ _artRegistration.toString());
+        artAppointment = ArtAppointment.fromJson(jsonDecode(art_appointment_response));
+        print('FFFFFFFFFFFFFFFFFFFFFFF art appointment'+ artAppointment.toString());
       });
 
     } catch (e) {
