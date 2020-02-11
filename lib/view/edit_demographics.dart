@@ -630,7 +630,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                         elevation: 8.0,
                                                         shape: RoundedRectangleBorder(

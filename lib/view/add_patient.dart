@@ -424,7 +424,7 @@ class _AddPatient extends State<AddPatient> {
                                                     ),
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
@@ -436,6 +436,7 @@ class _AddPatient extends State<AddPatient> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: <Widget>[
                                                             Text('Proceed to Demographics', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
                                                             Icon(Icons.navigate_next, color: Colors.white, ),
                                                           ],
                                                         ),
