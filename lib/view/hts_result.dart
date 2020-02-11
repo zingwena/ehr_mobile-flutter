@@ -385,8 +385,6 @@ class _Hts_Result  extends State<Hts_Result > {
                                                        DataCell(Text(labinvesttest.endTime))])
 
                                                       ).toList()
-
-
                                                       ),
                                                     ),
 
@@ -394,34 +392,35 @@ class _Hts_Result  extends State<Hts_Result > {
                                                       height: 10.0,
                                                     ),
 
-
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                      child: Row(
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
+                                                      child: Column(
                                                         children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: final_result),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Final Result',
-                                                                  // icon: Icon(Icons.add_box, color: Colors.blue),
+                                                          Material(
+                                                            elevation: 1,
+                                                            color: Colors.white,
+                                                            child: Column(
+                                                              children: <Widget>[
+                                                                Divider(
+                                                                  height: 1,
+                                                                  color: Colors.black87,
                                                                 ),
-
-                                                              ),
+                                                                buildNotificationItem(icon: Icons.notifications_none),
+                                                                Divider(
+                                                                  height: 3,
+                                                                  color: Colors.black87,
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-
-
+                                                          SizedBox(height: 50),
                                                         ],
                                                       ),
                                                     ),
 
                                                     SizedBox(
-                                                      height: 30.0,
+                                                      height: 10.0,
                                                     ),
 
                                                     Container(
@@ -446,8 +445,6 @@ class _Hts_Result  extends State<Hts_Result > {
                                                               }else{
 
                                                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> PostTestOverview(patientPostTest, widget.patientId, widget.visitId, widget.person, widget.htsId, patientPostTest.consentToIndexTesting,true, true, patientPostTest.finalResult, widget.htsRegistration)));
-
-
                                                               }
                                                             }
                                                           }
@@ -476,6 +473,70 @@ class _Hts_Result  extends State<Hts_Result > {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildNotificationItem({IconData icon}) {
+    return Padding(
+      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0 ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 10),
+
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "RESULT",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+          ],
+        ),
+
+        title: Text(
+          "HIV",
+          style: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        trailing: Container(
+          height: 40,
+          width: 100,
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                width: 1,
+                color: Colors.black26,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Row(
+              children: <Widget>[
+                /*  Icon(
+                  Icons.plus_one,
+                  color: Colors.grey,
+                  size: 15,
+                ), */
+                Text(
+                  final_result,
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        onTap: () {},
       ),
     );
   }

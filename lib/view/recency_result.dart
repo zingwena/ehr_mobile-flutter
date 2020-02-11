@@ -351,7 +351,7 @@ class _Recency_Result  extends State<Recency_Result > {
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
-                                                    child:               Row(
+                                                    child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: Padding(
@@ -385,10 +385,6 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     ),
                                                   ),
 
-                                                  SizedBox(
-                                                    height: 20.0,
-                                                  ),
-
                                                   Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
@@ -411,7 +407,6 @@ class _Recency_Result  extends State<Recency_Result > {
                                                             DataCell(Text(widget.laboratoryInvestigation.result.name))
                                                           ])
                                                         ]
-
                                                     ),
                                                   ),
 
@@ -419,64 +414,67 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     height: 20.0,
                                                   ),
 
-
-
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        child: Padding(
-                                                          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
-                                                          child: TextField(
-                                                            controller: TextEditingController(
-                                                                text: widget.laboratoryInvestigation.result.name),
-                                                            decoration: InputDecoration(
-                                                              labelText: 'Final Result',
-                                                              // icon: Icon(Icons.add_box, color: Colors.blue),
-                                                            ),
-
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        Material(
+                                                          elevation: 1,
+                                                          color: Colors.white,
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Divider(
+                                                                height: 1,
+                                                                color: Colors.black87,
+                                                              ),
+                                                              buildNotificationItem(icon: Icons.notifications_none),
+                                                              Divider(
+                                                                height: 3,
+                                                                color: Colors.black87,
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                                      ),
-
-
-                                                    ],
+                                                        SizedBox(height: 50),
+                                                      ],
+                                                    ),
                                                   ),
 
                                                   SizedBox(
-                                                    height: 30.0,
+                                                    height: 10.0,
                                                   ),
 
                                                   Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                            child: RaisedButton(
-                            elevation: 4.0,
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                            color: Colors.blue,
-                            padding: const EdgeInsets.all(20.0),
-                            child: Text(
-                            "Proceed to Index Testing",
-                            style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                            getIndexTestByPersonId(widget.patientId);
-                            if(indextestid == null){
-                              IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
-                              saveIndexTest(indexTest);
-                              Navigator.push(context,MaterialPageRoute(
-                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
-                              ));
-                            }else{
-                              Navigator.push(context,MaterialPageRoute(
-                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
-                              ));
-                               }
-
-
-                            },
-                            ),
-                            ),                ],
+                                                      width: double.infinity,
+                                                              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                                  child: RaisedButton(
+                                                                        elevation: 4.0,
+                                                                           shape: RoundedRectangleBorder(
+                                                                             borderRadius: BorderRadius.circular(5.0)),
+                                                                                color: Colors.blue,
+                                                                                    padding: const EdgeInsets.all(20.0),
+                                                                                        child: Text(
+                                                                                             "Proceed to Index Testing",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                                  ),
+                                                                                              onPressed: () {
+                                                                                             getIndexTestByPersonId(widget.patientId);
+                                                                                            if(indextestid == null){
+                                                                                     IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
+                                                                                       saveIndexTest(indexTest);
+                                                                                   Navigator.push(context,MaterialPageRoute(
+                                                                          builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+                                                                         ));
+                                                                         }else{
+                                                       Navigator.push(context,MaterialPageRoute(
+                                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
+                                                ));
+                                                }
+                                                    },
+                                                   ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
@@ -499,6 +497,70 @@ class _Recency_Result  extends State<Recency_Result > {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildNotificationItem({IconData icon}) {
+    return Padding(
+      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0 ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 10),
+
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "RESULT",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+          ],
+        ),
+
+        title: Text(
+          "FINAL",
+          style: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        trailing: Container(
+          height: 10,
+          width: 100,
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                width: 1,
+                color: Colors.black26,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Row(
+              children: <Widget>[
+                /*  Icon(
+                  Icons.plus_one,
+                  color: Colors.grey,
+                  size: 15,
+                ), */
+                Text(
+                  widget.laboratoryInvestigation.result.name,
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        onTap: () {},
       ),
     );
   }
