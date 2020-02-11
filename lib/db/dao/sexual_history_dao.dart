@@ -85,7 +85,7 @@ class SexualHistoryDao extends BaseDao{
     inserter.set(sexWithMaleDate, const CustomDateTimeConverter().fromEhrJson(map['sexWithMaleDate']));
     inserter.set(sexWithFemaleDate, const CustomDateTimeConverter().fromEhrJson(map['sexWithFemaleDate']));
 
-    inserter.set(numberOfSexualPartners, map['sexWithFemaleDate']);
+    inserter.set(numberOfSexualPartners, map['numberOfSexualPartners']);
     inserter.set(numberOfSexualPartnersLastTwelveMonths, map['numberOfSexualPartnersLastTwelveMonths']);
 
     inserter.set(status,'IMPORTED');
