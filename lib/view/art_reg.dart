@@ -75,11 +75,14 @@ class _ArtReg extends State<ArtReg> {
   int _reTested = 0;
   String testingSite = "";
   bool retestedBeforeArt = false;
-  String _currentReferringProgram, _currentHivTestUsed, _currentReasonForTest;
+  String _currentReferringProgram, _currentHivTestUsed, _currentReasonForTest, _currentFacility;
 
   bool selfIdentifiedReferringIsValid = false;
   bool selfIdentifiedHIVTestIsValid = false;
   bool selfIdentifiedReasonForTestIsValid = false;
+  bool selfIdentifiedFacilitysValid = false;
+  bool healthfacility_change = false;
+
   String _reason;
   List reasons = List();
   List _dropDownListReasons = List();
@@ -115,6 +118,7 @@ class _ArtReg extends State<ArtReg> {
     _dropDownMenuItemsReasonForTest  =     getDropDownMenuItemsReasonsForHivTest();
     if(widget.artdto.facility != null){
       _testingSite = 1;
+      healthFacility = true;
 
     }
     print("ART DTO >>>>>>>>>>"+ widget.artdto.facility);
@@ -743,11 +747,11 @@ class _ArtReg extends State<ArtReg> {
                                                                     Colors
                                                                         .black,
                                                                 value:
-                                                                    _currentReferringProgram,
+                                                                _currentFacility,
                                                                 items:
                                                                 _dropDownMenuItemsEntryPoint,
                                                                 onChanged:
-                                                                    changedDropDownItemReferring,
+                                                                changedDropDownItemHealthFacility,
                                                               ),
                                                             ),
                                                             borderSide:
@@ -1192,6 +1196,11 @@ class _ArtReg extends State<ArtReg> {
                                                           widget.artdto
                                                                   .dateRetested =
                                                               retest_date;
+                                                          if(healthfacility_change){
+                                                            widget.artdto.facility = _currentFacility;
+                                                          }
+
+
 
                                                           await artRegistration(
                                                               widget.artdto);
@@ -1323,6 +1332,14 @@ class _ArtReg extends State<ArtReg> {
     setState(() {
       _currentReferringProgram = selectedReferringProgramIdentified;
       selfIdentifiedReferringIsValid = !selfIdentifiedReferringIsValid;
+      _selfReferringProgramError = null;
+    });
+  }
+  void changedDropDownItemHealthFacility(String selectedReferringProgramIdentified) {
+    setState(() {
+      healthfacility_change = true;
+      _currentFacility = selectedReferringProgramIdentified;
+      selfIdentifiedFacilitysValid = !selfIdentifiedFacilitysValid;
       _selfReferringProgramError = null;
     });
   }

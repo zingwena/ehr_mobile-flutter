@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/artappointment.dart';
+import 'package:ehr_mobile/model/followupreason.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/reason.dart';
@@ -22,7 +23,7 @@ class ArtAppointmentView extends StatefulWidget {
   HtsRegistration htsRegistration;
 
   String htsId;
-  ArtAppointmentView();
+  ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
 
 
   @override
@@ -64,7 +65,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
   List functionalStatuses = List();
   List _dropDownFunctionalStatuses = List();
   List<DropdownMenuItem<String>> _dropDownMenuItemsFunctionalStatuses;
-  List<Reason> _functionalStatusList = List();
+  List<FollowUpReason> _functionalStatusList = List();
 
 
 
@@ -75,8 +76,11 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     dateOfAppointment = DateFormat("yyyy/MM/dd").format(DateTime.now());
     test_date = DateTime.now();
     enrollment_date = DateTime.now();
+    getArtAppointment(widget.personId);
     //getAge(widget.person);
     getFacilityName();
+    getFunctionalStatus();
+
     _dropDownMenuItemsAppointmentReasonIdentified = getDropDownMenuAppointmentReasonList();
 
     super.initState();
@@ -128,14 +132,15 @@ class _ArtAppointment extends State<ArtAppointmentView> {
   Future<void> getFunctionalStatus() async {
     String response;
     try {
-      response = await artChannel.invokeMethod('getFunctionalStatus');
+      response = await artChannel.invokeMethod('getFollowUpReason');
       setState(() {
         _functionalStatus = response;
         functionalStatuses = jsonDecode(_functionalStatus);
-        _dropDownFunctionalStatuses = Reason.mapFromJson(functionalStatuses);
+        _dropDownFunctionalStatuses = FollowUpReason.mapFromJson(functionalStatuses);
         _dropDownFunctionalStatuses.forEach((e) {
           _functionalStatusList.add(e);
         });
+        print("LIST OF DROPDOWNS"+ _functionalStatusList.toString());
         _dropDownMenuItemsFunctionalStatuses =
             getDropDownMenuAppointmentReasonList();
       });
@@ -372,9 +377,9 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                       onPressed: () async{
                                                         artAppointment.date = test_date;
                                                         artAppointment.reason = _currentAppointmentReason;
-                                                        Navigator.push(
+                                                       /* Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) => ArtAppointmentView()), );
+                                                          MaterialPageRoute(builder: (context) => ArtAppointmentView()), );*/
 
                                                        }
                                                     ),

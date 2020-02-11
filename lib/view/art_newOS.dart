@@ -365,9 +365,10 @@ class _ArtOIState extends State<ArtNewOI> {
                                                             Navigator.push(context,
                                                                 MaterialPageRoute(
                                                                     builder: (
-                                                                        context) =>  ArtAppointmentView()
+                                                                        context) =>  ArtAppointmentView(widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsid)
 
                                                                 ));
+                                                            //ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
                                                           }
                                                       ),
                                                     ),
