@@ -45,33 +45,26 @@ class _ArtAppointment extends State<ArtAppointmentView> {
   DateTime enrollment_date, test_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
- ArtAppointment artAppointment;
+ ArtAppointment artAppointmentDto;
  ArtAppointment artAppointmentResponse;
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
 
-  List<DropdownMenuItem<String>> _dropDownMenuItemsEntryPoint;
-  List<FollowUpReason> _entryPointList = List();
-  String _entryPoint;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
-
-
-  List _appointmentReasonIdentified = ["Appointment Reason 1", "Appointment Reason 2", "Appointment Reason 3", "Appointment Reason 4" ];
-
+  List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
+  List<FollowUpReason> _reasonList = List();
+  String _reason;
+  List reasons = List();
+  List _dropDownListReasons = List();
 
   String  _currentAppointmentReason;
 
   bool selfIdentifiedAppointmentReasonIsValid=false;
 
-  List<DropdownMenuItem<String>> _dropDownMenuItemsAppointmentReasonIdentified;
+  String _entryPoint;
+  List entryPoints = List();
+  List _dropDownListEntryPoints = List();
+  List<ArtAppointment> _entryPointList = List();
 
-
-  String _functionalStatus;
-  List functionalStatuses = List();
-  List _dropDownFunctionalStatuses = List();
-  List<DropdownMenuItem<String>> _dropDownMenuItemsFunctionalStatuses;
-  List<FollowUpReason> _functionalStatusList = List();
 
 
   @override
@@ -84,7 +77,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     getArtAppointment(widget.personId);
     //getAge(widget.person);
     getFacilityName();
-    getFunctionalStatus();
     getEntryPoints();
 
     super.initState();
@@ -97,15 +89,14 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     try {
       response = await artChannel.invokeMethod('getFollowUpReason');
       setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = FollowUpReason.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
+        _reason = response;
+        reasons = jsonDecode(_reason);
+        _dropDownListReasons = FollowUpReason.mapFromJson(reasons);
+        _dropDownListReasons.forEach((e) {
+          _reasonList.add(e);
         });
-        print("LIST OF REASONS "+_entryPointList.toString());
-        _dropDownMenuItemsEntryPoint =
-            getDropDownMenuAppointmentReasonList();
+        print("LIST OF REASONS "+_reasonList.toString());
+        _dropDownMenuItemsReasons = getDropDownMenuAppointmentReasonList();
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -153,37 +144,18 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     }
   }
 
-  Future<void> getFunctionalStatus() async {
-    String response;
-    try {
-      response = await artChannel.invokeMethod('getFollowUpReason');
-      setState(() {
-        _functionalStatus = response;
-        functionalStatuses = jsonDecode(_functionalStatus);
-        _dropDownFunctionalStatuses = FollowUpReason.mapFromJson(functionalStatuses);
-        _dropDownFunctionalStatuses.forEach((e) {
-          _functionalStatusList.add(e);
-        });
-        print("LIST OF DROPDOWNS"+ _functionalStatusList.toString());
-        _dropDownMenuItemsFunctionalStatuses =
-            getDropDownMenuAppointmentReasonList();
-      });
-    } catch (e) {
-      print('--------------------Something went wrong  $e');
-    }
-  }
-
-
   List<DropdownMenuItem<String>> getDropDownMenuAppointmentReasonList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (FollowUpReason appointmentReasonIdentified in _appointmentReasonIdentified) {
+    for (FollowUpReason entryPoint in _reasonList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: appointmentReasonIdentified.code, child: Text(appointmentReasonIdentified.name)));
+          value: entryPoint.code, child: Text(entryPoint.name)));
     }
+    print('HERE ARE THE ITEMS IN MAPPING DROP DOWN '+ items.toString());
     return items;
   }
+
 
   String _selfAppointmentReasonError="Select ARV Regimen";
 
@@ -364,7 +336,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                           hint:Text("Appointment Reason"),
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentAppointmentReason,
-                                                          items: _dropDownMenuItemsEntryPoint,
+                                                          items: _dropDownMenuItemsReasons,
                                                           onChanged: changedDropDownItemAppointmentReason,
                                                         ),
                                                       ),
@@ -399,12 +371,14 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                             fontWeight: FontWeight.w500),
                                                       ),
                                                       onPressed: () async{
-                                                       ArtAppointment artAppointment = ArtAppointment(null, artAppointmentResponse.artId, _currentAppointmentReason, test_date, null, null,null , null );
-                                                       await artappintmentReg(artAppointment);
+                                                        ArtAppointment artAppointmentObj =  ArtAppointment(null, this.artAppointmentResponse.artId, _currentAppointmentReason, test_date);
+
+                                                       await artappintmentReg(artAppointmentObj);
+                                                       await getArtAppointments(widget.personId);
 
                                                         Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this.artAppointmentResponse, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                          MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._entryPointList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
                                                           ), );
 
                                                        }
@@ -467,14 +441,34 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
   Future<void> artappintmentReg(ArtAppointment artAppointment) async {
     String art_appointment_response;
+    print("ART APPOINTMENT SAVE METHOD"+ artAppointment.toString());
+    try {
+
+      art_appointment_response = await artChannel.invokeMethod('saveArtAppointment', jsonEncode(artAppointment));
+      setState(() {
+        artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(art_appointment_response));
+      });
+
+    } catch (e) {
+      print('--------------something went wrong  $e');
+    }
+
+  }
+
+  Future<void> getArtAppointments(String  personId) async {
+    var art_appointment_response;
     try {
 
       art_appointment_response = await artChannel.invokeMethod(
-          'saveArtAppointment', jsonEncode(artAppointment.toJson()));
-      print('pppppppppppppppppppppppppppppppppppp art response'+ art_appointment_response);
+          'getArtAppointments', personId);
       setState(() {
-        artAppointment = ArtAppointment.fromJson(jsonDecode(art_appointment_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF art appointment'+ artAppointment.toString());
+        _entryPoint = art_appointment_response;
+        entryPoints = jsonDecode(_entryPoint);
+        _dropDownListEntryPoints = ArtAppointment.mapFromJson(entryPoints);
+        _dropDownListEntryPoints.forEach((e) {
+          _entryPointList.add(e);
+        });
+        print("DDDDDDDDDDDDD ART APPOINTMENTS HERE"+ _entryPointList.toString());
       });
 
     } catch (e) {

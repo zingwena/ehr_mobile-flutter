@@ -121,10 +121,7 @@ class _ArtReg extends State<ArtReg> {
       healthFacility = true;
 
     }
-    print("ART DTO >>>>>>>>>>"+ widget.artdto.facility);
- /*   List<NameCode> entryList= _entryPointList.where((entryPoint)=> entryPoint.code.contains(widget.artdto.facility) ).toList();
-    print("JJJJJJJJJJJ entry list after searching in list"+ entryList.toString());
-    _currentReferringProgram = entryList[0].code;*/
+
     super.initState();
   }
 

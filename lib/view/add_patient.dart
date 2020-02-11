@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -50,6 +51,7 @@ class _AddPatient extends State<AddPatient> {
 
     _identifierDropdownMenuItem = getIdentifierDropdownMenuItems();
     _identifier = _identifierDropdownMenuItem[0].value;
+    getFacilityName();
     super.initState();
   }
 
@@ -239,7 +241,7 @@ class _AddPatient extends State<AddPatient> {
                                                       ],
                                                     ),
 
-
+/*
                                                     !showError
                                                         ? SizedBox.shrink()
                                                         : Row(
@@ -255,7 +257,7 @@ class _AddPatient extends State<AddPatient> {
                                                                 style: TextStyle(
                                                                     color: Colors.red),
                                                               ),
-                                                            ),),),], ),
+                                                            ),),),], ),*/
                                                     SizedBox(
                                                       height: 10.0,
                                                     ),
@@ -421,9 +423,6 @@ class _AddPatient extends State<AddPatient> {
                                                             _formKey
                                                                 .currentState
                                                                 .save();
-
-//                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
-//                           await registerPatient(patient);
                                                             setState(() {
                                                               nationalIdNumber =
                                                                   nationalId.replaceAll(
@@ -436,8 +435,8 @@ class _AddPatient extends State<AddPatient> {
                                                                     r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
                                                             if (regex.hasMatch(
                                                                 nationalIdNumber)) {
-                                                              Navigator.push(
-                                                                  context,
+
+                                                              Navigator.push(                                                                  context,
                                                                   MaterialPageRoute(
                                                                       builder: (context) => EditDemographics(
                                                                           lastName,
@@ -499,7 +498,7 @@ class _AddPatient extends State<AddPatient> {
             text: "Close",
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
+              MaterialPageRoute(builder: (context) => SearchPatient()),
             ),
           ),
         ],

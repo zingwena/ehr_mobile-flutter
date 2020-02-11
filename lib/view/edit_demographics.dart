@@ -43,7 +43,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   DateTime birthDate;
   Person registeredPatient;
   String lastName,  firstName,nationalId, religion, country,occupation,educationLevel,nationality,maritalStatus;
-  String _dropdownError="Select Country of birth";
+  String _countryERror="Select Country of birth";
   String _maritalStatusError="Select Marital status";
   String _nationalityError="Select Nationality";
   String _educationLevelError="Select Education Level";
@@ -60,7 +60,14 @@ class _EditDemographicsState extends State<EditDemographics> {
   bool selfIdentifiedGenderIsValid=false;
 
   bool _formValid=false;
-  bool showError=false;
+  bool showNationalityError=false;
+  bool showCounrtyError = false;
+  bool showOccupationError = false;
+  bool showMaritalError = false;
+  bool showEducationError = false;
+  bool showReligionError = false;
+  bool showSelfIdentifiedGenderError = false;
+
   List _religions= List();
   List<Religion> _religionListDropdown= List();
 
@@ -354,7 +361,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                       ),
                                                     ),
 
-                                                    !showError
+                                                    !showSelfIdentifiedGenderError
                                                         ? SizedBox.shrink()
                                                         : Text(
                                                       _selfIdentifiedGenderError ?? "",
@@ -393,7 +400,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                       ),
                                                     ),
 
-                                                    !showError
+                                                    !showMaritalError
                                                         ? SizedBox.shrink()
                                                         : Text(
                                                       _maritalStatusError ?? "",
@@ -431,7 +438,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                       ),
                                                     ),
 
-                                                    !showError
+                                                    !showEducationError
                                                         ? SizedBox.shrink()
                                                         : Text(
                                                       _educationLevelError ?? "",
@@ -468,7 +475,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
-                                                    !showError
+                                                    !showOccupationError
                                                         ? SizedBox.shrink()
                                                         : Text(
                                                       _occupationError ?? "",
@@ -508,7 +515,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                     ),
 
 
-                                                    !showError
+                                                    !showReligionError
                                                         ? SizedBox.shrink()
                                                         : Text(
                                                       _religionError ?? "",
@@ -546,7 +553,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                       ),
                                                     ),
 
-                                                    !showError
+                                                    !showNationalityError
                                                         ? SizedBox.shrink()
                                                         : Text(
                                                       _nationalityError ?? "",
@@ -584,10 +591,10 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                       ),
                                                     ),
 
-                                                    !showError
+                                                    !showCounrtyError
                                                         ? SizedBox.shrink()
                                                         : Text(
-                                                      _dropdownError ?? "",
+                                                      _countryERror ?? "",
                                                       style: TextStyle(color: Colors.red),
                                                     ),
 
@@ -646,11 +653,61 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 _currentSiGender,
                                                                 _currentOccupation);
 
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                        PatientAddress(patient)));
+                                                            if(countryIsValid& nationalityIsValid&selfIdentifiedGenderIsValid&maritalStatusIsValid&educationLevelIsValid&occupationIsValid&religionIsValid
+                                                            ){
+
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          PatientAddress(patient)));
+
+                                                            }else{
+
+                                                              if(countryIsValid == false){
+                                                                setState(() {
+                                                                  showCounrtyError = true;
+
+
+                                                                });
+                                                              }
+                                                              if(selfIdentifiedGenderIsValid== false){
+                                                                setState(() {
+                                                                  showSelfIdentifiedGenderError = true;
+
+
+                                                                });
+
+                                                              }
+                                                              if(occupationIsValid== false){
+                                                                setState(() {
+                                                                  showOccupationError = true;
+                                                                });
+                                                              }
+                                                              if(maritalStatusIsValid == false){
+                                                                setState(() {
+                                                                  showMaritalError = true;
+                                                                });
+                                                              }
+                                                              if(religionIsValid == false){
+                                                                setState(() {
+                                                                  showReligionError = true;
+                                                                });
+
+                                                              }
+                                                              if(educationLevelIsValid == false){
+                                                                setState(() {
+                                                                  showEducationError = true;
+                                                                });
+                                                              }
+                                                              if(nationalityIsValid == false){
+                                                                setState(() {
+                                                                  showNationalityError = true;
+                                                                });
+
+                                                              }
+                                                            }
+
                                                           }
 
                                                         },
@@ -850,11 +907,10 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   void changedDropDownItemCountry(String selectedCountry) {
-    print('@@@@@@@@@@@@@@@@@@ this is the selected country >>>>>>>>>> $selectedCountry');
 
     setState(() {
               _currentCountry = selectedCountry;
-              _dropdownError = null;
+              _countryERror = null;
               countryIsValid = !countryIsValid;
             });
 
@@ -865,7 +921,6 @@ class _EditDemographicsState extends State<EditDemographics> {
     String countries;
     try{
       countries= await dataChannel.invokeMethod('countryOptions');
-      print('****************************** $countries');
       setState(() {
         country=countries;
         _countries= jsonDecode(country);

@@ -251,9 +251,7 @@ public class ArtChannel {
                         }
                         if (methodCall.method.equals("getFollowUpReason")) {
                             try {
-                                Log.i(TAG, " LIST OF REASONS IN ANDROID"+gson.toJson(ehrMobileDatabase.followUpReasonDao().findAll()));
                                 result.success(gson.toJson(ehrMobileDatabase.followUpReasonDao().findAll()));
-
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());
                                 e.printStackTrace();
@@ -261,7 +259,6 @@ public class ArtChannel {
                         }
                         if (methodCall.method.equals("getIptReason")) {
                             try {
-                                Log.i(TAG, "UUUUUUUUUUUU List of Reasons returned"+ehrMobileDatabase.iptReasonDao().findAll().toString());
 
                                 result.success(gson.toJson(ehrMobileDatabase.iptReasonDao().findAll()));
 
@@ -272,7 +269,6 @@ public class ArtChannel {
                         }
                         if (methodCall.method.equals("getIptStatus")) {
                             try {
-                                Log.i(TAG, "UUUUUUUUUUUU List of Statuses returned"+ehrMobileDatabase.iptStatusDao().findAll().toString());
                                 result.success(gson.toJson(ehrMobileDatabase.iptStatusDao().findAll()));
 
                             } catch (Exception e) {
@@ -347,6 +343,7 @@ public class ArtChannel {
                         if (methodCall.method.equals("getArtAppointments")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
+                                Log.i(TAG,"ART Appointments in android"+gson.toJson(artService.getPersonArtAppointments(arguments).toString()));
                                 result.success(gson.toJson(artService.getPersonArtAppointments(arguments)));
 
                             } catch (Exception e) {

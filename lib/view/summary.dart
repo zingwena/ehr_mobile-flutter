@@ -1362,7 +1362,6 @@ class SummaryOverviewState extends State<SummaryOverview>
           new RoundedButton(
             text: "ART",
             onTap: ()  {
-
               if(artdto.artNumber == null ){
                 print("ART DTO DATE IS  NULL");
 

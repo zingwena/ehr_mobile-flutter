@@ -34,7 +34,7 @@ class _PatientAddressState extends State<PatientAddress> {
   MethodChannel('example.channel.dev/singlePatient');
 
   final _formKey = GlobalKey<FormState>();
-  bool _showError=false;
+  bool _showTownError=false;
   bool _townIsValid=false;
   bool _formIsValid=false;
   String _townError="Select Town";
@@ -317,6 +317,12 @@ class _PatientAddressState extends State<PatientAddress> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
+                                                    !_showTownError
+                                                        ? SizedBox.shrink()
+                                                        : Text(
+                                                      _townError ?? "",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
 
                                                     SizedBox(
                                                       height: 35.0,
@@ -353,7 +359,7 @@ class _PatientAddressState extends State<PatientAddress> {
                                                             }
                                                             else{
                                                               setState(() {
-                                                                _showError=true;
+                                                                _showTownError=true;
                                                               });
                                                             }
                                                             if(_formIsValid){
