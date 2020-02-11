@@ -414,36 +414,27 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     height: 20.0,
                                                   ),
 
-                                                  Container(
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
-                                                    child: Column(
-                                                      children: <Widget>[
-                                                        Material(
-                                                          elevation: 1,
-                                                          color: Colors.white,
-                                                          child: Column(
-                                                            children: <Widget>[
-                                                              Divider(
-                                                                height: 1,
-                                                                color: Colors.black87,
-                                                              ),
-                                                              buildNotificationItem(icon: Icons.notifications_none),
-                                                              Divider(
-                                                                height: 3,
-                                                                color: Colors.black87,
-                                                              ),
-                                                            ],
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
+                                                          child: TextField(
+                                                            controller: TextEditingController(
+                                                                text: widget.laboratoryInvestigation.result.name),
+                                                            decoration: InputDecoration(
+                                                              labelText: 'Final Result',
+                                                              // icon: Icon(Icons.add_box, color: Colors.blue),
+                                                            ),
+
                                                           ),
                                                         ),
-                                                        SizedBox(height: 50),
-                                                      ],
-                                                    ),
+                                                      ),
+
+
+                                                    ],
                                                   ),
 
-                                                  SizedBox(
-                                                    height: 10.0,
-                                                  ),
 
                                                   Container(
                                                       width: double.infinity,
@@ -501,6 +492,8 @@ class _Recency_Result  extends State<Recency_Result > {
     );
   }
 
+
+
   Widget buildNotificationItem({IconData icon}) {
     return Padding(
       padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0 ),
@@ -531,8 +524,8 @@ class _Recency_Result  extends State<Recency_Result > {
         ),
 
         trailing: Container(
-          height: 10,
-          width: 100,
+          height: 40,
+          width: 60,
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
@@ -553,6 +546,7 @@ class _Recency_Result  extends State<Recency_Result > {
                 Text(
                   widget.laboratoryInvestigation.result.name,
                   style: TextStyle(
+                    fontSize: 18,
                     color: Colors.grey,
                   ),
                 )

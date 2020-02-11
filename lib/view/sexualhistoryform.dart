@@ -374,7 +374,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                   sexuallyactive == true?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets.symmetric( vertical: 10.0, horizontal: 30.0),
-                                                    child:              Row(
+                                                    child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(

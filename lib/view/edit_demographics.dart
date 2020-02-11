@@ -276,8 +276,33 @@ class _EditDemographicsState extends State<EditDemographics> {
                         ),
                       ])
               ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
             ],
           ),
+
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
@@ -597,10 +622,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 0.0,
-                                                          horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                       child: RaisedButton(
                                                         elevation: 8.0,
                                                         shape: RoundedRectangleBorder(

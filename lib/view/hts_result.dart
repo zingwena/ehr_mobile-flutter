@@ -394,7 +394,7 @@ class _Hts_Result  extends State<Hts_Result > {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 40.0),
                                                       child: Column(
                                                         children: <Widget>[
                                                           Material(
@@ -417,10 +417,6 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           SizedBox(height: 50),
                                                         ],
                                                       ),
-                                                    ),
-
-                                                    SizedBox(
-                                                      height: 10.0,
                                                     ),
 
                                                     Container(
@@ -529,6 +525,7 @@ class _Hts_Result  extends State<Hts_Result > {
                 Text(
                   final_result,
                   style: TextStyle(
+                    fontSize: 18,
                     color: Colors.grey,
                   ),
                 )
