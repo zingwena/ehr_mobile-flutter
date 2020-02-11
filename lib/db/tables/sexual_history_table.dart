@@ -25,8 +25,14 @@ class SexualHistoryTable extends BaseTable {
     sh.sexWithMaleDate = const CustomDateTimeConverter().fromIntToSqlDate(map['sexWithMaleDate']);
     sh.sexWithFemaleDate = const CustomDateTimeConverter().fromIntToSqlDate(map['sexWithFemaleDate']);
     sh.date = const CustomDateTimeConverter().fromIntToSqlDate(map['date']);
-    sh.numberOfSexualPartners=map['numberOfSexualPartners'];
-    sh.numberOfSexualPartnersLastTwelveMonths=map['numberOfSexualPartnersLastTwelveMonths'];
+    if(map['numberOfSexualPartners']!=null){
+      sh.numberOfSexualPartners=map['numberOfSexualPartners'];
+    }
+
+    if(map['numberOfSexualPartnersLastTwelveMonths']!=null){
+      sh.numberOfSexualPartnersLastTwelveMonths=map['numberOfSexualPartnersLastTwelveMonths'];
+    }
+
     return sh;
   }
 

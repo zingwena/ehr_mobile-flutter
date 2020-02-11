@@ -20,7 +20,6 @@ class PersonTable extends BaseTable{
   String nationalityId;
   String countryId;
 
-  String countryOfBirthId;
   Address address;
   PhoneNumberTable phoneNumberTable;
 
@@ -44,6 +43,8 @@ class PersonTable extends BaseTable{
     person.nationalityId=map['nationalityId'];
 
     person.countryId = map['countryId'];
+
+    person.address=new Address(map['street'], map['town'], map['city']);
 
     return person;
   }
@@ -75,14 +76,14 @@ class PersonTable extends BaseTable{
     'lastName': lastName,
     'sex': sex,
     'nationalId': nationalId,
-    'birthDate': const CustomDateTimeConverter().fromIntToSqlDateTime(birthDate),
+    'birthDate': const CustomDateTimeConverter().fromIntToSqlDate(birthDate),
     'selfIdentifiedGender': selfIdentifiedGender,
     'religionId': religionId,
     'occupationId': occupationId,
     'maritalStatusId': maritalStatusId,
     'educationLevelId': educationLevelId,
     'nationalityId': nationalityId,
-    'countryOfBirthId': countryOfBirthId,
+    'countryId': countryId,
     'addressDto': address,
     'gender':sex,
 //    'phoneNumber1':phoneNumberTable.phoneNumber1,

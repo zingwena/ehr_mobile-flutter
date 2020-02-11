@@ -21,7 +21,7 @@ class PersonInvestigationTable extends BaseTable{
     person.personId=map['personId'];
     person.status=map['status'];
     person.investigationId=map['investigationId'];
-    person.resultId = map['resultId'];
+    person.resultId = map['result'];
     person.date = const CustomDateTimeConverter().fromIntToSqlDate(map['date']);
 
     return person;
