@@ -28,6 +28,12 @@ class ArtSymptom{
 
   factory ArtSymptom.fromJson(Map<String,dynamic> json) => _$ArtSymptomFromJson(json);
 
+  @override
+  String toString() {
+    return 'ArtSymptom{id: $id, artId: $artId, date: $date, symptom:$symptom}';
+  }
+
+
   Map<String,dynamic> toJson() => _$ArtSymptomToJson(this);
 
   static mapFromJson(List dynamicList){
