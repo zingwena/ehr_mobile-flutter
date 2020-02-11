@@ -1,7 +1,5 @@
 import 'package:ehr_mobile/view/data_syncronization.dart';
 
-//import 'package:ehr_mobile/art_symptoms.dart';
-
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'view/data_syncronization.dart';

@@ -44,6 +44,7 @@ dependencies:
   logger: ^0.7.0+2
   graphql_flutter: ^2.0.1
   progress_dialog: ^1.2.0
+  path_drawing: ^0.4.0
 
 dev_dependencies:
   flutter_test:

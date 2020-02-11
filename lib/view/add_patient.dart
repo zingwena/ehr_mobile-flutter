@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -143,9 +144,11 @@ class _AddPatient extends State<AddPatient> {
             facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
             fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -161,6 +164,30 @@ class _AddPatient extends State<AddPatient> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                              icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                             context,
+                               MaterialPageRoute(builder: (context) => LoginScreen()),),
+                        ),
+                      /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -212,8 +239,7 @@ class _AddPatient extends State<AddPatient> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(vertical: 16.0, horizontal: 60.0),
+                                                              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                               child: TextFormField(
                                                                 /*validator:
                                                                     (value) {
@@ -249,8 +275,7 @@ class _AddPatient extends State<AddPatient> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(vertical: 2.0, horizontal: 60.0),
+                                                              padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60.0),
                                                               child: Text(
                                                                 _nationalIdError ??
                                                                     "",
@@ -381,18 +406,16 @@ class _AddPatient extends State<AddPatient> {
                                                                         : null;
                                                                   },
                                                                   decoration: InputDecoration(
-                                                                      border: OutlineInputBorder(),
-                                                                  labelText: "Date of birth"),
+                                                                      suffixIcon: IconButton(
+                                                                          icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                          onPressed: () {_selectDate(context);}),
+                                                                      labelText: 'Date of Birth',
+                                                                      border: OutlineInputBorder()),
                                                                 ),
                                                               ),
                                                               width: 100,
                                                             ),
                                                           ),
-                                                          IconButton(
-                                                              icon: Icon(Icons
-                                                                  .calendar_today),
-                                                              color: Colors.blue,
-                                                              onPressed: () {_selectDate(context);})
                                                         ],
                                                       ),
                                                     ),
@@ -401,7 +424,7 @@ class _AddPatient extends State<AddPatient> {
                                                     ),
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
@@ -499,6 +522,7 @@ class _AddPatient extends State<AddPatient> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SearchPatient()),
+
             ),
           ),
         ],

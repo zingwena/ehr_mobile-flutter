@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sync/data_sync.dart';
@@ -178,7 +179,7 @@ class _SearchPatientState extends State<SearchPatient> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 35.0,
+                    height: 25.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -250,9 +251,21 @@ class _SearchPatientState extends State<SearchPatient> {
                           text: 'Sync',
                           //selected: true,
                         ),
+
+                        RoundedButton(
+
+                          text: "Logout",
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                          ),
+                        ),
+
                       ],
                     ),
                   ),
+
+
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),

@@ -210,7 +210,7 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
     for (Nationality nationality in _nationalityList) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(value: nationality.code, child: Text(nationality.name)));
+      items.add(DropdownMenuItem(value: nationality.name, child: Text(nationality.name)));
     }
     return items;
   }
@@ -617,6 +617,15 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
                                                           if (_formValid) {
                                                             _formKey.currentState.save();
 
+                                                            Map nationalities=Map();
+                                                            Map countries=Map();
+                                                            _countryList.forEach((country){
+                                                              countries['${country.name}']='${country.code}';
+                                                            });
+                                                            _nationalityList.forEach((nationality){
+                                                              nationalities['${nationality.name}']='${nationality.code}';
+                                                            });
+
                                                             Person patient = Person.basic(
                                                                 firstName,
                                                                 lastName,
@@ -626,8 +635,8 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
                                                                 _currentReligion,
                                                                 _currentMaritalStatus,
                                                                 _currentEducationLevel,
-                                                                _currentNationality,
-                                                                _currentCountry,
+                                                                nationalities['$_currentNationality'],
+                                                                countries['$_currentCountry'],
                                                                 _currentSiGender,
                                                                 _currentOccupation);
 
