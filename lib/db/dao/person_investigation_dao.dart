@@ -12,7 +12,7 @@ class PersonInvestigationDao extends BaseDao{
   var investigationId = new StrField('investigationId');
 
   var date = new DateTimeField('date');
-  var resultId = new StrField('resultId');
+  var resultId = new StrField('result');
   final id = new StrField('id');
 
   SqfliteAdapter _adapter;

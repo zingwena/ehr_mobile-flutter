@@ -1,26 +1,17 @@
-import 'dart:async' as prefix0;
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/dto/testkitbatchdto.dart';
-import 'package:ehr_mobile/model/investigation.dart';
 import 'package:ehr_mobile/model/laboratoryInvestigationTest.dart';
 import 'package:ehr_mobile/model/testkitbatchissue.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
-import 'package:ehr_mobile/view/search_patient.dart';
-import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/model/result.dart';
 import 'package:ehr_mobile/model/testKit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
-import 'package:ehr_mobile/view/patient_post_test.dart';
-import 'package:ehr_mobile/view/reception_vitals.dart';
-import 'package:ehr_mobile/view/htsreg_overview.dart';
-import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/util/logger.dart';
 
-import 'package:ehr_mobile/view/art_reg.dart';
-import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/hts_result.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +87,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
   @override
   void initState()   {
+      super.initState();
+      log.i(widget.personId);
       selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
       getPersonInvestigation(widget.personId);
       //getLabInvestigation(widget.personId);
@@ -110,7 +103,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       date = DateTime.now();
       print("HERE IS THE VISITID IN HTS SCREENING>>>>>>>>>>>>>>>"+ widget.visitId);
 
-    super.initState();
+
   }
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(

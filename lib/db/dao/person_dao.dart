@@ -41,7 +41,7 @@ class PersonDao extends BaseDao{
   Future<int> setSyncd(String id) async {
     Update updater = new Update(tableName);
     updater.where(this.id.eq(id));
-    updater.set(this.status, '2');
+    updater.set(this.status, 'SYNCED');
     var result=await _adapter.update(updater);
     return result;
   }

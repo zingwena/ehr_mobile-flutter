@@ -61,9 +61,10 @@ syncPatient(String token, String url) async {
     dto = await setSexualHistory(adapter,dto);
     dto=await setHtsScreening(adapter,dto);
     dto=await setArt(adapter, dto);
-    var encoded=json.encode(dto.toJson());
+
+    if(person.status=='NEW'){
+      var encoded=json.encode(dto.toJson());
     log.i(encoded);
-    if(person.status=='IMPORTED'){
       http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: jsonEncode(dto.toJson())).then((value){
         log.i(value.statusCode);
         log.i(json.decode(value.body));
@@ -147,7 +148,8 @@ Future <PatientDto> setIndexTest(SqfliteAdapter adapter,PatientDto dto,PersonDao
   var indexTest=await indexTestDao.findByPersonId(dto.personDto.id);
   if(indexTest!=null){
     log.i('------->${indexTest.personId}');
-    indexTest.visitId=dto.htsDto.visitId;
+    //indexTest.visitId=dto.htsDto.visitId;
+    indexTest.visitId=dto.patientId;
     dto.indexTestDto=indexTest;
     dto.indexTestDto.indexContactDtos=await setIndexContacts(adapter,indexTest.id,personDao);
   }
@@ -201,6 +203,7 @@ Future <PatientDto> setSexualHistory(SqfliteAdapter adapter,PatientDto dto) asyn
   var sexualHistory=await sexualHistoryDao.findByPersonId(dto.personDto.id);
   if(sexualHistory!=null){
     dto.sexualHistoryDto=sexualHistory;
+    log.i('Sexual+history--->${sexualHistory.sexWithFemaleDate}');
     var sexualHistoryQns=await setSexualHistoryQuestions(adapter,sexualHistory.id);
     sexualHistory.sexualHistoryQuestionDtos=sexualHistoryQns;
   }
@@ -247,33 +250,33 @@ Future <PatientDto> setArt(SqfliteAdapter adapter,PatientDto dto) async {
   var art=await artDao.findByPersonId(dto.personId);
   if(art!=null){
     dto.artDto=art;
-    var artInit=await getArtInitiation(adapter,dto.personId);
-    if(artInit!=null){
-      dto.artDto.artInitiationDto=artInit;
-      //log.i('========artRegimenId=======>${artInit.artRegimenId}');
-    }
+//    var artInit=await getArtInitiation(adapter,dto.personId);
+//    if(artInit!=null){
+//      dto.artDto.artInitiationDto=artInit;
+//      //log.i('========artRegimenId=======>${artInit.artRegimenId}');
+//    }
 
   }
   return dto;
 }
 
-Future <ArtInitiationTable> getArtInitiation(SqfliteAdapter adapter,String personId) async {
-  var artInitDao=ArtInitiationDao(adapter);
-  var artInit=await artInitDao.findByPersonId(personId);
-  if(artInit!=null){
-    return artInit;
-  }
-  return null;
-}
+//Future <ArtInitiationTable> getArtInitiation(SqfliteAdapter adapter,String personId) async {
+//  var artInitDao=ArtInitiationDao(adapter);
+//  var artInit=await artInitDao.findByPersonId(personId);
+//  if(artInit!=null){
+//    return artInit;
+//  }
+//  return null;
+//}
 
 Future <PatientDto> setPhoneNumbers(SqfliteAdapter adapter, PatientDto dto) async {
-  var phoneDao=PhoneNumberDao(adapter);
-  var phone = await phoneDao.findByPersonId(dto.personDto.id);
-
-  if(phone!=null){
-    log.i('----PHONE NUMBER------${phone.phoneNumber1}');
-    dto.personDto.phoneNumberTable.phoneNumber1=phone.phoneNumber1;
-    dto.personDto.phoneNumberTable.phoneNumber2=phone.phoneNumber2;
-  }
+  //var phoneDao=PhoneNumberDao(adapter);
+//  var phone = await phoneDao.findByPersonId(dto.personDto.id);
+//
+//  if(phone!=null){
+//    log.i('----PHONE NUMBER------${phone.phoneNumber1}');
+//    dto.personDto.phoneNumberTable.phoneNumber1=phone.phoneNumber1;
+//    dto.personDto.phoneNumberTable.phoneNumber2=phone.phoneNumber2;
+//  }
   return dto;
 }
