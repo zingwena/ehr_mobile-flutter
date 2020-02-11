@@ -10,9 +10,7 @@ ArtAppointment _$ArtAppointmentFromJson(Map<String, dynamic> json) {
   return ArtAppointment(
     json['id'] as String,
     json['artId'] as String,
-    json['reason'] == null
-        ? null
-        : NameCode.fromJson(json['reason'] as Map<String, dynamic>),
+    json['reason'] as String,
     const CustomDateTimeConverter().fromJson(json['date'] as String),
     json['followUpReason'] == null
         ? null

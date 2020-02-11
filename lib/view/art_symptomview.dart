@@ -25,8 +25,24 @@ class ArtSymptomState extends State<ArtSymptomView>{
   String _picked;
   static const htsChannel =
   MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
+
   String sexualHistoryDtoId ;
   bool _artsymptom = false;
+  ArtSymptom artSymptomResponse;
+
+
+  @override
+  void initState() {
+    print("############### thie is the artSymptom sent"+ widget.artSymptom.toString());
+    if(widget.artSymptom.id == null){
+      _artsymptom = false;
+    }else{
+      _artsymptom = true;
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,17 +72,37 @@ class ArtSymptomState extends State<ArtSymptomView>{
   void _onArtSymptomChanged(bool value) {
     setState(() {
       _artsymptom = value;
+      if(_artsymptom == true){
+        saveArtSymptom(widget.artSymptom);
+      }else{
+        deleteArtSymptom(widget.artSymptom);
+
+      }
 
     });
   }
 
 
-  Future<void>saveSexualHistoryDto(SexualHistoryDto sexualHistoryview)async{
+  Future<void>saveArtSymptom(ArtSymptom artSymptom)async{
     var response;
     try{
-      response = htsChannel.invokeMethod('saveSexualHistoryDto', jsonEncode(sexualHistoryview));
+      response = artChannel.invokeMethod('saveArtSymptom', jsonEncode(artSymptom));
       setState(() {
-        sexualHistoryDtoId = response;
+        artSymptomResponse = ArtSymptom.fromJson(jsonDecode(response));
+        widget.artSymptom = artSymptomResponse;
+      });
+    }catch(e){
+      print("Exception thrown in save sexualhistory dto method");
+
+    }
+  }
+
+  Future<void>deleteArtSymptom(ArtSymptom artSymptom)async{
+    var response;
+    try{
+      response = artChannel.invokeMethod('removeArtSymptom', artSymptom.id);
+      setState(() {
+
       });
     }catch(e){
       print("Exception thrown in save sexualhistory dto method");

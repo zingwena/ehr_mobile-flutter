@@ -9,6 +9,7 @@ import 'package:ehr_mobile/model/CbsQuestions.dart';
 import 'package:ehr_mobile/model/sexualhistory.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/sexualhistoryform2.dart';
@@ -417,10 +418,14 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                       ? 'Enter Number of sexual partners'
                                                                       : null;
                                                                 },
-                                                                onSaved:
-                                                                    (value) =>
-                                                                    setState(
-                                                                            () { numberofsexualpartners  = int.parse(value);                                           }),
+                                                                onChanged: (value){
+                                                                  if(value!=null && value.isNotEmpty){
+                                                                    numberofsexualpartners  = int.parse(value);
+                                                                  }
+                                                                },
+//                                                                onSaved:
+//                                                                    (value) =>
+//                                                                    setState(() { numberofsexualpartners  = int.parse(value);                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'Number of sexual partners',
@@ -452,11 +457,16 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                                       ? 'Enter  Number of sexual partners'
                                                                       : null;
                                                                 },
-                                                                onSaved:
-                                                                    (value) =>
-                                                                    setState(
-                                                                            () {
-                                                                          numberofsexualpartnersinlast12months  = int.parse(value);                                           }),
+                                                                onChanged: (value){
+                                                                  if(value!=null && value.isNotEmpty){
+                                                                    numberofsexualpartnersinlast12months  = int.parse(value);
+                                                                  }
+                                                                },
+//                                                                onChanged:
+//                                                                    (value) =>
+//                                                                    setState(
+//                                                                            () {
+//                                                                          numberofsexualpartnersinlast12months  = int.parse(value);                                           }),
                                                                 decoration: InputDecoration(
                                                                     labelText:
                                                                     'Number of sexual partners in the past 12 months ',
@@ -529,6 +539,7 @@ class _CbsQuestion extends State<CbsQuestions> {
   }
 
   Future<void>saveSexualHistory(SexualHistory sexualHistory)async{
+    log.i(sexualHistory);
     var response;
     try{
       response = await htsChannel.invokeMethod('saveSexualHistory',jsonEncode(sexualHistory));

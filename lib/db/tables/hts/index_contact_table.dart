@@ -30,7 +30,7 @@ class IndexContactTable extends BaseTable{
     icTable.status=map['status'];
     icTable.personId = map['personId'];
 
-    icTable.relation = const RelationTypeConvertor().fromInt(map['relation']);
+    icTable.relation = map['relation'];
     icTable.hivStatus = map['hivStatus'];
 
     icTable.dateOfHivStatus=const CustomDateTimeConverter().fromIntToSqlDate(map['dateOfHivTest']);

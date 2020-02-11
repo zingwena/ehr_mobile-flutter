@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/model/artappointment.dart';
+import 'package:ehr_mobile/model/followupreason.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/model/reason.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +16,14 @@ import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 
 
-class ArtAppointment extends StatefulWidget {
+class ArtAppointmentView extends StatefulWidget {
   String personId;
   String visitId;
   Person person;
   HtsRegistration htsRegistration;
 
   String htsId;
-  ArtAppointment();
+  ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
 
 
   @override
@@ -29,7 +32,7 @@ class ArtAppointment extends StatefulWidget {
   }
 }
 
-class _ArtAppointment extends State<ArtAppointment> {
+class _ArtAppointment extends State<ArtAppointmentView> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   static final MethodChannel addPatient =
@@ -42,7 +45,8 @@ class _ArtAppointment extends State<ArtAppointment> {
   DateTime enrollment_date, test_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
-
+ ArtAppointment artAppointment;
+ ArtAppointment artAppointmentResponse;
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
 
@@ -57,6 +61,13 @@ class _ArtAppointment extends State<ArtAppointment> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsAppointmentReasonIdentified;
 
 
+  String _functionalStatus;
+  List functionalStatuses = List();
+  List _dropDownFunctionalStatuses = List();
+  List<DropdownMenuItem<String>> _dropDownMenuItemsFunctionalStatuses;
+  List<FollowUpReason> _functionalStatusList = List();
+
+
 
   @override
   void initState() {
@@ -65,8 +76,11 @@ class _ArtAppointment extends State<ArtAppointment> {
     dateOfAppointment = DateFormat("yyyy/MM/dd").format(DateTime.now());
     test_date = DateTime.now();
     enrollment_date = DateTime.now();
-    getAge(widget.person);
+    getArtAppointment(widget.personId);
+    //getAge(widget.person);
     getFacilityName();
+    getFunctionalStatus();
+
     _dropDownMenuItemsAppointmentReasonIdentified = getDropDownMenuAppointmentReasonList();
 
     super.initState();
@@ -100,29 +114,49 @@ class _ArtAppointment extends State<ArtAppointment> {
 
     }
   }
-  Future<void>getAge(Person person)async{
-    String response;
-    try{
-      response = await dataChannel.invokeMethod('getage', person.id);
+
+  Future<void> getArtAppointment(String patientId) async {
+    var hts;
+    try {
+      hts = await artChannel.invokeMethod('getArtAppointment', patientId);
       setState(() {
-        age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
+        artAppointment = ArtAppointment.fromJson(jsonDecode(hts));
+        print("HERE IS THE HTS AFTER ASSIGNMENT " + artAppointment.toString());
       });
+      print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+  }
 
-    }catch(e){
-      debugPrint("Exception thrown in get facility name method"+e);
-
+  Future<void> getFunctionalStatus() async {
+    String response;
+    try {
+      response = await artChannel.invokeMethod('getFollowUpReason');
+      setState(() {
+        _functionalStatus = response;
+        functionalStatuses = jsonDecode(_functionalStatus);
+        _dropDownFunctionalStatuses = FollowUpReason.mapFromJson(functionalStatuses);
+        _dropDownFunctionalStatuses.forEach((e) {
+          _functionalStatusList.add(e);
+        });
+        print("LIST OF DROPDOWNS"+ _functionalStatusList.toString());
+        _dropDownMenuItemsFunctionalStatuses =
+            getDropDownMenuAppointmentReasonList();
+      });
+    } catch (e) {
+      print('--------------------Something went wrong  $e');
     }
   }
 
 
   List<DropdownMenuItem<String>> getDropDownMenuAppointmentReasonList() {
     List<DropdownMenuItem<String>> items = new List();
-    for (String appointmentReasonIdentified in _appointmentReasonIdentified) {
+    for (Reason appointmentReasonIdentified in _appointmentReasonIdentified) {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: appointmentReasonIdentified, child: Text(appointmentReasonIdentified)));
+          value: appointmentReasonIdentified.code, child: Text(appointmentReasonIdentified.name)));
     }
     return items;
   }
@@ -165,7 +199,7 @@ class _ArtAppointment extends State<ArtAppointment> {
                     child: Text("ART Appointment", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                /*  Container(
+                 /* Container(
                       child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment:
@@ -186,11 +220,11 @@ class _ArtAppointment extends State<ArtAppointment> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                            Padding(
+                        *//*    Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
+                            ),*//*
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Icon(
@@ -207,7 +241,7 @@ class _ArtAppointment extends State<ArtAppointment> {
                                 Icons.verified_user, size: 25.0, color: Colors.white,),
                             ),
                           ])
-                  ),  */
+                  ),*/
                  // _buildButtonsRow(),
                   Expanded(
                     child: new Card(
@@ -306,7 +340,7 @@ class _ArtAppointment extends State<ArtAppointment> {
                                                           hint:Text("Appointment Reason"),
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentAppointmentReason,
-                                                          items: _dropDownMenuItemsAppointmentReasonIdentified,
+                                                          items: _dropDownMenuItemsFunctionalStatuses,
                                                           onChanged: changedDropDownItemAppointmentReason,
                                                         ),
                                                       ),
@@ -340,9 +374,14 @@ class _ArtAppointment extends State<ArtAppointment> {
                                                             color: Colors.white,
                                                             fontWeight: FontWeight.w500),
                                                       ),
-                                                      onPressed: () => Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(builder: (context) => ArtAppointment()), ),
+                                                      onPressed: () async{
+                                                        artAppointment.date = test_date;
+                                                        artAppointment.reason = _currentAppointmentReason;
+                                                       /* Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(builder: (context) => ArtAppointmentView()), );*/
+
+                                                       }
                                                     ),
                                                   ),
                                                   SizedBox(

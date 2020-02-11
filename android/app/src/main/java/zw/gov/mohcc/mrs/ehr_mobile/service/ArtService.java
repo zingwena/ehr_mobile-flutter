@@ -123,7 +123,7 @@ public class ArtService {
 
                 if (laboratoryInvestigation != null) {
                     Facility facility = ehrMobileDatabase.facilityDao().findById(laboratoryInvestigation.getFacilityId());
-                    artDTO.setFacility(facility.getName());
+                    artDTO.setFacility(facility.getCode());
                 }
             }
         }
@@ -400,7 +400,7 @@ public class ArtService {
             return ArtIptDTO.get(artIpt);
         }
 
-        Log.d(TAG, "ART DTO TO BE RETURNED IN ANDROID >>>>>>"+ ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null)));
+        Log.d(TAG, "ART DTO TO BE RETURNED IN ANDROID >>>>>>" + ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null)));
 
         return ArtIptDTO.get(new ArtIpt(null, art.getId(), visitId, null, null));
     }

@@ -12,7 +12,7 @@ class PulseTable extends VitalBaseValueTable{
     pulse.visitId = map['visitId'];
     pulse.dateTime = const CustomDateTimeConverter().fromIntToSqlDate(map['dateTime']);
     pulse.status = map['status'];
-    pulse.value=map['value'];
+    pulse.value='${map['value']}';
     return pulse;
   }
 

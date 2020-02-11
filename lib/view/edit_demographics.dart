@@ -114,6 +114,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
   @override
   void initState() {
+    super.initState();
     _retrieveMetaDataFromDB();
     _dropDownMenuItems = getDropDownMenuItems();
     _dropDownMenuItemsIdentified = getDropDownMenuItemsIdentified();
@@ -124,7 +125,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     birthDate = widget.birthDate;
     getCountries();
     getNationalities();
-    super.initState();
+
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {

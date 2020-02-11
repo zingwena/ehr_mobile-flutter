@@ -51,7 +51,13 @@ public class DataChannel {
                                 System.out.println("Something went wrong " + e);
                             }
                         }
-
+                        if (methodCall1.method.equals("facilityOptions")) {
+                            try {
+                                result1.success(gson.toJson(ehrMobileDatabase.facilityDao().findAll()));
+                            } catch (Exception e) {
+                                System.out.println("Something went wrong " + e);
+                            }
+                        }
                         if (methodCall1.method.equals("religionOptions")) {
                             try {
                                 List<Religion> religions = ehrMobileDatabase.religionDao().getAllReligions();

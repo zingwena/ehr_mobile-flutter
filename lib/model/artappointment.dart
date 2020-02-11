@@ -13,14 +13,14 @@ part 'artappointment.g.dart';
 class ArtAppointment {
   String id;
   String artId;
-  NameCode reason;
+  String reason;
   DateTime date;
   NameCode followUpReason;
   DateTime followupDate;
   DateTime appointmentOutcomeDate;
   NameCode appointmentOutcome;
 
-  ArtAppointment(String id, String artId, NameCode reason, DateTime date, NameCode followUpReason, DateTime followupDate,
+  ArtAppointment(String id, String artId, String reason, DateTime date, NameCode followUpReason, DateTime followupDate,
       DateTime appointmentOutcomeDate, NameCode appointmentOutcome  ){
 
      this.id = id;

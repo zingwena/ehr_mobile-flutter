@@ -19,6 +19,7 @@ import 'package:flutter/services.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 import '../sidebar.dart';
+import 'art_appointment.dart';
 import 'art_newOS.dart';
 import 'art_symptomview.dart';
 
@@ -268,7 +269,7 @@ class _ArtOIState extends State<ArtNewOI> {
                   Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Text(
-                      "Art Symptoms",
+                      "Art New OI",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16.0,
@@ -361,12 +362,13 @@ class _ArtOIState extends State<ArtNewOI> {
                                                                     .w500),
                                                           ),
                                                           onPressed: ()  {
-                                                         /*   Navigator.push(context,
+                                                            Navigator.push(context,
                                                                 MaterialPageRoute(
                                                                     builder: (
-                                                                        context) =>  ArtNewOI()
+                                                                        context) =>  ArtAppointmentView(widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsid)
 
-                                                                ));*/
+                                                                ));
+                                                            //ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
                                                           }
                                                       ),
                                                     ),

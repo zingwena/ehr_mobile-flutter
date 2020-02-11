@@ -73,7 +73,7 @@ class _Registration extends State<Registration> {
     visitId = widget.visitId;
 //    patient id
     patientId = widget.patientId;
-    getFacilities();
+    getEntryPoints();
     getHtsRecord(patientId);
     getAge(widget.person);
     getFacilityName();
@@ -82,7 +82,7 @@ class _Registration extends State<Registration> {
     super.initState();
   }
 
-  Future<void> getFacilities() async {
+  Future<void> getEntryPoints() async {
     String response;
     try {
       response = await dataChannel.invokeMethod('getEntryPointsOptions');
