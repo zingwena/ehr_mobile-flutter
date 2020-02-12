@@ -393,12 +393,13 @@ class _Registration extends State<Registration> {
                                                         ],
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      height: 15.0,
-                                                    ),
-                                                    showTypeError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("Select HTS type ", style: TextStyle(color: Colors.red, fontSize: 15),),
+
+                                                    showTypeError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 95),
+                                                      child: Text("Select HTS type ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
+
+
                                                     Container(
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
                                                       width: double.infinity,
@@ -436,13 +437,17 @@ class _Registration extends State<Registration> {
                                                         : Row(
                                                            children: <Widget>[
                                                               Expanded( child: SizedBox(
-                                                                  child: Padding( padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60.0 ),
+                                                                  child: Padding( padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 95 ),
                                                                     child: Text( _entryPointError ??
                                                                "",
                                                            style: TextStyle(
                                                 color: Colors.red),
                                           ),
-                                        ),),),], ),
+                                        ),
+                                                              ),
+                                                              ),], ),
+
+
                                                     SizedBox(
                                                       height: 35.0,
                                                     ),
