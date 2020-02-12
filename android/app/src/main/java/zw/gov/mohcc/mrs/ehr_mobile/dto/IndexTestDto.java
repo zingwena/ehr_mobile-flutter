@@ -25,7 +25,7 @@ public class IndexTestDto {
         return date;
     }
 
-    public void setDate(Date dateOfEnrolmentIntoCare) {
+    public void setDate(PastDate dateOfEnrolmentIntoCare) {
         this.date = dateOfEnrolmentIntoCare;
     }
 }

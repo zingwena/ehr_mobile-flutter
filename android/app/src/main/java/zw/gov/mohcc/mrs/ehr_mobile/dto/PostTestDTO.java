@@ -19,7 +19,7 @@ public class PostTestDTO {
     public PostTestDTO() {
     }
 
-    public PostTestDTO(String htsId, Date datePostTestCounselled, boolean resultReceived, String reasonForNotIssuingResultId, boolean consentToIndexTesting, boolean postTestCounselled) {
+    public PostTestDTO(String htsId, PastDate datePostTestCounselled, boolean resultReceived, String reasonForNotIssuingResultId, boolean consentToIndexTesting, boolean postTestCounselled) {
         this.htsId = htsId;
         this.datePostTestCounselled = datePostTestCounselled;
         this.resultReceived = resultReceived;
@@ -40,7 +40,7 @@ public class PostTestDTO {
         return datePostTestCounselled;
     }
 
-    public void setDatePostTestCounselled(Date datePostTestCounselled) {
+    public void setDatePostTestCounselled(PastDate datePostTestCounselled) {
         this.datePostTestCounselled = datePostTestCounselled;
     }
 

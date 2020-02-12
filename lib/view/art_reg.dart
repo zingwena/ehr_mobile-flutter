@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/namecode.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/question.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
@@ -361,6 +362,54 @@ class _ArtReg extends State<ArtReg> {
                 fontSize: 25.0,
               ),
             ),
+
+            actions: <Widget>[
+
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -474,28 +523,19 @@ class _ArtReg extends State<ArtReg> {
                                             Form(
                                               key: _formKey,
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
-                                                    height: 10.0,
+                                                    height: 20.0,
                                                   ),
                                                   Row(
                                                     children: <Widget>[
                                                       Expanded(
                                                         child: SizedBox(
                                                           child: Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        16.0,
-                                                                    horizontal:
-                                                                        60.0),
-                                                            child:
-                                                                TextFormField(
+                                                            padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                            child: TextFormField(
                                                               validator:
                                                                   (value) {
                                                                 return value
@@ -507,14 +547,11 @@ class _ArtReg extends State<ArtReg> {
                                                                   (value) =>
                                                                       setState(
                                                                           () {
-                                                                oi_art_number =
-                                                                    value;
+                                                                oi_art_number = value;
                                                               }),
                                                               decoration: InputDecoration(
-                                                                  labelText:
-                                                                      'Art Number',
-                                                                  border:
-                                                                      OutlineInputBorder()),
+                                                                  labelText: 'Art Number',
+                                                                  border: OutlineInputBorder()),
                                                             ),
                                                           ),
                                                           width: 100,
@@ -528,23 +565,16 @@ class _ArtReg extends State<ArtReg> {
                                                   Container(
                                                     width: double.infinity,
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                        EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(0.0),
-                                                              child:
-                                                                  TextFormField(
-                                                                controller:
-                                                                    TextEditingController(
-                                                                        text:
-                                                                            dateOfTest),
+                                                              padding: const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                        text: dateOfTest),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -552,26 +582,19 @@ class _ArtReg extends State<ArtReg> {
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                0.0)),
-                                                                    labelText:
-                                                                        "Date of HIV Test"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateOfHivTest(context);}),
+                                                                    labelText: 'Date of HIV Test',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfHivTest(
-                                                                  context);
-                                                            })
+
                                                       ],
                                                     ),
                                                   ),
@@ -589,15 +612,10 @@ class _ArtReg extends State<ArtReg> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(0.0),
-                                                              child:
-                                                                  TextFormField(
-                                                                controller:
-                                                                    TextEditingController(
-                                                                        text:
-                                                                            dateOfEnrollment),
+                                                              padding: const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                        text: dateOfEnrollment),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -605,26 +623,19 @@ class _ArtReg extends State<ArtReg> {
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                0.0)),
-                                                                    labelText:
-                                                                        "Date of Enrollment"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateOfEnrollment(context);}),
+                                                                    labelText: 'Date of Enrollment',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfEnrollment(
-                                                                  context);
-                                                            })
+
                                                       ],
                                                     ),
                                                   ),
@@ -705,39 +716,20 @@ class _ArtReg extends State<ArtReg> {
                                                         ),
                                                   healthFacility
                                                       ? Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical:
-                                                                      16.0,
-                                                                  horizontal:
-                                                                      60.0),
-                                                          width:
-                                                              double.infinity,
+                                                          padding: EdgeInsets.symmetric(
+                                                                  vertical: 16.0, horizontal: 60.0),
+                                                          width: double.infinity,
                                                           child: OutlineButton(
                                                             shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0)),
+                                                                borderRadius: BorderRadius.circular(5.0)),
                                                             color: Colors.white,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(0.0),
+                                                            padding: const EdgeInsets.all(0.0),
                                                             child: Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          8.0,
-                                                                      horizontal:
-                                                                          30.0),
-                                                              child:
-                                                                  DropdownButton(
-                                                                isExpanded:
-                                                                    true,
-                                                                icon: Icon(Icons
-                                                                    .keyboard_arrow_down),
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0),
+                                                              child: DropdownButton(
+                                                                isExpanded: true,
+                                                                icon: Icon(Icons.keyboard_arrow_down),
                                                                 hint: Text(
                                                                     "Health Facility"),
                                                                 iconEnabledColor:
@@ -777,45 +769,30 @@ class _ArtReg extends State<ArtReg> {
                                                     child: OutlineButton(
                                                       shape:
                                                           RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0)),
+                                                              borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.white,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
+                                                      padding: const EdgeInsets.all(0.0),
                                                       child: Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal:
-                                                                    30.0),
+                                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                         child: DropdownButton(
                                                           isExpanded: true,
-                                                          icon: Icon(Icons
-                                                              .keyboard_arrow_down),
+                                                          icon: Icon(Icons.keyboard_arrow_down),
                                                           hint: Text(
                                                               "Referring Program"),
                                                           iconEnabledColor:
                                                               Colors.black,
-                                                          value:
-                                                              _currentReferringProgram,
-                                                          items:
-                                                              _dropDownMenuItemsReferringListIdentified,
-                                                          onChanged:
-                                                              changedDropDownItemReferring,
+                                                          value: _currentReferringProgram,
+                                                          items: _dropDownMenuItemsReferringListIdentified,
+                                                          onChanged: changedDropDownItemReferring,
                                                         ),
                                                       ),
                                                       borderSide: BorderSide(
                                                         color: Colors.blue,
                                                         //Color of the border
-                                                        style:
-                                                            BorderStyle.solid,
+                                                        style: BorderStyle.solid,
                                                         //Style of the border
-                                                        width:
-                                                            2.0, //width of the border
+                                                        width: 2.0, //width of the border
                                                       ),
                                                       onPressed: () {},
                                                     ),
@@ -825,14 +802,9 @@ class _ArtReg extends State<ArtReg> {
                                                       Expanded(
                                                         child: SizedBox(
                                                           child: Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        16.0,
-                                                                    horizontal:
-                                                                        60.0),
-                                                            child:
-                                                                TextFormField(
+                                                            padding: EdgeInsets.symmetric(
+                                                                    vertical: 16.0, horizontal: 60.0),
+                                                            child: TextFormField(
                                                               validator:
                                                                   (value) {
                                                                 return value
@@ -848,10 +820,8 @@ class _ArtReg extends State<ArtReg> {
                                                                     value;
                                                               }),
                                                               decoration: InputDecoration(
-                                                                  labelText:
-                                                                      'Program Number',
-                                                                  border:
-                                                                      OutlineInputBorder()),
+                                                                  labelText: 'Program Number',
+                                                                  border: OutlineInputBorder()),
                                                             ),
                                                           ),
                                                           width: 100,
@@ -876,12 +846,9 @@ class _ArtReg extends State<ArtReg> {
                                                               padding:
                                                                   const EdgeInsets
                                                                       .all(0.0),
-                                                              child:
-                                                                  TextFormField(
-                                                                controller:
-                                                                    TextEditingController(
-                                                                        text:
-                                                                            dateHivConfirmed),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                        text: dateHivConfirmed),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -889,26 +856,19 @@ class _ArtReg extends State<ArtReg> {
                                                                       ? 'Enter date'
                                                                       : null;
                                                                 },
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                0.0)),
-                                                                    labelText:
-                                                                        "Date  HIV Confirmed"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateHivConfirmed(context);}),
+                                                                    labelText: 'Date HIV Confirmed',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateHivConfirmed(
-                                                                  context);
-                                                            })
+
                                                       ],
                                                     ),
                                                   ),
@@ -941,16 +901,11 @@ class _ArtReg extends State<ArtReg> {
                                                                     30.0),
                                                         child: DropdownButton(
                                                           isExpanded: true,
-                                                          icon: Icon(Icons
-                                                              .keyboard_arrow_down),
-                                                          hint: Text(
-                                                              "HIV Test Used"),
-                                                          iconEnabledColor:
-                                                              Colors.black,
-                                                          value:
-                                                              _currentHivTestUsed,
-                                                          items:
-                                                              _dropDownMenuItemsHivTestUsedIdentified,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint: Text("HIV Test Used"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentHivTestUsed,
+                                                          items: _dropDownMenuItemsHivTestUsedIdentified,
                                                           onChanged:
                                                               changedDropDownItemHIVTestUsed,
                                                         ),
@@ -958,11 +913,9 @@ class _ArtReg extends State<ArtReg> {
                                                       borderSide: BorderSide(
                                                         color: Colors.blue,
                                                         //Color of the border
-                                                        style:
-                                                            BorderStyle.solid,
+                                                        style: BorderStyle.solid,
                                                         //Style of the border
-                                                        width:
-                                                            2.0, //width of the border
+                                                        width: 2.0, //width of the border
                                                       ),
                                                       onPressed: () {},
                                                     ),
@@ -979,35 +932,22 @@ class _ArtReg extends State<ArtReg> {
                                                     child: OutlineButton(
                                                       shape:
                                                           RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0)),
+                                                              borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.white,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
+                                                      padding: const EdgeInsets.all(0.0),
                                                       child: Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
+                                                        padding: EdgeInsets.symmetric(
                                                                 vertical: 8.0,
-                                                                horizontal:
-                                                                    30.0),
+                                                                horizontal: 30.0),
                                                         child: DropdownButton(
                                                           isExpanded: true,
-                                                          icon: Icon(Icons
-                                                              .keyboard_arrow_down),
-                                                          hint: Text(
-                                                              "Reason for HIV Test"),
-                                                          iconEnabledColor:
-                                                              Colors.black,
-                                                          value:
-                                                              _currentReasonForTest,
-                                                          items:
-                                                              _dropDownMenuItemsReasonForTest,
-                                                          onChanged:
-                                                              changedDropDownItemReasonForTest,
+                                                          icon: Icon(Icons.keyboard_arrow_down),
+                                                          hint: Text("Reason for HIV Test"),
+                                                          iconEnabledColor: Colors.black,
+                                                          value: _currentReasonForTest,
+                                                          items: _dropDownMenuItemsReasonForTest,
+                                                          onChanged: changedDropDownItemReasonForTest,
                                                         ),
                                                       ),
                                                       borderSide: BorderSide(
@@ -1081,14 +1021,11 @@ class _ArtReg extends State<ArtReg> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding:
-                                                                  const EdgeInsets
-                                                                      .all(0.0),
-                                                              child:
-                                                                  TextFormField(
+                                                                  const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
                                                                 controller:
                                                                     TextEditingController(
-                                                                        text:
-                                                                            dateOfRetest),
+                                                                        text: dateOfRetest),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -1096,26 +1033,21 @@ class _ArtReg extends State<ArtReg> {
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
+
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                0.0)),
-                                                                    labelText:
-                                                                        "Date of ReTest"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateOfReTest(context);}),
+                                                                    labelText: 'Date of ReTest',
+                                                                    border: OutlineInputBorder()),
+
+
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color: Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfReTest(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ),
@@ -1130,24 +1062,18 @@ class _ArtReg extends State<ArtReg> {
                                                             horizontal: 30.0),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0)),
+                                                      shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.blue,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              20.0),
-                                                      child: Text(
-                                                        "Register",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                      padding: const EdgeInsets.all(20.0),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Text('Register', style: TextStyle(color: Colors.white),),
+                                                          Spacer(),
+                                                          Icon(Icons.navigate_next, color: Colors.white, ),
+                                                        ],
                                                       ),
                                                       onPressed: () async {
                                                         if (_formKey
@@ -1253,7 +1179,7 @@ class _ArtReg extends State<ArtReg> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: 25.0,
+                                                    height: 45.0,
                                                   ),
                                                 ],
                                               ),

@@ -5,7 +5,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patient_admission.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
-
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/queue.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/summary.dart';
@@ -83,9 +83,11 @@ class VisitInitiationState extends State<VisitInitiation>
             facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
             fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -101,6 +103,30 @@ class VisitInitiationState extends State<VisitInitiation>
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -201,7 +227,7 @@ class VisitInitiationState extends State<VisitInitiation>
                                             Row(
                                               children: <Widget>[
                                                 SizedBox(
-                                                  height: 20.0,
+                                                  height: 30.0,
                                                 ),
 
                                                 Expanded(
@@ -224,7 +250,7 @@ class VisitInitiationState extends State<VisitInitiation>
                                                 getQueues(_queuesList),
 
                                                 SizedBox(
-                                                     height: 25.0,
+                                                     height: 35.0,
                                                        ),
 
                                             Container(

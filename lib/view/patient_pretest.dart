@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
@@ -298,9 +299,11 @@ class _PatientPretest extends State<PatientPretest> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -316,6 +319,30 @@ class _PatientPretest extends State<PatientPretest> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -406,6 +433,10 @@ class _PatientPretest extends State<PatientPretest> {
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
 
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
+
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
@@ -434,12 +465,13 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
 
-                                                    showApproachError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showApproachError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
+
+
                                                     ):SizedBox(height: 0.0, width: 0.0,),
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
                                                       width: double.infinity,
                                                       child: OutlineButton(
                                                         shape: RoundedRectangleBorder(
@@ -468,16 +500,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
-                                                    showModelError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("Select HTS Model ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showModelError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60),
+                                                       child: Text("Select HTS Model ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
                                                   SizedBox(
                                                     height: 30.0,
                                                   ),
 
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
                                                       width: double.infinity,
                                                       child: OutlineButton(
                                                         shape: RoundedRectangleBorder(
@@ -506,8 +538,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
-                                                    showPurposeError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("Select Purpose  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showPurposeError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Purpose of Test", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
 
@@ -540,8 +572,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-                                                    shownewTestError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("new test ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    shownewTestError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select New Test Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
                                                     Container(
@@ -571,8 +603,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-                                                    showCoupleCounselling == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("couple counselling ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showCoupleCounselling == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Couple Counselling Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
 
@@ -604,8 +636,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-                                                    showPretestInfoError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("pretest info given ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showPretestInfoError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Pretest Info Given Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
                                                     pregnatandlactatingqstn(),
@@ -644,16 +676,21 @@ class _PatientPretest extends State<PatientPretest> {
                                                     ),
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Save",
-                                                          style: TextStyle(color: Colors.white),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Save', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: ()async {
                                                           if (_formKey.currentState.validate()) {

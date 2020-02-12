@@ -10,7 +10,7 @@ public class InvestigationDTO {
     private String investigationId;
     private String result;
 
-    public InvestigationDTO(String personId, Date dateOfTest, String visitId, String investigationId, String result) {
+    public InvestigationDTO(String personId, PastDate dateOfTest, String visitId, String investigationId, String result) {
         this.personId = personId;
         this.dateOfTest = dateOfTest;
         this.visitId = visitId;
@@ -30,7 +30,7 @@ public class InvestigationDTO {
         return dateOfTest;
     }
 
-    public void setDateOfTest(Date dateOfTest) {
+    public void setDateOfTest(PastDate dateOfTest) {
         this.dateOfTest = dateOfTest;
     }
 

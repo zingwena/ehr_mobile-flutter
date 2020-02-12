@@ -190,8 +190,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
                                         minHeight:
-                                        viewportConstraints.maxHeight -
-                                            48.0,
+                                        viewportConstraints.maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                         child: Column(
