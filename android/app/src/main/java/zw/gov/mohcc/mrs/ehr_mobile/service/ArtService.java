@@ -16,12 +16,12 @@ import java.util.UUID;
 import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtAppointmentDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtCurrentStatusDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PastDate;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
-import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ArvStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
@@ -37,6 +37,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Person;
 import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArtVisitType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.ArvCombinationRegimen;
@@ -149,30 +150,28 @@ public class ArtService {
         return ehrMobileDatabase.laboratoryInvestigationDao().findByPersonInvestigationId(personInvestigationId);
     }
 
-    public ArtCurrentStatus initiatePatientOnArt(ArtCurrentStatus artCurrentStatus) {
+    public ArtCurrentStatusDTO initiatePatientOnArt(ArtCurrentStatusDTO artCurrentStatusDTO) {
 
-        artCurrentStatus.setState(ArvStatus.START_ARV);
-        artCurrentStatus.setId(UUID.randomUUID().toString());
-        artCurrentStatus.setDate(new Date());
-        Log.d(TAG, "State of art current status : " + artCurrentStatus);
-        ehrMobileDatabase.artCurrentStatusDao().save(artCurrentStatus);
+        Log.d(TAG, "State of art current status : " + artCurrentStatusDTO);
+        ArtReason artReason = null;
+        if (artCurrentStatusDTO.getReason() != null) {
+            artReason = ehrMobileDatabase.artReasonDao().findById(artCurrentStatusDTO.getReason());
+        }
+        ArvCombinationRegimen arvCombinationRegimen = null;
+        if (artCurrentStatusDTO.getRegimen() != null) {
+            arvCombinationRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatusDTO.getRegimen());
+        }
+        ehrMobileDatabase.artCurrentStatusDao().save(ArtCurrentStatusDTO.getInstance(artCurrentStatusDTO, artReason, arvCombinationRegimen));
 
         ArtCurrentStatus savedArtCurrentStatus = ehrMobileDatabase.artCurrentStatusDao()
-                .findLastestPatientStatus(artCurrentStatus.getArtId());
+                .findLastestPatientStatus(artCurrentStatusDTO.getArtId());
 
         Log.d(TAG, "Latest saved art current status : " + savedArtCurrentStatus);
 
-        return savedArtCurrentStatus;
+        return ArtCurrentStatusDTO.get(savedArtCurrentStatus);
     }
 
-    public ArtWhoStage getCurrentWHoStage(String artId) {
-
-        Log.d(TAG, "Retrieving current who stage using artId : " + artId);
-
-        return ehrMobileDatabase.artWhoStageDao().findLatestWhoStageByArtId(artId);
-    }
-
-    public ArtCurrentStatus getArtCurrentStatus(String artId) {
+    public ArtCurrentStatusDTO getArtCurrentStatus(String artId) {
 
         Log.d(TAG, "Fetching patient art current status using artId : " + artId);
 
@@ -181,7 +180,15 @@ public class ArtService {
 
         Log.d(TAG, "Fetched art current status : " + artId);
 
-        return artCurrentStatus;
+        return artCurrentStatus != null ? ArtCurrentStatusDTO.get(artCurrentStatus) :
+                ArtCurrentStatusDTO.get(new ArtCurrentStatus(null, artId));
+    }
+
+    public ArtWhoStage getCurrentWHoStage(String artId) {
+
+        Log.d(TAG, "Retrieving current who stage using artId : " + artId);
+
+        return ehrMobileDatabase.artWhoStageDao().findLatestWhoStageByArtId(artId);
     }
 
     public List<ArvCombinationRegimen> getPersonArvCombinationRegimens(String personId, RegimenType regimenType) {
