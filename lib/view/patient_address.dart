@@ -195,11 +195,13 @@ class _PatientAddressState extends State<PatientAddress> {
                                               Form(
                                                 key: _formKey,
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment
-                                                      .start,
-                                                  mainAxisAlignment: MainAxisAlignment
-                                                      .spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
+
+                                                    SizedBox(
+                                                      height: 10.0,
+                                                    ),
 
                                                     Row(
                                                       children: <Widget>[

@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/artregmendto.dart';
 import 'package:ehr_mobile/model/arv_combination_regimen.dart';
 import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/personInvestigation.dart';
@@ -257,6 +258,54 @@ class _Art_Initiation extends State<Art_Initiation> {
             title:new Text(
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+
+            actions: <Widget>[
+
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -353,7 +402,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding: const EdgeInsets.all(60.0),
+                                                                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                                                                 child: Text('Please Select'),
                                                               ),
                                                               width: 250,
@@ -486,10 +535,14 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                               BorderRadius.circular(5.0)),
                                                           color: Colors.blue,
                                                           padding: const EdgeInsets.all(20.0),
-                                                          child: Text("Initiate",
-                                                            style: TextStyle( fontSize: 15,
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.w500),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Text('Initiate', style: TextStyle(color: Colors.white),),
+                                                              Spacer(),
+                                                              Icon(Icons.navigate_next, color: Colors.white, ),
+                                                            ],
                                                           ),
 
                                                           onPressed: () {

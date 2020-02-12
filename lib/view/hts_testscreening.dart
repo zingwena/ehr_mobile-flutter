@@ -738,7 +738,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
+                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 20.0),
                                           child: DateTimePickerFormField(
                                             inputType: InputType.both,
                                             format: DateFormat(
@@ -767,7 +767,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
+                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 20.0),
                                           child: DateTimePickerFormField(
                                             inputType: InputType.both,
                                             format: DateFormat(

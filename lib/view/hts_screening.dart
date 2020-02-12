@@ -142,7 +142,7 @@ class _HtsScreening extends State<Hts_Screening> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1920, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedLastNegDate)
       setState(() {
@@ -154,7 +154,7 @@ class _HtsScreening extends State<Hts_Screening> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1920, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDateOfLastTest)
       setState(() {
@@ -370,26 +370,21 @@ class _HtsScreening extends State<Hts_Screening> {
                                             Form(
                                               key: _formKey,
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment
-                                                    .start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
-                                                    height: 10.0,
+                                                    height: 15.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 16.0,
-                                                        horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: const EdgeInsets
-                                                                  .all(8.0),
+                                                              padding: const EdgeInsets.all(8.0),
                                                               child: Text(
                                                                   'Have you ever been tested before ?'),
                                                             ),
@@ -421,43 +416,28 @@ class _HtsScreening extends State<Hts_Screening> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(
-                                                                  0.0),
-                                                              child:
-                                                              TextFormField(
-                                                                controller:
-                                                                TextEditingController(
-                                                                    text:
-                                                                    selectedDateOfLastTest),
-                                                                validator:
-                                                                    (value) {
+                                                              const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                    text: selectedDateOfLastTest),
+                                                                validator: (value) {
                                                                   return value
                                                                       .isEmpty
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                            0.0)),
-                                                                    labelText: "Date of last HIV test"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateLastTest(context);}),
+                                                                    labelText: 'Date of last HIV test',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateLastTest(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
@@ -879,11 +859,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
-                                                            Colors.blue,
+                                                        IconButton( icon: Icon(Icons.calendar_today),
+                                                            color: Colors.blue,
                                                             onPressed: () {
                                                               _selectDateOfCD4Count(
                                                                   context);
@@ -965,11 +942,11 @@ class _HtsScreening extends State<Hts_Screening> {
                                                   ),
 
                                                   SizedBox(
-                                                    height: 10.0,
+                                                    height: 15.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 55.0),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder(

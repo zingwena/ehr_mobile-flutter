@@ -336,8 +336,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
-                                        minHeight: viewportConstraints
-                                            .maxHeight - 48.0,
+                                        minHeight: viewportConstraints .maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                           child: Column(
@@ -525,7 +524,12 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
+
+                                              SizedBox(
+                                                height: 35.0,
+                                              ),
+
+                                             // Expanded(child: Container()),
                                                Container(
                                                         width: double.infinity,
                                                  padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0),
