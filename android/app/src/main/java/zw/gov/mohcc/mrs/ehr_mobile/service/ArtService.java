@@ -17,6 +17,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtAppointmentDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtFollowUpDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
@@ -26,6 +27,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtFollowUp;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
@@ -458,5 +460,35 @@ public class ArtService {
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
         return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdOrderByDateDesc(art.getId()));
     }
+
+    /*public ArtFollowUpDTO getArtFollowUpVisit(String personId) {
+
+        Log.d(TAG, "Retrieving visitId using personId : " + personId);
+
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+
+        ArtFollowUp artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(art.getId(), new Date().getTime());
+        Log.d(TAG, "Current Art appointment record for this day : " + artAppointment);
+        if (artAppointment != null) {
+            return ArtAppointmentDTO.get(artAppointment);
+        }
+
+        return ArtAppointmentDTO.get(new ArtAppointment(null, art.getId()));
+    }
+
+    public ArtFollowUpDTO saveArtFollowUpVisit(ArtFollowUpDTO artFollowUpDTO) {
+
+        Log.d(TAG, "Current state of ArtAppointment DTO : " + artAppointmentDTO);
+
+        FollowUpReason followUpReason = null;
+        if (artAppointmentDTO.getReason() != null) {
+            followUpReason = ehrMobileDatabase.followUpReasonDao().findById(artAppointmentDTO.getReason());
+        }
+
+        ehrMobileDatabase.artAppointmentDao().save(artAppointmentDTO.getInstance(artAppointmentDTO, followUpReason));
+
+        return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(
+                artAppointmentDTO.getArtId(), artAppointmentDTO.getDate().getTime()));
+    }*/
 
 }

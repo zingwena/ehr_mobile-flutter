@@ -1,26 +1,25 @@
-package zw.gov.mohcc.mrs.ehr_mobile.model.art;
+package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.annotation.NonNull;
-import androidx.room.Embedded;
-import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.FollowUpTypeConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.FollowUpType;
-import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtFollowUp;
+import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.FollowUpReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity
-public class ArtFollowUp extends BaseEntity {
+public class ArtFollowUpDTO implements Serializable {
 
     @NonNull
     private String artAppointmentId;
-    @Embedded
-    private NameCode outcome;
+    @NonNull
+    private String outcome;
     @NonNull
     @TypeConverters(DateConverter.class)
     private Date date;
@@ -28,16 +27,25 @@ public class ArtFollowUp extends BaseEntity {
     @NonNull
     private FollowUpType followUpType;
 
-    public ArtFollowUp() {
-    }
-
-    @Ignore
-    public ArtFollowUp(@NonNull String id, @NonNull String artAppointmentId, NameCode outcome, @NonNull Date date, @NonNull FollowUpType followUpType) {
-        super(id);
+    public ArtFollowUpDTO(@NonNull String artAppointmentId, @NonNull String outcome, @NonNull Date date, @NonNull FollowUpType followUpType) {
         this.artAppointmentId = artAppointmentId;
         this.outcome = outcome;
         this.date = date;
         this.followUpType = followUpType;
+    }
+
+    public static ArtFollowUpDTO get(ArtFollowUp artFollowUp) {
+
+        return new ArtFollowUpDTO(artFollowUp.getArtAppointmentId(), artFollowUp.getOutcome() != null ?
+                artFollowUp.getOutcome().getName() : null, artFollowUp.getDate(), artFollowUp.getFollowUpType());
+    }
+
+    public static ArtFollowUp getInstance(ArtFollowUpDTO artFollowUpDTO, FollowUpReason outcome) {
+
+        NameCode followUpReason = outcome != null ? new NameCode(outcome.getCode(), outcome.getName()) : null;
+
+        return new ArtFollowUp(UUID.randomUUID().toString(), artFollowUpDTO.getArtAppointmentId(), followUpReason,
+                artFollowUpDTO.getDate(), artFollowUpDTO.getFollowUpType());
     }
 
     @NonNull
@@ -49,14 +57,16 @@ public class ArtFollowUp extends BaseEntity {
         this.artAppointmentId = artAppointmentId;
     }
 
-    public NameCode getOutcome() {
+    @NonNull
+    public String getOutcome() {
         return outcome;
     }
 
-    public void setOutcome(NameCode outcome) {
+    public void setOutcome(@NonNull String outcome) {
         this.outcome = outcome;
     }
 
+    @NonNull
     public Date getDate() {
         return date;
     }
@@ -76,9 +86,9 @@ public class ArtFollowUp extends BaseEntity {
 
     @Override
     public String toString() {
-        return "ArtFollowUp{" +
+        return "ArtFollowUpDTO{" +
                 "artAppointmentId='" + artAppointmentId + '\'' +
-                ", outcome=" + outcome +
+                ", outcome='" + outcome + '\'' +
                 ", date=" + date +
                 ", followUpType=" + followUpType +
                 '}';
