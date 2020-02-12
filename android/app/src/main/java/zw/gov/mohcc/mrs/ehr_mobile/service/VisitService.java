@@ -13,6 +13,7 @@ import java.util.UUID;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PastDate;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSummaryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.PatientType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
@@ -198,7 +199,7 @@ public class VisitService {
         Log.d(TAG, "Retrieved latest patient bloodPressure record : " + bloodPressure);
         if (bloodPressure != null) {
             summary.setBloodPressure(new PatientSummaryDTO.ValueDate(
-                    bloodPressure.getSystolic(), bloodPressure.getDiastolic(), bloodPressure.getDateTime()));
+                    bloodPressure.getSystolic(), bloodPressure.getDiastolic(), new PastDate(bloodPressure.getDateTime())));
         }
         Weight weight = ehrMobileDatabase.weightDao().findLatestRecordByPersonId(personId);
         Log.d(TAG, "Retrieved latest patient weight record : " + weight);

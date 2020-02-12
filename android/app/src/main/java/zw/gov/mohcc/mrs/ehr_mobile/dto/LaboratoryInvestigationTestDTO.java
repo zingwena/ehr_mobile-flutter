@@ -87,7 +87,7 @@ public class LaboratoryInvestigationTestDTO implements Serializable {
 
     public InvestigationDTO get(LaboratoryInvestigationTestDTO dto) {
 
-        return new InvestigationDTO(dto.getPersonId(), new Date(), dto.getVisitId(), dto.getInvestigationId().trim(), dto.getResult().getCode());
+        return new InvestigationDTO(dto.getPersonId(), new PastDate(new Date()), dto.getVisitId(), dto.getInvestigationId().trim(), dto.getResult().getCode());
     }
 
     @Override

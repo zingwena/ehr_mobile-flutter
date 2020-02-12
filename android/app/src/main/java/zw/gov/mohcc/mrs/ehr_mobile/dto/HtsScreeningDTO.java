@@ -1,47 +1,37 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
+
 import androidx.annotation.NonNull;
 import androidx.room.TypeConverters;
+
 import java.util.Date;
 import java.util.UUID;
+
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ActivityStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
+import zw.gov.mohcc.mrs.ehr_mobile.model.hts.HtsScreening;
 
 public class HtsScreeningDTO {
 
     @NonNull
     private String personId;
-
     private boolean testedBefore;
-
     private Boolean art;
-
     private String result;
-
     @TypeConverters(DateConverter.class)
     private Date dateLastTested;
-
     private String artNumber;
-
     @TypeConverters(DateConverter.class)
     private Date dateLastNegative;
-
     private Integer viralLoad;
-
     @TypeConverters(DateConverter.class)
     private Date viralLoadDate;
-
     private Integer cd4Count;
-
     @TypeConverters(DateConverter.class)
     private Date cd4CountDate;
-
     @TypeConverters(DateConverter.class)
     private Date dateEnrolled;
-
     private ActivityStatus viralLoadDone;
-
     private ActivityStatus cd4Done;
 
     @NonNull
@@ -81,7 +71,7 @@ public class HtsScreeningDTO {
         return dateLastTested;
     }
 
-    public void setDateLastTested(Date dateLastTested) {
+    public void setDateLastTested(PastDate dateLastTested) {
         this.dateLastTested = dateLastTested;
     }
 
@@ -97,7 +87,7 @@ public class HtsScreeningDTO {
         return dateLastNegative;
     }
 
-    public void setDateLastNegative(Date dateLastNegative) {
+    public void setDateLastNegative(PastDate dateLastNegative) {
         this.dateLastNegative = dateLastNegative;
     }
 
@@ -113,7 +103,7 @@ public class HtsScreeningDTO {
         return viralLoadDate;
     }
 
-    public void setViralLoadDate(Date viralLoadDate) {
+    public void setViralLoadDate(PastDate viralLoadDate) {
         this.viralLoadDate = viralLoadDate;
     }
 
@@ -129,7 +119,7 @@ public class HtsScreeningDTO {
         return cd4CountDate;
     }
 
-    public void setCd4CountDate(Date cd4CountDate) {
+    public void setCd4CountDate(PastDate cd4CountDate) {
         this.cd4CountDate = cd4CountDate;
     }
 
@@ -137,7 +127,7 @@ public class HtsScreeningDTO {
         return dateEnrolled;
     }
 
-    public void setDateEnrolled(Date dateEnrolled) {
+    public void setDateEnrolled(PastDate dateEnrolled) {
         this.dateEnrolled = dateEnrolled;
     }
 

@@ -17,6 +17,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsRegDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.LaboratoryInvestigationTestDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PastDate;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
@@ -63,7 +64,8 @@ public class HtsService {
         Log.i(TAG, "Creating HTS record");
         Hts hts = HtsRegDTO.getInstance(dto, visitId);
         Log.i(TAG, "HTS RECORD CREATED HERE " + hts);
-        String laboratoryInvestigationId = createInvestigation(new InvestigationDTO(dto.getPersonId(), hts.getDateOfHivTest(),
+        String laboratoryInvestigationId = createInvestigation(new InvestigationDTO(dto.getPersonId(),
+                new PastDate(hts.getDateOfHivTest()),
                 visitId, APPLICATION_CONSTANTS.HIV_TESTS[0], null), true);
         hts.setLaboratoryInvestigationId(laboratoryInvestigationId);
         Log.i(TAG, "Created hts record : " + ehrMobileDatabase.htsDao().findHtsById(hts.getId()));

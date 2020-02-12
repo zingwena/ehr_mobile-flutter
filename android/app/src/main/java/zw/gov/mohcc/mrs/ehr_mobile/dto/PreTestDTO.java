@@ -2,6 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.room.TypeConverters;
 
 import zw.gov.mohcc.mrs.ehr_mobile.converter.GenderConverter;
@@ -10,7 +11,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 public class PreTestDTO {
 
     private final String TAG = "Purpose of test DTO";
+    @NonNull
     private String htsId;
+    @NonNull
     private String htsApproach;
     private boolean newTest;
     @TypeConverters(GenderConverter.class)
@@ -18,7 +21,9 @@ public class PreTestDTO {
     private boolean coupleCounselling;
     private boolean optOutOfTest;
     private boolean preTestInformationGiven;
+    @NonNull
     private String htsModelId;
+    @NonNull
     private String reasonForHivTestingId;
 
     public PreTestDTO() {
@@ -36,19 +41,21 @@ public class PreTestDTO {
         this.reasonForHivTestingId = reasonForHivTestingId;
     }
 
+    @NonNull
     public String getHtsId() {
         return htsId;
     }
 
-    public void setHtsId(String htsId) {
+    public void setHtsId(@NonNull String htsId) {
         this.htsId = htsId;
     }
 
+    @NonNull
     public String getHtsApproach() {
         return htsApproach;
     }
 
-    public void setHtsApproach(String htsApproach) {
+    public void setHtsApproach(@NonNull String htsApproach) {
         this.htsApproach = htsApproach;
     }
 
@@ -92,19 +99,21 @@ public class PreTestDTO {
         this.preTestInformationGiven = preTestInformationGiven;
     }
 
+    @NonNull
     public String getHtsModelId() {
         return htsModelId;
     }
 
-    public void setHtsModelId(String htsModelId) {
+    public void setHtsModelId(@NonNull String htsModelId) {
         this.htsModelId = htsModelId;
     }
 
+    @NonNull
     public String getReasonForHivTestingId() {
         return reasonForHivTestingId;
     }
 
-    public void setReasonForHivTestingId(String reasonForHivTestingId) {
+    public void setReasonForHivTestingId(@NonNull String reasonForHivTestingId) {
         this.reasonForHivTestingId = reasonForHivTestingId;
     }
 

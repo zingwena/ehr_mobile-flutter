@@ -17,9 +17,9 @@ import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtAppointmentDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
-import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtFollowUpDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PastDate;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ArvStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
@@ -27,7 +27,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtFollowUp;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
@@ -119,7 +118,7 @@ public class ArtService {
             artDTO.setPersonId(personId);
             PersonInvestigation personInvestigation = getLatestHivPositiveRecord(personId);
             if (personInvestigation != null) {
-                artDTO.setDateOfHivTest(personInvestigation.getDate());
+                artDTO.setDateOfHivTest(personInvestigation.getDate() != null ? new PastDate(personInvestigation.getDate()) : null);
                 LaboratoryInvestigation laboratoryInvestigation = getLaboratoryInvestigationForLatestHivTest(personInvestigation.getId());
                 Log.d(TAG, "Laboratory investigation if any for this history record : " + laboratoryInvestigation);
 
@@ -154,6 +153,7 @@ public class ArtService {
 
         artCurrentStatus.setState(ArvStatus.START_ARV);
         artCurrentStatus.setId(UUID.randomUUID().toString());
+        artCurrentStatus.setDate(new Date());
         Log.d(TAG, "State of art current status : " + artCurrentStatus);
         ehrMobileDatabase.artCurrentStatusDao().save(artCurrentStatus);
 

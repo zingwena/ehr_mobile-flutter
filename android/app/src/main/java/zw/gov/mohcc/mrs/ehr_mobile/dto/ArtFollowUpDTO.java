@@ -27,7 +27,7 @@ public class ArtFollowUpDTO implements Serializable {
     @NonNull
     private FollowUpType followUpType;
 
-    public ArtFollowUpDTO(@NonNull String artAppointmentId, @NonNull String outcome, @NonNull Date date, @NonNull FollowUpType followUpType) {
+    public ArtFollowUpDTO(@NonNull String artAppointmentId, @NonNull String outcome, @NonNull PastDate date, @NonNull FollowUpType followUpType) {
         this.artAppointmentId = artAppointmentId;
         this.outcome = outcome;
         this.date = date;
@@ -37,7 +37,7 @@ public class ArtFollowUpDTO implements Serializable {
     public static ArtFollowUpDTO get(ArtFollowUp artFollowUp) {
 
         return new ArtFollowUpDTO(artFollowUp.getArtAppointmentId(), artFollowUp.getOutcome() != null ?
-                artFollowUp.getOutcome().getName() : null, artFollowUp.getDate(), artFollowUp.getFollowUpType());
+                artFollowUp.getOutcome().getName() : null, new PastDate(artFollowUp.getDate()), artFollowUp.getFollowUpType());
     }
 
     public static ArtFollowUp getInstance(ArtFollowUpDTO artFollowUpDTO, FollowUpReason outcome) {
@@ -71,7 +71,7 @@ public class ArtFollowUpDTO implements Serializable {
         return date;
     }
 
-    public void setDate(@NonNull Date date) {
+    public void setDate(@NonNull PastDate date) {
         this.date = date;
     }
 
