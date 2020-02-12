@@ -13,6 +13,7 @@ import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -217,9 +218,11 @@ class _Hts_Result  extends State<Hts_Result > {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -235,6 +238,30 @@ class _Hts_Result  extends State<Hts_Result > {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -421,7 +448,7 @@ class _Hts_Result  extends State<Hts_Result > {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 35.0),
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
@@ -446,6 +473,13 @@ class _Hts_Result  extends State<Hts_Result > {
                                                           }
                                                       ),
                                                     ),
+
+                                                    SizedBox(
+                                                      height: 30.0,
+                                                    ),
+
+
+
                                                   ],
                                                 ),
                                               ),
@@ -560,9 +594,28 @@ class _Hts_Result  extends State<Hts_Result > {
   Widget getNextTestButton(){
     try{
       if(final_result ==''|| final_result == 'Pending'){
-        return new Text("Proceed to "+ test_name,  style: TextStyle(color: Colors.white),);
+        return new   Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("Proceed to "+ test_name, style: TextStyle(color: Colors.white),),
+            Spacer(),
+            Icon(Icons.navigate_next, color: Colors.white, ),
+          ],
+        );
+
+
       } else{
-        return new Text("Proceed to Post Test",  style: TextStyle(color: Colors.white),);
+        return new  Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("Proceed to Post Test", style: TextStyle(color: Colors.white),),
+            Spacer(),
+            Icon(Icons.navigate_next, color: Colors.white, ),
+          ],
+        );
+
 
       }
 

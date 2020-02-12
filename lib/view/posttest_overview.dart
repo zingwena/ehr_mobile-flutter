@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/sexualhistoryform.dart';
 import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
@@ -195,31 +196,51 @@ class PostTestOverviewState extends State<PostTestOverview> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Icon(
-                            Icons.person_pin,
-                            size: 25.0,
-                            color: Colors.white,
-                          ),
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: Text(
-                            "admin",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.0,
-                                color: Colors.white),
-                          ),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
-                      ])),
+                      ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
             ],
           ),
           Positioned.fill(
@@ -326,50 +347,33 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                                const EdgeInsets.only( right: 16.0),
                                                             child: TextField(
                                                               controller:
                                                                   TextEditingController(
-                                                                      text:
-                                                                          dateOfTest),
+                                                                      text: dateOfTest),
                                                               decoration: InputDecoration(
                                                                   icon: Icon(
-                                                                      Icons
-                                                                          .date_range,
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  labelText:
-                                                                      "Date Post Counselled",
-                                                                  hintText:
-                                                                      "Date Post Counselled"),
+                                                                      Icons.date_range,
+                                                                      color: Colors.blue),
+                                                                  labelText: "Date Post Counselled",
+                                                                  hintText: "Date Post Counselled"),
                                                             ),
                                                           ),
                                                         ),
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only( right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
                                                                   text: nullHandler(widget
                                                                       .postTest
                                                                       .finalResult)),
                                                               decoration: InputDecoration(
-                                                                  icon: new Icon(
-                                                                      Icons
-                                                                          .date_range,
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  labelText:
-                                                                      "Final Result",
-                                                                  hintText:
-                                                                      "Final Result"),
+                                                                  icon: new Icon ( Icons.date_range,
+                                                                      color: Colors.blue ),
+                                                                  labelText: "Final Result",
+                                                                  hintText: "Final Result"),
                                                             ),
                                                           ),
                                                         ),
@@ -380,21 +384,13 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                right:
-                                                                16.0),
+                                                            const EdgeInsets.only( right: 16.0),
                                                             child: TextField(
-                                                              controller:
-                                                              TextEditingController(
-                                                                  text:
-                                                                  results_received),
+                                                              controller: TextEditingController(
+                                                                  text: results_received),
                                                               decoration: InputDecoration(
-                                                                  icon: Icon(
-                                                                      Icons
-                                                                          .date_range,
-                                                                      color: Colors
-                                                                          .blue),
+                                                                  icon: Icon( Icons.date_range,
+                                                                      color: Colors.blue),
                                                                   labelText:
                                                                   "Results Received ?",
                                                                   hintText:
@@ -430,23 +426,14 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                     Row(
                                                       children: <Widget>[
                                                         Expanded(
-                                                          child: Padding(
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                right:
-                                                                16.0),
-                                                            child: TextField(
-                                                              controller:
+                                                          child: Padding( padding: const EdgeInsets.only( right:  16.0),
+                                                            child: TextField( controller:
                                                               TextEditingController(
-                                                                  text:
-                                                                  patient_aware_of_status),
+                                                                  text: patient_aware_of_status),
                                                               decoration: InputDecoration(
                                                                   icon: Icon(
-                                                                      Icons
-                                                                          .date_range,
-                                                                      color: Colors
-                                                                          .blue),
+                                                                      Icons.date_range,
+                                                                      color: Colors.blue),
                                                                   labelText:
                                                                   "Patient aware of their status ? ",
                                                                   hintText:
@@ -466,10 +453,8 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                                   text: nullHandler(patient_on_art_string)),
                                                               decoration: InputDecoration(
                                                                   icon: new Icon(
-                                                                      Icons
-                                                                          .date_range,
-                                                                      color: Colors
-                                                                          .blue),
+                                                                      Icons.date_range,
+                                                                      color: Colors.blue ),
                                                                   labelText:
                                                                   "Is patient on ART ?",
                                                                   hintText:
@@ -483,22 +468,13 @@ class PostTestOverviewState extends State<PostTestOverview> {
                                                       children: <Widget>[
                                                        widget.consenttoIndex == true ? Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                right:
-                                                                16.0),
-                                                            child: TextField(
-                                                              controller:
+                                                            padding: const EdgeInsets.only( right: 16.0),
+                                                            child: TextField( controller:
                                                               TextEditingController(
-                                                                  text:
-                                                                  consent_to_index_testing),
+                                                                  text: consent_to_index_testing),
                                                               decoration: InputDecoration(
-                                                                  icon: Icon(
-                                                                      Icons
-                                                                          .date_range,
-                                                                      color: Colors
-                                                                          .blue),
+                                                                  icon: Icon( Icons.date_range,
+                                                                      color: Colors.blue),
                                                                   labelText:
                                                                   "Consent to index testing ? ",
                                                                   hintText:
@@ -551,16 +527,21 @@ class PostTestOverviewState extends State<PostTestOverview> {
     if (widget.result == 'POSITIVE' || widget.result == 'Positive') {
       return Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
         child: RaisedButton(
           elevation: 4.0,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           color: Colors.blue,
           padding: const EdgeInsets.all(20.0),
-          child: Text(
-            "Recency Testing",
-            style: TextStyle(color: Colors.white),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text('Recency Testing', style: TextStyle(color: Colors.white),),
+              Spacer(),
+              Icon(Icons.navigate_next, color: Colors.white, ),
+            ],
           ),
           onPressed: () {
             Navigator.push(
