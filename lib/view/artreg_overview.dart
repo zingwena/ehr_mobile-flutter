@@ -54,8 +54,6 @@ class ArtOverviewState extends State<ArtRegOverview> {
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   static const dataChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
 
-
-
   Person _patient;
   Visit _visit;
   Map<String, dynamic> details;

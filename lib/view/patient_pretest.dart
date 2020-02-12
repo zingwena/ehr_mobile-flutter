@@ -233,16 +233,15 @@ class _PatientPretest extends State<PatientPretest> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+      setState(() {
+
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
 
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }

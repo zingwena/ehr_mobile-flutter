@@ -68,8 +68,8 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
 
     print(_patient.toString());
     getArtVist(widget.personId);
-    getRegimen(widget.artInitiation.artRegimenId);
-    getReason(widget.artInitiation.artReasonId);
+    getRegimen(widget.artInitiation.regimen);
+    getReason(widget.artInitiation.reason);
     //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
     getFacilityName();
@@ -301,7 +301,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.artInitiation.line),
+                                                                    text: widget.artInitiation.regimenType),
                                                                 decoration: InputDecoration(
                                                                     icon: Icon(Icons.date_range, color: Colors.blue),
                                                                     labelText: "Line",

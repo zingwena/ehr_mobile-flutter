@@ -79,6 +79,7 @@ class _Art_Initiation extends State<Art_Initiation> {
   ArtRegimenDto _artRegimenDto;
   Age age;
   Artdto artdto;
+  ArtInitiation artInitiation;
 
   String facility_name;
 
@@ -90,6 +91,7 @@ class _Art_Initiation extends State<Art_Initiation> {
     getAge(widget.person);
     getFacilityName();
     getArt(widget.patientId);
+    getArtInitiation((widget.visitId));
     super.initState();
   }
 
@@ -136,6 +138,22 @@ class _Art_Initiation extends State<Art_Initiation> {
       setState(() {
         this.artdto = Artdto.fromJson(jsonDecode(response));
         print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+
+  Future<void>getArtInitiation(String visitId)async{
+    String response;
+    try{
+      response = await htsChannel.invokeMethod('getArtInitiationRecord', visitId);
+      setState(() {
+        artInitiation = ArtInitiation.fromJson(jsonDecode(response));
+        print("THIS IS THE ART INITIATION RETRIEVED @@@@@@@@@@@@@@ "+ artInitiation.toString());
       });
 
     }catch(e){
@@ -545,13 +563,11 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                             ],
                                                           ),
 
-                                                          onPressed: () {
-                                                            ArtInitiation artInitiationDetails = ArtInitiation(widget.patientId, line, _currentArvCombinationRegimen, _currentArtReason);
-                                                            print('*************************artReg number ${artInitiationDetails.line}');
-                                                            artInitiation(artInitiationDetails);
+                                                          onPressed: ()async {
+                                                            ArtInitiation artInitiationDetails = ArtInitiation(artInitiation.artId, line,_currentArtReason, _currentArvCombinationRegimen);
+                                                            await artInitiationReg(artInitiationDetails);
 
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(artInitiationDetails, widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId)));
-
                                                           },
 
                                                         ),
@@ -614,7 +630,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
 
 
-  Future<void> artInitiation(ArtInitiation artInitiation) async {
+  Future<void> artInitiationReg(ArtInitiation artInitiation) async {
     String response;
     try {
       response = await artChannel.invokeMethod(

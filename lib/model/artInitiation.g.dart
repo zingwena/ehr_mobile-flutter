@@ -8,17 +8,18 @@ part of 'artInitiation.dart';
 
 ArtInitiation _$ArtInitiationFromJson(Map<String, dynamic> json) {
   return ArtInitiation(
-    json['personId'] as String,
-    json['line'] as String,
-    json['artRegimenId'] as String,
-    json['artReasonId'] as String,
+    json['artId'] as String,
+    json['regimenType'] as String,
+    json['reason'] as String,
+    json['regimen'] as String,
+
   );
 }
 
 Map<String, dynamic> _$ArtInitiationToJson(ArtInitiation instance) =>
     <String, dynamic>{
-      'personId': instance.personId,
-      'line': instance.line,
-      'artRegimenId': instance.artRegimenId,
-      'artReasonId': instance.artReasonId,
+      'artId': instance.artId,
+      'regimenType': instance.regimenType,
+      'reason': instance.reason,
+      'regimen': instance.regimen
     };

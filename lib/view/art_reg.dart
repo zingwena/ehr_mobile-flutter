@@ -1134,7 +1134,7 @@ class _ArtReg extends State<ArtReg> {
                                                                       widget
                                                                           .htsId)));
 
-                                                          artRegistration(
+                                                         await artRegistration(
                                                               widget.artdto);
                                                           print(
                                                               "ART DTO WAS NULL %%%%%%%%%%%%%%%%%%%%");
