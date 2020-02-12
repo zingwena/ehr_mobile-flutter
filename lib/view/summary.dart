@@ -67,6 +67,7 @@ class SummaryOverviewState extends State<SummaryOverview>
     getPatientSummary(widget.person.id);
     getArt(widget.person.id);
    getAge(widget.person);
+   getFacilityName();
     super.initState();
     controller = new TabController(length: 3, vsync: this);
   }

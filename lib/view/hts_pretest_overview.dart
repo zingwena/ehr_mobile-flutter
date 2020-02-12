@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/preTest.dart';
+import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -60,7 +62,8 @@ class PretestOverviewState extends State<PretestOverview> {
   bool showInputTabOptions = true;
   String visitId="1";
   String htsApproach;
-  String _htsModelId;
+  String  _htsModelId;
+  PurposeOfTest _purposeOfTest;
   String final_result;
   bool newTest;
   String _newTest;
@@ -85,11 +88,12 @@ class PretestOverviewState extends State<PretestOverview> {
   @override
   void initState() {
      getHtsModel(widget.preTest.htsModelId);
+     getReasonForTest(widget.preTest.reasonForHivTestingId);
      getHtsRecord(widget.personId);
      getLabInvestigation(widget.personId);
      getFacilityName();
      getAge(widget.person);
-     if(widget.preTest.newTest == false){
+     if(widget.preTest.newTestInClientLife == false){
        _newTest = "NO";
      }else{
        _newTest = "YES";
@@ -168,42 +172,55 @@ class PretestOverviewState extends State<PretestOverview> {
 
   }
 
-
   Future<void> getHtsModel(String htsModelId) async {
    String htsModel;
 
     try {
       htsModel = await htsChannel.invokeMethod('getHtsModel', htsModelId);
-      print('KKKKKKKKKKKKKKKK' + htsModel);
+      print("HTS MODEL RETURNED"+ htsModel);
+
       setState(() {
         _htsModelId = htsModel;
+        //HtsModel.fromJson(jsonDecode(htsModel));
+        print("HTS MODEL RETURNED AFTER ASSIGNMENT"+ htsModel);
+
       });
 
     } catch (e) {
       print("channel failure: '$e'");
     }
 
+  }
 
+  Future<void> getReasonForTest(String reasonId) async {
+    String htsModel;
+
+    try {
+      htsModel = await htsChannel.invokeMethod('getPurposeofTest', reasonId);
+      setState(() {
+        _purposeOfTest = PurposeOfTest.fromJson(jsonDecode(htsModel));
+      });
+
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
 
   }
   Future<void> getHtsRecord(String patientId) async {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+      setState(() {
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        labInvestId = htsRegistration.laboratoryInvestigationId;
+        getFinalResult(labInvestId);
+        getLabInvestigationTest(labInvestId);
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
 
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      labInvestId = htsRegistration.laboratoryInvestigationId;
-      print("@@@@@@@@@@@@@@@@@@@@@@ labinvest @@@@@@@@@@@@"+ labInvestId);
-      getFinalResult(labInvestId);
-      getLabInvestigationTest(labInvestId);
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -516,6 +533,21 @@ class PretestOverviewState extends State<PretestOverview> {
                                                                         _optOutOfTest)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Opt out of test ?',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        _purposeOfTest.name)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Purpose of Test ?',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 

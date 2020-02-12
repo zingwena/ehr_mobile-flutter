@@ -118,7 +118,6 @@ class _PatientPretest extends State<PatientPretest> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -656,24 +655,23 @@ class _PatientPretest extends State<PatientPretest> {
                                                           "Save",
                                                           style: TextStyle(color: Colors.white),
                                                         ),
-                                                        onPressed: () {
+                                                        onPressed: ()async {
                                                           if (_formKey.currentState.validate()) {
                                                             _formKey.currentState.save();
                                                             if(approachSelected & modelSelected&purposeSelected
                                                             &newTestSelected &pretestInfoGivenSelected&coupleCounsellingSelected){
-
-                                                              getPurposeByName(_currentPurposeOfTest);
-                                                            getHtsModelByName(_currentHtsModel);
-                                                            PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, newTestInLife,
+                                                            //  getPurposeByName(_currentPurposeOfTest);
+                                                           // getHtsModelByName(_currentHtsModel);
+                                                            PreTest patient_pretest_obj = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, newTestInLife,
                                                                 coupleCounselling,preTestInfoGiven,optOutOfTest,newTestInPreg,_currentPurposeOfTest);
-                                                            insertPreTest(patient_pretest);
-                                                            if(patient_pretest.optOutOfTest ){
+                                                             await insertPreTest(patient_pretest_obj);
+                                                            if(patient_pretest_obj.optOutOfTest ){
                                                               Navigator.push(context,MaterialPageRoute(
                                                                   builder: (context)=> Overview(widget.person)
                                                               ));
                                                             } else {
                                                               Navigator.push(context,MaterialPageRoute(
-                                                                  builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
+                                                                  builder: (context)=> PretestOverview(patient_preTest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
                                                               ));
                                                             }
                                                             }else{
