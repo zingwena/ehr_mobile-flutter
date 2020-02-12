@@ -5,9 +5,9 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RelationshipType;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.converter.RelationshipTypeConverter;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RelationshipType;
 
 public class IndexContactDto {
     private String id;
@@ -26,7 +26,7 @@ public class IndexContactDto {
     private Boolean disclosureStatus;
     private String disclosureMethodId;
 
-    public IndexContactDto(String id, String indexTestId, @NonNull String personId, @NonNull RelationshipType relation, String hivStatus, Date dateOfHivStatus, boolean fearOfIpv, String disclosureMethodPlanId, String testingPlanId, Boolean disclosureStatus, String disclosureMethodId) {
+    public IndexContactDto(String id, String indexTestId, @NonNull String personId, @NonNull RelationshipType relation, String hivStatus, PastDate dateOfHivStatus, boolean fearOfIpv, String disclosureMethodPlanId, String testingPlanId, Boolean disclosureStatus, String disclosureMethodId) {
         this.indexTestId = indexTestId;
         this.personId = personId;
         this.relation = relation;
@@ -78,7 +78,7 @@ public class IndexContactDto {
         return dateOfHivStatus;
     }
 
-    public void setDateOfHivStatus(Date dateOfHivStatus) {
+    public void setDateOfHivStatus(PastDate dateOfHivStatus) {
         this.dateOfHivStatus = dateOfHivStatus;
     }
 

@@ -42,7 +42,7 @@ public class SexualHistoryDTO {
         return sexWithMaleDate;
     }
 
-    public void setSexWithMaleDate(Date sexWithMaleDate) {
+    public void setSexWithMaleDate(PastDate sexWithMaleDate) {
         this.sexWithMaleDate = sexWithMaleDate;
     }
 
@@ -50,7 +50,7 @@ public class SexualHistoryDTO {
         return sexWithFemaleDate;
     }
 
-    public void setSexWithFemaleDate(Date sexWithFemaleDate) {
+    public void setSexWithFemaleDate(PastDate sexWithFemaleDate) {
         this.sexWithFemaleDate = sexWithFemaleDate;
     }
 

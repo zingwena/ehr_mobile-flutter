@@ -19,6 +19,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtAppointmentDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PastDate;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.ArvStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
@@ -117,7 +118,7 @@ public class ArtService {
             artDTO.setPersonId(personId);
             PersonInvestigation personInvestigation = getLatestHivPositiveRecord(personId);
             if (personInvestigation != null) {
-                artDTO.setDateOfHivTest(personInvestigation.getDate());
+                artDTO.setDateOfHivTest(personInvestigation.getDate() != null ? new PastDate(personInvestigation.getDate()) : null);
                 LaboratoryInvestigation laboratoryInvestigation = getLaboratoryInvestigationForLatestHivTest(personInvestigation.getId());
                 Log.d(TAG, "Laboratory investigation if any for this history record : " + laboratoryInvestigation);
 
@@ -152,6 +153,7 @@ public class ArtService {
 
         artCurrentStatus.setState(ArvStatus.START_ARV);
         artCurrentStatus.setId(UUID.randomUUID().toString());
+        artCurrentStatus.setDate(new Date());
         Log.d(TAG, "State of art current status : " + artCurrentStatus);
         ehrMobileDatabase.artCurrentStatusDao().save(artCurrentStatus);
 
@@ -458,5 +460,35 @@ public class ArtService {
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
         return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdOrderByDateDesc(art.getId()));
     }
+
+    /*public ArtFollowUpDTO getArtFollowUpVisit(String personId) {
+
+        Log.d(TAG, "Retrieving visitId using personId : " + personId);
+
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+
+        ArtFollowUp artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(art.getId(), new Date().getTime());
+        Log.d(TAG, "Current Art appointment record for this day : " + artAppointment);
+        if (artAppointment != null) {
+            return ArtAppointmentDTO.get(artAppointment);
+        }
+
+        return ArtAppointmentDTO.get(new ArtAppointment(null, art.getId()));
+    }
+
+    public ArtFollowUpDTO saveArtFollowUpVisit(ArtFollowUpDTO artFollowUpDTO) {
+
+        Log.d(TAG, "Current state of ArtAppointment DTO : " + artAppointmentDTO);
+
+        FollowUpReason followUpReason = null;
+        if (artAppointmentDTO.getReason() != null) {
+            followUpReason = ehrMobileDatabase.followUpReasonDao().findById(artAppointmentDTO.getReason());
+        }
+
+        ehrMobileDatabase.artAppointmentDao().save(artAppointmentDTO.getInstance(artAppointmentDTO, followUpReason));
+
+        return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(
+                artAppointmentDTO.getArtId(), artAppointmentDTO.getDate().getTime()));
+    }*/
 
 }
