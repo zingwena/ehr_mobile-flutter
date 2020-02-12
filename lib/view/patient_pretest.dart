@@ -434,6 +434,10 @@ class _PatientPretest extends State<PatientPretest> {
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
 
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
+
                                                     Container(
                                                       width: double.infinity,
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
@@ -466,8 +470,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                       height: 20.0, width: 300.0, child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
                                                       width: double.infinity,
                                                       child: OutlineButton(
                                                         shape: RoundedRectangleBorder(
@@ -504,8 +507,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                   ),
 
                                                     Container(
-                                                      padding:
-                                                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
                                                       width: double.infinity,
                                                       child: OutlineButton(
                                                         shape: RoundedRectangleBorder(
@@ -672,7 +674,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                     ),
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(

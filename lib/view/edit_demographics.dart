@@ -642,6 +642,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: <Widget>[
                                                             Text('Proceed to Contact Details', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
                                                             Icon(Icons.navigate_next, color: Colors.white, ),
                                                           ],
                                                         ),

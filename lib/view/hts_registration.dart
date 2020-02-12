@@ -435,19 +435,16 @@ class _Registration extends State<Registration> {
                                                         ? SizedBox.shrink()
                                                         : Row(
                                                            children: <Widget>[
-                                                              Expanded(
-                                                                child: SizedBox(
-                                                                  child: Padding(
-                                                               padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60.0),
-                                                                    child: Text(
-                                                              _entryPointError ??
+                                                              Expanded( child: SizedBox(
+                                                                  child: Padding( padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60.0 ),
+                                                                    child: Text( _entryPointError ??
                                                                "",
                                                            style: TextStyle(
                                                 color: Colors.red),
                                           ),
                                         ),),),], ),
                                                     SizedBox(
-                                                      height: 40.0,
+                                                      height: 35.0,
                                                     ),
                                                     Container(
                                                       width: double.infinity,
