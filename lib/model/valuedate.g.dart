@@ -8,7 +8,7 @@ part of 'valuedate.dart';
 
 ValueDate _$ValueDateFromJson(Map<String, dynamic> json) {
   return ValueDate(
-    json['value'] as String,
+    json['value'] as double,
     const CustomDateTimeConverter().fromJson(json['date'] as String),
 
   );

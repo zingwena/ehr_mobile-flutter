@@ -80,11 +80,11 @@ class _HtsScreening extends State<Hts_Screening> {
   @override
   void initState() {
     //getHtsRecord(widget.personId);
-    selectedLastNegDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfViralLoad =  DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfCd4Count = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfLastTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    selectedLastNegDate = '';
+    selectedDateOfEnrollment = '';
+    selectedDateOfViralLoad =  '';
+    selectedDateOfCd4Count = '';
+    selectedDateOfLastTest = '';
 
     dateOfLastNeg = DateTime.now();
     dateOfViralLoad = DateTime.now();
@@ -97,7 +97,6 @@ class _HtsScreening extends State<Hts_Screening> {
   }
 
   Future<void> savehtsscreening(HtsScreeningdto htsScreening) async {
-    print("GGGGGGGGGGGG RRRRRRR TTTTTTT  THIS IS THE HTSSCREENINGDTO  MODEL TO BE SAVED"+ htsScreening.toString());
     var response;
     try {
       response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
