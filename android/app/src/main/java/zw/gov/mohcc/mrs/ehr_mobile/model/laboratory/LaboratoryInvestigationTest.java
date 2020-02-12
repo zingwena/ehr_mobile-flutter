@@ -32,9 +32,8 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     private Date endTime;
     @NonNull
     private String visitId;
-    @Embedded(prefix = "result_")
     @NonNull
-    private NameCode result;
+    private String result;
     @Embedded(prefix = "testkit_")
     @NonNull
     private NameCode testkit;
@@ -57,11 +56,11 @@ public class LaboratoryInvestigationTest extends BaseEntity {
         this.laboratoryInvestigationId = laboratoryInvestigationId;
     }
 
-    public NameCode getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(NameCode result) {
+    public void setResult(String result) {
         this.result = result;
     }
 

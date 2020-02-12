@@ -87,7 +87,10 @@ class PersonDao extends BaseDao{
 
     inserter.set(selfIdentifiedGender, map['selfIdentifiedGender']);
     inserter.set(religionId, map['religion']['id']);
-    inserter.set(occupationId, map['occupation']['id']);
+    if(map['occupation']!=null){
+      inserter.set(occupationId, map['occupation']['id']);
+    }
+
 
     inserter.set(maritalStatusId, map['marital']['id']);
     inserter.set(educationLevelId, map['education']['id']);

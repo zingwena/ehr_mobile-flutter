@@ -4,208 +4,227 @@ class PersonQuery {
 
   String getAll(){
     return """ 
-        query GetPatientsQuery{
+        query GetPatientsQuery {
                     
-            people(text: "", page: 0, size: 1000, sort: "") {
-              content {
-                personId
-                firstname
-                lastname
-                phones {
-                  number
-                  phoneId
-                }
-                sex
-                identifications {
-                  number
-                  type {
-                    name
+            people(text: "", page: 0, size: 20000, sort: "") {
+                content {
+                  personId
+                  firstname
+                  lastname
+                  phones {
+                    number
+                    phoneId
                   }
-                }
-                occupation {
-                  id
-                  name
-                }
-                identifications {
-                  identificationId
-                }
-                selfIdentifiedGender
-                religion {
-                  name
-                  id
-                }
-                education {
-                  id
-                  name
-                }
-                marital {
-                  name
-                  id
-                }
-                birthdate
-                nationality {
-                  id
-                  name
-                }
-                countryOfBirth {
-                  id
-                  name
-                }
-                address {
-                  city
-                  town {
-                    name
-                  }
-                  street
-                }
-                age {
-                  years
-                }
-                hivStatus {
-                  date
-                  status
-                }
-                history {
-                  sexualHistory {
-                    sexualHistoryId
-                    personId
-                    sexuallyActive
-                    sexWithMaleDate
-                    sexWithFemaleDate
-                    numberOfSexualPartners
-                    numberOfSexualPartnersLastTwelveMonths
-                    questions {
-                      sexualHistoryQuestionId
-                      question{
-                        id
-                        name
-                        responseType
-                      }
-                    }
-                  }
-                  investigations {
-                    personInvestigationId
-                    investigationId
-                    date
-                    result {
-                      id
+                  sex
+                  identifications {
+                    number
+                    type {
                       name
                     }
                   }
-                }
-                visitHistory {
-                  patientId
-                  time
-                  type
-                  hospitalNumber
-                  discharged
-                  registeredOnArt
-                  cbsNotificationDone
-                  screenTbPatient
-                  temperatures{
-                    readingId
-                    unit
-                    value
-                  }
-                  bloodPressures{
-                    systolic
-                    diastolic
-                  }
-                  weight {
-                    value
-                  }
-                  facility {
+                  occupation {
                     id
                     name
                   }
-                  hts {
-                    htsId
+                  identifications {
+                    identificationId
+                  }
+                  selfIdentifiedGender
+                  religion {
+                    name
+                    id
+                  }
+                  education {
+                    id
+                    name
+                  }
+                  marital {
+                    name
+                    id
+                  }
+                  birthdate
+                  nationality {
+                    id
+                    name
+                  }
+                  countryOfBirth {
+                    id
+                    name
+                  }
+                  address {
+                    city
+                    town {
+                      name
+                    }
+                    street
+                  }
+                  age {
+                    years
+                  }
+                  hivStatus {
                     date
-                    coupleCounselling
-                    approach
-                    retest
-                    preTestInformationGiven
-                    resultsIssued
-                    testForPregnancy
-                    postTestCounselling
-                    htsNumber
-                    optOut
-                    postDateCounselled
-                    dateOfHivTest
-                    pregnant
-                    lactating
-                    consentToIndexTesting
-                    htsType
-                    selfTestPositive
-                    startedLactating
-                    reasonForNotInitiatingArt
-                    reasonForNotPerformingTest
-                    firstHivTest
-                    performDnaPcr
-                    dnaPcrInvestigationOrderId
-                    dnaPcrDone
-                    recencyInvestigationOrderId
-                    clientAlreadyPositive
-                    clientAlreadyOnArt
-                    purpose {
-                      id
+                    status
+                  }
+                  history {
+                    sexualHistory {
+                      sexualHistoryId
+                      personId
+                      sexuallyActive
+                      sexWithMaleDate
+                      sexWithFemaleDate
+                      numberOfSexualPartners
+                      numberOfSexualPartnersLastTwelveMonths
+                      questions {
+                        sexualHistoryQuestionId
+                        question {
+                          id
+                          name
+                          responseType
+                        }
+                      }
                     }
-                    laboratoryInvestigation {
-                      laboratoryInvestigationId
-                      date
-                      date
+                    investigations {
+                      personInvestigationId
                       investigationId
-                      resultDate
-                      status
-                      investigationType
-                      openHivTest
-                    }
-                    entryPoint {
-                      id
-                    }
-                    model {
-                      id
-                    }
-                    reasonForNotIssuingResult {
-                      id
+                      date
+                      result {
+                        id
+                        name
+                      }
                     }
                   }
-                }
-                art {
-                  artId
-                  artNumber
-                  dateEnrolled
-                  dateOfHivTest
-                  date
-                  enlargedLymphNode
-                  pallor
-                  jaundice
-                  cyanosis
-                  mentalStatus
-                  centralNervousSystem
-                  tracing
-                  followUp
-                  hivStatus
-                  relation
-                  dateOfDisclosure
-                  reason
-                  symptoms{
-                    artSymptomId
-                    date
-                    present
-                    Symptom{
+                  visitHistory {
+                    patientId
+                    time
+                    type
+                    hospitalNumber
+                    discharged
+                    registeredOnArt
+                    cbsNotificationDone
+                    screenTbPatient
+                    temperatures {
+                      readingId
+                      unit
+                      value
+                    }
+                    bloodPressures {
+                      systolic
+                      diastolic
+                    }
+                    weight {
+                      value
+                    }
+                    facility {
                       id
                       name
                     }
+                    hts {
+                      htsId
+                      date
+                      coupleCounselling
+                      approach
+                      retest
+                      preTestInformationGiven
+                      resultsIssued
+                      testForPregnancy
+                      postTestCounselling
+                      htsNumber
+                      optOut
+                      postDateCounselled
+                      dateOfHivTest
+                      pregnant
+                      lactating
+                      consentToIndexTesting
+                      htsType
+                      selfTestPositive
+                      startedLactating
+                      reasonForNotInitiatingArt
+                      reasonForNotPerformingTest
+                      firstHivTest
+                      performDnaPcr
+                      dnaPcrInvestigationOrderId
+                      dnaPcrDone
+                      recencyInvestigationOrderId
+                      clientAlreadyPositive
+                      clientAlreadyOnArt
+                      purpose {
+                        id
+                      }
+                      laboratoryInvestigation {
+                        laboratoryInvestigationId
+                        date
+                        date
+                        investigationId
+                        resultDate
+                        status
+                        investigationType
+                        openHivTest
+                      }
+                      entryPoint {
+                        id
+                      }
+                      model {
+                        id
+                      }
+                      reasonForNotIssuingResult {
+                        id
+                      }
+                    }
                   }
-                  stages{
-                    artStageId
-                    stage
-                  }
+                  art {
+                      artId
+                      artNumber
+                      dateEnrolled
+                      dateOfHivTest
+                      date
+                      enlargedLymphNode
+                      pallor
+                      jaundice
+                      cyanosis
+                      mentalStatus
+                      centralNervousSystem
+                      tracing
+                      followUp
+                      hivStatus
+                      relation
+                      dateOfDisclosure
+                      reason
+                      symptoms {
+                        artSymptomId
+                        date
+                        present
+                        Symptom {
+                          id
+                          name
+                        }
+                      }
+                      stages {
+                        artStageId
+                        stage
+                      }
+                      appointments {
+                        artAppointmentId
+                        artId
+                        date
+                        followupDate
+                        daysToAppointment
+                        appointmentOutcomeDate
+                        expectedToday
+                        missed
+                        defaulter
+                        due
+                        followupReason{
+                          id
+                          name
+                        }
+                        appointmentOutcome{
+                          id
+                          name
+                        }
+                      }
+                    }
                 }
               }
-            }
-
           }
       """;
   }

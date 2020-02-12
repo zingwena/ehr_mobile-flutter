@@ -82,7 +82,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -115,7 +114,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
         preTest = PreTest.fromJson(jsonDecode(pre_test));
         htsApproach = preTest.htsApproach;
       });
-      print('PRETEST IN THE FLUTTER THE RETURNED ONE '+ pre_test.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -156,12 +154,8 @@ class HtsOverviewState extends State<HtsRegOverview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
       setState(() {
-
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
       });
     } catch (e) {
       print("channel failure: '$e'");

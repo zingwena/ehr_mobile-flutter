@@ -28,6 +28,9 @@ public interface ArtWhoStageDao {
     @Query("SELECT a.* FROM ArtWhoStage a inner join Visit v on a.visitId=v.id WHERE artId=:artid Order By v.time DESC")
     List<ArtWhoStage> findByArtId(String artid);
 
+    @Query("SELECT a.* FROM ArtWhoStage a inner join Visit v on a.visitId=v.id WHERE artId=:artid Order By v.time DESC Limit 1")
+    ArtWhoStage findLatestWhoStageByArtId(String artid);
+
     @Query("DELETE FROM ArtWhoStage where id=:id")
     void deleteById(String id);
 

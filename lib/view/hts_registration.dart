@@ -79,7 +79,7 @@ class _Registration extends State<Registration> {
     getHtsRecord(patientId);
     getAge(widget.person);
     getFacilityName();
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    selectedDate = '';
     date = DateTime.now();
     super.initState();
   }
@@ -486,7 +486,7 @@ class _Registration extends State<Registration> {
                                                               HtsRegistration htsDetails = HtsRegistration(widget.patientId,
                                                                   visitId, htsType, date, _currentEntryPoint, null);
                                                               await registration(htsDetails);
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(htsDetails, patientId, hts_id, visitId, widget.person)));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id, visitId, widget.person)));
 
                                                             }
                                                           }

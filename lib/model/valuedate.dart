@@ -3,10 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 part 'valuedate.g.dart';
 @JsonSerializable()
 class ValueDate{
-  String value;
+  double value;
   DateTime date;
 
-  ValueDate(String value, DateTime date){
+  ValueDate(double value, DateTime date){
     this.value = value;
     this.date = date;
   }

@@ -20,6 +20,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.FacilityWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientWard;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtWhoStage;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Investigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.vitals.BloodPressure;
@@ -225,8 +226,12 @@ public class VisitService {
                 arvRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatus.getRegimen().getCode()).getName();
             }
             Log.d(TAG, "Art Initiation object : " + artCurrentStatus);
-            summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getArtNumber(), null,
-                    arvRegimen));
+
+            ArtWhoStage currentWhoStage = artService.getCurrentWHoStage(art.getPersonId());
+            Log.d(TAG, "Current Patient WHO Stage : " + currentWhoStage);
+
+            summary.setArtDetails(new PatientSummaryDTO.ArtDetailsDTO(art.getDateOfHivTest(), art.getArtNumber(),
+                    currentWhoStage != null ? currentWhoStage.getStage().toString() : null, arvRegimen));
         }
         List<PersonInvestigation> investigations = ehrMobileDatabase.personInvestigationDao().findLatestThreeTestsByPersonId(personId);
         if (investigations != null && !investigations.isEmpty()) {

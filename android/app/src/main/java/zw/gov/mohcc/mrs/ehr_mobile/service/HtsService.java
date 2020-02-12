@@ -22,14 +22,13 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
@@ -243,7 +242,7 @@ public class HtsService {
         test.setLaboratoryInvestigationId(laboratoryInvestigationId);
         test.setVisitId(testDTO.getVisitId());
         test.setTestkit(testDTO.getTestkit());
-        test.setResult(testDTO.getResult());
+        test.setResult(testDTO.getResult().getName());
         test.setStartTime(DateUtil.getDateDiff(true));
         test.setEndTime(DateUtil.getDateDiff(false));
         test.setBatchIssueId(testDTO.getBatchIssueId());
@@ -271,12 +270,12 @@ public class HtsService {
         // check current count
         if (count == 0) {
             // if result is negative set final result
-            if (test.getResult().getName().equalsIgnoreCase("Negative")) {
+            if (test.getResult().equalsIgnoreCase("Negative")) {
                 setFinalResult(test);
             }
         } else if (count == 1) {
             // if result is positive set final result
-            if (test.getResult().getName().equalsIgnoreCase("Positive")) {
+            if (test.getResult().equalsIgnoreCase("Positive")) {
                 setFinalResult(test);
             }
         } // coming to this point means we are now in a parallel test ignore first parallel test and jump to second parallel test
@@ -284,15 +283,15 @@ public class HtsService {
             // retrieve last test before this one
             LaboratoryInvestigationTest lastTest =
                     ehrMobileDatabase.labInvestTestdao().findEarliestTests(test.getLaboratoryInvestigationId()).get(2);
-            if (lastTest.getResult().getName().equalsIgnoreCase(test.getResult().getName())) {
+            if (lastTest.getResult().equalsIgnoreCase(test.getResult())) {
 
                 setFinalResult(test);
             }
 
         } else if (count == 4) {
             // if result is positive set result to be inconclusive
-            if (test.getResult().getName().equalsIgnoreCase("Positive")) {
-                test.setResult(new NameCode("41d3c289-fd7d-11e6-9840-000c29c7ff5e", "INCONCLUSIVE"));
+            if (test.getResult().equalsIgnoreCase("Positive")) {
+                test.setResult("INCONCLUSIVE");
             }
             setFinalResult(test);
         }
@@ -320,7 +319,7 @@ public class HtsService {
         // retrieve person investigation and update
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(
                 laboratoryInvestigation.getPersonInvestigationId());
-        personInvestigation.setResult(test.getResult().getName());
+        personInvestigation.setResult(test.getResult());
         Log.d(TAG, "Retrieved person investigation record : " + personInvestigation);
         ehrMobileDatabase.personInvestigationDao().update(personInvestigation);
     }

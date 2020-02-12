@@ -13,6 +13,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtAppointmentDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtCurrentStatusDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
@@ -73,8 +74,8 @@ public class ArtChannel {
                         if (methodCall.method.equals("saveArtInitiation")) {
                             try {
 
-                                ArtCurrentStatus artCurrentStatus = gson.fromJson(arguments, ArtCurrentStatus.class);
-                                result.success(gson.toJson(artService.initiatePatientOnArt(artCurrentStatus)));
+                                ArtCurrentStatusDTO artCurrentStatusDTO = gson.fromJson(arguments, ArtCurrentStatusDTO.class);
+                                result.success(gson.toJson(artService.initiatePatientOnArt(artCurrentStatusDTO)));
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
 
