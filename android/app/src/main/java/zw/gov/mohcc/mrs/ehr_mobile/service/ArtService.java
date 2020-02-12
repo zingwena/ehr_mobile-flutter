@@ -18,15 +18,18 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.Age;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtAppointmentDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtCurrentStatusDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtFollowUpDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PastDate;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.AgeGroup;
+import zw.gov.mohcc.mrs.ehr_mobile.enumeration.FollowUpType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.RegimenType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.Art;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtAppointment;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
+import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtFollowUp;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtLinkageFrom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
@@ -475,34 +478,39 @@ public class ArtService {
         return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdOrderByDateDesc(art.getId()));
     }
 
-    /*public ArtFollowUpDTO getArtFollowUpVisit(String personId) {
+    public ArtFollowUpDTO getArtFollowUp(String artFollowUpId) {
 
-        Log.d(TAG, "Retrieving visitId using personId : " + personId);
+        Log.d(TAG, "Retrieving ArtFollowUp entity using artFollowUpId : " + artFollowUpId);
 
-        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
-
-        ArtFollowUp artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(art.getId(), new Date().getTime());
-        Log.d(TAG, "Current Art appointment record for this day : " + artAppointment);
-        if (artAppointment != null) {
-            return ArtAppointmentDTO.get(artAppointment);
-        }
-
-        return ArtAppointmentDTO.get(new ArtAppointment(null, art.getId()));
+        return ArtFollowUpDTO.get(ehrMobileDatabase.artFollowUpDao().findById(artFollowUpId));
     }
 
     public ArtFollowUpDTO saveArtFollowUpVisit(ArtFollowUpDTO artFollowUpDTO) {
 
-        Log.d(TAG, "Current state of ArtAppointment DTO : " + artAppointmentDTO);
+        return saveArtFollowUp(artFollowUpDTO, FollowUpType.VISIT);
+    }
 
-        FollowUpReason followUpReason = null;
-        if (artAppointmentDTO.getReason() != null) {
-            followUpReason = ehrMobileDatabase.followUpReasonDao().findById(artAppointmentDTO.getReason());
+    public ArtFollowUpDTO saveArtFollowUpCall(ArtFollowUpDTO artFollowUpDTO) {
+
+        return saveArtFollowUp(artFollowUpDTO, FollowUpType.CALL);
+    }
+
+    private ArtFollowUpDTO saveArtFollowUp(ArtFollowUpDTO artFollowUpDTO, FollowUpType followUpType) {
+
+        Log.d(TAG, "State of ArtFollowUpDTO : " + artFollowUpDTO);
+
+        FollowUpReason outcome = null;
+        if (artFollowUpDTO.getOutcome() != null) {
+            outcome = ehrMobileDatabase.followUpReasonDao().findById(artFollowUpDTO.getOutcome());
         }
 
-        ehrMobileDatabase.artAppointmentDao().save(artAppointmentDTO.getInstance(artAppointmentDTO, followUpReason));
+        ArtFollowUp artFollowUp = ArtFollowUpDTO.getInstance(artFollowUpDTO, followUpType, outcome);
 
-        return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(
-                artAppointmentDTO.getArtId(), artAppointmentDTO.getDate().getTime()));
-    }*/
+        Log.d(TAG, "State of ArtFollowUp : " + artFollowUp);
+
+        ehrMobileDatabase.artFollowUpDao().save(artFollowUp);
+
+        return ArtFollowUpDTO.get(ehrMobileDatabase.artFollowUpDao().findById(artFollowUp.getId()));
+    }
 
 }
