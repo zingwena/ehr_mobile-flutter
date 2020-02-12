@@ -17,6 +17,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 public class ArtFollowUpDTO implements Serializable {
 
     @NonNull
+    private String id;
+    @NonNull
     private String artAppointmentId;
     @NonNull
     private String outcome;
@@ -27,25 +29,33 @@ public class ArtFollowUpDTO implements Serializable {
     @NonNull
     private FollowUpType followUpType;
 
-    public ArtFollowUpDTO(@NonNull String artAppointmentId, @NonNull String outcome, @NonNull PastDate date, @NonNull FollowUpType followUpType) {
+    public ArtFollowUpDTO(@NonNull String id, @NonNull String artAppointmentId, @NonNull String outcome, @NonNull PastDate date, @NonNull FollowUpType followUpType) {
+        this.id = id;
         this.artAppointmentId = artAppointmentId;
         this.outcome = outcome;
         this.date = date;
         this.followUpType = followUpType;
     }
 
-    public static ArtFollowUpDTO get(ArtFollowUp artFollowUp) {
+    public static ArtFollowUp getInstance(ArtFollowUpDTO artFollowUpDTO, FollowUpType followUpType, FollowUpReason followUpReason) {
 
-        return new ArtFollowUpDTO(artFollowUp.getArtAppointmentId(), artFollowUp.getOutcome() != null ?
-                artFollowUp.getOutcome().getName() : null, new PastDate(artFollowUp.getDate()), artFollowUp.getFollowUpType());
+        return new ArtFollowUp(UUID.randomUUID().toString(), artFollowUpDTO.getArtAppointmentId(),
+                new NameCode(followUpReason.getCode(), followUpReason.getName()), artFollowUpDTO.getDate(), followUpType);
     }
 
-    public static ArtFollowUp getInstance(ArtFollowUpDTO artFollowUpDTO, FollowUpReason outcome) {
+    public static ArtFollowUpDTO get(ArtFollowUp artFollowUp) {
 
-        NameCode followUpReason = outcome != null ? new NameCode(outcome.getCode(), outcome.getName()) : null;
+        return new ArtFollowUpDTO(artFollowUp.getId(), artFollowUp.getArtAppointmentId(), artFollowUp.getOutcome().getName(),
+                new PastDate(artFollowUp.getDate()), artFollowUp.getFollowUpType());
+    }
 
-        return new ArtFollowUp(UUID.randomUUID().toString(), artFollowUpDTO.getArtAppointmentId(), followUpReason,
-                artFollowUpDTO.getDate(), artFollowUpDTO.getFollowUpType());
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
     @NonNull
@@ -71,7 +81,7 @@ public class ArtFollowUpDTO implements Serializable {
         return date;
     }
 
-    public void setDate(@NonNull PastDate date) {
+    public void setDate(@NonNull Date date) {
         this.date = date;
     }
 
@@ -87,7 +97,8 @@ public class ArtFollowUpDTO implements Serializable {
     @Override
     public String toString() {
         return "ArtFollowUpDTO{" +
-                "artAppointmentId='" + artAppointmentId + '\'' +
+                "id='" + id + '\'' +
+                ", artAppointmentId='" + artAppointmentId + '\'' +
                 ", outcome='" + outcome + '\'' +
                 ", date=" + date +
                 ", followUpType=" + followUpType +
