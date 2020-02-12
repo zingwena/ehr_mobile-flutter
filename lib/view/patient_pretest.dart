@@ -119,7 +119,6 @@ class _PatientPretest extends State<PatientPretest> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -435,12 +434,12 @@ class _PatientPretest extends State<PatientPretest> {
                                                   children: <Widget>[
 
                                                     SizedBox(
-                                                      height: 15.0,
+                                                      height: 25.0,
                                                     ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child: Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -467,10 +466,13 @@ class _PatientPretest extends State<PatientPretest> {
                                                     ),
 
                                                     showApproachError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
-
-
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
+
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
+
                                                     Container(
                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
                                                       width: double.infinity,
@@ -502,12 +504,13 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showModelError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65),
                                                        child: Text("Select HTS Model ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
-                                                  SizedBox(
-                                                    height: 30.0,
-                                                  ),
+
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
 
                                                     Container(
                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
@@ -540,14 +543,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showPurposeError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Purpose of Test", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select Purpose of Test", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
-
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child:        Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -574,12 +579,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     shownewTestError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select New Test Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select New Test Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
+
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child:        Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -605,13 +614,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showCoupleCounselling == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Couple Counselling Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select Couple Counselling Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child:        Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -638,7 +650,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showPretestInfoError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Pretest Info Given Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select Pretest Info Given Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
                                                     pregnatandlactatingqstn(),
@@ -693,24 +705,23 @@ class _PatientPretest extends State<PatientPretest> {
                                                             Icon(Icons.save_alt, color: Colors.white, ),
                                                           ],
                                                         ),
-                                                        onPressed: () {
+                                                        onPressed: ()async {
                                                           if (_formKey.currentState.validate()) {
                                                             _formKey.currentState.save();
                                                             if(approachSelected & modelSelected&purposeSelected
                                                             &newTestSelected &pretestInfoGivenSelected&coupleCounsellingSelected){
-
-                                                              getPurposeByName(_currentPurposeOfTest);
-                                                            getHtsModelByName(_currentHtsModel);
-                                                            PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, newTestInLife,
+                                                            //  getPurposeByName(_currentPurposeOfTest);
+                                                           // getHtsModelByName(_currentHtsModel);
+                                                            PreTest patient_pretest_obj = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, newTestInLife,
                                                                 coupleCounselling,preTestInfoGiven,optOutOfTest,newTestInPreg,_currentPurposeOfTest);
-                                                            insertPreTest(patient_pretest);
-                                                            if(patient_pretest.optOutOfTest ){
+                                                             await insertPreTest(patient_pretest_obj);
+                                                            if(patient_pretest_obj.optOutOfTest ){
                                                               Navigator.push(context,MaterialPageRoute(
                                                                   builder: (context)=> Overview(widget.person)
                                                               ));
                                                             } else {
                                                               Navigator.push(context,MaterialPageRoute(
-                                                                  builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
+                                                                  builder: (context)=> PretestOverview(patient_preTest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
                                                               ));
                                                             }
                                                             }else{

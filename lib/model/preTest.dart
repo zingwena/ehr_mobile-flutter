@@ -11,7 +11,7 @@ class PreTest {
   String htsId;
   String htsApproach;
   String htsModelId;
-  bool newTest;
+  bool newTestInClientLife;
   bool coupleCounselling;
   bool preTestInformationGiven;
   bool optOutOfTest;
@@ -22,7 +22,7 @@ class PreTest {
       this.htsId,
       this.htsApproach,
       this.htsModelId,
-      this.newTest,
+      this.newTestInClientLife,
       this.coupleCounselling,
       this.preTestInformationGiven,
       this.optOutOfTest,
@@ -31,6 +31,12 @@ class PreTest {
 
   factory PreTest.fromJson(Map<String, dynamic> json) =>
       _$PreTestFromJson(json);
+
+
+  @override
+  String toString() {
+    return 'PreTest{personId: $personId, htsId: $htsId, htsApproach: $htsApproach, htsModelId: $htsModelId, newTestInClientLife: $newTestInClientLife, coupleCounselling: $coupleCounselling, preTestInformationGiven: $preTestInformationGiven, optOutOfTest: $optOutOfTest, newTestPregLact: $newTestPregLact, reasonForHivTestingId: $reasonForHivTestingId}';
+  }
 
   Map<String, dynamic> toJson() => _$PreTestToJson(this);
 

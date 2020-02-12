@@ -164,29 +164,29 @@ class sidebarstate extends State<Sidebar>{
             height: 10.0,
             color: Colors.blue.shade500,
           ),
-          widget.visitId == null?SizedBox(height: 0.0,):new ListTile(leading: new Icon(Icons.settings_overscan, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
+          new ListTile(leading: new Icon(Icons.settings_overscan, color: Colors.blue), title: new Text("Patient Overview "), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     SummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),
 
           )),
-         widget.visitId==null?SizedBox(height: 0.0,): Divider(
+          Divider(
             height: 10.0,
             color: Colors.blue.shade500,
           ),
-         widget.visitId== null? SizedBox(height: 0.0,):new ListTile(leading: new Icon(Icons.add_box, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
+          new ListTile(leading: new Icon(Icons.add_box, color: Colors.blue), title: new Text("Vitals",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     ReceptionVitals(widget.patientId, widget.visitId, widget.person, widget.htsId)),
           )),
-          widget.visitId == null ?SizedBox(height: 0.0,):Divider(
+          Divider(
             height: 10.0,
             color: Colors.blue.shade500,
           ),
-          widget.visitId == null?SizedBox(height: 0.0,):new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
+          new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("HTS",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
             if(htsScreening == null ){
               Navigator.push(context,MaterialPageRoute(
@@ -198,11 +198,11 @@ class sidebarstate extends State<Sidebar>{
               ));
             }
           }),
-         widget.visitId == null ?SizedBox(height: 0.0, width: 0.0,): Divider(
+          Divider(
             height: 10.0,
             color: Colors.blue.shade500,
           ),
-         widget.visitId == null ?SizedBox(height: 0.0,): new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("Index Testing",  style: new TextStyle(
+          new ListTile(leading: new Icon(Icons.healing, color: Colors.blue), title: new Text("Index Testing",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: () {
             if(indextestid == null){
               print("Index test id is null here ");
@@ -217,11 +217,11 @@ class sidebarstate extends State<Sidebar>{
               ));
             }
           }),
-          widget.visitId == null? SizedBox(height: 0.0, width: 0.0,):Divider(
+          Divider(
             height: 10.0,
             color: Colors.blue.shade500,
           ),
-          widget.visitId == null ? SizedBox(height: 0.0,):new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
+          new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: (){
             if(artdto.artNumber == null ){
               print("ART DTO DATE IS  NULL");

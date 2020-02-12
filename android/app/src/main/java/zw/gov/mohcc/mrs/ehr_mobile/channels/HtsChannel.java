@@ -204,6 +204,8 @@ public class HtsChannel {
                                 Log.i(TAG, "PRETEST SENT FROM FLUTTER" + arguments);
 
                                 Hts hts = htsService.savePreTestCounselling(preTestDTO);
+                                Log.i(TAG, "PRETEST SENT TO AFTER SAVING FLUTTER" + hts);
+
 
                                 result.success(gson.toJson(hts));
 
@@ -214,7 +216,9 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
-                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findByname(arguments);
+                                HtsModel htsModel = ehrMobileDatabase.htsModelDao().findById(arguments);
+                                Log.i(TAG, "HTS MODEL retrieved in android "+ htsModel.toString());
+
 
                                 result.success(htsModel);
                             } catch (Exception e) {
@@ -224,8 +228,10 @@ public class HtsChannel {
                         }
                         if (methodCall.method.equals("getPurposeofTest")) {
                             try {
-                                PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findByName(arguments);
-                                result.success(purposeOfTest);
+                                PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findById(arguments);
+                                Log.i(TAG, "PUrpose retrieved in android "+ purposeOfTest.toString());
+
+                                result.success(gson.toJson(purposeOfTest));
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
