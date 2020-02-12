@@ -67,14 +67,14 @@ class HtsDao {
     return hts;
   }
 
-  Future insertFromEhr(Map map,String ehrPersonId, String patientId) async {
+  Future insertFromEhr(Map map,String ehrPersonId, String patientId,String labInvestigationId) async {
 
     Insert inserter = new Insert(tableName);
     inserter.set(personId,ehrPersonId);
     inserter.set(id, map['htsId']);
     inserter.set(visitId, patientId);
     inserter.set(htsType, map['htsType']);
-    inserter.set(laboratoryInvestigationId,map['laboratoryInvestigation']['laboratoryInvestigationId']);
+    inserter.set(laboratoryInvestigationId, labInvestigationId);
     inserter.set(dateOfHivTest,const CustomDateTimeConverter().fromEhrJson(map['dateOfHivTest']));
     inserter.set(entryPointId,map['entryPoint']['id']);
     inserter.set(htsApproach,map['approach']);
@@ -89,22 +89,25 @@ class HtsDao {
     map['preTestInformationGiven']!=null
         ? inserter.set(preTestInformationGiven,map['preTestInformationGiven']):
     inserter.set(preTestInformationGiven,false);
-    inserter.set(newTestInClientLife,map['firstHivTest']??!null);
+
+    map['firstHivTest']!=null? inserter.set(newTestInClientLife,map['firstHivTest']):inserter.set(newTestInClientLife,true);
     //inserter.set(newTestPregLact,map['testForPregnancy']); //TODO needs clarification
 
     map['coupleCounselling']!=null?inserter.set(coupleCounselling,map['coupleCounselling']):inserter.set(coupleCounselling,false);
     inserter.set(optOutOfTest,map['optOut']);
     inserter.set(resultReceived,map['resultsIssued']);
-    inserter.set(reasonForNotIssuingResultId,map['reasonForNotIssuingResult']);
+    if(map['reasonForNotIssuingResult']!=null){
+      inserter.set(reasonForNotIssuingResultId,map['reasonForNotIssuingResult']['id']);
+    }
 
     map['postTestCounselling']!=null ? inserter.set(postTestCounselled,map['postTestCounselling'])
-        :inserter.set(postTestCounselled,false);
+        :inserter.set(postTestCounselled,true);
 
     if(map['postDateCounselled']!=null){
       inserter.set(datePostTestCounselled,const CustomDateTimeConverter().fromEhrJson(map['postDateCounselled']));
     }
     map['consentToIndexTesting']!=null? inserter.set(consentToIndexTesting, map['consentToIndexTesting']):
-    inserter.set(consentToIndexTesting, false);
+    inserter.set(consentToIndexTesting, true);
     inserter.set(status, 'IMPORTED');
     return await _adapter.insert(inserter);
   }

@@ -70,7 +70,6 @@ class SexualHistoryQuestionDao extends BaseDao{
 
   Future insertFromEhr(Map map,String sexualHistory) async {
 
-    log.i(map);
     Insert inserter = new Insert(tableName);
 
     inserter.set(id, map['sexualHistoryQuestionId']);
