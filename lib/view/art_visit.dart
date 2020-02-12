@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/artvisitstatus.dart';
 import 'package:ehr_mobile/model/artvisittype.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/country.dart';
 import 'package:ehr_mobile/model/familyplanningstatus.dart';
 import 'package:ehr_mobile/model/followupstatus.dart';
@@ -391,9 +392,11 @@ class _ArtVisit extends State<ArtVisitView> {
             title: new Text("Impilo Mobile",   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -409,6 +412,30 @@ class _ArtVisit extends State<ArtVisitView> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -706,15 +733,12 @@ class _ArtVisit extends State<ArtVisitView> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(vertical: 16.0,
-                                                                  horizontal: 60.0),
+                                                              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                               child: TextFormField(
                                                                 controller: TextEditingController(
                                                                     text: 'admin '),
                                                                 decoration: InputDecoration(
-                                                                    labelText:
-                                                                    'Name Of Clinician ',
+                                                                    labelText: 'Name Of Clinician ',
                                                                     border: OutlineInputBorder()),
                                                               ),
                                                             ),
@@ -808,10 +832,7 @@ class _ArtVisit extends State<ArtVisitView> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 0.0,
-                                                          horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                         elevation: 8.0,
                                                         shape: RoundedRectangleBorder(
@@ -823,7 +844,8 @@ class _ArtVisit extends State<ArtVisitView> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: <Widget>[
                                                             Text('Save', style: TextStyle(color: Colors.white),),
-                                                            Icon(Icons.navigate_next, color: Colors.white, ),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
                                                           ],
                                                         ),
                                                         onPressed: () async{
