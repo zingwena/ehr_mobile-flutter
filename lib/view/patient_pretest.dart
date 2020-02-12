@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
@@ -68,7 +69,6 @@ class _PatientPretest extends State<PatientPretest> {
   PurposeOfTest purposeOfTest;
 
   int _patientPretest = 0;
-  //int _optOutTest = 0;
   PreTest patient_preTest;
 
 
@@ -85,6 +85,24 @@ class _PatientPretest extends State<PatientPretest> {
   String purposeOfTestId;
 
   String facility_name;
+
+  bool showApproachError = false;
+  bool approachSelected = false;
+
+  bool showModelError = false;
+  bool modelSelected = false;
+
+   bool showPurposeError = false;
+   bool purposeSelected = false;
+
+   bool shownewTestError = false;
+   bool newTestSelected = false;
+
+   bool showCoupleCounselling = false;
+   bool coupleCounsellingSelected  = false;
+
+   bool pretestInfoGivenSelected = false;
+   bool showPretestInfoError = false;
   Age age;
   @override
   void initState() {
@@ -237,9 +255,11 @@ class _PatientPretest extends State<PatientPretest> {
       switch (_hts) {
         case 1:
           _htsApproach = "PITC";
+          approachSelected = true;
           break;
         case 2:
           _htsApproach = "CITC";
+          approachSelected = true;
           break;
       }
     });
@@ -280,9 +300,11 @@ class _PatientPretest extends State<PatientPretest> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -298,6 +320,30 @@ class _PatientPretest extends State<PatientPretest> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -416,6 +462,9 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
 
+                                                    showApproachError == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
                                                     Container(
                                                       padding:
                                                       EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
@@ -447,6 +496,9 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
+                                                    showModelError == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("Select HTS Model ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
                                                   SizedBox(
                                                     height: 30.0,
                                                   ),
@@ -482,6 +534,9 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
+                                                    showPurposeError == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("Select Purpose  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
 
 
 
@@ -513,6 +568,9 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
+                                                    shownewTestError == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("new test ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
 
                                                     Container(
                                                       width: double.infinity,
@@ -541,6 +599,10 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
+                                                    showCoupleCounselling == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("couple counselling ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
+
 
                                                     Container(
                                                       width: double.infinity,
@@ -570,6 +632,10 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
+                                                    showPretestInfoError == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("pretest info given ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
+
                                                     pregnatandlactatingqstn(),
                                                      Container(
                                                       width: double.infinity,
@@ -613,14 +679,22 @@ class _PatientPretest extends State<PatientPretest> {
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Save",
-                                                          style: TextStyle(color: Colors.white),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Save', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: () {
                                                           if (_formKey.currentState.validate()) {
                                                             _formKey.currentState.save();
-                                                            getPurposeByName(_currentPurposeOfTest);
+                                                            if(approachSelected & modelSelected&purposeSelected
+                                                            &newTestSelected &pretestInfoGivenSelected&coupleCounsellingSelected){
+
+                                                              getPurposeByName(_currentPurposeOfTest);
                                                             getHtsModelByName(_currentHtsModel);
                                                             PreTest patient_pretest = PreTest(widget.personId, widget.htsid,_htsApproach, _currentHtsModel, newTestInLife,
                                                                 coupleCounselling,preTestInfoGiven,optOutOfTest,newTestInPreg,_currentPurposeOfTest);
@@ -633,6 +707,39 @@ class _PatientPretest extends State<PatientPretest> {
                                                               Navigator.push(context,MaterialPageRoute(
                                                                   builder: (context)=> PretestOverview(patient_pretest, widget.htsRegistration, widget.personId, widget.htsid, widget.visitId, widget.person)
                                                               ));
+                                                            }
+                                                            }else{
+
+                                                              if(approachSelected == false){
+                                                                setState(() {
+                                                                  showApproachError = true;
+                                                                });
+                                                              }
+                                                              if(pretestInfoGivenSelected == false){
+                                                                setState(() {
+                                                                  showPretestInfoError = true;
+                                                                });
+                                                              }
+                                                              if(coupleCounsellingSelected == false){
+                                                                setState(() {
+                                                                  showCoupleCounselling = true;
+                                                                });
+                                                              }
+                                                              if(newTestSelected == false){
+                                                                setState(() {
+                                                                  shownewTestError = true;
+                                                                });
+                                                              }
+                                                              if(purposeSelected == false){
+                                                                setState(() {
+                                                                  showPurposeError = true;
+                                                                });
+                                                              }
+                                                              if(modelSelected == false){
+                                                                setState(() {
+                                                                  showModelError = true;
+                                                                });
+                                                              }
                                                             }
 
                                                           }
@@ -736,6 +843,7 @@ Widget pregnatandlactatingqstn(){
   void changedDropDownItemHtsModel(String value) {
     setState(() {
       _currentHtsModel = value;
+      modelSelected = true;
 
     });
   }
@@ -743,6 +851,7 @@ Widget pregnatandlactatingqstn(){
   void changedDropDownItemPurposeOfTest(String value) {
     setState(() {
       _currentPurposeOfTest = value;
+      purposeSelected = true;
 
     });
   }
@@ -781,9 +890,11 @@ Widget pregnatandlactatingqstn(){
       switch (_coupleCounselling) {
         case 1:
           coupleCounselling = true;
+          coupleCounsellingSelected = true;
           break;
         case 2:
           coupleCounselling = false;
+          coupleCounsellingSelected = true;
           break;
       }
     });
@@ -795,9 +906,11 @@ Widget pregnatandlactatingqstn(){
       switch (_newTestInLife) {
         case 1:
           newTestInLife = true;
+          newTestSelected = true;
           break;
         case 2:
           newTestInLife = false;
+          newTestSelected = true;
           break;
       }
     });
@@ -811,9 +924,11 @@ Widget pregnatandlactatingqstn(){
       switch (_preTestInfoGiven) {
         case 1:
           preTestInfoGiven = true;
+          pretestInfoGivenSelected = true;
           break;
         case 2:
           preTestInfoGiven = false;
+          pretestInfoGivenSelected = true;
           break;
       }
     });

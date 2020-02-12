@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
@@ -50,6 +51,8 @@ class _Registration extends State<Registration> {
   bool _showError = false;
   bool _entryPointIsValid = false;
   bool _formIsValid = false;
+  bool showTypeError = false;
+  bool typeselected = false;
   String _entryPointError = "Select Entry Point";
   DateTime date;
   int _htsType = 0;
@@ -71,7 +74,6 @@ class _Registration extends State<Registration> {
   @override
   void initState() {
     visitId = widget.visitId;
-//    patient id
     patientId = widget.patientId;
     getEntryPoints();
     getHtsRecord(patientId);
@@ -105,7 +107,7 @@ class _Registration extends State<Registration> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1920, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
@@ -152,11 +154,13 @@ class _Registration extends State<Registration> {
         case 1:
           htsType = "Self";
           print("hts value : $htsType");
+          typeselected = true;
 
           break;
         case 2:
           htsType = "Rapid";
           print("hts value : $htsType");
+          typeselected = true;
 
           break;
       }
@@ -198,9 +202,11 @@ class _Registration extends State<Registration> {
     facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
     fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -216,6 +222,30 @@ class _Registration extends State<Registration> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -366,6 +396,9 @@ class _Registration extends State<Registration> {
                                                     SizedBox(
                                                       height: 15.0,
                                                     ),
+                                                    showTypeError == true ? SizedBox(
+                                                      height: 20.0, width: 300.0, child: Text("Select HTS type ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    ):SizedBox(height: 0.0, width: 0.0,),
                                                     Container(
                                                       padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
                                                       width: double.infinity,
@@ -418,27 +451,33 @@ class _Registration extends State<Registration> {
                                                     ),
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
                                                       child: RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Save",
-                                                          style: TextStyle(color: Colors.white),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Save', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: () async {
                                                           if (_formKey.currentState.validate()) {
                                                             _formKey.currentState.save();
-                                                            if (_entryPointIsValid) {
+                                                            if (_entryPointIsValid & typeselected) {
                                                               setState(() {
                                                                 _formIsValid = true;
                                                               });
                                                             } else {
                                                               setState(() {
                                                                 _showError = true;
+                                                                showTypeError = true;
                                                               });
                                                             }
                                                             if (_formIsValid) {
