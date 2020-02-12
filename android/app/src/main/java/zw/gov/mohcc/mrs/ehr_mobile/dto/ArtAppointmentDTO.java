@@ -21,7 +21,7 @@ public class ArtAppointmentDTO implements Serializable {
     @NonNull
     private final Date date;
 
-    public ArtAppointmentDTO(@NonNull String artId, @NonNull String reason, @NonNull Date date) {
+    public ArtAppointmentDTO(@NonNull String artId, @NonNull String reason, @NonNull FutureDate date) {
         this.artId = artId;
         this.reason = reason;
         this.date = date;
@@ -30,7 +30,7 @@ public class ArtAppointmentDTO implements Serializable {
     public static ArtAppointmentDTO get(ArtAppointment artAppointment) {
 
         return new ArtAppointmentDTO(artAppointment.getArtId(),
-                artAppointment.getReason() != null ? artAppointment.getReason().getName() : null, artAppointment.getDate());
+                artAppointment.getReason() != null ? artAppointment.getReason().getName() : null, new FutureDate(artAppointment.getDate()));
     }
 
     public static List<ArtAppointmentDTO> get(List<ArtAppointment> artAppointments) {

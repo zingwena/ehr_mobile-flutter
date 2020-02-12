@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -202,9 +203,11 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -220,6 +223,30 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -309,8 +336,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
-                                        minHeight: viewportConstraints
-                                            .maxHeight - 48.0,
+                                        minHeight: viewportConstraints .maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                           child: Column(
@@ -498,19 +524,29 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
+
+                                              SizedBox(
+                                                height: 35.0,
+                                              ),
+
+                                             // Expanded(child: Container()),
                                                Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                                                 padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0),
                                                         child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(
                                                               borderRadius: BorderRadius.circular(5.0)),
                                                           color: Colors.blue,
                                                           padding: const EdgeInsets.all(20.0),
-                                                          child: Text(
-                                                            "Proceed to HTS Registration",
-                                                            style: TextStyle(color: Colors.white),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Text('Proceed to HTS Registration', style: TextStyle(color: Colors.white),),
+                                                              Spacer(),
+                                                              Icon(Icons.navigate_next, color: Colors.white, ),
+                                                            ],
                                                           ),
                                                           onPressed: () {
                                                             if(htsRegistration == null ){

@@ -10,6 +10,7 @@ import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/hts_pretest_overview.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -81,7 +82,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -114,7 +114,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
         preTest = PreTest.fromJson(jsonDecode(pre_test));
         htsApproach = preTest.htsApproach;
       });
-      print('PRETEST IN THE FLUTTER THE RETURNED ONE '+ pre_test.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -155,12 +154,8 @@ class HtsOverviewState extends State<HtsRegOverview> {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
       setState(() {
-
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -198,9 +193,11 @@ class HtsOverviewState extends State<HtsRegOverview> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -216,6 +213,30 @@ class HtsOverviewState extends State<HtsRegOverview> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),

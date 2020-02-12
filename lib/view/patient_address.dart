@@ -195,11 +195,13 @@ class _PatientAddressState extends State<PatientAddress> {
                                               Form(
                                                 key: _formKey,
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment
-                                                      .start,
-                                                  mainAxisAlignment: MainAxisAlignment
-                                                      .spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
+
+                                                    SizedBox(
+                                                      height: 10.0,
+                                                    ),
 
                                                     Row(
                                                       children: <Widget>[
@@ -354,7 +356,7 @@ class _PatientAddressState extends State<PatientAddress> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child:   RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(

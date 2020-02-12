@@ -252,15 +252,29 @@ class _SearchPatientState extends State<SearchPatient> {
                           //selected: true,
                         ),
 
-                        RoundedButton(
+                        Container(
+                            padding: EdgeInsets.all(3.0),
+                            child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(0.0),
+                                    child: IconButton(
+                                      icon: Icon(Icons.exit_to_app), iconSize:32, color: Colors.white,
+                                      onPressed: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => LoginScreen()),),
+                                    ),
+                                    /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
 
-                          text: "Logout",
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()),
-                          ),
+                                  ),  ])
                         ),
-
                       ],
                     ),
                   ),

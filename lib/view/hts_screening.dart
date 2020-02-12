@@ -7,6 +7,7 @@ import 'package:ehr_mobile/model/preTest.dart';
 import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
@@ -80,11 +81,11 @@ class _HtsScreening extends State<Hts_Screening> {
   @override
   void initState() {
     //getHtsRecord(widget.personId);
-    selectedLastNegDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfViralLoad =  DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfCd4Count = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    selectedDateOfLastTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    selectedLastNegDate = '';
+    selectedDateOfEnrollment = '';
+    selectedDateOfViralLoad =  '';
+    selectedDateOfCd4Count = '';
+    selectedDateOfLastTest = '';
 
     dateOfLastNeg = DateTime.now();
     dateOfViralLoad = DateTime.now();
@@ -97,7 +98,6 @@ class _HtsScreening extends State<Hts_Screening> {
   }
 
   Future<void> savehtsscreening(HtsScreeningdto htsScreening) async {
-    print("GGGGGGGGGGGG RRRRRRR TTTTTTT  THIS IS THE HTSSCREENINGDTO  MODEL TO BE SAVED"+ htsScreening.toString());
     var response;
     try {
       response = await htsChannel.invokeMethod('saveHtsScreening', jsonEncode(htsScreening));
@@ -141,7 +141,7 @@ class _HtsScreening extends State<Hts_Screening> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1920, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedLastNegDate)
       setState(() {
@@ -153,7 +153,7 @@ class _HtsScreening extends State<Hts_Screening> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1920, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDateOfLastTest)
       setState(() {
@@ -237,9 +237,11 @@ class _HtsScreening extends State<Hts_Screening> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -255,6 +257,30 @@ class _HtsScreening extends State<Hts_Screening> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -343,26 +369,21 @@ class _HtsScreening extends State<Hts_Screening> {
                                             Form(
                                               key: _formKey,
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment
-                                                    .start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
-                                                    height: 10.0,
+                                                    height: 15.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 16.0,
-                                                        horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: const EdgeInsets
-                                                                  .all(8.0),
+                                                              padding: const EdgeInsets.all(8.0),
                                                               child: Text(
                                                                   'Have you ever been tested before ?'),
                                                             ),
@@ -394,43 +415,28 @@ class _HtsScreening extends State<Hts_Screening> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(
-                                                                  0.0),
-                                                              child:
-                                                              TextFormField(
-                                                                controller:
-                                                                TextEditingController(
-                                                                    text:
-                                                                    selectedDateOfLastTest),
-                                                                validator:
-                                                                    (value) {
+                                                              const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                    text: selectedDateOfLastTest),
+                                                                validator: (value) {
                                                                   return value
                                                                       .isEmpty
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                            0.0)),
-                                                                    labelText: "Date of last HIV test"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateLastTest(context);}),
+                                                                    labelText: 'Date of last HIV test',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateLastTest(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
@@ -500,27 +506,18 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                            0.0)),
-                                                                    labelText: "Date of Last Negative HIV Test"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectNegTestDate(context);}),
+                                                                    labelText: 'Date of Last Negative HIV Test',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectNegTestDate(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
@@ -598,24 +595,16 @@ class _HtsScreening extends State<Hts_Screening> {
                                                   first_patient_on_art == true? Container(
                                                     width: double.infinity,
                                                     padding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 16.0,
-                                                        horizontal: 60.0),
+                                                    EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding:
-                                                              const EdgeInsets
-                                                                  .all(
-                                                                  0.0),
-                                                              child:
-                                                              TextFormField(
-                                                                controller:
-                                                                TextEditingController(
-                                                                    text:
-                                                                    selectedDateOfEnrollment),
+                                                              padding: const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                    text: selectedDateOfEnrollment),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -623,27 +612,19 @@ class _HtsScreening extends State<Hts_Screening> {
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
+
+
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                            0.0)),
-                                                                    labelText: "Date of enrollment into care"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDateOfEnrollment(context);}),
+                                                                    labelText: 'Date of enrollment into care',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfEnrollment(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
@@ -852,11 +833,8 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
-                                                            Colors.blue,
+                                                        IconButton( icon: Icon(Icons.calendar_today),
+                                                            color: Colors.blue,
                                                             onPressed: () {
                                                               _selectDateOfCD4Count(
                                                                   context);
@@ -938,27 +916,25 @@ class _HtsScreening extends State<Hts_Screening> {
                                                   ),
 
                                                   SizedBox(
-                                                    height: 10.0,
+                                                    height: 15.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 0.0,
-                                                        horizontal: 30.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 55.0),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius
-                                                              .circular(5.0)),
+                                                          borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.blue,
-                                                      padding: const EdgeInsets
-                                                          .all(20.0),
-                                                      child: Text(
-                                                        "Save",
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .white),
+                                                      padding: const EdgeInsets.all(20.0),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Text('Save', style: TextStyle(color: Colors.white),),
+                                                          Spacer(),
+                                                          Icon(Icons.save_alt, color: Colors.white, ),
+                                                        ],
                                                       ),
                                                       onPressed: () {
                                                         if (_formKey

@@ -132,6 +132,7 @@ class _EditDemographicsState extends State<EditDemographics> {
     birthDate = widget.birthDate;
     getCountries();
     getNationalities();
+    getFacilityName();
 
   }
 
@@ -629,7 +630,7 @@ class _EditDemographicsState extends State<EditDemographics> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                         elevation: 8.0,
                                                         shape: RoundedRectangleBorder(
@@ -641,6 +642,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: <Widget>[
                                                             Text('Proceed to Contact Details', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
                                                             Icon(Icons.navigate_next, color: Colors.white, ),
                                                           ],
                                                         ),

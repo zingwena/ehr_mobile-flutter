@@ -2,8 +2,11 @@
 import 'package:ehr_mobile/model/result.dart';
 import 'package:ehr_mobile/model/testKit.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
+
 part 'laboratoryInvestigationTest.g.dart';
 
+@CustomDateTimeConverter()
 @JsonSerializable()
 class LaboratoryInvestigationTest{
    String id;

@@ -18,6 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.HtsScreeningDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.InvestigationDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.NameCodeResponse;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.PastDate;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.SexualHistoryQuestionView;
@@ -138,7 +139,7 @@ public class HistoryService {
             dto.setPersonId(personId);
             // retrieve last HTS record
             Hts hts = ehrMobileDatabase.htsDao().findLatestHts(personId);
-            dto.setDateLastTested(hts.getDateOfHivTest());
+            dto.setDateLastTested(hts.getDateOfHivTest() != null ? new PastDate(hts.getDateOfHivTest()) : null);
             // retrieve the result of this test
             LaboratoryInvestigation laboratoryInvestigation = ehrMobileDatabase.laboratoryInvestigationDao()
                     .findLaboratoryInvestigationById(hts.getLaboratoryInvestigationId());
@@ -157,13 +158,13 @@ public class HistoryService {
             dto.setPersonId(personId);
             dto.setArt(htsScreening.getArt());
             dto.setArtNumber(htsScreening.getArtNumber());
-            dto.setDateLastTested(htsScreening.getDateLastTested());
+            dto.setDateLastTested(htsScreening.getDateLastTested() != null ? new PastDate(htsScreening.getDateLastTested()) : null);
             dto.setTestedBefore(htsScreening.isTestedBefore());
             dto.setResult(htsScreening.getResult());
             dto.setViralLoadDone(htsScreening.getViralLoadDone());
             dto.setCd4Done(htsScreening.getCd4Done());
             Log.i(TAG, "Setting date last negative" + htsScreening.getDateLastNegative());
-            dto.setDateLastNegative(htsScreening.getDateLastNegative());
+            dto.setDateLastNegative(htsScreening.getDateLastNegative() != null ? new PastDate(htsScreening.getDateLastNegative()) : null);
             Log.i(TAG, "Date last negative set successfully");
         }
 
@@ -177,7 +178,7 @@ public class HistoryService {
             dto.setPersonId(personId);
             dto.setArt(true);
             dto.setArtNumber(art.getArtNumber());
-            dto.setDateEnrolled(art.getDateEnrolled());
+            dto.setDateEnrolled(art.getDateEnrolled() != null ? new PastDate(art.getDateEnrolled()) : null);
         }
         // retrieve tests for viral load and cd4 count
         final Set<String> viralLoadTests = new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.VIRAL_LOAD_TESTS));
@@ -194,7 +195,7 @@ public class HistoryService {
             dto.setViralLoad(StringUtils.isNoneBlank(viralLoadInvestigation.getResult())
                     ? Integer.valueOf(viralLoadInvestigation.getResult())
                     : null);
-            dto.setViralLoadDate(viralLoadInvestigation.getDate());
+            dto.setViralLoadDate(viralLoadInvestigation.getDate() != null ? new PastDate(viralLoadInvestigation.getDate()) : null);
         }
 
         final Set<String> cd4CountTests = new HashSet<>(
@@ -212,14 +213,14 @@ public class HistoryService {
             dto.setCd4Count(StringUtils.isNoneBlank(cd4CountInvestigation.getResult())
                     ? Integer.valueOf(cd4CountInvestigation.getResult())
                     : null);
-            dto.setCd4CountDate(cd4CountInvestigation.getDate());
+            dto.setCd4CountDate(cd4CountInvestigation.getDate() != null ? new PastDate(cd4CountInvestigation.getDate()) : null);
         }
         if (personInvestigation != null) {
             if (dto == null) {
                 dto = new HtsScreeningDTO();
             }
             dto.setPersonId(personId);
-            dto.setDateLastNegative(personInvestigation.getDate());
+            dto.setDateLastNegative(personInvestigation.getDate() != null ? new PastDate(personInvestigation.getDate()) : null);
         }
         Log.d(TAG, "Hts Screening for current patient : " + dto);
         return dto;
@@ -270,7 +271,8 @@ public class HistoryService {
                 Log.d(TAG, "Retrieve either positive or negative HIV results : " + dto.getResult());
                 String resultId = dto.getResult();
 
-                InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getDateLastTested(), visitId,
+                InvestigationDTO investigationDTO = new InvestigationDTO(personId,
+                        dto.getDateLastTested() != null ? new PastDate(dto.getDateLastTested()) : null, visitId,
                         APPLICATION_CONSTANTS.HIV_TESTS[0], resultId);
                 Log.i(TAG, "Saving investigation record ");
                 htsService.createInvestigation(investigationDTO, false);
@@ -278,7 +280,8 @@ public class HistoryService {
             // viral load
             if (dto.getViralLoad() != null && dto.getViralLoadDate() != null) {
                 Log.i(TAG, "Viral load tests");
-                InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getViralLoadDate(), visitId,
+                InvestigationDTO investigationDTO = new InvestigationDTO(personId,
+                        dto.getViralLoadDate() != null ? new PastDate(dto.getViralLoadDate()) : null, visitId,
                         APPLICATION_CONSTANTS.VIRAL_LOAD_TESTS[0], dto.getViralLoad().toString());
                 Log.i(TAG, "Saved viral load investigation record");
                 htsService.createInvestigation(investigationDTO, false);
@@ -287,7 +290,8 @@ public class HistoryService {
             // cd4 count
             if (dto.getCd4Count() != null && dto.getCd4CountDate() != null) {
                 Log.i(TAG, "Cd4 count tests");
-                InvestigationDTO investigationDTO = new InvestigationDTO(personId, dto.getCd4CountDate(), visitId,
+                InvestigationDTO investigationDTO = new InvestigationDTO(personId,
+                        dto.getCd4CountDate() != null ? new PastDate(dto.getCd4CountDate()) : null, visitId,
                         APPLICATION_CONSTANTS.CD4_COUNT_TESTS[0], dto.getCd4Count().toString());
                 Log.i(TAG, "Saved cd4 count investigation record");
                 htsService.createInvestigation(investigationDTO, false);

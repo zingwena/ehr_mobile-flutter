@@ -1,5 +1,7 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
@@ -8,20 +10,32 @@ import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 public class PatientDto {
 
     private int id;
+    @NonNull
     private String firstName;
+    @NonNull
     private String lastName;
     private String personId;
+    @NonNull
     private Gender sex;
     private String identifier;
     private String nationalId;
+    @NonNull
     private Date birthDate;
+    @NonNull
     private Gender selfIdentifiedGender;
+    @NonNull
     private String religionId;
+    @NonNull
     private String occupationId;
+    @NonNull
     private String maritalStatusId;
+    @NonNull
     private String educationLevelId;
+    @NonNull
     private String nationalityId;
+    @NonNull
     private String countryOfBirthId;
+    @NonNull
     private Address address;
 
     public PatientDto() {
@@ -161,7 +175,7 @@ public class PatientDto {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(PastDate birthDate) {
         this.birthDate = birthDate;
     }
 

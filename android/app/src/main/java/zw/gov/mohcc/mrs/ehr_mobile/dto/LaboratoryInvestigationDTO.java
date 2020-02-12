@@ -7,7 +7,7 @@ public class LaboratoryInvestigationDTO {
     private int facilityId;
     private Date resultDate;
 
-    public LaboratoryInvestigationDTO(int facilityId, Date resultDate) {
+    public LaboratoryInvestigationDTO(int facilityId, PastDate resultDate) {
         this.facilityId = facilityId;
         this.resultDate = resultDate;
     }
@@ -25,7 +25,7 @@ public class LaboratoryInvestigationDTO {
         return resultDate;
     }
 
-    public void setResultDate(Date resultDate) {
+    public void setResultDate(PastDate resultDate) {
         this.resultDate = resultDate;
     }
 

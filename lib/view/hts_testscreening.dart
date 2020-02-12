@@ -11,6 +11,7 @@ import 'package:ehr_mobile/model/testKit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/util/logger.dart';
+import 'package:ehr_mobile/login_screen.dart';
 
 import 'package:ehr_mobile/view/hts_result.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
@@ -497,9 +498,11 @@ Future<dynamic> getTestKitsByCount(int count) async {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -515,6 +518,30 @@ Future<dynamic> getTestKitsByCount(int count) async {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -711,7 +738,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
+                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 20.0),
                                           child: DateTimePickerFormField(
                                             inputType: InputType.both,
                                             format: DateFormat(
@@ -740,7 +767,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 0.0),
+                                          padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 20.0),
                                           child: DateTimePickerFormField(
                                             inputType: InputType.both,
                                             format: DateFormat(
@@ -808,7 +835,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                     Expanded(
                                       child: SizedBox(
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                                          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                                           child: RaisedButton(
                                               elevation: 4.0,
                                               shape: RoundedRectangleBorder(
@@ -817,12 +844,14 @@ Future<dynamic> getTestKitsByCount(int count) async {
                                               color: Colors.blue,
                                               padding: const EdgeInsets.all(
                                                   20.0),
-                                              child: Text(
-                                                "Save",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight
-                                                        .w500),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Text('Save', style: TextStyle(color: Colors.white),),
+                                                  Spacer(),
+                                                  Icon(Icons.save_alt, color: Colors.white, ),
+                                                ],
                                               ),
                                               onPressed: ()  {
                                                 if (_formKey.currentState

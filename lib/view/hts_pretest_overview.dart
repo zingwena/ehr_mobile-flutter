@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/htsModel.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/preTest.dart';
+import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
@@ -60,7 +63,8 @@ class PretestOverviewState extends State<PretestOverview> {
   bool showInputTabOptions = true;
   String visitId="1";
   String htsApproach;
-  String _htsModelId;
+  String  _htsModelId;
+  PurposeOfTest _purposeOfTest;
   String final_result;
   bool newTest;
   String _newTest;
@@ -85,11 +89,12 @@ class PretestOverviewState extends State<PretestOverview> {
   @override
   void initState() {
      getHtsModel(widget.preTest.htsModelId);
+     getReasonForTest(widget.preTest.reasonForHivTestingId);
      getHtsRecord(widget.personId);
      getLabInvestigation(widget.personId);
      getFacilityName();
      getAge(widget.person);
-     if(widget.preTest.newTest == false){
+     if(widget.preTest.newTestInClientLife == false){
        _newTest = "NO";
      }else{
        _newTest = "YES";
@@ -168,42 +173,55 @@ class PretestOverviewState extends State<PretestOverview> {
 
   }
 
-
   Future<void> getHtsModel(String htsModelId) async {
    String htsModel;
 
     try {
       htsModel = await htsChannel.invokeMethod('getHtsModel', htsModelId);
-      print('KKKKKKKKKKKKKKKK' + htsModel);
+      print("HTS MODEL RETURNED"+ htsModel);
+
       setState(() {
         _htsModelId = htsModel;
+        //HtsModel.fromJson(jsonDecode(htsModel));
+        print("HTS MODEL RETURNED AFTER ASSIGNMENT"+ htsModel);
+
       });
 
     } catch (e) {
       print("channel failure: '$e'");
     }
 
+  }
 
+  Future<void> getReasonForTest(String reasonId) async {
+    String htsModel;
+
+    try {
+      htsModel = await htsChannel.invokeMethod('getPurposeofTest', reasonId);
+      setState(() {
+        _purposeOfTest = PurposeOfTest.fromJson(jsonDecode(htsModel));
+      });
+
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
 
   }
   Future<void> getHtsRecord(String patientId) async {
     var  hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
+      setState(() {
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+        labInvestId = htsRegistration.laboratoryInvestigationId;
+        getFinalResult(labInvestId);
+        getLabInvestigationTest(labInvestId);
+
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
 
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      labInvestId = htsRegistration.laboratoryInvestigationId;
-      print("@@@@@@@@@@@@@@@@@@@@@@ labinvest @@@@@@@@@@@@"+ labInvestId);
-      getFinalResult(labInvestId);
-      getLabInvestigationTest(labInvestId);
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-
-    });
 
 
   }
@@ -280,9 +298,11 @@ class PretestOverviewState extends State<PretestOverview> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -298,6 +318,30 @@ class PretestOverviewState extends State<PretestOverview> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -516,6 +560,21 @@ class PretestOverviewState extends State<PretestOverview> {
                                                                         _optOutOfTest)),
                                                                 decoration: InputDecoration(
                                                                   labelText: 'Opt out of test ?',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        _purposeOfTest.name)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Purpose of Test ?',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 

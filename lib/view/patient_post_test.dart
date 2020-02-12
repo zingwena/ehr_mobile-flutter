@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/reasonForNotIssuingResult.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/posttest_overview.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -207,31 +208,51 @@ class _PatientPostTest extends State<PatientPostTest> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Icon(
-                            Icons.person_pin,
-                            size: 25.0,
-                            color: Colors.white,
-                          ),
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: Text(
-                            "admin",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.0,
-                                color: Colors.white),
-                          ),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
-                      ])),
+                      ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
             ],
           ),
           Positioned.fill(
@@ -317,39 +338,25 @@ class _PatientPostTest extends State<PatientPostTest> {
                                             Form(
                                               key: _formKey,
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
                                                   Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                     children: <Widget>[
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 16.0,
-                                                                horizontal:
-                                                                    60.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
                                                         child: Row(
                                                           children: <Widget>[
                                                             Expanded(
                                                               child: SizedBox(
                                                                 child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
+                                                                  padding: const EdgeInsets.all(8.0),
                                                                   child: Text(
                                                                       'Final Result'),
                                                                 ),
@@ -392,58 +399,32 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                             Text('NO'),
                                                             Radio(
                                                                 value: 2,
-                                                                groupValue:
-                                                                    _resultsreceived,
-                                                                onChanged:
-                                                                    _handleResultReceived)
+                                                                groupValue: _resultsreceived,
+                                                                onChanged: _handleResultReceived)
                                                           ],
                                                         ),
                                                       ),
                                                       _resultReceived == false
                                                           ? Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          16.0,
-                                                                      horizontal:
-                                                                          60.0),
-                                                              child:
-                                                                  OutlineButton(
+                                                              width: double.infinity,
+                                                             padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                              child: OutlineButton(
                                                                 shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0)),
-                                                                color: Colors
-                                                                    .white,
-                                                                child:
-                                                                    Container(
-                                                                  width: double
-                                                                      .infinity,
-                                                                  child:
-                                                                      DropdownButton(
-                                                                    isExpanded:
-                                                                        true,
-                                                                    icon: Icon(Icons
-                                                                        .keyboard_arrow_down),
-                                                                    iconEnabledColor:
-                                                                        Colors
-                                                                            .black,
-                                                                    hint: Text(
-                                                                        "Select reason for not issuing results"),
-                                                                    value:
-                                                                        _currentReasonfornotissuing,
-                                                                    items:
-                                                                        _dropDownMenuItemsReasons,
-                                                                    onChanged:
-                                                                        changedDropDownItemReasons,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          15,
-                                                                      color: Colors
-                                                                          .black,
+                                                                    borderRadius: BorderRadius.circular(5.0)),
+                                                                color: Colors.white,
+                                                                child: Container(
+                                                                  width: double.infinity,
+                                                                  child: DropdownButton(
+                                                                    isExpanded: true,
+                                                                    icon: Icon(Icons.keyboard_arrow_down),
+                                                                    iconEnabledColor: Colors.black,
+                                                                    hint: Text("Select reason for not issuing results"),
+                                                                    value: _currentReasonfornotissuing,
+                                                                    items: _dropDownMenuItemsReasons,
+                                                                    onChanged: changedDropDownItemReasons,
+                                                                    style: TextStyle(
+                                                                      fontSize: 15,
+                                                                      color: Colors.black,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -695,12 +676,12 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                               ),
                                                             )
                                                           : SizedBox(
-                                                              height: 10.0,
+                                                              height: 18.0,
                                                             ),
 
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                         child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(
@@ -712,11 +693,14 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(20.0),
-                                                          child: Text(
-                                                            "Proceed",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Text('Proceed to Post Test', style: TextStyle(color: Colors.white),),
+                                                              Spacer(),
+                                                              Icon(Icons.navigate_next, color: Colors.white, ),
+                                                            ],
                                                           ),
                                                           onPressed: () {
                                                             PostTest postTest = new PostTest(
