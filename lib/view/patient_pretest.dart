@@ -435,12 +435,12 @@ class _PatientPretest extends State<PatientPretest> {
                                                   children: <Widget>[
 
                                                     SizedBox(
-                                                      height: 15.0,
+                                                      height: 25.0,
                                                     ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child: Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -467,10 +467,13 @@ class _PatientPretest extends State<PatientPretest> {
                                                     ),
 
                                                     showApproachError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
-
-
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
+
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
+
                                                     Container(
                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
                                                       width: double.infinity,
@@ -502,12 +505,13 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showModelError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65),
                                                        child: Text("Select HTS Model ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
-                                                  SizedBox(
-                                                    height: 30.0,
-                                                  ),
+
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
 
                                                     Container(
                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
@@ -540,14 +544,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showPurposeError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Purpose of Test", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select Purpose of Test", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
-
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child:        Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -574,12 +580,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     shownewTestError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select New Test Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select New Test Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
+
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child:        Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -605,13 +615,16 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showCoupleCounselling == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Couple Counselling Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select Couple Counselling Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
+                                                    SizedBox(
+                                                      height: 25.0,
+                                                    ),
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 60.0),
                                                       child:        Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -638,7 +651,7 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
                                                     showPretestInfoError == true ? Container(
-                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Pretest Info Given Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 65), child: Text("Select Pretest Info Given Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
                                                     pregnatandlactatingqstn(),
