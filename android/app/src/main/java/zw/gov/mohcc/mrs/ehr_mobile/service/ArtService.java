@@ -165,6 +165,13 @@ public class ArtService {
         return savedArtCurrentStatus;
     }
 
+    public ArtWhoStage getCurrentWHoStage(String artId) {
+
+        Log.d(TAG, "Retrieving current who stage using artId : " + artId);
+
+        return ehrMobileDatabase.artWhoStageDao().findLatestWhoStageByArtId(artId);
+    }
+
     public ArtCurrentStatus getArtCurrentStatus(String artId) {
 
         Log.d(TAG, "Fetching patient art current status using artId : " + artId);
