@@ -211,7 +211,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.persistance.dao.vitalsDao.WeightDao;
         FollowUpStatus.class, FunctionalStatus.class, FamilyPlanningStatus.class, LactatingStatus.class, MedicineName.class,
         ArtVisitType.class, ArtVisitStatus.class, IptReason.class, ArtLinkageFrom.class, TbScreening.class, ArtSymptom.class,
         ArtVisit.class, ArtWhoStage.class, ArtIpt.class, IptStatus.class, ArtAppointment.class, FollowUpReason.class,
-        ArtOi.class, ArtFollowUp.class}, version = 6, exportSchema = false)
+        ArtOi.class, ArtFollowUp.class}, version = 1, exportSchema = false)
 
 @TypeConverters({GenderConverter.class, CoupleCounsellingConverter.class,
         HtsApproachConverter.class, TestForPregnantLactatingMotherConverter.class, NewTestConverter.class,
@@ -231,7 +231,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "impMobil")
+                            EhrMobileDatabase.class, "impMobile")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();

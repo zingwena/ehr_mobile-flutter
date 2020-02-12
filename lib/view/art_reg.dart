@@ -11,6 +11,7 @@ import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -271,7 +272,7 @@ class _ArtReg extends State<ArtReg> {
       // here we are creating the drop down menu items, you can customize the item right here
       // but I'll just use a simple text for this
       items.add(DropdownMenuItem(
-          value: entryPoint.code, child: Text(entryPoint.name)));
+          value: entryPoint.name, child: Text(entryPoint.name)));
     }
     return items;
   }
@@ -624,7 +625,6 @@ class _ArtReg extends State<ArtReg> {
                                                             width: 100,
                                                           ),
                                                         ),
-
                                                       ],
                                                     ),
                                                   ),
@@ -634,17 +634,13 @@ class _ArtReg extends State<ArtReg> {
                                                   Container(
                                                     width: double.infinity,
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                        EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
+                                                              padding: const EdgeInsets.all(8.0),
                                                               child: Text(
                                                                   'Testing Site'),
                                                             ),
@@ -654,21 +650,16 @@ class _ArtReg extends State<ArtReg> {
                                                         Text('Health Facility'),
                                                         Radio(
                                                             value: 1,
-                                                            groupValue:
-                                                                _testingSite,
+                                                            groupValue: _testingSite,
                                                             activeColor:
-                                                                Colors.blue,
-                                                            onChanged:
-                                                                _handleTestingSiteChange),
+                                                            Colors.blue,
+                                                            onChanged: _handleTestingSiteChange),
                                                         Text('Other Site'),
                                                         Radio(
                                                             value: 2,
-                                                            groupValue:
-                                                                _testingSite,
-                                                            activeColor:
-                                                                Colors.blue,
-                                                            onChanged:
-                                                                _handleTestingSiteChange),
+                                                            groupValue: _testingSite,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleTestingSiteChange),
                                                       ],
                                                     ),
                                                   ),
@@ -681,18 +672,11 @@ class _ArtReg extends State<ArtReg> {
                                                             Expanded(
                                                               child: SizedBox(
                                                                 child: Padding(
-                                                                  padding: EdgeInsets.symmetric(
-                                                                      vertical:
-                                                                          16.0,
-                                                                      horizontal:
-                                                                          60.0),
-                                                                  child:
-                                                                      TextFormField(
+                                                                  padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                                  child: TextFormField(
                                                                     decoration: InputDecoration(
-                                                                        labelText:
-                                                                            'Health Facility Name',
-                                                                        border:
-                                                                            OutlineInputBorder()),
+                                                                        labelText: 'Health Facility Name',
+                                                                        border: OutlineInputBorder()),
                                                                   ),
                                                                 ),
                                                                 width: 100,
@@ -705,8 +689,7 @@ class _ArtReg extends State<ArtReg> {
                                                         ),
                                                   healthFacility
                                                       ? Container(
-                                                          padding: EdgeInsets.symmetric(
-                                                                  vertical: 16.0, horizontal: 60.0),
+                                                          padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                           width: double.infinity,
                                                           child: OutlineButton(
                                                             shape: RoundedRectangleBorder(
@@ -716,44 +699,32 @@ class _ArtReg extends State<ArtReg> {
                                                             child: Container(
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0),
-                                                              child: DropdownButton(
+                                                              child: SearchableDropdown(
                                                                 isExpanded: true,
                                                                 icon: Icon(Icons.keyboard_arrow_down),
-                                                                hint: Text(
-                                                                    "Health Facility"),
+                                                                hint: Text("Health Facility"),
                                                                 iconEnabledColor:
-                                                                    Colors
-                                                                        .black,
-                                                                value:
-                                                                _currentFacility,
-                                                                items:
-                                                                _dropDownMenuItemsEntryPoint,
-                                                                onChanged:
-                                                                changedDropDownItemHealthFacility,
+                                                                    Colors.black,
+                                                                value: _currentFacility,
+                                                                items: _dropDownMenuItemsEntryPoint,
+                                                                onChanged: changedDropDownItemHealthFacility,
                                                               ),
                                                             ),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color:
-                                                                  Colors.blue,
+                                                            borderSide: BorderSide(
+                                                              color: Colors.blue,
                                                               //Color of the border
-                                                              style: BorderStyle
-                                                                  .solid,
+                                                              style: BorderStyle.solid,
                                                               //Style of the border
-                                                              width:
-                                                                  2.0, //width of the border
+                                                              width: 2.0, //width of the border
                                                             ),
                                                             onPressed: () {},
                                                           ),
                                                         )
-                                                      : SizedBox(
-                                                          height: 0.0,
+                                                      : SizedBox( height: 0.0,
                                                         ),
                                                   Container(
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                        EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     width: double.infinity,
                                                     child: OutlineButton(
                                                       shape:
@@ -767,10 +738,8 @@ class _ArtReg extends State<ArtReg> {
                                                         child: DropdownButton(
                                                           isExpanded: true,
                                                           icon: Icon(Icons.keyboard_arrow_down),
-                                                          hint: Text(
-                                                              "Referring Program"),
-                                                          iconEnabledColor:
-                                                              Colors.black,
+                                                          hint: Text( "Referring Program"),
+                                                          iconEnabledColor: Colors.black,
                                                           value: _currentReferringProgram,
                                                           items: _dropDownMenuItemsReferringListIdentified,
                                                           onChanged: changedDropDownItemReferring,
@@ -796,17 +765,12 @@ class _ArtReg extends State<ArtReg> {
                                                             child: TextFormField(
                                                               validator:
                                                                   (value) {
-                                                                return value
-                                                                        .isEmpty
+                                                                return value.isEmpty
                                                                     ? 'Enter Program Number'
                                                                     : null;
                                                               },
-                                                              onSaved:
-                                                                  (value) =>
-                                                                      setState(
-                                                                          () {
-                                                                program_number =
-                                                                    value;
+                                                              onSaved: (value) => setState( () {
+                                                                program_number = value;
                                                               }),
                                                               decoration: InputDecoration(
                                                                   labelText: 'Program Number',
@@ -823,18 +787,13 @@ class _ArtReg extends State<ArtReg> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(0.0),
+                                                              padding: const EdgeInsets.all(0.0),
                                                               child: TextFormField(
                                                                 controller: TextEditingController(
                                                                         text: dateHivConfirmed),
@@ -865,29 +824,16 @@ class _ArtReg extends State<ArtReg> {
                                                     height: 10.0,
                                                   ),
                                                   Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     width: double.infinity,
                                                     child: OutlineButton(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0)),
+                                                      shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.white,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
+                                                      padding: const EdgeInsets.all(0.0),
                                                       child: Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal:
-                                                                    30.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0),
                                                         child: DropdownButton(
                                                           isExpanded: true,
                                                           icon: Icon(Icons.keyboard_arrow_down),
@@ -914,21 +860,16 @@ class _ArtReg extends State<ArtReg> {
                                                   ),
                                                   Container(
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                        EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     width: double.infinity,
                                                     child: OutlineButton(
-                                                      shape:
-                                                          RoundedRectangleBorder(
+                                                      shape: RoundedRectangleBorder(
                                                               borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.white,
                                                       padding: const EdgeInsets.all(0.0),
                                                       child: Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal: 30.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0),
                                                         child: DropdownButton(
                                                           isExpanded: true,
                                                           icon: Icon(Icons.keyboard_arrow_down),
@@ -942,11 +883,9 @@ class _ArtReg extends State<ArtReg> {
                                                       borderSide: BorderSide(
                                                         color: Colors.blue,
                                                         //Color of the border
-                                                        style:
-                                                            BorderStyle.solid,
+                                                        style: BorderStyle.solid,
                                                         //Style of the border
-                                                        width:
-                                                            2.0, //width of the border
+                                                        width: 2.0, //width of the border
                                                       ),
                                                       onPressed: () {},
                                                     ),
@@ -956,20 +895,15 @@ class _ArtReg extends State<ArtReg> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Text(
-                                                                  'Retested Before ART Initiation '),
+                                                                  const EdgeInsets.all(8.0),
+                                                              child: Text( 'Retested Before ART Initiation '),
                                                             ),
                                                             width: 250,
                                                           ),
@@ -977,21 +911,15 @@ class _ArtReg extends State<ArtReg> {
                                                         Text('Yes'),
                                                         Radio(
                                                             value: 1,
-                                                            groupValue:
-                                                                _reTested,
-                                                            activeColor:
-                                                                Colors.blue,
-                                                            onChanged:
-                                                                _handleReTestedArtChange),
+                                                            groupValue: _reTested,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleReTestedArtChange),
                                                         Text('No'),
                                                         Radio(
                                                             value: 2,
-                                                            groupValue:
-                                                                _reTested,
-                                                            activeColor:
-                                                                Colors.blue,
-                                                            onChanged:
-                                                                _handleReTestedArtChange),
+                                                            groupValue: _reTested,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleReTestedArtChange),
                                                       ],
                                                     ),
                                                   ),
@@ -1046,13 +974,10 @@ class _ArtReg extends State<ArtReg> {
                                                   Container(
                                                     width: double.infinity,
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 0.0,
-                                                            horizontal: 30.0),
+                                                        EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
-                                                      shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5.0)),
+                                                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(5.0) ),
                                                       color: Colors.blue,
                                                       padding: const EdgeInsets.all(20.0),
                                                       child: Row(
@@ -1070,48 +995,22 @@ class _ArtReg extends State<ArtReg> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          widget.artdto
-                                                                  .personId =
-                                                              widget.personId;
-                                                          widget.artdto.date =
-                                                              test_date;
-                                                          widget.artdto
-                                                                  .artNumber =
-                                                              oi_art_number;
-                                                          widget.artdto
-                                                                  .dateOfHivTest =
-                                                              test_date;
-                                                          widget.artdto
-                                                                  .dateEnrolled =
-                                                              enrollment_date;
-                                                          widget.artdto
-                                                                  .linkageFrom =
-                                                              _currentReferringProgram;
-                                                          widget.artdto
-                                                                  .dateHivConfirmed =
-                                                              test_date;
-                                                          widget.artdto
-                                                                  .linkageNumber =
-                                                              program_number;
-                                                          widget.artdto
-                                                                  .hivTestUsed =
-                                                              _currentHivTestUsed;
-                                                          widget.artdto
-                                                                  .otherInstitution =
-                                                              null;
-                                                          widget.artdto
-                                                                  .testReason =
-                                                              _currentReasonForTest;
-                                                          widget.artdto
-                                                                  .reTested =
-                                                              retestedBeforeArt;
-                                                          widget.artdto
-                                                                  .dateRetested =
-                                                              retest_date;
+                                                          widget.artdto.personId = widget.personId;
+                                                          widget.artdto.date = test_date;
+                                                          widget.artdto.artNumber = oi_art_number;
+                                                          widget.artdto.dateOfHivTest = test_date;
+                                                          widget.artdto.dateEnrolled = enrollment_date;
+                                                          widget.artdto.linkageFrom = _currentReferringProgram;
+                                                          widget.artdto.dateHivConfirmed = test_date;
+                                                          widget.artdto.linkageNumber = program_number;
+                                                          widget.artdto.hivTestUsed = _currentHivTestUsed;
+                                                          widget.artdto.otherInstitution = null;
+                                                          widget.artdto.testReason = _currentReasonForTest;
+                                                          widget.artdto.reTested = retestedBeforeArt;
+                                                          widget.artdto.dateRetested = retest_date;
                                                           if(healthfacility_change){
                                                             widget.artdto.facility = _currentFacility;
                                                           }
-
 
 
                                                           await artRegistration(
@@ -1123,16 +1022,11 @@ class _ArtReg extends State<ArtReg> {
                                                               MaterialPageRoute(
                                                                   builder: (context) => ArtRegOverview(
                                                                       _artRegistration,
-                                                                      widget
-                                                                          .personId,
-                                                                      widget
-                                                                          .visitId,
-                                                                      widget
-                                                                          .person,
-                                                                      widget
-                                                                          .htsRegistration,
-                                                                      widget
-                                                                          .htsId)));
+                                                                      widget.personId,
+                                                                      widget.visitId,
+                                                                      widget.person,
+                                                                      widget.htsRegistration,
+                                                                      widget.htsId)));
 
                                                          await artRegistration(
                                                               widget.artdto);
@@ -1143,16 +1037,11 @@ class _ArtReg extends State<ArtReg> {
                                                               MaterialPageRoute(
                                                                   builder: (context) => ArtRegOverview(
                                                                       _artRegistration,
-                                                                      widget
-                                                                          .personId,
-                                                                      widget
-                                                                          .visitId,
-                                                                      widget
-                                                                          .person,
-                                                                      widget
-                                                                          .htsRegistration,
-                                                                      widget
-                                                                          .htsId)));
+                                                                      widget.personId,
+                                                                      widget.visitId,
+                                                                      widget.person,
+                                                                      widget.htsRegistration,
+                                                                      widget.htsId)));
                                                           setState(() {
                                                             /*  Artdto(this.personId, this.date, this.artNumber, this.enlargedLymphNode,
                                                                 this.pallor, this.jaundice, this.cyanosis, this.mentalStatus,

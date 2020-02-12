@@ -344,6 +344,7 @@ public class HtsChannel {
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
                                 List<Result> results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
+                                Log.d(TAG, "Results for hiv testing : " + results);
                                 String results_list = gson.toJson(results);
                                 result.success(results_list);
                             } catch (Exception e) {
