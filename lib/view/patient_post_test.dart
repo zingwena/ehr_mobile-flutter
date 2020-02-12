@@ -338,39 +338,25 @@ class _PatientPostTest extends State<PatientPostTest> {
                                             Form(
                                               key: _formKey,
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
                                                     height: 20.0,
                                                   ),
                                                   Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                     children: <Widget>[
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 16.0,
-                                                                horizontal:
-                                                                    60.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
                                                         child: Row(
                                                           children: <Widget>[
                                                             Expanded(
                                                               child: SizedBox(
                                                                 child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
+                                                                  padding: const EdgeInsets.all(8.0),
                                                                   child: Text(
                                                                       'Final Result'),
                                                                 ),
