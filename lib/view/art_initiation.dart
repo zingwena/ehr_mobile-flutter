@@ -616,7 +616,6 @@ class _Art_Initiation extends State<Art_Initiation> {
 
   Future<void> artInitiation(ArtInitiation artInitiation) async {
     String response;
-    print('*************************art initiation ${artInitiation.toString()}');
     try {
       response = await artChannel.invokeMethod(
           'saveArtInitiation', jsonEncode(artInitiation));

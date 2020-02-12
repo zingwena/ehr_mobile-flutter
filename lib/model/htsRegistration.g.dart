@@ -8,6 +8,7 @@ part of 'htsRegistration.dart';
 
 HtsRegistration _$HtsRegistrationFromJson(Map<String, dynamic> json) {
   return HtsRegistration(
+    json['id'] as String,
     json['personId'] as String,
     json['visitId'] as String,
     json['htsType'] as String,
@@ -19,6 +20,7 @@ HtsRegistration _$HtsRegistrationFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$HtsRegistrationToJson(HtsRegistration instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'personId': instance.personId,
       'visitId': instance.visitId,
       'dateOfHivTest':

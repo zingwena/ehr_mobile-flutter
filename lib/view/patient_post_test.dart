@@ -68,7 +68,7 @@ class _PatientPostTest extends State<PatientPostTest> {
   int _patientonart = 0;
   int _consentToIndex = 0;
   Age age;
-
+  PostTest postestResponse;
   var facility_name;
 
   @override
@@ -128,8 +128,14 @@ class _PatientPostTest extends State<PatientPostTest> {
   }
 
   Future<void> insertPostTest(PostTest postTest) async {
+    var post_test_response;
     try {
-      await htsChannel.invokeMethod('savePostTest', jsonEncode(postTest));
+      post_test_response = await htsChannel.invokeMethod('savePostTest', jsonEncode(postTest));
+      print("POST TEST STRING"+post_test_response);
+      setState(() {
+        postestResponse = PostTest.fromJson(jsonDecode(post_test_response));
+        print("POST TEST RETRIEVED AFTER SAVING"+ postestResponse.toString());
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -139,13 +145,11 @@ class _PatientPostTest extends State<PatientPostTest> {
     var hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
     setState(() {
       htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
     });
   }
 
@@ -702,7 +706,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                               Icon(Icons.navigate_next, color: Colors.white, ),
                                                             ],
                                                           ),
-                                                          onPressed: () {
+                                                          onPressed: () async {
                                                             PostTest postTest = new PostTest(
                                                                 widget.htsId,
                                                                 date,
@@ -712,8 +716,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                 this._consenttoindex,
                                                                 _postTestCounselled);
 
-                                                            //PostTest(this.htsId, this.datePostTestCounselled,this.resultReceived,this.reasonForNotIssuingResult, this.finalResult, this.consentToIndexTesting, this.postTestCounselled);
-                                                            insertPostTest(
+                                                            await insertPostTest(
                                                                 postTest);
                                                             Navigator.push(
                                                                 context,

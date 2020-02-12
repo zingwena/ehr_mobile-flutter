@@ -276,17 +276,6 @@ class _ArtReg extends State<ArtReg> {
     return items;
   }
 
-/*  List<DropdownMenuItem<String>> getDropDownMenuItemsReasonForHivTest() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String hivReasonIdentified in _reasonForHivTestIdentified) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(DropdownMenuItem(
-          value: hivReasonIdentified, child: Text(hivReasonIdentified)));
-    }
-    return items;
-  }*/
-
   List<DropdownMenuItem<String>> getDropDownMenuItemsReasonsForHivTest() {
     List<DropdownMenuItem<String>> items = new List();
     for (Question question in _reasonList) {

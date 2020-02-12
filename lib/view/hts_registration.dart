@@ -478,7 +478,7 @@ class _Registration extends State<Registration> {
                                                               });
                                                             }
                                                             if (_formIsValid) {
-                                                              HtsRegistration htsDetails = HtsRegistration(widget.patientId,
+                                                              HtsRegistration htsDetails = HtsRegistration(null, widget.patientId,
                                                                   visitId, htsType, date, _currentEntryPoint, null);
                                                               await registration(htsDetails);
                                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsRegOverview(_htsRegistration, patientId, hts_id, visitId, widget.person)));
@@ -546,6 +546,7 @@ class _Registration extends State<Registration> {
       htsresponse = await htsChannel.invokeMethod('getHtsRegDetails', hts_id);
       setState(() {
         _htsRegistration = HtsRegistration.fromJson(jsonDecode(htsresponse));
+        print("HTS REGISTRATION ON RETURN FROM FLUTTER AFTER SAVE"+ _htsRegistration.toString());
       });
 
       String patientid = patientId.toString();
