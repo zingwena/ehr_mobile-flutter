@@ -542,7 +542,7 @@ class _Hts_Result  extends State<Hts_Result > {
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                width: 1,
+                width: 2,
                 color: Colors.black26,
               ),
             ),
@@ -560,7 +560,7 @@ class _Hts_Result  extends State<Hts_Result > {
                   final_result,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
                   ),
                 )
               ],

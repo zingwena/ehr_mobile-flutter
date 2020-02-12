@@ -466,8 +466,10 @@ class _PatientPretest extends State<PatientPretest> {
                                                       ),
                                                     ),
 
-                                                    showApproachError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showApproachError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select HTS Approach ", style: TextStyle(color: Colors.red, fontSize: 15),),
+
+
                                                     ):SizedBox(height: 0.0, width: 0.0,),
                                                     Container(
                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
@@ -499,8 +501,9 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
-                                                    showModelError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("Select HTS Model ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showModelError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60),
+                                                       child: Text("Select HTS Model ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
                                                   SizedBox(
                                                     height: 30.0,
@@ -536,8 +539,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         onPressed: () {},
                                                       ),
                                                     ),
-                                                    showPurposeError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("Select Purpose  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showPurposeError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Purpose of Test", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
 
@@ -570,8 +573,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-                                                    shownewTestError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("new test ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    shownewTestError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select New Test Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
                                                     Container(
@@ -601,8 +604,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-                                                    showCoupleCounselling == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("couple counselling ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showCoupleCounselling == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Couple Counselling Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
 
@@ -634,8 +637,8 @@ class _PatientPretest extends State<PatientPretest> {
                                                         ],
                                                       ),
                                                     ),
-                                                    showPretestInfoError == true ? SizedBox(
-                                                      height: 20.0, width: 300.0, child: Text("pretest info given ?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                    showPretestInfoError == true ? Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60), child: Text("Select Pretest Info Given Option?  ", style: TextStyle(color: Colors.red, fontSize: 15),),
                                                     ):SizedBox(height: 0.0, width: 0.0,),
 
                                                     pregnatandlactatingqstn(),
