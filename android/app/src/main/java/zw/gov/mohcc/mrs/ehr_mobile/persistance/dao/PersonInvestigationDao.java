@@ -13,24 +13,21 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 
 @Dao
 public interface PersonInvestigationDao {
-    @Insert
-    void insertPersonInvestigation(List<PersonInvestigation> personInvestigations);
 
     @Query("DELETE FROM PersonInvestigation")
-    void deletePersonInvestigations();
-
+    void deleteAll();
 
     @Insert
-    void insertPersonInvestigation(PersonInvestigation PersonInvestigation);
+    void save(PersonInvestigation PersonInvestigation);
 
     @Update
     void update(PersonInvestigation PersonInvestigation);
 
     @Query("SELECT * FROM PersonInvestigation ")
-    List<PersonInvestigation> getAllPersonInvestigations();
+    List<PersonInvestigation> findAll();
 
     @Query("SELECT * FROM PersonInvestigation WHERE id=:id")
-    PersonInvestigation findPersonInvestigationById(String id);
+    PersonInvestigation findById(String id);
 
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId AND (:dateOfHivTest Between date and :endOfDay)")
     PersonInvestigation findByPersonIdAndDate(String personId, long dateOfHivTest, long endOfDay);

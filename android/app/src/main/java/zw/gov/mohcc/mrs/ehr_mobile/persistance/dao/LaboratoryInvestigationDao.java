@@ -15,16 +15,16 @@ public interface LaboratoryInvestigationDao {
 
 
     @Insert
-    void createLaboratoryInvestigation(LaboratoryInvestigation laboratoryInvestigation);
+    void save(LaboratoryInvestigation laboratoryInvestigation);
 
     @Update
     void update(LaboratoryInvestigation laboratoryInvestigation);
 
     @Query("SELECT * FROM laboratoryinvestigation")
-    List<LaboratoryInvestigation> getAllLaboratoryInvestigations();
+    List<LaboratoryInvestigation> findAll();
 
     @Query("SELECT * from laboratoryinvestigation WHERE id=:id")
-    LaboratoryInvestigation findLaboratoryInvestigationById(String id);
+    LaboratoryInvestigation findById(String id);
 
     @Query("SELECT * from laboratoryinvestigation WHERE personInvestigationId=:personInvestigationId")
     LaboratoryInvestigation findByPersonInvestigationId(String personInvestigationId);

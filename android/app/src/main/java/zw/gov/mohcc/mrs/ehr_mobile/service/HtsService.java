@@ -22,6 +22,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.dto.PostTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PreTestDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.TestLevel;
+import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.LaboratoryInvestigationTest;
@@ -29,7 +30,6 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Result;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestKit;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.warehouse.TestKitBatchIssue;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
 import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
@@ -90,14 +90,14 @@ public class HtsService {
 
         Log.d(TAG, "Person investigation object : " + personInvestigation);
 
-        ehrMobileDatabase.personInvestigationDao().insertPersonInvestigation(personInvestigation);
-        Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(personInvestigationId));
+        ehrMobileDatabase.personInvestigationDao().save(personInvestigation);
+        Log.i(TAG, "Saved person investigation record : " + ehrMobileDatabase.personInvestigationDao().findById(personInvestigationId));
         if (labInvestigation) {
             Log.i(TAG, "Creating laboratory investigation record");
             String laboratoryInvestigationId = personInvestigationId;
             LaboratoryInvestigation laboratoryInvestigation = new LaboratoryInvestigation(laboratoryInvestigationId, siteService.getFacilityDetails().getCode(), personInvestigationId);
-            ehrMobileDatabase.laboratoryInvestigationDao().createLaboratoryInvestigation(laboratoryInvestigation);
-            Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId));
+            ehrMobileDatabase.laboratoryInvestigationDao().save(laboratoryInvestigation);
+            Log.d(TAG, "Created laboratory investigation : " + ehrMobileDatabase.laboratoryInvestigationDao().findById(laboratoryInvestigationId));
             return laboratoryInvestigationId;
         }
         return null;
@@ -225,10 +225,10 @@ public class HtsService {
     public String getFinalResult(String laboratoryInvestigationId) {
 
         LaboratoryInvestigation laboratoryInvestigation =
-                ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(laboratoryInvestigationId);
+                ehrMobileDatabase.laboratoryInvestigationDao().findById(laboratoryInvestigationId);
 
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
-                .findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
+                .findById(laboratoryInvestigation.getPersonInvestigationId());
 
         return personInvestigation.getResult();
     }
@@ -312,13 +312,13 @@ public class HtsService {
         Log.d(TAG, "Laboratory Investigation Test Object : " + test);
         Log.d(TAG, "Retrieving laboratory investigation record");
         LaboratoryInvestigation laboratoryInvestigation =
-                ehrMobileDatabase.laboratoryInvestigationDao().findLaboratoryInvestigationById(test.getLaboratoryInvestigationId());
+                ehrMobileDatabase.laboratoryInvestigationDao().findById(test.getLaboratoryInvestigationId());
         Log.d(TAG, "Retrieved laboratory investigation record : " + laboratoryInvestigation);
         laboratoryInvestigation.setResultDate(test.getEndTime());
         ehrMobileDatabase.laboratoryInvestigationDao().update(laboratoryInvestigation);
         Log.d(TAG, "Updated laboratory investigation record : " + laboratoryInvestigation);
         // retrieve person investigation and update
-        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(
+        PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findById(
                 laboratoryInvestigation.getPersonInvestigationId());
         personInvestigation.setResult(test.getResult().getName());
         Log.d(TAG, "Retrieved person investigation record : " + personInvestigation);
