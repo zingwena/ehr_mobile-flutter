@@ -1,4 +1,6 @@
 import 'package:ehr_mobile/db/dao/art_dao/ArtAppointmentDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtCurrentStatusDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtVisitDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/art_dao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtSymptomDao.dart';
 import 'package:ehr_mobile/db/dao/blood_pressure_dao.dart';
@@ -40,6 +42,9 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
     var labInvestigationDao = LaboratoryInvestigationDao(adapter);
     await ArtDao(adapter).removeAll();
     await ArtSymptomDao(adapter).removeAll();
+    await ArtVisitDao(adapter).removeAll();
+
+    await ArtCurrentStatusDao(adapter).removeAll();
 
     ///Empty existing data first
     await htsDao.removeAll();
@@ -105,6 +110,14 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
 
         if (art['appointments'] != null) {
           await saveArtAppointments(art);
+        }
+
+        if (art['artCurrentStatus']!= null) {
+          await saveArtCurrentStatus(art['artCurrentStatus'],art['artId']);
+        }
+
+        if(art['visits']!=null){
+          await saveArtVisit(art);
         }
       }
 
@@ -189,7 +202,7 @@ Future<String> savePatientArtSymptoms(Map map, String artId) async {
   var artSymptomDao = ArtSymptomDao(adapter);
   for (Map symptom in map['symptoms']) {
     if (symptom['artSymptomId'] != null) {
-      //await artSymptomDao.insertFromEhr(symptom, artId);
+      await artSymptomDao.insertFromEhr(symptom, artId);
     }
   }
   return '$DONE_STATUS';
@@ -204,3 +217,22 @@ Future<String> saveArtAppointments(Map map) async {
   }
   return '$DONE_STATUS';
 }
+
+Future<String> saveArtCurrentStatus(Map map,String artId) async {
+  var dbHandler = DatabaseHelper();
+  var adapter = await dbHandler.getAdapter();
+  var artCurrentStatusDao = ArtCurrentStatusDao(adapter);
+  await artCurrentStatusDao.insertFromEhr(map,artId);
+  return '$DONE_STATUS';
+}
+
+Future<String> saveArtVisit(Map map) async {
+  var dbHandler = DatabaseHelper();
+  var adapter = await dbHandler.getAdapter();
+  var artVisitDao = ArtVisitDao(adapter);
+  for(Map visit in map['visits']){
+    await artVisitDao.insertFromEhr(visit,map['artId']);
+  }
+  return '$DONE_STATUS';
+}
+

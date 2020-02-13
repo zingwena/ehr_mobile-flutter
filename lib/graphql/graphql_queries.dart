@@ -5,8 +5,8 @@ class PersonQuery {
   String getAll(){
     return """ 
         query GetPatientsQuery {
-                    
-            people(text: "", page: 0, size: 20000, sort: "") {
+             
+             people(text: "", page: 0, size: 10, sort: "") {
                 content {
                   personId
                   firstname
@@ -172,59 +172,96 @@ class PersonQuery {
                     }
                   }
                   art {
-                      artId
-                      artNumber
-                      dateEnrolled
-                      dateOfHivTest
+                    artId
+                    artNumber
+                    dateEnrolled
+                    dateOfHivTest
+                    date
+                    enlargedLymphNode
+                    pallor
+                    jaundice
+                    cyanosis
+                    mentalStatus
+                    centralNervousSystem
+                    tracing
+                    followUp
+                    hivStatus
+                    relation
+                    dateOfDisclosure
+                    reason
+                    symptoms {
+                      artSymptomId
                       date
-                      enlargedLymphNode
-                      pallor
-                      jaundice
-                      cyanosis
-                      mentalStatus
-                      centralNervousSystem
-                      tracing
-                      followUp
-                      hivStatus
-                      relation
-                      dateOfDisclosure
-                      reason
-                      symptoms {
-                        artSymptomId
-                        date
-                        present
-                        Symptom {
-                          id
-                          name
-                        }
-                      }
-                      stages {
-                        artStageId
-                        stage
-                      }
-                      appointments {
-                        artAppointmentId
-                        artId
-                        date
-                        followupDate
-                        daysToAppointment
-                        appointmentOutcomeDate
-                        expectedToday
-                        missed
-                        defaulter
-                        due
-                        followupReason{
-                          id
-                          name
-                        }
-                        appointmentOutcome{
-                          id
-                          name
-                        }
+                      present
+                      Symptom {
+                        id
+                        name
                       }
                     }
+                    stages {
+                      artStageId
+                      stage
+                    }
+                    appointments {
+                      artAppointmentId
+                      artId
+                      date
+                      followupDate
+                      daysToAppointment
+                      appointmentOutcomeDate
+                      expectedToday
+                      missed
+                      defaulter
+                      due
+                      followupReason {
+                        id
+                        name
+                      }
+                      appointmentOutcome {
+                        id
+                        name
+                      }
+                    }
+                    artCurrentStatus {
+                      artStatusId
+                      date
+                      state
+                      regimenType
+                      medicine
+                      adverseEventStatus {
+                        id
+                        name	
+                      }
+                    }
+                    visits {
+                      visitId
+                      date
+                      ancFirstBookingDate
+                      viralLoad
+                      cd4Count
+                      cotrimoxazole
+                      fluconazole
+                      visitStatus {
+                        id
+                        name
+                      }
+                      lactatingStatus{
+                        id
+                        name
+                      }
+                      familyPlanningStatus {
+                        id
+                        name
+                      }
+                      visitType{
+                        id
+                        name
+                      }
+                    }
+                  }
                 }
               }
+                
           }
       """;
   }
