@@ -61,10 +61,10 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
   bool selfIdentifiedAppointmentReasonIsValid=false;
 
-  String _entryPoint;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
-  List<ArtAppointment> _entryPointList = List();
+  String _appointmetnt_string;
+  List appointmnents = List();
+  List _dropDownListAppointments= List();
+  List<ArtAppointment> _appointmentList = List();
 
 
 
@@ -78,14 +78,14 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     getArtAppointment(widget.personId);
     //getAge(widget.person);
     getFacilityName();
-    getEntryPoints();
+    getFolloUpReasons();
 
     super.initState();
   }
 
 
 
-  Future<void> getEntryPoints() async {
+  Future<void> getFolloUpReasons() async {
     String response;
     try {
       response = await artChannel.invokeMethod('getFollowUpReason');
@@ -96,7 +96,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
         _dropDownListReasons.forEach((e) {
           _reasonList.add(e);
         });
-        print("LIST OF REASONS "+_reasonList.toString());
         _dropDownMenuItemsReasons = getDropDownMenuAppointmentReasonList();
       });
     } catch (e) {
@@ -429,7 +428,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
                                                         Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._entryPointList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                          MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._appointmentList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
                                                           ), );
 
                                                        }
@@ -492,7 +491,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
   Future<void> artappintmentReg(ArtAppointment artAppointment) async {
     String art_appointment_response;
-    print("ART APPOINTMENT SAVE METHOD"+ artAppointment.toString());
     try {
 
       art_appointment_response = await artChannel.invokeMethod('saveArtAppointment', jsonEncode(artAppointment));
@@ -513,13 +511,12 @@ class _ArtAppointment extends State<ArtAppointmentView> {
       art_appointment_response = await artChannel.invokeMethod(
           'getArtAppointments', personId);
       setState(() {
-        _entryPoint = art_appointment_response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = ArtAppointment.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
+        _appointmetnt_string = art_appointment_response;
+        appointmnents = jsonDecode(_appointmetnt_string);
+        _dropDownListAppointments = ArtAppointment.mapFromJson(appointmnents);
+        _dropDownListAppointments.forEach((e) {
+          _appointmentList.add(e);
         });
-        print("DDDDDDDDDDDDD ART APPOINTMENTS HERE"+ _entryPointList.toString());
       });
 
     } catch (e) {

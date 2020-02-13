@@ -101,11 +101,11 @@ class _ArtReg extends State<ArtReg> {
 
   @override
   void initState() {
-    displayDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfEnrollment = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfTest = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateOfRetest = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    dateHivConfirmed = DateFormat("yyyy/MM/dd").format(DateTime.now());
+    displayDate = '';
+    dateOfEnrollment = '';
+    dateOfTest = '';
+    dateOfRetest = '';
+    dateHivConfirmed = '';
     test_date = DateTime.now();
     enrollment_date = DateTime.now();
     retest_date = DateTime.now();
@@ -116,7 +116,6 @@ class _ArtReg extends State<ArtReg> {
     getFacilities();
     _dropDownMenuItemsReferringListIdentified = getDropDownMenuItemsReferringList();
     _dropDownMenuItemsHivTestUsedIdentified = getDropDownMenuItemsHivTestUsed();
-   // _dropDownMenuItemsReasonForTestListIdentified = getDropDownMenuItemsReasonForHivTest();
     _dropDownMenuItemsReasonForTest  =     getDropDownMenuItemsReasonsForHivTest();
     if(widget.artdto.facility != null){
       _testingSite = 1;
@@ -1030,8 +1029,6 @@ class _ArtReg extends State<ArtReg> {
 
                                                          await artRegistration(
                                                               widget.artdto);
-                                                          print(
-                                                              "ART DTO WAS NULL %%%%%%%%%%%%%%%%%%%%");
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
@@ -1112,17 +1109,11 @@ class _ArtReg extends State<ArtReg> {
   Future<void> artRegistration(Artdto artRegistration) async {
     var art_registration_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art regmethod reg object ' +
-          artRegistration.toString());
-
       art_registration_response = await artChannel.invokeMethod(
           'saveArtRegistration', jsonEncode(artRegistration));
-      print('pppppppppppppppppppppppppppppppppppp art response' +
-          art_registration_response);
       setState(() {
         _artRegistration =
             Artdto.fromJson(jsonDecode(art_registration_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF' + _artRegistration.toString());
       });
     } catch (e) {
       print('--------------something went wrong in art registration  $e');

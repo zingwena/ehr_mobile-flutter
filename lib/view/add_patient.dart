@@ -267,22 +267,6 @@ class _AddPatient extends State<AddPatient> {
                                                       ],
                                                     ),
 
-/*
-                                                    !showError
-                                                        ? SizedBox.shrink()
-                                                        : Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 60.0),
-                                                              child: Text(
-                                                                _nationalIdError ??
-                                                                    "",
-                                                                style: TextStyle(
-                                                                    color: Colors.red),
-                                                              ),
-                                                            ),),),], ),*/
                                                     SizedBox(
                                                       height: 10.0,
                                                     ),
