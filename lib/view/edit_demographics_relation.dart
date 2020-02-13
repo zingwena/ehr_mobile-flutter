@@ -52,6 +52,7 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
 
   List<String> _list;
   DateTime birthDate;
+  String facility_name;
   Person registeredPatient;
   String lastName,  firstName,nationalId, religion, country,occupation,educationLevel,nationality,maritalStatus;
   String _dropdownError="Select Country of birth";
@@ -249,7 +250,8 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
@@ -261,8 +263,7 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: Icon(
-                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                          child: Icon( Icons.person_pin, size: 25.0, color: Colors.white,),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
@@ -270,6 +271,30 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -591,10 +616,7 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 0.0,
-                                                          horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                         elevation: 8.0,
                                                         shape: RoundedRectangleBorder(
@@ -606,6 +628,7 @@ class _EditDemographicsState extends State<EditDemographicsRelation> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: <Widget>[
                                                             Text('Proceed to Contact Details', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
                                                             Icon(Icons.navigate_next, color: Colors.white, ),
                                                           ],
                                                         ),

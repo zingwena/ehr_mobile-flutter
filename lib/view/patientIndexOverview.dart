@@ -8,6 +8,7 @@ import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hiv_information.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:flutter/material.dart';
@@ -181,31 +182,51 @@ class OverviewState extends State<PatientIndexOverview> {
               ),
             ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Icon(
-                            Icons.person_pin,
-                            size: 25.0,
-                            color: Colors.white,
-                          ),
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: Text(
-                            "admin",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.0,
-                                color: Colors.white),
-                          ),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
-                      ])),
+                      ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
             ],
           ),
           Positioned.fill(
@@ -269,52 +290,31 @@ class OverviewState extends State<PatientIndexOverview> {
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                                const EdgeInsets.only( right:  16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: _patient
-                                                                          .firstName +
-                                                                      " " +
-                                                                      _patient
-                                                                          .lastName),
+                                                                  text: _patient.firstName + " " + _patient.lastName),
                                                               decoration: InputDecoration(
-                                                                  icon: Icon(
-                                                                      Icons
-                                                                          .person,
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  labelText:
-                                                                      "Full Name",
-                                                                  hintText:
-                                                                      "Full Name"),
+                                                                  icon: Icon( Icons.person,
+                                                                      color: Colors.blue),
+                                                                  labelText: "Full Name",
+                                                                  hintText: "Full Name"),
                                                             ),
                                                           ),
                                                         ),
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only(
+                                                                    right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: nullHandler(
-                                                                      _patient
-                                                                          .sex)),
+                                                                  text: nullHandler( _patient.sex)),
                                                               decoration: InputDecoration(
                                                                   icon: new Icon(
-                                                                      MdiIcons
-                                                                          .humanMaleFemale,
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  labelText:
-                                                                      "Sex",
-                                                                  hintText:
-                                                                      "Sex"),
+                                                                      MdiIcons.humanMaleFemale,
+                                                                      color: Colors.blue),
+                                                                  labelText: "Sex",
+                                                                  hintText: "Sex"),
                                                             ),
                                                           ),
                                                         ),
@@ -324,51 +324,28 @@ class OverviewState extends State<PatientIndexOverview> {
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only( right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: nullHandler(
-                                                                      _patient
-                                                                          .nationalId)),
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText:
-                                                                    'National ID',
-                                                                icon: Icon(
-                                                                    Icons
-                                                                        .credit_card,
-                                                                    color: Colors
-                                                                        .blue),
+                                                                  text: nullHandler( _patient.nationalId)),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'National ID',
+                                                                icon: Icon( Icons.credit_card,
+                                                                    color: Colors.blue),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only( right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: DateFormat(
-                                                                          "dd/MM/yyyy")
-                                                                      .format(_patient
-                                                                          .birthDate)),
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText:
-                                                                    'Date Of Birth',
-                                                                icon: Icon(
-                                                                    Icons
-                                                                        .date_range,
-                                                                    color: Colors
-                                                                        .blue),
+                                                                  text: DateFormat( "dd/MM/yyyy").format(_patient.birthDate)),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Date Of Birth',
+                                                                icon: Icon( Icons.date_range,
+                                                                    color: Colors.blue),
                                                               ),
                                                             ),
                                                           ),
@@ -379,47 +356,32 @@ class OverviewState extends State<PatientIndexOverview> {
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only(
+                                                                    right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: nullHandler(
-                                                                      _maritalStatus)),
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText:
-                                                                    'Marital Status',
+                                                                  text: nullHandler(_maritalStatus)),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Marital Status',
                                                                 icon: new Icon(
-                                                                    MdiIcons
-                                                                        .humanMaleFemale,
-                                                                    color: Colors
-                                                                        .blue),
+                                                                    MdiIcons.humanMaleFemale,
+                                                                    color: Colors.blue),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only(
+                                                                    right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: nullHandler(
-                                                                      _educationLevel)),
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText:
-                                                                    'Education',
+                                                                  text: nullHandler(_educationLevel)),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Education',
                                                                 icon: Icon(
                                                                     Icons.book,
-                                                                    color: Colors
-                                                                        .blue),
+                                                                    color: Colors.blue),
                                                               ),
                                                             ),
                                                           ),
@@ -430,48 +392,32 @@ class OverviewState extends State<PatientIndexOverview> {
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only(
+                                                                    right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: nullHandler(
-                                                                      _nationality)),
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText:
-                                                                    'Nationality',
+                                                                  text: nullHandler(_nationality)),
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Nationality',
                                                                 icon: Icon(
                                                                     Icons.flag,
-                                                                    color: Colors
-                                                                        .blue),
+                                                                    color: Colors.blue),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
+                                                            padding: const EdgeInsets.only(
+                                                                    right: 16.0),
                                                             child: TextField(
                                                               controller:
                                                                   TextEditingController(
-                                                                      text:
-                                                                          _phonenumber),
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText:
-                                                                    'Phone Number',
-                                                                icon: Icon(
-                                                                    Icons
-                                                                        .smartphone,
-                                                                    color: Colors
-                                                                        .blue),
+                                                                      text: _phonenumber),
+                                                              decoration:  InputDecoration(
+                                                                labelText: 'Phone Number',
+                                                                icon: Icon( Icons.smartphone,
+                                                                    color: Colors.blue),
                                                               ),
                                                             ),
                                                           ),
@@ -479,19 +425,15 @@ class OverviewState extends State<PatientIndexOverview> {
                                                       ],
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
+                                                      padding: const EdgeInsets.fromLTRB(
                                                           0.0, 0.0, 64.0, 8.0),
                                                       child: TextFormField(
-                                                        controller:
-                                                            TextEditingController(
+                                                        controller: TextEditingController(
                                                                 text: _address),
-                                                        decoration:
-                                                            InputDecoration(
+                                                        decoration: InputDecoration(
                                                           labelText: 'Address',
                                                           icon: Icon(Icons.home,
-                                                              color:
-                                                                  Colors.blue),
+                                                              color: Colors.blue),
                                                         ),
                                                       ),
                                                     ),
@@ -503,9 +445,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                             SizedBox(height: 50.0),
                                             Container(
                                               width: double.infinity,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 0.0,
-                                                  horizontal: 30.0),
+                                              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
                                               child: RaisedButton(
                                                 elevation: 4.0,
                                                 shape: RoundedRectangleBorder(
@@ -527,20 +467,13 @@ class OverviewState extends State<PatientIndexOverview> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               HivInformation(
-                                                                  widget
-                                                                      .person_contact,
-                                                                  widget
-                                                                      .indexTestId,
-                                                                  widget
-                                                                      .patient,
-                                                                  widget
-                                                                      .personId,
-                                                                  widget
-                                                                      .visitId,
-                                                                  widget
-                                                                      .htsRegistration,
-                                                                  widget
-                                                                      .htsId)));
+                                                                  widget.person_contact,
+                                                                  widget.indexTestId,
+                                                                  widget.patient,
+                                                                  widget.personId,
+                                                                  widget.visitId,
+                                                                  widget.htsRegistration,
+                                                                  widget.htsId)));
                                                 },
                                               ),
                                             )

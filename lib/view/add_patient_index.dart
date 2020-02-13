@@ -141,9 +141,11 @@ class _AddPatient extends State<AddPatientIndex> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -159,6 +161,30 @@ class _AddPatient extends State<AddPatientIndex> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -404,15 +430,10 @@ class _AddPatient extends State<AddPatientIndex> {
                                                           child: SizedBox(
                                                             child: Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(
-                                                                  0.0),
-                                                              child:
-                                                              TextFormField(
-                                                                controller:
-                                                                TextEditingController(
-                                                                    text:
-                                                                    displayDate),
+                                                              const EdgeInsets.all(0.0),
+                                                              child: TextFormField(
+                                                                controller: TextEditingController(
+                                                                    text: displayDate),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -420,25 +441,17 @@ class _AddPatient extends State<AddPatientIndex> {
                                                                       ? 'Enter some text'
                                                                       : null;
                                                                 },
-                                                                decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius.circular(0.0)),
-                                                                    labelText: "Date of birth"),
+                                                                 decoration: InputDecoration(
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                        onPressed: () {_selectDate(context);}),
+                                                                    labelText: 'Date of Birth',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons
-                                                                .calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDate(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ),
@@ -447,7 +460,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder(
@@ -455,12 +468,14 @@ class _AddPatient extends State<AddPatientIndex> {
                                                           BorderRadius.circular(5.0)),
                                                       color: Colors.blue,
                                                       padding: const EdgeInsets.all(20.0),
-                                                      child: Text(
-                                                        "Register Patient",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.w500),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Text('Proceed to Demographics', style: TextStyle(color: Colors.white),),
+                                                          Spacer(),
+                                                          Icon(Icons.navigate_next, color: Colors.white, ),
+                                                        ],
                                                       ),
                                                       onPressed: () async {
                                                         if (_formKey
