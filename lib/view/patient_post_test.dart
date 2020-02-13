@@ -45,7 +45,7 @@ class _PatientPostTest extends State<PatientPostTest> {
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   final _formKey = GlobalKey<FormState>();
   var selectedDate;
-  DateTime date;
+  DateTime date_of_test;
   List<ReasonForNotIssuingResult> _reasonForNotIssuingResultList = List();
   bool _resultReceived = false;
   String resultReceived = "NO";
@@ -73,8 +73,8 @@ class _PatientPostTest extends State<PatientPostTest> {
 
   @override
   void initState() {
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
+    selectedDate = '';
+    date_of_test = DateTime.now();
     getHtsRecord(widget.patientId);
     getReasonsForNotIssueingResult();
     getFacilityName();
@@ -109,6 +109,8 @@ class _PatientPostTest extends State<PatientPostTest> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        date_of_test = DateFormat("yyyy/MM/dd").parse(selectedDate);
+
       });
   }
 
@@ -145,12 +147,13 @@ class _PatientPostTest extends State<PatientPostTest> {
     var hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      setState(() {
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-    });
+
   }
 
   Future<void> getReasonsForNotIssueingResult() async {
@@ -709,12 +712,13 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                           onPressed: () async {
                                                             PostTest postTest = new PostTest(
                                                                 widget.htsId,
-                                                                date,
+                                                                date_of_test,
                                                                 _resultReceived,
                                                                 _currentReasonfornotissuing,
                                                                 widget.result,
                                                                 this._consenttoindex,
                                                                 _postTestCounselled);
+                                                            print("POST TEST TO BE SAVED "+ postTest.toString());
 
                                                             await insertPostTest(
                                                                 postTest);

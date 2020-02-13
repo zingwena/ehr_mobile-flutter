@@ -53,6 +53,7 @@ class _ArtReg extends State<ArtReg> {
   String _nationalIdError = "National Id number is invalid";
   Age age;
   String facility_name;
+  String other_site_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsHivTestUsedIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonForTest;
@@ -122,7 +123,9 @@ class _ArtReg extends State<ArtReg> {
       healthFacility = true;
 
     }
-
+    List<NameCode> entryList= _entryPointList.where((entryPoint)=> entryPoint.code.contains('ZW010251') ).toList();
+    print("JJJJJJJJJJJ entry list after searching in list"+ entryList.toString());
+    //_currentReferringProgram = entryList[0].code;
     super.initState();
   }
 
@@ -676,6 +679,10 @@ class _ArtReg extends State<ArtReg> {
                                                                     decoration: InputDecoration(
                                                                         labelText: 'Health Facility Name',
                                                                         border: OutlineInputBorder()),
+                                                                    onSaved: (value) =>
+                                                                        setState(() {
+                                                                          other_site_name = value;
+                                                                        }),
                                                                   ),
                                                                 ),
                                                                 width: 100,
@@ -1003,7 +1010,10 @@ class _ArtReg extends State<ArtReg> {
                                                           widget.artdto.dateHivConfirmed = test_date;
                                                           widget.artdto.linkageNumber = program_number;
                                                           widget.artdto.hivTestUsed = _currentHivTestUsed;
-                                                          widget.artdto.otherInstitution = null;
+                                                          if(otherSite){
+                                                            widget.artdto.otherInstitution = other_site_name;
+
+                                                          }
                                                           widget.artdto.testReason = _currentReasonForTest;
                                                           widget.artdto.reTested = retestedBeforeArt;
                                                           widget.artdto.dateRetested = retest_date;
@@ -1014,8 +1024,7 @@ class _ArtReg extends State<ArtReg> {
 
                                                           await artRegistration(
                                                               widget.artdto);
-                                                          print(
-                                                              "ART DTO WAS NULL %%%%%%%%%%%%%%%%%%%%");
+
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(

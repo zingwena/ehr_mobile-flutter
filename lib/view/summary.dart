@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/patientsummarydto.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/art_summary_overview.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -1148,13 +1149,9 @@ class SummaryOverviewState extends State<SummaryOverview>
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ArtReg(
-                              this.artdto,
-                              widget.person.id,
-                              widget.visitId,
-                              widget.person,
-                              widget.htsRegistration,
-                              widget.htsId)));
+                          builder: (context) =>   ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                      ));
                 } else {
                   print("ART DTO DATE IS NOT NULL");
                   Navigator.push(
