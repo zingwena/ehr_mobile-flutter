@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
@@ -228,13 +229,15 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
+            title:new Text(
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -251,9 +254,33 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                         ),
                       ])
               ),
-            ],
 
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
+            ],
           ),
+
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
@@ -274,6 +301,11 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
@@ -447,34 +479,28 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                           children: <Widget>[
                                                             Expanded(
                                                               child: SizedBox(
-                                                                child:
-                                                                Padding(
+                                                                child: Padding(
                                                                   padding: EdgeInsets.symmetric(
                                                                       vertical: 0.0, horizontal: 0.0),
-                                                                  child:
-                                                                  TextFormField(
+                                                                  child: TextFormField(
                                                                     controller: TextEditingController(
                                                                         text: selectedDate),
-                                                                    validator:
-                                                                        (value) {
+                                                                    validator: (value) {
                                                                       return value.isEmpty
                                                                           ? 'Enter some text'
                                                                           : null;
                                                                     },
                                                                     decoration: InputDecoration(
+                                                                        suffixIcon: IconButton(
+                                                                            icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                            onPressed: () {_selectDate(context);}),
                                                                         labelText: 'Last Date Tested For HIV',
-
                                                                         border: OutlineInputBorder()),
                                                                   ),
                                                                 ),
                                                                 width: 60,
                                                               ),
                                                             ),
-                                                            IconButton(
-                                                                icon: Icon(Icons.calendar_today),
-                                                                color: Colors.blue,
-                                                                onPressed: () { _selectDate(context);
-                                                                })
                                                           ],
                                                         ),
                                                       ): SizedBox(height: 0.0,),
@@ -539,11 +565,12 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                 color: Colors.blue,
                                                                 padding: const EdgeInsets.all(20.0),
                                                                   child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                                     children: <Widget>[
                                                                       Text('Proceed to Disclosure & Partner Testing Information', style: TextStyle(color: Colors.white),),
-                                                                      Icon(Icons.play_arrow, color: Colors.white, ),
+                                                                      Spacer(),
+                                                                      Icon(Icons.navigate_next, color: Colors.white, ),
                                                                     ],
                                                                   ),
                                                                   //onPressed: () {}

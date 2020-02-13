@@ -142,8 +142,8 @@ public class HistoryService {
             dto.setDateLastTested(hts.getDateOfHivTest() != null ? new PastDate(hts.getDateOfHivTest()) : null);
             // retrieve the result of this test
             LaboratoryInvestigation laboratoryInvestigation = ehrMobileDatabase.laboratoryInvestigationDao()
-                    .findLaboratoryInvestigationById(hts.getLaboratoryInvestigationId());
-            personInvestigation = ehrMobileDatabase.personInvestigationDao().findPersonInvestigationById(laboratoryInvestigation.getPersonInvestigationId());
+                    .findById(hts.getLaboratoryInvestigationId());
+            personInvestigation = ehrMobileDatabase.personInvestigationDao().findById(laboratoryInvestigation.getPersonInvestigationId());
 
             dto.setResult(personInvestigation.getResult());
 

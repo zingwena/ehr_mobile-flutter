@@ -314,7 +314,7 @@ class PelationshipListState extends State<RelationshipListPage>
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
+                                              //Expanded(child: Container()),
                                             ],
                                           )
 
@@ -353,7 +353,6 @@ class PelationshipListState extends State<RelationshipListPage>
               DataColumn(label: Text("Relationship")),
               DataColumn(label: Text("")),
 
-
             ],
             rows:_entryPointList.map((relationship)=>
                 DataRow(
@@ -387,7 +386,6 @@ class PelationshipListState extends State<RelationshipListPage>
                     ])
 
             ).toList()
-
 
         ),
       );

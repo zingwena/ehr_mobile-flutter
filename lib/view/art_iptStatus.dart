@@ -399,7 +399,9 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                                                         ),
                                                       ),
 
-
+                                                      SizedBox(
+                                                        height: 10.0,
+                                                      ),
 
                                                       Container(
                                                         width: double.infinity,

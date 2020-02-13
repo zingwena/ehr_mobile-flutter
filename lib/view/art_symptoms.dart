@@ -368,7 +368,7 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                                         child: Column(
                                           children: <Widget>[
                                             SizedBox(
-                                              height: 10.0,
+                                              height: 15.0,
                                             ),
                                             getArtSymptomWidgets(_entryPointList,  widget.personId),
                                             Row(
@@ -376,15 +376,14 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                                                 Expanded(
                                                   child: SizedBox(
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(10.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(
                                                               borderRadius:
                                                               BorderRadius.circular(5.0)),
                                                           color: Colors.blue,
-                                                          padding: const EdgeInsets.all(
-                                                              20.0),
+                                                          padding: const EdgeInsets.all(20.0),
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             crossAxisAlignment: CrossAxisAlignment.center,

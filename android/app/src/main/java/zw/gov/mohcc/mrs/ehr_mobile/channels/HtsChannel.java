@@ -217,7 +217,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getHtsModel")) {
                             try {
                                 HtsModel htsModel = ehrMobileDatabase.htsModelDao().findById(arguments);
-                                Log.i(TAG, "HTS MODEL retrieved in android "+ htsModel.toString());
+                                Log.i(TAG, "HTS MODEL retrieved in android " + htsModel.toString());
 
 
                                 result.success(htsModel);
@@ -229,7 +229,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getPurposeofTest")) {
                             try {
                                 PurposeOfTest purposeOfTest = ehrMobileDatabase.purposeOfTestDao().findById(arguments);
-                                Log.i(TAG, "PUrpose retrieved in android "+ purposeOfTest.toString());
+                                Log.i(TAG, "PUrpose retrieved in android " + purposeOfTest.toString());
 
                                 result.success(gson.toJson(purposeOfTest));
                             } catch (Exception e) {
@@ -349,9 +349,13 @@ public class HtsChannel {
                         if (methodCall.method.equals("getTestResults")) {
 
                             try {
-                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
-                                Date htsregdate = hts.getDateOfHivTest();
-                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
+
+                                Log.d(TAG, "Arguments from flutter : " + arguments);
+
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.htsDao().findPersonInvestigationByHts(arguments);
+
+                                Log.d(TAG, "Person Investigation record : " + personInvestigation);
+
                                 List<Result> results = htsService.getInvestigationResults(personInvestigation.getInvestigationId());
                                 Log.d(TAG, "Results for hiv testing : " + results);
                                 String results_list = gson.toJson(results);
@@ -364,9 +368,7 @@ public class HtsChannel {
                         if (methodCall.method.equals("getLabTest")) {
 
                             try {
-                                Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
-                                Date htsregdate = hts.getDateOfHivTest();
-                                PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
+                                PersonInvestigation personInvestigation = ehrMobileDatabase.htsDao().findPersonInvestigationByHts(arguments);
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 LaboratoryTest laboratoryTest = ehrMobileDatabase.laboratoryTestDao().findById(investigation.getLaboratoryTestId());
                                 String labtest_name = laboratoryTest.getName();
@@ -707,11 +709,11 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("getArvCombinationRegimens")) {
-                            Log.i(TAG, "ARGUMENTS SENT FROM FLUTTER TO GET ART REGIMEN >>>>>"+ arguments);
+                            Log.i(TAG, "ARGUMENTS SENT FROM FLUTTER TO GET ART REGIMEN >>>>>" + arguments);
 
                             try {
                                 List<ArvCombinationRegimen> arvCombinationRegimenList = artService.getArvCombinationRegimens(arguments);
-                                Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID"+ arvCombinationRegimenList);
+                                Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID" + arvCombinationRegimenList);
                                 String artjson = gson.toJson(arvCombinationRegimenList);
                                 result.success(artjson);
                             } catch (Exception e) {
