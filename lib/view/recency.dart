@@ -543,12 +543,26 @@ class _Recency extends State<RecencyTest> {
                                 ), */
 
 
-                                Row(children: <Widget>[
-                                  Text("Results"),
-                                  SizedBox(width: 10.0),
-                                  getRecencyResults(_entryPointList),
 
-                                ],),
+
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 6.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: SizedBox(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Results"),
+                                          ),
+                                          width: 250,
+                                        ),
+                                      ),
+                                      getRecencyResults(_entryPointList),
+                                    ],
+                                  ),
+                                ),
 
                                 SizedBox(
                                   height: 24,
