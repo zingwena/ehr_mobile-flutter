@@ -136,9 +136,6 @@ class _TbScreening extends State<TbScreeningView> {
     }
   }
 
-
-
-
   void _handleCoughingChange(int value) {
     setState(() {
       _coughing = value;
@@ -228,6 +225,54 @@ class _TbScreening extends State<TbScreeningView> {
             title: new Text(
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+
+            actions: <Widget>[
+
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
+              ),
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -255,9 +300,7 @@ class _TbScreening extends State<TbScreeningView> {
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
-                                        minHeight:
-                                        viewportConstraints.maxHeight -
-                                            48.0,
+                                        minHeight: viewportConstraints.maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                         child: Column(
@@ -265,11 +308,8 @@ class _TbScreening extends State<TbScreeningView> {
                                             Form(
                                               key: _formKey,
                                               child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceEvenly,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: <Widget>[
                                                   SizedBox(
                                                     height: 10.0,
@@ -277,8 +317,7 @@ class _TbScreening extends State<TbScreeningView> {
 
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                    EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
@@ -294,19 +333,15 @@ class _TbScreening extends State<TbScreeningView> {
                                                         Text('Yes'),
                                                         Radio(
                                                             value: 1,
-                                                            groupValue:
-                                                            _coughing,
-                                                            activeColor:
-                                                            Colors.blue,
-                                                            onChanged:
-                                                            _handleCoughingChange),
+                                                            groupValue: _coughing,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleCoughingChange),
                                                         Text('No'),
                                                         Radio(
                                                             value: 2,
                                                             groupValue: _coughing,
                                                             activeColor: Colors.blue,
                                                             onChanged: _handleCoughingChange),
-
                                                       ],
                                                     ),
                                                   ),
@@ -334,19 +369,15 @@ class _TbScreening extends State<TbScreeningView> {
                                                         Text('Yes'),
                                                         Radio(
                                                             value: 1,
-                                                            groupValue:
-                                                            _fever,
-                                                            activeColor:
-                                                            Colors.blue,
-                                                            onChanged:
-                                                            _handleFeverChange),
+                                                            groupValue: _fever,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleFeverChange),
                                                         Text('No'),
                                                         Radio(
                                                             value: 2,
                                                             groupValue: _fever,
                                                             activeColor: Colors.blue,
                                                             onChanged: _handleFeverChange),
-
                                                       ],
                                                     ),
                                                   ),
@@ -373,19 +404,15 @@ class _TbScreening extends State<TbScreeningView> {
                                                         Text('Yes'),
                                                         Radio(
                                                             value: 1,
-                                                            groupValue:
-                                                            _nightSweats,
-                                                            activeColor:
-                                                            Colors.blue,
-                                                            onChanged:
-                                                            _handleNightSweatsChange),
+                                                            groupValue: _nightSweats,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleNightSweatsChange),
                                                         Text('No'),
                                                         Radio(
                                                             value: 2,
                                                             groupValue: _nightSweats,
                                                             activeColor: Colors.blue,
                                                             onChanged: _handleNightSweatsChange),
-
                                                       ],
                                                     ),
                                                   ),
@@ -413,12 +440,9 @@ class _TbScreening extends State<TbScreeningView> {
                                                         Text('Yes'),
                                                         Radio(
                                                             value: 1,
-                                                            groupValue:
-                                                            _weightLoss,
-                                                            activeColor:
-                                                            Colors.blue,
-                                                            onChanged:
-                                                            _handleWeightLossChange),
+                                                            groupValue: _weightLoss,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleWeightLossChange),
                                                         Text('No'),
                                                         Radio(
                                                             value: 2,
@@ -437,7 +461,7 @@ class _TbScreening extends State<TbScreeningView> {
 
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
+                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder(
@@ -445,13 +469,15 @@ class _TbScreening extends State<TbScreeningView> {
                                                           BorderRadius.circular(5.0)),
                                                       color: Colors.blue,
                                                       padding: const EdgeInsets.all(20.0),
-                                                      child: Text(
-                                                        "Save",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.w500),
-                                                      ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Save Patient Record', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
+                                                          ],
+                                                        ),
                                                       onPressed: () async {
                                                         tbScreeningobj.weightLoss = weightLossOption;
                                                         tbScreeningobj.nightSweats = nightSweatsOption;

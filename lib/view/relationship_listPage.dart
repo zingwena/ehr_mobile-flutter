@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/relation_view_dto.dart';
 import 'package:ehr_mobile/model/relationship.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/relationship_searchpage.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/search_patient_index.dart';
 import 'package:flutter/material.dart';
@@ -134,9 +135,11 @@ class PelationshipListState extends State<RelationshipListPage>
 
             ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -152,6 +155,30 @@ class PelationshipListState extends State<RelationshipListPage>
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
