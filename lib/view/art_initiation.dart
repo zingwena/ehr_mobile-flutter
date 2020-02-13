@@ -394,7 +394,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                     children: <Widget>[
 
                                                       SizedBox(
-                                                        height: 20.0,
+                                                        height: 30.0,
                                                       ),
 
                                                       Row(
@@ -402,7 +402,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                           Expanded(
                                                             child: SizedBox(
                                                               child: Padding(
-                                                                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 50.0),
                                                                 child: Text('Please Select'),
                                                               ),
                                                               width: 250,

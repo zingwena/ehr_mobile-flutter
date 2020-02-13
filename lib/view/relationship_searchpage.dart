@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/add_patient_index.dart';
 import 'package:ehr_mobile/view/add_patient_relation.dart';
 import 'package:ehr_mobile/view/add_relation_page.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
 
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ class RelationshipSearch extends StatefulWidget {
 
 class _RelationSearchState extends State<RelationshipSearch> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
+
+  String facility_name;
   String searchItem;
   final _searchFormKey = GlobalKey<FormState>();
   List<Person> _patientList;
@@ -59,9 +62,7 @@ class _RelationSearchState extends State<RelationshipSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*  appBar: AppBar(
-        title: Text('Search Patient'),
-      ),*/
+
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
@@ -73,6 +74,63 @@ class _RelationSearchState extends State<RelationshipSearch> {
                 width: double.infinity,
                 color: Colors.blue,
               ),
+
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                centerTitle: true,
+                title: new Text(
+                  facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+                  fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+                actions: <Widget>[
+
+
+                  Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_pin, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("admin", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                            ),
+                          ])
+                  ),
+
+                  Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: IconButton(
+                                icon: Icon(Icons.exit_to_app), color: Colors.white,
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              ),
+                              /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                            ),  ])
+                  ),
+                ],
+              ),
+
               Positioned(
                   bottom: 150,
                   left: -40,
@@ -117,27 +175,24 @@ class _RelationSearchState extends State<RelationshipSearch> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 35.0,
+                    height: 72.0,
                   ),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                     child: Center(
 
-                        child: Text(
-                          "Search Relations Contact",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
-                              fontSize: 30),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text("Search Relationship Contact", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                         ),
 
 
                     ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
+
+                  /*Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                     child: Center(
                     child: Text(
@@ -148,10 +203,8 @@ class _RelationSearchState extends State<RelationshipSearch> {
                           fontWeight: FontWeight.w400),
                     ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  ),*/
+
 
                   Padding(
                     padding: EdgeInsets.only(left: 15.0, right: 15.0),

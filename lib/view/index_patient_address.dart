@@ -242,7 +242,7 @@ class _PatientAddressState extends State<IndexPatientAddress> {
                                                             child: Padding(
                                                               padding: EdgeInsets.symmetric(
                                                                   vertical: 16.0, horizontal: 60.0),
-                                                              child:         TextFormField(
+                                                              child: TextFormField(
                                                                 validator: (value) {
                                                                   return value.isEmpty ? 'Enter some text' : null;
                                                                 },
@@ -328,8 +328,7 @@ class _PatientAddressState extends State<IndexPatientAddress> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                      EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child:   RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(

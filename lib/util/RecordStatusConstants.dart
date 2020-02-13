@@ -1,0 +1,7 @@
+
+
+const SYNCHED="SYNCHED";
+const IMPORTED="IMPORTED";
+const NEW="NEW";
+const DELETED="DELETED";
+const CHANGED="CHANGED";

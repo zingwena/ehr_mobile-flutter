@@ -6,6 +6,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/view/add_patient_index.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
+import 'package:ehr_mobile/login_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -24,6 +25,7 @@ class SearchPatientIndex extends StatefulWidget {
   String htsId;
   String person;
 
+
   HtsRegistration htsRegistration;
   String personId;
   SearchPatientIndex(this.person_patient,this.indexTestId, this.visitId, this.personId);
@@ -34,6 +36,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
   static const platform = MethodChannel('ehr_mobile.channel/patient');
 
   String searchItem;
+  String facility_name;
   final _searchFormKey = GlobalKey<FormState>();
   List<Person> _patientList;
 
@@ -60,18 +63,14 @@ class _SearchPatientState extends State<SearchPatientIndex> {
 
   @override
   void initState() {
-
-
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
      //drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
-      /*  appBar: AppBar(
-        title: Text('Search Patient'),
-      ),*/
       backgroundColor: Colors.white,
 
       body: Column(
@@ -84,6 +83,62 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                 height: 180.0,
                 width: double.infinity,
                 color: Colors.blue,
+              ),
+
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                centerTitle: true,
+                title: new Text(
+                  facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+                  fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+                actions: <Widget>[
+
+
+                  Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_pin, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text("admin", style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                            ),
+                          ])
+                  ),
+
+                  Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: IconButton(
+                                icon: Icon(Icons.exit_to_app), color: Colors.white,
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              ),
+                              /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                            ),  ])
+                  ),
+                ],
               ),
               Positioned(
                   bottom: 150,
@@ -129,37 +184,21 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 35.0,
+                    height: 72.0,
                   ),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                     child: Center(
-                      child: Text(
-                        "Search Index Contact",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                            fontSize: 30),
+
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Text("Search Relationship Contact", style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                       ),
+
+
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                    child: Center(
-                      child: Text(
-                        "Search For Patient",
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white.withOpacity(0.80),
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
                   ),
 
                   Padding(
