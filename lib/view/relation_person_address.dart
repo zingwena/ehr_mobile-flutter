@@ -52,6 +52,7 @@ class _PatientAddressState extends State<RelationPatientAddress> {
   List _townList = List();
   List townList= List();
   List<Town> _townListDropdown= List();
+  String facility_name;
 
   @override
   void initState() {
@@ -90,10 +91,9 @@ class _PatientAddressState extends State<RelationPatientAddress> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text("Impilo Mobile",   style: TextStyle(
-              fontWeight: FontWeight.w300, fontSize: 25.0, ),
-
-            ),
+            title: new Text(
+              facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
               Container(
                   padding: EdgeInsets.all(8.0),
@@ -113,6 +113,30 @@ class _PatientAddressState extends State<RelationPatientAddress> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -161,10 +185,8 @@ class _PatientAddressState extends State<RelationPatientAddress> {
                                               Form(
                                                 key: _formKey,
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment
-                                                      .start,
-                                                  mainAxisAlignment: MainAxisAlignment
-                                                      .spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: <Widget>[
 
                                                     Row(
@@ -306,19 +328,21 @@ class _PatientAddressState extends State<RelationPatientAddress> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 0.0,
-                                                          horizontal: 30.0),
+                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
                                                       child:   RaisedButton(
                                                         elevation: 4.0,
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius: BorderRadius.circular(5.0)),
                                                         color: Colors.blue,
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          "Save",
-                                                          style: TextStyle(color: Colors.white),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Text('Save Relation Patient Record', style: TextStyle(color: Colors.white),),
+                                                            Spacer(),
+                                                            Icon(Icons.save_alt, color: Colors.white, ),
+                                                          ],
                                                         ),
                                                         onPressed: () async {
                                                           if (_formKey.currentState.validate()) {

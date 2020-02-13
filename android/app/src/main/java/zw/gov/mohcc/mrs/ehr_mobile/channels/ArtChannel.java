@@ -15,10 +15,10 @@ import zw.gov.mohcc.mrs.ehr_mobile.constant.APPLICATION_CONSTANTS;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtAppointmentDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtCurrentStatusDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtDTO;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtFollowUpDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtIptDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.ArtVisitDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.WorkArea;
-import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtCurrentStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtOi;
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtSymptom;
 import zw.gov.mohcc.mrs.ehr_mobile.model.tb.TbScreening;
@@ -301,7 +301,7 @@ public class ArtChannel {
                         if (methodCall.method.equals("getArtIpt")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
-                                Log.d(TAG, "ART IPT FROM ANDROID IN CHANNEL"+gson.toJson(artService.getArtIpt(arguments)) );
+                                Log.d(TAG, "ART IPT FROM ANDROID IN CHANNEL" + gson.toJson(artService.getArtIpt(arguments)));
                                 result.success(gson.toJson(artService.getArtIpt(arguments)));
 
                             } catch (Exception e) {
@@ -344,8 +344,40 @@ public class ArtChannel {
                         if (methodCall.method.equals("getArtAppointments")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
-                                Log.i(TAG,"ART Appointments in android"+gson.toJson(artService.getPersonArtAppointments(arguments).toString()));
+                                Log.i(TAG, "ART Appointments in android" + gson.toJson(artService.getPersonArtAppointments(arguments).toString()));
                                 result.success(gson.toJson(artService.getPersonArtAppointments(arguments)));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("getArtFollowUp")) {
+                            Log.i(TAG, "Current art followup id " + arguments);
+                            try {
+                                result.success(gson.toJson(artService.getArtFollowUp(arguments)));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("saveArtFollowUpVisit")) {
+                            Log.i(TAG, "ArtFollowUpVisit object from flutter " + arguments);
+                            try {
+                                ArtFollowUpDTO artFollowUpVisitDTO = gson.fromJson(arguments, ArtFollowUpDTO.class);
+                                result.success(gson.toJson(artService.saveArtFollowUpVisit(artFollowUpVisitDTO)));
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "something went wrong " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (methodCall.method.equals("saveArtFollowUpCall")) {
+                            Log.i(TAG, "ArtFollowUpCall object from flutter " + arguments);
+                            try {
+                                ArtFollowUpDTO artFollowUpCallDTO = gson.fromJson(arguments, ArtFollowUpDTO.class);
+                                result.success(gson.toJson(artService.saveArtFollowUpCall(artFollowUpCallDTO)));
 
                             } catch (Exception e) {
                                 Log.d(TAG, "something went wrong " + e.getMessage());

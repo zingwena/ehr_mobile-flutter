@@ -492,9 +492,14 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                           borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.blue,
                                                       padding: const EdgeInsets.all(20.0),
-                                                      child: Text(
-                                                        "Proceed",
-                                                        style: TextStyle(color: Colors.white),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Text('Proceed', style: TextStyle(color: Colors.white),),
+                                                          Spacer(),
+                                                          Icon(Icons.navigate_next, color: Colors.white, ),
+                                                        ],
                                                       ),
                                                       onPressed: () {
                                                         if (_formKey.currentState.validate()) {
