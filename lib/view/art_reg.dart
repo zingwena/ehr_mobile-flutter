@@ -11,7 +11,7 @@ import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -710,7 +710,7 @@ class _ArtReg extends State<ArtReg> {
                                                             child: Container(
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0),
-                                                              child: SearchableDropdown(
+                                                              child: DropdownButton(
                                                                 isExpanded: true,
                                                                 icon: Icon(Icons.keyboard_arrow_down),
                                                                 hint: Text("Health Facility"),
@@ -852,7 +852,8 @@ class _ArtReg extends State<ArtReg> {
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentHivTestUsed,
                                                           items: _dropDownMenuItemsHivTestUsedIdentified,
-                                                          onChanged: changedDropDownItemHIVTestUsed,
+                                                          onChanged:
+                                                              changedDropDownItemHIVTestUsed,
                                                         ),
                                                       ),
                                                       borderSide: BorderSide(
