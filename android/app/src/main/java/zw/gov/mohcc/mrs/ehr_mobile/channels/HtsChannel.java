@@ -338,6 +338,7 @@ public class HtsChannel {
                         }
 
                         if (methodCall.method.equals("getTestResults")) {
+                            Log.i(TAG, "Test results method called here here here ");
 
                             try {
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);

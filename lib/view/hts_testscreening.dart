@@ -102,7 +102,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
       getFacilityName();
       getAge(widget.person);
       date = DateTime.now();
-      print("HERE IS THE VISITID IN HTS SCREENING>>>>>>>>>>>>>>>"+ widget.visitId);
 
 
   }
@@ -192,7 +191,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
           this.sample_name=sample_name;
           });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in getPersonInvestigation method: '$e'");
     }
 
   }
@@ -201,11 +200,8 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     var binId_response;
     try {
       binId_response = await htsChannel.invokeMethod('getPatientQueueOrWard', personId);
-      debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE'+ binId_response);
       setState(() {
         this.patientBinId=binId_response;
-        debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE AFTER ASSIGNMENT'+ binId_response);
-
       });
     } catch (e) {
       print("channel failure in getPerson queue or ward: '$e'");
@@ -215,6 +211,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
 
   Future<void> getResults(String personId) async {
     String response;
+    print("Test results method called in flutter");
     try {
       response = await htsChannel.invokeMethod('getTestResults', personId);
       setState(() {
@@ -237,7 +234,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         this.test=labtestname;
       });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get Lab Test: '$e'");
     }
 
   }
@@ -249,7 +246,7 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
             print("Visit Patient Id : $visitPatientId || Lab Id : $labId"  );
      
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get labId method: '$e'");
     }
   
   }
@@ -259,7 +256,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
     try{
       TestKitBatchDto testKitBatchDto = new TestKitBatchDto(binType, binId, testKitId);
       testkitsresponse = await htsChannel.invokeMethod('getTestKitBatches', jsonEncode(testKitBatchDto));
-      debugPrint('ggggggggggggggggg testkit batches returned'+ testkitsresponse);
       setState(() {
         _testkitbatch_string = testkitsresponse;
         testkitbatches = jsonDecode(_testkitbatch_string);
@@ -267,7 +263,6 @@ class _HtsScreeningTest extends State<HtsScreeningTest> {
         _dropDownListTestKitBatches.forEach((e){
           _TestkitbatchesList.add(e);
         });
-        debugPrint('ggggggggggggggggg testkit batches after assignment'+ _TestkitbatchesList.toString());
       });
 
     }catch(e){
@@ -290,7 +285,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
        });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get  testkits method: '$e'");
     }
 
   }
@@ -303,6 +298,8 @@ Future<dynamic> getTestKitsByCount(int count) async {
       });
 
     }catch(e){
+      debugPrint("Exception thrown in get get test name method"+e);
+
 
     }
   }
@@ -312,11 +309,9 @@ Future<dynamic> getTestKitsByCount(int count) async {
       String response = await htsChannel.invokeMethod('getcurrenthts', personId);
       setState(() {
         labInvestId = response;
-        debugPrint("HERE IS THE LAB INVESTIGATION ID RETURNED FROM FLUTTER" + response);
-
       });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get lab investigation method : '$e'");
     }
 
   }
@@ -329,7 +324,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get testkit by code: '$e'");
     }
 
   }
@@ -347,7 +342,7 @@ Future<dynamic> getTestKitsByCount(int count) async {
 
       });
     } catch (e) {
-      print("channel failure: '$e'");
+      print("channel failure in get hts record method: '$e'");
     }
 
   }
