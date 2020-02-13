@@ -9,7 +9,9 @@ import androidx.room.Update;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
+
 import zw.gov.mohcc.mrs.ehr_mobile.model.hts.Hts;
+import zw.gov.mohcc.mrs.ehr_mobile.model.laboratory.PersonInvestigation;
 
 @Dao
 public interface HtsDao {
@@ -53,4 +55,7 @@ public interface HtsDao {
 
     @Query("SELECT * FROM Hts Where laboratoryInvestigationId=:laboratoryInvestigationId")
     Hts findByLaboratoryInvestigationId(String laboratoryInvestigationId);
+
+    @Query("SELECT p.* FROM Hts h inner join LaboratoryInvestigation l on l.id=h.laboratoryInvestigationId inner join PersonInvestigation p on p.id=l.personInvestigationId Where h.personId=:personId")
+    PersonInvestigation findPersonInvestigationByHts(String personId);
 }
