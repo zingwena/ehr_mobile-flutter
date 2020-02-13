@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/view/add_relation_page.dart';
 import 'package:ehr_mobile/view/hiv_information.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -167,9 +168,11 @@ class OverviewState extends State<PatientRelationOverview> {
 
             ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -185,6 +188,30 @@ class OverviewState extends State<PatientRelationOverview> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -401,10 +428,11 @@ class OverviewState extends State<PatientRelationOverview> {
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
+                                             // Expanded(child: Container()),
                                               SizedBox(
-                                                  height: 50.0
+                                                  height:30.0
                                               ),
+
                                               Container(
                                                 width: double.infinity,
                                                 padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
@@ -414,9 +442,14 @@ class OverviewState extends State<PatientRelationOverview> {
                                                       borderRadius: BorderRadius.circular(5.0)),
                                                   color: Colors.blue,
                                                   padding: const EdgeInsets.all(20.0),
-                                                  child: Text(
-                                                    "Add Relation",
-                                                    style: TextStyle(color: Colors.white),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: <Widget>[
+                                                      Text('Add Relation', style: TextStyle(color: Colors.white),),
+                                                      Spacer(),
+                                                      Icon(Icons.person_add, color: Colors.white, ),
+                                                    ],
                                                   ),
                                                   onPressed: () {
 
@@ -456,6 +489,8 @@ class OverviewState extends State<PatientRelationOverview> {
       ),
     );
   }
+
+
 
   Widget _buildButtonsRow() {
     return Padding(

@@ -852,8 +852,7 @@ class _ArtReg extends State<ArtReg> {
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentHivTestUsed,
                                                           items: _dropDownMenuItemsHivTestUsedIdentified,
-                                                          onChanged:
-                                                              changedDropDownItemHIVTestUsed,
+                                                          onChanged: changedDropDownItemHIVTestUsed,
                                                         ),
                                                       ),
                                                       borderSide: BorderSide(

@@ -362,20 +362,22 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
                                       constraints: new BoxConstraints(
-                                        minHeight:
-                                            viewportConstraints.maxHeight -
-                                                48.0,
+                                        minHeight: viewportConstraints.maxHeight - 48.0,
                                       ),
                                       child: new IntrinsicHeight(
                                         child: Column(
                                           children: <Widget>[
+                                            SizedBox(
+                                              height: 16,
+                                            ),
+
                                             getQuestions(_entryPointList, widget.sexualHistoryId, widget.personId),
                                             Row(
                                               children: <Widget>[
                                                 Expanded(
                                                   child: SizedBox(
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(10.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
                                                       child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(
@@ -406,6 +408,10 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                 ),
 
                                               ],
+                                            ),
+
+                                            SizedBox(
+                                              height: 20,
                                             ),
                                           ],
                                         ),

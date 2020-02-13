@@ -441,7 +441,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                 ),
                                               ),
                                             ),
-                                            Expanded(child: Container()),
+                                           // Expanded(child: Container()),
                                             SizedBox(height: 50.0),
                                             Container(
                                               width: double.infinity,
@@ -449,16 +449,17 @@ class OverviewState extends State<PatientIndexOverview> {
                                               child: RaisedButton(
                                                 elevation: 4.0,
                                                 shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.0)),
+                                                    borderRadius: BorderRadius.circular(5.0)),
                                                 color: Colors.blue,
-                                                padding:
-                                                    const EdgeInsets.all(20.0),
-                                                child: Text(
-                                                  "Add to Contact Index",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
+                                                padding: const EdgeInsets.all(20.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Text('Add to Contact Index', style: TextStyle(color: Colors.white),),
+                                                    Spacer(),
+                                                    Icon(Icons.navigate_next, color: Colors.white, ),
+                                                  ],
                                                 ),
                                                 onPressed: () {
 
