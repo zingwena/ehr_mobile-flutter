@@ -168,7 +168,7 @@ class _PatientAddressState extends State<RelationPatientAddress> {
                                 //  _buildTabBar(),
 
                                 SizedBox(
-                                  height: 15.0,
+                                  height: 25.0,
                                 ),
 
                                 Expanded(

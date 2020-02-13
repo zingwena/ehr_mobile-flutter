@@ -522,26 +522,18 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                                 ? 'Enter some text'
                                                                                 : null;
                                                                           },
-                                                                          decoration: InputDecoration(
-                                                                              labelText: 'Date Post Test Counselled',
-                                                                              border: OutlineInputBorder()),
+
+                                                                              decoration: InputDecoration(
+                                                                                  suffixIcon: IconButton(
+                                                                                      icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                                      onPressed: () {_selectDate(context);}),
+                                                                                  labelText: 'Date Post Test Counselled',
+                                                                                  border: OutlineInputBorder()),
                                                                         ),
                                                                       ),
-                                                                      width:
-                                                                          100,
+                                                                      width: 100,
                                                                     ),
                                                                   ),
-                                                                  IconButton(
-                                                                      icon: Icon(
-                                                                          Icons
-                                                                              .calendar_today),
-                                                                      color: Colors
-                                                                          .blue,
-                                                                      onPressed:
-                                                                          () {
-                                                                        _selectDate(
-                                                                            context);
-                                                                      })
                                                                 ],
                                                               ))
                                                           : SizedBox(

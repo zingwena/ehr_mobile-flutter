@@ -11,6 +11,7 @@ import 'package:ehr_mobile/vitals/pulse.dart';
 import 'package:ehr_mobile/vitals/respiratory_rate.dart';
 import 'package:ehr_mobile/vitals/temperature.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
@@ -162,9 +163,11 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
+
+
               Container(
                   padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment:
                       MainAxisAlignment.center,
@@ -180,6 +183,30 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                          /*  Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("logout", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ), */
+
+                        ),  ])
               ),
             ],
           ),
@@ -268,15 +295,17 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                             children: <Widget>[
                                               Form(
                                                 child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .all(16.0),
+                                                    padding: const EdgeInsets.all(16.0),
                                                     child: Column(
                                                       children: <Widget>[
-
                                                         Form(
                                                           key: _formKey,
                                                           child: Row(
                                                             children: <Widget>[
+
+                                                              SizedBox(
+                                                                height: 20.0,
+                                                              ),
 
                                                               Expanded(
                                                                 child: Padding(
@@ -711,23 +740,17 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                                         : Icons.save,
                                                                     color: Colors.blue),
                                                                 onPressed: () {
-                                                                  if (_formKeyWeight
-                                                                      .currentState
-                                                                      .validate()) {
-                                                                    _formKeyWeight
-                                                                        .currentState
-                                                                        .save();
+                                                                  if (_formKeyWeight.currentState.validate()) {
+                                                                    _formKeyWeight.currentState.save();
                                                                     isPressed5 = true;
-                                                                    saveVitals(
-                                                                        _weight,
-                                                                        'weight');
+                                                                    saveVitals( _weight, 'weight');
                                                                   }
                                                                 },
                                                               )
                                                             ],
                                                           ),
                                                         ),
-                                                       SizedBox(height: 100,),
+                                                       SizedBox(height: 60,),
                                                         Container(
                                                           width: double.infinity,
                                                           padding:
@@ -745,7 +768,8 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                               crossAxisAlignment: CrossAxisAlignment.center,
                                                               children: <Widget>[
                                                                 Text('Save', style: TextStyle(color: Colors.white),),
-                                                                Icon(Icons.navigate_next, color: Colors.white, ),
+                                                                Spacer(),
+                                                                Icon(Icons.save_alt, color: Colors.white, ),
                                                               ],
                                                             ),
                                                             onPressed: () {

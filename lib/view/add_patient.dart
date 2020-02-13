@@ -289,8 +289,7 @@ class _AddPatient extends State<AddPatient> {
                                                                           firstName = value;
                                                                         }),
                                                                 decoration: InputDecoration(
-                                                                    labelText:
-                                                                    'First Name',
+                                                                    labelText: 'First Name',
                                                                     border: OutlineInputBorder()),
                                                               ),
                                                             ),
@@ -322,8 +321,7 @@ class _AddPatient extends State<AddPatient> {
                                                                             () {
                                                                   lastName = value;                                           }),
                                                                 decoration: InputDecoration(
-                                                                    labelText:
-                                                                        'Last Name',
+                                                                    labelText: 'Last Name',
                                                                     border: OutlineInputBorder()),
                                                               ),
                                                             ),
@@ -338,8 +336,7 @@ class _AddPatient extends State<AddPatient> {
 
                                                     Container(
                                                       width: double.infinity,
-                                                      padding:
-                                                          EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
                                                       child: Row(
                                                         children: <Widget>[
                                                           Expanded(

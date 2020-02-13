@@ -322,6 +322,11 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
                               child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
                             ),
@@ -574,19 +579,16 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                           : null;
                                                                     },
                                                                     decoration: InputDecoration(
+                                                                        suffixIcon: IconButton(
+                                                                            icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                            onPressed: () {_selectDate(context);}),
                                                                         labelText: 'Proposed HIV Index Testing Appointment Date',
-
                                                                         border: OutlineInputBorder()),
                                                                   ),
                                                                 ),
                                                                 width: 60,
                                                               ),
                                                             ),
-                                                            IconButton(
-                                                                icon: Icon(Icons.calendar_today),
-                                                                color: Colors.blue,
-                                                                onPressed: () { _selectDate(context);
-                                                                })
                                                           ],
                                                         ),
                                                       ),

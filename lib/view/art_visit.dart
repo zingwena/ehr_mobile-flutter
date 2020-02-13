@@ -882,7 +882,7 @@ class _ArtVisit extends State<ArtVisitView> {
                                                     ),
 
                                                     SizedBox(
-                                                      height: 20.0,
+                                                      height: 30.0,
                                                     ),
 
                                                   ],

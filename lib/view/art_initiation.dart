@@ -412,36 +412,42 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                     children: <Widget>[
 
                                                       SizedBox(
-                                                        height: 20.0,
+                                                        height: 30.0,
                                                       ),
 
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-                                                                child: Text('Please Select'),
+                                                      Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child: SizedBox(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: Text('Please Select'),
+                                                                ),
+                                                                width: 250,
                                                               ),
-                                                              width: 250,
                                                             ),
-                                                          ),
-                                                          Text('First Line'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: _line,
-                                                              onChanged: _handleLineChange),
-                                                          Text('2nd Line'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: _line,
-                                                              onChanged: _handleLineChange),
-                                                          Text('3rd Line'),
-                                                          Radio(
-                                                              value: 3,
-                                                              groupValue: _line,
-                                                              onChanged: _handleLineChange)
-                                                        ],
+
+                                                            Text('First Line'),
+                                                            Radio(
+                                                                value: 1,
+                                                                groupValue: _line,
+                                                                onChanged: _handleLineChange),
+                                                            Text('2nd Line'),
+                                                            Radio(
+                                                                value: 2,
+                                                                groupValue: _line,
+                                                                onChanged: _handleLineChange),
+                                                            Text('3rd Line'),
+                                                            Radio(
+                                                                value: 3,
+                                                                groupValue: _line,
+                                                                onChanged: _handleLineChange)
+
+                                                          ],
+                                                        ),
                                                       ),
 
                                                       Container(
@@ -545,7 +551,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 35.0),
                                                         child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(

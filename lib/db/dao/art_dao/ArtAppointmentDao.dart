@@ -2,6 +2,7 @@
 
 
 import 'package:ehr_mobile/db/tables/art/ArtAppointmentTable.dart';
+import 'package:ehr_mobile/util/RecordStatusConstants.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
@@ -35,7 +36,7 @@ class ArtAppointmentDao  extends BaseDao{
   Future<int> setSyncd(String id) async {
     Update updater = new Update(tableName);
     updater.where(this.id.eq(id));
-    updater.set(this.status, '2');
+    updater.set(this.status, SYNCHED);
     var result=await _adapter.update(updater);
     return result;
   }
