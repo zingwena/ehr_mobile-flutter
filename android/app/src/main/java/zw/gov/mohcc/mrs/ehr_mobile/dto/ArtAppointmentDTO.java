@@ -30,7 +30,8 @@ public class ArtAppointmentDTO implements Serializable {
     public static ArtAppointmentDTO get(ArtAppointment artAppointment) {
 
         return new ArtAppointmentDTO(artAppointment.getArtId(),
-                artAppointment.getReason() != null ? artAppointment.getReason().getName() : null, new FutureDate(artAppointment.getDate()));
+                artAppointment.getReason() != null ? artAppointment.getReason().getName() : null,
+                artAppointment.getDate() != null ? new FutureDate(artAppointment.getDate()) : null);
     }
 
     public static List<ArtAppointmentDTO> get(List<ArtAppointment> artAppointments) {
