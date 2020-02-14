@@ -1,5 +1,7 @@
 
 import 'package:ehr_mobile/db/tables/laboratory_investigation_test_table.dart';
+import 'package:ehr_mobile/util/RecordStatusConstants.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -10,7 +12,7 @@ class LaboratoryInvestigationTestDao extends BaseDao{
   var laboratoryInvestigationId = new StrField('laboratoryInvestigationId');
 
   var startTime = new DateTimeField('startTime');
-  var endTime = new DateTimeField('resultDate');
+  var endTime = new DateTimeField('endTime');
 
   final visitId = new StrField('visitId');
   final resultCode = new StrField('result_code');
@@ -75,4 +77,38 @@ class LaboratoryInvestigationTestDao extends BaseDao{
     return labInvestigationTests;
   }
 
+  //
+
+  Future insertFromEhr(Map map,String labId,String visit) async {
+
+    Insert inserter = new Insert(tableName);
+    inserter.set(visitId, visit);
+    inserter.set(laboratoryInvestigationId, labId);
+    inserter.set(id, map['laboratoryInvestigationTestId']);
+    inserter.set(status,IMPORTED);
+
+    if (map['testKit'] != null) {
+      inserter.set(testKitName,map['testKit']['id']);
+      inserter.set(testKitCode,map['testKit']['name']);
+    }
+
+    if (map['result'] != null) {
+      inserter.set(resultCode,map['result']['id']);
+      inserter.set(resultName,map['result']['name']);
+    }
+
+    if (map['batchIssue'] != null) {
+      inserter.set(batchIssueId,map['batchIssue']['batchIssueId']);
+    }
+
+    inserter.set(startTime,const CustomDateTimeConverter().fromEhrDateTimeJson(map['time']));
+    inserter.set(endTime,const CustomDateTimeConverter().fromEhrDateTimeJson(map['readingTime']));
+
+    return await _adapter.insert(inserter);
+  }
+
+  Future<int> removeAll() async {
+    Remove deleter = new Remove(tableName);
+    return await _adapter.remove(deleter);
+  }
 }

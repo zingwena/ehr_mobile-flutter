@@ -168,6 +168,22 @@ class PersonQuery {
                         status
                         investigationType
                         openHivTest
+                        tests {
+                          laboratoryInvestigationTestId
+                          time
+                          readingTime
+                          methodOfResult
+                          clientTestedOnsite
+                          clientAssistedSelfTest
+                          username
+                          batchIssue{
+                            batchIssueId
+                          }
+                          result{
+                            id
+                            name
+                          }
+                        }
                       }
                       entryPoint {
                         id

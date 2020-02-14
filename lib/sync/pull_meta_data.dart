@@ -103,11 +103,9 @@ Future<String> pullQueueData(ProgressDialog progressDialog) async{
     await facilityQueueDao.removeAll();
     var queues = await result.data["queues"]['content'];
     for (Map map in queues) {
-      //progressDialog.update(message:'Fetching Queue: ${map['queue']['name']} data ...');
       await facilityQueueDao.insertFromEhr(map['queueId'],map['queue']['id'],
           map['queue']['name'],map['department']['id'],map['department']['name'], 0);
       for(Map kit in map['currentTestKits']['content']){
-        log.i(kit);
         await testKitBatchIssueDao.insertFromEhr(kit, map['queue']['name'], map['queue']['id']);
       }
     }
