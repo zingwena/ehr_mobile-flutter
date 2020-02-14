@@ -79,6 +79,7 @@ class _Art_Initiation extends State<Art_Initiation> {
   ArtRegimenDto _artRegimenDto;
   Age age;
   Artdto artdto;
+  ArtInitiation artInitiation;
 
   String facility_name;
 
@@ -90,6 +91,7 @@ class _Art_Initiation extends State<Art_Initiation> {
     getAge(widget.person);
     getFacilityName();
     getArt(widget.patientId);
+    getArtInitiation((widget.visitId));
     super.initState();
   }
 
@@ -136,6 +138,23 @@ class _Art_Initiation extends State<Art_Initiation> {
       setState(() {
         this.artdto = Artdto.fromJson(jsonDecode(response));
         print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
+
+  Future<void>getArtInitiation(String visitId)async{
+    var response;
+    print("ART INITIATION METHOD CALLED");
+    try{
+      response = await htsChannel.invokeMethod('getArtInitiationRecord', visitId);
+      setState(() {
+        artInitiation = ArtInitiation.fromJson(jsonDecode(response));
+        print("THIS IS THE ART INITIATION RETRIEVED @@@@@@@@@@@@@@ "+ artInitiation.toString());
       });
 
     }catch(e){
@@ -397,33 +416,39 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         height: 30.0,
                                                       ),
 
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 50.0),
-                                                                child: Text('Please Select'),
+                                                      Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child: SizedBox(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: Text('Please Select'),
+                                                                ),
+                                                                width: 250,
                                                               ),
-                                                              width: 250,
                                                             ),
-                                                          ),
-                                                          Text('First Line'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: _line,
-                                                              onChanged: _handleLineChange),
-                                                          Text('2nd Line'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: _line,
-                                                              onChanged: _handleLineChange),
-                                                          Text('3rd Line'),
-                                                          Radio(
-                                                              value: 3,
-                                                              groupValue: _line,
-                                                              onChanged: _handleLineChange)
-                                                        ],
+
+                                                            Text('First Line'),
+                                                            Radio(
+                                                                value: 1,
+                                                                groupValue: _line,
+                                                                onChanged: _handleLineChange),
+                                                            Text('2nd Line'),
+                                                            Radio(
+                                                                value: 2,
+                                                                groupValue: _line,
+                                                                onChanged: _handleLineChange),
+                                                            Text('3rd Line'),
+                                                            Radio(
+                                                                value: 3,
+                                                                groupValue: _line,
+                                                                onChanged: _handleLineChange)
+
+                                                          ],
+                                                        ),
                                                       ),
 
                                                       Container(
@@ -527,7 +552,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 30.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 35.0),
                                                         child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(
@@ -545,13 +570,11 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                             ],
                                                           ),
 
-                                                          onPressed: () {
-                                                            ArtInitiation artInitiationDetails = ArtInitiation(widget.patientId, line, _currentArvCombinationRegimen, _currentArtReason);
-                                                            print('*************************artReg number ${artInitiationDetails.line}');
-                                                            artInitiation(artInitiationDetails);
+                                                          onPressed: ()async {
+                                                            ArtInitiation artInitiationDetails = ArtInitiation(artInitiation.artId, line,_currentArtReason, _currentArvCombinationRegimen);
+                                                            await artInitiationReg(artInitiationDetails);
 
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=> ArtInitiationOverview(artInitiationDetails, widget.person, widget.patientId, widget.visitId, widget.htsRegistration, widget.htsId)));
-
                                                           },
 
                                                         ),
@@ -614,9 +637,8 @@ class _Art_Initiation extends State<Art_Initiation> {
 
 
 
-  Future<void> artInitiation(ArtInitiation artInitiation) async {
+  Future<void> artInitiationReg(ArtInitiation artInitiation) async {
     String response;
-    print('*************************art initiation ${artInitiation.toString()}');
     try {
       response = await artChannel.invokeMethod(
           'saveArtInitiation', jsonEncode(artInitiation));

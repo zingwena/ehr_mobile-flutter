@@ -93,17 +93,12 @@ class _Hts_Result  extends State<Hts_Result > {
 //    patient id
     patientId = widget.patientId;
     labInvetsTestId = widget.labInvetsTestId;
-
-    //getEndTime(widget.labInvetsTestId);
     selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     date = DateTime.now();
 
     getFinalResult(widget.labInvestId);
     getLabInvestigationTests();
-    // getLabInvestigationTests();
     getTestKIt(widget.labInvetsTestId);
-    //getStartTime(widget.labInvetsTestId);
-    //getHtsRecord(widget.patientId);
     getTestName();
     getFacilityName();
     getAge(widget.person);
@@ -112,15 +107,17 @@ class _Hts_Result  extends State<Hts_Result > {
   }
 
   Future<void> getPostTestRecord(String patientId) async {
-    var  postTest;
+    String  postTest_response;
+    print("POst test method called");
     try {
-      postTest = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      postTest_response = await htsChannel.invokeMethod('getcurrenthts', patientId);
+      print("POST TEST STRING RETURNED"+ postTest_response);
       setState(() {
-        patientPostTest = PostTest.fromJson(postTest);
+        patientPostTest = PostTest.fromJson(jsonDecode(postTest_response));
         print("HERE IS THE POST TEST RETRIEVED AFTER ASSIGNMENT " + patientPostTest.toString());
 
       });
-      print('POST TEST IN THE FLUTTER THE RETURNED ONE '+ postTest);
+      print('POST TEST IN THE FLUTTER THE RETURNED ONE '+ patientPostTest.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }

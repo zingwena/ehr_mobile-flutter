@@ -484,9 +484,6 @@ class _AddPatient extends State<AddPatientIndex> {
                                                           _formKey
                                                               .currentState
                                                               .save();
-
-//                           Patient patient= Patient.basic(nationalId, firstName, lastName, gender);
-//                           await registerPatient(patient);
                                                           setState(() {
                                                             nationalIdNumber =
                                                                 nationalId.replaceAll(

@@ -353,7 +353,7 @@ public class HtsService {
 
     public Hts savePostTestCounselling(PostTestDTO postTestDTO) {
 
-        Log.d(TAG, "Saving posttest counselling record");
+        Log.d(TAG, "Saving posttest counselling record hts id here"+ postTestDTO.getHtsId());
         Hts hts = ehrMobileDatabase.htsDao().findHtsById(postTestDTO.getHtsId());
         ehrMobileDatabase.htsDao().updateHts(postTestDTO.getInstance(postTestDTO, hts));
 

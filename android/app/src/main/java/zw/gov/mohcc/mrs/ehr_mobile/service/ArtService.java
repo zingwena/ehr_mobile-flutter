@@ -78,24 +78,19 @@ public class ArtService {
 
     @Transaction
     public ArtDTO createArt(ArtDTO artDTO) {
-
         Log.i(TAG, "Creating ART record : " + artDTO);
-
         Art artFromDTO = ArtDTO.getArt(artDTO);
         ehrMobileDatabase.artDao().save(artFromDTO);
-
         Art art = ehrMobileDatabase.artDao().findById(artFromDTO.getId());
         Log.i(TAG, "Created art record : " + art);
         Log.d(TAG, "Creating art linkage record ");
-        // update testReason with actual value
         Question question = ehrMobileDatabase.questionDao().findById(artDTO.getTestReason());
-
         ArtLinkageFrom artLinkageFrom = ArtDTO.getArtLinkage(artDTO, art.getId());
         if (question != null) {
             artLinkageFrom.setTestReason(new NameCode(question.getCode(), question.getName()));
         }
         if (StringUtils.isNoneBlank(artDTO.getFacility())) {
-            Facility facility = ehrMobileDatabase.facilityDao().findById(artDTO.getFacility());
+            Facility facility = ehrMobileDatabase.facilityDao().findByName(artDTO.getFacility());
             artLinkageFrom.setFacility(new NameCode(facility.getCode(), facility.getName()));
         }
         ehrMobileDatabase.artLinkageFromDao().save(artLinkageFrom);

@@ -23,4 +23,7 @@ public interface FacilityDao {
 
     @Query("SELECT * FROM Facility WHERE code=:code")
     Facility findById(String code);
+
+    @Query("SELECT * FROM Facility WHERE name=:name")
+    Facility findByName(String name);
 }

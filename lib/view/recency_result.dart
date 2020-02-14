@@ -460,7 +460,7 @@ class _Recency_Result  extends State<Recency_Result > {
                                                   ),
 
                                                   SizedBox(
-                                                    height: 20.0,
+                                                    height: 30.0,
                                                   ),
 
                                                   Container(

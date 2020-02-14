@@ -9,9 +9,7 @@ part of 'postTest.dart';
 PostTest _$PostTestFromJson(Map<String, dynamic> json) {
   return PostTest(
     json['htsId'] as String,
-    json['datePostTestCounselled'] == null
-        ? null
-        : DateTime.parse(json['datePostTestCounselled'] as String),
+    const CustomDateTimeConverter().fromJson(json['datePostTestCounselled'] as String),
     json['resultReceived'] as bool,
     json['reasonForNotIssuingResultId'] as String,
     json['finalResult'] as String,
@@ -22,8 +20,8 @@ PostTest _$PostTestFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PostTestToJson(PostTest instance) => <String, dynamic>{
       'htsId': instance.htsId,
-      'datePostTestCounselled':
-          instance.datePostTestCounselled?.toIso8601String(),
+  'datePostTestCounselled':
+      const CustomDateTimeConverter().toJson(instance.datePostTestCounselled),
       'resultReceived': instance.resultReceived,
       'reasonForNotIssuingResultId': instance.reasonForNotIssuingResultId,
       'finalResult': instance.finalResult,

@@ -4,6 +4,7 @@ part 'htsRegistration.g.dart';
 @JsonSerializable(explicitToJson: true)
 @CustomDateTimeConverter()
 class HtsRegistration {
+  String id;
   String personId;
   String visitId;
   DateTime dateOfHivTest;
@@ -11,7 +12,7 @@ class HtsRegistration {
   String entryPointId;
   String laboratoryInvestigationId;
 
-  HtsRegistration(this.personId, this.visitId, this.htsType, this.dateOfHivTest,this.entryPointId, this.laboratoryInvestigationId);
+  HtsRegistration(this.id, this.personId, this.visitId, this.htsType, this.dateOfHivTest,this.entryPointId, this.laboratoryInvestigationId);
 
   factory HtsRegistration.fromJson(Map<String, dynamic> json) => _$HtsRegistrationFromJson(json);
 

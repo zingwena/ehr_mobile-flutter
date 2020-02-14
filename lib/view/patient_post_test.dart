@@ -45,7 +45,7 @@ class _PatientPostTest extends State<PatientPostTest> {
       MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   final _formKey = GlobalKey<FormState>();
   var selectedDate;
-  DateTime date;
+  DateTime date_of_test;
   List<ReasonForNotIssuingResult> _reasonForNotIssuingResultList = List();
   bool _resultReceived = false;
   String resultReceived = "NO";
@@ -68,13 +68,13 @@ class _PatientPostTest extends State<PatientPostTest> {
   int _patientonart = 0;
   int _consentToIndex = 0;
   Age age;
-
+  PostTest postestResponse;
   var facility_name;
 
   @override
   void initState() {
-    selectedDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
-    date = DateTime.now();
+    selectedDate = '';
+    date_of_test = DateTime.now();
     getHtsRecord(widget.patientId);
     getReasonsForNotIssueingResult();
     getFacilityName();
@@ -109,6 +109,8 @@ class _PatientPostTest extends State<PatientPostTest> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        date_of_test = DateFormat("yyyy/MM/dd").parse(selectedDate);
+
       });
   }
 
@@ -128,8 +130,14 @@ class _PatientPostTest extends State<PatientPostTest> {
   }
 
   Future<void> insertPostTest(PostTest postTest) async {
+    var post_test_response;
     try {
-      await htsChannel.invokeMethod('savePostTest', jsonEncode(postTest));
+      post_test_response = await htsChannel.invokeMethod('savePostTest', jsonEncode(postTest));
+      print("POST TEST STRING"+post_test_response);
+      setState(() {
+        postestResponse = PostTest.fromJson(jsonDecode(post_test_response));
+        print("POST TEST RETRIEVED AFTER SAVING"+ postestResponse.toString());
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -139,14 +147,13 @@ class _PatientPostTest extends State<PatientPostTest> {
     var hts;
     try {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
+      setState(() {
+        htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
+      });
     } catch (e) {
       print("channel failure: '$e'");
     }
-    setState(() {
-      htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-      print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
-    });
+
   }
 
   Future<void> getReasonsForNotIssueingResult() async {
@@ -515,26 +522,18 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                                 ? 'Enter some text'
                                                                                 : null;
                                                                           },
-                                                                          decoration: InputDecoration(
-                                                                              labelText: 'Date Post Test Counselled',
-                                                                              border: OutlineInputBorder()),
+
+                                                                              decoration: InputDecoration(
+                                                                                  suffixIcon: IconButton(
+                                                                                      icon: Icon(Icons.calendar_today), color: Colors.blue,
+                                                                                      onPressed: () {_selectDate(context);}),
+                                                                                  labelText: 'Date Post Test Counselled',
+                                                                                  border: OutlineInputBorder()),
                                                                         ),
                                                                       ),
-                                                                      width:
-                                                                          100,
+                                                                      width: 100,
                                                                     ),
                                                                   ),
-                                                                  IconButton(
-                                                                      icon: Icon(
-                                                                          Icons
-                                                                              .calendar_today),
-                                                                      color: Colors
-                                                                          .blue,
-                                                                      onPressed:
-                                                                          () {
-                                                                        _selectDate(
-                                                                            context);
-                                                                      })
                                                                 ],
                                                               ))
                                                           : SizedBox(
@@ -702,18 +701,18 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                               Icon(Icons.navigate_next, color: Colors.white, ),
                                                             ],
                                                           ),
-                                                          onPressed: () {
+                                                          onPressed: () async {
                                                             PostTest postTest = new PostTest(
                                                                 widget.htsId,
-                                                                date,
+                                                                date_of_test,
                                                                 _resultReceived,
                                                                 _currentReasonfornotissuing,
                                                                 widget.result,
                                                                 this._consenttoindex,
                                                                 _postTestCounselled);
+                                                            print("POST TEST TO BE SAVED "+ postTest.toString());
 
-                                                            //PostTest(this.htsId, this.datePostTestCounselled,this.resultReceived,this.reasonForNotIssuingResult, this.finalResult, this.consentToIndexTesting, this.postTestCounselled);
-                                                            insertPostTest(
+                                                            await insertPostTest(
                                                                 postTest);
                                                             Navigator.push(
                                                                 context,

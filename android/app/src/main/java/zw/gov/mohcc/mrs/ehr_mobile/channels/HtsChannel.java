@@ -87,7 +87,7 @@ public class HtsChannel {
                             try {
                                 Hts hts = htsService.getCurrentHts(arguments);
                                 String htsjson = gson.toJson(hts);
-                                Log.i(TAG, "HTS SCREENING MODEL" + htsjson);
+                                Log.i(TAG, "HTS SCREENING MODEL " + htsjson);
                                 result.success(htsjson);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -276,12 +276,9 @@ public class HtsChannel {
                             System.out.println("HERE IS THE FINAL RESULT METHOD and the arguments " + arguments);
 
                             try {
-                                Log.i(TAG, "*************************** reching this point");
                                 String resultId = htsService.getFinalResult(arguments);
                                 Result result1 = ehrMobileDatabase.resultDao().findByName(resultId);
-                                Log.i(TAG, "*************************** after first call : " + result1);
                                 String result_name = result1 != null ? result1.getName() : "";
-                                Log.d(TAG, "GGGGGGGGGGGGGGGGGGGGGGG FINAL RESULT + " + result_name);
                                 result.success(result_name);
 
 
@@ -300,21 +297,15 @@ public class HtsChannel {
                             }
                         }
 
-
-                        /* */
-
                         if (methodCall.method.equals("getSample")) {
 
                             try {
-                                System.out.println("HERE ARE THE ARGUMENTS FROM FLUTTER " + arguments);
                                 Hts hts = ehrMobileDatabase.htsDao().findHtsByPersonId(arguments);
                                 Date htsregdate = hts.getDateOfHivTest();
                                 PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao().findByPersonIdAndDate(arguments, htsregdate.getTime(), DateUtil.getEndOfDay(new Date()).getTime());
-                                Log.i(TAG, "Investigations : " + ehrMobileDatabase.investigationDao().getInvestigations());
                                 Investigation investigation = ehrMobileDatabase.investigationDao().findByInvestigationId(personInvestigation.getInvestigationId());
                                 Sample sample = ehrMobileDatabase.sampleDao().findById(investigation.getSampleId());
                                 String sample_name = sample.getName();
-                                Log.i(TAG, "Here is the sample name to be returned >>>>>>>>>>>>>" + sample_name);
                                 result.success(sample_name);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
@@ -347,6 +338,7 @@ public class HtsChannel {
                         }
 
                         if (methodCall.method.equals("getTestResults")) {
+                            Log.i(TAG, "Test results method called here here here ");
 
                             try {
 

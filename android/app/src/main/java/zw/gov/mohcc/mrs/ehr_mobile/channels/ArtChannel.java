@@ -278,7 +278,6 @@ public class ArtChannel {
                             }
                         }
                         if (methodCall.method.equals("getArtVisit")) {
-                            Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
                                 result.success(gson.toJson(artService.getArtVisit(arguments)));
 

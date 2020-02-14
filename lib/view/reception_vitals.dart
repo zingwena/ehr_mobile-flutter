@@ -750,7 +750,7 @@ class _ReceptionVitalsState extends State<ReceptionVitals> {
                                                             ],
                                                           ),
                                                         ),
-                                                       SizedBox(height: 70,),
+                                                       SizedBox(height: 60,),
                                                         Container(
                                                           width: double.infinity,
                                                           padding:
