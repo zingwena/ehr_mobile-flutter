@@ -463,7 +463,7 @@ public class ArtService {
             followUpReason = ehrMobileDatabase.followUpReasonDao().findById(artAppointmentDTO.getReason());
         }
 
-        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(artAppointmentDTO.getId(), new Date().getTime());
+        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(artAppointmentDTO.getArtId(), new Date().getTime());
 
         if (artAppointment != null) {
 
