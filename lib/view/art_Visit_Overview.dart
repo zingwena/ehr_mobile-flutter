@@ -494,7 +494,7 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
           new RoundedButton(text: "IPT Status", onTap: (){
             Navigator.push(context,
                 MaterialPageRoute(
-                builder: (context)=>    ArtIptStatusView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)
+                builder: (context)=> ArtIptStatusView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)
 
 
             ));

@@ -4,6 +4,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/indextest.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
+import 'package:ehr_mobile/view/art_summary_overview.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
 import 'package:ehr_mobile/view/hts_screening.dart';
@@ -223,19 +224,10 @@ class sidebarstate extends State<Sidebar>{
           ),
           new ListTile(leading: new Icon(Icons.art_track, color: Colors.blue), title: new Text("ART",  style: new TextStyle(
               color: Colors.grey.shade700, fontWeight: FontWeight.bold)), onTap: (){
-            if(artdto.artNumber == null ){
-              print("ART DTO DATE IS  NULL");
-
               Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  ArtReg(this.artdto, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                  builder: (context)=>  ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
               ));
-            } else {
-            print("ART DTO DATE IS NOT NULL");
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=> ArtRegOverview(this.artdto, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
 
-              ));
-            }
           }),
           Divider(
             height: 10.0,

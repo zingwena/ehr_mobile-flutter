@@ -37,6 +37,6 @@ public interface QuestionDao {
     @Query("SELECT * FROM Question where categoryId=:categoryId Order by name ASC")
     List<Question> findByCategoryId(String categoryId);
 
-    @Query("SELECT q.* FROM Question q inner join QuestionCategory c on c.code=q.categoryId where c.workArea=:workArea and q.categoryId=:categoryId Order by name ASC")
+    @Query("SELECT q.* FROM Question q inner join QuestionCategory c on c.code=q.categoryId where q.workArea=:workArea and q.categoryId=:categoryId Order by name ASC")
     List<Question> findByWorkAreaAndCategoryId(WorkArea workArea, String categoryId);
 }

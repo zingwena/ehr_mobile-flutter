@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/model/artappointment.dart';
 import 'package:ehr_mobile/model/artdto.dart';
+import 'package:ehr_mobile/model/artipt.dart';
+import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/htsscreening.dart';
 import 'package:ehr_mobile/model/patientsummarydto.dart';
@@ -10,17 +12,28 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/tbscreening.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/art_appointment.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:ehr_mobile/view/tb_screening.dart';
+import 'package:ehr_mobile/view/tb_screening_overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../sidebar.dart';
+import 'art_Visit_Overview.dart';
+import 'art_iptStatus.dart';
+import 'art_iptStatusOverView.dart';
+import 'art_newOS.dart';
 import 'art_reg.dart';
+import 'art_symptoms.dart';
+import 'art_visit.dart';
+import 'artappointmentOverview.dart';
 import 'hts_screening.dart';
 
 class ArtSummaryOverview extends StatefulWidget {
@@ -68,14 +81,33 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
   ArtAppointment artAppointmentResponse;
   String facility_name;
 
+  String coughingString = "";
+  String feverString = "";
+  String nightSweatsString = "";
+  String weightLossString  = "";
+  String bmiUnderSeventeenString = "";
+
+  bool coughingOption = false;
+  bool feverOption = false;
+  bool nightSweatsOption = false;
+  bool weightLossOption = false;
+  bool bmiUnderSeventeen = false;
+
+  ArtVisit _artVisit;
+  ArtIpt _artIpt;
+
   @override
   void initState() {
     getHtsScreeningRecord(widget.person.id);
     getPatientSummary(widget.person.id);
+    getTbScreening(widget.person.id);
     getArt(widget.person.id);
     getAge(widget.person);
     getFacilityName();
-    getArtAppointment(widget.person.id);
+    getArtAppointments(widget.person.id);
+    getArtVist(widget.person.id);
+    getArtIpt(widget.person.id);
+
     super.initState();
     controller = new TabController(length: 3, vsync: this);
   }
@@ -114,6 +146,41 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       setState(() {
         tbScreeningobj = TbScreening.fromJson(jsonDecode(response));
         print("THIS IS THE TB SCREENING  RETRIEVED"+ tbScreeningobj.toString());
+
+        if(tbScreeningobj != null){
+          if(tbScreeningobj.coughing == true){
+            coughingString = "YES";
+          }else{
+            coughingString = "NO";
+          }
+
+          if(tbScreeningobj.fever == true){
+            feverString = "YES";
+          }else{
+            feverString = "NO";
+          }
+
+          if(tbScreeningobj.nightSweats == true){
+            nightSweatsString = "YES";
+
+          }else{
+            nightSweatsString = "NO";
+          }
+          if(tbScreeningobj.bmiUnderSeventeen == true){
+            bmiUnderSeventeenString = "YES";
+          }else{
+            bmiUnderSeventeenString = "NO";
+
+          }
+          if(tbScreeningobj.weightLoss == true){
+            weightLossString = "YES";
+          }else{
+            weightLossString = "NO";
+
+          }
+
+
+        }
       });
 
     }catch(e){
@@ -133,20 +200,26 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
     }
   }
 
-  Future<void> getArtAppointment(String patientId) async {
-    var hts;
+  Future<void> getArtAppointments(String  personId) async {
+    var art_appointment_response;
     try {
-      hts = await artChannel.invokeMethod('getArtAppointment', patientId);
-      setState(() {
-        artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(hts));
-        print("HERE IS THE art appointments AFTER ASSIGNMENT " + artAppointmentResponse.toString());
-      });
-      print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-  }
 
+      art_appointment_response = await artChannel.invokeMethod(
+          'getArtAppointments', personId);
+      setState(() {
+        _appointmetnt_string = art_appointment_response;
+        appointmnents = jsonDecode(_appointmetnt_string);
+        _dropDownListAppointments = ArtAppointment.mapFromJson(appointmnents);
+        _dropDownListAppointments.forEach((e) {
+          _appointmentList.add(e);
+        });
+      });
+
+    } catch (e) {
+      print('--------------something went wrong  $e');
+    }
+
+  }
   Future<void> getAge(Person person) async {
     String response;
     try {
@@ -179,9 +252,42 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
     }
   }
 
+  Future<void> getArtVist(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
+      setState(() {
+        _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
+
+  }
+
+  Future<void> getArtIpt(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtIpt', personId);
+      print("KKKKKKKKKKK art ipt string here "+ art_visit_response.toString());
+
+      setState(() {
+        _artIpt = ArtIpt.fromJson(jsonDecode(art_visit_response));
+        print("KKKKKKKKKKK art ipt here "+ _artIpt.toString());
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:  Sidebar(widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId),
+
       body: Stack(
         children: <Widget>[
           Container(
@@ -962,7 +1068,24 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                             width:
                                                             2.0, //width of the border
                                                           ),
-                                                          onPressed: () {},
+                                                          onPressed: () {
+                                                            if(_appointmentList.isEmpty){
+
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>  ArtAppointmentView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                                                                ),
+                                                              );
+                                                            }else{
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>  ArtAppointmentsOverview(_appointmentList, widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                                  ));
+                                                            }
+
+                                                          },
                                                         ),
                                                       ),
                                                       Container(
@@ -1056,7 +1179,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         child:
                                                                         TextFormField(
                                                                           initialValue:
-                                                                          tbScreeningobj.fever.toString(),
+                                                                          feverString,
                                                                           decoration:
                                                                           InputDecoration(
                                                                             icon: Icon(Icons.confirmation_number, color: Colors.blue),
@@ -1074,7 +1197,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         child:
                                                                         TextFormField(
                                                                           initialValue:
-                                                                          tbScreeningobj.coughing.toString(),
+                                                                          coughingString,
                                                                           decoration:
                                                                           InputDecoration(
                                                                             icon: Icon(Icons.calendar_today, color: Colors.blue),
@@ -1109,7 +1232,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         child:
                                                                         TextFormField(
                                                                           initialValue:
-                                                                          tbScreeningobj.weightLoss.toString(),
+                                                                          weightLossString,
                                                                           decoration:
                                                                           InputDecoration(
                                                                             icon: Icon(Icons.ac_unit, color: Colors.blue),
@@ -1127,7 +1250,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         child:
                                                                         TextFormField(
                                                                           initialValue:
-                                                                          tbScreeningobj.nightSweats.toString(),
+                                                                          nightSweatsString,
                                                                           decoration:
                                                                           InputDecoration(
                                                                             icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
@@ -1162,7 +1285,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         child:
                                                                         TextFormField(
                                                                           initialValue:
-                                                                          tbScreeningobj.bmiUnderSeventeen.toString(),
+                                                                          bmiUnderSeventeenString,
                                                                           decoration:
                                                                           InputDecoration(
                                                                             icon: Icon(Icons.ac_unit, color: Colors.blue),
@@ -1172,24 +1295,6 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          tbScreeningobj.nightSweats.toString(),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
-                                                                            labelText: "Night Sweats",
-                                                                            //hintText: "National ID"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
                                                                   ],
                                                                 ),
                                                                 Divider(
@@ -1215,465 +1320,22 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                             2.0, //width of the border
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ArtReg(
-                                                                      artdto,
-                                                                      widget.person
-                                                                          .id,
-                                                                      widget
-                                                                          .visitId,
-                                                                      widget.person,
-                                                                      widget
-                                                                          .htsRegistration,
-                                                                      widget
-                                                                          .htsId)),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 20.0),
-                                                        width: double.infinity,
-                                                        child: OutlineButton(
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  5.0)),
-                                                          color: Colors.white,
-                                                          padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
-                                                          child: Container(
-                                                            width: double.infinity,
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal:
-                                                                30.0),
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                              MainAxisSize.max,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                              children: <Widget>[
-                                                                // three line description
-                                                                Container(
-                                                                  alignment:
-                                                                  Alignment
-                                                                      .topLeft,
-                                                                  child: Text(
-                                                                    'ART Overview',
-                                                                    style:
-                                                                    TextStyle(
-                                                                      fontSize:
-                                                                      16.0,
-                                                                      fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                      color: Colors
-                                                                          .black87,
-                                                                    ),
-                                                                  ),
-                                                                ),
-
-                                                                Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                      top: 3.0),
-                                                                ),
-
-                                                                Divider(
-                                                                  height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
-                                                                ),
-                                                                Container(
-                                                                  height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
-                                                                ),
-
-                                                                patientSummaryDto ==
-                                                                    null ||
-                                                                    patientSummaryDto
-                                                                        .artDetails ==
-                                                                        null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
-                                                                  ),
-                                                                )
-                                                                    : Row(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          patientSummaryDto.artDetails.artNumber,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.confirmation_number, color: Colors.blue),
-                                                                            labelText: "Art Number",
-                                                                            // hintText: "Sex"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          DateFormat("yyyy/MM/dd").format(patientSummaryDto.artDetails.dateRegistered),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
-                                                                            labelText: "Registration Date",
-                                                                            // hintText: "Sex"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                patientSummaryDto ==
-                                                                    null ||
-                                                                    patientSummaryDto
-                                                                        .artDetails ==
-                                                                        null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
-                                                                  ),
-                                                                )
-                                                                    : Row(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          patientSummaryDto.artDetails.whoStage,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
-                                                                            labelText: "WHO Stage Levels",
-                                                                            // hintText: "Sex"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          patientSummaryDto.artDetails.arvRegimen,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
-                                                                            labelText: "Regimen",
-                                                                            //hintText: "National ID"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Divider(
-                                                                  height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
-                                                                ),
-                                                                Container(
-                                                                  height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          borderSide: BorderSide(
-                                                            color: Colors.blue,
-                                                            //Color of the border
-                                                            style:
-                                                            BorderStyle.solid,
-                                                            //Style of the border
-                                                            width:
-                                                            2.0, //width of the border
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ArtReg(
-                                                                      artdto,
-                                                                      widget.person
-                                                                          .id,
-                                                                      widget
-                                                                          .visitId,
-                                                                      widget.person,
-                                                                      widget
-                                                                          .htsRegistration,
-                                                                      widget
-                                                                          .htsId)),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ), Container(
-                                                        padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 20.0),
-                                                        width: double.infinity,
-                                                        child: OutlineButton(
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  5.0)),
-                                                          color: Colors.white,
-                                                          padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
-                                                          child: Container(
-                                                            width: double.infinity,
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal:
-                                                                30.0),
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                              MainAxisSize.max,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                              children: <Widget>[
-                                                                // three line description
-                                                                Container(
-                                                                  alignment:
-                                                                  Alignment
-                                                                      .topLeft,
-                                                                  child: Text(
-                                                                    'ART Overview',
-                                                                    style:
-                                                                    TextStyle(
-                                                                      fontSize:
-                                                                      16.0,
-                                                                      fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                      color: Colors
-                                                                          .black87,
-                                                                    ),
-                                                                  ),
-                                                                ),
-
-                                                                Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                      top: 3.0),
-                                                                ),
-
-                                                                Divider(
-                                                                  height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
-                                                                ),
-                                                                Container(
-                                                                  height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
-                                                                ),
-
-                                                                patientSummaryDto ==
-                                                                    null ||
-                                                                    patientSummaryDto
-                                                                        .artDetails ==
-                                                                        null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
-                                                                  ),
-                                                                )
-                                                                    : Row(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          patientSummaryDto.artDetails.artNumber,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.confirmation_number, color: Colors.blue),
-                                                                            labelText: "Art Number",
-                                                                            // hintText: "Sex"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          DateFormat("yyyy/MM/dd").format(patientSummaryDto.artDetails.dateRegistered),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
-                                                                            labelText: "Registration Date",
-                                                                            // hintText: "Sex"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                patientSummaryDto ==
-                                                                    null ||
-                                                                    patientSummaryDto
-                                                                        .artDetails ==
-                                                                        null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
-                                                                  ),
-                                                                )
-                                                                    : Row(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          patientSummaryDto.artDetails.whoStage,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
-                                                                            labelText: "WHO Stage Levels",
-                                                                            // hintText: "Sex"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          patientSummaryDto.artDetails.arvRegimen,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
-                                                                            labelText: "Regimen",
-                                                                            //hintText: "National ID"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Divider(
-                                                                  height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
-                                                                ),
-                                                                Container(
-                                                                  height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          borderSide: BorderSide(
-                                                            color: Colors.blue,
-                                                            //Color of the border
-                                                            style:
-                                                            BorderStyle.solid,
-                                                            //Style of the border
-                                                            width:
-                                                            2.0, //width of the border
-                                                          ),
-                                                          onPressed: () {
-                                                            if(artdto ==  null){
+                                                            if(tbScreeningobj == null){
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (context) => ArtReg(
-                                                                        artdto,
-                                                                        widget.person
-                                                                            .id,
-                                                                        widget
-                                                                            .visitId,
-                                                                        widget.person,
-                                                                        widget
-                                                                            .htsRegistration,
-                                                                        widget
-                                                                            .htsId)),
+                                                                    builder: (context) =>   TbScreeningView(widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                                ),
                                                               );
 
                                                             }else{
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>     TbScreeningOverview(tbScreeningobj, widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+                                                                ),
+                                                              );
 
                                                             }
 
@@ -1712,77 +1374,65 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "DEMOGRAPHICS",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Overview(widget.person)),
-            ),
+            text: "ART VISIT",
+            onTap: () =>   {
+            if(_artVisit.visitType == null ){
+        Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ArtVisitView(widget.person, widget.person.id, widget.visitId, widget.htsId, widget.htsRegistration)),
+      )
+        } else {
+    Navigator.push(context,MaterialPageRoute(
+    builder: (context)=>  ArtVisitOverview(this._artVisit, widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+    ))
+    }
+
+            }
           ),
           new RoundedButton(
-            text: "VITALS",
-            onTap: () => Navigator.push(
-              context,
+            text: "IPT STATUS",
+            onTap: () =>{
+              if(_artIpt == null){
+              Navigator.push(context,
               MaterialPageRoute(
-                  builder: (context) => ReceptionVitals(widget.person.id,
-                      widget.visitId, widget.person, widget.htsId)),
-            ),
+                  builder: (context)=>    ArtIptStatusView(widget.person, widget.person.id, widget.visitId, widget.htsId, widget.htsRegistration)
+
+              ))
+
+              }else{
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ArtIptStatusOverview(_artIpt, widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId)),
+                ),
+
+              }
+            }
           ),
           new RoundedButton(
-              text: "HTS",
+              text: "ART SYMPTOMS",
               onTap: () {
-                if (htsScreening == null) {
-                  debugPrint("The htsscreening record was null ######");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Hts_Screening(
-                              widget.person.id,
-                              widget.htsId,
-                              widget.htsRegistration,
-                              widget.visitId,
+                          builder: (context) =>   ArtSymptoms(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId,
                               widget.person)));
-                } else {
-                  debugPrint("The htsscreening record wasn't null #######");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HtsScreeningOverview(
-                              widget.person,
-                              htsScreening,
-                              widget.htsId,
-                              widget.visitId,
-                              widget.person.id)));
-                }
+
+
               }),
           new RoundedButton(
-              text: "ART",
+              text: "ART NEW OI",
               onTap: () {
-                if (artdto.artNumber == null) {
-                  print("ART DTO DATE IS  NULL");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>   ArtNewOI(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId,
+                              widget.person)));
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ArtReg(
-                              this.artdto,
-                              widget.person.id,
-                              widget.visitId,
-                              widget.person,
-                              widget.htsRegistration,
-                              widget.htsId)));
-                } else {
-                  print("ART DTO DATE IS NOT NULL");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ArtRegOverview(
-                              this.artdto,
-                              widget.person.id,
-                              widget.visitId,
-                              widget.person,
-                              widget.htsRegistration,
-                              widget.htsId)));
-                }
               }),
         ],
       ),

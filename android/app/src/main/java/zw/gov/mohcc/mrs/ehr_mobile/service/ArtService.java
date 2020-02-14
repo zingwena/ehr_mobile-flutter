@@ -153,11 +153,11 @@ public class ArtService {
         Log.d(TAG, "State of art current status : " + artCurrentStatusDTO);
         ArtReason artReason = null;
         if (artCurrentStatusDTO.getReason() != null) {
-            artReason = ehrMobileDatabase.artReasonDao().findById(artCurrentStatusDTO.getReason());
+            artReason = ehrMobileDatabase.artReasonDao().findByName(artCurrentStatusDTO.getReason());
         }
         ArvCombinationRegimen arvCombinationRegimen = null;
         if (artCurrentStatusDTO.getRegimen() != null) {
-            arvCombinationRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findById(artCurrentStatusDTO.getRegimen());
+            arvCombinationRegimen = ehrMobileDatabase.arvCombinationRegimenDao().findByName(artCurrentStatusDTO.getRegimen());
         }
         ehrMobileDatabase.artCurrentStatusDao().save(ArtCurrentStatusDTO.getInstance(artCurrentStatusDTO, artReason, arvCombinationRegimen));
 
@@ -463,6 +463,12 @@ public class ArtService {
             followUpReason = ehrMobileDatabase.followUpReasonDao().findById(artAppointmentDTO.getReason());
         }
 
+        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(artAppointmentDTO.getArtId(), new Date().getTime());
+
+        if (artAppointment != null) {
+
+            return ArtAppointmentDTO.get(artAppointment);
+        }
         ehrMobileDatabase.artAppointmentDao().save(artAppointmentDTO.getInstance(artAppointmentDTO, followUpReason));
 
         return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(

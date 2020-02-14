@@ -15,9 +15,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'art_symptoms.dart';
-
 
 class ArtIptStatusView extends StatefulWidget {
 
@@ -427,12 +425,9 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                                                             _artIpt.reason = _currentReason;
                                                             _artIpt.iptStatus = _currentIptStatus;
                                                             _artIpt.visitId = widget.visitId;
-
-
                                                            await saveIptStatus(_artIpt);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=>   ArtIptStatusOverview(artIptResponse, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
                                                             ));
-
 
                                                           },
 
