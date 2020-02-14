@@ -518,7 +518,7 @@ class _AddPatient extends State<AddPatient> {
                                                                     '');
                                                           });
                                                           RegExp regex = new RegExp(
-                                                              r'^(\\d{2}(-|.|\\s)?\\d{6,8}(-|.|\\s)?\\w{1}(-|.|\\s)?\\d{2})$');
+                                                              r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
                                                           if (nationalIdNumber.isEmpty || regex.hasMatch(
                                                               nationalIdNumber)) {
                                                             Navigator.push(
