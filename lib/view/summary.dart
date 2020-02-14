@@ -1143,7 +1143,6 @@ class SummaryOverviewState extends State<SummaryOverview>
           new RoundedButton(
               text: "ART",
               onTap: () {
-                if (artdto.artNumber == null) {
                   print("ART DTO DATE IS  NULL");
 
                   Navigator.push(
@@ -1152,19 +1151,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                           builder: (context) =>   ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
 
                       ));
-                } else {
-                  print("ART DTO DATE IS NOT NULL");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ArtRegOverview(
-                              this.artdto,
-                              widget.person.id,
-                              widget.visitId,
-                              widget.person,
-                              widget.htsRegistration,
-                              widget.htsId)));
-                }
+
               }),
         ],
       ),

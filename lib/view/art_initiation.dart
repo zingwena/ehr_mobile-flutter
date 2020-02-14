@@ -91,7 +91,7 @@ class _Art_Initiation extends State<Art_Initiation> {
     getAge(widget.person);
     getFacilityName();
     getArt(widget.patientId);
-    getArtInitiation((widget.visitId));
+    getArtInitiation((widget.patientId));
     super.initState();
   }
 
@@ -147,11 +147,11 @@ class _Art_Initiation extends State<Art_Initiation> {
   }
 
 
-  Future<void>getArtInitiation(String visitId)async{
+  Future<void>getArtInitiation(String personId)async{
     var response;
     print("ART INITIATION METHOD CALLED");
     try{
-      response = await htsChannel.invokeMethod('getArtInitiationRecord', visitId);
+      response = await artChannel.invokeMethod('getArtInitiationRecord', personId);
       setState(() {
         artInitiation = ArtInitiation.fromJson(jsonDecode(response));
         print("THIS IS THE ART INITIATION RETRIEVED @@@@@@@@@@@@@@ "+ artInitiation.toString());

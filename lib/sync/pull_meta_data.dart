@@ -348,6 +348,8 @@ Future<String> initDb(SqfliteAdapter adapter) async {
 
   await IptStatusDao(adapter).removeAll();
 
+  await TestKitBatchIssueDao(adapter).removeAll();
+
   status = '$DONE_STATUS';
   return status;
 }
