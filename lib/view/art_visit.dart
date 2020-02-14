@@ -111,7 +111,6 @@ class _ArtVisit extends State<ArtVisitView> {
   List<FamilyPlanningStatus> _familyPlanningStatusList = List();
 
 
-
   String _lactatingstatus;
   List lactatingstatuses = List();
   List _dropDownLactatingStatuses = List();
@@ -134,6 +133,7 @@ class _ArtVisit extends State<ArtVisitView> {
    getFamilyPlanningStatus();
    getPregnancyStatus();
    getAge(widget.person);
+   getArtVist(widget.person.id);
     super.initState();
   }
 

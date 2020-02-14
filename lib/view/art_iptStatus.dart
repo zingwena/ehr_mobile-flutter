@@ -429,7 +429,6 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                                                             Navigator.push(context, MaterialPageRoute(builder: (context)=>   ArtIptStatusOverview(artIptResponse, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
                                                             ));
 
-
                                                           },
 
                                                         ),

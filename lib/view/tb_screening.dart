@@ -67,16 +67,19 @@ class _TbScreening extends State<TbScreeningView> {
   int _fever = 0;
   int _nightSweats = 0;
   int _weightLoss = 0;
+  int _bmiunderseventeen = 0;
 
-  String coughing = "";
-  String fever = "";
-  String nightSweats = "";
-  String weightLoss = "";
+  String coughingString = "";
+  String feverString = "";
+  String nightSweatsString = "";
+  String weightLossString  = "";
+  String bmiUnderSeventeenString = "";
 
   bool coughingOption = false;
   bool feverOption = false;
   bool nightSweatsOption = false;
   bool weightLossOption = false;
+  bool bmiUnderSeventeen = false;
   String  _currentReferringProgram, _currentHivTestUsed, _currentReasonForTest ;
 
   bool selfIdentifiedReferringIsValid=false;
@@ -89,7 +92,6 @@ class _TbScreening extends State<TbScreeningView> {
     getAge(widget.person);
     getFacilityName();
     getTbScreening(widget.personId);
-
     super.initState();
   }
 
@@ -146,6 +148,20 @@ class _TbScreening extends State<TbScreeningView> {
           break;
         case 2:
           coughingOption = false ;
+          break;
+      }
+    });
+  }
+  void _handlebmiunderseventeenChange(int value) {
+    setState(() {
+      _bmiunderseventeen = value;
+
+      switch (_bmiunderseventeen) {
+        case 1:
+          bmiUnderSeventeen = true;
+          break;
+        case 2:
+          bmiUnderSeventeen = false ;
           break;
       }
     });
@@ -325,6 +341,41 @@ class _TbScreening extends State<TbScreeningView> {
                                                             child: Padding(
                                                               padding:
                                                               const EdgeInsets.all(8.0),
+                                                              child: Text('BMI Under Seventeen'),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('Yes'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue: _bmiunderseventeen,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handlebmiunderseventeenChange),
+                                                        Text('No'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _bmiunderseventeen,
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handlebmiunderseventeenChange),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets.all(8.0),
                                                               child: Text('Coughing : Productive or non productive 1 week or more'),
                                                             ),
                                                             width: 250,
@@ -483,6 +534,7 @@ class _TbScreening extends State<TbScreeningView> {
                                                         tbScreeningobj.nightSweats = nightSweatsOption;
                                                         tbScreeningobj.fever = feverOption;
                                                         tbScreeningobj.coughing = coughingOption;
+                                                        tbScreeningobj.bmiUnderSeventeen = bmiUnderSeventeen;
 
                                                          saveTbScreening(tbScreeningobj);
                                                         Navigator.push(
