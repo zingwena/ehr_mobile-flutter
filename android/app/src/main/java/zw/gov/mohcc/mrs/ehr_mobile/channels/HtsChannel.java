@@ -673,18 +673,6 @@ public class HtsChannel {
                                 System.out.println("something went wrong " + e.getMessage());
                             }
                         }
-                        if (methodCall.method.equals("getArtInitiationRecord")) {
-
-                            try {
-                                ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao().findByVisitId(arguments);
-                                Log.i(TAG, "Art Initiation MODEL RETURNED FROM ANDROID" + artCurrentStatus);
-                                String artjson = gson.toJson(artCurrentStatus);
-                                Log.i(TAG, "ART INITIATION MODEL #################" + artjson);
-                                result.success(artjson);
-                            } catch (Exception e) {
-                                System.out.println("something went wrong " + e.getMessage());
-                            }
-                        }
                         if (methodCall.method.equals("getPersonArvCombinationRegimens")) {
                             Log.i(TAG, "ARGUMENTS SENT FROM FLUTTER TO GET ART REGIMEN >>>>>" + arguments);
 

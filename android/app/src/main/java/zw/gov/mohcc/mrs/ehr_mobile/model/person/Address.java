@@ -7,8 +7,6 @@ public class Address {
     @NonNull
     private String street;
     @NonNull
-    private String suburbVillage;
-    @NonNull
     private String city;
     @NonNull
     private String town;
@@ -26,15 +24,6 @@ public class Address {
 
     public void setStreet(@NonNull String street) {
         this.street = street;
-    }
-
-    @NonNull
-    public String getSuburbVillage() {
-        return suburbVillage;
-    }
-
-    public void setSuburbVillage(@NonNull String suburbVillage) {
-        this.suburbVillage = suburbVillage;
     }
 
     @NonNull
@@ -59,7 +48,6 @@ public class Address {
     public String toString() {
         return "Address{" +
                 "street='" + street + '\'' +
-                ", suburbVillage='" + suburbVillage + '\'' +
                 ", city='" + city + '\'' +
                 ", town='" + town + '\'' +
                 '}';
