@@ -3,6 +3,7 @@
 
 import 'package:ehr_mobile/db/tables/meta_tables/FacilityQueueTable.dart';
 import 'package:ehr_mobile/model/enums/enums.dart';
+import 'package:ehr_mobile/util/RecordStatusConstants.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 class FacilityQueueDao {
@@ -53,7 +54,7 @@ class FacilityQueueDao {
 
     inserter.set(department_code, deptCode);
     inserter.set(department_name, deptName);
-    inserter.set(status,'${RecordStatus.IMPORTED.toString()}');
+    inserter.set(status,'$IMPORTED');
     inserter.set(beds, bed);
     return await _adapter.insert(inserter);
   }

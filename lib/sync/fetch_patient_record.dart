@@ -1,6 +1,7 @@
 import 'package:ehr_mobile/db/dao/art_dao/ArtAppointmentDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtCurrentStatusDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtVisitDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtWhoStageDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/art_dao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtSymptomDao.dart';
 import 'package:ehr_mobile/db/dao/blood_pressure_dao.dart';
@@ -80,51 +81,51 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
           }
         }
 
-      for (Map visitHistory in patient['visitHistory']) {
-        var patientId = visitHistory['patientId'];
-        await visitDao.insertFromEhr(visitHistory, patient['personId']);
+          for (Map visitHistory in patient['visitHistory']) {
+            var patientId = visitHistory['patientId'];
+            await visitDao.insertFromEhr(visitHistory, patient['personId']);
 
-        await saveVitals(visitHistory, personId, patientId);
-          if (visitHistory['hts'] != null) {
-            if (visitHistory['hts']['laboratoryInvestigation'] != null) {
-              await labInvestigationDao.insertFromEhr(
-                  visitHistory['hts']['laboratoryInvestigation'],
-                  visitHistory['facility']['id']);
-            }
-            await htsDao.insertFromEhr(
-                visitHistory['hts'], personId, patientId,visitHistory['hts']['laboratoryInvestigation']['laboratoryInvestigationId']);
+            await saveVitals(visitHistory, personId, patientId);
+              if (visitHistory['hts'] != null) {
+                if (visitHistory['hts']['laboratoryInvestigation'] != null) {
+                  await labInvestigationDao.insertFromEhr(
+                      visitHistory['hts']['laboratoryInvestigation'],
+                      visitHistory['facility']['id']);
+                }
+                await htsDao.insertFromEhr(
+                    visitHistory['hts'], personId, patientId,visitHistory['hts']['laboratoryInvestigation']['laboratoryInvestigationId']);
+              }
+
+
           }
 
+          ///-------Save Art --------------
+          if (patient['art'] != null) {
+            var art = patient['art'];
+            log.i(art);
+            await savePatientArt(art, personId);
 
-      }
+            if (art['symptoms'] != null) {
+              await savePatientArtSymptoms(art, art['artId']);
+            }
 
-      ///-------Save Art --------------
-      if (patient['art'] != null) {
-        var art = patient['art'];
-        log.i(art);
-        await savePatientArt(art, personId);
+            if (art['appointments'] != null) {
+              await saveArtAppointments(art);
+            }
 
-        if (art['symptoms'] != null) {
-          await savePatientArtSymptoms(art, art['artId']);
-        }
+            if (art['artCurrentStatus']!= null) {
+              await saveArtCurrentStatus(art['artCurrentStatus'],art['artId']);
+            }
 
-        if (art['appointments'] != null) {
-          await saveArtAppointments(art);
-        }
+            if(art['visits']!=null){
+              await saveArtVisit(art);
+            }
+          }
 
-        if (art['artCurrentStatus']!= null) {
-          await saveArtCurrentStatus(art['artCurrentStatus'],art['artId']);
-        }
-
-        if(art['visits']!=null){
-          await saveArtVisit(art);
-        }
-      }
-
-        }catch(e){
-          log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
-          //throw e;
-        }
+    }catch(e){
+      log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
+      //throw e;
+    }
       //await Future.delayed(Duration(milliseconds: 500));
     }
   } else {
@@ -232,7 +233,19 @@ Future<String> saveArtVisit(Map map) async {
   var artVisitDao = ArtVisitDao(adapter);
   for(Map visit in map['visits']){
     await artVisitDao.insertFromEhr(visit,map['artId']);
+    if(visit['stage']!=null){
+      await saveArtWhoStage(visit['stage'],map['artId'],visit['visitId']);
+    }
   }
+  return '$DONE_STATUS';
+}
+
+Future<String> saveArtWhoStage(Map map,String artId,String visitId) async {
+  var dbHandler = DatabaseHelper();
+  var adapter = await dbHandler.getAdapter();
+  var artWhoStageDao = ArtWhoStageDao(adapter);
+  await artWhoStageDao.insertFromEhr(map,artId,visitId);
+
   return '$DONE_STATUS';
 }
 

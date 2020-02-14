@@ -330,6 +330,7 @@ public class ArtChannel {
                         if (methodCall.method.equals("getArtAppointment")) {
                             Log.i(TAG, "PersonId String object from flutter " + arguments);
                             try {
+                                Log.i(TAG, "get appointments in android"+gson.toJson(artService.getArtAppointment(arguments)));
                                 result.success(gson.toJson(artService.getArtAppointment(arguments)));
 
                             } catch (Exception e) {

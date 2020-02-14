@@ -113,6 +113,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
       setState(() {
         dateOfAppointment = DateFormat("yyyy/MM/dd").format(picked);
         test_date = DateFormat("yyyy/MM/dd").parse(dateOfAppointment);
+        print("TEST DATE TO BE SENT IS THIS ONE"+ test_date.toString());
       });
   }
 
@@ -138,7 +139,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
         artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(hts));
         print("HERE IS THE art appointments AFTER ASSIGNMENT " + artAppointmentResponse.toString());
       });
-      print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -152,7 +152,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
       items.add(DropdownMenuItem(
           value: entryPoint.code, child: Text(entryPoint.name)));
     }
-    print('HERE ARE THE ITEMS IN MAPPING DROP DOWN '+ items.toString());
     return items;
   }
 
