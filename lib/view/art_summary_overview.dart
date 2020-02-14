@@ -804,21 +804,36 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                             2.0, //width of the border
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ArtReg(
-                                                                      artdto,
-                                                                      widget.person
-                                                                          .id,
-                                                                      widget
-                                                                          .visitId,
-                                                                      widget.person,
-                                                                      widget
-                                                                          .htsRegistration,
-                                                                      widget
-                                                                          .htsId)),
-                                                            );
+                                                            if(artdto.artNumber == null){
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => ArtReg(
+                                                                        artdto,
+                                                                        widget.person
+                                                                            .id,
+                                                                        widget
+                                                                            .visitId,
+                                                                        widget.person,
+                                                                        widget
+                                                                            .htsRegistration,
+                                                                        widget
+                                                                            .htsId)),
+                                                              );
+                                                            }else{
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => ArtRegOverview(
+                                                                          this.artdto,
+                                                                          widget.person.id,
+                                                                          widget.visitId,
+                                                                          widget.person,
+                                                                          widget.htsRegistration,
+                                                                          widget.htsId)));
+
+                                                            }
+
                                                           },
                                                         ),
                                                       ),
@@ -1641,21 +1656,27 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                             2.0, //width of the border
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ArtReg(
-                                                                      artdto,
-                                                                      widget.person
-                                                                          .id,
-                                                                      widget
-                                                                          .visitId,
-                                                                      widget.person,
-                                                                      widget
-                                                                          .htsRegistration,
-                                                                      widget
-                                                                          .htsId)),
-                                                            );
+                                                            if(artdto ==  null){
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => ArtReg(
+                                                                        artdto,
+                                                                        widget.person
+                                                                            .id,
+                                                                        widget
+                                                                            .visitId,
+                                                                        widget.person,
+                                                                        widget
+                                                                            .htsRegistration,
+                                                                        widget
+                                                                            .htsId)),
+                                                              );
+
+                                                            }else{
+
+                                                            }
+
                                                           },
                                                         ),
                                                       ),
