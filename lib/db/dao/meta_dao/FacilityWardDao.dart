@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/db/tables/meta_tables/FacilityWardTable.dart';
+import 'package:ehr_mobile/util/RecordStatusConstants.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 class FacilityWardDao {
@@ -15,6 +16,7 @@ class FacilityWardDao {
   var department_name=StrField('department_name');
 
   var beds=IntField('beds');
+  var status=IntField('status');
 
 
   SqfliteAdapter _adapter;
@@ -51,6 +53,8 @@ class FacilityWardDao {
     inserter.set(department_name, deptName);
 
     inserter.set(beds, bed);
+    inserter.set(status, IMPORTED);
+
     return await _adapter.insert(inserter);
   }
 

@@ -198,10 +198,6 @@ class PersonQuery {
                         name
                       }
                     }
-                    stages {
-                      artStageId
-                      stage
-                    }
                     appointments {
                       artAppointmentId
                       artId
@@ -256,6 +252,14 @@ class PersonQuery {
                       visitType{
                         id
                         name
+                      }
+                      stage {
+                        artStageId
+                        stage
+                        followUpStatus {
+                          id
+                          name
+                        }
                       }
                     }
                   }
