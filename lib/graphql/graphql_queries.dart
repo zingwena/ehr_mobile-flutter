@@ -114,6 +114,15 @@ class PersonQuery {
                     weight {
                       value
                     }
+                    height{
+                      value
+                    }
+                    pulses{
+                      value
+                    }
+                    respiratoryRates{
+                      value
+                    }
                     facility {
                       id
                       name
@@ -224,9 +233,17 @@ class PersonQuery {
                       state
                       regimenType
                       medicine
+                      reason{
+                        id
+                        name
+                      }
+                      regimen{
+                        id
+                        name
+                      }
                       adverseEventStatus {
                         id
-                        name	
+                        name
                       }
                     }
                     visits {

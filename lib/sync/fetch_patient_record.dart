@@ -5,10 +5,13 @@ import 'package:ehr_mobile/db/dao/art_dao/ArtWhoStageDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/art_dao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtSymptomDao.dart';
 import 'package:ehr_mobile/db/dao/blood_pressure_dao.dart';
+import 'package:ehr_mobile/db/dao/height_dao.dart';
 import 'package:ehr_mobile/db/dao/hts_dao/hts_dao.dart';
 import 'package:ehr_mobile/db/dao/laboratory_investigation_dao.dart';
 import 'package:ehr_mobile/db/dao/person_dao.dart';
 import 'package:ehr_mobile/db/dao/person_investigation_dao.dart';
+import 'package:ehr_mobile/db/dao/pulse_dao.dart';
+import 'package:ehr_mobile/db/dao/respiratory_rate_dao.dart';
 import 'package:ehr_mobile/db/dao/sexual_history_dao.dart';
 import 'package:ehr_mobile/db/dao/sexual_history_question_dao.dart';
 import 'package:ehr_mobile/db/dao/temperature_dao.dart';
@@ -22,6 +25,8 @@ import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/util/logger.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import 'pull_patient_queue.dart';
 
 Future<String> pullPatientData(ProgressDialog progressDialog) async {
   PersonQuery queryMutation = PersonQuery();
@@ -47,12 +52,20 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
 
     await ArtCurrentStatusDao(adapter).removeAll();
 
+    ///------EMPTY VITALS----
+    await WeightDao(adapter).removeAll();
+    await HeightDao(adapter).removeAll();
+    await PulseDao(adapter).removeAll();
+    await RespiratoryRateDao(adapter).removeAll();
+    await BloodPressureDao(adapter).removeAll();
+
     ///Empty existing data first
     await htsDao.removeAll();
     await personInvestigationDao.removeAll();
     await personDao.removeAll();
     await visitDao.removeAll();
     await labInvestigationDao.removeAll();
+
 
     var t = await result.data["people"]['content'];
     for (Map patient in t) {
@@ -84,7 +97,7 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
           for (Map visitHistory in patient['visitHistory']) {
             var patientId = visitHistory['patientId'];
             await visitDao.insertFromEhr(visitHistory, patient['personId']);
-
+            //log.i(visitHistory);
             await saveVitals(visitHistory, personId, patientId);
               if (visitHistory['hts'] != null) {
                 if (visitHistory['hts']['laboratoryInvestigation'] != null) {
@@ -122,12 +135,21 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
             }
           }
 
+
     }catch(e){
       log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
       //throw e;
     }
       //await Future.delayed(Duration(milliseconds: 500));
     }
+
+    try{
+      await fetchPatientQueue();
+    }catch(e){
+      log.e('$e');
+    }
+
+
   } else {
     log.e('$result');
   }
@@ -150,9 +172,24 @@ Future<String> saveVitals(Map visit, String personId, String patientId) async {
   var tempDao = TemperatureDao(adapter);
   var bpDao = BloodPressureDao(adapter);
   var weightDao = WeightDao(adapter);
+  var heightDao=HeightDao(adapter);
+  var pulseDao=PulseDao(adapter);
+  var respiratoryRateDao=RespiratoryRateDao(adapter);
   if (visit['temperatures'] != null) {
     for (Map tempMap in visit['temperatures']) {
       await tempDao.insertFromEhr(tempMap, personId, patientId);
+    }
+  }
+
+  if (visit['pulses'] != null) {
+    for (Map bpMap in visit['pulses']) {
+      await pulseDao.insertFromEhr(bpMap, personId, patientId);
+    }
+  }
+
+  if (visit['respiratoryRates'] != null) {
+    for (Map bpMap in visit['respiratoryRates']) {
+      await respiratoryRateDao.insertFromEhr(bpMap, personId, patientId);
     }
   }
 
@@ -164,6 +201,10 @@ Future<String> saveVitals(Map visit, String personId, String patientId) async {
 
   if (visit['weight'] != null) {
     await weightDao.insertFromEhr(visit['weight'], personId, patientId);
+  }
+
+  if (visit['height'] != null) {
+    await heightDao.insertFromEhr(visit['height'], personId, patientId);
   }
   return '$DONE_STATUS';
 }
@@ -223,6 +264,7 @@ Future<String> saveArtCurrentStatus(Map map,String artId) async {
   var dbHandler = DatabaseHelper();
   var adapter = await dbHandler.getAdapter();
   var artCurrentStatusDao = ArtCurrentStatusDao(adapter);
+  log.i(map);
   await artCurrentStatusDao.insertFromEhr(map,artId);
   return '$DONE_STATUS';
 }
