@@ -296,10 +296,12 @@ class _ArtReg extends State<ArtReg> {
 
       switch (_testingSite) {
         case 1:
+          otherSite = false;
           healthFacility = true;
           testingSite = "Health Facility";
           break;
         case 2:
+          healthFacility = false;
           otherSite = true;
           testingSite = "Other Site";
           break;

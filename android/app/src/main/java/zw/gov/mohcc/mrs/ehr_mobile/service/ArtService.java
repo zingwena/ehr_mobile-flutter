@@ -90,7 +90,7 @@ public class ArtService {
             artLinkageFrom.setTestReason(new NameCode(question.getCode(), question.getName()));
         }
         if (StringUtils.isNoneBlank(artDTO.getFacility())) {
-            Facility facility = ehrMobileDatabase.facilityDao().findById(artDTO.getFacility());
+            Facility facility = ehrMobileDatabase.facilityDao().findByName(artDTO.getFacility());
             artLinkageFrom.setFacility(new NameCode(facility.getCode(), facility.getName()));
         }
         ehrMobileDatabase.artLinkageFromDao().save(artLinkageFrom);

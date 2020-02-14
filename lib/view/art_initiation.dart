@@ -148,7 +148,8 @@ class _Art_Initiation extends State<Art_Initiation> {
 
 
   Future<void>getArtInitiation(String visitId)async{
-    String response;
+    var response;
+    print("ART INITIATION METHOD CALLED");
     try{
       response = await htsChannel.invokeMethod('getArtInitiationRecord', visitId);
       setState(() {
