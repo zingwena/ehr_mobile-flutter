@@ -101,12 +101,13 @@ Future<String> pullQueueData(ProgressDialog progressDialog) async{
     var testKitBatchIssueDao= TestKitBatchIssueDao(adapter);
     await testKitBatchIssueDao.removeAll();
     await facilityQueueDao.removeAll();
-    var wards = await result.data["queues"]['content'];
-    for (Map map in wards) {
+    var queues = await result.data["queues"]['content'];
+    for (Map map in queues) {
       //progressDialog.update(message:'Fetching Queue: ${map['queue']['name']} data ...');
       await facilityQueueDao.insertFromEhr(map['queueId'],map['queue']['id'],
           map['queue']['name'],map['department']['id'],map['department']['name'], 0);
       for(Map kit in map['currentTestKits']['content']){
+        log.i(kit);
         await testKitBatchIssueDao.insertFromEhr(kit, map['queue']['name'], map['queue']['id']);
       }
     }
@@ -128,12 +129,11 @@ Future<String> pullWardData() async {
     var dbHandler = DatabaseHelper();
     var adapter = await dbHandler.getAdapter();
     var facilityWardDao = FacilityWardDao(adapter);
-    facilityWardDao.removeAll();
+    await facilityWardDao.removeAll();
     var wards = await result.data["wards"]['content'];
     for (Map map in wards) {
       facilityWardDao.insertFromEhr(map['wardId'],map['ward']['id'],
           map['ward']['name'],map['department']['id'],map['department']['name'], 0);
-
     }
   }
   return "$DONE_STATUS";
