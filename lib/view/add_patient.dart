@@ -1,18 +1,16 @@
 import 'dart:convert';
 
+import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
-import 'package:ehr_mobile/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'rounded_button.dart';
-import 'package:ehr_mobile/login_screen.dart';
-import 'package:ehr_mobile/preferences/stored_preferences.dart';
-
 
 import 'edit_demographics.dart';
+import 'rounded_button.dart';
 
 class AddPatient extends StatefulWidget {
   @override
@@ -69,17 +67,15 @@ class _AddPatient extends State<AddPatient> {
       });
   }
 
-  Future<void>getFacilityName()async{
+  Future<void> getFacilityName() async {
     String response;
-    try{
+    try {
       response = await retrieveString(FACILITY_NAME);
       setState(() {
         facility_name = response;
       });
-
-    }catch(e){
-      debugPrint("Exception thrown in get facility name method"+e);
-
+    } catch (e) {
+      debugPrint("Exception thrown in get facility name method" + e);
     }
   }
 
@@ -141,54 +137,62 @@ class _AddPatient extends State<AddPatient> {
             elevation: 0.0,
             centerTitle: true,
             title: new Text(
-            facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
-            fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+              facility_name != null ? facility_name : 'Impilo Mobile',
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 25.0,
+              ),
+            ),
             actions: <Widget>[
-
-
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Icon(
-                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                            Icons.person_pin,
+                            size: 25.0,
+                            color: Colors.white,
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: Text("admin", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                          child: Text(
+                            "admin",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.0,
+                                color: Colors.white),
+                          ),
                         ),
-                      ])
-              ),
-
+                      ])),
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
-                              icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            icon: Icon(Icons.exit_to_app),
+                            color: Colors.white,
                             onPressed: () => Navigator.push(
-                             context,
-                               MaterialPageRoute(builder: (context) => LoginScreen()),),
-                        ),
-                      /*  Padding(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                            ),
+                          ),
+                          /*  Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text("logout", style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ), */
-
-                        ),  ])
-              ),
+                        ),
+                      ])),
             ],
           ),
           Positioned.fill(
@@ -199,97 +203,256 @@ class _AddPatient extends State<AddPatient> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("Add New Patient", style: TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
+                    child: Text(
+                      "Add New Patient",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.0,
+                          color: Colors.white),
+                    ),
                   ),
-                   _buildButtonsRow(),
+                  _buildButtonsRow(),
                   Expanded(
-                      child: new Card(
-                        elevation: 4.0,
-                        margin: const EdgeInsets.all(8.0),
-                        child: DefaultTabController(
-                          child: new LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints viewportConstraints) {
-                              return Column(
-                                children: <Widget>[
-                                  //   _buildTabBar(),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      child: new ConstrainedBox(
-                                        constraints: new BoxConstraints(
-                                          minHeight:
-                                              viewportConstraints.maxHeight -
-                                                  48.0,
-                                        ),
-                                        child: new IntrinsicHeight(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Form(
-                                                key: _formKey,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: <Widget>[
-                                                    SizedBox(
-                                                      height: 20.0,
-                                                    ),
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
-                                                              child: TextFormField(
-                                                                /*validator:
+                    child: new Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.all(8.0),
+                      child: DefaultTabController(
+                        child: new LayoutBuilder(
+                          builder: (BuildContext context,
+                              BoxConstraints viewportConstraints) {
+                            return Column(
+                              children: <Widget>[
+                                //   _buildTabBar(),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: new ConstrainedBox(
+                                      constraints: new BoxConstraints(
+                                        minHeight:
+                                            viewportConstraints.maxHeight -
+                                                48.0,
+                                      ),
+                                      child: new IntrinsicHeight(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Form(
+                                              key: _formKey,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    height: 20.0,
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        16.0,
+                                                                    horizontal:
+                                                                        60.0),
+                                                            child:
+                                                                TextFormField(
+                                                              /*validator:
                                                                     (value) {
                                                                   return value
                                                                           .isEmpty
                                                                       ? 'Enter National Id number'
                                                                       : null;
                                                                 },*/
-                                                                onSaved: (value) => setState(() {
-                                                                  nationalId = value;
-                                                                }),
-                                                                decoration: InputDecoration(
-                                                                    labelText: _identifier ==
-                                                                            "Select Identifier"
-                                                                        ? "ID Number e.g 22-234567Y23"
-                                                                        : _identifier +
-                                                                            " Number",
-                                                                    border:
-                                                                        OutlineInputBorder()),
-                                                              ),
+                                                              onSaved:
+                                                                  (value) =>
+                                                                      setState(
+                                                                          () {
+                                                                nationalId =
+                                                                    value;
+                                                              }),
+                                                              decoration: InputDecoration(
+                                                                  labelText: _identifier ==
+                                                                          "Select Identifier"
+                                                                      ? "ID Number e.g 22-234567Y23"
+                                                                      : _identifier +
+                                                                          " Number",
+                                                                  border:
+                                                                      OutlineInputBorder()),
                                                             ),
-                                                            width: 100,
                                                           ),
+                                                          width: 100,
                                                         ),
-                                                      ],
-                                                    ),
-
-                                                    SizedBox(
-                                                      height: 10.0,
-                                                    ),
-                                                    Row(
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        16.0,
+                                                                    horizontal:
+                                                                        60.0),
+                                                            child:
+                                                                TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                        .isEmpty
+                                                                    ? 'Enter First Name'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                      setState(
+                                                                          () {
+                                                                firstName =
+                                                                    value;
+                                                              }),
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                      'First Name',
+                                                                  border:
+                                                                      OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        child: SizedBox(
+                                                          child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        16.0,
+                                                                    horizontal:
+                                                                        60.0),
+                                                            child:
+                                                                TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                return value
+                                                                        .isEmpty
+                                                                    ? 'Enter Last Name'
+                                                                    : null;
+                                                              },
+                                                              onSaved:
+                                                                  (value) =>
+                                                                      setState(
+                                                                          () {
+                                                                lastName =
+                                                                    value;
+                                                              }),
+                                                              decoration: InputDecoration(
+                                                                  labelText:
+                                                                      'Last Name',
+                                                                  border:
+                                                                      OutlineInputBorder()),
+                                                            ),
+                                                          ),
+                                                          width: 100,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 16.0,
+                                                            horizontal: 60.0),
+                                                    child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets.symmetric(
-                                                                  vertical: 16.0,
-                                                                  horizontal: 60.0),
-                                                              child: TextFormField(
-                                                                validator: (value) {
-                                                                  return value.isEmpty
-                                                                      ? 'Enter First Name'
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  Text('Sex'),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('Male'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue: _gender,
+                                                            activeColor:
+                                                                Colors.blue,
+                                                            onChanged:
+                                                                _handleGenderChange),
+                                                        Text('Female'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _gender,
+                                                            activeColor:
+                                                                Colors.blue,
+                                                            onChanged:
+                                                                _handleGenderChange)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 16.0,
+                                                            horizontal: 60.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(0.0),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    TextEditingController(
+                                                                        text:
+                                                                            displayDate),
+                                                                validator:
+                                                                    (value) {
+                                                                  return value
+                                                                          .isEmpty
+                                                                      ? 'Enter some text'
                                                                       : null;
                                                                 },
-                                                                onSaved: (value) =>
-                                                                    setState(() {
-                                                                          firstName = value;
+                                                                decoration: InputDecoration(
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today),
+                                                                        color: Colors.blue,
+                                                                        onPressed: () {
+                                                                          _selectDate(
+                                                                              context);
                                                                         }),
-                                                                decoration: InputDecoration(
-                                                                    labelText: 'First Name',
+                                                                    labelText: 'Date of Birth',
                                                                     border: OutlineInputBorder()),
                                                               ),
                                                             ),
@@ -298,183 +461,101 @@ class _AddPatient extends State<AddPatient> {
                                                         ),
                                                       ],
                                                     ),
-                                                    SizedBox(
-                                                      height: 10.0,
-                                                    ),
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(vertical: 16.0,
-                                                                      horizontal: 60.0),
-                                                              child: TextFormField(
-                                                                validator: (value) {
-                                                                  return value.isEmpty
-                                                                      ? 'Enter Last Name'
-                                                                      : null;
-                                                                },
-                                                                onSaved:
-                                                                    (value) =>
-                                                                        setState(
-                                                                            () {
-                                                                  lastName = value;                                           }),
-                                                                decoration: InputDecoration(
-                                                                    labelText: 'Last Name',
-                                                                    border: OutlineInputBorder()),
-                                                              ),
-                                                            ),
-                                                            width: 100,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10.0,
-                                                    ),
-
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Text('Sex'),
-                                                              ),
-                                                              width: 250,
-                                                            ),
-                                                          ),
-                                                          Text('Male'),
-                                                          Radio(
-                                                              value: 1,
-                                                              groupValue: _gender,
-                                                              activeColor: Colors.blue,
-                                                              onChanged: _handleGenderChange),
-                                                          Text('Female'),
-                                                          Radio(
-                                                              value: 2,
-                                                              groupValue: _gender,
-                                                              activeColor: Colors.blue,
-                                                              onChanged: _handleGenderChange)
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10.0,
-                                                    ),
-                                                    Container(
-                                                      width: double.infinity,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 35.0,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 16.0,
+                                                            horizontal: 55.5),
+                                                    child: RaisedButton(
+                                                      elevation: 4.0,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0)),
+                                                      color: Colors.blue,
                                                       padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 16.0,
-                                                              horizontal: 60.0),
+                                                          const EdgeInsets.all(
+                                                              20.0),
                                                       child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: <Widget>[
-                                                          Expanded(
-                                                            child: SizedBox(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(0.0),
-                                                                child: TextFormField(
-                                                                  controller: TextEditingController(
-                                                                          text:displayDate),
-                                                                  validator: (value) {
-                                                                    return value.isEmpty
-                                                                        ? 'Enter some text'
-                                                                        : null;
-                                                                  },
-                                                                  decoration: InputDecoration(
-                                                                      suffixIcon: IconButton(
-                                                                          icon: Icon(Icons.calendar_today), color: Colors.blue,
-                                                                          onPressed: () {_selectDate(context);}),
-                                                                      labelText: 'Date of Birth',
-                                                                      border: OutlineInputBorder()),
-                                                                ),
-                                                              ),
-                                                              width: 100,
-                                                            ),
+                                                          Text(
+                                                            'Proceed to Demographics',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          Spacer(),
+                                                          Icon(
+                                                            Icons.navigate_next,
+                                                            color: Colors.white,
                                                           ),
                                                         ],
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 35.0,
-                                                    ),
-                                                    Container(
-                                                      width: double.infinity,
-                                                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 55.5),
-                                                      child: RaisedButton(
-                                                        elevation: 4.0,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(5.0)),
-                                                        color: Colors.blue,
-                                                        padding: const EdgeInsets.all(20.0),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: <Widget>[
-                                                            Text('Proceed to Demographics', style: TextStyle(color: Colors.white),),
-                                                            Spacer(),
-                                                            Icon(Icons.navigate_next, color: Colors.white, ),
-                                                          ],
-                                                        ),
-                                                        onPressed: () async {
-                                                          if (_formKey
-                                                              .currentState
-                                                              .validate()) {
-                                                            _formKey
-                                                                .currentState
-                                                                .save();
-                                                            setState(() {
-                                                              nationalIdNumber =
-                                                                  nationalId.replaceAll(
-                                                                      new RegExp(
-                                                                          r'[^a-zA-Z0-9]'),
-                                                                      '');
-                                                            });
-                                                            RegExp regex =
-                                                                new RegExp(
-                                                                    r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
-                                                            if (regex.hasMatch(
-                                                                nationalIdNumber)) {
-
-                                                              Navigator.push(                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) => EditDemographics(
-                                                                          lastName,
-                                                                          firstName,
-                                                                          birthDate,
-                                                                          gender,
-                                                                          nationalId)));
-                                                            } else {
-                                                              showError = true;
-                                                            }
+                                                      onPressed: () async {
+                                                        if (_formKey
+                                                            .currentState
+                                                            .validate()) {
+                                                          _formKey.currentState
+                                                              .save();
+                                                          setState(() {
+                                                            nationalIdNumber =
+                                                                nationalId.replaceAll(
+                                                                    new RegExp(
+                                                                        r'[^a-zA-Z0-9]'),
+                                                                    '');
+                                                          });
+                                                          RegExp regex = new RegExp(
+                                                              r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
+                                                          if (nationalIdNumber.isEmpty || regex.hasMatch(
+                                                              nationalIdNumber)) {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => EditDemographics(
+                                                                        lastName,
+                                                                        firstName,
+                                                                        birthDate,
+                                                                        gender,
+                                                                        nationalId)));
+                                                          } else {
+                                                            showError = true;
                                                           }
-                                                        },
-                                                      ),
+                                                        }
+                                                      },
                                                     ),
-                                                    SizedBox(
-                                                      height: 25.0,
-                                                    ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 25.0,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  )
-                                ],
-                              );
-                            },
-                          ),
-                          length: 3,
+                                  ),
+                                )
+                              ],
+                            );
+                          },
                         ),
+                        length: 3,
                       ),
+                    ),
                   ),
                 ],
               ),
@@ -494,17 +575,14 @@ class _AddPatient extends State<AddPatient> {
             text: "Add Patient",
             selected: true,
           ),
-
           new RoundedButton(
             text: "Continue Registration",
           ),
-
           new RoundedButton(
             text: "Close",
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SearchPatient()),
-
             ),
           ),
         ],
