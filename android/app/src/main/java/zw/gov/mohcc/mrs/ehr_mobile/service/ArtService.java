@@ -169,17 +169,19 @@ public class ArtService {
         return ArtCurrentStatusDTO.get(savedArtCurrentStatus);
     }
 
-    public ArtCurrentStatusDTO getArtCurrentStatus(String artId) {
+    public ArtCurrentStatusDTO getArtCurrentStatus(String personId) {
 
-        Log.d(TAG, "Fetching patient art current status using artId : " + artId);
+        Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
+
+        Log.d(TAG, "Fetching patient art current status using artId : " + art);
 
         ArtCurrentStatus artCurrentStatus = ehrMobileDatabase.artCurrentStatusDao()
-                .findLastestPatientStatus(artId);
+                .findLastestPatientStatus(art.getId());
 
-        Log.d(TAG, "Fetched art current status : " + artId);
+        Log.d(TAG, "Fetched art current status : " + artCurrentStatus);
 
         return artCurrentStatus != null ? ArtCurrentStatusDTO.get(artCurrentStatus) :
-                ArtCurrentStatusDTO.get(new ArtCurrentStatus(null, artId));
+                ArtCurrentStatusDTO.get(new ArtCurrentStatus(null, art.getId()));
     }
 
     public ArtWhoStage getCurrentWHoStage(String artId) {

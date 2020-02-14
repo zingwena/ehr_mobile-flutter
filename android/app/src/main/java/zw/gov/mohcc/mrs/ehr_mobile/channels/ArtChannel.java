@@ -70,7 +70,15 @@ public class ArtChannel {
                             }
 
                         }
+                        if (methodCall.method.equals("getArtInitiationRecord")) {
 
+                            try {
+                                Log.i(TAG, "Person ID from flutter " + arguments);
+                                result.success(gson.toJson(artService.getArtCurrentStatus(arguments)));
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
                         if (methodCall.method.equals("saveArtInitiation")) {
                             try {
 
