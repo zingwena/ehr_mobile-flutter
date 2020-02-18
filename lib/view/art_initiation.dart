@@ -4,28 +4,21 @@ import 'package:ehr_mobile/model/art_reason.dart';
 import 'package:ehr_mobile/model/artdto.dart';
 import 'package:ehr_mobile/model/artregmendto.dart';
 import 'package:ehr_mobile/model/arv_combination_regimen.dart';
-import 'package:ehr_mobile/model/entry_point.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
-import 'package:ehr_mobile/model/personInvestigation.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
-import 'package:ehr_mobile/view/home_page.dart';
-import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/art_initiationoverview.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
-import 'package:ehr_mobile/view/reception_vitals.dart';
-import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import '../sidebar.dart';
 import 'rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 class Art_Initiation extends StatefulWidget {
 
