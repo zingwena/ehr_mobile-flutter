@@ -9,6 +9,7 @@ import 'package:ehr_mobile/model/reason.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/artappointmentOverview.dart';
+import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,8 @@ import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
+
+import 'art_summary_overview.dart';
 
 
 class ArtAppointmentView extends StatefulWidget {
@@ -242,50 +245,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                     child: Text("ART Appointment", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                 /* Container(
-                      child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person_outline, size: 25.0, color: Colors.white,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.date_range, size: 25.0, color: Colors.white,),
-                            ),
-                        *//*    Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),*//*
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.person, size: 25.0, color: Colors.white,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text("Sex :"+ widget.person.sex, style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.verified_user, size: 25.0, color: Colors.white,),
-                            ),
-                          ])
-                  ),*/
-                 // _buildButtonsRow(),
+               _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -462,31 +422,33 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     );
   }
 
-  /* Widget _buildButtonsRow() {
+   Widget _buildButtonsRow() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "ART Registration",
+            text: "ART Appointment",
             selected: true,
           ),
 
-          new RoundedButton(
+         /* new RoundedButton(
             text: "ART Initiation",
           ),
-
+*/
           new RoundedButton(
             text: "Close",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SearchPatient()),
-            ),
+            onTap: () =>    Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                ))
           ),
         ],
       ),
     );
-  } */
+  }
 
   Future<void> artappintmentReg(ArtAppointment artAppointment) async {
     String art_appointment_response;

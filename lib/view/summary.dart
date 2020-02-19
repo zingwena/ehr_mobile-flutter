@@ -917,20 +917,11 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                       ),
                                                       onPressed: () {
                                                         Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) => ArtReg(
-                                                                  artdto,
-                                                                  widget.person
-                                                                      .id,
-                                                                  widget
-                                                                      .visitId,
-                                                                  widget.person,
-                                                                  widget
-                                                                      .htsRegistration,
-                                                                  widget
-                                                                      .htsId)),
-                                                        );
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>   ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                                                            ));
                                                       },
                                                     ),
                                                   ),
@@ -1117,7 +1108,6 @@ class SummaryOverviewState extends State<SummaryOverview>
               text: "HTS",
               onTap: () {
                 if (htsScreening == null) {
-                  debugPrint("The htsscreening record was null ######");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -1128,7 +1118,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                               widget.visitId,
                               widget.person)));
                 } else {
-                  debugPrint("The htsscreening record wasn't null #######");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -1143,8 +1132,6 @@ class SummaryOverviewState extends State<SummaryOverview>
           new RoundedButton(
               text: "ART",
               onTap: () {
-                  print("ART DTO DATE IS  NULL");
-
                   Navigator.push(
                       context,
                       MaterialPageRoute(

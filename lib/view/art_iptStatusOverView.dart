@@ -24,6 +24,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -359,7 +360,7 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "IPT Overview", selected: true),
+          new RoundedButton(text: "ART IPT Status ", selected: true),
           new RoundedButton(text: "Symptoms", onTap: (){
             Navigator.push(
               context,
@@ -368,28 +369,16 @@ class ArtIptStatusOverviewState extends State<ArtIptStatusOverview> {
                       widget.person)
               ),
             );
-
           },
           ),
-          new RoundedButton(text: "Art Visit", onTap: () {
-
-            if(_artVisit.visitType == null ){
-              Navigator.push(
+          new RoundedButton(text: "CLOSE", onTap: () {
+            Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
-              );
-            } else {
-              print("ART DTO DATE IS NOT NULL");
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
 
-              ));
-            }
+                ));
           }
-
-            // ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
 
           ),
 

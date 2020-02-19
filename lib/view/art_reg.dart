@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 
 class ArtReg extends StatefulWidget {
@@ -1050,16 +1051,7 @@ class _ArtReg extends State<ArtReg> {
                                                                       widget.person,
                                                                       widget.htsRegistration,
                                                                       widget.htsId)));
-                                                          setState(() {
-                                                            /*  Artdto(this.personId, this.date, this.artNumber, this.enlargedLymphNode,
-                                                                this.pallor, this.jaundice, this.cyanosis, this.mentalStatus,
-                                                                this.centralNervousSystem, this.dateOfHivTest, this.dateEnrolled,
-                                                                this.tracing, this.followUp, this.hivStatus, this.relation,
-                                                                this.dateOfDisclosure, this.reason, this.linkageFrom,
-                                                                this.dateHivConfirmed, this.linkageNumber, this.hivTestUsed,
-                                                                this.otherInstitution, this.testReason, this.reTested, this.dateRetested,
-                                                                this.facility);*/
-                                                          });
+
                                                         }
                                                       },
                                                     ),
@@ -1107,10 +1099,12 @@ class _ArtReg extends State<ArtReg> {
           ),
           new RoundedButton(
             text: "Close",
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SearchPatient()),
-            ),
+            onTap: () =>   Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>   ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                ))
           ),
         ],
       ),

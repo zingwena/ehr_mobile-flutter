@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'art_Visit_Overview.dart';
+import 'art_summary_overview.dart';
 //import 'patient_address.dart';
 //import 'rounded_button.dart';
 //import 'package:ehr_mobile/login_screen.dart';
@@ -995,7 +996,7 @@ class _ArtVisit extends State<ArtVisitView> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
-          new RoundedButton(text: "Art Visit", onTap: () {
+          new RoundedButton(text: "Art Visit",selected: true, onTap: () {
 
             if(_artVisit.visitType == null ){
               Navigator.push(
@@ -1005,7 +1006,6 @@ class _ArtVisit extends State<ArtVisitView> {
                         ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
               );
             } else {
-              print("ART DTO DATE IS NOT NULL");
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
 
@@ -1013,16 +1013,18 @@ class _ArtVisit extends State<ArtVisitView> {
             }
           }
 
-            // ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
-
           ),
 
-          new RoundedButton(text: "ART Registration",),
-          new RoundedButton(text: "ART Initiation", selected: true,
-          ),
+          new RoundedButton(text: "IPT Status",),
+          new RoundedButton(text: "CLOSE",onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
 
+                ));
 
-
+          },   ),
         ],
       ),
     );

@@ -547,18 +547,19 @@ class _Registration extends State<Registration> {
     String htsresponse ;
     try {
       id = await htsChannel.invokeMethod('htsRegistration', jsonEncode(htsRegistration));
-      hts_id = id;
-      htsresponse = await htsChannel.invokeMethod('getHtsRegDetails', hts_id);
+      htsresponse = await htsChannel.invokeMethod('getHtsRegDetails', id);
+
       setState(() {
+        hts_id = id;
         _htsRegistration = HtsRegistration.fromJson(jsonDecode(htsresponse));
-        print("HTS REGISTRATION ON RETURN FROM FLUTTER AFTER SAVE"+ _htsRegistration.toString());
+
       });
+
 
       String patientid = patientId.toString();
       DateTime date = htsRegistration.dateOfHivTest;
       PersonInvestigation personInvestigation = new PersonInvestigation(
           patientid, "36069471-adee-11e7-b30f-3372a2d8551e", date, null);
-    //  await htsChannel.invokeMethod('htsRegistration',jsonEncode(personInvestigation));
 
       print('---------------------saved file id  $id');
     } catch (e) {

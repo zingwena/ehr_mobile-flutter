@@ -110,6 +110,7 @@ class _PatientPretest extends State<PatientPretest> {
   getHtsRecord(widget.personId);
   getFacilityName();
   getAge(widget.person);
+  print("HTS ID IN PRETEST PAGE "+ widget.htsid);
     super.initState();
   }
 
@@ -806,8 +807,6 @@ class _PatientPretest extends State<PatientPretest> {
                         )),
           ),
           ),
-      //HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
-
       new RoundedButton(
             text: "HTS Pre-Testing", selected: true,
 

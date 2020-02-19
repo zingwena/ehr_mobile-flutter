@@ -72,6 +72,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
     getAge(widget.person);
     getFacilityName();
     dateofreg =  DateFormat("yyyy/MM/dd").format(widget.htsRegistration.dateOfHivTest);
+    print("HTS ID IN HTS REG OVERVIEW"+ widget.htsid);
 
     super.initState();
   }
@@ -431,12 +432,7 @@ class HtsOverviewState extends State<HtsRegOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "HTS Registration", selected: true,/* onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Registration(_patient.id)),
-          ),*/),
+          new RoundedButton(text: "HTS Registration", selected: true,),
           new RoundedButton(text: "HTS Pre-Testing", onTap: () {
             if(htsApproach == null ){
               Navigator.push(context,MaterialPageRoute(
@@ -448,35 +444,11 @@ class HtsOverviewState extends State<HtsRegOverview> {
               ));
             }
 
-
-
-
           }
           ),
-          new RoundedButton(text: "HTS Testing",/* onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    HtsScreeningTest(widget.personId)),
-          ),*/
+          new RoundedButton(text: "HTS Testing",
           ),
 
-
-          /*new RoundedButton(text: "HTS Post-Testing", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Art_Registration(_patient.id)),
-          ),),*/
-
-
-         /* new RoundedButton(text: "CLOSE", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
-          ),*/
         ],
       ),
     );

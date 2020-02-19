@@ -13,6 +13,7 @@ import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/ArtOiView.dart';
+import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/view/sexual_history_overview.dart';
 import 'package:ehr_mobile/view/sexual_history_qn.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import '../sidebar.dart';
 import 'art_appointment.dart';
 import 'art_newOS.dart';
+import 'art_summary_overview.dart';
 import 'art_symptomview.dart';
 
 class ArtNewOI extends StatefulWidget {
@@ -271,11 +273,6 @@ class _ArtOIState extends State<ArtNewOI> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
 
                         ),  ])
               ),
@@ -338,6 +335,7 @@ class _ArtOIState extends State<ArtNewOI> {
                                 Icons.verified_user, size: 25.0, color: Colors.white,),
                             ),
                           ])),
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -426,6 +424,32 @@ class _ArtOIState extends State<ArtNewOI> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+
+          new RoundedButton(text: "New OI ", selected: true),
+          new RoundedButton(text: "TB Screening", onTap: (){},
+          ),
+          new RoundedButton(text: "CLOSE", onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsid)
+
+                ));
+          }
+
+          ),
+
+
         ],
       ),
     );

@@ -22,6 +22,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -432,10 +433,8 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Registration",),
-          new RoundedButton(text: "ART Initiation", selected: true,
-          ),
-          new RoundedButton(text: "Art Visit", onTap: () {
+          new RoundedButton(text: "ART Initiation",selected: true),
+          new RoundedButton(text: "ART Visit", onTap: () {
 
             if(_artVisit.visitType == null ){
               Navigator.push(
@@ -452,9 +451,16 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
             }
           }
 
-             // ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
-
           ),
+          new RoundedButton(text: "CLOSE", onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                ));
+
+          },)
 
 
         ],

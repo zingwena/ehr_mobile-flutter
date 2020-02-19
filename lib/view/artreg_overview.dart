@@ -22,6 +22,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -502,21 +503,7 @@ class ArtOverviewState extends State<ArtRegOverview> {
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
+
                                             ],
                                           )
 
@@ -557,12 +544,10 @@ class ArtOverviewState extends State<ArtRegOverview> {
           ),*/),
           new RoundedButton(text: "ART Initiation", onTap: (){
             if(artInitiation == null ){
-              debugPrint("GGGGGGGGGGGGG art initiation is null");
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=>  Art_Initiation(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
               ));
             } else {
-              debugPrint("GGGGGGGGGGGGG art initiation is not null");
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=> ArtInitiationOverview(artInitiation, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
 
@@ -571,7 +556,14 @@ class ArtOverviewState extends State<ArtRegOverview> {
             }
           }
           ),
-          new RoundedButton(text: "Close",)
+          new RoundedButton(text: "Close", onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                ));
+          },)
         ],
       ),
     );
