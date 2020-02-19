@@ -11,6 +11,7 @@ import 'package:ehr_mobile/model/purposeOfTest.dart';
 import 'package:ehr_mobile/model/sexualhistoryview.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/view/sexual_history_overview.dart';
 import 'package:ehr_mobile/view/sexual_history_qn.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 
 import '../sidebar.dart';
 import 'art_newOS.dart';
+import 'art_summary_overview.dart';
 import 'art_symptomview.dart';
 
 class ArtSymptoms extends StatefulWidget {
@@ -345,6 +347,7 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                                 Icons.verified_user, size: 25.0, color: Colors.white,),
                             ),
                           ])),
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -437,7 +440,34 @@ class _ArtSymptomState extends State<ArtSymptoms> {
     );
   }
 
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+
+          new RoundedButton(text: "Symptoms ", selected: true),
+          new RoundedButton(text: "New OI", onTap: (){},
+          ),
+          new RoundedButton(text: "CLOSE", onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsid)
+
+                ));
+          }
+
+          ),
+
+
+        ],
+      ),
+    );
+  }
+
 }
+
 
 Widget getArtSymptomWidgets(List<ArtSymptom> artsymptoms,String personId) {
 
@@ -448,6 +478,10 @@ Widget getArtSymptomWidgets(List<ArtSymptom> artsymptoms,String personId) {
       )
           .toList());
 }
+
+
+
+
 
 
 

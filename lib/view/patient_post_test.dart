@@ -710,7 +710,6 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                 widget.result,
                                                                 this._consenttoindex,
                                                                 _postTestCounselled);
-                                                            print("POST TEST TO BE SAVED "+ postTest.toString());
 
                                                             await insertPostTest(
                                                                 postTest);

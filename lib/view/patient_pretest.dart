@@ -806,8 +806,6 @@ class _PatientPretest extends State<PatientPretest> {
                         )),
           ),
           ),
-      //HtsRegOverview(this.htsRegistration, this.personId, this.htsid);
-
       new RoundedButton(
             text: "HTS Pre-Testing", selected: true,
 

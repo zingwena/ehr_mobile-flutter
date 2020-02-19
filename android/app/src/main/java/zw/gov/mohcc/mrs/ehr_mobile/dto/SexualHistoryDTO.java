@@ -43,7 +43,7 @@ public class SexualHistoryDTO {
     }
 
     public void setSexWithMaleDate(PastDate sexWithMaleDate) {
-        this.sexWithMaleDate = sexWithMaleDate;
+        this.sexWithMaleDate = sexWithMaleDate != null ? sexWithMaleDate.getPastDate() : null;
     }
 
     public Date getSexWithFemaleDate() {
@@ -51,7 +51,7 @@ public class SexualHistoryDTO {
     }
 
     public void setSexWithFemaleDate(PastDate sexWithFemaleDate) {
-        this.sexWithFemaleDate = sexWithFemaleDate;
+        this.sexWithFemaleDate = sexWithFemaleDate != null ? sexWithFemaleDate.getPastDate() : null;
     }
 
     public Integer getNumberOfSexualPartners() {

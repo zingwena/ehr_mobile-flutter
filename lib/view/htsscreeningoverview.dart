@@ -75,8 +75,7 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
     getHtsRecord(_patient.id);
     getFacilityName();
     getAge(widget.person);
-    print(_patient.toString());
-
+    getHtsId(_patient.id);
     if(widget.htsScreening.testedBefore == true){
       beenTestedBefore = 'YES';
     }else{
@@ -148,7 +147,6 @@ class _HtsScreeningOverview extends State<HtsScreeningOverview> {
       setState(() {
 
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
 
       });
       print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);

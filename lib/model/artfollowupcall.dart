@@ -12,14 +12,15 @@ class ArtFollowUpCall  {
 
   String id;
   String artAppointmentId;
-  NameCode outcome;
+  String outcome;
   DateTime date;
-
-  ArtFollowUpCall(String id,String artAppointmentId, NameCode outcome, DateTime date){
+  String followUpType;
+  ArtFollowUpCall(String id,String artAppointmentId, String outcome, DateTime date, String followUpType){
     this.id = id;
     this.artAppointmentId = artAppointmentId;
     this.outcome = outcome;
     this.date = date;
+    this.followUpType = followUpType;
   }
 
   factory ArtFollowUpCall.fromJson(Map<String, dynamic> json) => _$ArtFollowUpCallFromJson(json);

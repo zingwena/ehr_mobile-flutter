@@ -94,6 +94,7 @@ class PretestOverviewState extends State<PretestOverview> {
      getLabInvestigation(widget.personId);
      getFacilityName();
      getAge(widget.person);
+     print("HTS ID IN PRETEST OVERVIEW"+ widget.htsId);
      if(widget.preTest.newTestInClientLife == false){
        _newTest = "NO";
      }else{
@@ -590,21 +591,6 @@ class PretestOverviewState extends State<PretestOverview> {
                                                 ),
                                               ),
                                               Expanded(child: Container()),
-                                              /*  Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16.0, top: 8.0),
-                                              child: FloatingActionButton(
-                                                onPressed: () =>
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddPatient()),
-                                                    ),
-                                                child: Icon(
-                                                    Icons.add, size: 36.0),
-                                              ),
-                                            ), */
                                             ],
                                           )
 

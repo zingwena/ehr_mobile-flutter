@@ -33,7 +33,7 @@ public class ArtFollowUpDTO implements Serializable {
         this.id = id;
         this.artAppointmentId = artAppointmentId;
         this.outcome = outcome;
-        this.date = date;
+        this.date = date != null ? date.getPastDate() : null;
         this.followUpType = followUpType;
     }
 

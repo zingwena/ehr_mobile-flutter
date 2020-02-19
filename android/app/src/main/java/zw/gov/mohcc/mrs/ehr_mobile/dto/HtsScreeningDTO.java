@@ -72,7 +72,7 @@ public class HtsScreeningDTO {
     }
 
     public void setDateLastTested(PastDate dateLastTested) {
-        this.dateLastTested = dateLastTested;
+        this.dateLastTested = dateLastTested != null ? dateLastTested.getPastDate() : null;
     }
 
     public String getArtNumber() {
@@ -88,7 +88,7 @@ public class HtsScreeningDTO {
     }
 
     public void setDateLastNegative(PastDate dateLastNegative) {
-        this.dateLastNegative = dateLastNegative;
+        this.dateLastNegative = dateLastNegative != null ? dateLastNegative.getPastDate() : null;
     }
 
     public Integer getViralLoad() {
@@ -104,7 +104,7 @@ public class HtsScreeningDTO {
     }
 
     public void setViralLoadDate(PastDate viralLoadDate) {
-        this.viralLoadDate = viralLoadDate;
+        this.viralLoadDate = viralLoadDate != null ? viralLoadDate.getPastDate() : null;
     }
 
     public Integer getCd4Count() {
@@ -120,7 +120,7 @@ public class HtsScreeningDTO {
     }
 
     public void setCd4CountDate(PastDate cd4CountDate) {
-        this.cd4CountDate = cd4CountDate;
+        this.cd4CountDate = cd4CountDate != null ? cd4CountDate.getPastDate() : null;
     }
 
     public Date getDateEnrolled() {
@@ -128,7 +128,7 @@ public class HtsScreeningDTO {
     }
 
     public void setDateEnrolled(PastDate dateEnrolled) {
-        this.dateEnrolled = dateEnrolled;
+        this.dateEnrolled = dateEnrolled != null ? dateEnrolled.getPastDate() : null;
     }
 
     public ActivityStatus getViralLoadDone() {

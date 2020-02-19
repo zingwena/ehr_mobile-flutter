@@ -27,6 +27,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../sidebar.dart';
+import 'artFollowUp.dart';
 import 'art_Visit_Overview.dart';
 import 'art_iptStatus.dart';
 import 'art_iptStatusOverView.dart';
@@ -1395,8 +1396,14 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
             }
           ),
           new RoundedButton(
-            text: "IPT STATUS",
-            onTap: () =>{
+            text: "FOLLOW UP ",
+            onTap: () {
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>   ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+
+              ));
+            }/*=>{
               if(_artIpt == null){
               Navigator.push(context,
               MaterialPageRoute(
@@ -1413,7 +1420,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                 ),
 
               }
-            }
+            }*/
           ),
           new RoundedButton(
               text: "ART SYMPTOMS",

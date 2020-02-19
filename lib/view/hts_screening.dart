@@ -86,7 +86,6 @@ class _HtsScreening extends State<Hts_Screening> {
     selectedDateOfViralLoad =  '';
     selectedDateOfCd4Count = '';
     selectedDateOfLastTest = '';
-
     dateOfLastNeg = DateTime.now();
     dateOfViralLoad = DateTime.now();
     dateOfEnrollmentIntoCare = DateTime.now();

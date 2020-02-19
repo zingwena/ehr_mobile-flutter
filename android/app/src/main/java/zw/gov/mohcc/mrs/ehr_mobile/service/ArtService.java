@@ -466,16 +466,17 @@ public class ArtService {
             followUpReason = ehrMobileDatabase.followUpReasonDao().findById(artAppointmentDTO.getReason());
         }
 
-        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(artAppointmentDTO.getArtId(), new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
+        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(artAppointmentDTO.getArtId(),
+                artAppointmentDTO.getDate().getTime(), DateUtil.getEndOfDay(artAppointmentDTO.getDate()).getTime());
 
         if (artAppointment != null) {
 
             return ArtAppointmentDTO.get(artAppointment);
         }
-        ehrMobileDatabase.artAppointmentDao().save(artAppointmentDTO.getInstance(artAppointmentDTO, followUpReason));
+        ArtAppointment artAppointmentToBeSaved = artAppointmentDTO.getInstance(artAppointmentDTO, followUpReason);
+        ehrMobileDatabase.artAppointmentDao().save(artAppointmentToBeSaved);
 
-        return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(
-                artAppointmentDTO.getArtId(), artAppointmentDTO.getDate().getTime(), DateUtil.getEndOfDay(new Date()).getTime()));
+        return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findById(artAppointmentToBeSaved.getId()));
     }
 
     public List<ArtAppointmentDTO> getPersonArtAppointments(String personId) {

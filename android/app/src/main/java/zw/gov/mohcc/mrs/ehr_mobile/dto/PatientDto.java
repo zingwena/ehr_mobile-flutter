@@ -176,7 +176,7 @@ public class PatientDto {
     }
 
     public void setBirthDate(PastDate birthDate) {
-        this.birthDate = birthDate;
+        this.birthDate = birthDate != null ? birthDate.getPastDate() : null;
     }
 
     public String getPersonId() {

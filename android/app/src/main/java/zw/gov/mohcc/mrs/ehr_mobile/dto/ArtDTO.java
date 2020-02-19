@@ -109,7 +109,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDate(@NonNull PastDate date) {
-        this.date = date;
+        this.date = date != null ? date.getPastDate() : null;
     }
 
     @NonNull
@@ -154,7 +154,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDateHivConfirmed(@NonNull PastDate dateHivConfirmed) {
-        this.dateHivConfirmed = dateHivConfirmed;
+        this.dateHivConfirmed = dateHivConfirmed != null ? dateHivConfirmed.getPastDate() : null;
     }
 
     public String getLinkageNumber() {
@@ -194,7 +194,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDateRetested(PastDate dateRetested) {
-        this.dateRetested = dateRetested;
+        this.dateRetested = dateRetested != null ? dateRetested.getPastDate() : null;
     }
 
     public String getTestReason() {
