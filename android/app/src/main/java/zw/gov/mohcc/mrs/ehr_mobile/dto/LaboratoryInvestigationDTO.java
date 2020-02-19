@@ -9,7 +9,7 @@ public class LaboratoryInvestigationDTO {
 
     public LaboratoryInvestigationDTO(int facilityId, PastDate resultDate) {
         this.facilityId = facilityId;
-        this.resultDate = resultDate;
+        this.resultDate = resultDate != null ? resultDate.getPastDate() : null;
     }
 
     public int getFacilityId() {
@@ -26,7 +26,7 @@ public class LaboratoryInvestigationDTO {
     }
 
     public void setResultDate(PastDate resultDate) {
-        this.resultDate = resultDate;
+        this.resultDate = resultDate != null ? resultDate.getPastDate() : null;
     }
 
     @Override

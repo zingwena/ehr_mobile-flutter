@@ -2,7 +2,7 @@ package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import java.util.Date;
 
-public class FutureDate extends Date {
+public class FutureDate {
 
     private final Date futureDate;
 
