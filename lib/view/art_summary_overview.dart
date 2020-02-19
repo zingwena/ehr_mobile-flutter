@@ -12,6 +12,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/tbscreening.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:ehr_mobile/view/art_appointment.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
@@ -116,6 +117,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
     String response;
     try {
       response = await artChannel.invokeMethod('getArt', personId);
+      log.i(response);
       setState(() {
         this.artdto = Artdto.fromJson(jsonDecode(response));
       });

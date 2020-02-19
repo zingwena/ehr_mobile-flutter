@@ -10,7 +10,7 @@ public class PastDate extends Date {
     private final String TAG = "Past Date";
 
     public PastDate(Date pastDate) {
-
+        super();
         if (pastDate.after(new Date())) {
             throw new IllegalStateException("Date cannot be in the future");
         }

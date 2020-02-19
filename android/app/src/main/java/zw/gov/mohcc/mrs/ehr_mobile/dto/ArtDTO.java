@@ -127,7 +127,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDateOfHivTest(@NonNull PastDate dateOfHivTest) {
-        this.dateOfHivTest = dateOfHivTest;
+        this.dateOfHivTest = dateOfHivTest.getPastDate();
     }
 
     @NonNull

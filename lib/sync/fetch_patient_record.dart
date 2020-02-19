@@ -1,5 +1,6 @@
 import 'package:ehr_mobile/db/dao/art_dao/ArtAppointmentDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtCurrentStatusDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtLinkageFromDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtVisitDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/ArtWhoStageDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/art_dao.dart';
@@ -136,6 +137,11 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
                 if(art['visits']!=null){
                   await saveArtVisit(art);
                 }
+
+                if(art['artLinkagesFrom']!=null){
+                  await saveArtLinkageFrom(art,art['artId']);
+                }
+
               }
 
 
@@ -300,6 +306,16 @@ Future<String> saveLabTests(Map labInvestigation,String visitId) async {
   var labTestsDao = LaboratoryInvestigationTestDao(adapter);
   for(Map test in labInvestigation['tests']){
     await labTestsDao.insertFromEhr(test,labInvestigation['laboratoryInvestigationId'],visitId);
+  }
+  return '$DONE_STATUS';
+}
+
+Future<String> saveArtLinkageFrom(Map artLinkages,String artId) async {
+  var dbHandler = DatabaseHelper();
+  var adapter = await dbHandler.getAdapter();
+  var linkagesDao = ArtLinkageFromDao(adapter);
+  for(Map linkage in artLinkages['artLinkagesFrom']){
+    await linkagesDao.insertFromEhr(linkage,artId);
   }
   return '$DONE_STATUS';
 }
