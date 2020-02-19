@@ -28,7 +28,6 @@ public class Art extends BaseEntity {
 
     @NonNull
     private String personId;
-    @NonNull
     @TypeConverters(DateConverter.class)
     private Date date;
     private String artNumber;

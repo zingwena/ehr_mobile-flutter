@@ -90,10 +90,17 @@ class ArtDao extends BaseDao{
     inserter.set(personId,ehrPersonId);
     inserter.set(id, map['artId']);
     inserter.set(artNumber, map['artNumber']);
-    inserter.set(dateEnrolled,const CustomDateTimeConverter().fromEhrJson( map['dateEnrolled']));
+    if (map['dateEnrolled'] != null) {
+      inserter.set(dateEnrolled,const CustomDateTimeConverter().fromEhrJson( map['dateEnrolled']));
+    }
 
-    inserter.set(dateOfHivTest,const CustomDateTimeConverter().fromEhrJson(map['dateOfHivTest']));
-    inserter.set(date,const CustomDateTimeConverter().fromEhrJson(map['date']));
+    if (map['dateOfHivTest'] != null) {
+      inserter.set(dateOfHivTest,const CustomDateTimeConverter().fromEhrJson(map['dateOfHivTest']));
+    }
+
+    if (map['date'] != null) {
+      inserter.set(date,const CustomDateTimeConverter().fromEhrJson(map['date']));
+    }
 
     if (map['enlargedLymphNode']!=null) inserter.set(enlargedLymphNode,map['enlargedLymphNode']);
     if (map['pallor']!=null) inserter.set(pallor,map['pallor']);
@@ -109,7 +116,10 @@ class ArtDao extends BaseDao{
 
     inserter.set(relation,map['relation']);
 
-    inserter.set(dateOfDisclosure,const CustomDateTimeConverter().fromEhrJson(map['dateOfDisclosure']));
+    if (map['dateOfDisclosure'] != null) {
+      inserter.set(dateOfDisclosure,const CustomDateTimeConverter().fromEhrJson(map['dateOfDisclosure']));
+    }
+
     inserter.set(reason,map['reason']);
 
     inserter.set(status, 'IMPORTED');
