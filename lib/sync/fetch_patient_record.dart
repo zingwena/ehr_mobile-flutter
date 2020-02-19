@@ -72,7 +72,7 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
     var t = await result.data["people"]['content'];
     for (Map patient in t) {
       log.i('--------${patient['firstname']}  ${patient['lastname']}.....');
-      try{
+      //try{
       progressDialog.update(
           message: '${patient['firstname']}  ${patient['lastname']}.....');
       var personId = patient['personId'];
@@ -138,10 +138,10 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
           }
 
 
-    }catch(e){
-      log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
-      //throw e;
-    }
+//    }catch(e){
+//      log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
+//      throw e;
+//    }
       //await Future.delayed(Duration(milliseconds: 500));
     }
 
@@ -153,7 +153,7 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
 
 
   } else {
-    log.e('$result');
+    log.e(result.errors);
   }
   return "$DONE_STATUS";
 }
