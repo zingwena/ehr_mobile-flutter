@@ -9,7 +9,7 @@ class DatabaseHelper {
 
   initDb() async {
     String documentsDirectory = await getDatabasesPath();
-    String path = join(documentsDirectory, 'testDBASE');
+    String path = join(documentsDirectory, 'ehrImpiloMobile');
     _adapter = new SqfliteAdapter(path);
     await _adapter.connect();
     return _adapter;
