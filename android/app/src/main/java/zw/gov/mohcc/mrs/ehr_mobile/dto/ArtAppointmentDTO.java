@@ -14,6 +14,8 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
 public class ArtAppointmentDTO implements Serializable {
 
+    private String id;
+
     @NonNull
     private final String artId;
     @NonNull
@@ -21,7 +23,8 @@ public class ArtAppointmentDTO implements Serializable {
     @NonNull
     private final Date date;
 
-    public ArtAppointmentDTO(@NonNull String artId, @NonNull String reason, @NonNull FutureDate date) {
+    public ArtAppointmentDTO(String id, @NonNull String artId, @NonNull String reason, @NonNull FutureDate date) {
+        this.id = id;
         this.artId = artId;
         this.reason = reason;
         this.date = date;
@@ -29,7 +32,7 @@ public class ArtAppointmentDTO implements Serializable {
 
     public static ArtAppointmentDTO get(ArtAppointment artAppointment) {
 
-        return new ArtAppointmentDTO(artAppointment.getArtId(),
+        return new ArtAppointmentDTO(artAppointment.getId(), artAppointment.getArtId(),
                 artAppointment.getReason() != null ? artAppointment.getReason().getName() : null,
                 artAppointment.getDate() != null ? new FutureDate(artAppointment.getDate()) : null);
     }
@@ -56,6 +59,14 @@ public class ArtAppointmentDTO implements Serializable {
     @NonNull
     public Date getDate() {
         return date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public ArtAppointment getInstance(ArtAppointmentDTO dto, FollowUpReason followUpReason) {
