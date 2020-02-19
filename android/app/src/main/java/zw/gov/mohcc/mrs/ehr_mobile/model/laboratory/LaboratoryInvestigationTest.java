@@ -33,12 +33,12 @@ public class LaboratoryInvestigationTest extends BaseEntity {
     @NonNull
     private String visitId;
     @Embedded(prefix = "result_")
-    @NonNull
+    //@NonNull
     private NameCode result;
     @Embedded(prefix = "testkit_")
     @NonNull
     private NameCode testkit;
-    @NonNull
+    //@NonNull
     private String batchIssueId;
 
     public String getVisitId() {
