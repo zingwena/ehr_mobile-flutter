@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'package:intl/intl.dart';
 
+import 'logger.dart';
+
 class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
   const CustomDateTimeConverter();
 
@@ -55,6 +57,9 @@ class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
   }
 
   int fromEhrDateTimeJson(String date) {
+    if(date==null){
+      return null;
+    }
     var df=DateFormat('yyyy-MM-dd\'T\'HH:mm');
     return df.parse(date).millisecondsSinceEpoch;
   }

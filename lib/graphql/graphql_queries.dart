@@ -6,7 +6,7 @@ class PersonQuery {
     return """ 
         query GetPatientsQuery {
              
-             people(text: "", page: 0, size: 10, sort: "") {
+             people(text: "", page: 0, size: 5000, sort: "") {
                 content {
                   personId
                   firstname
@@ -114,6 +114,15 @@ class PersonQuery {
                     weight {
                       value
                     }
+                    height{
+                      value
+                    }
+                    pulses{
+                      value
+                    }
+                    respiratoryRates{
+                      value
+                    }
                     facility {
                       id
                       name
@@ -159,6 +168,22 @@ class PersonQuery {
                         status
                         investigationType
                         openHivTest
+                        tests {
+                          laboratoryInvestigationTestId
+                          time
+                          readingTime
+                          methodOfResult
+                          clientTestedOnsite
+                          clientAssistedSelfTest
+                          username
+                          batchIssue{
+                            batchIssueId
+                          }
+                          result{
+                            id
+                            name
+                          }
+                        }
                       }
                       entryPoint {
                         id
@@ -224,9 +249,17 @@ class PersonQuery {
                       state
                       regimenType
                       medicine
+                      reason{
+                        id
+                        name
+                      }
+                      regimen{
+                        id
+                        name
+                      }
                       adverseEventStatus {
                         id
-                        name	
+                        name
                       }
                     }
                     visits {

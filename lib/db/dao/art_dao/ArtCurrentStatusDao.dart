@@ -58,6 +58,21 @@ class ArtCurrentStatusDao extends BaseDao {
 
     inserter.set(state,map['state']);
 
+    if (map['regimen'] != null) {
+      inserter.set(regimen_code,map['regimen']['id']);
+      inserter.set(regimen_name,map['regimen']['name']);
+    }
+
+    if (map['adverseEventStatus'] != null) {
+      inserter.set(adverseEventStatus_code,map['adverseEventStatus']['id']);
+      inserter.set(adverseEventStatus_name,map['adverseEventStatus']['name']);
+    }
+
+    if (map['reason'] != null) {
+      inserter.set(reason_code,map['reason']['id']);
+      inserter.set(reason_name,map['reason']['name']);
+    }
+
     inserter.set(status, IMPORTED);
     return await _adapter.insert(inserter);
   }

@@ -28,7 +28,7 @@ public class Art extends BaseEntity {
 
     @NonNull
     private String personId;
-    @NonNull
+    //@NonNull
     @TypeConverters(DateConverter.class)
     private Date date;
     @NonNull
@@ -45,7 +45,7 @@ public class Art extends BaseEntity {
     @NonNull
     private Date dateOfHivTest;
     @TypeConverters(DateConverter.class)
-    @NonNull
+    //@NonNull
     private Date dateEnrolled;
     private Boolean tracing;
     private Boolean followUp;

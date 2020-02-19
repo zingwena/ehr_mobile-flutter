@@ -50,8 +50,6 @@ class ArtVisitDao extends BaseDao {
   }
 
   Future insertFromEhr(Map map,String art) async {
-
-    log.i(map);
     Insert inserter = new Insert(tableName);
     inserter.set(artId, art);
     inserter.set(id, map['visitId']);

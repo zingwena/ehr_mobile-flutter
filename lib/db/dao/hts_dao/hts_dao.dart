@@ -76,7 +76,9 @@ class HtsDao {
     inserter.set(htsType, map['htsType']);
     inserter.set(laboratoryInvestigationId, labInvestigationId);
     inserter.set(dateOfHivTest,const CustomDateTimeConverter().fromEhrJson(map['dateOfHivTest']));
-    inserter.set(entryPointId,map['entryPoint']['id']);
+    if (map['entryPoint'] != null) {
+      inserter.set(entryPointId,map['entryPoint']['id']);
+    }
     inserter.set(htsApproach,map['approach']);
 
     if(map['purpose']!=null){

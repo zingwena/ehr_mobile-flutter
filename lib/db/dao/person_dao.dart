@@ -86,15 +86,27 @@ class PersonDao extends BaseDao{
     inserter.set(birthDate, const CustomDateTimeConverter().fromEhrJson(map['birthdate']));
 
     inserter.set(selfIdentifiedGender, map['selfIdentifiedGender']);
-    inserter.set(religionId, map['religion']['id']);
+    if (map['religion'] != null) {
+      inserter.set(religionId, map['religion']['id']);
+    }
+
     if(map['occupation']!=null){
       inserter.set(occupationId, map['occupation']['id']);
     }
 
+    if (map['marital'] != null) {
+      inserter.set(maritalStatusId, map['marital']['id']);
+    }
 
-    inserter.set(maritalStatusId, map['marital']['id']);
-    inserter.set(educationLevelId, map['education']['id']);
-    inserter.set(nationalityId, map['nationality']['id']);
+
+    if (map['education'] != null) {
+      inserter.set(educationLevelId, map['education']['id']);
+    }
+
+    if (map['nationality'] != null) {
+      inserter.set(nationalityId, map['nationality']['id']);
+    }
+
     inserter.set(status,'IMPORTED');
 
     if(map['countryOfBirth']!=null)
