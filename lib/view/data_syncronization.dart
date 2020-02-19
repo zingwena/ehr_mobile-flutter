@@ -204,30 +204,29 @@ class _DataSyncronizationState extends State<DataSyncronization> {
                             Navigator.push(
                                 context, MaterialPageRoute(builder: (context) => LoginScreen()));
                           });
+                        }).catchError((error){
+                          progressDialog.hide().whenComplete((){
+                            Alert(
+                              type: AlertType.warning,
+                              context: context,
+                              title: "Login",
+                              desc: "${error.toString().replaceAll("Exception:", "")}",
+                              style: AlertStyle(
+                                isCloseButton: false,
+                                isOverlayTapDismiss: false,),
+                              buttons: [
+                                DialogButton(
+                                  child: Text(
+                                    "OK",
+                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                  color: Color.fromRGBO(0, 179, 134, 1.0),
+                                )
+                              ]
+                            ).show();
+                          });
                         });
-//                            .catchError((error){
-//                          progressDialog.hide().whenComplete((){
-//                            Alert(
-//                              type: AlertType.warning,
-//                              context: context,
-//                              title: "Login",
-//                              desc: "${error.toString().replaceAll("Exception:", "")}",
-//                              style: AlertStyle(
-//                                isCloseButton: false,
-//                                isOverlayTapDismiss: false,),
-//                              buttons: [
-//                                DialogButton(
-//                                  child: Text(
-//                                    "OK",
-//                                    style: TextStyle(color: Colors.white, fontSize: 20),
-//                                  ),
-//                                  onPressed: () => Navigator.pop(context),
-//                                  color: Color.fromRGBO(0, 179, 134, 1.0),
-//                                )
-//                              ]
-//                            ).show();
-//                          });
-//                        });
                       }
                     }),
               ),

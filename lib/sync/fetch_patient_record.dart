@@ -72,76 +72,76 @@ Future<String> pullPatientData(ProgressDialog progressDialog) async {
     var t = await result.data["people"]['content'];
     for (Map patient in t) {
       log.i('--------${patient['firstname']}  ${patient['lastname']}.....');
-      //try{
-      progressDialog.update(
-          message: '${patient['firstname']}  ${patient['lastname']}.....');
-      var personId = patient['personId'];
-      personDao.insertFromEhr(patient);
+      try{
+          progressDialog.update(
+              message: '${patient['firstname']}  ${patient['lastname']}.....');
+          var personId = patient['personId'];
+          personDao.insertFromEhr(patient);
 
-        if (patient['history'] != null) {
-          var history = patient['history'];
-          await savePersonInvestigations(
-              history, personInvestigationDao, personId);
+            if (patient['history'] != null) {
+              var history = patient['history'];
+              await savePersonInvestigations(
+                  history, personInvestigationDao, personId);
 
-          ///-------Save Sexual History--------------
-          if (history['sexualHistory'] != null) {
-            var sexualHistory = history['sexualHistory'];
-            await saveSexualHistory(sexualHistory);
+              ///-------Save Sexual History--------------
+              if (history['sexualHistory'] != null) {
+                var sexualHistory = history['sexualHistory'];
+                await saveSexualHistory(sexualHistory);
 
-            ///-------Save Sexual History Questions--------------
-            if (sexualHistory['questions'] != null) {
-              await saveSexualHistoryQuestion(
-                  sexualHistory, sexualHistory['sexualHistoryId']);
-            }
-          }
-        }
-
-          for (Map visitHistory in patient['visitHistory']) {
-            var patientId = visitHistory['patientId'];
-            await visitDao.insertFromEhr(visitHistory, patient['personId']);
-            //log.i(visitHistory);
-            await saveVitals(visitHistory, personId, patientId);
-              if (visitHistory['hts'] != null) {
-                if (visitHistory['hts']['laboratoryInvestigation'] != null) {
-                  var labInvestigation=visitHistory['hts']['laboratoryInvestigation'];
-                  await labInvestigationDao.insertFromEhr(labInvestigation,
-                      visitHistory['facility']['id']);
-                  await saveLabTests(labInvestigation,patientId);
+                ///-------Save Sexual History Questions--------------
+                if (sexualHistory['questions'] != null) {
+                  await saveSexualHistoryQuestion(
+                      sexualHistory, sexualHistory['sexualHistoryId']);
                 }
-                await htsDao.insertFromEhr(
-                    visitHistory['hts'], personId, patientId,visitHistory['hts']['laboratoryInvestigation']['laboratoryInvestigationId']);
+              }
+            }
+
+              for (Map visitHistory in patient['visitHistory']) {
+                var patientId = visitHistory['patientId'];
+                await visitDao.insertFromEhr(visitHistory, patient['personId']);
+                //log.i(visitHistory);
+                await saveVitals(visitHistory, personId, patientId);
+                  if (visitHistory['hts'] != null) {
+                    if (visitHistory['hts']['laboratoryInvestigation'] != null) {
+                      var labInvestigation=visitHistory['hts']['laboratoryInvestigation'];
+                      await labInvestigationDao.insertFromEhr(labInvestigation,
+                          visitHistory['facility']['id']);
+                      await saveLabTests(labInvestigation,patientId);
+                    }
+                    await htsDao.insertFromEhr(
+                        visitHistory['hts'], personId, patientId,visitHistory['hts']['laboratoryInvestigation']['laboratoryInvestigationId']);
+                  }
+
+
+              }
+
+              ///-------Save Art --------------
+              if (patient['art'] != null) {
+                var art = patient['art'];
+                await savePatientArt(art, personId);
+
+                if (art['symptoms'] != null) {
+                  await savePatientArtSymptoms(art, art['artId']);
+                }
+
+                if (art['appointments'] != null) {
+                  await saveArtAppointments(art);
+                }
+
+                if (art['artCurrentStatus']!= null) {
+                  await saveArtCurrentStatus(art['artCurrentStatus'],art['artId']);
+                }
+
+                if(art['visits']!=null){
+                  await saveArtVisit(art);
+                }
               }
 
 
-          }
-
-          ///-------Save Art --------------
-          if (patient['art'] != null) {
-            var art = patient['art'];
-            await savePatientArt(art, personId);
-
-            if (art['symptoms'] != null) {
-              await savePatientArtSymptoms(art, art['artId']);
-            }
-
-            if (art['appointments'] != null) {
-              await saveArtAppointments(art);
-            }
-
-            if (art['artCurrentStatus']!= null) {
-              await saveArtCurrentStatus(art['artCurrentStatus'],art['artId']);
-            }
-
-            if(art['visits']!=null){
-              await saveArtVisit(art);
-            }
-          }
-
-
-//    }catch(e){
-//      log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
-//      throw e;
-//    }
+        }catch(e){
+          log.e('${patient['firstname']}  ${patient['lastname']}..... $e');
+          //throw e;
+        }
       //await Future.delayed(Duration(milliseconds: 500));
     }
 
