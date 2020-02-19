@@ -31,7 +31,6 @@ public class Art extends BaseEntity {
     @NonNull
     @TypeConverters(DateConverter.class)
     private Date date;
-    @NonNull
     private String artNumber;
     private Boolean enlargedLymphNode;
     private Boolean pallor;
@@ -42,10 +41,8 @@ public class Art extends BaseEntity {
     @TypeConverters(NormalityConverter.class)
     private Normality centralNervousSystem;
     @TypeConverters(DateConverter.class)
-    @NonNull
     private Date dateOfHivTest;
     @TypeConverters(DateConverter.class)
-    @NonNull
     private Date dateEnrolled;
     private Boolean tracing;
     private Boolean followUp;
@@ -84,12 +81,11 @@ public class Art extends BaseEntity {
         this.date = date;
     }
 
-    @NonNull
     public String getArtNumber() {
         return artNumber;
     }
 
-    public void setArtNumber(@NonNull String artNumber) {
+    public void setArtNumber(String artNumber) {
         this.artNumber = artNumber;
     }
 
