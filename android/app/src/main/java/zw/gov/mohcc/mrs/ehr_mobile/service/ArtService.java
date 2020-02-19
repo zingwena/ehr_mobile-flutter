@@ -55,6 +55,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.LactatingStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.Question;
 import zw.gov.mohcc.mrs.ehr_mobile.persistance.database.EhrMobileDatabase;
+import zw.gov.mohcc.mrs.ehr_mobile.util.DateUtil;
 
 public class ArtService {
 
@@ -445,7 +446,7 @@ public class ArtService {
 
         Art art = ehrMobileDatabase.artDao().findByPersonId(personId);
 
-        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(art.getId(), new Date().getTime());
+        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(art.getId(), new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
         Log.d(TAG, "Current Art appointment record for this day : " + artAppointment);
         if (artAppointment != null) {
             return ArtAppointmentDTO.get(artAppointment);
@@ -463,7 +464,7 @@ public class ArtService {
             followUpReason = ehrMobileDatabase.followUpReasonDao().findById(artAppointmentDTO.getReason());
         }
 
-        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(artAppointmentDTO.getArtId(), new Date().getTime());
+        ArtAppointment artAppointment = ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(artAppointmentDTO.getArtId(), new Date().getTime(), DateUtil.getEndOfDay(new Date()).getTime());
 
         if (artAppointment != null) {
 
@@ -472,7 +473,7 @@ public class ArtService {
         ehrMobileDatabase.artAppointmentDao().save(artAppointmentDTO.getInstance(artAppointmentDTO, followUpReason));
 
         return ArtAppointmentDTO.get(ehrMobileDatabase.artAppointmentDao().findByArtIdAndDate(
-                artAppointmentDTO.getArtId(), artAppointmentDTO.getDate().getTime()));
+                artAppointmentDTO.getArtId(), artAppointmentDTO.getDate().getTime(), DateUtil.getEndOfDay(new Date()).getTime()));
     }
 
     public List<ArtAppointmentDTO> getPersonArtAppointments(String personId) {
