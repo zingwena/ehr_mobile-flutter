@@ -23,7 +23,6 @@ class ArtAppointment {
       this.reason = reason;
       this.date = date;
 
-
   }
   factory ArtAppointment.fromJson(Map<String,dynamic> json) => _$ArtAppointmentFromJson(json);
 

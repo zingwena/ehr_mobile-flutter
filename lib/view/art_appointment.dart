@@ -380,9 +380,10 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                           ],
                                                         ),
                                                       onPressed: () async{
-                                                        ArtAppointment artAppointmentObj =  ArtAppointment(null, this.artAppointmentResponse.artId, _currentAppointmentReason, test_date);
-
-                                                       await artappintmentReg(artAppointmentObj);
+                                                        artAppointmentResponse.reason = _currentAppointmentReason;
+                                                        artAppointmentResponse.date = test_date;
+                                                        //ArtAppointment artAppointmentObj =  ArtAppointment(null, this.artAppointmentResponse.artId, _currentAppointmentReason, test_date);
+                                                       await artappintmentReg(artAppointmentResponse);
                                                        await getArtAppointments(widget.personId);
 
                                                         Navigator.push(
