@@ -231,7 +231,7 @@ public abstract class EhrMobileDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            EhrMobileDatabase.class, "testDBASE")
+                            EhrMobileDatabase.class, "ehrImpiloMobile")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
