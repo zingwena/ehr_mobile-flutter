@@ -14,6 +14,8 @@ ArtFollowUpCall _$ArtFollowUpCallFromJson(Map<String, dynamic> json) {
         ? null
         : NameCode.fromJson(json['outcome'] as Map<String, dynamic>),
     const CustomDateTimeConverter().fromJson(json['date'] as String),
+    json['followUpType'] as String,
+
   );
 }
 
@@ -23,4 +25,5 @@ Map<String, dynamic> _$ArtFollowUpCallToJson(ArtFollowUpCall instance) =>
       'artAppointmentId': instance.artAppointmentId,
       'outcome': instance.outcome,
       'date': const CustomDateTimeConverter().toJson(instance.date),
+      'followUpType': instance.followUpType
     };

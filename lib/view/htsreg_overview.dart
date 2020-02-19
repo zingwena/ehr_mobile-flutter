@@ -72,8 +72,6 @@ class HtsOverviewState extends State<HtsRegOverview> {
     getAge(widget.person);
     getFacilityName();
     dateofreg =  DateFormat("yyyy/MM/dd").format(widget.htsRegistration.dateOfHivTest);
-    print("HTS ID IN HTS REG OVERVIEW"+ widget.htsid);
-
     super.initState();
   }
 
