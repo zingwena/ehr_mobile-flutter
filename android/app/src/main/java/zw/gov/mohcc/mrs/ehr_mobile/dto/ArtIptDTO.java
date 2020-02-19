@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptReason;
@@ -17,7 +18,7 @@ public class ArtIptDTO implements Serializable {
     @NonNull
     private String artId;
     @NonNull
-    private String visitId;
+    private Date date;
     @NonNull
     private String iptStatus;
     @NonNull
@@ -29,16 +30,16 @@ public class ArtIptDTO implements Serializable {
     }
 
     @Ignore
-    public ArtIptDTO(@NonNull String artId, @NonNull String visitId, String iptStatus, String reason) {
+    public ArtIptDTO(@NonNull String artId, @NonNull Date date, String iptStatus, String reason) {
         this.artId = artId;
-        this.visitId = visitId;
+        this.date = date;
         this.iptStatus = iptStatus;
         this.reason = reason;
     }
 
     public static ArtIptDTO get(ArtIpt artIpt) {
 
-        return new ArtIptDTO(artIpt.getArtId(), artIpt.getVisitId(),
+        return new ArtIptDTO(artIpt.getArtId(), artIpt.getDate(),
                 artIpt.getIptStatus() != null ? artIpt.getIptStatus().getName() : null,
                 artIpt.getReason() != null ? artIpt.getReason().getName() : null);
     }
@@ -53,12 +54,12 @@ public class ArtIptDTO implements Serializable {
     }
 
     @NonNull
-    public String getVisitId() {
-        return visitId;
+    public Date getDate() {
+        return date;
     }
 
-    public void setVisitId(@NonNull String visitId) {
-        this.visitId = visitId;
+    public void setDate(@NonNull Date date) {
+        this.date = date;
     }
 
     @NonNull
@@ -86,7 +87,7 @@ public class ArtIptDTO implements Serializable {
 
 
 
-        return new ArtIpt(dto.getVisitId(), dto.getArtId(), dto.getVisitId(),
+        return new ArtIpt(dto.getArtId(),dto.getArtId(),dto.getDate(),
                 new NameCode(iptStatus.getCode(), iptStatus.getName()), new NameCode(iptReason.getCode(), iptReason.getName()));
     }
 
@@ -94,7 +95,7 @@ public class ArtIptDTO implements Serializable {
     public String toString() {
         return "ArtIptDTO{" +
                 "artId='" + artId + '\'' +
-                ", visitId='" + visitId + '\'' +
+                ", date='" + date + '\'' +
                 ", iptStatus='" + iptStatus + '\'' +
                 ", reason='" + reason + '\'' +
                 '}';

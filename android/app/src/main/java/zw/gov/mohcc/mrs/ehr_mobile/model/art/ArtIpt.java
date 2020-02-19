@@ -6,21 +6,21 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
+import androidx.room.TypeConverters;
 
+import java.util.Date;
+
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.Visit;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptReason;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.IptStatus;
 import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
-@Entity(indices = {@Index(value = "artId"), @Index(value = "visitId", unique = true),
+@Entity(indices = {@Index(value = "artId"),
 @Index("status_code"), @Index("reason_code")},
         foreignKeys = {@ForeignKey(entity = Art.class, onDelete = ForeignKey.CASCADE,
                 parentColumns = "id",
                 childColumns = "artId"),
-                @ForeignKey(entity = Visit.class, onDelete = ForeignKey.CASCADE,
-                        parentColumns = "id",
-                        childColumns = "visitId"),
                 @ForeignKey(entity = IptStatus.class, onDelete = ForeignKey.CASCADE,
                         parentColumns = "code",
                         childColumns = "status_code"),
@@ -31,8 +31,10 @@ public class ArtIpt extends BaseEntity {
 
     @NonNull
     private String artId;
-    @NonNull
-    private String visitId;
+
+    @TypeConverters(DateConverter.class)
+    private Date date;
+
     @Embedded(prefix = "status_")
     private NameCode iptStatus;
     @Embedded(prefix = "reason_")
@@ -42,10 +44,10 @@ public class ArtIpt extends BaseEntity {
     }
 
     @Ignore
-    public ArtIpt(@NonNull String id, @NonNull String artId, @NonNull String visitId, NameCode iptStatus, NameCode reason) {
+    public ArtIpt(@NonNull String id, @NonNull String artId, @NonNull Date date, NameCode iptStatus, NameCode reason) {
         super(id);
         this.artId = artId;
-        this.visitId = visitId;
+        this.date = date;
         this.iptStatus = iptStatus;
         this.reason = reason;
     }
@@ -60,12 +62,12 @@ public class ArtIpt extends BaseEntity {
     }
 
     @NonNull
-    public String getVisitId() {
-        return visitId;
+    public Date getDate() {
+        return date;
     }
 
-    public void setVisitId(@NonNull String visitId) {
-        this.visitId = visitId;
+    public void setDate(@NonNull Date date) {
+        this.date = date;
     }
 
     public NameCode getIptStatus() {
@@ -88,7 +90,7 @@ public class ArtIpt extends BaseEntity {
     public String toString() {
         return "ArtIpt{" +
                 "artId='" + artId + '\'' +
-                ", visitId=" + visitId +
+                ", date=" + date +
                 ", iptStatus=" + iptStatus +
                 ", reason=" + reason +
                 '}';

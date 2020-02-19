@@ -214,11 +214,31 @@ class PersonQuery {
                     relation
                     dateOfDisclosure
                     reason
+                    ipt{
+                      artIptStatusId
+                      date
+                      status{
+                        id
+                        name
+                      }
+                      reason{
+                        id
+                        name
+                      }
+                    }
                     symptoms {
                       artSymptomId
                       date
                       present
                       Symptom {
+                        id
+                        name
+                      }
+                    }
+                    ois {
+                      artOiId
+                      date
+                      oi {
                         id
                         name
                       }

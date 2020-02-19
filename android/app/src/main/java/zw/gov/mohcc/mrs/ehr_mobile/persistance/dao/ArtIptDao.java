@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 import zw.gov.mohcc.mrs.ehr_mobile.model.art.ArtIpt;
@@ -22,15 +23,15 @@ public interface ArtIptDao {
     @Update
     void update(ArtIpt artIpt);
 
-    @Query("SELECT a.* FROM ArtIpt a inner join Visit v on a.visitId=v.id WHERE artId=:artId Order By v.time DESC")
+    @Query("SELECT a.* FROM ArtIpt a WHERE artId=:artId Order By a.date DESC")
     List<ArtIpt> findByArtId(String artId);
 
     @Query("DELETE FROM ArtIpt where id=:id")
     void deleteById(String id);
 
-    @Query("SELECT a.* FROM ArtIpt a inner join Visit v on a.visitId=v.id WHERE artId=:artId Order By v.time DESC limit 1")
+    @Query("SELECT a.* FROM ArtIpt a WHERE artId=:artId Order By a.date DESC limit 1")
     ArtIpt findLatestIpt(String artId);
 
-    @Query("SELECT * FROM ArtIpt WHERE visitId=:visitId")
-    ArtIpt findByVisitId(String visitId);
+    @Query("SELECT * FROM ArtIpt WHERE date=:date")
+    ArtIpt findByDate(Long date);
 }
