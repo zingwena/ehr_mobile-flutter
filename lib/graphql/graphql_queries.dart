@@ -223,6 +223,24 @@ class PersonQuery {
                         name
                       }
                     }
+                    artLinkagesFrom {
+                      artLinkageFromId
+                      linkageFrom
+                      linkageNumber
+                      dateHivConfirmed
+                      otherInstitution
+                      hivTestUsed
+                      reTested
+                      dateRetested
+                      testReason{
+                        id
+                        name
+                      }
+                      facility{
+                        id
+                        name
+                      }
+                    }
                     appointments {
                       artAppointmentId
                       artId
