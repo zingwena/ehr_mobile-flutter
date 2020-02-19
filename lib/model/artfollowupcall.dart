@@ -12,10 +12,10 @@ class ArtFollowUpCall  {
 
   String id;
   String artAppointmentId;
-  NameCode outcome;
+  String outcome;
   DateTime date;
   String followUpType;
-  ArtFollowUpCall(String id,String artAppointmentId, NameCode outcome, DateTime date, String followUpType){
+  ArtFollowUpCall(String id,String artAppointmentId, String outcome, DateTime date, String followUpType){
     this.id = id;
     this.artAppointmentId = artAppointmentId;
     this.outcome = outcome;

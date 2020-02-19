@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/artappointment.dart';
+import 'package:ehr_mobile/model/artfollowupcall.dart';
 import 'package:ehr_mobile/model/followupreason.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -50,12 +51,16 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
   String _nationalIdError = "National Id number is invalid";
   Age age;
   ArtAppointment artAppointmentDto;
-  ArtAppointment artAppointmentResponse;
+  ArtFollowUpCall artFollowUpCallResponse;
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
   List<FollowUpReason> _reasonList = List();
   String _reason;
+  int _followUpType;
+  bool typeSelected = false;
+  String followUpTypeString;
+  bool showTypeError = false;
   List reasons = List();
   List _dropDownListReasons = List();
   String  _currentAppointmentReason;
@@ -134,8 +139,8 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
     try {
       hts = await artChannel.invokeMethod('getArtAppointment', patientId);
       setState(() {
-        artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(hts));
-        print("HERE IS THE art appointments AFTER ASSIGNMENT " + artAppointmentResponse.toString());
+        artAppointmentDto = ArtAppointment.fromJson(jsonDecode(hts));
+        print("HERE IS THE art appointment >>>>>>>>>>>> AFTER ASSIGNMENT " + artAppointmentDto.toString());
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -294,7 +299,7 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
                                                                     border: OutlineInputBorder(
                                                                         borderRadius:
                                                                         BorderRadius.circular(0.0)),
-                                                                    labelText: "Date Of Appointment"),
+                                                                    labelText: "Date Of Follow Up"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -311,6 +316,39 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
                                                       ],
                                                     ),
                                                   ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding( padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
+                                                              child: Text('Follow Up Type'),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('VISIT'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue: _followUpType,
+                                                            onChanged: _handleFollowUpChange),
+                                                        Text('CALL'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _followUpType,
+                                                            onChanged: _handleFollowUpChange)
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  showTypeError == true ? Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 95),
+                                                    child: Text("Select Follow Up type ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                  ):SizedBox(height: 0.0, width: 0.0,),
+
 
                                                   SizedBox(
                                                     height: 10.0,
@@ -370,9 +408,8 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
                                                           ],
                                                         ),
                                                         onPressed: () async{
-                                                          ArtAppointment artAppointmentObj =  ArtAppointment(null, this.artAppointmentResponse.artId, _currentAppointmentReason, test_date);
-                                                          await artappintmentReg(artAppointmentObj);
-                                                          await getArtAppointments(widget.personId);
+                                                          ArtFollowUpCall artfollowUpObj =  ArtFollowUpCall(null,artAppointmentDto.id, _currentAppointmentReason, test_date, followUpTypeString);
+                                                          await artFollowUpReg(artfollowUpObj);
                                                           Navigator.push(
                                                             context,
                                                             MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._appointmentList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
@@ -415,7 +452,7 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "ART Appointment",
+            text: "ART Follow Up",
             selected: true,
           ),
 
@@ -437,13 +474,13 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
     );
   }
 
-  Future<void> artappintmentReg(ArtAppointment artAppointment) async {
+  Future<void> artFollowUpReg(ArtFollowUpCall artFollowUp) async {
     String art_appointment_response;
     try {
 
-      art_appointment_response = await artChannel.invokeMethod('saveArtAppointment', jsonEncode(artAppointment));
+      art_appointment_response = await artChannel.invokeMethod('saveArtFollowUpCall', jsonEncode(artFollowUp));
       setState(() {
-        artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(art_appointment_response));
+        artFollowUpCallResponse = ArtFollowUpCall.fromJson(jsonDecode(art_appointment_response));
       });
 
     } catch (e) {
@@ -478,6 +515,25 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
       _currentAppointmentReason = selectedArvRegimenIdentified;
       selfIdentifiedAppointmentReasonIsValid=!selfIdentifiedAppointmentReasonIsValid;
       _selfAppointmentReasonError=null;
+    });
+  }
+
+  void _handleFollowUpChange(int value) {
+    print("hts value : $value");
+    setState(() {
+      _followUpType = value;
+
+      switch (_followUpType) {
+        case 1:
+          followUpTypeString = "VISIT";
+          typeSelected = true;
+
+          break;
+        case 2:
+          followUpTypeString = "CALL";
+          typeSelected = true;
+          break;
+      }
     });
   }
 

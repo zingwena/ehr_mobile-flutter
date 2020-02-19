@@ -110,7 +110,6 @@ class _PatientPretest extends State<PatientPretest> {
   getHtsRecord(widget.personId);
   getFacilityName();
   getAge(widget.person);
-  print("HTS ID IN PRETEST PAGE "+ widget.htsid);
     super.initState();
   }
 
