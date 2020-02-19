@@ -27,7 +27,7 @@ public class ArtAppointmentDTO implements Serializable {
         this.id = id;
         this.artId = artId;
         this.reason = reason;
-        this.date = date;
+        this.date = date != null ? date.getFutureDate() : null;
     }
 
     public static ArtAppointmentDTO get(ArtAppointment artAppointment) {

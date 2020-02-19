@@ -21,7 +21,7 @@ public class PostTestDTO {
 
     public PostTestDTO(String htsId, PastDate datePostTestCounselled, boolean resultReceived, String reasonForNotIssuingResultId, boolean consentToIndexTesting, boolean postTestCounselled) {
         this.htsId = htsId;
-        this.datePostTestCounselled = datePostTestCounselled;
+        this.datePostTestCounselled = datePostTestCounselled != null ? datePostTestCounselled.getPastDate() : null;
         this.resultReceived = resultReceived;
         this.reasonForNotIssuingResultId = reasonForNotIssuingResultId;
         this.consentToIndexTesting = consentToIndexTesting;
@@ -41,7 +41,7 @@ public class PostTestDTO {
     }
 
     public void setDatePostTestCounselled(PastDate datePostTestCounselled) {
-        this.datePostTestCounselled = datePostTestCounselled;
+        this.datePostTestCounselled = datePostTestCounselled != null ? datePostTestCounselled.getPastDate() : null;
     }
 
     public boolean isResultReceived() {

@@ -12,7 +12,7 @@ public class InvestigationDTO {
 
     public InvestigationDTO(String personId, PastDate dateOfTest, String visitId, String investigationId, String result) {
         this.personId = personId;
-        this.dateOfTest = dateOfTest;
+        this.dateOfTest = dateOfTest != null ? dateOfTest.getPastDate() : null;
         this.visitId = visitId;
         this.investigationId = investigationId;
         this.result = result;
@@ -31,7 +31,7 @@ public class InvestigationDTO {
     }
 
     public void setDateOfTest(PastDate dateOfTest) {
-        this.dateOfTest = dateOfTest;
+        this.dateOfTest = dateOfTest != null ? dateOfTest.getPastDate() : null;
     }
 
     public String getVisitId() {

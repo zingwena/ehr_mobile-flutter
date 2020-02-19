@@ -31,7 +31,7 @@ public class IndexContactDto {
         this.personId = personId;
         this.relation = relation;
         this.hivStatus = hivStatus;
-        this.dateOfHivStatus = dateOfHivStatus;
+        this.dateOfHivStatus = dateOfHivStatus != null ? dateOfHivStatus.getPastDate() : null;
         this.fearOfIpv = fearOfIpv;
         this.disclosureMethodPlanId = disclosureMethodPlanId;
         this.testingPlanId = testingPlanId;
@@ -79,7 +79,7 @@ public class IndexContactDto {
     }
 
     public void setDateOfHivStatus(PastDate dateOfHivStatus) {
-        this.dateOfHivStatus = dateOfHivStatus;
+        this.dateOfHivStatus = dateOfHivStatus != null ? dateOfHivStatus.getPastDate() : null;;
     }
 
     public boolean isFearOfIpv() {
