@@ -30,6 +30,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'pull_patient_queue.dart';
 
 Future<String> pullPatientData(ProgressDialog progressDialog) async {
+  progressDialog.update(message: 'Fetching Patient Records...');
   PersonQuery queryMutation = PersonQuery();
   var ip = await retrieveString(SERVER_IP);
   GraphQLClient _client = graphQLConfiguration.clientToQuery(ip);

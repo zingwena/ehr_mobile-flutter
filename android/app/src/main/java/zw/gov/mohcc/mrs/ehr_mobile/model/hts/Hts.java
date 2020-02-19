@@ -52,7 +52,7 @@ public class Hts extends BaseEntity {
     @NonNull
     private String laboratoryInvestigationId;
     @TypeConverters(DateConverter.class)
-    @NonNull
+    //@NonNull
     private Date dateOfHivTest;
     private String entryPointId;
     private String htsApproach;
