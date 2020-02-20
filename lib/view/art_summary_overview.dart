@@ -148,7 +148,6 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       response = await artChannel.invokeMethod('getTbScreening', personId);
       setState(() {
         tbScreeningobj = TbScreening.fromJson(jsonDecode(response));
-        print("THIS IS THE TB SCREENING  RETRIEVED"+ tbScreeningobj.toString());
 
         if(tbScreeningobj != null){
           if(tbScreeningobj.coughing == true){
@@ -1403,24 +1402,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
 
 
               ));
-            }/*=>{
-              if(_artIpt == null){
-              Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context)=>    ArtIptStatusView(widget.person, widget.person.id, widget.visitId, widget.htsId, widget.htsRegistration)
-
-              ))
-
-              }else{
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ArtIptStatusOverview(_artIpt, widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId)),
-                ),
-
-              }
-            }*/
+            }
           ),
           new RoundedButton(
               text: "ART SYMPTOMS",
