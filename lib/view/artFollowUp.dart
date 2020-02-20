@@ -459,10 +459,6 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
             selected: true,
           ),
 
-          /* new RoundedButton(
-            text: "ART Initiation",
-          ),
-*/
           new RoundedButton(
               text: "Close",
               onTap: () =>    Navigator.push(
@@ -480,8 +476,11 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
   Future<void> artFollowUpReg(ArtFollowUpCall artFollowUp) async {
     String art_appointment_response;
     try {
-
-      art_appointment_response = await artChannel.invokeMethod('saveArtFollowUpCall', jsonEncode(artFollowUp));
+          if(artFollowUp.followUpType == "CALL"){
+            art_appointment_response = await artChannel.invokeMethod('saveArtFollowUpCall', jsonEncode(artFollowUp));
+          } else{
+            art_appointment_response = await artChannel.invokeMethod('saveArtFollowUpVisit', jsonEncode(artFollowUp));
+          }
       setState(() {
         artFollowUpCallResponse = ArtFollowUpCall.fromJson(jsonDecode(art_appointment_response));
         print("HERE IS THE FOLLOW UP SAVED"+ artFollowUpCallResponse.toString());

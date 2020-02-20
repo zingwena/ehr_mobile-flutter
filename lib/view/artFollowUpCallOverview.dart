@@ -390,25 +390,7 @@ class ArtFollowUpCallOverviewState extends State<ArtFollowUpOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Initiation",selected: true),
-          new RoundedButton(text: "ART Visit", onTap: () {
-
-            if(_artVisit.visitType == null ){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
-              );
-            } else {
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
-
-              ));
-            }
-          }
-
-          ),
+          new RoundedButton(text: "ART Follow Up",selected: true),
           new RoundedButton(text: "CLOSE", onTap: (){
             Navigator.push(
                 context,

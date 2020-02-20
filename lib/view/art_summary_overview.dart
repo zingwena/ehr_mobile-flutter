@@ -1010,91 +1010,65 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
                                                                 Row(
                                                                   children: <Widget>[
-                                                                    Expanded(
-                                                                      child: _appointmentList.isEmpty
-                                                                          ? Container(
-                                                                          alignment:
-                                                                          Alignment.topLeft,
-                                                                          child:
-                                                                          Center(child: Text(
-                                                                            'No Records',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),)
-                                                                      )
-                                                                          : Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        padding: EdgeInsets.symmetric(
-                                                                            vertical:
-                                                                            0.0,
-                                                                            horizontal:
-                                                                            30.0),
-                                                                        child: DataTable(
-                                                                            columns: [
-                                                                              DataColumn(label: Text("Date")),
-                                                                              DataColumn(label: Text("Reason Name")),
-                                                                              DataColumn(label: Text("")),
-                                                                              DataColumn(label: Text("")),
+                                                                    _appointmentList.isEmpty
+                                                                          ?Expanded(
 
+                                                                        child: Container(
+                                                                        alignment:
+                                                                        Alignment.topLeft,
+                                                                        child:
+                                                                        Center(child: Text(
+                                                                          'No Records',
+                                                                          style: TextStyle(
+                                                                              fontSize: 13.0,
+                                                                              color: Colors.black54),
+                                                                        ),)
+                                                                    ))
+                                                                          : Expanded(
+                                                                        child:Container(
+                                                                      width: double
+                                                                          .infinity,
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          vertical:
+                                                                          0.0,
+                                                                          horizontal:
+                                                                          30.0),
+                                                                      child: DataTable(
+                                                                          columns: [
+                                                                            DataColumn(label: Text("Date")),
+                                                                            DataColumn(label: Text("Reason Name")),
+                                                                            DataColumn(label: Text("Follow Up")),
 
-                                                                            ],
-                                                                            rows: _appointmentList
-                                                                                .map((appointment) => DataRow(cells: [
-                                                                              DataCell(Text(DateFormat("yyyy/MM/dd").format(appointment.date))),
-                                                                              DataCell(Text(appointment.reason)),
-                                                                              DataCell(    Padding(
-                                                                                  padding: const EdgeInsets.only(right: 0),
-                                                                                  child: RaisedButton(
-                                                                                    onPressed: () {
-                                                                                      Navigator.push(
-                                                                                          context,
-                                                                                          MaterialPageRoute(builder: (context) =>  ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
+                                                                          ],
+                                                                          rows: _appointmentList
+                                                                              .map((appointment) => DataRow(cells: [
+                                                                            DataCell(Text(DateFormat("yyyy/MM/dd").format(appointment.date))),
+                                                                            DataCell(Text(appointment.reason)),
+                                                                            DataCell(    Padding(
+                                                                                padding: const EdgeInsets.only(right: 0),
+                                                                                child: RaisedButton(
+                                                                                  onPressed: () {
+                                                                                    Navigator.push(
+                                                                                        context,
+                                                                                        MaterialPageRoute(builder: (context) =>  ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
 
-                                                                                    },
-                                                                                    color: Colors.blue,
-                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                    child: Padding(
-                                                                                      padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                                                                                      child: Text('Visit',
-                                                                                        style: TextStyle(
-                                                                                            fontSize: 13.0,
-                                                                                            fontWeight: FontWeight.bold,
-                                                                                            color: Colors.white),
-                                                                                      ),
+                                                                                  },
+                                                                                  color: Colors.blue,
+                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                                                    child: Text('Follow',
+                                                                                      style: TextStyle(
+                                                                                          fontSize: 13.0,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                          color: Colors.white),
                                                                                     ),
-                                                                                  )),
-
-
-                                                                              ),
-                                                                              DataCell(    Padding(
-                                                                                  padding: const EdgeInsets.only(right: 0),
-                                                                                  child: RaisedButton(
-                                                                                    onPressed: () {
-                                                                                      Navigator.push(
-                                                                                          context,
-                                                                                          MaterialPageRoute(builder: (context) =>  ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
-
-                                                                                    },
-                                                                                    color: Colors.blue,
-                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                    child: Padding(
-                                                                                      padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                                                                                      child: Text('Call',
-                                                                                        style: TextStyle(
-                                                                                            fontSize: 13.0,
-                                                                                            fontWeight: FontWeight.bold,
-                                                                                            color: Colors.white),
-                                                                                      ),
-                                                                                    ),
-                                                                                  )),
-
-
-                                                                              ),
-                                                                            ]))
-                                                                                .toList()),
-                                                                      ),)
+                                                                                  ),
+                                                                                )),
+                                                                            ),
+                                                                          ]))
+                                                                              .toList()),
+                                                                    ))
                                                                   ],
                                                                 ),
 
@@ -1447,13 +1421,14 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
             }
           ),
           new RoundedButton(
-            text: "FOLLOW UP ",
+            text: "IPT STATUS ",
             onTap: () {
-           /*   Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>   ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, )
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>   ArtIptStatusView(widget.person, widget.person.id, widget.visitId, widget.htsId, widget.htsRegistration)
+                  ));
 
-
-              ));*/
             }
           ),
           new RoundedButton(

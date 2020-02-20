@@ -214,7 +214,7 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("ART Registration OverView", style: TextStyle(
+                    child: Text("ART Appointment OverView", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   Container(
@@ -382,9 +382,6 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
                                                                       DataColumn(label: Text("Date")),
                                                                       DataColumn(label: Text("Reason Name")),
                                                                       DataColumn(label: Text("")),
-                                                                      DataColumn(label: Text("")),
-
-
                                                                     ],
                                                                     rows: widget.artAppointment
                                                                         .map((appointment) => DataRow(cells: [
@@ -403,7 +400,7 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
                                                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                                                                             child: Padding(
                                                                               padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                                                                              child: Text('Visit',
+                                                                              child: Text('Follow Up',
                                                                                 style: TextStyle(
                                                                                     fontSize: 13.0,
                                                                                     fontWeight: FontWeight.bold,
@@ -414,30 +411,7 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
 
 
                                                                       ),
-                                                                      DataCell(    Padding(
-                                                                          padding: const EdgeInsets.only(right: 0),
-                                                                          child: RaisedButton(
-                                                                            onPressed: () {
-                                                                              Navigator.push(
-                                                                                  context,
-                                                                                  MaterialPageRoute(builder: (context) =>   ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
 
-                                                                            },
-                                                                            color: Colors.blue,
-                                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                            child: Padding(
-                                                                              padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                                                                              child: Text('Visit',
-                                                                                style: TextStyle(
-                                                                                    fontSize: 13.0,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                    color: Colors.white),
-                                                                              ),
-                                                                            ),
-                                                                          )),
-
-
-                                                                      )
                                                                     ]))
                                                                         .toList()),
                                                               ),)

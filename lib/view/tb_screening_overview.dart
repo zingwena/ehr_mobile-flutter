@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -449,15 +450,14 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
         children: <Widget>[
 
           new RoundedButton(text: "TB Screening ", selected: true),
-          new RoundedButton(text: "TB Screening", /*onTap: (){
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context)=>    TbScreeningView(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
-
-            ));
-
-          }*/
-          ),
-          new RoundedButton(text: "Close",)
+          new RoundedButton(text: "Close",onTap: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),
+            );
+          },)
         ],
       ),
     );
