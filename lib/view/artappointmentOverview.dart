@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
+import 'artFollowUp.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -380,11 +381,63 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
                                                                     columns: [
                                                                       DataColumn(label: Text("Date")),
                                                                       DataColumn(label: Text("Reason Name")),
+                                                                      DataColumn(label: Text("")),
+                                                                      DataColumn(label: Text("")),
+
+
                                                                     ],
                                                                     rows: widget.artAppointment
                                                                         .map((appointment) => DataRow(cells: [
                                                                       DataCell(Text(DateFormat("yyyy/MM/dd").format(appointment.date))),
                                                                       DataCell(Text(appointment.reason)),
+                                                                      DataCell(    Padding(
+                                                                          padding: const EdgeInsets.only(right: 0),
+                                                                          child: RaisedButton(
+                                                                            onPressed: () {
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(builder: (context) =>  ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
+
+                                                                            },
+                                                                            color: Colors.blue,
+                                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                                              child: Text('Visit',
+                                                                                style: TextStyle(
+                                                                                    fontSize: 13.0,
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.white),
+                                                                              ),
+                                                                            ),
+                                                                          )),
+
+
+                                                                      ),
+                                                                      DataCell(    Padding(
+                                                                          padding: const EdgeInsets.only(right: 0),
+                                                                          child: RaisedButton(
+                                                                            onPressed: () {
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(builder: (context) =>   ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
+
+                                                                            },
+                                                                            color: Colors.blue,
+                                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                                              child: Text('Visit',
+                                                                                style: TextStyle(
+                                                                                    fontSize: 13.0,
+                                                                                    fontWeight: FontWeight.bold,
+                                                                                    color: Colors.white),
+                                                                              ),
+                                                                            ),
+                                                                          )),
+
+
+                                                                      )
                                                                     ]))
                                                                         .toList()),
                                                               ),)

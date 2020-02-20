@@ -1035,11 +1035,63 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                             columns: [
                                                                               DataColumn(label: Text("Date")),
                                                                               DataColumn(label: Text("Reason Name")),
+                                                                              DataColumn(label: Text("")),
+                                                                              DataColumn(label: Text("")),
+
+
                                                                             ],
                                                                             rows: _appointmentList
                                                                                 .map((appointment) => DataRow(cells: [
                                                                               DataCell(Text(DateFormat("yyyy/MM/dd").format(appointment.date))),
                                                                               DataCell(Text(appointment.reason)),
+                                                                              DataCell(    Padding(
+                                                                                  padding: const EdgeInsets.only(right: 0),
+                                                                                  child: RaisedButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.push(
+                                                                                          context,
+                                                                                          MaterialPageRoute(builder: (context) =>  ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
+
+                                                                                    },
+                                                                                    color: Colors.blue,
+                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                    child: Padding(
+                                                                                      padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                                                      child: Text('Visit',
+                                                                                        style: TextStyle(
+                                                                                            fontSize: 13.0,
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.white),
+                                                                                      ),
+                                                                                    ),
+                                                                                  )),
+
+
+                                                                              ),
+                                                                              DataCell(    Padding(
+                                                                                  padding: const EdgeInsets.only(right: 0),
+                                                                                  child: RaisedButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.push(
+                                                                                          context,
+                                                                                          MaterialPageRoute(builder: (context) =>  ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
+
+                                                                                    },
+                                                                                    color: Colors.blue,
+                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                    child: Padding(
+                                                                                      padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                                                      child: Text('Call',
+                                                                                        style: TextStyle(
+                                                                                            fontSize: 13.0,
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.white),
+                                                                                      ),
+                                                                                    ),
+                                                                                  )),
+
+
+                                                                              ),
                                                                             ]))
                                                                                 .toList()),
                                                                       ),)
@@ -1397,11 +1449,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
           new RoundedButton(
             text: "FOLLOW UP ",
             onTap: () {
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>   ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+           /*   Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>   ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, )
 
 
-              ));
+              ));*/
             }
           ),
           new RoundedButton(

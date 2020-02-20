@@ -1,81 +1,124 @@
 import 'dart:convert';
-
+import 'package:ehr_mobile/model/artfollowupcall.dart';
+import 'package:ehr_mobile/model/artvisit.dart';
+import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/model/artInitiation.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
-import 'package:ehr_mobile/view/patient_overview.dart';
-import 'package:ehr_mobile/view/search_patient.dart';
-import 'package:ehr_mobile/view/search_patient_index.dart';
+import 'package:ehr_mobile/view/art_Visit_Overview.dart';
+import 'package:ehr_mobile/view/art_visit.dart';
 import 'package:ehr_mobile/login_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:ehr_mobile/view/rounded_button.dart';
-import 'package:ehr_mobile/view/home_page.dart';
-import 'package:ehr_mobile/view/hiv_screening.dart';
-import 'package:ehr_mobile/model/htsRegistration.dart';
+import 'package:ehr_mobile/view/patient_pretest.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/art_initiation.dart';
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
-import 'package:ehr_mobile/view/reception_vitals.dart';
+import 'package:ehr_mobile/vitals/visit.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
-
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
+import 'rounded_button.dart';
+import 'home_page.dart';
 
+import 'hts_testscreening.dart';
+import 'hts_registration.dart';
 
-class HIVServicesIndexContactList extends StatefulWidget {
+import 'reception_vitals.dart';
+import 'package:ehr_mobile/model/artRegistration.dart';
 
-  final HtsRegistration htsRegistration;
-  final String htsId ;
+class ArtFollowUpOverview extends StatefulWidget {
+  final ArtFollowUpCall artFollowUpCall;
+  final Person person;
   final String personId;
   final String visitId;
-  final Person person;
-  final String indexTestId;
-  final Person person_contact;
-  HIVServicesIndexContactList(this.person,this.person_contact, this.visitId, this.htsId, this.htsRegistration, this.personId, this.indexTestId);
+  final String htsId;
+  final HtsRegistration htsRegistration;
+  ArtFollowUpOverview(this.artFollowUpCall, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
+
   @override
-  HIVServicesIndexContactListState createState() {
-    return new HIVServicesIndexContactListState();
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return ArtFollowUpCallOverviewState();
   }
 }
 
-class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList>
-    with TickerProviderStateMixin {
-
-  var selectedDate;
+class ArtFollowUpCallOverviewState extends State<ArtFollowUpOverview> {
+  static const platform = MethodChannel('ehr_mobile.channel/vitals');
+  static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
+  static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
   static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
-  static const htsChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
-  String person_string;
-  List entryPoints = List();
-  List _dropDownListEntryPoints = List();
-  List _religions= List();
-  List<Person>_religionList = List();
-  List<Person> _religionListDropdown= List();
-  List<Person> _entryPointList = List();
-
-  String _entryPoint;
-
-  String facility_name;
+  Person _patient;
+  Visit _visit;
+  Map<String, dynamic> details;
+  String _entrypoint;
+  String regimen_name;
+  String art_reason;
   Age age;
-
+  bool showInput = true;
+  bool showInputTabOptions = true;
+  String facility_name;
+  ArtVisit _artVisit;
 
   @override
   void initState() {
-    getIndexContactList(widget.indexTestId);
+    getArtVist(widget.personId);
     getAge(widget.person);
     getFacilityName();
+    print("Follow up call from save"+ widget.artFollowUpCall.toString());
+    super.initState();
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+  Future<void> getArtVist(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
       setState(() {
-        selectedDate = DateFormat("yyyy/MM/dd").format(picked);
+        _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
       });
-  }
 
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
+
+  }
+  Future<void> getReason(String reasonId) async {
+    String reason;
+
+    try {
+      reason =
+      await artChannel.invokeMethod('getReason', reasonId);
+      setState(() {
+        art_reason = reason;
+      });
+
+
+
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+
+  }
+  Future<void>getAge(Person person)async{
+    String response;
+    try{
+      response = await dataChannel.invokeMethod('getage', person.id);
+      setState(() {
+        age = Age.fromJson(jsonDecode(response));
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
   Future<void>getFacilityName()async{
     String response;
     try{
@@ -90,40 +133,9 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
     }
   }
 
-
-  Future<void>getAge(Person person)async{
-    String response;
-    try{
-      response = await dataChannel.invokeMethod('getage', person.id);
-      setState(() {
-        age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
-      });
-
-    }catch(e){
-      debugPrint("Exception thrown in get facility name method"+e);
-
-    }
+  String nullHandler(String value) {
+    return value == null ? "" : value;
   }
-  Future<void>getIndexContactList(String indexId)async{
-    var response ;
-    try{
-      response = await htsChannel.invokeMethod('getIndexContactList', indexId);
-      setState(() {
-        _entryPoint = response;
-        entryPoints = jsonDecode(_entryPoint);
-        _dropDownListEntryPoints = Person.mapFromJson(entryPoints);
-        _dropDownListEntryPoints.forEach((e) {
-          _entryPointList.add(e);
-        });
-      });
-
-    }catch(e){
-
-    }
-  }
-    bool showInput = true;
-  bool showInputTabOptions = true;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +157,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
-            title: new Text(
+            title:new Text(
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
             actions: <Widget>[
@@ -186,12 +198,6 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
                         ),  ])
               ),
             ],
@@ -206,16 +212,21 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
               child: new Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("HIV Services Index Contact Page", style: TextStyle(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text("ART Follow Up Call", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-                  SizedBox(height: 6.0,),
                   Container(
                       child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
                           children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.person_outline, size: 25.0, color: Colors.white,),
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text(widget.person.firstName + " " + widget.person.lastName, style: TextStyle(
@@ -246,9 +257,21 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                               child: Icon(
                                 Icons.verified_user, size: 25.0, color: Colors.white,),
                             ),
-                          ])),
-                  //_buildButtonsRow(),
+                          ])
+                  ),
+                  _buildButtonsRow(),
                   Expanded(child: WillPopScope(
+                    onWillPop: () {
+                      if (!showInput) {
+                        setState(() {
+                          showInput = true;
+                          showInputTabOptions = true;
+                        });
+                        return Future(() => false);
+                      } else {
+                        return Future(() => true);
+                      }
+                    },
                     child: new Card(
                       elevation: 4.0,
                       margin: const EdgeInsets.all(8.0),
@@ -259,7 +282,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                               BoxConstraints viewportConstraints) {
                             return Column(
                               children: <Widget>[
-                                //   _buildTabBar(),
+                                //  _buildTabBar(),
                                 Expanded(
                                   child: SingleChildScrollView(
                                     child: new ConstrainedBox(
@@ -275,68 +298,66 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                                                   padding: const EdgeInsets.all(16.0),
                                                   child: Column(
                                                     children: <Widget>[
+
                                                       Row(
                                                         children: <Widget>[
                                                           Expanded(
                                                             child: Padding(
-                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0),
-                                                              child: RaisedButton(
-                                                               // onPressed: () {},
-                                                                color: Colors.blue,
-                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                child: Padding(
-                                                                  padding:
-                                                                  const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                                                                  child: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                                    children: <Widget>[
-                                                                      Icon(Icons.search, color: Colors.white, ),
-                                                                      Text('Look Up Patient', style: TextStyle(color: Colors.white),),
-                                                                    ],
-                                                                  ),
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        DateFormat("yyyy/MM/dd").format(widget.artFollowUpCall.date))),
+                                                                decoration: InputDecoration(
+                                                                    icon: new Icon(Icons.credit_card, color: Colors.blue),
+                                                                    labelText: "Date of Follow Up",
+                                                                    hintText: "Date of Follow Up"
                                                                 ),
-                                                                onPressed: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(builder: (context) => SearchPatientIndex(widget.person,widget.indexTestId, widget.visitId, widget.personId)),
-                                                                  );
-
-                                                                }
                                                               ),
                                                             ),
                                                           ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: widget.artFollowUpCall.outcome),
+                                                                decoration: InputDecoration(
+                                                                    icon: Icon(Icons.date_range, color: Colors.blue),
+                                                                    labelText: "Outcome",
+                                                                    hintText: "Outcome"
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(right: 16.0),
+                                                              child: TextField(
+                                                                controller: TextEditingController(
+                                                                    text: nullHandler(
+                                                                        widget.artFollowUpCall.followUpType)),
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Type',
+                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+
                                                         ],
                                                       ),
 
-                                                      Container(
-                                                        padding: const EdgeInsets.symmetric(
-                                                            vertical: 16.0, horizontal: 30.0),
-                                                        child: GestureDetector(
-                                                          child: Column(
-                                                            mainAxisSize: MainAxisSize.max,
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: <Widget>[                                                             // three line description
-                                                            getContactList(),
-                                                              Divider(
-                                                                height: 10.0,
-                                                                color: Colors.blue.shade500,
-                                                              ),
-                                                              Container(
-                                                                height: 2.0,
-                                                                color: Colors.blue,
-                                                              ),
-
-
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
                                                     ],
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
                                             ],
                                           )
 
@@ -363,56 +384,51 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
     );
   }
 
-Widget getContactList(){
-  if(_entryPointList.length > 0){
-     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-      child: DataTable(
-          columns: [
-            DataColumn(label: Text("First Name")),
-            DataColumn(label: Text("Last Name")),
-            DataColumn(label: Text(""))
-          ],
-          rows:_entryPointList.map((index_person)=>
-              DataRow(
-                  cells: [
-                    DataCell(Text(index_person.firstName)),
-                    DataCell(Text(index_person.lastName)),
-                    DataCell(    Padding(
-                      padding: const EdgeInsets.only(right: 0),
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Overview(index_person)));
+  Widget _buildButtonsRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
 
-                        },
-                        color: Colors.blue,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
-                          child: Text('View',
-                            style: TextStyle(
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                      )),
+          new RoundedButton(text: "ART Initiation",selected: true),
+          new RoundedButton(text: "ART Visit", onTap: () {
+
+            if(_artVisit.visitType == null ){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
+              );
+            } else {
+              Navigator.push(context,MaterialPageRoute(
+                  builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+
+              ));
+            }
+          }
+
+          ),
+          new RoundedButton(text: "CLOSE", onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                ));
+
+          },)
 
 
-                    )])
-
-          ).toList()
-
-
+        ],
       ),
     );
-  }else{
-     return new Text("No Contacts Added");
   }
+
 }
 
 
-}
+
+
+
+

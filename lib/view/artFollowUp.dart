@@ -19,6 +19,7 @@ import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 
+import 'artFollowUpCallOverview.dart';
 import 'art_summary_overview.dart';
 
 
@@ -28,7 +29,8 @@ class ArtFollowUpView extends StatefulWidget {
   Person person;
   HtsRegistration htsRegistration;
   String htsId;
-  ArtFollowUpView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
+  String artAppointmentId;
+  ArtFollowUpView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId, this.artAppointmentId);
 
 
   @override
@@ -408,11 +410,12 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
                                                           ],
                                                         ),
                                                         onPressed: () async{
-                                                          ArtFollowUpCall artfollowUpObj =  ArtFollowUpCall(null,artAppointmentDto.id, _currentAppointmentReason, test_date, followUpTypeString);
+                                                          ArtFollowUpCall artfollowUpObj =  ArtFollowUpCall(null,widget.artAppointmentId, _currentAppointmentReason, test_date, followUpTypeString);
                                                           await artFollowUpReg(artfollowUpObj);
                                                           Navigator.push(
                                                             context,
-                                                            MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._appointmentList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                            MaterialPageRoute(builder: (context) => ArtFollowUpOverview(artFollowUpCallResponse, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+
                                                             ), );
                                                         }
                                                     ),
@@ -481,6 +484,7 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
       art_appointment_response = await artChannel.invokeMethod('saveArtFollowUpCall', jsonEncode(artFollowUp));
       setState(() {
         artFollowUpCallResponse = ArtFollowUpCall.fromJson(jsonDecode(art_appointment_response));
+        print("HERE IS THE FOLLOW UP SAVED"+ artFollowUpCallResponse.toString());
       });
 
     } catch (e) {
