@@ -1,19 +1,11 @@
 package zw.gov.mohcc.mrs.ehr_mobile.model.warehouse;
 
-import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.TypeConverters;
 
-import java.util.Date;
-
-import zw.gov.mohcc.mrs.ehr_mobile.converter.BinTypeConverter;
-import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.Batch;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.BinTypeIdName;
-import zw.gov.mohcc.mrs.ehr_mobile.enumeration.BinType;
 import zw.gov.mohcc.mrs.ehr_mobile.model.BaseEntity;
-import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.NameCode;
 
 @Entity
 public class TestKitBatchIssue extends BaseEntity {
@@ -26,9 +18,6 @@ public class TestKitBatchIssue extends BaseEntity {
     @Embedded(prefix = "detail_")
     private BinTypeIdName detail;
     private Double quantity;
-
-    @TypeConverters(DateConverter.class)
-    private Date date;
 
     public TestKitBatchIssue() {
     }
@@ -73,14 +62,6 @@ public class TestKitBatchIssue extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public BinTypeIdName getDetail() {
         return detail;
     }
@@ -98,7 +79,6 @@ public class TestKitBatchIssue extends BaseEntity {
                 ", batch=" + batch +
                 ", detail=" + detail +
                 ", quantity=" + quantity +
-                ", date=" + date +
                 '}';
     }
 }

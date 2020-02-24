@@ -1,4 +1,6 @@
 
+import 'package:ehr_mobile/util/custom_date_converter.dart';
+
 class TestKitBatchIssueTable {
   String id;
   String remaining;
@@ -25,7 +27,7 @@ class TestKitBatchIssueTable {
     tbi.expiredStatus=map['expiredStatus'];
 
     tbi.batch_batchNumber=map['batch_batchNumber'];
-    tbi.batch_expiryDate=map['batch_expiryDate'];
+    tbi.batch_expiryDate=const CustomDateTimeConverter().fromIntToSqlDateTime(map['batch_expiryDate']);
     tbi.batch_textKitId=map['batch_textKitId'];
     tbi.batch_testKitName=map['batch_testKitName'];
 
