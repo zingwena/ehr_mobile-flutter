@@ -487,70 +487,44 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                       ),
                                                       Container(
                                                         padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 20.0),
+                                                        EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0 ),
                                                         width: double.infinity,
                                                         child: OutlineButton(
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  5.0)),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular( 5.0 )),
                                                           color: Colors.white,
-                                                          padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
+                                                          padding: const EdgeInsets.all( 0.0 ),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal:
-                                                                30.0),
+                                                            padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                             child: Column(
-                                                              mainAxisSize:
-                                                              MainAxisSize.max,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
                                                               children: <Widget>[
                                                                 // three line description
                                                                 Container(
-                                                                  alignment:
-                                                                  Alignment
-                                                                      .topLeft,
+                                                                  alignment: Alignment.topLeft,
                                                                   child: Text(
                                                                     'ART Registration',
-                                                                    style:
-                                                                    TextStyle(
-                                                                      fontSize:
-                                                                      16.0,
-                                                                      fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                      color: Colors
-                                                                          .black87,
+                                                                    style: TextStyle(
+                                                                      fontSize: 16.0,
+                                                                      fontStyle: FontStyle.normal,
+                                                                      color: Colors.black87,
                                                                     ),
                                                                   ),
                                                                 ),
 
                                                                 Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                      top: 3.0),
+                                                                  margin: EdgeInsets.only( top: 3.0 ),
                                                                 ),
 
                                                                 Divider(
                                                                   height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
+                                                                  color: Colors.blue.shade500,
                                                                 ),
                                                                 Container(
                                                                   height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
+                                                                  color: Colors.blue,
                                                                 ),
 
                                                                 artdto ==
@@ -559,26 +533,19 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          artdto.artNumber,
-                                                                          decoration:
-                                                                          InputDecoration(
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: artdto.artNumber,
+                                                                          decoration: InputDecoration(
                                                                             icon: Icon(Icons.confirmation_number, color: Colors.blue),
                                                                             labelText: "Art Number",
                                                                             // hintText: "Sex"
@@ -589,15 +556,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     Expanded(
                                                                       child:
                                                                       Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          DateFormat("yyyy/MM/dd").format(artdto.date),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.date),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
                                                                             labelText: "Registration Date",
                                                                             // hintText: "Sex"
                                                                           ),
@@ -612,27 +575,21 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          DateFormat("yyyy/MM/dd").format(artdto.dateEnrolled),
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.dateEnrolled),
                                                                           decoration:
                                                                           InputDecoration(
-                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
+                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
                                                                             labelText: "Date Enrolled",
                                                                             // hintText: "Sex"
                                                                           ),
@@ -646,11 +603,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         const EdgeInsets.only(right: 16.0),
                                                                         child:
                                                                         TextFormField(
-                                                                          initialValue:
-                                                                          DateFormat("yyyy/MM/dd").format(artdto.dateOfHivTest),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.dateOfHivTest),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
                                                                             labelText: "Date of HIV Test",
                                                                             //hintText: "National ID"
                                                                           ),
@@ -665,10 +620,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
@@ -685,7 +638,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                           DateFormat("yyyy/MM/dd").format(artdto.dateHivConfirmed),
                                                                           decoration:
                                                                           InputDecoration(
-                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
+                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
                                                                             labelText: "Date HIV Confirmed",
                                                                             // hintText: "Sex"
                                                                           ),
@@ -703,7 +656,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                           artdto.linkageFrom,
                                                                           decoration:
                                                                           InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            icon: Icon(Icons.link, color: Colors.blue),
                                                                             labelText: "Linkage From",
                                                                             //hintText: "National ID"
                                                                           ),
@@ -718,27 +671,20 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          artdto.linkageNumber,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: artdto.linkageNumber,
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.confirmation_number, color: Colors.blue),
                                                                             labelText: "Art Linkage Number",
                                                                             // hintText: "Sex"
                                                                           ),
@@ -752,11 +698,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         const EdgeInsets.only(right: 16.0),
                                                                         child:
                                                                         TextFormField(
-                                                                          initialValue:
-                                                                          artdto.hivTestUsed,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                          initialValue: artdto.hivTestUsed,
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
                                                                             labelText: "HIV Test used",
                                                                             //hintText: "National ID"
                                                                           ),
@@ -771,26 +715,19 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
+                                                                      child: Padding( padding:
                                                                         const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                           artdto.testReason,
-                                                                          decoration:
-                                                                          InputDecoration(
+                                                                        child: TextFormField(
+                                                                          initialValue: artdto.testReason,
+                                                                          decoration: InputDecoration(
                                                                             icon: Icon(Icons.ac_unit, color: Colors.blue),
                                                                             labelText: "Test Reason",
                                                                             // hintText: "Sex"
@@ -799,18 +736,12 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                       ),
                                                                     ),
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 
-                                                                        16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          artdto.reTested.toString(),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: artdto.reTested.toString(),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
                                                                             labelText: "Retested ?",
                                                                             //hintText: "National ID"
                                                                           ),
@@ -824,28 +755,19 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     ? Center(
                                                                   child: Text(
                                                                     'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                    style: TextStyle( fontSize: 13.0, color: Colors.black54 ),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
+                                                                      child: Padding( padding:
                                                                         const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          DateFormat("yyyy/MM/dd").format(artdto.dateRetested),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
+                                                                        child: TextFormField(
+                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.dateRetested),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
                                                                             labelText: "Date Retested",
                                                                             // hintText: "Sex"
                                                                           ),
@@ -863,7 +785,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                           artdto.facility,
                                                                           decoration:
                                                                           InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            icon: Icon(Icons.home, color: Colors.blue),
                                                                             labelText: "Facility",
                                                                             //hintText: "National ID"
                                                                           ),
@@ -891,13 +813,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
                                                                 Divider(
                                                                   height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
+                                                                  color: Colors.blue.shade500,
                                                                 ),
                                                                 Container(
                                                                   height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
+                                                                  color: Colors.blue,
                                                                 ),
                                                               ],
                                                             ),
@@ -905,11 +825,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                           borderSide: BorderSide(
                                                             color: Colors.blue,
                                                             //Color of the border
-                                                            style:
-                                                            BorderStyle.solid,
+                                                            style: BorderStyle.solid,
                                                             //Style of the border
-                                                            width:
-                                                            2.0, //width of the border
+                                                            width: 2.0, //width of the border
                                                           ),
                                                           onPressed: () {
                                                             if(artdto.artNumber == null){
@@ -918,15 +836,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 MaterialPageRoute(
                                                                     builder: (context) => ArtReg(
                                                                         artdto,
-                                                                        widget.person
-                                                                            .id,
-                                                                        widget
-                                                                            .visitId,
+                                                                        widget.person.id,
+                                                                        widget.visitId,
                                                                         widget.person,
-                                                                        widget
-                                                                            .htsRegistration,
-                                                                        widget
-                                                                            .htsId)),
+                                                                        widget.htsRegistration,
+                                                                        widget.htsId)),
                                                               );
                                                             }else{
                                                               Navigator.push(
@@ -955,58 +869,39 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                             horizontal: 20.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  5.0)),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
                                                           color: Colors.white,
-                                                          padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
+                                                          padding: const EdgeInsets.all(0.0),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding: EdgeInsets
-                                                                .symmetric(
+                                                            padding: EdgeInsets.symmetric(
                                                                 vertical: 8.0,
-                                                                horizontal:
-                                                                30.0),
+                                                                horizontal: 30.0),
                                                             child: Column(
-                                                              mainAxisSize:
-                                                              MainAxisSize.max,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
                                                               children: <Widget>[
                                                                 // three line description
                                                                 Container(
                                                                   alignment:
-                                                                  Alignment
-                                                                      .topLeft,
+                                                                  Alignment.topLeft,
                                                                   child: Text(
                                                                     'Art Appointments List',
                                                                     style:
-                                                                    TextStyle(
-                                                                      fontSize:
-                                                                      16.0,
-                                                                      fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                      color: Colors
-                                                                          .black87,
+                                                                    TextStyle( fontSize: 16.0,
+                                                                      fontStyle: FontStyle.normal,
+                                                                      color: Colors.black87,
                                                                     ),
                                                                   ),
                                                                 ),
                                                                 Divider(
                                                                   height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
+                                                                  color: Colors.blue.shade500,
                                                                 ),
                                                                 Container(
                                                                   height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
+                                                                  color: Colors.blue,
                                                                 ),
                                                                 Row(
                                                                   children: <Widget>[
@@ -1014,10 +909,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                           ?Expanded(
 
                                                                         child: Container(
-                                                                        alignment:
-                                                                        Alignment.topLeft,
-                                                                        child:
-                                                                        Center(child: Text(
+                                                                        alignment: Alignment.topLeft,
+                                                                        child: Center(child: Text(
                                                                           'No Records',
                                                                           style: TextStyle(
                                                                               fontSize: 13.0,
@@ -1026,13 +919,10 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     ))
                                                                           : Expanded(
                                                                         child:Container(
-                                                                      width: double
-                                                                          .infinity,
+                                                                      width: double.infinity,
                                                                       padding: EdgeInsets.symmetric(
-                                                                          vertical:
-                                                                          0.0,
-                                                                          horizontal:
-                                                                          30.0),
+                                                                          vertical: 0.0,
+                                                                          horizontal: 30.0),
                                                                       child: DataTable(
                                                                           columns: [
                                                                             DataColumn(label: Text("Date")),
@@ -1117,71 +1007,44 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                         ),
                                                       ),
                                                       Container(
-                                                        padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 20.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 20.0 ),
                                                         width: double.infinity,
                                                         child: OutlineButton(
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  5.0)),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
                                                           color: Colors.white,
-                                                          padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
+                                                          padding: const EdgeInsets.all(0.0),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal:
-                                                                30.0),
+                                                            padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
                                                             child: Column(
-                                                              mainAxisSize:
-                                                              MainAxisSize.max,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
                                                               children: <Widget>[
                                                                 // three line description
                                                                 Container(
-                                                                  alignment:
-                                                                  Alignment
-                                                                      .topLeft,
+                                                                  alignment: Alignment.topLeft,
                                                                   child: Text(
                                                                     'TB Screening',
-                                                                    style:
-                                                                    TextStyle(
-                                                                      fontSize:
-                                                                      16.0,
-                                                                      fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                      color: Colors
-                                                                          .black87,
+                                                                    style: TextStyle(
+                                                                      fontSize: 16.0,
+                                                                      fontStyle: FontStyle.normal,
+                                                                      color: Colors.black87,
                                                                     ),
                                                                   ),
                                                                 ),
 
                                                                 Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                      top: 3.0),
+                                                                  margin: EdgeInsets.only(top: 3.0),
                                                                 ),
 
                                                                 Divider(
                                                                   height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
+                                                                  color: Colors.blue.shade500,
                                                                 ),
                                                                 Container(
                                                                   height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
+                                                                  color: Colors.blue,
                                                                 ),
 
                                                                 tbScreeningobj ==
@@ -1190,27 +1053,20 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          feverString,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.confirmation_number, color: Colors.blue),
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: feverString,
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
                                                                             labelText: "Fever",
                                                                             // hintText: "Sex"
                                                                           ),
@@ -1220,15 +1076,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     Expanded(
                                                                       child:
                                                                       Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          coughingString,
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: coughingString,
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
                                                                             labelText: "Coughing",
                                                                             // hintText: "Sex"
                                                                           ),
@@ -1243,24 +1095,18 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          weightLossString,
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: weightLossString,
                                                                           decoration:
                                                                           InputDecoration(
                                                                             icon: Icon(Icons.ac_unit, color: Colors.blue),
@@ -1281,7 +1127,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                           nightSweatsString,
                                                                           decoration:
                                                                           InputDecoration(
-                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            icon: Icon(Icons.ac_unit, color: Colors.blue),
                                                                             labelText: "Night Sweats",
                                                                             //hintText: "National ID"
                                                                           ),
@@ -1296,26 +1142,19 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   child: Text(
                                                                     'No Record',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                        13.0,
-                                                                        color:
-                                                                        Colors.black54),
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
                                                                   ),
                                                                 )
                                                                     : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          bmiUnderSeventeenString,
-                                                                          decoration:
-                                                                          InputDecoration(
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child: TextFormField(
+                                                                          initialValue: bmiUnderSeventeenString,
+                                                                          decoration: InputDecoration(
                                                                             icon: Icon(Icons.ac_unit, color: Colors.blue),
                                                                             labelText: "BMI Under Seventeen ?",
                                                                             // hintText: "Sex"
@@ -1327,13 +1166,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
                                                                 Divider(
                                                                   height: 10.0,
-                                                                  color: Colors.blue
-                                                                      .shade500,
+                                                                  color: Colors.blue.shade500,
                                                                 ),
                                                                 Container(
                                                                   height: 2.0,
-                                                                  color:
-                                                                  Colors.blue,
+                                                                  color: Colors.blue,
                                                                 ),
                                                               ],
                                                             ),
@@ -1341,11 +1178,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                           borderSide: BorderSide(
                                                             color: Colors.blue,
                                                             //Color of the border
-                                                            style:
-                                                            BorderStyle.solid,
+                                                            style: BorderStyle.solid,
                                                             //Style of the border
-                                                            width:
-                                                            2.0, //width of the border
+                                                            width: 2.0, //width of the border
                                                           ),
                                                           onPressed: () {
                                                             if(tbScreeningobj == null){
