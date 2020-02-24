@@ -29,6 +29,9 @@ public interface ArtDao {
     @Query("SELECT * FROM Art WHERE personId =:personId")
     Art findByPersonId(String personId);
 
+    @Query("SELECT count(*) FROM Art WHERE personId =:personId")
+    int existsByPersonId(String personId);
+
     @Query("DELETE FROM Art where id = :id")
     void deleteById(String id);
 }

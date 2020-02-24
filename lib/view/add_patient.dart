@@ -377,20 +377,14 @@ class _AddPatient extends State<AddPatient> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child:
-                                                                  Text('Sex'),
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text('Sex'),
                                                             ),
                                                             width: 250,
                                                           ),
@@ -399,18 +393,14 @@ class _AddPatient extends State<AddPatient> {
                                                         Radio(
                                                             value: 1,
                                                             groupValue: _gender,
-                                                            activeColor:
-                                                                Colors.blue,
-                                                            onChanged:
-                                                                _handleGenderChange),
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleGenderChange),
                                                         Text('Female'),
                                                         Radio(
                                                             value: 2,
                                                             groupValue: _gender,
-                                                            activeColor:
-                                                                Colors.blue,
-                                                            onChanged:
-                                                                _handleGenderChange)
+                                                            activeColor: Colors.blue,
+                                                            onChanged: _handleGenderChange)
                                                       ],
                                                     ),
                                                   ),
@@ -419,10 +409,7 @@ class _AddPatient extends State<AddPatient> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
@@ -467,35 +454,20 @@ class _AddPatient extends State<AddPatient> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 55.5),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 55.5 ),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0)),
+                                                      shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(5.0)),
                                                       color: Colors.blue,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              20.0),
+                                                      padding: const EdgeInsets.all(20.0),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: <Widget>[
-                                                          Text(
-                                                            'Proceed to Demographics',
+                                                          Text( 'Proceed to Demographics',
                                                             style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
+                                                                color: Colors.white),
                                                           ),
                                                           Spacer(),
                                                           Icon(

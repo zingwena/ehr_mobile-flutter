@@ -38,12 +38,19 @@ public interface PersonInvestigationDao {
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId=:investigationId and result=:resultId")
     PersonInvestigation findByPersonIdAndInvestigationIdAndResultId(String personId, String investigationId, String resultId);
 
+    @Query("SELECT count(*) FROM PersonInvestigation WHERE personId=:personId and investigationId in(:investigationIds) and result=:resultId")
+    int existsByPersonIdAndInvestigationIdAndResultId(String personId, String [] investigationIds, String resultId);
+
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and result=:hivResult and investigationId in (:hivTests) order by date Desc limit 1")
     PersonInvestigation findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(
             String personId, String hivResult, Set<String> hivTests);
 
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId in (:investigations) order by date Desc limit 1")
     PersonInvestigation findTopByPersonIdAndInvestigationIdInOrderByDateDesc(
+            String personId, Set<String> investigations);
+
+    @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId and investigationId in (:investigations)")
+    int existsbyPersonIdAndInvestigationIdIn(
             String personId, Set<String> investigations);
 
     @Query("SELECT * FROM PersonInvestigation WHERE personId=:personId order by date Desc limit 3")

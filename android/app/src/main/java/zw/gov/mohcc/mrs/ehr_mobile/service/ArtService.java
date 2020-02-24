@@ -137,7 +137,7 @@ public class ArtService {
     public PersonInvestigation getLatestHivPositiveRecord(String personId) {
 
         PersonInvestigation latestPositiveHivResult = ehrMobileDatabase.personInvestigationDao().
-                findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(personId, APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT_LITERAL,
+                findTopByPersonIdAndResultNameAndInvestigationIdInOrderByDateDesc(personId, APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL,
                         new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.HIV_TESTS)));
         Log.d(TAG, "Retrieved latest hiv positive result for this patient : " + latestPositiveHivResult);
         return latestPositiveHivResult;

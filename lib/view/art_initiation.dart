@@ -405,11 +405,9 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                   padding: const EdgeInsets.all(16.0),
                                                   child: Column(
                                                     children: <Widget>[
-
                                                       SizedBox(
                                                         height: 30.0,
                                                       ),
-
                                                       Container(
                                                         width: double.infinity,
                                                         padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
@@ -446,7 +444,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                       ),
 
                                                       Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
                                                           shape: RoundedRectangleBorder(
@@ -494,7 +492,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                                                         height: 20.0,
                                                       ),
                                                      Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                                                       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
                                                         width: double.infinity,
                                                         child: OutlineButton(
                                                           shape: RoundedRectangleBorder(
@@ -546,7 +544,7 @@ class _Art_Initiation extends State<Art_Initiation> {
 
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 35.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 55.5 ),
                                                         child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(

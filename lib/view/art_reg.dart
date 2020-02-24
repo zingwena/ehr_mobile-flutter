@@ -15,6 +15,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../sidebar.dart';
 import 'art_summary_overview.dart';
@@ -638,8 +639,7 @@ class _ArtReg extends State<ArtReg> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                     child: Row(
                                                       children: <Widget>[
                                                         Expanded(
@@ -708,7 +708,7 @@ class _ArtReg extends State<ArtReg> {
                                                             child: Container(
                                                               width: double.infinity,
                                                               padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0),
-                                                              child: DropdownButton(
+                                                              child: SearchableDropdown(
                                                                 isExpanded: true,
                                                                 icon: Icon(Icons.keyboard_arrow_down),
                                                                 hint: Text("Health Facility"),
@@ -978,12 +978,11 @@ class _ArtReg extends State<ArtReg> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: 35.0,
+                                                    height: 30.0,
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 55.5 ),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(5.0) ),

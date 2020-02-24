@@ -172,7 +172,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1950, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
@@ -439,30 +439,19 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                 width: 100,
                                                               ),
                                                             ),
-                                                            Text('Yes',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),),
+                                                            Text('Yes'),
                                                             Radio(
                                                                 value: 1,
                                                                 groupValue: _options,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleOptionsChange),
-                                                            Text('No',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('No'),
                                                             Radio(
                                                                 value: 2,
                                                                 groupValue: _options,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleOptionsChange),
-                                                            Text('Not Known',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('Not Known'),
                                                             Radio(
                                                                 value: 3,
                                                                 groupValue: _options,
@@ -519,30 +508,19 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                                 width: 100,
                                                               ),
                                                             ),
-                                                            Text('Positive',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),),
+                                                            Text('Positive'),
                                                             Radio(
                                                                 value: 1,
                                                                 groupValue: _result,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleResultChange),
-                                                            Text('Negative',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('Negative'),
                                                             Radio(
                                                                 value: 2,
                                                                 groupValue: _result,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleResultChange),
-                                                            Text('Not Known',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('Not Known'),
                                                             Radio(
                                                                 value: 3,
                                                                 groupValue: _result,

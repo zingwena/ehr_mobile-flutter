@@ -301,23 +301,20 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                                       : null;
                                                                 },
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius.circular(0.0)),
-                                                                    labelText: "Date Of Appointment"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today),
+                                                                        color: Colors.blue,
+                                                                        onPressed: () {
+                                                                          _selectDateOfInitiation(
+                                                                              context);
+                                                                        }),
+                                                                    labelText: 'Date of Appointment',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfInitiation(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ),
@@ -362,7 +359,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder(

@@ -482,7 +482,6 @@ class OverviewState extends State<Overview> {
                                                     ],
                                                   ),
                                                 ),
-
                                               ),
 
                                               Row(
