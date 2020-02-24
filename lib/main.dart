@@ -12,6 +12,7 @@ void main() => runApp(
     client: graphQLConfiguration.getClient(),
     child: CacheProvider(child: EhrMobileApp()),
   ),
+
 );
 
 
