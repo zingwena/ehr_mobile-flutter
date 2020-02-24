@@ -357,7 +357,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                     children: <Widget>[
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 80.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0),
                                                         child: Row(
                                                           children: <Widget>[
                                                             Expanded(
@@ -376,22 +376,14 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                       ),
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 16.0,
-                                                                horizontal:
-                                                                    60.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                         child: Row(
                                                           children: <Widget>[
                                                             Expanded(
                                                               child: SizedBox(
                                                                 child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child: Text(
-                                                                      'Results Received'),
+                                                                  padding: const EdgeInsets.all( 8.0 ),
+                                                                  child: Text( 'Results Received' ),
                                                                 ),
                                                                 width: 250,
                                                               ),
@@ -399,10 +391,8 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                             Text('YES'),
                                                             Radio(
                                                                 value: 1,
-                                                                groupValue:
-                                                                    _resultsreceived,
-                                                                onChanged:
-                                                                    _handleResultReceived),
+                                                                groupValue: _resultsreceived,
+                                                                onChanged: _handleResultReceived),
                                                             Text('NO'),
                                                             Radio(
                                                                 value: 2,
@@ -421,6 +411,7 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                 color: Colors.white,
                                                                 child: Container(
                                                                   width: double.infinity,
+                                                                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
                                                                   child: DropdownButton(
                                                                     isExpanded: true,
                                                                     icon: Icon(Icons.keyboard_arrow_down),
@@ -437,34 +428,25 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                 ),
                                                                 borderSide:
                                                                     BorderSide(
-                                                                  color: Colors
-                                                                      .blue, //Color of the border
-                                                                  style: BorderStyle
-                                                                      .solid, //Style of the border
-                                                                  width:
-                                                                      2.0, //width of the border
+                                                                  color: Colors.blue, //Color of the border
+                                                                  style: BorderStyle.solid, //Style of the border
+                                                                  width: 2.0, //width of the border
                                                                 ),
                                                                 onPressed:
                                                                     () {},
                                                               ))
                                                           : SizedBox(
                                                               height: 0.0),
+
                                                       Container(
                                                         width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 16.0,
-                                                                horizontal:
-                                                                    60.0),
+                                                        padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                         child: Row(
                                                           children: <Widget>[
                                                             Expanded(
                                                               child: SizedBox(
                                                                 child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
+                                                                  padding: const EdgeInsets.all( 8.0 ),
                                                                   child: Text(
                                                                       'Post Test Counselled'),
                                                                 ),
@@ -474,17 +456,13 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                             Text('YES'),
                                                             Radio(
                                                                 value: 1,
-                                                                groupValue:
-                                                                    _posttestcounselled,
-                                                                onChanged:
-                                                                    _handlePostTestCounselled),
+                                                                groupValue: _posttestcounselled,
+                                                                onChanged: _handlePostTestCounselled),
                                                             Text('NO'),
                                                             Radio(
                                                                 value: 2,
-                                                                groupValue:
-                                                                    _posttestcounselled,
-                                                                onChanged:
-                                                                    _handlePostTestCounselled)
+                                                                groupValue: _posttestcounselled,
+                                                                onChanged: _handlePostTestCounselled)
                                                           ],
                                                         ),
                                                       ),
@@ -494,28 +472,17 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                       _postTestCounselled ==
                                                               true
                                                           ? Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          16.0,
-                                                                      horizontal:
-                                                                          60.0),
+                                                              width: double.infinity,
+                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                               child: Row(
                                                                 children: <
                                                                     Widget>[
-                                                                  Expanded(
-                                                                    child:
+                                                                  Expanded( child:
                                                                         SizedBox(
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(0.0),
-                                                                        child:
-                                                                            TextFormField(
-                                                                          controller:
-                                                                              TextEditingController(text: selectedDate),
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.all(0.0),
+                                                                        child: TextFormField(
+                                                                          controller: TextEditingController(text: selectedDate),
                                                                           validator:
                                                                               (value) {
                                                                             return value.isEmpty
