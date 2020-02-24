@@ -12,6 +12,7 @@ import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/tbscreening.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:ehr_mobile/view/art_appointment.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/htsscreeningoverview.dart';
@@ -26,6 +27,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../sidebar.dart';
+import 'artFollowUp.dart';
 import 'art_Visit_Overview.dart';
 import 'art_iptStatus.dart';
 import 'art_iptStatusOverView.dart';
@@ -116,6 +118,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
     String response;
     try {
       response = await artChannel.invokeMethod('getArt', personId);
+      log.i(response);
       setState(() {
         this.artdto = Artdto.fromJson(jsonDecode(response));
       });
@@ -145,7 +148,6 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       response = await artChannel.invokeMethod('getTbScreening', personId);
       setState(() {
         tbScreeningobj = TbScreening.fromJson(jsonDecode(response));
-        print("THIS IS THE TB SCREENING  RETRIEVED"+ tbScreeningobj.toString());
 
         if(tbScreeningobj != null){
           if(tbScreeningobj.coughing == true){
@@ -1008,39 +1010,65 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
                                                                 Row(
                                                                   children: <Widget>[
-                                                                    Expanded(
-                                                                      child: _appointmentList.isEmpty
-                                                                          ? Container(
-                                                                          alignment:
-                                                                          Alignment.topLeft,
-                                                                          child:
-                                                                          Center(child: Text(
-                                                                            'No Records',
-                                                                            style: TextStyle(
-                                                                                fontSize: 13.0,
-                                                                                color: Colors.black54),
-                                                                          ),)
-                                                                      )
-                                                                          : Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        padding: EdgeInsets.symmetric(
-                                                                            vertical:
-                                                                            0.0,
-                                                                            horizontal:
-                                                                            30.0),
-                                                                        child: DataTable(
-                                                                            columns: [
-                                                                              DataColumn(label: Text("Date")),
-                                                                              DataColumn(label: Text("Reason Name")),
-                                                                            ],
-                                                                            rows: _appointmentList
-                                                                                .map((appointment) => DataRow(cells: [
-                                                                              DataCell(Text(DateFormat("yyyy/MM/dd").format(appointment.date))),
-                                                                              DataCell(Text(appointment.reason)),
-                                                                            ]))
-                                                                                .toList()),
-                                                                      ),)
+                                                                    _appointmentList.isEmpty
+                                                                          ?Expanded(
+
+                                                                        child: Container(
+                                                                        alignment:
+                                                                        Alignment.topLeft,
+                                                                        child:
+                                                                        Center(child: Text(
+                                                                          'No Records',
+                                                                          style: TextStyle(
+                                                                              fontSize: 13.0,
+                                                                              color: Colors.black54),
+                                                                        ),)
+                                                                    ))
+                                                                          : Expanded(
+                                                                        child:Container(
+                                                                      width: double
+                                                                          .infinity,
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          vertical:
+                                                                          0.0,
+                                                                          horizontal:
+                                                                          30.0),
+                                                                      child: DataTable(
+                                                                          columns: [
+                                                                            DataColumn(label: Text("Date")),
+                                                                            DataColumn(label: Text("Reason Name")),
+                                                                            DataColumn(label: Text("Follow Up")),
+
+                                                                          ],
+                                                                          rows: _appointmentList
+                                                                              .map((appointment) => DataRow(cells: [
+                                                                            DataCell(Text(DateFormat("yyyy/MM/dd").format(appointment.date))),
+                                                                            DataCell(Text(appointment.reason)),
+                                                                            DataCell(    Padding(
+                                                                                padding: const EdgeInsets.only(right: 0),
+                                                                                child: RaisedButton(
+                                                                                  onPressed: () {
+                                                                                    Navigator.push(
+                                                                                        context,
+                                                                                        MaterialPageRoute(builder: (context) =>  ArtFollowUpView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId, appointment.id)));
+
+                                                                                  },
+                                                                                  color: Colors.blue,
+                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.only(left: 15, right: 15, top: 1, bottom: 1),
+                                                                                    child: Text('Follow',
+                                                                                      style: TextStyle(
+                                                                                          fontSize: 13.0,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                          color: Colors.white),
+                                                                                    ),
+                                                                                  ),
+                                                                                )),
+                                                                            ),
+                                                                          ]))
+                                                                              .toList()),
+                                                                    ))
                                                                   ],
                                                                 ),
 
@@ -1393,24 +1421,14 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
             }
           ),
           new RoundedButton(
-            text: "IPT STATUS",
-            onTap: () =>{
-              if(_artIpt == null){
-              Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context)=>    ArtIptStatusView(widget.person, widget.person.id, widget.visitId, widget.htsId, widget.htsRegistration)
-
-              ))
-
-              }else{
-
-                Navigator.push(
+            text: "IPT STATUS ",
+            onTap: () {
+              Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ArtIptStatusOverview(_artIpt, widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId)),
-                ),
+                      builder: (context) =>   ArtIptStatusView(widget.person, widget.person.id, widget.visitId, widget.htsId, widget.htsRegistration)
+                  ));
 
-              }
             }
           ),
           new RoundedButton(

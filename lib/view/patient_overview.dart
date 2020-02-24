@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import 'art_reg.dart';
+import 'art_summary_overview.dart';
 import 'sexualhistoryform.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
@@ -65,7 +66,6 @@ class OverviewState extends State<Overview> {
   Artdto artdto;
   @override
   void initState() {
-    print("THIS IS THE PATIENT IN PATIENT OVERVIEW"+ widget.patient.toString());
     _patient = widget.patient;
     getVisit(_patient.id);
     getHtsScreeningRecord(_patient.id);
@@ -150,6 +150,7 @@ class OverviewState extends State<Overview> {
       hts = await htsChannel.invokeMethod('getHtsId', patientId);
       setState(() {
         htsId = hts;
+        print("HTS ID IN PATIENT OVERVIEW"+ htsId);
       });
     } catch (e) {
       print("channel failure in get htsId: '$e'");
@@ -624,12 +625,10 @@ class OverviewState extends State<Overview> {
 
           new RoundedButton(text: "HTS", onTap: () {
             if(htsScreening == null ){
-              debugPrint("The htsscreening record was null ######");
                Navigator.push(context,MaterialPageRoute(
                   builder: (context)=>  Hts_Screening(widget.patient.id, htsId, htsRegistration, visitId, _patient)
               ));
             } else {
-              debugPrint("The htsscreening record wasn't null #######");
               Navigator.push(context,MaterialPageRoute(
                   builder: (context)=> HtsScreeningOverview(widget.patient, htsScreening, htsId, visitId,  widget.patient.id)
               ));
@@ -638,18 +637,12 @@ class OverviewState extends State<Overview> {
           ),
 
       new RoundedButton(text: "ART", onTap: () {
-        if(artdto.artNumber == null ){
-          print('nnnnnn artreg null ');
-          Navigator.push(context,MaterialPageRoute(
-              builder: (context)=>  ArtReg(this.artdto, widget.patient.id, visitId, widget.patient, htsRegistration, htsId)
-          ));
-        } else {
-          print('nnnnn artreg  not null ');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>   ArtSummaryOverview(widget.patient, visitId, htsRegistration, htsId)
 
-          Navigator.push(context,MaterialPageRoute(
-              builder: (context)=> ArtRegOverview(artdto, _patient.id, visitId, _patient, htsRegistration, htsId)
-          ));
-        }
+            ));
       //    ArtRegOverview(this.artRegistration, this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
 
       }),

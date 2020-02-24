@@ -469,7 +469,6 @@ Future<dynamic> getTestKitsByCount(int count) async {
   @override
   Widget build(BuildContext context) {
     var list=this._testkitslist ;
-    print("+++++++++++  $list");
     return Scaffold(
       drawer:  Sidebar(widget.person, widget.personId, widget.visitId, htsRegistration, widget.htsId),
       body:

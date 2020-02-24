@@ -214,11 +214,49 @@ class PersonQuery {
                     relation
                     dateOfDisclosure
                     reason
+                    ipt{
+                      artIptStatusId
+                      date
+                      status{
+                        id
+                        name
+                      }
+                      reason{
+                        id
+                        name
+                      }
+                    }
                     symptoms {
                       artSymptomId
                       date
                       present
                       Symptom {
+                        id
+                        name
+                      }
+                    }
+                    ois {
+                      artOiId
+                      date
+                      oi {
+                        id
+                        name
+                      }
+                    }
+                    artLinkagesFrom {
+                      artLinkageFromId
+                      linkageFrom
+                      linkageNumber
+                      dateHivConfirmed
+                      otherInstitution
+                      hivTestUsed
+                      reTested
+                      dateRetested
+                      testReason{
+                        id
+                        name
+                      }
+                      facility{
                         id
                         name
                       }

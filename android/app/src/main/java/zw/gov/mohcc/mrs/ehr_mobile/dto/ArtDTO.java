@@ -73,8 +73,9 @@ public class ArtDTO implements Serializable {
 
         ArtDTO dto = new ArtDTO();
         dto.setArtNumber(art.getArtNumber());
-        dto.setDate(new PastDate(art.getDate()));
+        dto.setDate(art.getDate() != null ? new PastDate(art.getDate()) : null);
         dto.setDateEnrolled(art.getDateEnrolled());
+        dto.setDateOfHivTest(art.getDateOfHivTest() != null ? new PastDate(art.getDateOfHivTest()) : null);
         dto.setDateOfHivTest(new PastDate(art.getDateOfHivTest()));
         dto.setDateEnrolled(art.getDateEnrolled());
         dto.setPersonId(art.getPersonId());
@@ -109,7 +110,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDate(@NonNull PastDate date) {
-        this.date = date;
+        this.date = date != null ? date.getPastDate() : null;
     }
 
     @NonNull
@@ -127,7 +128,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDateOfHivTest(@NonNull PastDate dateOfHivTest) {
-        this.dateOfHivTest = dateOfHivTest;
+        this.dateOfHivTest = dateOfHivTest.getPastDate();
     }
 
     @NonNull
@@ -154,7 +155,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDateHivConfirmed(@NonNull PastDate dateHivConfirmed) {
-        this.dateHivConfirmed = dateHivConfirmed;
+        this.dateHivConfirmed = dateHivConfirmed != null ? dateHivConfirmed.getPastDate() : null;
     }
 
     public String getLinkageNumber() {
@@ -194,7 +195,7 @@ public class ArtDTO implements Serializable {
     }
 
     public void setDateRetested(PastDate dateRetested) {
-        this.dateRetested = dateRetested;
+        this.dateRetested = dateRetested != null ? dateRetested.getPastDate() : null;
     }
 
     public String getTestReason() {

@@ -15,6 +15,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'art_summary_overview.dart';
 import 'art_symptoms.dart';
 
 class ArtIptStatusView extends StatefulWidget {
@@ -148,11 +149,8 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
     var art_visit_response;
     try {
       art_visit_response = await artChannel.invokeMethod('getArtIpt', personId);
-      print("KKKKKKKKKKK art ipt string here "+ art_visit_response.toString());
-
       setState(() {
         _artIpt = ArtIpt.fromJson(jsonDecode(art_visit_response));
-        print("KKKKKKKKKKK art ipt here "+ _artIpt.toString());
       });
 
     } catch (e) {
@@ -237,12 +235,6 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
                         ),  ])
               ),
             ],
@@ -468,12 +460,9 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
   Future<void> saveIptStatus(ArtIpt artIpt) async {
     var art_ipt_response;
     try {
-      print('pppppppppppppppppppppppppppppppppppp art ipt  to be saved '+ art_ipt_response.toString());
       art_ipt_response = await artChannel.invokeMethod('saveArtIpt', jsonEncode(artIpt));
-      print('pppppppppppppppppppppppppppppppppppp art ipt  response response'+ art_ipt_response);
       setState(() {
         artIptResponse = ArtIpt.fromJson(jsonDecode(art_ipt_response));
-        print('FFFFFFFFFFFFFFFFFFFFFFF'+ artIptResponse.toString());
       });
 
     } catch (e) {
@@ -487,20 +476,15 @@ class _ArtIptStatus extends State<ArtIptStatusView> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
-          new RoundedButton(text: "ART Registration", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    LandingScreen()),
+          new RoundedButton(text: "ART IPT Status", selected: true, onTap: () {},
           ),
-          ),
-          new RoundedButton(text: "Art IPT status", selected: true),
-          new RoundedButton(text: "Close", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
+          new RoundedButton(text: "Symptoms"),
+          new RoundedButton(text: "Close", onTap: () =>  Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+              ))
           ),
         ],
       ),

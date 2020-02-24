@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ehr_mobile/model/artappointment.dart';
+import 'package:ehr_mobile/model/artfollowupcall.dart';
 import 'package:ehr_mobile/model/followupreason.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
@@ -18,25 +19,27 @@ import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 
+import 'artFollowUpCallOverview.dart';
 import 'art_summary_overview.dart';
 
 
-class ArtAppointmentView extends StatefulWidget {
+class ArtFollowUpView extends StatefulWidget {
   String personId;
   String visitId;
   Person person;
   HtsRegistration htsRegistration;
   String htsId;
-  ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
+  String artAppointmentId;
+  ArtFollowUpView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId, this.artAppointmentId);
 
 
   @override
   State createState() {
-    return _ArtAppointment();
+    return _ArtFollowUp();
   }
 }
 
-class _ArtAppointment extends State<ArtAppointmentView> {
+class _ArtFollowUp extends State<ArtFollowUpView> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   static final MethodChannel addPatient =
@@ -49,21 +52,21 @@ class _ArtAppointment extends State<ArtAppointmentView> {
   DateTime enrollment_date, test_date;
   String _nationalIdError = "National Id number is invalid";
   Age age;
- ArtAppointment artAppointmentDto;
- ArtAppointment artAppointmentResponse;
+  ArtAppointment artAppointmentDto;
+  ArtFollowUpCall artFollowUpCallResponse;
   String facility_name;
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasonIdentified;
-
   List<DropdownMenuItem<String>> _dropDownMenuItemsReasons;
   List<FollowUpReason> _reasonList = List();
   String _reason;
+  int _followUpType;
+  bool typeSelected = false;
+  String followUpTypeString;
+  bool showTypeError = false;
   List reasons = List();
   List _dropDownListReasons = List();
-
   String  _currentAppointmentReason;
-
   bool selfIdentifiedAppointmentReasonIsValid=false;
-
   String _appointmetnt_string;
   List appointmnents = List();
   List _dropDownListAppointments= List();
@@ -79,7 +82,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     test_date = DateTime.now();
     enrollment_date = DateTime.now();
     getArtAppointment(widget.personId);
-    //getAge(widget.person);
     getFacilityName();
     getFolloUpReasons();
 
@@ -139,8 +141,8 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     try {
       hts = await artChannel.invokeMethod('getArtAppointment', patientId);
       setState(() {
-        artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(hts));
-        print("HERE IS THE art appointments AFTER ASSIGNMENT " + artAppointmentResponse.toString());
+        artAppointmentDto = ArtAppointment.fromJson(jsonDecode(hts));
+        print("HERE IS THE art appointment >>>>>>>>>>>> AFTER ASSIGNMENT " + artAppointmentDto.toString());
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -224,11 +226,6 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
 
                         ),  ])
               ),
@@ -242,10 +239,10 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("ART Appointment", style: TextStyle(
+                    child: Text("ART Follow Up", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
-               _buildButtonsRow(),
+                  _buildButtonsRow(),
                   Expanded(
                     child: new Card(
                       elevation: 4.0,
@@ -304,7 +301,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                                     border: OutlineInputBorder(
                                                                         borderRadius:
                                                                         BorderRadius.circular(0.0)),
-                                                                    labelText: "Date Of Appointment"),
+                                                                    labelText: "Date Of Follow Up"),
                                                               ),
                                                             ),
                                                             width: 100,
@@ -321,6 +318,39 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                       ],
                                                     ),
                                                   ),
+
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 90.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            child: Padding( padding: EdgeInsets.symmetric( vertical: 8.0, horizontal: 30.0 ),
+                                                              child: Text('Follow Up Type'),
+                                                            ),
+                                                            width: 250,
+                                                          ),
+                                                        ),
+                                                        Text('VISIT'),
+                                                        Radio(
+                                                            value: 1,
+                                                            groupValue: _followUpType,
+                                                            onChanged: _handleFollowUpChange),
+                                                        Text('CALL'),
+                                                        Radio(
+                                                            value: 2,
+                                                            groupValue: _followUpType,
+                                                            onChanged: _handleFollowUpChange)
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  showTypeError == true ? Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 95),
+                                                    child: Text("Select Follow Up type ", style: TextStyle(color: Colors.red, fontSize: 15),),
+                                                  ):SizedBox(height: 0.0, width: 0.0,),
+
 
                                                   SizedBox(
                                                     height: 10.0,
@@ -340,7 +370,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                         child: DropdownButton(
                                                           isExpanded:true,
                                                           icon: Icon(Icons.keyboard_arrow_down),
-                                                          hint:Text("Appointment Reason"),
+                                                          hint:Text("Follow Up  Outcome"),
                                                           iconEnabledColor: Colors.black,
                                                           value: _currentAppointmentReason,
                                                           items: _dropDownMenuItemsReasons,
@@ -362,14 +392,14 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
                                                     child: RaisedButton(
-                                                      elevation: 4.0,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(5.0)),
-                                                      color: Colors.blue,
-                                                      padding: const EdgeInsets.all(20.0),
+                                                        elevation: 4.0,
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius.circular(5.0)),
+                                                        color: Colors.blue,
+                                                        padding: const EdgeInsets.all(20.0),
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -379,19 +409,15 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                             Icon(Icons.save_alt, color: Colors.white, ),
                                                           ],
                                                         ),
-                                                      onPressed: () async{
-                                                        artAppointmentResponse.reason = _currentAppointmentReason;
-                                                        artAppointmentResponse.date = test_date;
-                                                        //ArtAppointment artAppointmentObj =  ArtAppointment(null, this.artAppointmentResponse.artId, _currentAppointmentReason, test_date);
-                                                       await artappintmentReg(artAppointmentResponse);
-                                                       await getArtAppointments(widget.personId);
+                                                        onPressed: () async{
+                                                          ArtFollowUpCall artfollowUpObj =  ArtFollowUpCall(null,widget.artAppointmentId, _currentAppointmentReason, test_date, followUpTypeString);
+                                                          await artFollowUpReg(artfollowUpObj);
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(builder: (context) => ArtFollowUpOverview(artFollowUpCallResponse, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
 
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._appointmentList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
-                                                          ), );
-
-                                                       }
+                                                            ), );
+                                                        }
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -423,41 +449,41 @@ class _ArtAppointment extends State<ArtAppointmentView> {
     );
   }
 
-   Widget _buildButtonsRow() {
+  Widget _buildButtonsRow() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
           new RoundedButton(
-            text: "ART Appointment",
+            text: "ART Follow Up",
             selected: true,
           ),
 
-         /* new RoundedButton(
-            text: "ART Initiation",
-          ),
-*/
           new RoundedButton(
-            text: "Close",
-            onTap: () =>    Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+              text: "Close",
+              onTap: () =>    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
 
-                ))
+                  ))
           ),
         ],
       ),
     );
   }
 
-  Future<void> artappintmentReg(ArtAppointment artAppointment) async {
+  Future<void> artFollowUpReg(ArtFollowUpCall artFollowUp) async {
     String art_appointment_response;
     try {
-
-      art_appointment_response = await artChannel.invokeMethod('saveArtAppointment', jsonEncode(artAppointment));
+          if(artFollowUp.followUpType == "CALL"){
+            art_appointment_response = await artChannel.invokeMethod('saveArtFollowUpCall', jsonEncode(artFollowUp));
+          } else{
+            art_appointment_response = await artChannel.invokeMethod('saveArtFollowUpVisit', jsonEncode(artFollowUp));
+          }
       setState(() {
-        artAppointmentResponse = ArtAppointment.fromJson(jsonDecode(art_appointment_response));
+        artFollowUpCallResponse = ArtFollowUpCall.fromJson(jsonDecode(art_appointment_response));
+        print("HERE IS THE FOLLOW UP SAVED"+ artFollowUpCallResponse.toString());
       });
 
     } catch (e) {
@@ -492,6 +518,25 @@ class _ArtAppointment extends State<ArtAppointmentView> {
       _currentAppointmentReason = selectedArvRegimenIdentified;
       selfIdentifiedAppointmentReasonIsValid=!selfIdentifiedAppointmentReasonIsValid;
       _selfAppointmentReasonError=null;
+    });
+  }
+
+  void _handleFollowUpChange(int value) {
+    print("hts value : $value");
+    setState(() {
+      _followUpType = value;
+
+      switch (_followUpType) {
+        case 1:
+          followUpTypeString = "VISIT";
+          typeSelected = true;
+
+          break;
+        case 2:
+          followUpTypeString = "CALL";
+          typeSelected = true;
+          break;
+      }
     });
   }
 

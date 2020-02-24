@@ -16,6 +16,7 @@ import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -606,20 +607,14 @@ class _Art_Initiation extends State<Art_Initiation> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
-          new RoundedButton(text: "ART Registration", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ArtReg(artdto, widget.patientId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)),
-          ),
-          ),
-          new RoundedButton(text: "Art Initiation", selected: true),
-          new RoundedButton(text: "Close", onTap: () =>     Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SearchPatient()),
-          ),
+          new RoundedButton(text: "ART Initiation", selected: true, onTap: () {}),
+          new RoundedButton(text: "ART Visit"),
+          new RoundedButton(text: "Close", onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+              ))
           ),
         ],
       ),

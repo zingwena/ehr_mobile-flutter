@@ -459,7 +459,7 @@ class _Hts_Result  extends State<Hts_Result > {
 
                                                             }else{
 
-                                                              if(patientPostTest == null){
+                                                              if(patientPostTest.finalResult == null){
                                                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId, widget.htsRegistration)));
 
                                                               }else{

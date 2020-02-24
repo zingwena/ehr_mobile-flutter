@@ -4,13 +4,12 @@ import android.util.Log;
 
 import java.util.Date;
 
-public class PastDate extends Date {
+public class PastDate{
 
     private final Date pastDate;
     private final String TAG = "Past Date";
 
     public PastDate(Date pastDate) {
-
         if (pastDate.after(new Date())) {
             throw new IllegalStateException("Date cannot be in the future");
         }

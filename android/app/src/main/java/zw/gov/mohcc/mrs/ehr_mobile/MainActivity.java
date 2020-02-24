@@ -758,8 +758,6 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onFailure(Call<TerminologyModel> call, Throwable t) {
 
-                System.out.println("tttttttttttttttttttttttt" + t);
-
             }
         });
     }

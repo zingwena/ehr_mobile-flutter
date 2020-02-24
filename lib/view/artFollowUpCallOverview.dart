@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ehr_mobile/model/artfollowupcall.dart';
 import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
@@ -32,23 +33,23 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 
-class ArtInitiationOverview extends StatefulWidget {
-  final ArtInitiation artInitiation;
+class ArtFollowUpOverview extends StatefulWidget {
+  final ArtFollowUpCall artFollowUpCall;
   final Person person;
   final String personId;
   final String visitId;
   final String htsId;
   final HtsRegistration htsRegistration;
-  ArtInitiationOverview(this.artInitiation, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
+  ArtFollowUpOverview(this.artFollowUpCall, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return ArtInitiationOverviewState();
+    return ArtFollowUpCallOverviewState();
   }
 }
 
-class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
+class ArtFollowUpCallOverviewState extends State<ArtFollowUpOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
@@ -67,52 +68,13 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
 
   @override
   void initState() {
-
-    print(_patient.toString());
     getArtVist(widget.personId);
-    getRegimen(widget.artInitiation.regimen);
-    getReason(widget.artInitiation.reason);
-    //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
     getFacilityName();
+    print("Follow up call from save"+ widget.artFollowUpCall.toString());
     super.initState();
   }
 
-
-  Future<void> getEntryPoint(String entrypointId) async {
-    String entrypoint;
-
-    try {
-      entrypoint =
-      await htsChannel.invokeMethod('getEntrypoint', entrypointId);
-
-
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      _entrypoint = entrypoint;
-    });
-
-
-  }
-  Future<void> getRegimen(String regId) async {
-    String regimenname;
-
-    try {
-      regimenname =
-      await artChannel.invokeMethod('getRegimenName', regId);
-
-
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      regimen_name = regimenname;
-    });
-
-
-  }
   Future<void> getArtVist(String  personId) async {
     var art_visit_response;
     try {
@@ -178,7 +140,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -236,12 +198,6 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
                         ),  ])
               ),
             ],
@@ -257,7 +213,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("ART Registration OverView", style: TextStyle(
+                    child: Text("ART Follow Up Call", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   Container(
@@ -281,7 +237,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                               child: Icon(
                                 Icons.date_range, size: 25.0, color: Colors.white,),
                             ),
-                              Padding(
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: Text("Age -"+age.years.toString()+"years", style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14.0,color: Colors.white ),),
@@ -350,11 +306,12 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: widget.artInitiation.regimenType),
+                                                                    text: nullHandler(
+                                                                        DateFormat("yyyy/MM/dd").format(widget.artFollowUpCall.date))),
                                                                 decoration: InputDecoration(
-                                                                    icon: Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Line",
-                                                                    hintText: "Line"
+                                                                    icon: new Icon(Icons.credit_card, color: Colors.blue),
+                                                                    labelText: "Date of Follow Up",
+                                                                    hintText: "Date of Follow Up"
                                                                 ),
                                                               ),
                                                             ),
@@ -364,16 +321,16 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        regimen_name)),
+                                                                    text: widget.artFollowUpCall.outcome),
                                                                 decoration: InputDecoration(
-                                                                    icon: new Icon(Icons.credit_card, color: Colors.blue),
-                                                                    labelText: "Regimen",
-                                                                    hintText: "Regimen"
+                                                                    icon: Icon(Icons.date_range, color: Colors.blue),
+                                                                    labelText: "Outcome",
+                                                                    hintText: "Outcome"
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
+
                                                         ],
                                                       ),
                                                       Row(
@@ -384,9 +341,9 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        art_reason)),
+                                                                        widget.artFollowUpCall.followUpType)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Art reason',
+                                                                  labelText: 'Type',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -433,25 +390,7 @@ class ArtInitiationOverviewState extends State<ArtInitiationOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "ART Initiation",selected: true),
-          new RoundedButton(text: "ART Visit", onTap: () {
-
-            if(_artVisit.visitType == null ){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
-              );
-            } else {
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
-
-              ));
-            }
-          }
-
-          ),
+          new RoundedButton(text: "ART Follow Up",selected: true),
           new RoundedButton(text: "CLOSE", onTap: (){
             Navigator.push(
                 context,

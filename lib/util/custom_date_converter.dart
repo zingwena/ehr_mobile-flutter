@@ -10,7 +10,6 @@ class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
   @override
   DateTime fromJson(String json) {
     if(json == null){
-      print("************************* date is nuuuullll");
       return  DateFormat("MMM d, yyyy HH:mm:ss a").parse("Jan 01, 2020 4:19:38 PM");
     }else {
 

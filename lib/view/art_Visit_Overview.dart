@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -70,12 +71,7 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
 
   @override
   void initState() {
-  /*  dateOfEnrollment = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateEnrolled);
-    dateOfHivTest = DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateOfHivTest);
-    dateHivConfirmed =  DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateHivConfirmed);
-    dateOfRetest =   DateFormat("yyyy/MM/dd").format(widget.artRegistration.dateRetested);*/
     print(_patient.toString());
-    //  getEntryPoint(widget.htsRegistration.entryPointId);
     getAge(widget.person);
     getFacilityName();
     super.initState();
@@ -135,11 +131,8 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
       art_initiation = await htsChannel.invokeMethod('getArtInitiationRecord', patientId);
       setState(() {
         artInitiation = ArtInitiation.fromJson(jsonDecode(art_initiation));
-        print("HERE IS THE ART INITIATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artInitiation.toString());
-
       });
 
-      print('ART INITIATION IN THE FLUTTER THE RETURNED ONE '+ artInitiation.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -214,12 +207,6 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
                         ),  ])
               ),
             ],
@@ -414,45 +401,7 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
                                                             ),
                                                           ),
                                                         ],
-                                                      ),/*
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.artRegistration.reTested.toString())),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Retested before ART',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        dateOfRetest)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Date of retest',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-
-                                                        ],
-                                                      ),*/
-
+                                                      ),
                                                     ],
                                                   ),
                                                 ),
@@ -495,13 +444,17 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
             Navigator.push(context,
                 MaterialPageRoute(
                 builder: (context)=> ArtIptStatusView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)
-
-
             ));
-
           }
           ),
-          new RoundedButton(text: "Close",)
+          new RoundedButton(text: "Close", onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                ));
+          },)
         ],
       ),
     );

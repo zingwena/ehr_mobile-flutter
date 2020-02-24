@@ -23,6 +23,6 @@ public interface ArtAppointmentDao {
     @Query("SELECT * FROM ArtAppointment WHERE artId=:artId Order By date DESC")
     List<ArtAppointment> findByArtIdOrderByDateDesc(String artId);
 
-    @Query("SELECT * FROM ArtAppointment WHERE artId=:artId and date=:date")
-    ArtAppointment findByArtIdAndDate(String artId, long date);
+    @Query("SELECT * FROM ArtAppointment WHERE artId=:artId and date between:date and :endDate")
+    ArtAppointment findByArtIdAndDate(String artId, long date, long endDate);
 }
