@@ -383,11 +383,8 @@ public class HtsService {
         if (ehrMobileDatabase.artDao().existsByPersonId(personId) >= 1) {
             return false;
         }
-        if (ehrMobileDatabase.personInvestigationDao().existsByPersonIdAndInvestigationIdAndResultId(
-                personId, APPLICATION_CONSTANTS.HIV_TESTS, APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL) == 1) {
-            return true;
-        }
-        return true;
+        return ehrMobileDatabase.personInvestigationDao().existsByPersonIdAndInvestigationIdAndResultId(
+                personId, APPLICATION_CONSTANTS.HIV_TESTS, APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL) == 1;
     }
 
 }
