@@ -7,6 +7,7 @@ import androidx.room.Transaction;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -327,7 +328,7 @@ public class HtsService {
 
     public boolean getPersonHivStatus(String personId) {
         String hivBloodInvestigationId = APPLICATION_CONSTANTS.HIV_TESTS[0];
-        String hivPositiveResultId = APPLICATION_CONSTANTS.POSITIVE_HIV_RESULT_LITERAL;
+        String hivPositiveResultId = APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL;
         return ehrMobileDatabase.personInvestigationDao().findByPersonIdAndInvestigationIdAndResultId(personId, hivBloodInvestigationId, hivPositiveResultId) != null;
     }
 
@@ -353,11 +354,40 @@ public class HtsService {
 
     public Hts savePostTestCounselling(PostTestDTO postTestDTO) {
 
-        Log.d(TAG, "Saving posttest counselling record hts id here"+ postTestDTO.getHtsId());
+        Log.d(TAG, "Saving posttest counselling record hts id here" + postTestDTO.getHtsId());
         Hts hts = ehrMobileDatabase.htsDao().findHtsById(postTestDTO.getHtsId());
         ehrMobileDatabase.htsDao().updateHts(postTestDTO.getInstance(postTestDTO, hts));
 
         return ehrMobileDatabase.htsDao().findHtsById(hts.getId());
+    }
+
+    public boolean patientEligibleForRecency(String personId) {
+
+        // check if patient already has recency record if yes return false
+        if (ehrMobileDatabase.personInvestigationDao().existsbyPersonIdAndInvestigationIdIn(
+                personId, new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.RECENCY_INVESTIGATION_ID))) >= 1) {
+            return false;
+        }
+        // check if patient is already on art if yes return false
+        if (ehrMobileDatabase.artDao().existsByPersonId(personId) >= 1) {
+            return false;
+        }
+        // check if this is first positive if yes return true
+        return ehrMobileDatabase.personInvestigationDao().existsByPersonIdAndInvestigationIdAndResultId(
+                personId, APPLICATION_CONSTANTS.HIV_TESTS, APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL) == 1;
+    }
+
+    public boolean patientEligibleForIndex(String personId) {
+
+        // check if patient is already on art if yes return false
+        if (ehrMobileDatabase.artDao().existsByPersonId(personId) >= 1) {
+            return false;
+        }
+        if (ehrMobileDatabase.personInvestigationDao().existsByPersonIdAndInvestigationIdAndResultId(
+                personId, APPLICATION_CONSTANTS.HIV_TESTS, APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL) == 1) {
+            return true;
+        }
+        return true;
     }
 
 }

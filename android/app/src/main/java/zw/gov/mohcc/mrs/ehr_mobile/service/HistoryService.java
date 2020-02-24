@@ -126,7 +126,7 @@ public class HistoryService {
         HtsScreeningDTO dto = null;
         // retrieve person last negative result this applies to both test in ehr and
         // outside it
-        final String negativeHivResult = APPLICATION_CONSTANTS.NEGATIVE_HIV_RESULT_LITERAL;
+        final String negativeHivResult = APPLICATION_CONSTANTS.NEGATIVE_RESULT_LITERAL;
         final Set<String> hivTests = new HashSet<>(Arrays.asList(APPLICATION_CONSTANTS.HIV_TESTS));
 
         PersonInvestigation personInvestigation = ehrMobileDatabase.personInvestigationDao()
