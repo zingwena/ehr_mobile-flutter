@@ -362,7 +362,7 @@ class _ArtAppointment extends State<ArtAppointmentView> {
 
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric( vertical: 0.0, horizontal: 30.0 ),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder(

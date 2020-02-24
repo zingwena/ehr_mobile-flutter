@@ -1,27 +1,25 @@
 import 'dart:convert';
-import 'package:ehr_mobile/model/artdto.dart';
+import 'package:ehr_mobile/model/artfollowupcall.dart';
 import 'package:ehr_mobile/model/artvisit.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/model/artInitiation.dart';
-import 'package:ehr_mobile/model/tbscreening.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/art_Visit_Overview.dart';
+import 'package:ehr_mobile/view/art_visit.dart';
 import 'package:ehr_mobile/login_screen.dart';
-import 'package:ehr_mobile/view/art_initiationoverview.dart';
-
-import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/patient_pretest.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/art_initiation.dart';
-
+import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
-import 'package:ehr_mobile/view/tb_screening.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
@@ -35,79 +33,85 @@ import 'hts_registration.dart';
 import 'reception_vitals.dart';
 import 'package:ehr_mobile/model/artRegistration.dart';
 
-class TbScreeningOverview extends StatefulWidget {
-  final TbScreening tbScreening;
+class ArtFollowUpOverview extends StatefulWidget {
+  final ArtFollowUpCall artFollowUpCall;
+  final Person person;
   final String personId;
   final String visitId;
-  final Person person;
-  final HtsRegistration htsRegistration;
   final String htsId;
-
-  TbScreeningOverview(this.tbScreening, this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
+  final HtsRegistration htsRegistration;
+  ArtFollowUpOverview(this.artFollowUpCall, this.person, this.personId, this.visitId, this.htsRegistration, this.htsId);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return TbScreeningOverviewState();
+    return ArtFollowUpCallOverviewState();
   }
 }
 
-class TbScreeningOverviewState extends State<TbScreeningOverview> {
+class ArtFollowUpCallOverviewState extends State<ArtFollowUpOverview> {
   static const platform = MethodChannel('ehr_mobile.channel/vitals');
   static const htsChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/htsChannel');
   static const artChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile.channel/art');
-  static const dataChannel =  MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
-
+  static const dataChannel = MethodChannel('zw.gov.mohcc.mrs.ehr_mobile/dataChannel');
   Person _patient;
   Visit _visit;
   Map<String, dynamic> details;
   String _entrypoint;
+  String regimen_name;
+  String art_reason;
+  Age age;
   bool showInput = true;
   bool showInputTabOptions = true;
-  ArtInitiation artInitiation;
-  var dateOfEnrollment, dateOfHivTest, dateHivConfirmed, dateOfRetest;
-  Age age;
   String facility_name;
-  String cough = " ";
-  String fever = " ";
-  String nightsweats = " ";
-  String weightloss = " ";
+  ArtVisit _artVisit;
 
   @override
   void initState() {
+    getArtVist(widget.personId);
     getAge(widget.person);
     getFacilityName();
-    if(widget.tbScreening.coughing){
-      cough = "Yes";
-
-    }else{
-      cough = "No";
-    }
-    if(widget.tbScreening.fever){
-      fever = "Yes";
-    }else{
-      fever = "No";
-    }
-    if(widget.tbScreening.nightSweats){
-      nightsweats = "Yes";
-    }else{
-      nightsweats = "No";
-    }
-    if(widget.tbScreening.weightLoss){
-      weightloss = "Yes";
-    }else{
-      weightloss = "No";
-    }
+    print("Follow up call from save"+ widget.artFollowUpCall.toString());
     super.initState();
   }
 
+  Future<void> getArtVist(String  personId) async {
+    var art_visit_response;
+    try {
+      art_visit_response = await artChannel.invokeMethod('getArtVisit', personId);
+      setState(() {
+        _artVisit = ArtVisit.fromJson(jsonDecode(art_visit_response));
+      });
+
+    } catch (e) {
+      print('--------------something went wrong in art visit get  method  $e');
+    }
+
+  }
+  Future<void> getReason(String reasonId) async {
+    String reason;
+
+    try {
+      reason =
+      await artChannel.invokeMethod('getReason', reasonId);
+      setState(() {
+        art_reason = reason;
+      });
+
+
+
+    } catch (e) {
+      print("channel failure: '$e'");
+    }
+
+
+  }
   Future<void>getAge(Person person)async{
     String response;
     try{
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -129,52 +133,14 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
     }
   }
 
-
-  Future<void> getEntryPoint(String entrypointId) async {
-    String entrypoint;
-
-    try {
-      entrypoint =
-      await htsChannel.invokeMethod('getEntrypoint', entrypointId);
-
-
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-    setState(() {
-      _entrypoint = entrypoint;
-    });
-
-
-  }
-
-  Future<void> getArtInitiation(String patientId) async {
-    var  art_initiation;
-    try {
-      art_initiation = await htsChannel.invokeMethod('getArtInitiationRecord', patientId);
-      setState(() {
-        artInitiation = ArtInitiation.fromJson(jsonDecode(art_initiation));
-        print("HERE IS THE ART INITIATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artInitiation.toString());
-
-      });
-
-      print('ART INITIATION IN THE FLUTTER THE RETURNED ONE '+ artInitiation.toString());
-    } catch (e) {
-      print("channel failure: '$e'");
-    }
-
-
-  }
-
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
+      drawer: Sidebar(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
       body: Stack(
         children: <Widget>[
           Container(
@@ -194,7 +160,6 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
             title:new Text(
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
-
             actions: <Widget>[
 
 
@@ -233,12 +198,6 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
                         ),  ])
               ),
             ],
@@ -254,7 +213,7 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Text("ART Visit OverView", style: TextStyle(
+                    child: Text("ART Follow Up Call", style: TextStyle(
                         fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                   ),
                   Container(
@@ -339,6 +298,7 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                   padding: const EdgeInsets.all(16.0),
                                                   child: Column(
                                                     children: <Widget>[
+
                                                       Row(
                                                         children: <Widget>[
                                                           Expanded(
@@ -347,32 +307,29 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        cough)),
+                                                                        DateFormat("yyyy/MM/dd").format(widget.artFollowUpCall.date))),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Coughing',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                    icon: new Icon(Icons.credit_card, color: Colors.blue),
+                                                                    labelText: "Date of Follow Up",
+                                                                    hintText: "Date of Follow Up"
                                                                 ),
-
                                                               ),
                                                             ),
                                                           ),
-
                                                           Expanded(
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(right: 16.0),
                                                               child: TextField(
                                                                 controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        fever)),
+                                                                    text: widget.artFollowUpCall.outcome),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Fever',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
+                                                                    icon: Icon(Icons.date_range, color: Colors.blue),
+                                                                    labelText: "Outcome",
+                                                                    hintText: "Outcome"
                                                                 ),
-
                                                               ),
                                                             ),
                                                           ),
-
 
                                                         ],
                                                       ),
@@ -384,24 +341,9 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                               child: TextField(
                                                                 controller: TextEditingController(
                                                                     text: nullHandler(
-                                                                        weightloss)),
+                                                                        widget.artFollowUpCall.followUpType)),
                                                                 decoration: InputDecoration(
-                                                                  labelText: 'Weight Loss',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        nightsweats)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Night Sweats',
+                                                                  labelText: 'Type',
                                                                   icon: Icon(Icons.credit_card, color: Colors.blue),
                                                                 ),
 
@@ -416,7 +358,6 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: Container()),
                                             ],
                                           )
 
@@ -449,15 +390,18 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
       child: Row(
         children: <Widget>[
 
-          new RoundedButton(text: "TB Screening ", selected: true),
-          new RoundedButton(text: "Close",onTap: (){
+          new RoundedButton(text: "ART Follow Up",selected: true),
+          new RoundedButton(text: "CLOSE", onTap: (){
             Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                ));
+
           },)
+
+
         ],
       ),
     );

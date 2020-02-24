@@ -349,11 +349,9 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                         Expanded(
                                                           child: SizedBox(
                                                             child: Padding(
-                                                              padding: EdgeInsets.symmetric(
-                                                                  vertical: 16.0, horizontal: 60.0),
+                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                               child: TextFormField(
-                                                                controller:
-                                                                TextEditingController(text: selectedDateOfSexWithMale),
+                                                                controller: TextEditingController(text: selectedDateOfSexWithMale),
                                                                 validator: (value) {
                                                                   return value.isEmpty ? 'Enter date' : null;
                                                                 },
@@ -485,7 +483,7 @@ class _CbsQuestion extends State<CbsQuestions> {
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
+                                                    padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 55.5 ),
                                                     child: RaisedButton(
                                                       elevation: 4.0,
                                                       shape: RoundedRectangleBorder(

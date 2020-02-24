@@ -13,17 +13,12 @@ import 'package:ehr_mobile/view/hiv_screening.dart';
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
-
-/*
-import 'package:ehr_mobile/home_screen.dart';
-*/
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../sidebar.dart';
-import 'art_reg.dart';
 
 
 class HIVServicesIndexContactList extends StatefulWidget {

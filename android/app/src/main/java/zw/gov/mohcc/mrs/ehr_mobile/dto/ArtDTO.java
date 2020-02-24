@@ -73,8 +73,9 @@ public class ArtDTO implements Serializable {
 
         ArtDTO dto = new ArtDTO();
         dto.setArtNumber(art.getArtNumber());
-        dto.setDate(new PastDate(art.getDate()));
+        dto.setDate(art.getDate() != null ? new PastDate(art.getDate()) : null);
         dto.setDateEnrolled(art.getDateEnrolled());
+        dto.setDateOfHivTest(art.getDateOfHivTest() != null ? new PastDate(art.getDateOfHivTest()) : null);
         dto.setDateOfHivTest(new PastDate(art.getDateOfHivTest()));
         dto.setDateEnrolled(art.getDateEnrolled());
         dto.setPersonId(art.getPersonId());
