@@ -712,6 +712,235 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 16.0,
+                                                            horizontal: 20.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0)),
+                                                      color: Colors.white,
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 8.0,
+                                                                horizontal:
+                                                                    30.0),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            // three line description
+                                                            Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topLeft,
+                                                              child: Text(
+                                                                'HIV Testing Overview',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                  color: Colors
+                                                                      .black87,
+                                                                ),
+                                                              ),
+                                                            ),
+
+
+                                                            Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      top: 3.0),
+                                                            ),
+
+                                                            Divider(
+                                                              height: 10.0,
+                                                              color: Colors.blue
+                                                                  .shade500,
+                                                            ),
+                                                            Container(
+                                                              height: 2.0,
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+
+                                                            Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: <
+                                                                  Widget>[
+                                                                Expanded(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            0.0,
+                                                                        horizontal:
+                                                                            10.0),
+                                                                    child: RaisedButton(
+                                                                        //onPressed: () {},
+                                                                        color: Colors.blue,
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                              left: 10,
+                                                                              right: 10,
+                                                                              top: 1,
+                                                                              bottom: 1),
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.center,
+                                                                            children: <Widget>[
+                                                                              Icon(
+                                                                                Icons.edit_attributes,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              Spacer(),
+                                                                              Text(
+                                                                                'Offer HIV Testing',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          if (htsScreening ==
+                                                                              null) {
+                                                                            Navigator.push(context,
+                                                                                MaterialPageRoute(builder: (context) => Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)));
+                                                                          } else {
+                                                                            Navigator.push(context,
+                                                                                MaterialPageRoute(builder: (context) => HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId, widget.person.id)));
+                                                                          }
+                                                                        }),
+                                                                  ),
+              ),
+                                                                Expanded(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            0.0,
+                                                                        horizontal:
+                                                                            10.0),
+                                                                    child: RaisedButton(
+                                                                        // onPressed: () {},
+                                                                        color: Colors.blue,
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                              left: 2,
+                                                                              right: 2,
+                                                                              top: 1,
+                                                                              bottom: 1),
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.center,
+                                                                            children: <Widget>[
+                                                                              Icon(
+                                                                                Icons.format_list_numbered,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              Spacer(),
+                                                                              Text(
+                                                                                'HIV Contact List 4',
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {}),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+
+                                                            Divider(
+                                                              height: 10.0,
+                                                              color: Colors.blue
+                                                                  .shade500,
+                                                            ),
+                                                            Container(
+                                                              height: 2.0,
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue,
+                                                        //Color of the border
+                                                        style:
+                                                            BorderStyle.solid,
+                                                        //Style of the border
+                                                        width:
+                                                            2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {
+                                                        if (htsScreening ==
+                                                            null) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => Hts_Screening(
+                                                                      widget
+                                                                          .person
+                                                                          .id,
+                                                                      widget
+                                                                          .htsId,
+                                                                      widget
+                                                                          .htsRegistration,
+                                                                      widget
+                                                                          .visitId,
+                                                                      widget
+                                                                          .person)));
+                                                        } else {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => HtsScreeningOverview(
+                                                                      widget
+                                                                          .person,
+                                                                      htsScreening,
+                                                                      widget
+                                                                          .htsId,
+                                                                      widget
+                                                                          .visitId,
+                                                                      widget
+                                                                          .person
+                                                                          .id)));
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
@@ -1030,9 +1259,51 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                                       ]))
                                                                                   .toList()),
                                                                         ),
-                                                                )
+                                                                ),
+                                                                Expanded(
+                                                                  child:
+                                                                  Padding(
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                        0.0,
+                                                                        horizontal:
+                                                                        10.0),
+                                                                    child: RaisedButton(
+                                                                      // onPressed: () {},
+                                                                        color: Colors.blue,
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                              left: 2,
+                                                                              right: 2,
+                                                                              top: 1,
+                                                                              bottom: 1),
+                                                                          child:
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                            children: <Widget>[
+                                                                              Icon(
+                                                                                Icons.format_list_numbered,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              Spacer(),
+                                                                              Text(
+                                                                                'HIV Contact List 4',
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {}),
+                                                                  ),
+                                                                ),
+
                                                               ],
                                                             ),
+
 
                                                             Divider(
                                                               height: 10.0,
@@ -1044,6 +1315,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                               color:
                                                                   Colors.blue,
                                                             ),
+
                                                           ],
                                                         ),
                                                       ),
