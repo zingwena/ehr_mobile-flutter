@@ -301,23 +301,20 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                                       : null;
                                                                 },
                                                                 decoration: InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius.circular(0.0)),
-                                                                    labelText: "Date Of Appointment"),
+                                                                    suffixIcon: IconButton(
+                                                                        icon: Icon(Icons.calendar_today),
+                                                                        color: Colors.blue,
+                                                                        onPressed: () {
+                                                                          _selectDateOfInitiation(
+                                                                              context);
+                                                                        }),
+                                                                    labelText: 'Date of Appointment',
+                                                                    border: OutlineInputBorder()),
                                                               ),
                                                             ),
                                                             width: 100,
                                                           ),
                                                         ),
-                                                        IconButton(
-                                                            icon: Icon(Icons.calendar_today),
-                                                            color:
-                                                            Colors.blue,
-                                                            onPressed: () {
-                                                              _selectDateOfInitiation(
-                                                                  context);
-                                                            })
                                                       ],
                                                     ),
                                                   ),
