@@ -563,33 +563,23 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                 children: <
                                                                     Widget>[
                                                                   Expanded(
-                                                                    child:
-                                                                        SizedBox(
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                        child: Text(
-                                                                            'Is patient on ART ? '),
+                                                                    child: SizedBox(
+                                                                      child: Padding( padding: const EdgeInsets.all(8.0),
+                                                                        child: Text('Is patient on ART ? '),
                                                                       ),
-                                                                      width:
-                                                                          250,
+                                                                      width: 250,
                                                                     ),
                                                                   ),
                                                                   Text('YES'),
                                                                   Radio(
                                                                       value: 1,
-                                                                      groupValue:
-                                                                          _patientonart,
-                                                                      onChanged:
-                                                                          _handlePatientOnArt),
+                                                                      groupValue: _patientonart,
+                                                                      onChanged: _handlePatientOnArt),
                                                                   Text('NO'),
                                                                   Radio(
                                                                       value: 2,
-                                                                      groupValue:
-                                                                          _patientonart,
-                                                                      onChanged:
-                                                                          _handlePatientOnArt)
+                                                                      groupValue: _patientonart,
+                                                                      onChanged: _handlePatientOnArt)
                                                                 ],
                                                               ),
                                                             )
@@ -601,43 +591,30 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                           ? Container(
                                                               width: double
                                                                   .infinity,
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          16.0,
-                                                                      horizontal:
-                                                                          60.0),
+                                                              padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
                                                               child: Row(
                                                                 children: <
                                                                     Widget>[
                                                                   Expanded(
-                                                                    child:
-                                                                        SizedBox(
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
+                                                                    child: SizedBox(
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.all(8.0),
                                                                         child: Text(
                                                                             'Consent to Index testing'),
                                                                       ),
-                                                                      width:
-                                                                          250,
+                                                                      width: 250,
                                                                     ),
                                                                   ),
                                                                   Text('YES'),
                                                                   Radio(
                                                                       value: 1,
-                                                                      groupValue:
-                                                                          _consentToIndex,
-                                                                      onChanged:
-                                                                          _handleConsentForIndex),
+                                                                      groupValue: _consentToIndex,
+                                                                      onChanged: _handleConsentForIndex),
                                                                   Text('NO'),
                                                                   Radio(
                                                                       value: 2,
-                                                                      groupValue:
-                                                                          _consentToIndex,
-                                                                      onChanged:
-                                                                          _handleConsentForIndex)
+                                                                      groupValue: _consentToIndex,
+                                                                      onChanged: _handleConsentForIndex)
                                                                 ],
                                                               ),
                                                             )
@@ -685,19 +662,14 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                 MaterialPageRoute(
                                                                     builder: (context) => PostTestOverview(
                                                                         postTest,
-                                                                        widget
-                                                                            .patientId,
-                                                                        widget
-                                                                            .visitId,
-                                                                        widget
-                                                                            .person,
-                                                                        widget
-                                                                            .htsId,
+                                                                        widget.patientId,
+                                                                        widget.visitId,
+                                                                        widget.person,
+                                                                        widget.htsId,
                                                                         _consenttoindex,
                                                                         awareofstatus,
                                                                         patientOnArt,
-                                                                        widget
-                                                                            .result,
+                                                                        widget.result,
                                                                         htsRegistration)));
                                                           },
                                                         ),
