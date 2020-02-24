@@ -58,7 +58,7 @@ public class AddPatientChannel {
                     ehrMobileDatabase.personDao().createPatient(person);
                     Person person1 = ehrMobileDatabase.personDao().findPatientById(personId);
                     Log.i(TAG,"PERSON PERSON PERSON SAVED IN ANDROID"+ person1.toString());
-                    result.success(person1.getId());
+                    result.success(gson.toJson(person1));
 
                     System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.personDao().findPatientById(person.getId()));
                 }

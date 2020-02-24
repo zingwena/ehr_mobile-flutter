@@ -15,6 +15,7 @@ import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -173,8 +174,7 @@ class SummaryOverviewState extends State<SummaryOverview>
               ),
             ),
             actions: <Widget>[
-
-
+              SizedBox(width: 5.0,),
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
@@ -202,6 +202,14 @@ class SummaryOverviewState extends State<SummaryOverview>
                       mainAxisAlignment:
                       MainAxisAlignment.center,
                       children: <Widget>[
+                          Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                         icon: Icon(Icons.home), color: Colors.white,
+                         onPressed: () => Navigator.push(
+                         context,
+                         MaterialPageRoute(builder: (context) => SearchPatient()),),
+                       )),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
@@ -210,13 +218,7 @@ class SummaryOverviewState extends State<SummaryOverview>
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),
