@@ -1,6 +1,7 @@
 
 
 import 'package:ehr_mobile/db/tables/meta_tables/TestKitBatchIssueTable.dart';
+import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 class TestKitBatchIssueDao{
@@ -53,7 +54,7 @@ class TestKitBatchIssueDao{
     inserter.set(expiredStatus, map['expiredStatus']);
 
     inserter.set(batch_batchNumber, map['batch']['batchNumber']);
-    inserter.set(batch_expiryDate, map['batch']['expiryDate']);
+    inserter.set(batch_expiryDate,  const CustomDateTimeConverter().fromEhrJson(map['batch']['expiryDate']));
     inserter.set(batch_textKitId, map['batch']['testKit']['id']);
     inserter.set(batch_testKitName, map['batch']['testKit']['name']);
 
