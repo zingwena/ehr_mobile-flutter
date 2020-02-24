@@ -410,20 +410,13 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                 width: 100,
                                                               ),
                                                             ),
-                                                            Text('Yes',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),),
+                                                            Text('Yes'),
                                                             Radio(
                                                                 value: 1,
                                                                 groupValue: _options,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleOptionsChange),
-                                                            Text('No',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('No'),
                                                             Radio(
                                                                 value: 2,
                                                                 groupValue: _options,
@@ -447,20 +440,13 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                                 width: 100,
                                                               ),
                                                             ),
-                                                            Text('Yes',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),),
+                                                            Text('Yes'),
                                                             Radio(
                                                                 value: 1,
                                                                 groupValue: status,
                                                                 activeColor: Colors.blue,
                                                                 onChanged: _handleStatusDiscloseChange),
-                                                            Text('No',
-                                                              style: TextStyle(
-                                                                color: Colors.grey.shade500,
-                                                              ),
-                                                            ),
+                                                            Text('No'),
                                                             Radio(
                                                                 value: 2,
                                                                 groupValue: status,
@@ -473,7 +459,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                                                       disclosed_status? Container(
                                                         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
                                                         width: double.infinity,
-                                                        child:      Text("Partner Disclosure Plan",
+                                                        child: Text("Partner Disclosure Plan",
                                                           style: TextStyle( fontSize: 15,
                                                               color: Colors.black,
                                                              // fontWeight: FontWeight.w500

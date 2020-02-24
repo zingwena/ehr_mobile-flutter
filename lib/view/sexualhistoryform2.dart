@@ -377,7 +377,7 @@ class _CbsQuestion extends State<CbsQuestions2> {
                                                 Expanded(
                                                   child: SizedBox(
                                                     child: Padding(
-                                                      padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 60.0),
+                                                      padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 55.5 ),
                                                       child: RaisedButton(
                                                           elevation: 4.0,
                                                           shape: RoundedRectangleBorder(
