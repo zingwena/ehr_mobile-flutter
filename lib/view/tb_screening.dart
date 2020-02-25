@@ -55,14 +55,6 @@ class _TbScreening extends State<TbScreeningView> {
   TbScreening tbscreeningResponse;
 
   String facility_name;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsHivTestUsedIdentified;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsReferringListIdentified;
-  List<DropdownMenuItem<String>> _dropDownMenuItemsReasonForTestListIdentified;
-
-  List _referringListIdentified = ["EID", "HTS", "PMTCT", "STI", "TB_PROGRAM", "VMMC", "VIAC" ];
-  List _hivTestUsedIdentified = ["AB", "PCR" ];
-  List _reasonForHivTestIdentified = ["Reason 1", "Reason 2", "Reason 3", "Reason 4" ];
-
   int _coughing = 0;
   int _fever = 0;
   int _nightSweats = 0;
@@ -80,8 +72,6 @@ class _TbScreening extends State<TbScreeningView> {
   bool nightSweatsOption = false;
   bool weightLossOption = false;
   bool bmiUnderSeventeen = false;
-  String  _currentReferringProgram, _currentHivTestUsed, _currentReasonForTest ;
-
   bool selfIdentifiedReferringIsValid=false;
   bool selfIdentifiedHIVTestIsValid=false;
   bool selfIdentifiedReasonForTestIsValid=false;
@@ -92,6 +82,7 @@ class _TbScreening extends State<TbScreeningView> {
     getAge(widget.person);
     getFacilityName();
     getTbScreening(widget.personId);
+    print("HERE IS THE TB SCREENING VIEW PAGE");
     super.initState();
   }
 
@@ -212,9 +203,6 @@ class _TbScreening extends State<TbScreeningView> {
     });
   }
 
-  String _selfReferringProgramError="Select Referring Program";
-  String _selfHivTestUsedError="Select HIV Test Used";
-  String _selfReasonForHivTestError="Select HIV Test Used";
 
 
   @override

@@ -189,7 +189,7 @@ public class PatientsApolloClient {
                                         testKitBatchIssue.setBatch(
                                                 new Batch(batch.batch().batchNumber(), getDateFromString(batch.batch().expiryDate()),
                                                         batch.batch().testKit().id(), batch.batch().testKit().name()));
-                                        testKitBatchIssue.setDate(getDateFromString(batch.date()));
+                                       // testKitBatchIssue.setDate(getDateFromString(batch.date()));
                                         testKitBatchIssue.setDetail(new BinTypeIdName(BinType.QUEUE,
                                                 facilityQueue.getQueue().getName(), facilityQueue.getQueue().getCode()));
                                         testKitBatchIssue.setExpiredStatus(batch.expiredStatus());
@@ -254,7 +254,7 @@ public class PatientsApolloClient {
                                         testKitBatchIssue.setBatch(
                                                 new Batch(batch.batch().batchNumber(), getDateFromString(batch.batch().expiryDate()),
                                                         batch.batch().testKit().id(), batch.batch().testKit().name()));
-                                        testKitBatchIssue.setDate(getDateFromString(batch.date()));
+                                        //testKitBatchIssue.setDate(getDateFromString(batch.date()));
                                         testKitBatchIssue.setDetail(new BinTypeIdName(BinType.QUEUE,
                                                 facilityWard.getWard().getName(), facilityWard.getWard().getCode()));
                                         testKitBatchIssue.setExpiredStatus(batch.expiredStatus());
@@ -271,7 +271,6 @@ public class PatientsApolloClient {
 
                             } catch (Exception e) {
                                 e.printStackTrace();
-
                                 System.out.println("e = " + e.getLocalizedMessage());
                             }
                     }

@@ -542,16 +542,6 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
         children: <Widget>[
 
           new RoundedButton(text: "ART Appointment",selected: true,),
-          new RoundedButton(text: "TB Screening", onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      TbScreeningView(widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId),
-            ));
-
-          },
-          ),
           new RoundedButton(text: "Close", onTap: () {
 
             if(_artVisit.visitType == null ){

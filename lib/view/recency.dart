@@ -40,9 +40,8 @@ class RecencyTest extends StatefulWidget {
   final String visitId;
   final Person person;
   final String htsId;
-  final String indexTestId;
   final HtsRegistration htsRegistration;
-  RecencyTest(this.personId, this.visitId, this.person, this.htsId, this.indexTestId, this.htsRegistration);
+  RecencyTest(this.personId, this.visitId, this.person, this.htsId,this.htsRegistration);
 
   @override
   State createState() {
@@ -525,26 +524,6 @@ class _Recency extends State<RecencyTest> {
                                   height: 20,
                                 ),
 
-                              /*  Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SizedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            'Results'
-                                          ),
-                                        ),
-                                        width: 250,
-                                      ),
-                                    ),
-
-                                  ],
-                                ), */
-
-
-
-
                                 Container(
                                   width: double.infinity,
                                   padding: EdgeInsets.symmetric( vertical: 16.0,  horizontal: 6.0),
@@ -606,7 +585,7 @@ class _Recency extends State<RecencyTest> {
                                                           MaterialPageRoute(
                                                               builder: (
                                                                   context) =>
-                                                                  Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest, widget.indexTestId)
+                                                                  Recency_Result(widget.personId, labInvestTestId, widget.visitId, labInvestId, widget.person, widget.htsId, labInvestTest)
 
                                                           ));
                                                     }else{

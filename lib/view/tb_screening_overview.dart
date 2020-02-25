@@ -77,27 +77,32 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
   void initState() {
     getAge(widget.person);
     getFacilityName();
-    if(widget.tbScreening.coughing){
-      cough = "Yes";
+    print("HERE IS THE TB SCREENING OVERVIEW");
+    if(widget.tbScreening != null){
 
-    }else{
-      cough = "No";
+      if(widget.tbScreening.coughing){
+        cough = "Yes";
+
+      }else{
+        cough = "No";
+      }
+      if(widget.tbScreening.fever){
+        fever = "Yes";
+      }else{
+        fever = "No";
+      }
+      if(widget.tbScreening.nightSweats){
+        nightsweats = "Yes";
+      }else{
+        nightsweats = "No";
+      }
+      if(widget.tbScreening.weightLoss){
+        weightloss = "Yes";
+      }else{
+        weightloss = "No";
+      }
     }
-    if(widget.tbScreening.fever){
-      fever = "Yes";
-    }else{
-      fever = "No";
-    }
-    if(widget.tbScreening.nightSweats){
-      nightsweats = "Yes";
-    }else{
-      nightsweats = "No";
-    }
-    if(widget.tbScreening.weightLoss){
-      weightloss = "Yes";
-    }else{
-      weightloss = "No";
-    }
+
     super.initState();
   }
 

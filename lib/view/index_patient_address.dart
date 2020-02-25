@@ -5,6 +5,7 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/town.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
+import 'package:ehr_mobile/util/logger.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
@@ -441,15 +442,15 @@ class _PatientAddressState extends State<IndexPatientAddress> {
     String response;
     var patientResponse;
     try {
-      String jsonPatient = jsonEncode(patient.toJson());
+      String jsonPatient = jsonEncode(patient);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
-
-      patientResponse= await addPatient.invokeMethod("getPatientById", response);
+      log.i('HERE IS THE RESPONSE JSON OBJECT  OF THE PERSON SAVED'+ response);
+      /* patientResponse= await addPatient.invokeMethod("getPatientById", response);*/
       setState(() {
-        registeredPatient = Person.fromJson(jsonDecode(patientResponse));
-        savephonenumber();
+        registeredPatient = Person.fromJson(jsonDecode(response));
+        log.i("THIS IS THE PATIENT AFTER ASSIGNMENT IN FLUTTER AFTER SAVING"+ registeredPatient.toString());
       });
-
+      await savephonenumber();
 
     }
     catch(e){

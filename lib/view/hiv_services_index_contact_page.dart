@@ -186,11 +186,7 @@ class HIVServicesIndexContactListState extends State<HIVServicesIndexContactList
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
+
 
                         ),  ])
               ),

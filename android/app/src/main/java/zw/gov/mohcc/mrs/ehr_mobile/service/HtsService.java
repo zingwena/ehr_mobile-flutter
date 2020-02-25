@@ -370,10 +370,10 @@ public class HtsService {
         }
         // check if patient is already on art if yes return false
         if (ehrMobileDatabase.artDao().existsByPersonId(personId) >= 1) {
-            return false;
+            return true;
         }
         // check if this is first positive if yes return true
-        return ehrMobileDatabase.personInvestigationDao().existsByPersonIdAndInvestigationIdAndResultId(
+        return  ehrMobileDatabase.personInvestigationDao().existsByPersonIdAndInvestigationIdAndResultId(
                 personId, APPLICATION_CONSTANTS.HIV_TESTS, APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL) == 1;
     }
 
@@ -381,7 +381,7 @@ public class HtsService {
 
         // check if patient is already on art if yes return false
         if (ehrMobileDatabase.artDao().existsByPersonId(personId) >= 1) {
-            return false;
+            return true;
         }
         return ehrMobileDatabase.personInvestigationDao().existsByPersonIdAndInvestigationIdAndResultId(
                 personId, APPLICATION_CONSTANTS.HIV_TESTS, APPLICATION_CONSTANTS.POSITIVE_RESULT_LITERAL) == 1;

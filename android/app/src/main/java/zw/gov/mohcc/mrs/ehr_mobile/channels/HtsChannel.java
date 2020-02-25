@@ -681,7 +681,6 @@ public class HtsChannel {
                                 String personId = artRegimenDto.getPersonId();
                                 RegimenType regimenType = artRegimenDto.getLine();
                                 List<ArvCombinationRegimen> arvCombinationRegimenList = artService.getPersonArvCombinationRegimens(personId, regimenType);
-                                Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID" + arvCombinationRegimenList);
                                 String artjson = gson.toJson(arvCombinationRegimenList);
                                 result.success(artjson);
                             } catch (Exception e) {
@@ -689,13 +688,30 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("getArvCombinationRegimens")) {
-                            Log.i(TAG, "ARGUMENTS SENT FROM FLUTTER TO GET ART REGIMEN >>>>>" + arguments);
 
                             try {
                                 List<ArvCombinationRegimen> arvCombinationRegimenList = artService.getArvCombinationRegimens(arguments);
                                 Log.i(TAG, "ARV COMB LIST RETURNED MODEL RETURNED FROM ANDROID" + arvCombinationRegimenList);
                                 String artjson = gson.toJson(arvCombinationRegimenList);
                                 result.success(artjson);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("eligibleForRecency")) {
+                            try {
+                                boolean isEligible = htsService.patientEligibleForRecency(arguments);
+                                Log.i(TAG, "ELIGIBITY IN THE RECENCY METHOD IN ANDROID"+ isEligible);
+                                result.success(isEligible);
+                            } catch (Exception e) {
+                                System.out.println("something went wrong " + e.getMessage());
+                            }
+                        }
+                        if (methodCall.method.equals("eligibleForIndex")) {
+                            try {
+                                boolean isEligible = htsService.patientEligibleForIndex(arguments);
+                                Log.i(TAG, "ELIGIBITY IN THE INDEX METHOD IN ANDROID"+ isEligible);
+                                result.success(isEligible);
                             } catch (Exception e) {
                                 System.out.println("something went wrong " + e.getMessage());
                             }

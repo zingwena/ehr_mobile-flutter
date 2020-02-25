@@ -89,6 +89,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
   String weightLossString  = "";
   String bmiUnderSeventeenString = "";
 
+  String reTested = "";
+
   bool coughingOption = false;
   bool feverOption = false;
   bool nightSweatsOption = false;
@@ -121,6 +123,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       log.i(response);
       setState(() {
         this.artdto = Artdto.fromJson(jsonDecode(response));
+        if(this.artdto.reTested){
+          reTested = "YES";
+        }else{
+          reTested = "NO";
+        }
       });
     } catch (e) {
       debugPrint("Exception thrown in get facility name method" + e);
@@ -148,6 +155,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       response = await artChannel.invokeMethod('getTbScreening', personId);
       setState(() {
         tbScreeningobj = TbScreening.fromJson(jsonDecode(response));
+        print("TB SCREENING OBJECT HERE"+ tbScreeningobj.toString());
+
 
         if(tbScreeningobj != null){
           if(tbScreeningobj.coughing == true){
@@ -557,57 +566,18 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                       child:
                                                                       Padding(
                                                                         padding: const EdgeInsets.only(right: 16.0),
-                                                                        child: TextFormField(
-                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.date),
+                                                                        child:  DateFormat("yyyy/MM/dd").format(artdto.date) ==  DateFormat("yyyy/MM/dd").format(DateTime.utc(2020, 1, 1))?TextFormField(
+                                                                          initialValue: '',
                                                                           decoration: InputDecoration(
                                                                             icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
                                                                             labelText: "Registration Date",
-                                                                            // hintText: "Sex"
                                                                           ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                artdto ==
-                                                                    null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
-                                                                  ),
-                                                                )
-                                                                    : Row(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Expanded(
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets.only(right: 16.0),
-                                                                        child: TextFormField(
-                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.dateEnrolled),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
-                                                                            labelText: "Date Enrolled",
-                                                                            // hintText: "Sex"
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child:
-                                                                      Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.dateOfHivTest),
+                                                                        ):TextFormField(
+                                                                          initialValue:  DateFormat("yyyy/MM/dd").format(artdto.date),
                                                                           decoration: InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
-                                                                            labelText: "Date of HIV Test",
-                                                                            //hintText: "National ID"
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            labelText: "Registration Date",
+
                                                                           ),
                                                                         ),
                                                                       ),
@@ -630,17 +600,74 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     Expanded(
                                                                       child:
                                                                       Padding(
-                                                                        padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child:
-                                                                        TextFormField(
-                                                                          initialValue:
-                                                                          DateFormat("yyyy/MM/dd").format(artdto.dateHivConfirmed),
-                                                                          decoration:
-                                                                          InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child:  DateFormat("yyyy/MM/dd").format(artdto.dateEnrolled) ==  DateFormat("yyyy/MM/dd").format(DateTime.utc(2020, 1, 1))?TextFormField(
+                                                                          initialValue: '',
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            labelText: "Date Enrolled",
+                                                                          ),
+                                                                        ):TextFormField(
+                                                                          initialValue:  DateFormat("yyyy/MM/dd").format(artdto.dateEnrolled),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            labelText: "Date Enrolled",
+
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      child:
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child:  DateFormat("yyyy/MM/dd").format(artdto.dateOfHivTest) ==  DateFormat("yyyy/MM/dd").format(DateTime.utc(2020, 1, 1))?TextFormField(
+                                                                          initialValue: '',
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            labelText: "Date of HIV Test",
+                                                                          ),
+                                                                        ):TextFormField(
+                                                                          initialValue:  DateFormat("yyyy/MM/dd").format(artdto.dateOfHivTest),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            labelText: "Date of HIV Test",
+
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                artdto ==
+                                                                    null
+                                                                    ? Center(
+                                                                  child: Text(
+                                                                    'No Record',
+                                                                    style: TextStyle(
+                                                                        fontSize: 13.0,
+                                                                        color: Colors.black54),
+                                                                  ),
+                                                                )
+                                                                    : Row(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Expanded(
+                                                                      child:
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child:  DateFormat("yyyy/MM/dd").format(artdto.dateEnrolled) ==  DateFormat("yyyy/MM/dd").format(DateTime.utc(2020, 1, 1))?TextFormField(
+                                                                          initialValue: '',
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
                                                                             labelText: "Date HIV Confirmed",
-                                                                            // hintText: "Sex"
+                                                                          ),
+                                                                        ):TextFormField(
+                                                                          initialValue:  DateFormat("yyyy/MM/dd").format(artdto.dateEnrolled),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            labelText: "Date HIV confirmed",
+
                                                                           ),
                                                                         ),
                                                                       ),
@@ -739,7 +766,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                       child: Padding(
                                                                         padding: const EdgeInsets.only(right: 16.0),
                                                                         child: TextFormField(
-                                                                          initialValue: artdto.reTested.toString(),
+                                                                          initialValue: reTested,
                                                                           decoration: InputDecoration(
                                                                             icon: Icon(Icons.ac_unit, color: Colors.blue),
                                                                             labelText: "Retested ?",
@@ -762,14 +789,21 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(
-                                                                      child: Padding( padding:
-                                                                        const EdgeInsets.only(right: 16.0),
-                                                                        child: TextFormField(
-                                                                          initialValue: DateFormat("yyyy/MM/dd").format(artdto.dateRetested),
+                                                                      child:
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(right: 16.0),
+                                                                        child:  DateFormat("yyyy/MM/dd").format(artdto.dateRetested) ==  DateFormat("yyyy/MM/dd").format(DateTime.utc(2020, 1, 1))?TextFormField(
+                                                                          initialValue: '',
                                                                           decoration: InputDecoration(
-                                                                            icon: Icon(Icons.calendar_today, color: Colors.blue),
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
                                                                             labelText: "Date Retested",
-                                                                            // hintText: "Sex"
+                                                                          ),
+                                                                        ):TextFormField(
+                                                                          initialValue:  DateFormat("yyyy/MM/dd").format(artdto.dateRetested),
+                                                                          decoration: InputDecoration(
+                                                                            icon: Icon(Icons.perm_contact_calendar, color: Colors.blue),
+                                                                            labelText: "Date ReTested",
+
                                                                           ),
                                                                         ),
                                                                       ),
@@ -1047,11 +1081,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   color: Colors.blue,
                                                                 ),
 
-                                                                tbScreeningobj ==
+                                                                tbScreeningobj.weightLoss ==
                                                                     null
                                                                     ? Center(
                                                                   child: Text(
-                                                                    'No Record',
+                                                                    'No Records',
                                                                     style: TextStyle(
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
@@ -1089,11 +1123,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                tbScreeningobj ==
+                                                                tbScreeningobj.weightLoss ==
                                                                     null
                                                                     ? Center(
                                                                   child: Text(
-                                                                    'No Record',
+                                                                    'No Records',
                                                                     style: TextStyle(
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
@@ -1136,11 +1170,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                tbScreeningobj ==
+                                                                tbScreeningobj.weightLoss ==
                                                                     null
                                                                     ? Center(
                                                                   child: Text(
-                                                                    'No Record',
+                                                                    'No Records',
                                                                     style: TextStyle(
                                                                         fontSize: 13.0,
                                                                         color: Colors.black54),
@@ -1183,7 +1217,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                             width: 2.0, //width of the border
                                                           ),
                                                           onPressed: () {
-                                                            if(tbScreeningobj == null){
+                                                            if(tbScreeningobj.weightLoss == null){
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
