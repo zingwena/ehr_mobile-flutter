@@ -1,6 +1,7 @@
 import 'package:ehr_mobile/db/tables/visit_table.dart';
 import 'package:ehr_mobile/model/enums/enums.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
+import 'package:ehr_mobile/vitals/visit.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 import 'base_dao.dart';
@@ -33,22 +34,36 @@ class VisitDao extends BaseDao {
     return result;
   }
 
+  Future<int> updateDischargedDate(VisitTable visit) async {
+    Update updater = new Update(tableName);
+    updater.where(this.id.eq(visit.id));
+    updater.set(this.discharged, const CustomDateTimeConverter().fromEhrJson(visit.discharged));
+    var result = await _adapter.update(updater);
+    return result;
+  }
+
   /// Finds visit by time less than last midnight and discharged null[id]
-  Future<void> findByTimeAndDischargedNotNull(DateTime time, DateTime dischargedTime) async {
+  Future<List<VisitTable>> findByTimeAndDischargedNotNull(
+      DateTime time, DateTime dischargedTime) async {
     Find param = new Find(tableName);
 
-    param.where(this.time.lt(time)).and(this.discharged.isNot(""));
+    param.where(this.time.lt(time));
+    param.where(this.discharged.iss(null));
 
     List<Map> maps = (await _adapter.find(param)).toList();
 
+    List<VisitTable> visits = new List<VisitTable>();
+
+    print("Size of returned query : " + maps.length.toString());
+
     for (Map map in maps) {
       var visit = VisitTable.fromJson(map);
-      print("Updating visit id : " + visit.id);
-      Update updater = new Update(tableName);
-      updater.set(this.discharged, dischargedTime);
-      await _adapter.update(updater);
+
+      visits.add(visit);
     }
+    return visits;
   }
+
 
   Future<VisitTable> findById(String id) async {
     Find param = new Find(tableName);

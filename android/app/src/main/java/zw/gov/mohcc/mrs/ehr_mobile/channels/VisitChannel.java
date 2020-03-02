@@ -8,6 +8,7 @@ import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
+import zw.gov.mohcc.mrs.ehr_mobile.dto.DischargePatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.OutPatientDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.dto.PatientSummaryDTO;
 import zw.gov.mohcc.mrs.ehr_mobile.model.PatientQueue;
@@ -16,7 +17,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.service.AppWideService;
 import zw.gov.mohcc.mrs.ehr_mobile.service.VisitService;
 
 public class VisitChannel {
-    private final static String TAG = "Main Activity";
+    private final static String TAG = "Visit Channel";
 
     public VisitChannel(FlutterView flutterView, String channelName, AppWideService appWideService, VisitService visitService) {
         new MethodChannel(flutterView, channelName).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
@@ -48,6 +49,12 @@ public class VisitChannel {
                     PatientSummaryDTO patientSummaryDTO = visitService.getPatientSummary(arguments);
                     System.out.println("HERE IS THE PATIENT SUMMARY DTO PASSED to FLUTTER" + gson.toJson(patientSummaryDTO));
                     result1.success(gson.toJson(patientSummaryDTO));
+                }
+
+                if(call.method.equals("dischargePatient")){
+                    Log.i(TAG, "Here is the person Id sent from flutter "+ arguments);
+                    DischargePatientDTO dischargePatientDTO = gson.fromJson(arguments, DischargePatientDTO.class);
+                    visitService.dischargePatient(dischargePatientDTO.getVisitId(), dischargePatientDTO.getDischargeDate());
                 }
 
             }
