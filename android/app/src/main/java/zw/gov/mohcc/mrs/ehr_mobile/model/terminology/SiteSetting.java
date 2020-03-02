@@ -22,6 +22,8 @@ public class SiteSetting extends BaseEntity {
     private Date lastEhrPull;
     @TypeConverters(DateConverter.class)
     private Date lastEhrPush;
+    @TypeConverters(DateConverter.class)
+    private Date cronLastRan;
 
     public SiteSetting() {
     }
@@ -81,6 +83,14 @@ public class SiteSetting extends BaseEntity {
         this.lastEhrPush = lastEhrPush;
     }
 
+    public Date getCronLastRan() {
+        return cronLastRan;
+    }
+
+    public void setCronLastRan(Date cronLastRan) {
+        this.cronLastRan = cronLastRan;
+    }
+
     @Override
     public String toString() {
         return super.toString().concat("SiteSetting{" +
@@ -90,6 +100,7 @@ public class SiteSetting extends BaseEntity {
                 ", ipAddress='" + ipAddress + '\'' +
                 ", lastEhrPull=" + lastEhrPull +
                 ", lastEhrPush=" + lastEhrPush +
+                ", cronLastRan=" + cronLastRan +
                 '}');
     }
 }
