@@ -286,6 +286,7 @@ public class HtsChannel {
                             }
                         }
                         if (methodCall.method.equals("savePostTest")) {
+                            Log.i(TAG, "POST TEST TO BE SAVED"+ arguments);
 
                             try {
                                 PostTestDTO postTest = gson.fromJson(arguments, PostTestDTO.class);

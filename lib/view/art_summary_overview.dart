@@ -510,19 +510,43 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                               mainAxisSize: MainAxisSize.max,
                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                               children: <Widget>[
-                                                                // three line description
-                                                                Container(
-                                                                  alignment: Alignment.topLeft,
-                                                                  child: Text(
-                                                                    'ART Registration',
-                                                                    style: TextStyle(
-                                                                      fontSize: 16.0,
-                                                                      fontStyle: FontStyle.normal,
-                                                                      color: Colors.black87,
-                                                                    ),
+                                                                Row(children: <Widget>[
+                                                                  Container(
+                                                                    alignment: Alignment.topLeft,
+                                                                    child:SizedBox(width:200, child: Text(
+                                                                      'ART Registration',
+                                                                      style: TextStyle(
+                                                                        fontSize: 16.0,
+                                                                        fontStyle: FontStyle.normal,
+                                                                        color: Colors.black87,
+                                                                      ),
+                                                                    ),)
                                                                   ),
-                                                                ),
+                                                                  SizedBox(width: 200.0,),
+                                                                  Container(
+                                                                      alignment: Alignment.topRight,
+                                                                      child: RaisedButton.icon(
+                                                                          onPressed: () {
+                                                                            Navigator.push(
+                                                                          context,
+                                                                          MaterialPageRoute(builder: (context) =>   ArtReg(this.artdto, widget.person.id, widget.visitId, widget.person,
+                                                                              widget.htsRegistration, widget.htsId)));
 
+                                                                          },
+                                                                          color: Colors.blue,
+                                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                          icon:  Icon(
+                                                                            Icons.add,
+                                                                            size: 25.0,
+                                                                            color: Colors.white,
+                                                                          ),
+                                                                          label: Text("Add Registration" , style:TextStyle(fontSize: 15.0, color: Colors.white) ,)
+                                                                      )
+                                                                  ),
+
+
+                                                                ],),
+                                                                // three line description,
                                                                 Container(
                                                                   margin: EdgeInsets.only( top: 3.0 ),
                                                                 ),
@@ -537,13 +561,11 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
 
                                                                 artdto ==
-                                                                    null
+                                                                    null || artdto.artNumber == null
                                                                     ? Center(
                                                                   child: Text(
                                                                     'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
+                                                                    style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                   ),
                                                                 )
                                                                     : Row(
@@ -585,14 +607,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
-                                                                  ),
+                                                                    null || artdto.artNumber == null
+                                                                    ? SizedBox(
+                                                                      height: 0.0, width : 0.0
                                                                 )
                                                                     : Row(
                                                                   children: <
@@ -640,14 +657,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
-                                                                  ),
+                                                                    null || artdto.artNumber == null
+                                                                    ?SizedBox(
+                                                                    height: 0.0, width : 0.0
                                                                 )
                                                                     : Row(
                                                                   children: <
@@ -693,14 +705,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
-                                                                  ),
+                                                                    null ||artdto.artNumber == null
+                                                                    ? SizedBox(
+                                                                    height: 0.0, width : 0.0
                                                                 )
                                                                     : Row(
                                                                   children: <
@@ -737,14 +744,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
-                                                                  ),
+                                                                    null || artdto.artNumber== null
+                                                                    ?SizedBox(
+                                                                    height: 0.0, width : 0.0
                                                                 )
                                                                     : Row(
                                                                   children: <
@@ -778,12 +780,10 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Record',
-                                                                    style: TextStyle( fontSize: 13.0, color: Colors.black54 ),
-                                                                  ),
+                                                                    null || artdto.artNumber == null                                                                    ? Center(
+                                                                  child:SizedBox(
+                                                                      height: 0.0, width : 0.0
+                                                                  )
                                                                 )
                                                                     : Row(
                                                                   children: <
@@ -920,14 +920,43 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 Container(
                                                                   alignment:
                                                                   Alignment.topLeft,
-                                                                  child: Text(
-                                                                    'Art Appointments List',
-                                                                    style:
-                                                                    TextStyle( fontSize: 16.0,
-                                                                      fontStyle: FontStyle.normal,
-                                                                      color: Colors.black87,
+                                                                  child:    Row(
+                                                                    children: <Widget>[
+                                                                    Container(
+                                                                      alignment: Alignment.topLeft,
+                                                                      child: SizedBox(width: 200, child:Text(
+                                                                        'ART Appointments',
+                                                                        style: TextStyle(
+                                                                          fontSize: 16.0,
+                                                                          fontStyle: FontStyle.normal,
+                                                                          color: Colors.black87,
+                                                                        ),
+                                                                      ),),
                                                                     ),
-                                                                  ),
+                                                                    SizedBox(width: 200.0,),
+                                                                    Container(
+                                                                        alignment: Alignment.topRight,
+                                                                        child: RaisedButton.icon(
+                                                                            onPressed: () {
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(builder: (context) => ArtAppointmentView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
+                                                                                  ));
+
+                                                                            },
+                                                                            color: Colors.blue,
+                                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                            icon:  Icon(
+                                                                              Icons.add,
+                                                                              size: 25.0,
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                            label: Text("Add Appointment" , style:TextStyle(fontSize: 15.0, color: Colors.white) ,)
+                                                                        )
+                                                                    ),
+
+
+                                                                  ],)
                                                                 ),
                                                                 Divider(
                                                                   height: 10.0,
@@ -945,10 +974,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                         child: Container(
                                                                         alignment: Alignment.topLeft,
                                                                         child: Center(child: Text(
-                                                                          'No Records',
-                                                                          style: TextStyle(
-                                                                              fontSize: 13.0,
-                                                                              color: Colors.black54),
+                                                                          'No Record',
+                                                                          style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                         ),)
                                                                     ))
                                                                           : Expanded(
@@ -1021,21 +1048,6 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                             2.0, //width of the border
                                                           ),
                                                           onPressed: () {
-                                                            if(_appointmentList.isEmpty){
-
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) =>  ArtAppointmentView(widget.person.id, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
-                                                                ),
-                                                              );
-                                                            }else{
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) =>  ArtAppointmentsOverview(_appointmentList, widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId)
-                                                                  ));
-                                                            }
 
                                                           },
                                                         ),
@@ -1058,14 +1070,44 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 // three line description
                                                                 Container(
                                                                   alignment: Alignment.topLeft,
-                                                                  child: Text(
-                                                                    'TB Screening',
-                                                                    style: TextStyle(
-                                                                      fontSize: 16.0,
-                                                                      fontStyle: FontStyle.normal,
-                                                                      color: Colors.black87,
-                                                                    ),
-                                                                  ),
+                                                                  child:  Row(
+                                                                    children: <Widget>[
+                                                                      Container(
+                                                                        alignment: Alignment.topLeft,
+                                                                        child: SizedBox(width: 200, child:Text(
+                                                                          'TB Screening',
+                                                                          style: TextStyle(
+                                                                            fontSize: 16.0,
+                                                                            fontStyle: FontStyle.normal,
+                                                                            color: Colors.black87,
+                                                                          ),
+                                                                        ),)
+                                                                      ),
+                                                                      SizedBox(width: 200.0,),
+                                                                      Container(
+                                                                          alignment: Alignment.topRight,
+                                                                          child: RaisedButton.icon(
+                                                                              onPressed: () {
+                                                                                Navigator.push(
+                                                                                    context,
+                                                                                    MaterialPageRoute(builder: (context) =>  TbScreeningView(widget.person, widget.person.id, widget.visitId, widget.htsRegistration, widget.htsId)
+
+                                                                                    ));
+
+                                                                              },
+                                                                              color: Colors.blue,
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                              icon:  Icon(
+                                                                                Icons.add,
+                                                                                size: 25.0,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              label: Text("Add TB Screening" , style:TextStyle(fontSize: 15.0, color: Colors.white) ,)
+                                                                          )
+                                                                      ),
+
+
+                                                                    ],)
                                                                 ),
 
                                                                 Container(
@@ -1085,10 +1127,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     null
                                                                     ? Center(
                                                                   child: Text(
-                                                                    'No Records',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
+                                                                    'No Record',
+                                                                    style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                   ),
                                                                 )
                                                                     : Row(
@@ -1125,13 +1165,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
                                                                 tbScreeningobj.weightLoss ==
                                                                     null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Records',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
-                                                                  ),
+                                                                    ? SizedBox(
+                                                                    height: 0.0, width : 0.0
                                                                 )
                                                                     : Row(
                                                                   children: <
@@ -1172,15 +1207,9 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
                                                                 tbScreeningobj.weightLoss ==
                                                                     null
-                                                                    ? Center(
-                                                                  child: Text(
-                                                                    'No Records',
-                                                                    style: TextStyle(
-                                                                        fontSize: 13.0,
-                                                                        color: Colors.black54),
-                                                                  ),
-                                                                )
-                                                                    : Row(
+                                                                    ? SizedBox(
+                                                                    height: 0.0, width : 0.0
+                                                                )  : Row(
                                                                   children: <
                                                                       Widget>[
                                                                     Expanded(

@@ -15,6 +15,7 @@ public class PostTestDTO {
     private String reasonForNotIssuingResultId;
     private boolean consentToIndexTesting;
     private boolean postTestCounselled;
+    private String finalResult;
 
     public PostTestDTO() {
     }
@@ -60,6 +61,18 @@ public class PostTestDTO {
         this.reasonForNotIssuingResultId = reasonForNotIssuingResultId;
     }
 
+    public void setDatePostTestCounselled(Date datePostTestCounselled) {
+        this.datePostTestCounselled = datePostTestCounselled;
+    }
+
+    public String getFinalResult() {
+        return finalResult;
+    }
+
+    public void setFinalResult(String finalResult) {
+        this.finalResult = finalResult;
+    }
+
     public boolean isConsentToIndexTesting() {
         return consentToIndexTesting;
     }
@@ -84,7 +97,8 @@ public class PostTestDTO {
         hts.setResultReceived(dto.isResultReceived());
         hts.setReasonForNotIssuingResultId(dto.getReasonForNotIssuingResultId());
         hts.setConsentToIndexTesting(dto.isConsentToIndexTesting());
-        hts.setDatePostTestCounselled(dto.getDatePostTestCounselled());
+        hts.setPostTestCounselled(dto.isPostTestCounselled());
+        hts.setFinalResult(dto.getFinalResult());
         Log.d(TAG, "State of HTS after updating posttest fields : " + hts);
         return hts;
     }

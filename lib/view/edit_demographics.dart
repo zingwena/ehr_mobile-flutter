@@ -677,14 +677,17 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 _currentSiGender,
                                                                 _currentOccupation);
 
-                                                            if(countryIsValid& nationalityIsValid&selfIdentifiedGenderIsValid&maritalStatusIsValid&educationLevelIsValid&occupationIsValid&religionIsValid
-                                                            ){
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        PatientAddress(patient)));
 
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) =>
-                                                                          PatientAddress(patient)));
+                                                  /*          if (_formKey
+                                                                .currentState
+                                                                .validate()) {
+                                                              _formKey.currentState
+                                                                  .save();
 
                                                             }else{
 
@@ -730,7 +733,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 });
 
                                                               }
-                                                            }
+                                                            }*/
 
                                                           }
 

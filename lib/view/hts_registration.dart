@@ -478,8 +478,14 @@ class _Registration extends State<Registration> {
                                                               });
                                                             } else {
                                                               setState(() {
-                                                                _showError = true;
-                                                                showTypeError = true;
+                                                                if(_entryPointIsValid == false){
+                                                                  _showError = true;
+
+                                                                }
+                                                                if(typeselected == false){
+                                                                  showTypeError = true;
+
+                                                                }
                                                               });
                                                             }
                                                             if (_formIsValid) {

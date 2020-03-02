@@ -82,7 +82,6 @@ class _TbScreening extends State<TbScreeningView> {
     getAge(widget.person);
     getFacilityName();
     getTbScreening(widget.personId);
-    print("HERE IS THE TB SCREENING VIEW PAGE");
     super.initState();
   }
 

@@ -177,11 +177,6 @@ class SummaryOverviewState extends State<SummaryOverview>
       setState(() {
         patientSummaryDto =
             PatientSummaryDto.fromJson(jsonDecode(patient_summary));
-        debugPrint("RRRRRRRRRRRRR Patient summary dto from android" +
-            patientSummaryDto.toString());
-        debugPrint(
-            "RRRRRRRRRRRRR Patient summary dto from android temperature" +
-                patientSummaryDto.temperature.toString());
       });
     } catch (e) {
       print("channel failure at Patient summary dto method: '$e'");
@@ -190,15 +185,10 @@ class SummaryOverviewState extends State<SummaryOverview>
 
   Future<void>saveIndexTest(IndexTest indexTest)async{
     var response ;
-    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX '+ indexTest.toString());
-    print('GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE ID FOR PERSON WATIKUDEALER NAYE INDEX TEST'+ indexTest.personId);
-
     try{
       response = await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
-      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id'+ response );
       setState(() {
         indextestid = response;
-        print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED" + indextestid);
 
       });
 
@@ -214,11 +204,8 @@ class SummaryOverviewState extends State<SummaryOverview>
 
     try{
       response = await htsChannel.invokeMethod(' getIndexTestByPersonId', jsonEncode(personId));
-      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id returned as it was saved'+ response );
       setState(() {
         indextestid = response;
-        print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED indextest id returned as it was save" + indextestid);
-
       });
 
     }catch(e){
@@ -778,18 +765,259 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                           Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ReceptionVitals(
-                                                                    widget
-                                                                        .person
-                                                                        .id,
-                                                                    widget
-                                                                        .visitId,
-                                                                    widget
-                                                                        .person,
-                                                                    widget
-                                                                        .htsId)),
+                                                            builder: (context) {}
+                                                           ),
                                                       ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 16.0,
+                                                        horizontal: 20.0),
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      shape:
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              5.0)),
+                                                      color: Colors.white,
+                                                      padding:
+                                                      const EdgeInsets.all(
+                                                          0.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 8.0,
+                                                            horizontal:
+                                                            30.0),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                          MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                          children: <Widget>[
+                                                            // three line description
+                                                            Container(
+                                                              alignment:
+                                                              Alignment
+                                                                  .topLeft,
+                                                              child: Text(
+                                                                'Investigations Overview',
+                                                                style:
+                                                                TextStyle(
+                                                                  fontSize:
+                                                                  16.0,
+                                                                  fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                                  color: Colors
+                                                                      .black87,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Divider(
+                                                              height: 10.0,
+                                                              color: Colors.blue
+                                                                  .shade500,
+                                                            ),
+                                                            Container(
+                                                              height: 2.0,
+                                                              color:
+                                                              Colors.blue,
+                                                            ),
+                                                            Row(
+                                                              children: <
+                                                                  Widget>[
+                                                                Expanded(
+                                                                  child: patientSummaryDto ==
+                                                                      null ||
+                                                                      patientSummaryDto
+                                                                          .investigations
+                                                                          .isEmpty
+                                                                      ? Container(
+                                                                      alignment: Alignment
+                                                                          .topLeft,
+                                                                      child:
+                                                                      Center(
+                                                                        child:
+                                                                        Text(
+                                                                          'No Record',
+                                                                          style: TextStyle(fontSize: 15.0, color: Colors.black87),
+                                                                        ),
+                                                                      ))
+                                                                      : Container(
+                                                                    width:
+                                                                    double.infinity,
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical: 0.0,
+                                                                        horizontal: 30.0),
+                                                                    child: DataTable(
+                                                                        columns: [
+                                                                          DataColumn(label: Text("Date")),
+                                                                          DataColumn(label: Text("Test Name")),
+                                                                          DataColumn(label: Text("Result")),
+                                                                        ],
+                                                                        rows: patientSummaryDto.investigations
+                                                                            .map((investigation) => DataRow(cells: [
+                                                                          DataCell(Text(DateFormat("yyyy/MM/dd").format(investigation.testDate))),
+                                                                          DataCell(Text(investigation.testName)),
+                                                                          DataCell(Text(investigation.result)),
+                                                                        ]))
+                                                                            .toList()),
+                                                                  ),
+                                                                ),
+
+
+                                                              ],
+                                                            ),
+
+                                                            Row(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: <
+                                                                  Widget>[
+                                                                eligibel_for_recency?Expanded(
+                                                                  child:
+                                                                  Padding(
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                        0.0,
+                                                                        horizontal:
+                                                                        10.0),
+                                                                    child: RaisedButton(
+                                                                      //onPressed: () {},
+                                                                        color: Colors.blue,
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                              left: 10,
+                                                                              right: 10,
+                                                                              top: 1,
+                                                                              bottom: 1),
+                                                                          child:
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                            children: <Widget>[
+                                                                              Icon(
+                                                                                Icons.edit_attributes,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              Spacer(),
+                                                                              Text(
+                                                                                'Offer Recency Testing',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                  builder: (context) => RecencyTest(
+                                                                                      widget.person.id,
+                                                                                      widget.visitId,
+                                                                                      widget.person,
+                                                                                      widget.htsId,
+                                                                                      widget.htsRegistration)));
+                                                                        }),
+                                                                  ),
+                                                                ): SizedBox(height: 0.0, width: 0.0,),
+                                                                eligible_for_index ?Expanded(
+                                                                  child:
+                                                                  Padding(
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                        0.0,
+                                                                        horizontal:
+                                                                        10.0),
+                                                                    child: RaisedButton(
+                                                                        color: Colors.blue,
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                              left: 2,
+                                                                              right: 2,
+                                                                              top: 1,
+                                                                              bottom: 1),
+                                                                          child:
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                            children: <Widget>[
+                                                                              Icon(
+                                                                                Icons.format_list_numbered,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              Spacer(),
+                                                                              Text(
+                                                                                'Index Contact List ',
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          getIndexTestByPersonId(widget.person.id);
+                                                                          if(indextestid == null){
+                                                                            IndexTest indexTest = IndexTest(widget.person.id, DateTime.now());
+                                                                            saveIndexTest(indexTest);
+                                                                            Navigator.push(context,MaterialPageRoute(
+                                                                                builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.person.id, indextestid)
+                                                                            ));
+                                                                          }else{
+                                                                            Navigator.push(context,MaterialPageRoute(
+                                                                                builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.person.id, indextestid)
+                                                                            ));
+                                                                          }
+                                                                        }),
+                                                                  ),
+                                                                ): SizedBox(height: 0.0, width: 0.0,),
+                                                              ],
+                                                            ),
+                                                            Divider(
+                                                              height: 10.0,
+                                                              color: Colors.blue
+                                                                  .shade500,
+                                                            ),
+                                                            Container(
+                                                              height: 2.0,
+                                                              color:
+                                                              Colors.blue,
+                                                            ),
+
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      borderSide: BorderSide(
+                                                        color: Colors.blue,
+                                                        //Color of the border
+                                                        style:
+                                                        BorderStyle.solid,
+                                                        //Style of the border
+                                                        width:
+                                                        2.0, //width of the border
+                                                      ),
+                                                      onPressed: () {},
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -869,16 +1097,12 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             patientSummaryDto ==
                                                                         null ||
                                                                     patientSummaryDto
-                                                                            .artDetails ==
+                                                                            .artDetails.artNumber ==
                                                                         null
                                                                 ? Center(
                                                                     child: Text(
                                                                       'No Record',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              13.0,
-                                                                          color:
-                                                                              Colors.black54),
+                                                                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                     ),
                                                                   )
                                                                 : Row(
@@ -927,16 +1151,12 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             patientSummaryDto ==
                                                                         null ||
                                                                     patientSummaryDto
-                                                                            .artDetails ==
+                                                                            .artDetails.artNumber ==
                                                                         null
                                                                 ? Center(
                                                                     child: Text(
                                                                       'No Record',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              13.0,
-                                                                          color:
-                                                                              Colors.black54),
+                                                                      style: TextStyle(fontSize: 15.0, color: Colors.black87),
                                                                     ),
                                                                   )
                                                                 : Row(
@@ -1003,271 +1223,19 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             2.0, //width of the border
                                                       ),
                                                       onPressed: () {
-                                                        Navigator.push(
+                                                    /*    Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
                                                                 builder: (context) =>   ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
 
-                                                            ));
+                                                            ));*/
                                                       },
                                                     ),
                                                   ),
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
-                                                  Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.0,
-                                                            horizontal: 20.0),
-                                                    width: double.infinity,
-                                                    child: OutlineButton(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0)),
-                                                      color: Colors.white,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              0.0),
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 8.0,
-                                                                horizontal:
-                                                                    30.0),
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: <Widget>[
-                                                            // three line description
-                                                            Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .topLeft,
-                                                              child: Text(
-                                                                'Investigations Overview',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .normal,
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Divider(
-                                                              height: 10.0,
-                                                              color: Colors.blue
-                                                                  .shade500,
-                                                            ),
-                                                            Container(
-                                                              height: 2.0,
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
-                                                            Row(
-                                                              children: <
-                                                                  Widget>[
-                                                                Expanded(
-                                                                  child: patientSummaryDto ==
-                                                                              null ||
-                                                                          patientSummaryDto
-                                                                              .investigations
-                                                                              .isEmpty
-                                                                      ? Container(
-                                                                          alignment: Alignment
-                                                                              .topLeft,
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                Text(
-                                                                              'No Record',
-                                                                              style: TextStyle(fontSize: 13.0, color: Colors.black54),
-                                                                            ),
-                                                                          ))
-                                                                      : Container(
-                                                                          width:
-                                                                              double.infinity,
-                                                                          padding: EdgeInsets.symmetric(
-                                                                              vertical: 0.0,
-                                                                              horizontal: 30.0),
-                                                                          child: DataTable(
-                                                                              columns: [
-                                                                                DataColumn(label: Text("Date")),
-                                                                                DataColumn(label: Text("Test Name")),
-                                                                                DataColumn(label: Text("Result")),
-                                                                              ],
-                                                                              rows: patientSummaryDto.investigations
-                                                                                  .map((investigation) => DataRow(cells: [
-                                                                                        DataCell(Text(DateFormat("yyyy/MM/dd").format(investigation.testDate))),
-                                                                                        DataCell(Text(investigation.testName)),
-                                                                                        DataCell(Text(investigation.result)),
-                                                                                      ]))
-                                                                                  .toList()),
-                                                                        ),
-                                                                ),
 
-
-                                                              ],
-                                                            ),
-
-                                                            Row(
-                                                              crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                eligibel_for_recency?Expanded(
-                                                                  child:
-                                                                  Padding(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                        0.0,
-                                                                        horizontal:
-                                                                        10.0),
-                                                                    child: RaisedButton(
-                                                                      //onPressed: () {},
-                                                                        color: Colors.blue,
-                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                        child: Padding(
-                                                                          padding: const EdgeInsets.only(
-                                                                              left: 10,
-                                                                              right: 10,
-                                                                              top: 1,
-                                                                              bottom: 1),
-                                                                          child:
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                            crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                            children: <Widget>[
-                                                                              Icon(
-                                                                                Icons.edit_attributes,
-                                                                                color: Colors.white,
-                                                                              ),
-                                                                              Spacer(),
-                                                                              Text(
-                                                                                'Offer Recency Testing',
-                                                                                style: TextStyle(
-                                                                                  color: Colors.white,
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        onPressed: () {
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              MaterialPageRoute(
-                                                                                  builder: (context) => RecencyTest(
-                                                                                      widget.person.id,
-                                                                                      widget.visitId,
-                                                                                      widget.person,
-                                                                                      widget.htsId,
-                                                                                      widget.htsRegistration)));
-                                                                       /*   if (htsScreening ==
-                                                                              null) {
-                                                                            Navigator.push(context,
-                                                                                MaterialPageRoute(builder: (context) => Hts_Screening(widget.person.id, widget.htsId, widget.htsRegistration, widget.visitId, widget.person)));
-                                                                          } else {
-                                                                            Navigator.push(context,
-                                                                                MaterialPageRoute(builder: (context) => HtsScreeningOverview(widget.person, htsScreening, widget.htsId, widget.visitId, widget.person.id)));
-                                                                          }*/
-                                                                        }),
-                                                                  ),
-                                                                ): SizedBox(height: 0.0, width: 0.0,),
-                                                                eligible_for_index ?Expanded(
-                                                                  child:
-                                                                  Padding(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                        0.0,
-                                                                        horizontal:
-                                                                        10.0),
-                                                                    child: RaisedButton(
-                                                                      // onPressed: () {},
-                                                                        color: Colors.blue,
-                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                        child: Padding(
-                                                                          padding: const EdgeInsets.only(
-                                                                              left: 2,
-                                                                              right: 2,
-                                                                              top: 1,
-                                                                              bottom: 1),
-                                                                          child:
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                            crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                            children: <Widget>[
-                                                                              Icon(
-                                                                                Icons.format_list_numbered,
-                                                                                color: Colors.white,
-                                                                              ),
-                                                                              Spacer(),
-                                                                              Text(
-                                                                                'Index Contact List ',
-                                                                                style: TextStyle(color: Colors.white),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        onPressed: () {
-                                                                          getIndexTestByPersonId(widget.person.id);
-                                                                          if(indextestid == null){
-                                                                            IndexTest indexTest = IndexTest(widget.person.id, DateTime.now());
-                                                                            saveIndexTest(indexTest);
-                                                                            Navigator.push(context,MaterialPageRoute(
-                                                                                builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.person.id, indextestid)
-                                                                            ));
-                                                                          }else{
-                                                                            Navigator.push(context,MaterialPageRoute(
-                                                                                builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.person.id, indextestid)
-                                                                            ));
-                                                                          }
-                                                                        }),
-                                                                  ),
-                                                                ): SizedBox(height: 0.0, width: 0.0,),
-                                                              ],
-                                                            ),
-                                                            Divider(
-                                                              height: 10.0,
-                                                              color: Colors.blue
-                                                                  .shade500,
-                                                            ),
-                                                            Container(
-                                                              height: 2.0,
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      borderSide: BorderSide(
-                                                        color: Colors.blue,
-                                                        //Color of the border
-                                                        style:
-                                                            BorderStyle.solid,
-                                                        //Style of the border
-                                                        width:
-                                                            2.0, //width of the border
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
-                                                  ),
                                                 ],
                                               ),
                                             ),

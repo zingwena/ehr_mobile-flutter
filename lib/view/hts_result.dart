@@ -459,12 +459,14 @@ class _Hts_Result  extends State<Hts_Result > {
 
                                                             }else{
 
-                                                              if(patientPostTest.finalResult == null){
-                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId, widget.htsRegistration)));
-
-                                                              }else{
+                                                              if(patientPostTest.postTestCounselled  == true){
 
                                                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> PostTestOverview(patientPostTest, widget.patientId, widget.visitId, widget.person, widget.htsId, patientPostTest.consentToIndexTesting,true, true, patientPostTest.finalResult, widget.htsRegistration)));
+
+                                                              }else{
+                                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientPostTest(this.final_result, this.patientId, this._visitId, widget.person, widget.htsId, widget.htsRegistration)));
+
+
                                                               }
                                                             }
                                                           }

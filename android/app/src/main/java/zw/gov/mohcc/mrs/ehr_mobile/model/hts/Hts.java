@@ -69,6 +69,7 @@ public class Hts extends BaseEntity {
     @TypeConverters(DateConverter.class)
     private Date datePostTestCounselled;
     private boolean consentToIndexTesting;
+    private String finalResult;
 
     public Hts() {
     }
@@ -230,6 +231,18 @@ public class Hts extends BaseEntity {
         this.consentToIndexTesting = consentToIndexTesting;
     }
 
+    public Boolean getNewTestPregLact() {
+        return newTestPregLact;
+    }
+
+    public String getFinalResult() {
+        return finalResult;
+    }
+
+    public void setFinalResult(String finalResult) {
+        this.finalResult = finalResult;
+    }
+
     @Override
     public String toString() {
         return super.toString().concat("Hts{" +
@@ -250,6 +263,7 @@ public class Hts extends BaseEntity {
                 ", postTestCounselled=" + postTestCounselled +
                 ", datePostTestCounselled=" + datePostTestCounselled +
                 ", consentToIndexTesting=" + consentToIndexTesting +
+                "finalResult="+ finalResult+
                 '}');
     }
 }
