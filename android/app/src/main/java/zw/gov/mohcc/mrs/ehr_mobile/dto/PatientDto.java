@@ -1,9 +1,11 @@
 package zw.gov.mohcc.mrs.ehr_mobile.dto;
 
 import androidx.annotation.NonNull;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import zw.gov.mohcc.mrs.ehr_mobile.converter.DateConverter;
 import zw.gov.mohcc.mrs.ehr_mobile.model.person.Address;
 import zw.gov.mohcc.mrs.ehr_mobile.enumeration.Gender;
 
@@ -20,6 +22,7 @@ public class PatientDto {
     private String identifier;
     private String nationalId;
     @NonNull
+    @TypeConverters(DateConverter.class)
     private Date birthDate;
     @NonNull
     private Gender selfIdentifiedGender;

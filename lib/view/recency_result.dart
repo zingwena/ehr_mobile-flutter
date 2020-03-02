@@ -25,6 +25,7 @@ import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/hiv_services_index_contact_page.dart';
+import 'package:ehr_mobile/view/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -40,10 +41,9 @@ class Recency_Result extends StatefulWidget {
   String labInvestId;
   Person person;
   String htsId;
-  String indexTestId;
   LaboratoryInvestigationTestDto laboratoryInvestigation;
 
-  Recency_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId, this.laboratoryInvestigation, this.indexTestId);
+  Recency_Result(this.patientId, this.labInvetsTestId, this.visitId, this.labInvestId, this.person, this.htsId, this.laboratoryInvestigation);
 
   //Hts_Result (this.visitId, this.patientId);
 
@@ -463,40 +463,28 @@ class _Recency_Result  extends State<Recency_Result > {
                                                     height: 30.0,
                                                   ),
 
-                                                  Container(
-                                                      width: double.infinity,
-                                                              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-                                                                  child: RaisedButton(
-                                                                        elevation: 4.0,
-                                                                           shape: RoundedRectangleBorder(
-                                                                             borderRadius: BorderRadius.circular(5.0)),
-                                                                                color: Colors.blue,
-                                                                                    padding: const EdgeInsets.all(20.0),
-                                                                                        child: Row(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                               crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                             children: <Widget>[
-                                                                                                 Text('Proceed to Demographics', style: TextStyle(color: Colors.white),),
-                                                                                                 Spacer(),
-                                                                                             Icon(Icons.navigate_next, color: Colors.white, ),
-                                                                                           ],
-                                                                                          ),
-                                                                                              onPressed: () {
-                                                                                             getIndexTestByPersonId(widget.patientId);
-                                                                                            if(indextestid == null){
-                                                                                     IndexTest indexTest = IndexTest(widget.patientId, DateTime.now());
-                                                                                       saveIndexTest(indexTest);
-                                                                                   Navigator.push(context,MaterialPageRoute(
-                                                                          builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
-                                                                         ));
-                                                                         }else{
-                                                       Navigator.push(context,MaterialPageRoute(
-                                                  builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
-                                                ));
-                                                }
-                                                    },
-                                                   ),
-                                                  ),
+                            Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+                            child: RaisedButton(
+                            elevation: 4.0,
+                            shape:
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                            color: Colors.blue,
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                            "Close ",
+                            style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                            builder: (context) =>   SummaryOverview(widget.person, widget.visitId, this.htsRegistration, widget.htsId)
+                            ));
+                            },
+                            ),
+                            ),
                                                 ],
                                               ),
                                             ),
@@ -628,26 +616,6 @@ class _Recency_Result  extends State<Recency_Result > {
 
     }catch(e){
       print("channel failure: '$e'");
-
-    }
-
-  }
-  Future<void>  getIndexTestByPersonId(String personId)async{
-    var response ;
-
-    try{
-      response = await htsChannel.invokeMethod(' getIndexTestByPersonId', jsonEncode(personId));
-      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id returned as it was saved'+ response );
-      setState(() {
-        indextestid = response;
-        print("JJJJJJJJJJJJJJJJJJJJJ INDEX TEST ID IN FLUTTER RETURNED indextest id returned as it was save" + indextestid);
-
-      });
-
-    }catch(e){
-      print("channel failure: '$e'");
-
-
 
     }
 

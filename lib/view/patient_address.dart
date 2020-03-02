@@ -471,11 +471,11 @@ class _PatientAddressState extends State<PatientAddress> {
     try {
       String jsonPatient = jsonEncode(patient);
       response= await addPatient.invokeMethod('registerPatient',jsonPatient);
-      log.i('HERE IS THE RESPONSE ID OF THE PERSON SAVED'+ response);
-      patientResponse= await addPatient.invokeMethod("getPatientById", response);
+      log.i('HERE IS THE RESPONSE JSON OBJECT  OF THE PERSON SAVED'+ response);
+     /* patientResponse= await addPatient.invokeMethod("getPatientById", response);*/
       setState(() {
-        registeredPatient = Person.fromJson(jsonDecode(patientResponse));
-        log.i("THIS IS THE PATIENT AFTER ASSIGNMENT IN FLUTTER"+ registeredPatient.toString());
+        registeredPatient = Person.fromJson(jsonDecode(response));
+        log.i("THIS IS THE PATIENT AFTER ASSIGNMENT IN FLUTTER AFTER SAVING"+ registeredPatient.toString());
       });
       await savephonenumber();
 

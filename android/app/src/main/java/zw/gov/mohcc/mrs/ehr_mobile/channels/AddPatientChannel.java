@@ -58,18 +58,14 @@ public class AddPatientChannel {
                     ehrMobileDatabase.personDao().createPatient(person);
                     Person person1 = ehrMobileDatabase.personDao().findPatientById(personId);
                     Log.i(TAG,"PERSON PERSON PERSON SAVED IN ANDROID"+ person1.toString());
-                    result.success(person1.getId());
+                    result.success(gson.toJson(person1));
 
-                    System.out.println("==================-=-=-=-=-fromDB " + ehrMobileDatabase.personDao().findPatientById(person.getId()));
                 }
                 if (methodCall.method.equals("getPatientById")) {
                     String ags = methodCall.arguments();
                     Log.i(TAG, "HERE IS PATIENT ID TO RETRIEVE PATIENT"+ ags);
-
                     Person person = ehrMobileDatabase.personDao().findPatientById(ags);
-
                     String response = gson.toJson(person);
-                    System.out.println("HERE IS THE PERSON SENT FROM FLUTTER THROUGH GET BY ID >>>>>>>>>>>>> "+ response);
                     result.success(response);
                 }
                 if (methodCall.method.equals("getPatientMaritalStatus")) {

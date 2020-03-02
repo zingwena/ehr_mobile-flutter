@@ -259,13 +259,6 @@ class _AddPatient extends State<AddPatient> {
                                                                         60.0),
                                                             child:
                                                                 TextFormField(
-                                                              /*validator:
-                                                                    (value) {
-                                                                  return value
-                                                                          .isEmpty
-                                                                      ? 'Enter National Id number'
-                                                                      : null;
-                                                                },*/
                                                               onSaved:
                                                                   (value) =>
                                                                       setState(

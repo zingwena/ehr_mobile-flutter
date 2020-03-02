@@ -47,4 +47,10 @@ class PatientSummaryDto{
     return patientSummaryList;
   }
 
+   @override
+   String toString() {
+     return 'PatientSummaryDto{personId: $personId, temperature: $temperature, bloodPressure: $bloodPressure, pulse: $pulse, respiratoryRate: $respiratoryRate, height: $height, weight: $weight, artDetails: $artDetails, investigations: $investigations}';
+   }
+
+
 }

@@ -68,7 +68,7 @@ class OverviewState extends State<Overview> {
   void initState() {
     _patient = widget.patient;
     getVisit(_patient.id);
-    getHtsScreeningRecord(_patient.id);
+   // getHtsScreeningRecord(_patient.id);
     getHtsRecord(_patient.id);
     getArt(_patient.id);
     getDetails(_patient.maritalStatusId,_patient.educationLevelId,_patient.occupationId,_patient.nationalityId, _patient.id);

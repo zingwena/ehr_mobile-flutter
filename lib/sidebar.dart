@@ -199,7 +199,7 @@ class sidebarstate extends State<Sidebar>{
               ));
             }
           }),
-          Divider(
+         /* Divider(
             height: 10.0,
             color: Colors.blue.shade500,
           ),
@@ -217,7 +217,7 @@ class sidebarstate extends State<Sidebar>{
                   builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.patientId, indextestid)
               ));
             }
-          }),
+          }),*/
           Divider(
             height: 10.0,
             color: Colors.blue.shade500,

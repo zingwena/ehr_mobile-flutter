@@ -17,6 +17,7 @@ import 'package:ehr_mobile/view/art_initiation.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/model/person.dart';
 import 'package:ehr_mobile/model/age.dart';
+import 'package:ehr_mobile/view/summary.dart';
 import 'package:ehr_mobile/vitals/visit.dart';
 
 import 'package:flutter/material.dart';
@@ -524,40 +525,7 @@ class PostTestOverviewState extends State<PostTestOverview> {
   }
 
   Widget _recencyTesting() {
-    if (widget.result == 'POSITIVE' || widget.result == 'Positive') {
-      return Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
-        child: RaisedButton(
-          elevation: 4.0,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          color: Colors.blue,
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text('Recency Testing', style: TextStyle(color: Colors.white),),
-              Spacer(),
-              Icon(Icons.navigate_next, color: Colors.white, ),
-            ],
-          ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RecencyTest(
-                        widget.personId,
-                        widget.visitId,
-                        widget.person,
-                        widget.htsId,
-                        indexTestId,
-                        widget.htsRegistration)));
-          },
-        ),
-      );
-    } else {
+
       return Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
@@ -575,64 +543,12 @@ class PostTestOverviewState extends State<PostTestOverview> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Overview(widget.person)));
+                    builder: (context) =>   SummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+                ));
           },
         ),
       );
-    }
+
   }
 
-  Widget _IndexButton() {
-    if (widget.consenttoIndex == true) {
-      return Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-        child: RaisedButton(
-          elevation: 4.0,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          color: Colors.blue,
-          padding: const EdgeInsets.all(20.0),
-          child: Text(
-            "Index Testing",
-            style: TextStyle(color: Colors.white),
-          ),
-          onPressed: () {
-            IndexTest indexTest = IndexTest(
-                widget.personId, widget.postTest.datePostTestCounselled);
-            saveIndexTest(indexTest);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HIVServicesIndexContactList(
-                        widget.person,
-                        null,
-                        widget.visitId,
-                        widget.htsId,
-                        null,
-                        widget.personId,
-                        indexTestId)));
-          },
-        ),
-      );
-    } else {
-      return SizedBox(
-        height: 10.0,
-      );
-    }
-  }
-
-  Future<void> saveIndexTest(IndexTest indexTest) async {
-    var response;
-    print(
-        'GGGGGGGGGGGGGGGGGGGGGGGGG HERE IS THE INDEX ' + indexTest.toString());
-    try {
-      response =
-          await htsChannel.invokeMethod('saveIndexTest', jsonEncode(indexTest));
-      print('LLLLLLLLLLLLLLLLLLLLLLL hre is the indextest id' + response);
-      setState(() {
-        indexTestId = response;
-      });
-    } catch (e) {}
-  }
 }
