@@ -36,7 +36,7 @@ class CustomDateTimeConverter implements JsonConverter<DateTime, String> {
     if(time!=null){
       return toSqlDateTime(DateTime.fromMillisecondsSinceEpoch(time));
     }
-    return toSqlDateTime(DateTime.now());
+    return null;
   }
 
   String toSqlDateTime(DateTime dateTime){
