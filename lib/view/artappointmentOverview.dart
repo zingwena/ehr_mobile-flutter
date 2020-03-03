@@ -26,6 +26,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:intl/intl.dart';
 import '../sidebar.dart';
 import 'artFollowUp.dart';
+import 'art_summary_overview.dart';
 import 'rounded_button.dart';
 import 'home_page.dart';
 
@@ -544,19 +545,13 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
           new RoundedButton(text: "ART Appointment",selected: true,),
           new RoundedButton(text: "Close", onTap: () {
 
-            if(_artVisit.visitType == null ){
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ArtVisitView(widget.person, widget.personId, widget.visitId, widget.htsId, widget.htsRegistration)),
+                        ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)
+                ),
               );
-            } else {
-              Navigator.push(context,MaterialPageRoute(
-                  builder: (context)=>  ArtVisitOverview(this._artVisit, widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsId)
-
-              ));
-            }
           }
 
             // ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);

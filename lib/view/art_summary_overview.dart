@@ -523,7 +523,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                     ),)
                                                                   ),
                                                                   SizedBox(width: 200.0,),
-                                                                  Container(
+                                                                  artdto.artNumber == null?Container(
                                                                       alignment: Alignment.topRight,
                                                                       child: RaisedButton.icon(
                                                                           onPressed: () {
@@ -542,7 +542,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                           ),
                                                                           label: Text("Add Registration" , style:TextStyle(fontSize: 15.0, color: Colors.white) ,)
                                                                       )
-                                                                  ),
+                                                                  ): SizedBox(height: 0.0,),
 
 
                                                                 ],),

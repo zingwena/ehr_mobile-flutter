@@ -231,9 +231,6 @@ public class Hts extends BaseEntity {
         this.consentToIndexTesting = consentToIndexTesting;
     }
 
-    public Boolean getNewTestPregLact() {
-        return newTestPregLact;
-    }
 
     public String getFinalResult() {
         return finalResult;
