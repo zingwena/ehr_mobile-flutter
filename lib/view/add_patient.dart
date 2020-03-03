@@ -28,6 +28,7 @@ class _AddPatient extends State<AddPatient> {
 
   var birthDate, displayDate;
   bool showError = false;
+  bool showDateError = false;
   int _gender = 0;
   String gender = "";
   String _identifier;
@@ -105,6 +106,17 @@ class _AddPatient extends State<AddPatient> {
           break;
       }
     });
+  }
+
+  void _dateValidation(DateTime dateTime){
+    showDateError = false;
+    if(dateTime.isAfter(DateTime.now())){
+      setState(() {
+        showDateError = true;
+
+      });
+    }
+
   }
 
   List<DropdownMenuItem<String>> getIdentifierDropdownMenuItems() {
@@ -186,11 +198,6 @@ class _AddPatient extends State<AddPatient> {
                                   builder: (context) => LoginScreen()),
                             ),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
                         ),
                       ])),
             ],
@@ -441,6 +448,15 @@ class _AddPatient extends State<AddPatient> {
                                                         ),
                                                       ],
                                                     ),
+
+                                                  ),
+                                                  Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                   child:showDateError == false
+                                                       ? SizedBox.shrink()
+                                                       : Text(
+                                                     "Birt date cannot be in the future",
+                                                     style: TextStyle(color: Colors.red),
+                                                   ),
                                                   ),
                                                   SizedBox(
                                                     height: 35.0,
@@ -484,17 +500,23 @@ class _AddPatient extends State<AddPatient> {
                                                           });
                                                           RegExp regex = new RegExp(
                                                               r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
+                                                          //validating the birth date
+                                                          _dateValidation(birthDate);
                                                           if (nationalIdNumber.isEmpty || regex.hasMatch(
-                                                              nationalIdNumber)) {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => EditDemographics(
-                                                                        lastName,
-                                                                        firstName,
-                                                                        birthDate,
-                                                                        gender,
-                                                                        nationalId)));
+                                                              nationalIdNumber )) {
+                                                            if(showDateError == false){
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => EditDemographics(
+                                                                          lastName,
+                                                                          firstName,
+                                                                          birthDate,
+                                                                          gender,
+                                                                          nationalId)));
+
+                                                            }
+
                                                           } else {
                                                             showError = true;
                                                           }
