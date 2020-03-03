@@ -114,6 +114,7 @@ class _AddPatient extends State<AddPatient> {
       setState(() {
         showDateError = true;
 
+
       });
     }
 
@@ -423,7 +424,8 @@ class _AddPatient extends State<AddPatient> {
                                                                 controller:
                                                                     TextEditingController(
                                                                         text:
-                                                                            displayDate),
+                                                                            displayDate,
+                                                                    ),
                                                                 validator:
                                                                     (value) {
                                                                   return value
@@ -438,6 +440,7 @@ class _AddPatient extends State<AddPatient> {
                                                                         onPressed: () {
                                                                           _selectDate(
                                                                               context);
+
                                                                         }),
                                                                     labelText: 'Date of Birth',
                                                                     border: OutlineInputBorder()),
