@@ -1019,7 +1019,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                           _formKey.currentState
                                                               .save();
 
-                                                          _hivdateValidation(dateLastTested);
+                                                          //_hivdateValidation(dateLastTested);
                                                           _dateOfCd4CountValidation(dateOfCd4Count);
                                                          _dateOfViralLoadCountValidation(dateOfViralLoad);
                                                           _enrollmentDateValidation(dateOfEnrollmentIntoCare);

@@ -185,21 +185,27 @@ class _AddPatient extends State<AddPatient> {
                   padding: EdgeInsets.all(8.0),
                   child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
-                            icon: Icon(Icons.exit_to_app),
-                            color: Colors.white,
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                            ),
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                        ),
-                      ])),
+                        ),])
+              ),
             ],
           ),
           Positioned.fill(

@@ -193,7 +193,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
 
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
-                        child: Text("Search Relationship Contact", style: TextStyle(
+                        child: Text("Search Index Contact", style: TextStyle(
                             fontWeight: FontWeight.w400, fontSize: 16.0,color: Colors.white ),),
                       ),
 

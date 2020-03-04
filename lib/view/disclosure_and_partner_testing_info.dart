@@ -107,13 +107,6 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
     return items;
   }
 
-  List _testingPlanStatusList = [
-    "Select Partner Testing Plan",
-    "Individual Testing",
-    "Couples Testing",
-    "Community Testing",
-    "Self-Test Screening",
-  ];
   List<DropdownMenuItem<String>> _dropDownMenuItemsReligion;
   List<DropdownMenuItem<String>>_dropDownMenuItemsTestingPlans;
 
@@ -282,6 +275,14 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
@@ -289,13 +290,7 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo> with TickerProvide
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
 

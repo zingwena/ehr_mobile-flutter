@@ -24,6 +24,7 @@ import 'package:flutter/services.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:intl/intl.dart';
+import '../login_screen.dart';
 import '../sidebar.dart';
 import 'artFollowUp.dart';
 import 'art_summary_overview.dart';
@@ -203,6 +204,54 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
             title:new Text(
               facility_name!=null?facility_name: 'Impilo Mobile',   style: TextStyle(
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
+            actions: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person_pin, size: 25.0, color: Colors.white,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text("admin", style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
+                        ),
+                      ])
+              ),
+
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                          ),
+                        ),])
+              ),
+
+            ],
           ),
           Positioned.fill(
             child: Padding(
@@ -446,70 +495,6 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
                                                   onPressed: () {},
                                                 ),
                                               ),
-                                          /*    Form(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0),
-                                                  child: Column(
-                                                    children: <Widget>[
-
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: dateOfAppointment),
-                                                                decoration: InputDecoration(
-                                                                    icon: Icon(Icons.date_range, color: Colors.blue),
-                                                                    labelText: "Date",
-                                                                    hintText: "Date"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        widget.artAppointment.reason)),
-                                                                decoration: InputDecoration(
-                                                                    icon: new Icon(Icons.credit_card, color: Colors.blue),
-                                                                    labelText: "Reason",
-                                                                    hintText: "Reason"
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(right: 16.0),
-                                                              child: TextField(
-                                                                controller: TextEditingController(
-                                                                    text: nullHandler(
-                                                                        art_reason)),
-                                                                decoration: InputDecoration(
-                                                                  labelText: 'Art reason',
-                                                                  icon: Icon(Icons.credit_card, color: Colors.blue),
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                        ],
-                                                      ),
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              )*/
                                             ],
                                           )
 
@@ -553,8 +538,6 @@ class ArtAppointmentOverviewState extends State<ArtAppointmentsOverview> {
                 ),
               );
           }
-
-            // ArtVisitView(this.person, this.personId, this.visitId, this.htsId, this.htsRegistration);
 
           ),
 

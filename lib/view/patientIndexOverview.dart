@@ -75,9 +75,9 @@ class OverviewState extends State<PatientIndexOverview> {
     getVisit(_patient.id);
     getHtsRecord(_patient.id);
     getFacilityName();
-    getDetails(_patient.maritalStatusId, _patient.educationLevelId,
-        _patient.occupationId, _patient.nationalityId, _patient.id);
-    getArt(_patient.id);
+    getDetails(widget.person_contact.maritalStatusId, widget.person_contact.educationLevelId,
+        widget.person_contact.occupationId, widget.person_contact.nationalityId, widget.person_contact.id);
+    getArt(widget.person_contact.id);
 
     super.initState();
   }
@@ -293,7 +293,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                                 const EdgeInsets.only( right:  16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: _patient.firstName + " " + _patient.lastName),
+                                                                  text: widget.person_contact.firstName + " " + widget.person_contact.lastName),
                                                               decoration: InputDecoration(
                                                                   icon: Icon( Icons.person,
                                                                       color: Colors.blue),
@@ -308,7 +308,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                                     right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: nullHandler( _patient.sex)),
+                                                                  text: nullHandler(widget.person_contact.sex)),
                                                               decoration: InputDecoration(
                                                                   icon: new Icon(
                                                                       MdiIcons.humanMaleFemale,
@@ -327,7 +327,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                             padding: const EdgeInsets.only( right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: nullHandler( _patient.nationalId)),
+                                                                  text: nullHandler( widget.person_contact.nationalId)),
                                                               decoration: InputDecoration(
                                                                 labelText: 'National ID',
                                                                 icon: Icon( Icons.credit_card,
@@ -341,7 +341,7 @@ class OverviewState extends State<PatientIndexOverview> {
                                                             padding: const EdgeInsets.only( right: 16.0),
                                                             child: TextField(
                                                               controller: TextEditingController(
-                                                                  text: DateFormat( "dd/MM/yyyy").format(_patient.birthDate)),
+                                                                  text: DateFormat( "dd/MM/yyyy").format(widget.person_contact.birthDate)),
                                                               decoration: InputDecoration(
                                                                 labelText: 'Date Of Birth',
                                                                 icon: Icon( Icons.date_range,

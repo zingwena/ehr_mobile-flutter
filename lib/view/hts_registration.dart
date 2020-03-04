@@ -640,29 +640,19 @@ class _Registration extends State<Registration> {
                                                         ],
                                                       ),
                                                       onPressed: () async {
-                                                        if (_formKey
-                                                            .currentState
-                                                            .validate()) {
+                                                        if (_formKey.currentState.validate()) {
                                                           _formKey.currentState
                                                               .save();
                                                           //validating the date
                                                           _dateValidation(date);
-                                                          if (_entryPointIsValid &
-                                                              typeselected &
-                                                              (date.isBefore(
-                                                                      DateTime
-                                                                          .now()) &
-                                                                  date.isAfter(widget
-                                                                      .person
-                                                                      .birthDate))) {
+                                                          if (_entryPointIsValid & typeselected & (date.isBefore(DateTime.now()) & date.isAfter(widget.person.birthDate))) {
                                                             setState(() {
                                                               _formIsValid =
                                                                   true;
                                                             });
                                                           } else {
                                                             setState(() {
-                                                              if (_entryPointIsValid ==
-                                                                  false) {
+                                                              if (_entryPointIsValid == false) {
                                                                 _showError =
                                                                     true;
                                                               }
@@ -794,7 +784,7 @@ class _Registration extends State<Registration> {
     setState(() {
       _currentEntryPoint = selectedEntryPoint;
       _entryPointError = null;
-      _entryPointIsValid = !_entryPointIsValid;
+      _entryPointIsValid = true;
     });
   }
 }
