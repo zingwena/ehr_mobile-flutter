@@ -447,8 +447,6 @@ class _ArtSymptomState extends State<ArtSymptoms> {
         children: <Widget>[
 
           new RoundedButton(text: "Symptoms ", selected: true),
-          new RoundedButton(text: "New OI", onTap: (){},
-          ),
           new RoundedButton(text: "CLOSE", onTap: () {
             Navigator.push(
                 context,

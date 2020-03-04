@@ -389,7 +389,7 @@ class _ArtOIState extends State<ArtNewOI> {
                                                             Navigator.push(context,
                                                                 MaterialPageRoute(
                                                                     builder: (
-                                                                        context) =>  ArtAppointmentView(widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsid)
+                                                                        context) =>  ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsid)
 
                                                                 ));
                                                             //ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
@@ -436,8 +436,6 @@ class _ArtOIState extends State<ArtNewOI> {
         children: <Widget>[
 
           new RoundedButton(text: "New OI ", selected: true),
-          new RoundedButton(text: "TB Screening", onTap: (){},
-          ),
           new RoundedButton(text: "CLOSE", onTap: () {
             Navigator.push(
                 context,

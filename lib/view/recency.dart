@@ -25,6 +25,7 @@ import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/hts_result.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/view/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -790,14 +791,17 @@ class _Recency extends State<RecencyTest> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
-          new RoundedButton(
-            text: "HTS Test Results",
-          ),
-          new RoundedButton(
-            text: "Post Test",
-          ),
+
           new RoundedButton(
             text: "Recency Testing", selected: true,
+          ),
+          new RoundedButton(
+            text: "Close", onTap: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsId)),
+            );
+          },
           ),
         ],
       ),
@@ -807,14 +811,12 @@ class _Recency extends State<RecencyTest> {
 
   Future<void> saveLabInvestigationTest(LaboratoryInvestigationTestDto laboratoryInvestTest)async{
     int response;
-    print(">>>>>>>>>>>>>>>>>> SAVE LAB INVESTIGATION TEST"+ laboratoryInvestTest.toString());
     var labInvestTestResponse;
     try {
 
       String jsonLabInvestTest = jsonEncode(laboratoryInvestTest);
       labInvestTestResponse= await htsChannel.invokeMethod('saveRecency',jsonLabInvestTest);
       setState(() {
-        print('###################'+ labInvestTestResponse);
         labInvestTestId = labInvestTestResponse;
 
       });

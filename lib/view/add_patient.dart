@@ -114,7 +114,6 @@ class _AddPatient extends State<AddPatient> {
       setState(() {
         showDateError = true;
 
-
       });
     }
 

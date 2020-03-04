@@ -213,8 +213,6 @@ class _PatientAddressState extends State<PatientAddress> {
                                                                   horizontal: 60.0),
                                                               child: TextFormField(
                                                                 keyboardType: TextInputType.number,
-                                                                validator: (value) {
-                                                                  return value.isEmpty ? 'Enter some text' : null; },
                                                                 onSaved: (value) => setState(() {
                                                                   phonenumber_1 = value; }),
                                                                 decoration: InputDecoration(

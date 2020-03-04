@@ -102,6 +102,23 @@ class _ArtReg extends State<ArtReg> {
   List entryPoints = List();
   List _dropDownListEntryPoints = List();
 
+  bool showHIVDateBeforeBirthError = false;
+  bool showFutureHIVDateError = false;
+
+  bool showEnrollmentDateBeforeBirthError = false;
+  bool showFutureEnrollmentDateError = false;
+
+  bool showHIVConfirmedDateBeforeBirthError = false;
+  bool showFutureHIVConfirmedDateError = false;
+
+  bool showHIVRetestDateBeforeBirthError = false;
+  bool showFutureHIVRetestDateError = false;
+
+  bool hivTestDateValid = false;
+  bool enrollmentDateValid = false;
+  bool confirmationDateValid = false;
+  bool retestDateValid = false;
+
   @override
   void initState() {
     displayDate = '';
@@ -126,7 +143,6 @@ class _ArtReg extends State<ArtReg> {
 
     }
     List<NameCode> entryList= _entryPointList.where((entryPoint)=> entryPoint.code.contains('ZW010251') ).toList();
-    print("JJJJJJJJJJJ entry list after searching in list"+ entryList.toString());
     //_currentReferringProgram = entryList[0].code;
     super.initState();
   }
@@ -156,7 +172,6 @@ class _ArtReg extends State<ArtReg> {
         });
         _dropDownMenuItemsEntryPoint =
             getDropDownMenuItemsIdentifiedEntryPoint();
-        print("LLLLLLLLLLLLL list of facilities retrieved"+ _entryPointList.toString());
       });
     } catch (e) {
       print('--------------------Something went wrong  $e');
@@ -594,6 +609,18 @@ class _ArtReg extends State<ArtReg> {
                                                       ],
                                                     ),
                                                   ),
+                                                  showFutureHIVDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showHIVDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
@@ -634,6 +661,18 @@ class _ArtReg extends State<ArtReg> {
                                                       ],
                                                     ),
                                                   ),
+                                                  showFutureEnrollmentDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showEnrollmentDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
@@ -829,6 +868,18 @@ class _ArtReg extends State<ArtReg> {
                                                       ],
                                                     ),
                                                   ),
+                                                  showFutureHIVConfirmedDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showHIVConfirmedDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
@@ -977,6 +1028,18 @@ class _ArtReg extends State<ArtReg> {
                                                       ],
                                                     ),
                                                   ),
+                                                  showFutureHIVRetestDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showHIVRetestDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   SizedBox(
                                                     height: 30.0,
                                                   ),
@@ -1003,53 +1066,68 @@ class _ArtReg extends State<ArtReg> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          widget.artdto.personId = widget.personId;
-                                                          widget.artdto.date = test_date;
-                                                          widget.artdto.artNumber = oi_art_number;
-                                                          widget.artdto.dateOfHivTest = test_date;
-                                                          widget.artdto.dateEnrolled = enrollment_date;
-                                                          widget.artdto.linkageFrom = _currentReferringProgram;
-                                                          widget.artdto.dateHivConfirmed = test_date;
-                                                          widget.artdto.linkageNumber = program_number;
-                                                          widget.artdto.hivTestUsed = _currentHivTestUsed;
-                                                          if(otherSite){
-                                                            widget.artdto.otherInstitution = other_site_name;
 
+                                                          //validating dates
+                                                          _hivdateValidation(test_date);
+                                                          _enrollementDate(enrollment_date);
+                                                          _retestDateValidation(retest_date);
+                                                          _confirmationDateValidation(hivConfirmation_date);
+
+
+                                                          if(hivTestDateValid){
+
+                                                            // setting variables for artdto to be saved
+                                                            widget.artdto.personId = widget.personId;
+                                                            widget.artdto.date = test_date;
+                                                            widget.artdto.artNumber = oi_art_number;
+                                                            widget.artdto.dateOfHivTest = test_date;
+                                                            widget.artdto.dateEnrolled = enrollment_date;
+                                                            widget.artdto.linkageFrom = _currentReferringProgram;
+                                                            widget.artdto.dateHivConfirmed = test_date;
+                                                            widget.artdto.linkageNumber = program_number;
+                                                            widget.artdto.hivTestUsed = _currentHivTestUsed;
+                                                            if(otherSite){
+                                                              widget.artdto.otherInstitution = other_site_name;
+
+                                                            }
+                                                            widget.artdto.testReason = _currentReasonForTest;
+                                                            widget.artdto.reTested = retestedBeforeArt;
+                                                            widget.artdto.dateRetested = retest_date;
+
+                                                            if(healthfacility_change){
+                                                              widget.artdto.facility = _currentFacility;
+                                                            }
+
+
+                                                            await artRegistration(
+                                                                widget.artdto);
+
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => ArtRegOverview(
+                                                                        _artRegistration,
+                                                                        widget.personId,
+                                                                        widget.visitId,
+                                                                        widget.person,
+                                                                        widget.htsRegistration,
+                                                                        widget.htsId)));
+
+                                                            await artRegistration(
+                                                                widget.artdto);
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => ArtRegOverview(
+                                                                        _artRegistration,
+                                                                        widget.personId,
+                                                                        widget.visitId,
+                                                                        widget.person,
+                                                                        widget.htsRegistration,
+                                                                        widget.htsId)));
                                                           }
-                                                          widget.artdto.testReason = _currentReasonForTest;
-                                                          widget.artdto.reTested = retestedBeforeArt;
-                                                          widget.artdto.dateRetested = retest_date;
-                                                          if(healthfacility_change){
-                                                            widget.artdto.facility = _currentFacility;
-                                                          }
 
 
-                                                          await artRegistration(
-                                                              widget.artdto);
-
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ArtRegOverview(
-                                                                      _artRegistration,
-                                                                      widget.personId,
-                                                                      widget.visitId,
-                                                                      widget.person,
-                                                                      widget.htsRegistration,
-                                                                      widget.htsId)));
-
-                                                         await artRegistration(
-                                                              widget.artdto);
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ArtRegOverview(
-                                                                      _artRegistration,
-                                                                      widget.personId,
-                                                                      widget.visitId,
-                                                                      widget.person,
-                                                                      widget.htsRegistration,
-                                                                      widget.htsId)));
 
                                                         }
                                                       },
@@ -1156,4 +1234,100 @@ class _ArtReg extends State<ArtReg> {
       _selfReasonForHivTestError = null;
     });
   }
+  void _hivdateValidation(DateTime dateTime) {
+
+    showHIVDateBeforeBirthError = false;
+    showFutureHIVDateError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureHIVDateError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showHIVDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showFutureHIVDateError || showHIVDateBeforeBirthError == true)){
+      setState(() {
+         hivTestDateValid= true;
+      });
+    }
+  }
+
+
+  void _confirmationDateValidation(DateTime dateTime) {
+
+    showHIVConfirmedDateBeforeBirthError = false;
+    showFutureHIVConfirmedDateError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureHIVConfirmedDateError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showHIVConfirmedDateBeforeBirthError = true;
+      });
+    }
+
+
+    if(!(showHIVConfirmedDateBeforeBirthError || showFutureHIVConfirmedDateError == true)){
+      setState(() {
+        confirmationDateValid= true;
+      });
+    }
+  }
+
+  void _retestDateValidation(DateTime dateTime) {
+
+    showHIVRetestDateBeforeBirthError = false;
+    showFutureHIVRetestDateError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureHIVRetestDateError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showHIVRetestDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showHIVRetestDateBeforeBirthError || showFutureHIVRetestDateError == true)){
+      setState(() {
+        retestDateValid= true;
+      });
+    }
+
+  }
+
+  void _enrollementDate(DateTime dateTime) {
+
+    showEnrollmentDateBeforeBirthError = false;
+    showFutureEnrollmentDateError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureEnrollmentDateError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showEnrollmentDateBeforeBirthError = true;
+      });
+    }
+
+
+    if(!(showEnrollmentDateBeforeBirthError || showFutureEnrollmentDateError == true)){
+      setState(() {
+        enrollmentDateValid= true;
+      });
+    }
+  }
+
 }

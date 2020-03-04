@@ -69,6 +69,11 @@ class _ArtAppointment extends State<ArtAppointmentView> {
   List _dropDownListAppointments= List();
   List<ArtAppointment> _appointmentList = List();
 
+  bool showDateBeforeBirthError = false;
+  bool showFutureDateError = false;
+
+  bool hivTestDateValid = false;
+
 
 
   @override
@@ -318,7 +323,18 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                       ],
                                                     ),
                                                   ),
-
+                                                  showFutureDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
@@ -377,16 +393,21 @@ class _ArtAppointment extends State<ArtAppointmentView> {
                                                           ],
                                                         ),
                                                       onPressed: () async{
-                                                        artAppointmentResponse.reason = _currentAppointmentReason;
-                                                        artAppointmentResponse.date = test_date;
-                                                        //ArtAppointment artAppointmentObj =  ArtAppointment(null, this.artAppointmentResponse.artId, _currentAppointmentReason, test_date);
-                                                       await artappintmentReg(artAppointmentResponse);
-                                                       await getArtAppointments(widget.personId);
 
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._appointmentList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
-                                                          ), );
+                                                        _hivdateValidation(test_date);
+                                                        if(hivTestDateValid){
+                                                          artAppointmentResponse.reason = _currentAppointmentReason;
+                                                          artAppointmentResponse.date = test_date;
+                                                          //ArtAppointment artAppointmentObj =  ArtAppointment(null, this.artAppointmentResponse.artId, _currentAppointmentReason, test_date);
+                                                          await artappintmentReg(artAppointmentResponse);
+                                                          await getArtAppointments(widget.personId);
+
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(builder: (context) =>   ArtAppointmentsOverview(this._appointmentList, widget.person, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)
+                                                            ), );
+
+                                                        }
 
                                                        }
                                                     ),
@@ -490,6 +511,23 @@ class _ArtAppointment extends State<ArtAppointmentView> {
       selfIdentifiedAppointmentReasonIsValid=!selfIdentifiedAppointmentReasonIsValid;
       _selfAppointmentReasonError=null;
     });
+  }
+
+  void _hivdateValidation(DateTime dateTime) {
+     showDateBeforeBirthError = false;
+     showFutureDateError = false;
+
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showDateBeforeBirthError == true)){
+      setState(() {
+        hivTestDateValid= true;
+      });
+    }
   }
 
 

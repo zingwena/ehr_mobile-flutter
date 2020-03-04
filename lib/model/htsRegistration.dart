@@ -31,7 +31,7 @@ class HtsRegistration {
 
   @override
   String toString() {
-    return 'HtsRegistration{id: $visitId, dateOfHivTest: $dateOfHivTest, htsType: $htsType, entryPointId: $entryPointId}';
+    return 'HtsRegistration{id: $id, visitId: $visitId, dateOfHivTest: $dateOfHivTest, htsType: $htsType, entryPointId: $entryPointId}';
   }
 
 

@@ -677,24 +677,20 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 _currentSiGender,
                                                                 _currentOccupation);
 
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                        PatientAddress(patient)));
+                                                            if(countryIsValid& nationalityIsValid&selfIdentifiedGenderIsValid&maritalStatusIsValid&educationLevelIsValid&occupationIsValid&religionIsValid
+                                                            ){
 
-                                                  /*          if (_formKey
-                                                                .currentState
-                                                                .validate()) {
-                                                              _formKey.currentState
-                                                                  .save();
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          PatientAddress(patient)));
 
                                                             }else{
 
                                                               if(countryIsValid == false){
                                                                 setState(() {
                                                                   showCounrtyError = true;
-
 
                                                                 });
                                                               }
@@ -733,7 +729,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 });
 
                                                               }
-                                                            }*/
+                                                            }
 
                                                           }
 
