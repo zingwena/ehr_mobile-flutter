@@ -77,7 +77,12 @@ Future<String> pullTotalPatients(ProgressDialog progressDialog) async {
     int size=t['size'];
     int totalPages=t['totalPages'];
     for(int i=0;i<totalPages;i++){
-      await pullPatientData(progressDialog,i,size);
+      try{
+        await pullPatientData(progressDialog,i,size);
+      }catch(e) {
+        log.e(e);
+      }
+
     }
   }
 
