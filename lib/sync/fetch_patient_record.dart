@@ -43,17 +43,35 @@ Future<String> pullTotalPatients(ProgressDialog progressDialog) async {
     ),
   );
 
-  //{
-  //  "data": {
-  //    "people": {
-  //      "size": 1000,
-  //      "totalPages": 20,
-  //      "totalElements": "19553"
-  //    }
-  //  }
-  //}
-
   if (!result.hasErrors) {
+    var dbHandler = DatabaseHelper();
+    var adapter = await dbHandler.getAdapter();
+    var personDao = PersonDao(adapter);
+    var visitDao = VisitDao(adapter);
+    var htsDao = HtsDao(adapter);
+    var personInvestigationDao = PersonInvestigationDao(adapter);
+    var labInvestigationDao = LaboratoryInvestigationDao(adapter);
+    await ArtDao(adapter).removeAll();
+    await ArtSymptomDao(adapter).removeAll();
+    await ArtVisitDao(adapter).removeAll();
+
+    await ArtCurrentStatusDao(adapter).removeAll();
+
+    ///------EMPTY VITALS----
+    await WeightDao(adapter).removeAll();
+    await HeightDao(adapter).removeAll();
+    await PulseDao(adapter).removeAll();
+    await RespiratoryRateDao(adapter).removeAll();
+    await BloodPressureDao(adapter).removeAll();
+
+    ///Empty existing data first
+    await htsDao.removeAll();
+    await personInvestigationDao.removeAll();
+    await personDao.removeAll();
+    await visitDao.removeAll();
+    await labInvestigationDao.removeAll();
+
+    await LaboratoryInvestigationTestDao(adapter).removeAll();
     var t = await result.data["people"];
     log.i(t);
     int size=t['size'];
@@ -84,27 +102,6 @@ Future<String> pullPatientData(ProgressDialog progressDialog, int page,int size)
     var htsDao = HtsDao(adapter);
     var personInvestigationDao = PersonInvestigationDao(adapter);
     var labInvestigationDao = LaboratoryInvestigationDao(adapter);
-    await ArtDao(adapter).removeAll();
-    await ArtSymptomDao(adapter).removeAll();
-    await ArtVisitDao(adapter).removeAll();
-
-    await ArtCurrentStatusDao(adapter).removeAll();
-
-    ///------EMPTY VITALS----
-    await WeightDao(adapter).removeAll();
-    await HeightDao(adapter).removeAll();
-    await PulseDao(adapter).removeAll();
-    await RespiratoryRateDao(adapter).removeAll();
-    await BloodPressureDao(adapter).removeAll();
-
-    ///Empty existing data first
-    await htsDao.removeAll();
-    await personInvestigationDao.removeAll();
-    await personDao.removeAll();
-    await visitDao.removeAll();
-    await labInvestigationDao.removeAll();
-
-    await LaboratoryInvestigationTestDao(adapter).removeAll();
 
     var t = await result.data["people"]['content'];
     for (Map patient in t) {
