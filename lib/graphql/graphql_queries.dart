@@ -2,11 +2,11 @@
 
 class PersonQuery {
 
-  String getAll(){
+  String getAll(int page, int size){
     return """ 
         query GetPatientsQuery {
              
-             people(text: "", page: 0, size: 100, sort: "") {
+             people(text: "", page: $page, size: $size, sort: "") {
                 content {
                   personId
                   firstname
