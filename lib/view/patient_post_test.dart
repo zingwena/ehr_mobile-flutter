@@ -70,6 +70,8 @@ class _PatientPostTest extends State<PatientPostTest> {
   Age age;
   PostTest postestResponse;
   var facility_name;
+  bool showDateBeforeBirthError = false;
+  bool showFutureDateError = false;
 
   @override
   void initState() {
@@ -79,10 +81,6 @@ class _PatientPostTest extends State<PatientPostTest> {
     getReasonsForNotIssueingResult();
     getFacilityName();
     getAge(widget.person);
-
-    print(
-        'reasonForNotIssuingResultList${_reasonForNotIssuingResultList.length}');
-
     super.initState();
   }
 
@@ -120,7 +118,6 @@ class _PatientPostTest extends State<PatientPostTest> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -133,10 +130,8 @@ class _PatientPostTest extends State<PatientPostTest> {
     var post_test_response;
     try {
       post_test_response = await htsChannel.invokeMethod('savePostTest', jsonEncode(postTest));
-      print("POST TEST STRING"+post_test_response);
       setState(() {
         postestResponse = PostTest.fromJson(jsonDecode(post_test_response));
-        print("POST TEST RETRIEVED AFTER SAVING"+ postestResponse.toString());
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -502,10 +497,23 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                                     ),
                                                                   ),
                                                                 ],
-                                                              ))
-                                                          : SizedBox(
-                                                              height: 0.0,
-                                                            ),
+                                                              ),
+
+                                                      )
+                                                          : SizedBox.shrink(),
+                                                      showFutureDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                        child:Text(
+                                                          "Date cannot be in the future",
+                                                          style: TextStyle(color: Colors.red),
+                                                        ),
+                                                      ): SizedBox.shrink(),
+                                                     showDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                        child: Text(
+                                                          "Date cannot be before birth date",
+                                                          style: TextStyle(color: Colors.red),
+                                                        ),
+                                                      ): SizedBox.shrink(),
+
                                                       SizedBox(
                                                         height: 10.0,
                                                       ),
@@ -646,31 +654,35 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                             ],
                                                           ),
                                                           onPressed: () async {
-                                                            PostTest postTest = new PostTest(
-                                                                widget.htsId,
-                                                                date_of_test,
-                                                                _resultReceived,
-                                                                _currentReasonfornotissuing,
-                                                                widget.result,
-                                                                this._consenttoindex,
-                                                                _postTestCounselled);
+                                                            _dateValidation(date_of_test);
+                                                            if(date_of_test.isBefore(DateTime.now()) & date_of_test.isAfter(widget.person.birthDate)){
+                                                              PostTest postTest = new PostTest(
+                                                                  widget.htsId,
+                                                                  date_of_test,
+                                                                  _resultReceived,
+                                                                  _currentReasonfornotissuing,
+                                                                  widget.result,
+                                                                  this._consenttoindex,
+                                                                  _postTestCounselled);
 
-                                                            await insertPostTest(
-                                                                postTest);
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => PostTestOverview(
-                                                                        postTest,
-                                                                        widget.patientId,
-                                                                        widget.visitId,
-                                                                        widget.person,
-                                                                        widget.htsId,
-                                                                        _consenttoindex,
-                                                                        awareofstatus,
-                                                                        patientOnArt,
-                                                                        widget.result,
-                                                                        htsRegistration)));
+                                                              await insertPostTest(
+                                                                  postTest);
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) => PostTestOverview(
+                                                                          postTest,
+                                                                          widget.patientId,
+                                                                          widget.visitId,
+                                                                          widget.person,
+                                                                          widget.htsId,
+                                                                          _consenttoindex,
+                                                                          awareofstatus,
+                                                                          patientOnArt,
+                                                                          widget.result,
+                                                                          htsRegistration)));
+                                                            }
+
                                                           },
                                                         ),
                                                       ),
@@ -803,5 +815,23 @@ class _PatientPostTest extends State<PatientPostTest> {
     setState(() {
       _currentReasonfornotissuing = value;
     });
+  }
+
+  void _dateValidation(DateTime dateTime){
+    showDateBeforeBirthError = false;
+    showFutureDateError = false;
+
+    if(dateTime.isAfter(DateTime.now())){
+      setState(() {
+        showFutureDateError = true;
+      });
+    }
+    if(dateTime.isBefore(widget.person.birthDate)){
+      setState(() {
+        showDateBeforeBirthError = true;
+
+      });
+
+    }
   }
 }

@@ -34,7 +34,6 @@ class ArtSymptomState extends State<ArtSymptomView>{
 
   @override
   void initState() {
-    print("############### thie is the artSymptom sent"+ widget.artSymptom.toString());
     if(widget.artSymptom.id == null){
       _artsymptom = false;
     }else{

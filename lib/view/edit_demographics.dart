@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/education_level.dart';
 import 'package:ehr_mobile/model/nationality.dart';
 import 'package:ehr_mobile/model/occupation.dart';
 import 'package:ehr_mobile/view/patient_address.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/link_bar.dart';
 
@@ -293,6 +294,14 @@ class _EditDemographicsState extends State<EditDemographics> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
@@ -300,13 +309,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),
@@ -677,24 +680,20 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 _currentSiGender,
                                                                 _currentOccupation);
 
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                        PatientAddress(patient)));
+                                                            if(countryIsValid& nationalityIsValid&selfIdentifiedGenderIsValid&maritalStatusIsValid&educationLevelIsValid&occupationIsValid&religionIsValid
+                                                            ){
 
-                                                  /*          if (_formKey
-                                                                .currentState
-                                                                .validate()) {
-                                                              _formKey.currentState
-                                                                  .save();
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          PatientAddress(patient)));
 
                                                             }else{
 
                                                               if(countryIsValid == false){
                                                                 setState(() {
                                                                   showCounrtyError = true;
-
 
                                                                 });
                                                               }
@@ -733,7 +732,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                                                                 });
 
                                                               }
-                                                            }*/
+                                                            }
 
                                                           }
 
@@ -867,7 +866,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   void changedDropDownItemSi(String selectedGenderIdentified) {
     setState(() {
       _currentSiGender = selectedGenderIdentified;
-      selfIdentifiedGenderIsValid=!selfIdentifiedGenderIsValid;
+      selfIdentifiedGenderIsValid=true;
       _selfIdentifiedGenderError=null;
     });
   }
@@ -875,7 +874,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   void changedDropDownItemMaritalStatus(String selectedMaritalStatus) {
     setState(() {
       _currentMaritalStatus = selectedMaritalStatus;
-      maritalStatusIsValid=!maritalStatusIsValid;
+      maritalStatusIsValid=true;
       _maritalStatusError=null;
     });
   }
@@ -883,7 +882,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   void changedDropDownItemEducationLevel(String selectedEducationLevel) {
     setState(() {
       _currentEducationLevel = selectedEducationLevel;
-      educationLevelIsValid=!educationLevelIsValid;
+      educationLevelIsValid=true;
       _educationLevelError=null;
     });
   }
@@ -891,7 +890,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   void changedDropDownItemOccupation(String selectedOccupation) {
     setState(() {
       _currentOccupation = selectedOccupation;
-      occupationIsValid=!occupationIsValid;
+      occupationIsValid=true;
       _occupationError=null;
     });
   }
@@ -899,7 +898,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   void changedDropDownItemReligion(String selectedReligion) {
     setState(() {
       _currentReligion = selectedReligion;
-      religionIsValid=!religionIsValid;
+      religionIsValid=true;
       _religionError=null;
     });
 
@@ -908,7 +907,7 @@ class _EditDemographicsState extends State<EditDemographics> {
   void changedDropDownItemNationality(String selectedNationality) {
     setState(() {
       _currentNationality = selectedNationality;
-      nationalityIsValid=!nationalityIsValid;
+      nationalityIsValid=true;
       _nationalityError=null;
     });
   }
@@ -918,13 +917,12 @@ class _EditDemographicsState extends State<EditDemographics> {
     setState(() {
               _currentCountry = selectedCountry;
               _countryERror = null;
-              countryIsValid = !countryIsValid;
+              countryIsValid = true;
             });
 
   }
 
   Future<void> getCountries() async{
-    print("here");
     String countries;
     try{
       countries= await dataChannel.invokeMethod('countryOptions');
@@ -944,11 +942,9 @@ class _EditDemographicsState extends State<EditDemographics> {
   }
 
   Future<void> getNationalities() async{
-    print("here");
     String nationalities;
     try{
       nationalities= await dataChannel.invokeMethod('nationalityOptions');
-      print('****************************** $nationalities');
       setState(() {
         nationality=nationalities;
         _nationalities=jsonDecode(nationality);

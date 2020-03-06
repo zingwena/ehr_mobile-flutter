@@ -170,8 +170,6 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
               fontWeight: FontWeight.w300, fontSize: 25.0, ), ),
 
             actions: <Widget>[
-
-
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
@@ -200,6 +198,14 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
@@ -207,8 +213,9 @@ class ArtVisitOverviewState extends State<ArtVisitOverview> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                        ),  ])
+                        ),])
               ),
+
             ],
           ),
           Positioned.fill(

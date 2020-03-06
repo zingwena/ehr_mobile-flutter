@@ -14,6 +14,7 @@ import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/ArtOiView.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/sexual_history_overview.dart';
 import 'package:ehr_mobile/view/sexual_history_qn.dart';
 import 'package:flutter/material.dart';
@@ -266,6 +267,14 @@ class _ArtOIState extends State<ArtNewOI> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
@@ -273,8 +282,7 @@ class _ArtOIState extends State<ArtNewOI> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),
@@ -389,7 +397,7 @@ class _ArtOIState extends State<ArtNewOI> {
                                                             Navigator.push(context,
                                                                 MaterialPageRoute(
                                                                     builder: (
-                                                                        context) =>  ArtAppointmentView(widget.personId, widget.visitId, widget.person, widget.htsRegistration, widget.htsid)
+                                                                        context) =>  ArtSummaryOverview(widget.person, widget.visitId, widget.htsRegistration, widget.htsid)
 
                                                                 ));
                                                             //ArtAppointmentView(this.personId, this.visitId, this.person, this.htsRegistration, this.htsId);
@@ -436,8 +444,6 @@ class _ArtOIState extends State<ArtNewOI> {
         children: <Widget>[
 
           new RoundedButton(text: "New OI ", selected: true),
-          new RoundedButton(text: "TB Screening", onTap: (){},
-          ),
           new RoundedButton(text: "CLOSE", onTap: () {
             Navigator.push(
                 context,

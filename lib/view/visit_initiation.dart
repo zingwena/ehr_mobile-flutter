@@ -8,6 +8,7 @@ import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/model/queue.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/summary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -112,6 +113,14 @@ class VisitInitiationState extends State<VisitInitiation>
                       mainAxisAlignment:
                       MainAxisAlignment.center,
                       children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(

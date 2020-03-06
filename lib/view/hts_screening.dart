@@ -75,8 +75,30 @@ class _HtsScreening extends State<Hts_Screening> {
   DateTime dateOfLastNeg, dateOfEnrollmentIntoCare, dateOfViralLoad, dateOfCd4Count, dateLastTest;
   HtsScreeningdto htsScreening;
 
+  bool showFutureLasttestDateError = false;
+  bool showHIVLastTestDateBeforeBirthError = false;
+
+  bool showFutureLastNegativetestDateError = false;
+  bool showHIVLastNegativeTestDateBeforeBirthError = false;
+
+  bool showFutureEnrollmentDateError = false;
+  bool showEnrolledDateBeforeBirthError = false;
+
+  bool showFutureDateOfViralLoadError = false;
+  bool showViralLoadDateBeforeBirthError = false;
+
+  bool showFutureDateOfCd4CountError = false;
+  bool showCd4CountDateBeforeBirthError = false;
+
+
   var facility_name;
 
+  bool hivTestDateValid = false;
+  bool dateOfLastNegTestValid = false;
+  bool dateOfEnrollmentValid = false;
+  bool dateOfViralLoadValid = false;
+  bool dateOfCd4CountValid = false;
+  bool dateOfLastTestValid = false;
 
   @override
   void initState() {
@@ -273,12 +295,6 @@ class _HtsScreening extends State<Hts_Screening> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
                         ),  ])
               ),
             ],
@@ -439,6 +455,18 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
+                                                  showFutureLasttestDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showHIVLastTestDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   SizedBox(height: 10.0,),
                                                   _testedbefore == true? Container(
                                                     width: double.infinity,
@@ -477,6 +505,7 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
+
                                                   result == 'POSITIVE' || result == 'Positive'? Container(
                                                     width: double.infinity,
                                                     padding:
@@ -520,6 +549,18 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
+                                                  showFutureLastNegativetestDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showHIVLastNegativeTestDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   result == 'POSITIVE' || result == 'Positive'?Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
@@ -627,6 +668,18 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
+                                                  showFutureEnrollmentDateError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showEnrolledDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   result == 'POSITIVE' || result == 'Positive'? Container(
                                                     width: double.infinity,
                                                     padding: EdgeInsets
@@ -716,6 +769,18 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
+                                                  showFutureDateOfViralLoadError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showViralLoadDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   viralLoadDone == 'DONE'?  Row(
                                                     children: <Widget>[
                                                       Expanded(
@@ -841,6 +906,18 @@ class _HtsScreening extends State<Hts_Screening> {
                                                       ],
                                                     ),
                                                   ): SizedBox(height: 0.0,),
+                                                  showFutureDateOfCd4CountError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child:Text(
+                                                      "Date cannot be in the future",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
+                                                  showCd4CountDateBeforeBirthError == true? Container( padding: EdgeInsets.symmetric( vertical: 16.0, horizontal: 60.0 ),
+                                                    child: Text(
+                                                      "Date cannot be before birth date",
+                                                      style: TextStyle(color: Colors.red),
+                                                    ),
+                                                  ): SizedBox.shrink(),
                                                   cd4Done == 'DONE'?  Row(
                                                     children: <Widget>[
                                                       Expanded(
@@ -941,10 +1018,22 @@ class _HtsScreening extends State<Hts_Screening> {
                                                             .validate()) {
                                                           _formKey.currentState
                                                               .save();
-                                                          HtsScreeningdto htsscreeningdto = new HtsScreeningdto(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result,dateOfLastNeg,dateLastTest, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, dateOfViralLoad, cd4Done, dateOfCd4Count);
-                                                          HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result, dateOfLastNeg, dateLastTest, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
-                                                          savehtsscreening(htsscreeningdto);
-                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningOverview(widget.person, htsscreening, widget.htsid, widget.visitId, widget.personId)));
+
+                                                          //_hivdateValidation(dateLastTested);
+                                                          _dateOfCd4CountValidation(dateOfCd4Count);
+                                                         _dateOfViralLoadCountValidation(dateOfViralLoad);
+                                                          _enrollmentDateValidation(dateOfEnrollmentIntoCare);
+                                                          _dateOfLastNegValidation(dateOfLastNeg);
+
+                                                          if( dateOfEnrollmentValid & dateOfViralLoadValid & dateOfCd4CountValid & dateOfLastNegTestValid ){
+
+                                                            HtsScreeningdto htsscreeningdto = new HtsScreeningdto(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result,dateOfLastNeg,dateLastTest, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, dateOfViralLoad, cd4Done, dateOfCd4Count);
+                                                            HtsScreening htsscreening = new HtsScreening(widget.personId, widget.visitId, _testedbefore, first_patient_on_art, result, dateOfLastNeg, dateLastTest, dateOfEnrollmentIntoCare, artNumber, beenOnPrep, prepOption, viralLoadDone, cd4Done);
+                                                            savehtsscreening(htsscreeningdto);
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> HtsScreeningOverview(widget.person, htsscreening, widget.htsid, widget.visitId, widget.personId)));
+
+                                                          }
+
 
                                                         }
                                                       },
@@ -1093,6 +1182,121 @@ class _HtsScreening extends State<Hts_Screening> {
           break;
       }
     });
+  }
+
+  void _hivdateValidation(DateTime dateTime) {
+
+     showFutureLasttestDateError = false;
+     showHIVLastTestDateBeforeBirthError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureLasttestDateError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showHIVLastTestDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showHIVLastTestDateBeforeBirthError || showFutureLasttestDateError == true)){
+      setState(() {
+        hivTestDateValid= true;
+      });
+    }
+  }
+
+  void _enrollmentDateValidation(DateTime dateTime) {
+
+    showFutureEnrollmentDateError = false;
+    showEnrolledDateBeforeBirthError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureEnrollmentDateError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showEnrolledDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showEnrolledDateBeforeBirthError || showFutureEnrollmentDateError == true)){
+      setState(() {
+        dateOfEnrollmentValid= true;
+      });
+    }
+  }
+
+  void _dateOfLastNegValidation(DateTime dateTime) {
+
+    showFutureLastNegativetestDateError = false;
+    showHIVLastNegativeTestDateBeforeBirthError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureLastNegativetestDateError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showHIVLastNegativeTestDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showFutureLastNegativetestDateError || showHIVLastNegativeTestDateBeforeBirthError == true)){
+      setState(() {
+        dateOfLastNegTestValid= true;
+      });
+    }
+  }
+
+  void _dateOfCd4CountValidation(DateTime dateTime) {
+
+    showFutureDateOfCd4CountError = false;
+    showCd4CountDateBeforeBirthError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureDateOfCd4CountError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showCd4CountDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showCd4CountDateBeforeBirthError || showFutureDateOfCd4CountError == true)){
+      setState(() {
+        dateOfCd4CountValid= true;
+      });
+    }
+  }
+
+  void _dateOfViralLoadCountValidation(DateTime dateTime) {
+
+    showFutureDateOfViralLoadError = false;
+    showViralLoadDateBeforeBirthError = false;
+
+    if (dateTime.isAfter(DateTime.now())) {
+      setState(() {
+        showFutureDateOfViralLoadError = true;
+      });
+    }
+    if (dateTime.isBefore(widget.person.birthDate)) {
+      setState(() {
+        showViralLoadDateBeforeBirthError = true;
+      });
+    }
+
+    if(!(showViralLoadDateBeforeBirthError || showFutureDateOfViralLoadError == true)){
+      setState(() {
+        dateOfViralLoadValid= true;
+      });
+    }
   }
 
 

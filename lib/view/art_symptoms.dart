@@ -12,6 +12,7 @@ import 'package:ehr_mobile/model/sexualhistoryview.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:ehr_mobile/view/sexual_history_overview.dart';
 import 'package:ehr_mobile/view/sexual_history_qn.dart';
 import 'package:flutter/material.dart';
@@ -273,6 +274,14 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
@@ -280,13 +289,7 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                               context,
                               MaterialPageRoute(builder: (context) => LoginScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),
@@ -447,8 +450,6 @@ class _ArtSymptomState extends State<ArtSymptoms> {
         children: <Widget>[
 
           new RoundedButton(text: "Symptoms ", selected: true),
-          new RoundedButton(text: "New OI", onTap: (){},
-          ),
           new RoundedButton(text: "CLOSE", onTap: () {
             Navigator.push(
                 context,
