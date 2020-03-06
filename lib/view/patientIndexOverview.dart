@@ -88,8 +88,7 @@ class OverviewState extends State<PatientIndexOverview> {
       response = await artChannel.invokeMethod('getArt', personId);
       setState(() {
         this.artdto = Artdto.fromJson(jsonDecode(response));
-        print("THIS IS THE ARTDTO RETRIEVED @@@@@@@@@@@@@@ "+ artdto.toString());
-      });
+        });
 
     }catch(e){
       debugPrint("Exception thrown in get facility name method"+e);
