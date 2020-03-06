@@ -22,6 +22,7 @@ import 'package:ehr_mobile/db/dao/temperature_dao.dart';
 import 'package:ehr_mobile/db/dao/visit_dao.dart';
 import 'package:ehr_mobile/db/dao/weight_dao.dart';
 import 'package:ehr_mobile/db/db_helper.dart';
+import 'package:ehr_mobile/graphql/TotalPatientsQuery.dart';
 import 'package:ehr_mobile/graphql/graphql_queries.dart';
 import 'package:ehr_mobile/main.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -32,14 +33,46 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 import 'pull_patient_queue.dart';
 
-Future<String> pullPatientData(ProgressDialog progressDialog) async {
+Future<String> pullTotalPatients(ProgressDialog progressDialog) async {
+  TotalPatientsQuery queryMutation = TotalPatientsQuery();
+  var ip = await retrieveString(SERVER_IP);
+  GraphQLClient _client = graphQLConfiguration.clientToQuery(ip);
+  QueryResult result = await _client.query(
+    QueryOptions(
+      document: queryMutation.getAll(),
+    ),
+  );
+
+  //{
+  //  "data": {
+  //    "people": {
+  //      "size": 1000,
+  //      "totalPages": 20,
+  //      "totalElements": "19553"
+  //    }
+  //  }
+  //}
+
+  if (!result.hasErrors) {
+    var t = await result.data["people"];
+    log.i(t);
+    int size=t['size'];
+    int totalPages=t['totalPages'];
+    for(int i=0;i<totalPages;i++){
+      await pullPatientData(progressDialog,i,size);
+    }
+  }
+
+}
+
+Future<String> pullPatientData(ProgressDialog progressDialog, int page,int size) async {
   progressDialog.update(message: 'Fetching Patient Records...');
   PersonQuery queryMutation = PersonQuery();
   var ip = await retrieveString(SERVER_IP);
   GraphQLClient _client = graphQLConfiguration.clientToQuery(ip);
   QueryResult result = await _client.query(
     QueryOptions(
-      document: queryMutation.getAll(),
+      document: queryMutation.getAll(page,size),
     ),
   );
 

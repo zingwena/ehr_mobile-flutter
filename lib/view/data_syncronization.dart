@@ -270,7 +270,7 @@ class _DataSyncronizationState extends State<DataSyncronization> {
       log.i("RESULT-------${result.toString()}");
       var pull=await pullMetaData(progressDialog,'$url/api',token.id_token);
       print("Response =========Meta Data========$pull");
-      pull=await pullPatientData(progressDialog);
+      pull=await pullTotalPatients(progressDialog);
       print("Response =========Patient Data========$pull");
     } else {
       print(response.body);
