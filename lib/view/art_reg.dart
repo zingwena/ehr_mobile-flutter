@@ -27,7 +27,6 @@ class ArtReg extends StatefulWidget {
   Person person;
   HtsRegistration htsRegistration;
   Artdto artdto;
-
   String htsId;
 
   ArtReg(this.artdto, this.personId, this.visitId, this.person,

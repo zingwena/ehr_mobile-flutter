@@ -1,4 +1,5 @@
 
+import 'package:ehr_mobile/db/tables/art/ArtLinkageForm.dart';
 import 'package:ehr_mobile/util/RecordStatusConstants.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
@@ -42,6 +43,19 @@ class ArtLinkageFromDao extends BaseDao{
     var result=await _adapter.update(updater);
     return result;
   }
+
+
+  Future<ArtLinkageFormTable> findByArtId(String artId) async {
+    Find param = new Find(tableName);
+    param.where(this.artId.eq(artId));
+    Map map = await _adapter.findOne(param);
+    if(map==null || map.isEmpty){
+      return null;
+    }
+    var artLinkageForm = ArtLinkageFormTable.fromJson(map);
+    return artLinkageForm;
+  }
+
 
 
   Future insertFromEhr(Map map,String art) async {

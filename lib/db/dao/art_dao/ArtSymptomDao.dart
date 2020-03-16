@@ -1,4 +1,5 @@
 
+import 'package:ehr_mobile/db/tables/art/ArtSymptomTable.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
@@ -25,6 +26,17 @@ class ArtSymptomDao extends BaseDao{
     updater.set(this.status, '2');
     var result=await _adapter.update(updater);
     return result;
+  }
+
+  Future<ArtSymptomTable> findByArtId(String artId) async {
+    Find param = new Find(tableName);
+    param.where(this.artId.eq(artId));
+    Map map = await _adapter.findOne(param);
+    if(map==null || map.isEmpty){
+      return null;
+    }
+    var artSymptom = ArtSymptomTable.fromJson(map);
+    return artSymptom;
   }
 
   Future insertFromEhr(Map map,String art) async {

@@ -1,6 +1,7 @@
 
 
 import 'package:ehr_mobile/db/tables/art/ArtCurrentStatusTable.dart';
+import 'package:ehr_mobile/db/tables/art_initiation_table.dart';
 import 'package:ehr_mobile/util/RecordStatusConstants.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
@@ -47,6 +48,18 @@ class ArtCurrentStatusDao extends BaseDao {
       arts.add(art);
     }
     return arts;
+  }
+
+
+  Future<ArtCurrentStatusTable> findByArtId(String artId) async {
+    Find param = new Find(tableName);
+    param.where(this.artId.eq(artId));
+    Map map = await _adapter.findOne(param);
+    if(map==null || map.isEmpty){
+      return null;
+    }
+    var artCurrentStatus = ArtCurrentStatusTable.fromJson(map);
+    return artCurrentStatus;
   }
 
   Future insertFromEhr(Map map,String art) async {

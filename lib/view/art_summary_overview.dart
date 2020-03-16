@@ -525,8 +525,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                       ),
                                                                     ),)
                                                                   ),
-                                                                  SizedBox(width: 200.0,),
-                                                                  artdto.artNumber == null?Container(
+                                                                  //SizedBox(width: 200.0,),
+                                                                  artdto.linkageNumber == null?Container(
                                                                       alignment: Alignment.topRight,
                                                                       child: RaisedButton.icon(
                                                                           onPressed: () {
@@ -564,7 +564,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                 ),
 
                                                                 artdto ==
-                                                                    null || artdto.artNumber == null
+                                                                    null || artdto.linkageNumber == null
                                                                     ? Center(
                                                                   child: Text(
                                                                     'No Record',
@@ -610,7 +610,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null || artdto.artNumber == null
+                                                                    null || artdto.linkageNumber == null
                                                                     ? SizedBox(
                                                                       height: 0.0, width : 0.0
                                                                 )
@@ -660,7 +660,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null || artdto.artNumber == null
+                                                                    null || artdto.linkageNumber == null
                                                                     ?SizedBox(
                                                                     height: 0.0, width : 0.0
                                                                 )
@@ -708,7 +708,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null ||artdto.artNumber == null
+                                                                    null ||artdto.linkageNumber == null
                                                                     ? SizedBox(
                                                                     height: 0.0, width : 0.0
                                                                 )
@@ -747,7 +747,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null || artdto.artNumber== null
+                                                                    null || artdto.linkageNumber== null
                                                                     ?SizedBox(
                                                                     height: 0.0, width : 0.0
                                                                 )
@@ -783,7 +783,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                                                                   ],
                                                                 ),
                                                                 artdto ==
-                                                                    null || artdto.artNumber == null                                                                    ? Center(
+                                                                    null || artdto.linkageNumber == null                                                                    ? Center(
                                                                   child:SizedBox(
                                                                       height: 0.0, width : 0.0
                                                                   )

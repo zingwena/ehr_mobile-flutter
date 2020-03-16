@@ -52,6 +52,17 @@ class ArtAppointmentDao  extends BaseDao{
     var art = ArtAppointmentTable.fromJson(map);
     return art;
   }
+//
+  Future<ArtAppointmentTable> findByArtId(String artId) async {
+    Find param = new Find(tableName);
+    param.where(this.artId.eq(artId));
+    Map map = await _adapter.findOne(param);
+    if(map==null || map.isEmpty){
+      return null;
+    }
+    var artAppointments = ArtAppointmentTable.fromJson(map);
+    return artAppointments;
+  }
 
 
   /// Finds all Art

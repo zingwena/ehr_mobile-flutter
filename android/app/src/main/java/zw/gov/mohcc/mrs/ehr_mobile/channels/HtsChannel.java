@@ -645,17 +645,6 @@ public class HtsChannel {
                             try {
                                 IndexContact indexContact = gson.fromJson(arguments, IndexContact.class);
                                 Log.d(TAG, "@@@@@@@@@@@@@ Index contact sent from flutter " + arguments);
-                               /* IndexContact indexContact = new IndexContact();
-                                indexContact.setPersonId(indexContactDto.getPersonId());
-                                indexContact.setDateOfHivStatus(indexContactDto.getDateOfHivStatus());
-                                indexContact.setDisclosureMethodId(indexContactDto.getDisclosureMethodId());
-                                indexContact.setDisclosureMethodPlanId(indexContactDto.getDisclosureMethodPlanId());
-                                indexContact.setIndexTestId(indexContactDto.getIndexTestId());
-                                indexContact.setFearOfIpv(indexContactDto.isFearOfIpv());
-                                indexContact.setTestingPlanId(indexContact.getTestingPlanId());
-                                indexContact.setRelation(indexContactDto.getRelation());
-                                indexContact.setHivStatus(indexContactDto.getHivStatus());
-                                System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + indexContact.toString());*/
                                 String indexTestId = indexTestingService.createIndexContact(indexContact);
                                 result.success(indexTestId);
                             } catch (Exception e) {

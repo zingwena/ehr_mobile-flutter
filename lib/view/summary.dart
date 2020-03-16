@@ -77,6 +77,7 @@ class SummaryOverviewState extends State<SummaryOverview>
     getAge(widget.person);
     eligibleForRecency(widget.person.id);
     eligibleForIndex(widget.person.id);
+    getIndexTestByPersonId(widget.person.id);
     getFacilityName();
     super.initState();
     controller = new TabController(length: 3, vsync: this);
@@ -203,9 +204,11 @@ class SummaryOverviewState extends State<SummaryOverview>
     var response ;
 
     try{
-      response = await htsChannel.invokeMethod(' getIndexTestByPersonId', jsonEncode(personId));
+      response = await htsChannel.invokeMethod('getIndexTestByPersonId', personId);
+      print("INdex test id sent from android "+ response);
       setState(() {
         indextestid = response;
+        print("Index test id after response");
       });
 
     }catch(e){
@@ -759,15 +762,11 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                             BorderStyle.solid,
                                                         //Style of the border
                                                         width:
-                                                            2.0, //width of the border
+                                                            2.0,
+                                                        //width of the border
                                                       ),
-                                                      onPressed: () =>
-                                                          Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {}
-                                                           ),
-                                                      ),
+                                                      onPressed: (){},
+                                                  
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -977,14 +976,16 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                           ),
                                                                         ),
                                                                         onPressed: () {
-                                                                          getIndexTestByPersonId(widget.person.id);
+                                                                          //getIndexTestByPersonId(widget.person.id);
                                                                           if(indextestid == null){
+                                                                            print("NO INDEX TEST APA");
                                                                             IndexTest indexTest = IndexTest(widget.person.id, DateTime.now());
                                                                             saveIndexTest(indexTest);
                                                                             Navigator.push(context,MaterialPageRoute(
                                                                                 builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.person.id, indextestid)
                                                                             ));
                                                                           }else{
+                                                                            print("INDEX TEST FOUND");
                                                                             Navigator.push(context,MaterialPageRoute(
                                                                                 builder: (context)=> HIVServicesIndexContactList(widget.person,null, widget.visitId, widget.htsId, null, widget.person.id, indextestid)
                                                                             ));

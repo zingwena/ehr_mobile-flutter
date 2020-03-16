@@ -18,7 +18,7 @@ import zw.gov.mohcc.mrs.ehr_mobile.model.terminology.TestingPlan;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(indices = {@Index(value = "indexTestId", unique = true), @Index("personId"),
+@Entity(indices = {@Index(value = "indexTestId"), @Index("personId"),
         @Index("disclosureMethodPlanId"), @Index("testingPlanId"), @Index("disclosureMethodId")},
         foreignKeys = {@ForeignKey(entity = IndexTest.class, onDelete = CASCADE,
                 parentColumns = "id",

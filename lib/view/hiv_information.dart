@@ -379,17 +379,7 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                         height: 20.0,
                                                       ),
                                                       Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 60.0),
-                                                        width: double.infinity,
-                                                        child:      Text("Relation",
-                                                          style: TextStyle( fontSize: 15,
-                                                            color: Colors.black,
-                                                            // fontWeight: FontWeight.w500
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60.0),
+                                                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 60),
                                                         width: double.infinity,
                                                         child: OutlineButton(
                                                           shape: RoundedRectangleBorder(
@@ -398,22 +388,19 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                                                           padding: const EdgeInsets.all(0.0),
                                                           child: Container(
                                                             width: double.infinity,
-                                                            padding:
-                                                            EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                                                            padding: EdgeInsets.symmetric(
+                                                                vertical: 8.0, horizontal: 30.0),
                                                             child: DropdownButton(
-                                                              isExpanded: true,
+                                                              isExpanded:true,
                                                               icon: Icon(Icons.keyboard_arrow_down),
                                                               iconEnabledColor: Colors.black,
+
+                                                              hint: Text('Select Relation'),
                                                               value: _currentRelation,
                                                               items: _dropDownMenuItemsRelations,
                                                               onChanged: changedDropDownItemDisclosurePlanStatus,
-                                                              style: TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors.black,
-                                                              ),
                                                             ),
                                                           ),
-
                                                           borderSide: BorderSide(
                                                             color: Colors.blue, //Color of the border
                                                             style: BorderStyle.solid, //Style of the border

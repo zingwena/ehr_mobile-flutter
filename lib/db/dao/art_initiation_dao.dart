@@ -13,7 +13,7 @@ class ArtInitiationDao extends BaseDao{
   SqfliteAdapter _adapter;
 
   /// Table name for the model this bean manages
-  String get tableName => 'ArtInitiation';
+  String get tableName => 'ArtCurrentStatus';
   ArtInitiationDao(SqfliteAdapter _adapter){
     this._adapter=_adapter;
   }

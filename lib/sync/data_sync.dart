@@ -3,6 +3,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ehr_mobile/db/dao/art_dao/ArtAppointmentDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtCurrentStatusDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtIptDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtLinkageFromDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtOIDao.dart';
+import 'package:ehr_mobile/db/dao/art_dao/ArtSymptomDao.dart';
 import 'package:ehr_mobile/db/dao/art_dao/art_dao.dart';
 import 'package:ehr_mobile/db/dao/art_initiation_dao.dart';
 import 'package:ehr_mobile/db/dao/blood_pressure_dao.dart';
@@ -36,6 +42,7 @@ import 'package:ehr_mobile/db/tables/respiratory_rate_table.dart';
 import 'package:ehr_mobile/db/tables/sexual_history_question_table.dart';
 import 'package:ehr_mobile/db/tables/temperature_table.dart';
 import 'package:ehr_mobile/db/tables/weight_table.dart';
+import 'package:ehr_mobile/model/artcurrentstatus.dart';
 import 'package:ehr_mobile/model/dto/patient_dto.dart';
 import 'package:ehr_mobile/model/enums/enums.dart';
 import 'package:ehr_mobile/util/logger.dart';
@@ -51,16 +58,25 @@ syncPatient(String token, String url) async {
   for(PersonTable person in persons){
     var dto=PatientDto();
     dto.personDto=person;
-    dto =await setPhoneNumbers(adapter,dto);
-    dto=await setVisit(adapter,dto);
+    dto = await setPhoneNumbers(adapter,dto);
+    dto = await setVisit(adapter,dto);
     dto = await setHts(adapter,dto);
     dto = await setVitals(adapter, dto);
     dto = await setIndexTest(adapter,dto,personDao);
-
-    dto=await setPersonInvestigations(adapter,dto);
+    dto = await setPersonInvestigations(adapter,dto);
     dto = await setSexualHistory(adapter,dto);
-    dto=await setHtsScreening(adapter,dto);
-    dto=await setArt(adapter, dto);
+    dto = await setHtsScreening(adapter,dto);
+    dto = await setArt(adapter, dto);
+    dto = await setArtCurrentStatus(adapter, dto);
+    dto = await setArtAppointments(adapter, dto);
+    dto = await setArtIpt(adapter, dto);
+    dto = await setArtSymptom(adapter, dto);
+    dto = await setArtLinkageForm(adapter, dto);
+    dto = await setArtOI(adapter, dto);
+
+
+
+
 
     //if(person.status=='NEW'){
     var encoded=json.encode(dto.toJson());
@@ -254,24 +270,64 @@ Future <PatientDto> setArt(SqfliteAdapter adapter,PatientDto dto) async {
   var art=await artDao.findByPersonId(dto.personId);
   if(art!=null){
     dto.artDto=art;
-//    var artInit=await getArtInitiation(adapter,dto.personId);
-//    if(artInit!=null){
-//      dto.artDto.artInitiationDto=artInit;
-//      //log.i('========artRegimenId=======>${artInit.artRegimenId}');
-//    }
-
   }
   return dto;
 }
 
-//Future <ArtInitiationTable> getArtInitiation(SqfliteAdapter adapter,String personId) async {
-//  var artInitDao=ArtInitiationDao(adapter);
-//  var artInit=await artInitDao.findByPersonId(personId);
-//  if(artInit!=null){
-//    return artInit;
-//  }
-//  return null;
-//}
+Future <PatientDto> setArtCurrentStatus(SqfliteAdapter adapter, PatientDto dto) async {
+  var artCurrentStatusDao=ArtCurrentStatusDao(adapter);
+  var artCurrentStatus=await artCurrentStatusDao.findByArtId(dto.artDto.id);
+  if(artCurrentStatus!=null){
+    dto.artCurrentStatusDto = artCurrentStatus;
+  }
+  return dto;
+}
+
+Future <PatientDto> setArtAppointments(SqfliteAdapter adapter, PatientDto dto) async {
+  var artAppointDao=ArtAppointmentDao(adapter);
+  var artAppointment=await artAppointDao.findByArtId(dto.artDto.id);
+  if(artAppointment!=null){
+    dto.artAppointmentDto = artAppointment;
+  }
+  return dto;
+}
+
+Future <PatientDto> setArtIpt(SqfliteAdapter adapter, PatientDto dto) async {
+  var artIptDao=ArtIptDao(adapter);
+  var artIpt=await artIptDao.findByArtId(dto.artDto.id);
+  if(artIpt!=null){
+    dto.artIptDto = artIpt;
+  }
+  return dto;
+}
+
+Future <PatientDto> setArtSymptom(SqfliteAdapter adapter, PatientDto dto) async {
+  var artSymptomDao=ArtSymptomDao(adapter);
+  var artSymptom=await artSymptomDao.findByArtId(dto.artDto.id);
+  if(artSymptom!=null){
+    dto.artSymptomDto = artSymptom;
+  }
+  return dto;
+}
+
+Future <PatientDto> setArtLinkageForm(SqfliteAdapter adapter, PatientDto dto) async {
+  var artLinkageFromDao=ArtLinkageFromDao(adapter);
+  var artLinkageFrom=await artLinkageFromDao.findByArtId(dto.artDto.id);
+  if(artLinkageFrom!=null){
+    dto.artLinkageFromDto = artLinkageFrom;
+  }
+  return dto;
+}
+
+Future <PatientDto> setArtOI(SqfliteAdapter adapter, PatientDto dto) async {
+  var artOIDao=ArtOIDao(adapter);
+  var artOI=await artOIDao.findByArtId(dto.artDto.id);
+  if(artOI!=null){
+    dto.artOIDto = artOI;
+  }
+  return dto;
+}
+
 
 Future <PatientDto> setPhoneNumbers(SqfliteAdapter adapter, PatientDto dto) async {
   //var phoneDao=PhoneNumberDao(adapter);

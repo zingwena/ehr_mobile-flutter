@@ -2,6 +2,7 @@
 
 
 import 'package:ehr_mobile/db/dao/base_dao.dart';
+import 'package:ehr_mobile/db/tables/art/ArtIptTable.dart';
 import 'package:ehr_mobile/util/RecordStatusConstants.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
 import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
@@ -10,10 +11,8 @@ class ArtIptDao extends BaseDao {
 
   var artId = new StrField('artId');
   var date = new StrField('date');
-
   var status_code = new StrField('status_code');
   var status_name = new StrField('status_name');
-
   var reason_code = new StrField('reason_code');
   var reason_name = new StrField('reason_name');
 
@@ -31,6 +30,18 @@ class ArtIptDao extends BaseDao {
     updater.set(this.status, SYNCHED);
     var result=await _adapter.update(updater);
     return result;
+  }
+
+
+  Future<ArtIptTable> findByArtId(String artId) async {
+    Find param = new Find(tableName);
+    param.where(this.artId.eq(artId));
+    Map map = await _adapter.findOne(param);
+    if(map==null || map.isEmpty){
+      return null;
+    }
+    var artIpt = ArtIptTable.fromJson(map);
+    return artIpt;
   }
 
 

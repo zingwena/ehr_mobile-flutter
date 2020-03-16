@@ -249,13 +249,6 @@ class _AddPatient extends State<AddPatientIndex> {
                                                                 60.0),
                                                             child:
                                                             TextFormField(
-                                                              validator:
-                                                                  (value) {
-                                                                return value
-                                                                    .isEmpty
-                                                                    ? 'Enter National Id number'
-                                                                    : null;
-                                                              },
                                                               onSaved:
                                                                   (value) =>
                                                                   setState(
@@ -278,15 +271,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                                       ),
                                                     ],
                                                   ),
-                                                  !showError
-                                                      ? SizedBox.shrink()
-                                                      : Text(
-                                                    _nationalIdError ??
-                                                        "",
-                                                    style: TextStyle(
-                                                        color:
-                                                        Colors.red),
-                                                  ),
+
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
@@ -497,8 +482,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                                           RegExp regex =
                                                           new RegExp(
                                                               r'((\d{8,10})([a-zA-Z])(\d{2})\b)');
-                                                          if (regex.hasMatch(
-                                                              nationalIdNumber)) {
+
                                                             Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
@@ -509,9 +493,7 @@ class _AddPatient extends State<AddPatientIndex> {
                                                                         birthDate,
                                                                         gender,
                                                                         nationalId, widget.indexTestId, widget.personId, widget.visitId, widget.htsRegistration, widget.htsId)));
-                                                          } else {
-                                                            showError = true;
-                                                          }
+
                                                         }
                                                       },
                                                     ),

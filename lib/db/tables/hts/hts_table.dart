@@ -28,7 +28,6 @@ class HtsTable extends BaseTable{
   String reasonForNotIssuingResultId;
   int postTestCounselled;
   String datePostTestCounselled;
-
   int consentToIndexTesting;
 
   List<PersonInvestigationTable> personInvestigationDtos;

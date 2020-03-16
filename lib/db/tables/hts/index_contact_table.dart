@@ -51,7 +51,6 @@ class IndexContactTable extends BaseTable{
     'personId': personId,
     'relation': relation,
     'hivStatus': hivStatus,
-
     'dateOfHivStatus': dateOfHivStatus,
     'fearOfIpv': fearOfIpv,
     'disclosureMethodPlanId': disclosureMethodPlanId,
