@@ -16,6 +16,7 @@ import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ehr_mobile/util/constants.dart';
+import '../landing_screen.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -285,7 +286,6 @@ class _EditDemographicsState extends State<EditDemographics> {
                         ),
                       ])
               ),
-
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
@@ -307,7 +307,7 @@ class _EditDemographicsState extends State<EditDemographics> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

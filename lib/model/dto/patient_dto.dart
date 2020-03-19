@@ -100,4 +100,11 @@ class PatientDto{
 
     return map;
   }
+
+  @override
+  String toString() {
+    return 'PatientDto{personDto: $personDto, htsDto: $htsDto, indexTestDto: $indexTestDto, vitalDtos: $vitalDtos, personInvestigationDtos: $personInvestigationDtos, sexualHistoryDto: $sexualHistoryDto, htsScreeningDto: $htsScreeningDto, artCurrentStatusDto: $artCurrentStatusDto, artDto: $artDto, artAppointmentDto: $artAppointmentDto, artIptDto: $artIptDto, artSymptomDto: $artSymptomDto, artLinkageFromDto: $artLinkageFromDto, artOIDto: $artOIDto, personId: $personId, patientType: $patientType, time: $time, discharged: $discharged, hospitalNumber: $hospitalNumber, code: $code, name: $name, patientId: $patientId}';
+  }
+
+
 }

@@ -6,8 +6,10 @@ import 'package:ehr_mobile/model/town.dart';
 import 'package:ehr_mobile/model/patientphonenumber.dart';
 import 'package:ehr_mobile/util/logger.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../landing_screen.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -53,6 +55,7 @@ class _PatientAddressState extends State<PatientAddress> {
     print("=======");
     //_dropDownMenuItemsTown.add(DropdownMenuItem(value: 'test', child: Text('test')));
      getTowns();
+     getFacilityName();
 
   }
 
@@ -132,20 +135,22 @@ class _PatientAddressState extends State<PatientAddress> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),

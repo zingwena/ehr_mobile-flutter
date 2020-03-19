@@ -67,27 +67,25 @@ syncPatient(String token, String url) async {
     dto = await setSexualHistory(adapter,dto);
     dto = await setHtsScreening(adapter,dto);
     dto = await setArt(adapter, dto);
-    dto = await setArtCurrentStatus(adapter, dto);
+  /*  dto = await setArtCurrentStatus(adapter, dto);
     dto = await setArtAppointments(adapter, dto);
     dto = await setArtIpt(adapter, dto);
     dto = await setArtSymptom(adapter, dto);
     dto = await setArtLinkageForm(adapter, dto);
-    dto = await setArtOI(adapter, dto);
-
-
-
+    dto = await setArtOI(adapter, dto);*/
 
 
     //if(person.status=='NEW'){
     var encoded=json.encode(dto.toJson());
     log.i(encoded);
-      http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: jsonEncode(dto.toJson())).then((value){
+    print("Now syncing patient data");
+    log.i('Here is the person object being sent ' +dto.personDto.firstName.toString()+ ">>>>>>>>>>>>>"+ dto.toString());
+    http.post('$url/data-sync/patient',headers: {'Authorization': 'Bearer $token', 'Content-Type':'application/json'},body: jsonEncode(dto.toJson())).then((value){
         log.i(value.statusCode);
-        log.i(json.decode(value.body));
         if(value.statusCode==201){
-          personDao.setSyncd(person.id);
+          personDao.setSyncd(person);
         } else {
-          log.i(value);
+          log.i('Patient not synced '+ person.firstName +'>>>>>>>>>>>>'+ value.toString());
         }
       }).catchError((error){
         log.i(error);

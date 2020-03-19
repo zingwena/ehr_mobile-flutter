@@ -654,34 +654,37 @@ class _PatientPostTest extends State<PatientPostTest> {
                                                             ],
                                                           ),
                                                           onPressed: () async {
-                                                            _dateValidation(date_of_test);
-                                                            if(date_of_test.isBefore(DateTime.now()) & date_of_test.isAfter(widget.person.birthDate)){
-                                                              PostTest postTest = new PostTest(
-                                                                  widget.htsId,
-                                                                  date_of_test,
-                                                                  _resultReceived,
-                                                                  _currentReasonfornotissuing,
-                                                                  widget.result,
-                                                                  this._consenttoindex,
-                                                                  _postTestCounselled);
 
-                                                              await insertPostTest(
-                                                                  postTest);
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) => PostTestOverview(
-                                                                          postTest,
-                                                                          widget.patientId,
-                                                                          widget.visitId,
-                                                                          widget.person,
-                                                                          widget.htsId,
-                                                                          _consenttoindex,
-                                                                          awareofstatus,
-                                                                          patientOnArt,
-                                                                          widget.result,
-                                                                          htsRegistration)));
-                                                            }
+                                                            PostTest postTest = new PostTest(
+                                                                widget.htsId,
+                                                                date_of_test,
+                                                                _resultReceived,
+                                                                _currentReasonfornotissuing,
+                                                                widget.result,
+                                                                this._consenttoindex,
+                                                                _postTestCounselled);
+
+                                                            await insertPostTest(
+                                                                postTest);
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => PostTestOverview(
+                                                                        postTest,
+                                                                        widget.patientId,
+                                                                        widget.visitId,
+                                                                        widget.person,
+                                                                        widget.htsId,
+                                                                        _consenttoindex,
+                                                                        awareofstatus,
+                                                                        patientOnArt,
+                                                                        widget.result,
+                                                                        htsRegistration)));
+
+                                                         /*   _dateValidation(date_of_test);
+                                                            if(date_of_test.isBefore(DateTime.now()) & date_of_test.isAfter(widget.person.birthDate)){
+
+                                                            }*/
 
                                                           },
                                                         ),

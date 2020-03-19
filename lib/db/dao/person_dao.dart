@@ -1,5 +1,6 @@
 
 import 'package:ehr_mobile/db/tables/person_table.dart';
+import 'package:ehr_mobile/model/dto/patient_dto.dart';
 import 'package:ehr_mobile/model/enums/enums.dart';
 import 'package:ehr_mobile/util/custom_convertor.dart';
 import 'package:ehr_mobile/util/custom_date_converter.dart';
@@ -38,9 +39,10 @@ class PersonDao extends BaseDao{
     this._adapter=_adapter;
   }
 
-  Future<int> setSyncd(String id) async {
+  Future<int> setSyncd( PersonTable patientDto) async {
+    print("################### patient synced"+ patientDto.firstName);
     Update updater = new Update(tableName);
-    updater.where(this.id.eq(id));
+    updater.where(this.id.eq(patientDto.id));
     updater.set(this.status, 'SYNCED');
     var result=await _adapter.update(updater);
     return result;

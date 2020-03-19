@@ -5,7 +5,7 @@ class TotalPatientsQuery {
     return """ 
         query TotalPatientsQuery {
      
-              people(text: "", page: 0, size: 1, sort: "") {
+              people(text: "", page: 0, size: 100, sort: "") {
                 size
                 totalPages
                 totalElements

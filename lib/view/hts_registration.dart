@@ -644,7 +644,7 @@ class _Registration extends State<Registration> {
                                                           _formKey.currentState
                                                               .save();
                                                           //validating the date
-                                                          _dateValidation(date);
+                                                       /*   _dateValidation(date);
                                                           if (_entryPointIsValid & typeselected & (date.isBefore(DateTime.now()) & date.isAfter(widget.person.birthDate))) {
                                                             setState(() {
                                                               _formIsValid =
@@ -662,32 +662,33 @@ class _Registration extends State<Registration> {
                                                                     true;
                                                               }
                                                             });
-                                                          }
-                                                          if (_formIsValid) {
-                                                            HtsRegistration
-                                                                htsDetails =
-                                                                HtsRegistration(
-                                                                    null,
-                                                                    widget
-                                                                        .patientId,
-                                                                    visitId,
-                                                                    htsType,
-                                                                    date,
-                                                                    _currentEntryPoint,
-                                                                    null);
-                                                            await registration(
-                                                                htsDetails);
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (context) => HtsRegOverview(
-                                                                        _htsRegistration,
-                                                                        patientId,
-                                                                        hts_id,
-                                                                        visitId,
-                                                                        widget
-                                                                            .person)));
-                                                          }
+                                                          }*/
+                                                          HtsRegistration
+                                                          htsDetails =
+                                                          HtsRegistration(
+                                                              null,
+                                                              widget
+                                                                  .patientId,
+                                                              visitId,
+                                                              htsType,
+                                                              date,
+                                                              _currentEntryPoint,
+                                                              null);
+                                                          await registration(
+                                                              htsDetails);
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => HtsRegOverview(
+                                                                      _htsRegistration,
+                                                                      patientId,
+                                                                      hts_id,
+                                                                      visitId,
+                                                                      widget
+                                                                          .person)));
+                                                        /*  if (_formIsValid) {
+
+                                                          }*/
                                                         }
                                                       },
                                                     ),
