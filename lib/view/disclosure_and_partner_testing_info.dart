@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../landing_screen.dart';
 import '../sidebar.dart';
 
 class PatientIndexHivInfo extends StatefulWidget {
@@ -276,32 +277,27 @@ class _PatientIndexHivInfo extends State<PatientIndexHivInfo>
                   padding: EdgeInsets.all(8.0),
                   child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
                             padding: const EdgeInsets.all(0.0),
                             child: IconButton(
-                              icon: Icon(Icons.home),
-                              color: Colors.white,
+                              icon: Icon(Icons.home), color: Colors.white,
                               onPressed: () => Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPatient()),
-                              ),
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
                             )),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
-                            icon: Icon(Icons.exit_to_app),
-                            color: Colors.white,
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                            ),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                        ),
-                      ])),
+                        ),])
+              ),
             ],
           ),
           Positioned.fill(

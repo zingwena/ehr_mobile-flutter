@@ -15,6 +15,7 @@ import 'package:ehr_mobile/view/art_initiationoverview.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'art_summary_overview.dart';
 import 'rounded_button.dart';
@@ -315,7 +316,7 @@ class _Art_Initiation extends State<Art_Initiation> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'art_newOS.dart';
 import 'art_summary_overview.dart';
@@ -265,7 +266,6 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                         ),
                       ])
               ),
-
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
@@ -287,7 +287,7 @@ class _ArtSymptomState extends State<ArtSymptoms> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

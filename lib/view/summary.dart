@@ -978,7 +978,6 @@ class SummaryOverviewState extends State<SummaryOverview>
                                                                         onPressed: () {
                                                                           //getIndexTestByPersonId(widget.person.id);
                                                                           if(indextestid == null){
-                                                                            print("NO INDEX TEST APA");
                                                                             IndexTest indexTest = IndexTest(widget.person.id, DateTime.now());
                                                                             saveIndexTest(indexTest);
                                                                             Navigator.push(context,MaterialPageRoute(

@@ -117,8 +117,7 @@ class _Recency_Result extends State<Recency_Result> {
           });
         }
       });
-      print("HERE IS THE LIST OF LAB INVESTIGATIONS" +
-          _entryPointList.toString());
+
     } catch (e) {
       print('--------------------Something went wrong  $e');
     }
@@ -130,7 +129,6 @@ class _Recency_Result extends State<Recency_Result> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED" + age.toString());
       });
     } catch (e) {
       debugPrint("Exception thrown in get facility name method" + e);
@@ -168,10 +166,7 @@ class _Recency_Result extends State<Recency_Result> {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
       setState(() {
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
       });
-
-      print('HTS IN THE FLUTTER THE RETURNED ONE ' + hts);
     } catch (e) {
       print("channel failure: '$e'");
     }

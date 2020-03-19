@@ -16,6 +16,8 @@ import 'package:flutter/services.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../landing_screen.dart';
+
 class VisitInitiation extends StatefulWidget {
   final Person person;
   final bool queue_change;
@@ -127,15 +129,9 @@ class VisitInitiationState extends State<VisitInitiation>
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),

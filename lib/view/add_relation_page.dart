@@ -21,6 +21,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'sexualhistoryform.dart';
 import 'rounded_button.dart';
@@ -187,7 +188,7 @@ class _AddRelationsState extends State<AddRelationshipPage> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

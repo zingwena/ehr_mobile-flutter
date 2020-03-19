@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 
+import '../landing_screen.dart';
 import '../login_screen.dart';
 
 
@@ -184,7 +185,7 @@ class _ArtSigns extends State<ArtSigns> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

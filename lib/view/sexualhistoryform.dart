@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'edit_demographics.dart';
 import 'hts_testscreening.dart';
@@ -96,9 +97,7 @@ class _CbsQuestion extends State<CbsQuestions> {
       hts = await htsChannel.invokeMethod('getcurrenthts', patientId);
       setState(() {
         htsRegistration = HtsRegistration.fromJson(jsonDecode(hts));
-        print("HERE IS THE HTS AFTER ASSIGNMENT " + htsRegistration.toString());
       });
-      print('HTS IN THE FLUTTER THE RETURNED ONE '+ hts);
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -110,7 +109,6 @@ class _CbsQuestion extends State<CbsQuestions> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -203,6 +201,31 @@ class _CbsQuestion extends State<CbsQuestions> {
                               fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
                         ),
                       ])
+              ),
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: IconButton(
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
+                          ),
+                        ),])
               ),
             ],
           ),

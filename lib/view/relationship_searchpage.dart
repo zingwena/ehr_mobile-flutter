@@ -6,12 +6,14 @@ import 'package:ehr_mobile/view/add_patient_relation.dart';
 import 'package:ehr_mobile/view/add_relation_page.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../landing_screen.dart';
 import 'add_patient.dart';
 import 'list_patients.dart';
 import 'patient_overview.dart';
@@ -48,7 +50,6 @@ class _RelationSearchState extends State<RelationshipSearch> {
       _patientList = Person.fromJsonDecodedMap(list);
     });
 
-    print("=====================searched$_patientList");
   }
 
   String nullHandler(String value) {
@@ -113,20 +114,22 @@ class _RelationSearchState extends State<RelationshipSearch> {
                           MainAxisAlignment.center,
                           children: <Widget>[
                             Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: IconButton(
+                                  icon: Icon(Icons.home), color: Colors.white,
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SearchPatient()),),
+                                )),
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: IconButton(
                                 icon: Icon(Icons.exit_to_app), color: Colors.white,
                                 onPressed: () => Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => LoginScreen()),),
+                                  MaterialPageRoute(builder: (context) => LandingScreen()),),
                               ),
-                              /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                            ),  ])
+                            ),])
                   ),
                 ],
               ),

@@ -17,6 +17,7 @@ import 'package:ehr_mobile/view/disclosure_and_partner_testing_info.dart';
 import 'package:ehr_mobile/view/home_page.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 
 
@@ -85,7 +86,6 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
     _dropDownMenuItemsRelations = getDropDownMenuItemsIdentifiedRelations();
     getFacilityName();
     getAge(widget.person);
-    print('KKKKKKKKKKK here is the person to be added'+ widget.person.toString()+ "RRRRRRR Here is the person contact"+ widget.person_contact.toString());
     super.initState();
   }
 
@@ -254,7 +254,6 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                         ),
                       ])
               ),
-
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
@@ -263,20 +262,22 @@ class _HivInformation extends State<HivInformation> with TickerProviderStateMixi
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),

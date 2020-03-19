@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'art_appointment.dart';
 import 'art_newOS.dart';
@@ -155,16 +156,11 @@ class _ArtOIState extends State<ArtNewOI> {
       await artChannel.invokeMethod('getArtNewOi', patientId);
       setState(() {
         _entryPoint = response;
-        print("Art OI list returned as string @@@@@@@@@@@" + _entryPointList.toString());
-
         entryPoints = jsonDecode(_entryPoint);
         _dropDownListEntryPoints = ArtOi.mapFromJson(entryPoints);
-        print("Art OI list returned after mapping @@@@@@@@@@@" + _entryPointList.toString());
-
         _dropDownListEntryPoints.forEach((e) {
           _entryPointList.add(e);
         });
-        print("Art 0i list returned @@@@@@@@@@@" + _entryPointList.toString());
       });
     } catch (e) {
       print("Exception thrown in getsexualhistory view method" + e);
@@ -280,7 +276,7 @@ class _ArtOIState extends State<ArtNewOI> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

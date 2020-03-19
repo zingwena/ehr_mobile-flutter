@@ -21,6 +21,8 @@ import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
+
+import '../landing_screen.dart';
 //import 'edit_demographics.dart';
 
 class TbScreeningView extends StatefulWidget {
@@ -105,7 +107,6 @@ class _TbScreening extends State<TbScreeningView> {
       response = await artChannel.invokeMethod('getTbScreening', personId);
       setState(() {
         tbScreeningobj = TbScreening.fromJson(jsonDecode(response));
-        print("THIS IS THE TB SCREENING  RETRIEVED"+ tbScreeningobj.toString());
       });
 
     }catch(e){
@@ -119,7 +120,6 @@ class _TbScreening extends State<TbScreeningView> {
       response = await dataChannel.invokeMethod('getage', person.id);
       setState(() {
         age = Age.fromJson(jsonDecode(response));
-        print("THIS IS THE AGE RETRIEVED"+ age.toString());
       });
 
     }catch(e){
@@ -251,7 +251,6 @@ class _TbScreening extends State<TbScreeningView> {
                         ),
                       ])
               ),
-
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
@@ -260,20 +259,22 @@ class _TbScreening extends State<TbScreeningView> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),

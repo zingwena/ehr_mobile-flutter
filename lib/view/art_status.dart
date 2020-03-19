@@ -13,6 +13,7 @@ import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 
+import '../landing_screen.dart';
 import '../login_screen.dart';
 
 
@@ -207,7 +208,7 @@ class _ArtStatus extends State<ArtStatus> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

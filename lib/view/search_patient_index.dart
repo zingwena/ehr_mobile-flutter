@@ -3,16 +3,20 @@ import 'dart:convert';
 
 import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/person.dart';
+import 'package:ehr_mobile/preferences/stored_preferences.dart';
+import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/add_patient_index.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/view/patientIndexOverview.dart';
 import 'package:ehr_mobile/login_screen.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../landing_screen.dart';
 import 'add_patient.dart';
 import 'list_patients.dart';
 import 'patient_overview.dart';
@@ -56,6 +60,20 @@ class _SearchPatientState extends State<SearchPatientIndex> {
     print("=====================searched$_patientList");
   }
 
+  Future<void>getFacilityName()async{
+    String response;
+    try{
+      response = await retrieveString(FACILITY_NAME);
+      setState(() {
+        facility_name = response;
+      });
+
+    }catch(e){
+      debugPrint("Exception thrown in get facility name method"+e);
+
+    }
+  }
+
   String nullHandler(String value) {
     return value == null ? "" : value;
   }
@@ -63,6 +81,7 @@ class _SearchPatientState extends State<SearchPatientIndex> {
 
   @override
   void initState() {
+    getFacilityName();
   }
 
 
@@ -123,20 +142,22 @@ class _SearchPatientState extends State<SearchPatientIndex> {
                           MainAxisAlignment.center,
                           children: <Widget>[
                             Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: IconButton(
+                                  icon: Icon(Icons.home), color: Colors.white,
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SearchPatient()),),
+                                )),
+                            Padding(
                               padding: const EdgeInsets.all(0.0),
                               child: IconButton(
                                 icon: Icon(Icons.exit_to_app), color: Colors.white,
                                 onPressed: () => Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => LoginScreen()),),
+                                  MaterialPageRoute(builder: (context) => LandingScreen()),),
                               ),
-                              /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                            ),  ])
+                            ),])
                   ),
                 ],
               ),

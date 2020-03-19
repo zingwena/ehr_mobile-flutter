@@ -20,6 +20,7 @@ import 'package:ehr_mobile/model/marital_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'patient_address.dart';
+import '../landing_screen.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 
@@ -286,7 +287,7 @@ class _EditDemographicsState extends State<EditDemographicsIndex> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

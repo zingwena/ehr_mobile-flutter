@@ -8,6 +8,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../landing_screen.dart';
 import 'rounded_button.dart';
 import 'package:ehr_mobile/login_screen.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
@@ -163,7 +164,6 @@ class _AddPatient extends State<AddPatientIndex> {
                         ),
                       ])
               ),
-
               Container(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
@@ -185,7 +185,7 @@ class _AddPatient extends State<AddPatientIndex> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

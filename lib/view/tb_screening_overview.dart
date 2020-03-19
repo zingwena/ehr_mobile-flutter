@@ -159,11 +159,8 @@ class TbScreeningOverviewState extends State<TbScreeningOverview> {
       art_initiation = await htsChannel.invokeMethod('getArtInitiationRecord', patientId);
       setState(() {
         artInitiation = ArtInitiation.fromJson(jsonDecode(art_initiation));
-        print("HERE IS THE ART INITIATION AFTER ASSIGNMENT >>>>>>>>>>>>>" + artInitiation.toString());
-
       });
 
-      print('ART INITIATION IN THE FLUTTER THE RETURNED ONE '+ artInitiation.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }

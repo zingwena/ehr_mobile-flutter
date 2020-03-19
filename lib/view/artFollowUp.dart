@@ -20,6 +20,7 @@ import 'package:ehr_mobile/model/artRegistration.dart';
 import 'package:ehr_mobile/model/age.dart';
 import 'package:ehr_mobile/view/artreg_overview.dart';
 
+import '../landing_screen.dart';
 import 'artFollowUpCallOverview.dart';
 import 'art_summary_overview.dart';
 
@@ -143,7 +144,6 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
       hts = await artChannel.invokeMethod('getArtAppointment', patientId);
       setState(() {
         artAppointmentDto = ArtAppointment.fromJson(jsonDecode(hts));
-        print("HERE IS THE art appointment >>>>>>>>>>>> AFTER ASSIGNMENT " + artAppointmentDto.toString());
       });
     } catch (e) {
       print("channel failure: '$e'");
@@ -233,7 +233,7 @@ class _ArtFollowUp extends State<ArtFollowUpView> {
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

@@ -27,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'artFollowUp.dart';
 import 'art_Visit_Overview.dart';
@@ -156,9 +157,6 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       response = await artChannel.invokeMethod('getTbScreening', personId);
       setState(() {
         tbScreeningobj = TbScreening.fromJson(jsonDecode(response));
-        print("TB SCREENING OBJECT HERE"+ tbScreeningobj.toString());
-
-
         if(tbScreeningobj != null){
           if(tbScreeningobj.coughing == true){
             coughingString = "YES";
@@ -253,11 +251,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
       setState(() {
         patientSummaryDto =
             PatientSummaryDto.fromJson(jsonDecode(patient_summary));
-        debugPrint("RRRRRRRRRRRRR Patient summary dto from android" +
-            patientSummaryDto.toString());
-        debugPrint(
-            "RRRRRRRRRRRRR Patient summary dto from android temperature" +
-                patientSummaryDto.temperature.toString());
+
       });
     } catch (e) {
       print("channel failure at Patient summary dto method: '$e'");
@@ -282,11 +276,8 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
     var art_visit_response;
     try {
       art_visit_response = await artChannel.invokeMethod('getArtIpt', personId);
-      print("KKKKKKKKKKK art ipt string here "+ art_visit_response.toString());
-
       setState(() {
         _artIpt = ArtIpt.fromJson(jsonDecode(art_visit_response));
-        print("KKKKKKKKKKK art ipt here "+ _artIpt.toString());
       });
 
     } catch (e) {
@@ -367,7 +358,7 @@ class ArtSummaryOverviewState extends State<ArtSummaryOverview>
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
                         ),])
               ),

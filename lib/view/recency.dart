@@ -320,7 +320,6 @@ class _Recency extends State<RecencyTest> {
     try{
       TestKitBatchDto testKitBatchDto = new TestKitBatchDto(binType, binId, testKitId);
       testkitsresponse = await htsChannel.invokeMethod('getTestKitBatches', jsonEncode(testKitBatchDto));
-      debugPrint('ggggggggggggggggg testkit batches returned'+ testkitsresponse);
       setState(() {
         _testkitbatch_string = testkitsresponse;
         testkitbatches = jsonDecode(_testkitbatch_string);
@@ -328,7 +327,6 @@ class _Recency extends State<RecencyTest> {
         _dropDownListTestKitBatches.forEach((e){
           _TestkitbatchesList.add(e);
         });
-        debugPrint('ggggggggggggggggg testkit batches after assignment'+ _TestkitbatchesList.toString());
       });
 
     }catch(e){
@@ -342,11 +340,8 @@ class _Recency extends State<RecencyTest> {
     var binId_response;
     try {
       binId_response = await htsChannel.invokeMethod('getPatientQueueOrWard', personId);
-      debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE'+ binId_response);
       setState(() {
         this.patientBinId=binId_response;
-        debugPrint('FFFFFFFF HERE IS THE BIN ID RESPONSE AFTER ASSIGNMENT'+ binId_response);
-
       });
     } catch (e) {
       print("channel failure in getPerson queue or ward: '$e'");
