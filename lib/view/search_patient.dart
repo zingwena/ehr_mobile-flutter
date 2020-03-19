@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../landing_screen.dart';
 import 'add_patient.dart';
 import 'patient_overview.dart';
 
@@ -253,27 +254,29 @@ class _SearchPatientState extends State<SearchPatient> {
                         ),
 
                         Container(
-                            padding: EdgeInsets.all(3.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
                                 children: <Widget>[
                                   Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: IconButton(
+                                        icon: Icon(Icons.home), color: Colors.white,
+                                        onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => SearchPatient()),),
+                                      )),
+                                  Padding(
                                     padding: const EdgeInsets.all(0.0),
                                     child: IconButton(
-                                      icon: Icon(Icons.exit_to_app), iconSize:32, color: Colors.white,
+                                      icon: Icon(Icons.exit_to_app), color: Colors.white,
                                       onPressed: () => Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => LoginScreen()),),
+                                        MaterialPageRoute(builder: (context) => LandingScreen()),),
                                     ),
-                                    /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                                  ),  ])
+                                  ),])
                         ),
                       ],
                     ),
