@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'edit_demographics.dart';
 import 'hts_testscreening.dart';
@@ -288,14 +289,22 @@ class _HtsScreening extends State<Hts_Screening> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                        ),  ])
+                        ),])
               ),
             ],
           ),

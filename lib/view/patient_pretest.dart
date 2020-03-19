@@ -13,8 +13,6 @@ import 'package:ehr_mobile/view/hts_pretest_overview.dart';
 import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
-import 'package:ehr_mobile/view/hts_testing.dart';
-import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';
@@ -22,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'sexualhistoryform.dart';
 import 'edit_demographics.dart';
@@ -328,20 +327,22 @@ class _PatientPretest extends State<PatientPretest> {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),

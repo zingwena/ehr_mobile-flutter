@@ -15,8 +15,6 @@ import 'package:ehr_mobile/view/reception_vitals.dart';
 import 'package:ehr_mobile/view/sexualhistoryform2.dart';
 import 'package:ehr_mobile/view/hts_registration.dart';
 import 'package:ehr_mobile/view/art_reg.dart';
-import 'package:ehr_mobile/view/hts_testing.dart';
-import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
 import 'package:ehr_mobile/view/patient_overview.dart';
 import 'package:ehr_mobile/view/search_patient.dart';

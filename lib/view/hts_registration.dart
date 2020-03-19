@@ -10,10 +10,12 @@ import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/sidebar.dart';
 import 'package:ehr_mobile/util/constants.dart';
 import 'package:ehr_mobile/view/htsreg_overview.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../landing_screen.dart';
 import 'rounded_button.dart';
 
 class Registration extends StatefulWidget {
@@ -241,26 +243,27 @@ class _Registration extends State<Registration> {
                   padding: EdgeInsets.all(8.0),
                   child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
-                            icon: Icon(Icons.exit_to_app),
-                            color: Colors.white,
+                            icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                            ),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-                        ),
-                      ])),
+                        ),])
+              ),
             ],
           ),
           Positioned.fill(

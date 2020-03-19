@@ -15,12 +15,14 @@ import 'package:ehr_mobile/login_screen.dart';
 
 import 'package:ehr_mobile/view/hts_result.dart';
 import 'package:ehr_mobile/view/rounded_button.dart';
+import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 
 class HtsScreeningTest extends StatefulWidget {
@@ -522,20 +524,22 @@ Future<dynamic> getTestKitsByCount(int count) async {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),

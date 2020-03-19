@@ -10,7 +10,6 @@ import 'package:ehr_mobile/model/htsRegistration.dart';
 import 'package:ehr_mobile/model/postTest.dart';
 import 'package:ehr_mobile/preferences/stored_preferences.dart';
 import 'package:ehr_mobile/view/home_page.dart';
-import 'package:ehr_mobile/view/hts_testing.dart';
 import 'package:ehr_mobile/view/hts_testscreening.dart';
 import 'package:ehr_mobile/view/patient_post_test.dart';
 import 'package:ehr_mobile/login_screen.dart';
@@ -25,6 +24,7 @@ import 'package:ehr_mobile/view/search_patient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../landing_screen.dart';
 import '../sidebar.dart';
 import 'rounded_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -108,16 +108,12 @@ class _Hts_Result  extends State<Hts_Result > {
 
   Future<void> getPostTestRecord(String patientId) async {
     String  postTest_response;
-    print("POst test method called");
     try {
       postTest_response = await htsChannel.invokeMethod('getcurrenthts', patientId);
-      print("POST TEST STRING RETURNED"+ postTest_response);
       setState(() {
         patientPostTest = PostTest.fromJson(jsonDecode(postTest_response));
-        print("HERE IS THE POST TEST RETRIEVED AFTER ASSIGNMENT " + patientPostTest.toString());
 
       });
-      print('POST TEST IN THE FLUTTER THE RETURNED ONE '+ patientPostTest.toString());
     } catch (e) {
       print("channel failure: '$e'");
     }
@@ -245,20 +241,22 @@ class _Hts_Result  extends State<Hts_Result > {
                       MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: IconButton(
+                              icon: Icon(Icons.home), color: Colors.white,
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SearchPatient()),),
+                            )),
+                        Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: IconButton(
                             icon: Icon(Icons.exit_to_app), color: Colors.white,
                             onPressed: () => Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),),
+                              MaterialPageRoute(builder: (context) => LandingScreen()),),
                           ),
-                          /*  Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("logout", style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.white ),),
-                        ), */
-
-                        ),  ])
+                        ),])
               ),
             ],
           ),
