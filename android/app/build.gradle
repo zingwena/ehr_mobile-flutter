@@ -27,7 +27,6 @@ if (flutterRoot == null) {
 //}
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.apollographql.android'
 apply plugin: 'net.ltgt.apt-idea'
 
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
